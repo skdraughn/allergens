@@ -26,7 +26,7 @@ const adapterOverrides = {
   },
   "auntie-annes": {
     minOfficialItemCount: 20,
-    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.htmlMatrix],
+    parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.pdfIngredients],
   },
   arbys: {
     parserTypes: [sharedParserTypes.pdfIngredients, sharedParserTypes.productPage],
@@ -60,15 +60,15 @@ const adapterOverrides = {
   },
   "churchs-texas-chicken": {
     minOfficialItemCount: 20,
-    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
+    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.pdfMatrix],
   },
   cava: {
     minOfficialItemCount: 20,
-    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
+    parserTypes: [sharedParserTypes.pdfMatrix],
   },
   cheddars: {
     minOfficialItemCount: casualDiningMinItemCount,
-    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
+    parserTypes: [sharedParserTypes.pdfMatrix],
   },
   "cheesecake-factory": {
     minOfficialItemCount: casualDiningMinItemCount,
@@ -93,7 +93,7 @@ const adapterOverrides = {
   },
   "del-taco": {
     minOfficialItemCount: 20,
-    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
+    parserTypes: [sharedParserTypes.pdfMatrix],
   },
   dominos: {
     parserTypes: [sharedParserTypes.htmlMatrix, sharedParserTypes.productPage],
@@ -230,7 +230,7 @@ const adapterOverrides = {
   },
   "tim-hortons": {
     minOfficialItemCount: casualDiningMinItemCount,
-    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
+    parserTypes: [sharedParserTypes.pdfMatrix],
   },
   wendys: {
     parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
@@ -247,7 +247,7 @@ const adapterOverrides = {
   },
   "yard-house": {
     minOfficialItemCount: casualDiningMinItemCount,
-    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.pdfMatrix],
+    parserTypes: [sharedParserTypes.pdfMatrix],
   },
   zaxbys: {
     parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.pdfIngredients],

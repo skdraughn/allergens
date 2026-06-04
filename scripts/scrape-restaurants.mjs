@@ -529,18 +529,7 @@ function officialOnlyRecordsForBrand(restaurantId, records) {
     return records.filter((record) => record.sourceKind === "html-ingredients");
   }
 
-  if (
-    [
-      "del-taco",
-      "cava",
-      "yard-house",
-      "churchs-texas-chicken",
-      "ruths-chris",
-      "auntie-annes",
-      "tim-hortons",
-      "cheddars",
-    ].includes(restaurantId)
-  ) {
+  if (["churchs-texas-chicken", "ruths-chris"].includes(restaurantId)) {
     return [];
   }
 
@@ -4151,6 +4140,30 @@ async function extractBrandPdfItems(text, restaurant, url, buffer) {
     return extractQdobaAllergenPdfItems(buffer, restaurant, url);
   }
 
+  if (restaurant.id === "del-taco" && /allergens-\d{2}-\d{4}\.pdf/i.test(url) && buffer) {
+    return extractDelTacoAllergenPdfItems(buffer, restaurant, url);
+  }
+
+  if (restaurant.id === "cava" && /AllergReg\.pdf/i.test(url) && buffer) {
+    return extractCavaAllergenPdfItems(buffer, restaurant, url);
+  }
+
+  if (restaurant.id === "yard-house" && /Yard_House_Allergen_Guide/i.test(url) && buffer) {
+    return extractYardHouseAllergenPdfItems(buffer, restaurant, url);
+  }
+
+  if (restaurant.id === "cheddars" && /Cheddars_Allergen_Guide/i.test(url) && buffer) {
+    return extractCheddarsAllergenPdfItems(buffer, restaurant, url);
+  }
+
+  if (restaurant.id === "auntie-annes" && /Food-Allergens-and-Sensitivities-Chart\.pdf/i.test(url) && buffer) {
+    return extractAuntieAnnesAllergenPdfItems(buffer, restaurant, url);
+  }
+
+  if (restaurant.id === "tim-hortons" && /Allergen-Guide/i.test(url) && buffer) {
+    return extractTimHortonsAllergenPdfItems(buffer, restaurant, url);
+  }
+
   return [];
 }
 
@@ -4555,6 +4568,641 @@ function isQdobaPdfNoise(rowText, name) {
   return /^(?:X Contains|Δ May contain|Wheat|Soy|Milk|Egg|Tree Nuts|Peanuts|Fish|Crustacean|\/Shellfish|Gluten|Vegan|ATTENTION VALUED|Foods prepared|and SHELLFISH|ALLERGEN INFORMATION|-- \d+ of \d+ --|\* Products|V- Vegan|Signature Builds|Kid's Meals)/i.test(
     rowText,
   ) || /^(?:Fountain Beverages|Bottled Beverages)$/i.test(name);
+}
+
+async function extractDelTacoAllergenPdfItems(buffer, restaurant, url) {
+  const rows = clusterPdfRowsByPageAndY(await readPdfPositionRows(buffer), 3);
+  const columns = [
+    { allergen: "milk", x: 318 },
+    { allergen: "egg", x: 338 },
+    { allergen: "fish", x: 358 },
+    { allergen: "shellfish", x: 383 },
+    { allergen: "tree-nut", x: 407 },
+    { allergen: "peanut", x: 432 },
+    { allergen: "wheat", x: 460 },
+    { allergen: "soy", x: 485 },
+    { allergen: "sesame", x: 510 },
+    { allergen: "gluten", x: 535 },
+  ];
+  const records = [];
+  let currentCategory = restaurant.category;
+  let pendingName = null;
+
+  for (const row of rows) {
+    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const leftText = cleanDelTacoPdfName(
+      row.items
+        .filter((item) => item.x < 265)
+        .map((item) => item.str)
+        .join(" "),
+    );
+
+    if (!leftText || isDelTacoPdfNoise(rowText, leftText)) {
+      continue;
+    }
+
+    const markers = row.items.filter((item) => /^X$/i.test(item.str) && item.x >= 310);
+
+    const splitName = splitDelTacoLeadingCategory(leftText);
+
+    if (markers.length === 0) {
+      if (isCategoryLine(leftText) || /^[A-Z0-9&'®\s-]{3,40}$/.test(leftText)) {
+        currentCategory = titleCase(leftText);
+        pendingName = null;
+      } else if (isProbablyMenuItemName(leftText)) {
+        pendingName = pendingName ? `${pendingName} ${leftText}` : leftText;
+      }
+      continue;
+    }
+
+    if (splitName) {
+      currentCategory = splitName.category;
+    }
+
+    const itemName = splitName?.name ?? leftText;
+    const name = pendingName ? cleanDelTacoPdfName(`${pendingName} ${itemName}`) : itemName;
+    pendingName = null;
+
+    if (!name || !isProbablyMenuItemName(name)) {
+      continue;
+    }
+
+    const allergens = markers
+      .map((marker) => closestAllergenColumn(marker.x, columns, 14))
+      .filter(Boolean);
+
+    records.push(
+      createRecord({
+        allergenSourceType: allergenSourceTypes.officialAllergenMenu,
+        allergens,
+        category: currentCategory,
+        description: "Official Del Taco allergen list PDF.",
+        imageUrl: null,
+        mayContain: [],
+        name,
+        sourceKind: "pdf-matrix",
+        sourceUrl: url,
+        variantGroup: currentCategory,
+      }),
+    );
+  }
+
+  return uniqueBy(records, (record) => `${record.category}:${record.name}`);
+}
+
+function cleanDelTacoPdfName(value) {
+  return cleanText(value)?.replace(/\*+$/g, "").replace(/^& NACHOS\s+/i, "").replace(/\s+/g, " ").trim();
+}
+
+function isDelTacoPdfNoise(rowText, name) {
+  return /^(?:DEL TACO MENU ITEMS|Vegetarian Vegan|SENSITIVITIES|CLAIMS|Menu Item Name|P5-2026|-- \d+ of \d+ --|©|Please be|DR PEPPER|INGREDIENTS|FOUNTAIN DRINKS)$/i.test(
+    rowText,
+  ) || /^P5-2026\b/i.test(name);
+}
+
+function splitDelTacoLeadingCategory(name) {
+  const categories = [
+    "BURGERS & FRIES",
+    "BURRITOS",
+    "TACOS",
+    "EPIC BURRITOS",
+    "QUESADILLAS",
+    "NACHOS",
+    "DESSERTS",
+    "BREAKFAST",
+    "SAUCES",
+    "SIDES",
+    "SALADS",
+    "KIDS",
+    "QUESADILLAS & NACHOS",
+  ];
+
+  for (const category of categories) {
+    if (name.startsWith(`${category} `)) {
+      return {
+        category: titleCase(category),
+        name: name.slice(category.length).trim(),
+      };
+    }
+  }
+
+  if (name.startsWith("& NACHOS ")) {
+    return {
+      category: "Quesadillas & Nachos",
+      name: name.slice("& NACHOS ".length).trim(),
+    };
+  }
+
+  return null;
+}
+
+async function extractCavaAllergenPdfItems(buffer, restaurant, url) {
+  const rows = clusterPdfRowsByPageAndY(await readPdfPositionRows(buffer), 4);
+  const columns = [
+    { allergen: "wheat", x: 180 },
+    { allergen: "milk", x: 220 },
+    { allergen: "soy", x: 257 },
+    { allergen: "egg", x: 293 },
+    { allergen: "tree-nut", x: 331 },
+    { allergen: "sesame", x: 364 },
+    { allergen: "peanut", x: 401 },
+    { allergen: "fish", x: 444 },
+    { allergen: "shellfish", x: 474 },
+  ];
+  const records = [];
+  let currentCategory = restaurant.category;
+
+  for (const row of rows.filter((entry) => entry.pageNumber >= 4)) {
+    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const name = cleanText(
+      row.items
+        .filter((item) => item.x < 165)
+        .map((item) => item.str)
+        .join(" "),
+    );
+
+    if (!name || isCavaPdfNoise(rowText, name)) {
+      continue;
+    }
+
+    const markers = row.items.filter((item) => /^(?:Contains|•|x|X)$/i.test(item.str) && item.x >= 165 && item.x < 500);
+
+    if (markers.length === 0 && isCategoryLine(name)) {
+      currentCategory = titleCase(name);
+      continue;
+    }
+
+    if (!isProbablyMenuItemName(name)) {
+      continue;
+    }
+
+    const allergens = markers
+      .map((marker) => closestAllergenColumn(marker.x, columns, 18))
+      .filter(Boolean);
+
+    records.push(
+      createRecord({
+        allergenSourceType: allergenSourceTypes.officialAllergenMenu,
+        allergens,
+        category: currentCategory,
+        description: "Official CAVA nutrition and allergen guide PDF.",
+        imageUrl: null,
+        mayContain: [],
+        name,
+        sourceKind: "pdf-matrix",
+        sourceUrl: url,
+        variantGroup: currentCategory,
+      }),
+    );
+  }
+
+  return uniqueBy(records, (record) => `${record.category}:${record.name}`);
+}
+
+function isCavaPdfNoise(rowText, name) {
+  return /^(?:Recipe|Wheat|Shellfish|Contains|ALLERGEN|D I E T|Allergen Guide|While we|We cannot|including salmon|beverage information|-- \d+ of \d+ --)$/i.test(
+    rowText,
+  ) || /^(?:beverage information is calculated without ice\.|Contains Compliant Ingredients)$/i.test(name);
+}
+
+async function extractYardHouseAllergenPdfItems(buffer, restaurant, url) {
+  const rows = clusterPdfRowsByPageAndY(await readPdfPositionRows(buffer), 5);
+  const columns = [
+    { allergen: "sesame", x: 395 },
+    { allergen: "shellfish", x: 429 },
+    { allergen: "shellfish", x: 463 },
+    { allergen: "peanut", x: 498 },
+    { allergen: "tree-nut", x: 532 },
+    { allergen: "soy", x: 566 },
+    { allergen: "egg", x: 600 },
+    { allergen: "fish", x: 634 },
+    { allergen: "milk", x: 668 },
+    { allergen: "wheat", x: 709 },
+    { allergen: "gluten", x: 743 },
+  ];
+  const records = [];
+  let currentCategory = restaurant.category;
+
+  for (const row of rows) {
+    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const name = cleanYardHousePdfName(
+      row.items
+        .filter((item) => item.x < 280)
+        .map((item) => item.str)
+        .join(" "),
+    );
+
+    if (!name || isYardHousePdfNoise(rowText, name)) {
+      continue;
+    }
+
+    const markers = row.items.filter((item) => /^[Y●]$/i.test(item.str) && item.x >= 280);
+
+    if (markers.length === 0) {
+      if (isCategoryLine(name) || /^[A-Z][A-Z\s&+'"-]+$/.test(name)) {
+        currentCategory = cleanYardHouseCategoryName(name);
+      }
+      continue;
+    }
+
+    if (!isProbablyMenuItemName(name)) {
+      continue;
+    }
+
+    const allergens = [];
+    const mayContain = [];
+
+    for (const marker of markers) {
+      const allergen = closestAllergenColumn(marker.x, columns, 18);
+
+      if (!allergen) {
+        continue;
+      }
+
+      if (/^●$/.test(marker.str)) {
+        mayContain.push(allergen);
+      } else {
+        allergens.push(allergen);
+      }
+    }
+
+    records.push(
+      createRecord({
+        allergenSourceType: allergenSourceTypes.officialAllergenMenu,
+        allergens,
+        category: currentCategory,
+        description: "Official Yard House allergen guide PDF.",
+        imageUrl: null,
+        mayContain,
+        name,
+        sourceKind: "pdf-matrix",
+        sourceUrl: url,
+        variantGroup: currentCategory,
+      }),
+    );
+  }
+
+  return uniqueBy(records, (record) => `${record.category}:${record.name}`);
+}
+
+function cleanYardHousePdfName(value) {
+  return cleanText(value)?.replace(/\s+/g, " ").replace(/\s+²$/g, "").trim();
+}
+
+function cleanYardHouseCategoryName(value) {
+  return titleCase(value)
+    .replace(/\bSandwi Ches\b/g, "Sandwiches")
+    .replace(/\bAppeti Zers\b/g, "Appetizers")
+    .replace(/\bChi Cken\b/g, "Chicken")
+    .replace(/\bPreparati On\b/g, "Preparation")
+    .replace(/\bPi Zzas\b/g, "Pizzas");
+}
+
+function isYardHousePdfNoise(rowText, name) {
+  return /^(?:KEY TO|KEY TO THI S GUI DE|ALLERGEN GUIDE|Printed information|The information|current version|grill or fryer|If you have|COMMON ALLERGENS|PREPARATION|Fried|Soybean Oil|Grilled|Peanuts Tree Nuts|Menu items marked|Dairy|Page \d+ of \d+|-- \d+ of \d+ --)$/i.test(
+    rowText,
+  ) || /^(?:KEY TO THI S GUI DE|served with pickles and choice of side|served lettuce wrapped|served on flour tortillas|served on corn tortillas)$/i.test(name);
+}
+
+async function extractCheddarsAllergenPdfItems(buffer, restaurant, url) {
+  const rows = clusterPdfRowsByPageAndY(await readPdfPositionRows(buffer), 5);
+  const columns = [
+    { allergen: "peanut", x: 716 },
+    { allergen: "tree-nut", x: 775 },
+    { allergen: "soy", x: 852 },
+    { allergen: "egg", x: 912 },
+    { allergen: "milk", x: 974 },
+    { allergen: "wheat", x: 1034 },
+    { allergen: "fish", x: 1101 },
+    { allergen: "shellfish", x: 1154 },
+    { allergen: "shellfish", x: 1217 },
+    { allergen: "gluten", x: 1284 },
+    { allergen: "sesame", x: 1344 },
+  ];
+  const records = [];
+  let currentCategory = restaurant.category;
+
+  for (const row of rows) {
+    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const name = cleanText(
+      row.items
+        .filter((item) => item.x < 545)
+        .map((item) => item.str)
+        .join(" "),
+    );
+
+    if (!name || isCheddarsPdfNoise(rowText, name)) {
+      continue;
+    }
+
+    const markers = row.items.filter((item) => /^X$/i.test(item.str) && item.x >= 545);
+
+    if (markers.length === 0) {
+      if (isCategoryLine(name) || /^[A-Z][A-Z\s&'/-]+$/.test(name)) {
+        currentCategory = titleCase(name);
+      }
+      continue;
+    }
+
+    if (!isProbablyMenuItemName(name)) {
+      continue;
+    }
+
+    const allergens = markers
+      .map((marker) => closestAllergenColumn(marker.x, columns, 24))
+      .filter(Boolean);
+
+    records.push(
+      createRecord({
+        allergenSourceType: allergenSourceTypes.officialAllergenMenu,
+        allergens,
+        category: currentCategory,
+        description: "Official Cheddar's Scratch Kitchen allergen guide PDF.",
+        imageUrl: null,
+        mayContain: [],
+        name,
+        sourceKind: "pdf-matrix",
+        sourceUrl: url,
+        variantGroup: currentCategory,
+      }),
+    );
+  }
+
+  return uniqueBy(records, (record) => `${record.category}:${record.name}`);
+}
+
+function isCheddarsPdfNoise(rowText, name) {
+  return /^(?:X Menu Item|Includes all|Fried in Soybean|Oil Grilled|Peanuts|Tree Nuts|Molluscan|Crustacean|Shellfish|Food Allergen Guide|Printed information|The information|most current|cooked on|If you have|-- \d+ of \d+ --)$/i.test(
+    rowText,
+  ) || /^(?:Sides? not included|Side not included|dressing not included)$/i.test(name);
+}
+
+async function extractAuntieAnnesAllergenPdfItems(buffer, restaurant, url) {
+  const rows = clusterPdfRowsByPageAndY(await readPdfPositionRows(buffer), 4);
+  const columns = [
+    { allergen: "milk", x: 323 },
+    { allergen: "egg", x: 363 },
+    { allergen: "fish", x: 403 },
+    { allergen: "shellfish", x: 443 },
+    { allergen: "wheat", x: 495 },
+    { allergen: "soy", x: 554 },
+    { allergen: "peanut", x: 619 },
+    { allergen: "tree-nut", x: 677 },
+  ];
+  const records = [];
+  let currentCategory = restaurant.category;
+
+  for (const row of rows) {
+    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const name = cleanAuntieAnnesPdfName(
+      row.items
+        .filter((item) => item.x < 300)
+        .map((item) => item.str)
+        .join(" "),
+    );
+
+    if (!name || isAuntieAnnesPdfNoise(rowText, name)) {
+      continue;
+    }
+
+    const markers = row.items.filter((item) => /^X$/i.test(item.str) && item.x >= 300);
+    const categoryHeading = auntieAnnesCategoryHeading(name);
+
+    if (markers.length === 0) {
+      if (categoryHeading) {
+        currentCategory = categoryHeading;
+        continue;
+      }
+
+      if (!isProbablyMenuItemName(name)) {
+        continue;
+      }
+
+      records.push(
+        createRecord({
+          allergenSourceType: allergenSourceTypes.officialAllergenMenu,
+          allergens: [],
+          category: currentCategory,
+          description: "Official Auntie Anne's allergen and sensitivities PDF matrix.",
+          imageUrl: null,
+          mayContain: [],
+          name: titleCase(name),
+          sourceKind: "pdf-matrix",
+          sourceUrl: url,
+          variantGroup: currentCategory,
+        }),
+      );
+      continue;
+    }
+
+    if (!isProbablyMenuItemName(name)) {
+      continue;
+    }
+
+    const allergens = markers
+      .map((marker) => closestAllergenColumn(marker.x, columns, 22))
+      .filter(Boolean);
+
+    records.push(
+      createRecord({
+        allergenSourceType: allergenSourceTypes.officialAllergenMenu,
+        allergens,
+        category: currentCategory,
+        description: "Official Auntie Anne's allergen and sensitivities PDF matrix.",
+        imageUrl: null,
+        mayContain: [],
+        name: titleCase(name),
+        sourceKind: "pdf-matrix",
+        sourceUrl: url,
+        variantGroup: currentCategory,
+      }),
+    );
+  }
+
+  return uniqueBy(records, (record) => `${record.category}:${record.name}`);
+}
+
+function cleanAuntieAnnesPdfName(value) {
+  return cleanText(value)?.replace(/\s+/g, " ").trim();
+}
+
+function isAuntieAnnesPdfNoise(rowText, name) {
+  if (/^Food Allergens and Sensitivities/i.test(name)) {
+    return true;
+  }
+
+  return /^(?:Food Allergens|Food Sensitivities|THIS CHART|Product|MILK|EGG|FISH|SHELL|TREE|FD&C|MONOSODIUM|GLUTAMATE|MSG|CORN|SULFITES|Please be advised|responsibility|condition or sensitivity|ingredient|questions related|Auntie Anne's LLC|Confidential|Revised|-- \d+ of \d+ --)$/i.test(
+    rowText,
+  ) || /^(?:Food Allergens|Confidential|Revised|Auntie Anne's LLC)$/i.test(name) || /^(?:MISCELLANEOUS|PRETZELS \(without butter\)|DIPS|BEVERAGES)$/i.test(name) === false && name.length < 3;
+}
+
+function auntieAnnesCategoryHeading(name) {
+  const headings = new Map([
+    ["PRETZELS (without butter)", "Pretzels"],
+    ["DIPS", "Dips"],
+    ["BEVERAGES", "Beverages"],
+    ["MISCELLANEOUS", "Miscellaneous"],
+  ]);
+
+  return headings.get(name.toUpperCase()) ?? null;
+}
+
+async function extractTimHortonsAllergenPdfItems(buffer, restaurant, url) {
+  const rows = clusterPdfRowsByPageAndY(await readPdfPositionRows(buffer), 3);
+  const columns = [
+    { allergen: "wheat", x: 275 },
+    { allergen: "gluten", x: 275 },
+    { allergen: "milk", x: 329 },
+    { allergen: "egg", x: 383 },
+    { allergen: "soy", x: 437 },
+    { allergen: "peanut", x: 491 },
+    { allergen: "tree-nut", x: 544 },
+    { allergen: "sesame", x: 599 },
+    { allergen: "fish", x: 653 },
+    { allergen: "shellfish", x: 695 },
+  ];
+  const records = [];
+  let currentCategory = restaurant.category;
+  let pendingRecord = null;
+
+  for (const row of rows) {
+    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const leftText = cleanTimHortonsPdfName(
+      row.items
+        .filter((item) => item.x < 250)
+        .map((item) => item.str)
+        .join(" "),
+    );
+
+    if (isTimHortonsPdfNoise(rowText, leftText ?? "")) {
+      continue;
+    }
+
+    const markers = row.items.filter((item) => /^[xo]$/i.test(item.str) && item.x >= 250);
+
+    if (markers.length === 0) {
+      const categoryText = leftText || rowText;
+      const categoryHeading = timHortonsCategoryHeading(categoryText);
+      if (categoryHeading) {
+        if (pendingRecord) {
+          records.push(createRecord(pendingRecord));
+        }
+        currentCategory = categoryHeading;
+        pendingRecord = null;
+      } else if (leftText && isProbablyMenuItemName(leftText)) {
+        if (pendingRecord) {
+          records.push(createRecord(pendingRecord));
+        }
+        pendingRecord = {
+          allergenSourceType: allergenSourceTypes.officialAllergenMenu,
+          allergens: [],
+          category: currentCategory,
+          description: "Official Tim Hortons USA allergen guide PDF.",
+          imageUrl: null,
+          mayContain: [],
+          name: leftText,
+          sourceKind: "pdf-matrix",
+          sourceUrl: url,
+          variantGroup: currentCategory,
+        };
+      }
+      continue;
+    }
+
+    if (pendingRecord && leftText && leftText !== pendingRecord.name) {
+      records.push(createRecord(pendingRecord));
+      pendingRecord = null;
+    }
+
+    const name = leftText || pendingRecord?.name;
+
+    if (!name || !isProbablyMenuItemName(name)) {
+      pendingRecord = null;
+      continue;
+    }
+
+    const allergens = [];
+    const mayContain = [];
+
+    for (const marker of markers) {
+      const allergen = closestAllergenColumn(marker.x, columns, 18);
+
+      if (!allergen) {
+        continue;
+      }
+
+      if (/^o$/i.test(marker.str)) {
+        mayContain.push(allergen);
+      } else {
+        allergens.push(allergen);
+      }
+    }
+
+    if (pendingRecord) {
+      pendingRecord = null;
+    }
+
+    records.push(
+      createRecord({
+        allergenSourceType: allergenSourceTypes.officialAllergenMenu,
+        allergens: uniqueStrings(allergens),
+        category: currentCategory,
+        description: "Official Tim Hortons USA allergen guide PDF.",
+        imageUrl: null,
+        mayContain: uniqueStrings(mayContain),
+        name,
+        sourceKind: "pdf-matrix",
+        sourceUrl: url,
+        variantGroup: currentCategory,
+      }),
+    );
+  }
+
+  if (pendingRecord) {
+    records.push(createRecord(pendingRecord));
+  }
+
+  return uniqueBy(records, (record) => `${record.category}:${record.name}`);
+}
+
+function cleanTimHortonsPdfName(value) {
+  return cleanText(value)?.replace(/\s+/g, " ").trim();
+}
+
+function isTimHortonsPdfNoise(rowText, name) {
+  return /^(?:Wheat &|Gluten|Menu Item|Milk|Egg|Soy|Peanuts|Tree Nuts|Sesame|Fish|Shellfish|x = Contains|o = May Contain|Page \d+ of \d+|-- \d+ of \d+ --|Tim Hortons USA|Allergen Information|Allergen Statement|Although precaution|This guide|Please consult|A blank field|To find out|Some of our|Beverages - Limited Time Only|Cold Beverages - Limited Time Only|©Tim Hortons)/i.test(
+    rowText,
+  ) || /^(?:Tim Hortons USA|Allergen Information|©Tim Hortons)/i.test(name);
+}
+
+function timHortonsCategoryHeading(value) {
+  const headings = new Set([
+    "Coffee, Tea & Other Hot Beverages",
+    "Beverage Additions",
+    "Cold Beverages",
+    "Donuts",
+    "Timbits®",
+    "Baked Goods",
+    "Muffins",
+    "Cookies",
+    "Croissants",
+    "Bagels",
+    "Bagel Toppings",
+    "Breakfast",
+    "Classic Breakfast Sandwiches",
+    "Bagel Breakfast Sandwiches",
+    "Grilled Breakfast Wraps",
+    "Other Breakfast Items",
+    "Lunch",
+    "Sandwiches",
+    "Wraps",
+    "Paninis",
+    "Soups & Chili",
+    "Sides",
+  ]);
+  const normalized = cleanText(value);
+
+  return headings.has(normalized) ? normalized : null;
 }
 
 function extractDunkinAllergyIngredientPdfItems(text, restaurant, url) {

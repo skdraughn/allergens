@@ -640,8 +640,10 @@ export const restaurantSources = [
     category: "Tex-Mex",
     domain: "deltaco.com",
     menuUrls: ["https://deltaco.com/menu"],
-    allergenUrls: ["https://deltaco.com/nutrition.html"],
-    apiUrls: ["https://www.nutritionix.com/del-taco/nutrition-calculator"],
+    allergenUrls: [
+      "https://deltaco.com/nutrition.html",
+      "https://deltaco.com/files/pdf/2026/allergens-06-2026.pdf",
+    ],
   },
   {
     id: "cava",
@@ -650,8 +652,10 @@ export const restaurantSources = [
     category: "Mediterranean",
     domain: "cava.com",
     menuUrls: ["https://cava.com/menu"],
-    allergenUrls: ["https://cava.com/menu/nutrition"],
-    apiUrls: ["https://www.nutritionix.com/cava-grill/nutrition-calculator"],
+    allergenUrls: [
+      "https://cava.com/nutrition",
+      "https://assets.ctfassets.net/kugm9fp9ib18/7KrOGNUFZjBddOWezWLWwm/a20b10d71b9b0496f96b8e38bd8e0211/CAVA-REC-GID-0326-AllergReg.pdf",
+    ],
   },
   {
     id: "nothing-bundt-cakes",
@@ -685,8 +689,11 @@ export const restaurantSources = [
     category: "Chicken",
     domain: "churchs.com",
     menuUrls: ["https://www.churchs.com/menu/"],
-    allergenUrls: ["https://www.churchs.com/nutrition/"],
-    apiUrls: ["https://www.nutritionix.com/churchs-chicken/nutrition-calculator"],
+    allergenUrls: [
+      "https://www.churchs.com/nutrition/",
+      "https://www.churchs.com/wp-content/uploads/2022/08/NutritionalFactSheet_ChurchsChicken_080922.pdf",
+    ],
+    apiUrls: ["https://mobile-api.churchs.com/api/v1/menu"],
   },
   {
     id: "ruths-chris",
@@ -705,8 +712,11 @@ export const restaurantSources = [
     category: "Snack",
     domain: "auntieannes.com",
     menuUrls: ["https://www.auntieannes.com/menu"],
-    allergenUrls: ["https://www.auntieannes.com/nutrition"],
-    apiUrls: ["https://www.nutritionix.com/auntie-annes/nutrition-calculator"],
+    allergenUrls: [
+      "https://www.auntieannes.com/nutrition",
+      "https://assets.ctfassets.net/zqt8tllj2cy0/2jjVNaTNGDoMGd4QVucpSy/0f94c0d0541ec11a334dba7ce6fc56b0/Auntie-Annes-Nutrition-Guide.pdf",
+      "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf",
+    ],
   },
   {
     id: "tim-hortons",
