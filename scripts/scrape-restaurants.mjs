@@ -521,6 +521,29 @@ function officialOnlyRecordsForBrand(restaurantId, records) {
     return tableRecords.length > 0 ? tableRecords : records;
   }
 
+  if (restaurantId === "pf-changs") {
+    return records.filter((record) => record.sourceKind === "html-allergen-matrix");
+  }
+
+  if (restaurantId === "nothing-bundt-cakes") {
+    return records.filter((record) => record.sourceKind === "html-ingredients");
+  }
+
+  if (
+    [
+      "del-taco",
+      "cava",
+      "yard-house",
+      "churchs-texas-chicken",
+      "ruths-chris",
+      "auntie-annes",
+      "tim-hortons",
+      "cheddars",
+    ].includes(restaurantId)
+  ) {
+    return [];
+  }
+
   if (restaurantId === "panda-express") {
     const pdfRecords = records.filter((record) => record.sourceKind === "pdf-matrix");
     return pdfRecords.length > 0 ? pdfRecords : records;
@@ -3083,6 +3106,14 @@ function extractHtmlItems(html, restaurant, url, kind = sourceTypes.menu) {
 }
 
 function extractBrandHtmlItems($, restaurant, url, kind) {
+  if (restaurant.id === "pf-changs" && kind === sourceTypes.allergen) {
+    return extractPfChangsAllergenItems($, restaurant, url);
+  }
+
+  if (restaurant.id === "nothing-bundt-cakes" && kind === sourceTypes.allergen) {
+    return extractNothingBundtCakesIngredientItems($, restaurant, url);
+  }
+
   if (restaurant.id === "chick-fil-a" && kind === sourceTypes.allergen) {
     return extractChickFilAAllergenItems($, restaurant, url);
   }
@@ -3096,6 +3127,121 @@ function extractBrandHtmlItems($, restaurant, url, kind) {
   }
 
   return [];
+}
+
+function extractPfChangsAllergenItems($, restaurant, url) {
+  const records = [];
+
+  $("table").each((_tableIndex, table) => {
+    const rows = $(table)
+      .find("tr")
+      .toArray()
+      .map((row) =>
+        $(row)
+          .find("th,td")
+          .toArray()
+          .map((cell) => cleanText($(cell).text()) ?? ""),
+      )
+      .filter((cells) => cells.some(Boolean));
+    const header = rows[0] ?? [];
+    const allergenColumns = header.map((cell, index) => ({
+      allergens: normalizeProviderAllergens([cell]),
+      index,
+    }));
+
+    if (allergenColumns.slice(1).filter((column) => column.allergens.length > 0).length < 6) {
+      return;
+    }
+
+    const category =
+      cleanText($(table).prevAll("h2,h3,h4").first().text()) ??
+      cleanText($(table).parent().prevAll("h2,h3,h4").first().text()) ??
+      restaurant.category;
+
+    for (const cells of rows.slice(1)) {
+      const name = cleanText(cells[0]);
+
+      if (!name || !isProbablyMenuItemName(name)) {
+        continue;
+      }
+
+      const allergens = [];
+
+      for (const column of allergenColumns) {
+        if (column.index === 0 || column.allergens.length === 0) {
+          continue;
+        }
+
+        if (/x|yes|contains|✔|✓|●/i.test(cells[column.index] ?? "")) {
+          allergens.push(...column.allergens);
+        }
+      }
+
+      if (allergens.length === 0 && /^[A-Z '&-]+$/.test(name)) {
+        continue;
+      }
+
+      records.push(
+        createRecord({
+          allergenSourceType: allergenSourceTypes.officialAllergenMenu,
+          allergens,
+          category,
+          description: "Official P.F. Chang's allergen matrix.",
+          imageUrl: null,
+          mayContain: [],
+          name,
+          sourceKind: "html-allergen-matrix",
+          sourceUrl: url,
+          variantGroup: category,
+        }),
+      );
+    }
+  });
+
+  return uniqueBy(records, (record) => `${record.category}:${record.name}`);
+}
+
+function extractNothingBundtCakesIngredientItems($, restaurant, url) {
+  const text = cleanText($("body").text()) ?? "";
+  const records = [];
+  const pattern = /([A-Z][A-Za-z0-9 '&®™.-]{2,80})›\s*INGREDIENTS:\s*([\s\S]*?)(?=(?:[A-Z][A-Za-z0-9 '&®™.-]{2,80})›\s*INGREDIENTS:|$)/g;
+  let match;
+
+  while ((match = pattern.exec(text))) {
+    const name = cleanText(match[1].split(/\.\s+/).pop());
+    const ingredientsText = cleanText(`INGREDIENTS: ${match[2]}`);
+
+    if (!name || !ingredientsText || !isProbablyMenuItemName(name)) {
+      continue;
+    }
+
+    const containsText = ingredientsText.match(/\bCONTAINS:\s*([^.]*)/i)?.[1] ?? "";
+    const mayContainText = ingredientsText.match(/\bMAY CONTAIN(?: TRACES OF)?:\s*([^.]*)/i)?.[1] ?? "";
+
+    records.push(
+      createRecord({
+        allergenSourceType: allergenSourceTypes.officialAllergenMenu,
+        allergens: uniqueStrings([
+          ...findAllergensInText(containsText),
+          ...findDeclaredAllergensOnly(containsText),
+        ]),
+        category: "Cake Flavors",
+        description: "Official Nothing Bundt Cakes ingredients list.",
+        imageUrl: null,
+        ingredientsText,
+        mayContain: uniqueStrings([
+          ...findMayContainAllergens(mayContainText),
+          ...findAllergensInText(mayContainText),
+        ]),
+        name,
+        sourceKind: "html-ingredients",
+        sourceUrl: url,
+        variantGroup: "Cake Flavors",
+      }),
+    );
+  }
+
+  return uniqueBy(records, (record) => record.name);
 }
 
 function extractFreddysAllergenItems($, restaurant, url) {

@@ -10,6 +10,7 @@ export const snapshotVersion = 1;
 
 const sharedParserTypes = {
   htmlMatrix: "html-allergen-matrix",
+  htmlIngredients: "html-ingredients",
   officialApi: "official-api",
   pdfIngredients: "pdf-ingredients",
   pdfMatrix: "pdf-matrix",
@@ -22,6 +23,10 @@ const adapterOverrides = {
   applebees: {
     minOfficialItemCount: casualDiningMinItemCount,
     parserTypes: [sharedParserTypes.htmlMatrix, sharedParserTypes.productPage],
+  },
+  "auntie-annes": {
+    minOfficialItemCount: 20,
+    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.htmlMatrix],
   },
   arbys: {
     parserTypes: [sharedParserTypes.pdfIngredients, sharedParserTypes.productPage],
@@ -53,6 +58,18 @@ const adapterOverrides = {
     minOfficialItemCount: casualDiningMinItemCount,
     parserTypes: [sharedParserTypes.productPage],
   },
+  "churchs-texas-chicken": {
+    minOfficialItemCount: 20,
+    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
+  },
+  cava: {
+    minOfficialItemCount: 20,
+    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
+  },
+  cheddars: {
+    minOfficialItemCount: casualDiningMinItemCount,
+    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
+  },
   "cheesecake-factory": {
     minOfficialItemCount: casualDiningMinItemCount,
     parserTypes: [sharedParserTypes.htmlMatrix, sharedParserTypes.productPage],
@@ -73,6 +90,10 @@ const adapterOverrides = {
   dennys: {
     minOfficialItemCount: casualDiningMinItemCount,
     parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.productPage],
+  },
+  "del-taco": {
+    minOfficialItemCount: 20,
+    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
   },
   dominos: {
     parserTypes: [sharedParserTypes.htmlMatrix, sharedParserTypes.productPage],
@@ -140,6 +161,10 @@ const adapterOverrides = {
     minOfficialItemCount: casualDiningMinItemCount,
     parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.productPage],
   },
+  "nothing-bundt-cakes": {
+    minOfficialItemCount: 15,
+    parserTypes: [sharedParserTypes.htmlIngredients],
+  },
   "outback-steakhouse": {
     minOfficialItemCount: casualDiningMinItemCount,
     parserTypes: [sharedParserTypes.htmlMatrix, sharedParserTypes.productPage],
@@ -151,6 +176,10 @@ const adapterOverrides = {
     parserTypes: [sharedParserTypes.pdfIngredients, sharedParserTypes.productPage],
   },
   "papa-johns": {
+    parserTypes: [sharedParserTypes.htmlMatrix],
+  },
+  "pf-changs": {
+    minOfficialItemCount: casualDiningMinItemCount,
     parserTypes: [sharedParserTypes.htmlMatrix],
   },
   "red-lobster": {
@@ -172,6 +201,10 @@ const adapterOverrides = {
   },
   "raising-canes": {
     parserTypes: [sharedParserTypes.htmlMatrix, sharedParserTypes.productPage],
+  },
+  "ruths-chris": {
+    minOfficialItemCount: casualDiningMinItemCount,
+    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
   },
   sonic: {
     parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.pdfIngredients],
@@ -195,6 +228,10 @@ const adapterOverrides = {
   "taco-bell": {
     parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
   },
+  "tim-hortons": {
+    minOfficialItemCount: casualDiningMinItemCount,
+    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
+  },
   wendys: {
     parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
   },
@@ -207,6 +244,10 @@ const adapterOverrides = {
   },
   wingstop: {
     parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
+  },
+  "yard-house": {
+    minOfficialItemCount: casualDiningMinItemCount,
+    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.pdfMatrix],
   },
   zaxbys: {
     parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.pdfIngredients],
