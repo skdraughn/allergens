@@ -66,9 +66,6 @@ export function HomeScreen() {
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
           <View style={styles.copyBlock}>
             <Text style={styles.title}>Restaurants</Text>
-            <Text style={styles.subtitle}>
-              Sorted by popularity and checked against your allergy profile.
-            </Text>
           </View>
 
           <View style={styles.searchGroup}>
@@ -328,11 +325,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 17,
     minHeight: 48,
-  },
-  subtitle: {
-    color: colors.muted,
-    fontSize: 24,
-    lineHeight: 30,
   },
   title: {
     color: colors.ink,

@@ -26,6 +26,13 @@ const adapterOverrides = {
   arbys: {
     parserTypes: [sharedParserTypes.pdfIngredients, sharedParserTypes.productPage],
   },
+  "bjs-restaurant": {
+    minOfficialItemCount: casualDiningMinItemCount,
+    parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.htmlMatrix],
+  },
+  bojangles: {
+    parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.pdfIngredients],
+  },
   "buffalo-wild-wings": {
     minOfficialItemCount: 50,
     parserTypes: [sharedParserTypes.htmlMatrix, sharedParserTypes.productPage],
@@ -39,6 +46,9 @@ const adapterOverrides = {
   chipotle: {
     parserTypes: [sharedParserTypes.officialApi],
   },
+  "carls-jr": {
+    parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.pdfIngredients],
+  },
   chilis: {
     minOfficialItemCount: casualDiningMinItemCount,
     parserTypes: [sharedParserTypes.productPage],
@@ -50,6 +60,9 @@ const adapterOverrides = {
   "cracker-barrel": {
     minOfficialItemCount: casualDiningMinItemCount,
     parserTypes: [sharedParserTypes.htmlMatrix, sharedParserTypes.productPage],
+  },
+  crumbl: {
+    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
   },
   culvers: {
     parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.htmlMatrix],
@@ -64,7 +77,13 @@ const adapterOverrides = {
   dominos: {
     parserTypes: [sharedParserTypes.htmlMatrix, sharedParserTypes.productPage],
   },
+  "dutch-bros": {
+    parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.pdfIngredients],
+  },
   dunkin: {
+    parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.pdfIngredients],
+  },
+  "el-pollo-loco": {
     parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.pdfIngredients],
   },
   "five-guys": {
@@ -73,6 +92,20 @@ const adapterOverrides = {
   "first-watch": {
     minOfficialItemCount: casualDiningMinItemCount,
     parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.htmlMatrix],
+  },
+  "firehouse-subs": {
+    parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.pdfIngredients],
+  },
+  freddys: {
+    minOfficialItemCount: 20,
+    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.htmlMatrix],
+  },
+  "golden-corral": {
+    minOfficialItemCount: casualDiningMinItemCount,
+    parserTypes: [sharedParserTypes.htmlMatrix, sharedParserTypes.officialApi],
+  },
+  hardees: {
+    parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.pdfIngredients],
   },
   "jack-in-the-box": {
     parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.pdfIngredients],
@@ -89,6 +122,12 @@ const adapterOverrides = {
   },
   "little-caesars": {
     parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.htmlMatrix],
+  },
+  "marcos-pizza": {
+    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
+  },
+  "mcalisters-deli": {
+    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
   },
   "longhorn-steakhouse": {
     minOfficialItemCount: casualDiningMinItemCount,
@@ -122,6 +161,9 @@ const adapterOverrides = {
     minOfficialItemCount: casualDiningMinItemCount,
     parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
   },
+  qdoba: {
+    parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.pdfIngredients],
+  },
   "pizza-hut": {
     parserTypes: [sharedParserTypes.htmlMatrix, sharedParserTypes.productPage],
   },
@@ -137,8 +179,14 @@ const adapterOverrides = {
   starbucks: {
     parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
   },
+  "shake-shack": {
+    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.productPage],
+  },
   subway: {
     parserTypes: [sharedParserTypes.pdfMatrix],
+  },
+  "tropical-smoothie-cafe": {
+    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.htmlMatrix],
   },
   "texas-roadhouse": {
     minOfficialItemCount: casualDiningMinItemCount,
