@@ -27,8 +27,10 @@ export function getMenuItemSafety(item: MenuItem, selectedAllergyIds: string[]) 
 
   let status: SafetyStatus = "ok";
 
-  if (selectedAllergyIds.length === 0 || officialAllergenDataUnavailable) {
+  if (selectedAllergyIds.length === 0) {
     status = "unknown";
+  } else if (officialAllergenDataUnavailable) {
+    status = "caution";
   } else if (directMatches.length > 0) {
     status = "avoid";
   } else if (cautionMatches.length > 0) {
@@ -37,8 +39,11 @@ export function getMenuItemSafety(item: MenuItem, selectedAllergyIds: string[]) 
 
   return {
     cautionMatches,
+    crossContactMatchLabels: getAllergyLabels(cautionMatches),
     directMatches,
+    directMatchLabels: getAllergyLabels(directMatches),
     matchedLabels: getAllergyLabels([...directMatches, ...cautionMatches]),
+    officialAllergenDataUnavailable,
     status,
   };
 }

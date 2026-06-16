@@ -2,13 +2,20 @@ export type RestaurantBrand = {
   color: string;
   description: string;
   domain: string;
+  logoAspectRatio?: number;
+  logoMonogram?: string;
+  logoSvgUrl?: string;
   logoUrl: string;
+};
+
+type RestaurantBrandAsset = Omit<RestaurantBrand, "logoUrl"> & {
+  logoUrl?: string;
 };
 
 const favicon = (domain: string) =>
   `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
 
-const brandAssets: Record<string, Omit<RestaurantBrand, "logoUrl">> = {
+const brandAssets: Record<string, RestaurantBrandAsset> = {
   mcdonalds: {
     color: "#FFC72C",
     description: "Burgers, breakfast, fries, chicken sandwiches, desserts, and McCafe drinks.",
@@ -159,6 +166,207 @@ const brandAssets: Record<string, Omit<RestaurantBrand, "logoUrl">> = {
     description: "Burgers, fries, shakes, fountain drinks, and limited core menu items.",
     domain: "in-n-out.com",
   },
+  "texas-roadhouse": {
+    color: "#A32622",
+    description: "Steaks, ribs, chicken, seafood, salads, sides, rolls, and desserts.",
+    domain: "texasroadhouse.com",
+  },
+  chilis: {
+    color: "#C8102E",
+    description: "Burgers, ribs, fajitas, chicken, salads, appetizers, and desserts.",
+    domain: "chilis.com",
+  },
+  "olive-garden": {
+    color: "#5A7F2B",
+    description: "Pastas, soups, salads, breadsticks, chicken, seafood, and desserts.",
+    domain: "olivegarden.com",
+    logoMonogram: "OG",
+  },
+  applebees: {
+    color: "#C41230",
+    description: "Burgers, chicken, ribs, salads, pasta, appetizers, and desserts.",
+    domain: "applebees.com",
+  },
+  ihop: {
+    color: "#005DAA",
+    description: "Pancakes, breakfast plates, omelets, burgers, sandwiches, and sides.",
+    domain: "ihop.com",
+  },
+  "outback-steakhouse": {
+    color: "#7A1F1D",
+    description: "Steaks, chicken, seafood, ribs, salads, sides, and desserts.",
+    domain: "outback.com",
+  },
+  "longhorn-steakhouse": {
+    color: "#7A3E1D",
+    description: "Steaks, ribs, chicken, seafood, salads, sides, and desserts.",
+    domain: "longhornsteakhouse.com",
+  },
+  dennys: {
+    color: "#F5A800",
+    description: "Breakfast plates, pancakes, burgers, sandwiches, dinners, and desserts.",
+    domain: "dennys.com",
+  },
+  "cracker-barrel": {
+    color: "#6B3F21",
+    description: "Breakfast, homestyle dinners, chicken, sides, biscuits, and desserts.",
+    domain: "crackerbarrel.com",
+  },
+  "buffalo-wild-wings": {
+    color: "#FDB515",
+    description: "Wings, tenders, burgers, sandwiches, sauces, sides, and appetizers.",
+    domain: "buffalowildwings.com",
+  },
+  "red-lobster": {
+    color: "#D71920",
+    description: "Seafood, shrimp, lobster, fish, biscuits, sides, and desserts.",
+    domain: "redlobster.com",
+  },
+  "cheesecake-factory": {
+    color: "#8A6F3D",
+    description: "Pastas, burgers, salads, seafood, steaks, appetizers, and cheesecakes.",
+    domain: "thecheesecakefactory.com",
+  },
+  "waffle-house": {
+    color: "#F6C300",
+    description: "Waffles, breakfast plates, hashbrowns, sandwiches, burgers, and sides.",
+    domain: "wafflehouse.com",
+  },
+  "first-watch": {
+    color: "#F58220",
+    description: "Breakfast, brunch, eggs, pancakes, sandwiches, salads, and juices.",
+    domain: "firstwatch.com",
+  },
+  "red-robin": {
+    color: "#C8102E",
+    description: "Burgers, chicken sandwiches, salads, fries, appetizers, and shakes.",
+    domain: "redrobin.com",
+  },
+  bojangles: {
+    color: "#F58220",
+    description: "Chicken, biscuits, breakfast, sandwiches, sides, sauces, and sweets.",
+    domain: "bojangles.com",
+  },
+  hardees: {
+    color: "#D71920",
+    description: "Burgers, chicken, breakfast biscuits, fries, sides, and desserts.",
+    domain: "hardees.com",
+  },
+  "dutch-bros": {
+    color: "#005DAA",
+    description: "Coffee, espresso drinks, teas, energy drinks, smoothies, and snacks.",
+    domain: "dutchbros.com",
+  },
+  "golden-corral": {
+    color: "#C69214",
+    description: "Buffet entrees, breakfast, meats, sides, salads, desserts, and drinks.",
+    domain: "goldencorral.com",
+  },
+  "carls-jr": {
+    color: "#D71920",
+    description: "Burgers, chicken sandwiches, breakfast, fries, sides, and shakes.",
+    domain: "carlsjr.com",
+  },
+  "tropical-smoothie-cafe": {
+    color: "#78BE20",
+    description: "Smoothies, wraps, flatbreads, bowls, sandwiches, salads, and sides.",
+    domain: "tropicalsmoothiecafe.com",
+  },
+  "bjs-restaurant": {
+    color: "#7A263A",
+    description: "Pizza, burgers, pasta, entrees, salads, appetizers, and Pizookies.",
+    domain: "bjsrestaurants.com",
+  },
+  "shake-shack": {
+    color: "#6CB33F",
+    description: "Burgers, chicken, fries, shakes, frozen custard, and drinks.",
+    domain: "shakeshack.com",
+  },
+  crumbl: {
+    color: "#F4A6C1",
+    description: "Cookies, desserts, rotating bakery items, frostings, and drinks.",
+    domain: "crumblcookies.com",
+  },
+  qdoba: {
+    color: "#F58220",
+    description: "Burritos, bowls, tacos, quesadillas, proteins, salsas, and toppings.",
+    domain: "qdoba.com",
+  },
+  "firehouse-subs": {
+    color: "#D71920",
+    description: "Hot subs, cold subs, salads, breads, meats, cheeses, and sides.",
+    domain: "firehousesubs.com",
+  },
+  "el-pollo-loco": {
+    color: "#FDB515",
+    description: "Fire-grilled chicken, bowls, burritos, tacos, salads, sides, and salsas.",
+    domain: "elpolloloco.com",
+  },
+  "marcos-pizza": {
+    color: "#C8102E",
+    description: "Pizza, subs, wings, salads, breads, sauces, and desserts.",
+    domain: "marcos.com",
+  },
+  "mcalisters-deli": {
+    color: "#006B3F",
+    description: "Sandwiches, soups, salads, spuds, teas, sides, and desserts.",
+    domain: "mcalistersdeli.com",
+  },
+  freddys: {
+    color: "#D71920",
+    description: "Steakburgers, hot dogs, fries, frozen custard, sandwiches, and sides.",
+    domain: "freddys.com",
+  },
+  "pf-changs": {
+    color: "#B31B1B",
+    description: "Asian entrees, noodles, rice, appetizers, soups, salads, and desserts.",
+    domain: "pfchangs.com",
+  },
+  "del-taco": {
+    color: "#E31837",
+    description: "Tacos, burritos, burgers, fries, quesadillas, sides, and desserts.",
+    domain: "deltaco.com",
+  },
+  cava: {
+    color: "#1D4F3A",
+    description: "Mediterranean bowls, pitas, greens, grains, proteins, dips, and toppings.",
+    domain: "cava.com",
+  },
+  "nothing-bundt-cakes": {
+    color: "#1D4494",
+    description: "Bundt cakes, frostings, seasonal cakes, party cakes, and bakery treats.",
+    domain: "nothingbundtcakes.com",
+  },
+  "yard-house": {
+    color: "#111111",
+    description: "Burgers, tacos, seafood, steaks, salads, appetizers, and desserts.",
+    domain: "yardhouse.com",
+  },
+  "churchs-texas-chicken": {
+    color: "#F58220",
+    description: "Fried chicken, tenders, sandwiches, biscuits, sides, sauces, and desserts.",
+    domain: "churchs.com",
+  },
+  "ruths-chris": {
+    color: "#7A1F1D",
+    description: "Steaks, seafood, chicken, salads, sides, appetizers, and desserts.",
+    domain: "ruthschris.com",
+  },
+  "auntie-annes": {
+    color: "#005DAA",
+    description: "Pretzels, dips, nuggets, sweet pretzels, drinks, and snacks.",
+    domain: "auntieannes.com",
+  },
+  "tim-hortons": {
+    color: "#C8102E",
+    description: "Coffee, donuts, breakfast sandwiches, wraps, soups, and baked goods.",
+    domain: "timhortons.com",
+  },
+  cheddars: {
+    color: "#7A4A20",
+    description: "Chicken, steaks, ribs, seafood, salads, sandwiches, sides, and desserts.",
+    domain: "cheddars.com",
+  },
 };
 
 export function getRestaurantBrand(id: string): RestaurantBrand {
@@ -168,10 +376,10 @@ export function getRestaurantBrand(id: string): RestaurantBrand {
       color: "#007AFF",
       description: "Restaurant menu items, allergen sources, and community notes.",
       domain: "example.com",
-    } satisfies Omit<RestaurantBrand, "logoUrl">);
+    } satisfies RestaurantBrandAsset);
 
   return {
     ...asset,
-    logoUrl: favicon(asset.domain),
+    logoUrl: asset.logoUrl ?? favicon(asset.domain),
   };
 }

@@ -12,13 +12,17 @@ import { getMenuItemSafety } from "@/lib/safety";
 
 type MenuItemDetailsModalProps = {
   item: MenuItem | null;
+  onComment?: (item: MenuItem) => void;
   onClose: () => void;
+  onReport?: (item: MenuItem) => void;
   selectedAllergyIds: string[];
 };
 
 export function MenuItemDetailsModal({
   item,
+  onComment,
   onClose,
+  onReport,
   selectedAllergyIds,
 }: MenuItemDetailsModalProps) {
   const safety = item ? getMenuItemSafety(item, selectedAllergyIds) : null;
@@ -36,7 +40,6 @@ export function MenuItemDetailsModal({
   const firstSource = item?.sourceUrls?.[0];
   const sourceHost = firstSource ? getSourceHost(firstSource) : null;
   const allergenSourceLabel = item ? getAllergenSourceLabel(item) : null;
-  const sourceTypeLabel = item?.sourceType ? getSourceTypeLabel(item.sourceType) : null;
 
   return (
     <Modal
@@ -61,11 +64,26 @@ export function MenuItemDetailsModal({
             <View style={styles.heroRow}>
               <View style={styles.statusBlock}>
                 <Text style={[styles.status, { color: tone }]}>{statusLabel}</Text>
-                {safety && safety.matchedLabels.length > 0 ? (
-                  <Text style={styles.match}>Matches {safety.matchedLabels.join(", ")}</Text>
-                ) : (
+                {safety && safety.directMatchLabels.length > 0 ? (
+                  <Text style={styles.match}>Contains {safety.directMatchLabels.join(", ")}</Text>
+                ) : null}
+                {safety && safety.crossContactMatchLabels.length > 0 ? (
+                  <Text style={styles.match}>
+                    Cross-contact {safety.crossContactMatchLabels.join(", ")}
+                  </Text>
+                ) : null}
+                {safety &&
+                safety.directMatchLabels.length === 0 &&
+                safety.crossContactMatchLabels.length === 0 &&
+                safety.officialAllergenDataUnavailable ? (
+                  <Text style={styles.match}>Official allergen information is unavailable.</Text>
+                ) : null}
+                {safety &&
+                safety.directMatchLabels.length === 0 &&
+                safety.crossContactMatchLabels.length === 0 &&
+                !safety.officialAllergenDataUnavailable ? (
                   <Text style={styles.match}>No matches in your allergy profile</Text>
-                )}
+                ) : null}
               </View>
             </View>
 
@@ -95,10 +113,7 @@ export function MenuItemDetailsModal({
 
             <View style={styles.sourceCard}>
               <Text style={styles.sourceEyebrow}>Allergen Information Source</Text>
-              <Text style={styles.sourceBody}>
-                {allergenSourceLabel}
-                {sourceTypeLabel ? ` · ${sourceTypeLabel}` : ""}
-              </Text>
+              <Text style={styles.sourceBody}>{allergenSourceLabel}</Text>
               {firstSource ? (
                 <Pressable
                   accessibilityRole="button"
@@ -111,6 +126,29 @@ export function MenuItemDetailsModal({
                   </Text>
                 </Pressable>
               ) : null}
+            </View>
+
+            <View style={styles.feedbackCard}>
+              <Text style={styles.feedbackTitle}>Something wrong?</Text>
+              <Text style={styles.feedbackBody}>
+                Reports are reviewed privately. Comments appear after approval.
+              </Text>
+              <View style={styles.feedbackActions}>
+                <Pressable
+                  accessibilityRole="button"
+                  onPress={() => onReport?.(item)}
+                  style={styles.feedbackButton}
+                >
+                  <Text style={styles.feedbackButtonText}>Report</Text>
+                </Pressable>
+                <Pressable
+                  accessibilityRole="button"
+                  onPress={() => onComment?.(item)}
+                  style={styles.feedbackButton}
+                >
+                  <Text style={styles.feedbackButtonText}>Comment</Text>
+                </Pressable>
+              </View>
             </View>
           </ScrollView>
         </ModalScreen>
@@ -126,20 +164,29 @@ function AllergenChips({
   item: MenuItem;
   selectedAllergyIds: string[];
 }) {
-  const chips = [
-    ...item.allergens.map((id) => ({
+  const broadCrossContact = hasBroadCrossContact(item);
+  const directChips = item.allergens.map((id) => ({
       id,
       label: getAllergenLabel(id),
       tone: "direct" as const,
-    })),
-    ...(item.mayContain ?? []).map((id) => ({
+  }));
+  const crossContactChips = (broadCrossContact ? [] : (item.mayContain ?? [])).map((id) => ({
       id,
-      label: `May contain ${getAllergenLabel(id)}`,
+      label: getAllergenLabel(id),
       tone: "mayContain" as const,
-    })),
-  ];
+  }));
 
-  if (chips.length === 0) {
+  if (item.allergenSourceType === "unavailable") {
+    return (
+      <View style={styles.allergenWrap}>
+        <View style={styles.reviewChip}>
+          <Text style={styles.reviewChipText}>Official allergen info unavailable</Text>
+        </View>
+      </View>
+    );
+  }
+
+  if (directChips.length === 0 && crossContactChips.length === 0 && !broadCrossContact) {
     return (
       <View style={styles.allergenWrap}>
         <View style={styles.noAllergenChip}>
@@ -150,34 +197,80 @@ function AllergenChips({
   }
 
   return (
-    <View style={styles.allergenWrap}>
-      {chips.map((chip) => {
-        const selected = selectedAllergyIds.includes(chip.id);
-        const mayContain = chip.tone === "mayContain";
-
-        return (
-          <View
-            key={`${chip.tone}-${chip.id}`}
-            style={[
-              styles.allergenChip,
-              mayContain && styles.mayContainChip,
-              selected && styles.matchedChip,
-            ]}
-          >
-            <Text
-              style={[
-                styles.allergenChipText,
-                mayContain && styles.mayContainText,
-                selected && styles.matchedChipText,
-              ]}
-            >
-              {chip.label}
-            </Text>
-          </View>
-        );
-      })}
+    <View style={styles.allergenGroups}>
+      {directChips.length > 0 ? (
+        <AllergenChipGroup
+          chips={directChips}
+          label="Contains"
+          selectedAllergyIds={selectedAllergyIds}
+        />
+      ) : null}
+      {crossContactChips.length > 0 || broadCrossContact ? (
+        <AllergenChipGroup
+          broad={broadCrossContact}
+          chips={crossContactChips}
+          label="Cross-contact"
+          selectedAllergyIds={selectedAllergyIds}
+        />
+      ) : null}
     </View>
   );
+}
+
+function AllergenChipGroup({
+  broad = false,
+  chips,
+  label,
+  selectedAllergyIds,
+}: {
+  broad?: boolean;
+  chips: Array<{ id: string; label: string; tone: "direct" | "mayContain" }>;
+  label: string;
+  selectedAllergyIds: string[];
+}) {
+  return (
+    <View style={styles.allergenGroup}>
+      <Text style={styles.allergenGroupTitle}>{label}</Text>
+      <View style={styles.allergenWrap}>
+        {chips.map((chip) => {
+          const selected = selectedAllergyIds.includes(chip.id);
+          const mayContain = chip.tone === "mayContain";
+
+          return (
+            <View
+              key={`${chip.tone}-${chip.id}`}
+              style={[
+                styles.allergenChip,
+                mayContain && styles.mayContainChip,
+                selected && styles.matchedChip,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.allergenChipText,
+                  mayContain && styles.mayContainText,
+                  selected && styles.matchedChipText,
+                ]}
+              >
+                {chip.label}
+              </Text>
+            </View>
+          );
+        })}
+        {broad ? (
+          <View style={[styles.allergenChip, styles.mayContainChip]}>
+            <Text style={[styles.allergenChipText, styles.mayContainText]}>
+              Shared prep/contact risk
+            </Text>
+          </View>
+        ) : null}
+      </View>
+    </View>
+  );
+}
+
+function hasBroadCrossContact(item: MenuItem) {
+  return (item.mayContain ?? []).length >= 8;
 }
 
 function getAllergenLabel(id: string) {
@@ -207,18 +300,6 @@ function getAllergenSourceLabel(item: MenuItem) {
   }
 }
 
-function getSourceTypeLabel(sourceType: string) {
-  const sourceTypeLabels: Record<string, string> = {
-    "html-allergen-matrix": "Official allergen table",
-    "official-api": "Official restaurant API",
-    "pdf-ingredients": "Official ingredient PDF",
-    "pdf-matrix": "Official PDF guide",
-    "product-page": "Official product page",
-  };
-
-  return sourceTypeLabels[sourceType] ?? sourceType.replaceAll("-", " ");
-}
-
 const styles = StyleSheet.create({
   allergenChip: {
     backgroundColor: "#F2F2F7",
@@ -231,11 +312,23 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "700",
   },
+  allergenGroup: {
+    gap: 6,
+  },
+  allergenGroups: {
+    gap: 12,
+    marginTop: 8,
+  },
+  allergenGroupTitle: {
+    color: colors.muted,
+    fontSize: 12,
+    fontWeight: "800",
+    textTransform: "uppercase",
+  },
   allergenWrap: {
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 6,
-    marginTop: 8,
   },
   body: {
     color: colors.ink,
@@ -246,6 +339,43 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.four,
     paddingHorizontal: spacing.three,
     paddingTop: spacing.three,
+  },
+  feedbackActions: {
+    flexDirection: "row",
+    gap: 10,
+    marginTop: spacing.two,
+  },
+  feedbackBody: {
+    color: colors.muted,
+    fontSize: 14,
+    lineHeight: 20,
+    marginTop: 4,
+  },
+  feedbackButton: {
+    alignItems: "center",
+    backgroundColor: colors.primaryLight,
+    borderRadius: radius.pill,
+    flex: 1,
+    justifyContent: "center",
+    minHeight: 46,
+  },
+  feedbackButtonText: {
+    color: colors.primary,
+    fontSize: 15,
+    fontWeight: "800",
+  },
+  feedbackCard: {
+    backgroundColor: colors.white,
+    borderColor: colors.line,
+    borderRadius: 22,
+    borderWidth: 1,
+    marginBottom: spacing.two,
+    padding: spacing.two,
+  },
+  feedbackTitle: {
+    color: colors.ink,
+    fontSize: 17,
+    fontWeight: "800",
   },
   heroRow: {
     alignItems: "center",
@@ -292,6 +422,19 @@ const styles = StyleSheet.create({
   },
   noAllergenText: {
     color: "#248A3D",
+    fontSize: 12,
+    fontWeight: "700",
+  },
+  reviewChip: {
+    backgroundColor: "#FFF6E5",
+    borderColor: "rgba(255,159,10,0.28)",
+    borderRadius: radius.pill,
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+  },
+  reviewChipText: {
+    color: "#B25E00",
     fontSize: 12,
     fontWeight: "700",
   },

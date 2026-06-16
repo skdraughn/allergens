@@ -1,8 +1,7 @@
 import { useFocusEffect, useRouter } from "expo-router";
-import { ClipboardList, Search, UserRound } from "lucide-react-native";
+import { ClipboardList, Plus, Search, UserRound } from "lucide-react-native";
 import { useCallback, useMemo, useState } from "react";
 import {
-  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -13,11 +12,16 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { IconButton } from "@/components/icon-button";
+import { RestaurantLogo } from "@/components/restaurant-logo";
 import { ScreenBackground } from "@/components/screen-background";
 import { SelectedAllergenBadges } from "@/components/selected-allergen-badges";
 import { colors, radius, spacing } from "@/constants/theme";
 import { getRestaurantBrand } from "@/data/brand-assets";
 import { type Restaurant } from "@/data/restaurants";
+import {
+  CommunityContributionModal,
+  type ContributionMode,
+} from "@/features/community/community-contribution-modal";
 import { useAllergyProfile } from "@/features/profile/allergy-profile-context";
 import { useRestaurantData } from "@/features/restaurants/restaurant-data-context";
 import { getRestaurantSafety } from "@/lib/safety";
@@ -27,6 +31,7 @@ export function HomeScreen() {
   const { selectedAllergyIds } = useAllergyProfile();
   const { restaurants } = useRestaurantData();
   const [query, setQuery] = useState("");
+  const [contributionMode, setContributionMode] = useState<ContributionMode | null>(null);
   const [pendingRestaurantId, setPendingRestaurantId] = useState<string | null>(null);
 
   useFocusEffect(
@@ -100,8 +105,40 @@ export function HomeScreen() {
                 summary={summary}
               />
             ))}
+            {reviewedRestaurants.length === 0 ? (
+              <View style={styles.emptySearch}>
+                <Text style={styles.emptySearchTitle}>No restaurant matches</Text>
+                <Text style={styles.emptySearchCopy}>
+                  Request it and we’ll look for official allergen sources.
+                </Text>
+                <Pressable
+                  accessibilityRole="button"
+                  onPress={() => setContributionMode("restaurant-request")}
+                  style={styles.requestButton}
+                >
+                  <Plus color={colors.primary} size={18} strokeWidth={2.6} />
+                  <Text style={styles.requestButtonText}>Request this restaurant</Text>
+                </Pressable>
+              </View>
+            ) : (
+              <Pressable
+                accessibilityRole="button"
+                onPress={() => setContributionMode("restaurant-request")}
+                style={styles.requestFooter}
+              >
+                <Plus color={colors.primary} size={17} strokeWidth={2.6} />
+                <Text style={styles.requestFooterText}>Missing a restaurant? Request it.</Text>
+              </Pressable>
+            )}
           </View>
         </ScrollView>
+
+        <CommunityContributionModal
+          initialRestaurantName={query}
+          mode={contributionMode}
+          onClose={() => setContributionMode(null)}
+          onSignInRequired={() => router.push("/account")}
+        />
       </SafeAreaView>
     </ScreenBackground>
   );
@@ -187,7 +224,7 @@ function RestaurantRow({
       ]}
     >
       <View style={[styles.logoWrap, { backgroundColor: `${brand.color}14` }]}>
-        <Image source={{ uri: brand.logoUrl }} style={styles.logo} />
+        <RestaurantLogo brand={brand} borderRadius={11} size={34} />
       </View>
       <View style={styles.restaurantText}>
         <Text style={styles.restaurantName}>{restaurant.name}</Text>
@@ -248,6 +285,23 @@ const styles = StyleSheet.create({
     marginBottom: spacing.three,
     paddingHorizontal: spacing.one,
   },
+  emptySearch: {
+    alignItems: "center",
+    gap: 10,
+    paddingHorizontal: spacing.three,
+    paddingVertical: spacing.four,
+  },
+  emptySearchCopy: {
+    color: colors.muted,
+    fontSize: 15,
+    lineHeight: 21,
+    textAlign: "center",
+  },
+  emptySearchTitle: {
+    color: colors.ink,
+    fontSize: 18,
+    fontWeight: "800",
+  },
   nav: {
     alignItems: "center",
     flexDirection: "row",
@@ -258,11 +312,6 @@ const styles = StyleSheet.create({
   },
   profileButtonWrap: {
     position: "relative",
-  },
-  logo: {
-    borderRadius: 11,
-    height: 34,
-    width: 34,
   },
   logoWrap: {
     alignItems: "center",
@@ -295,6 +344,34 @@ const styles = StyleSheet.create({
   },
   restaurantText: {
     flex: 1,
+  },
+  requestButton: {
+    alignItems: "center",
+    backgroundColor: colors.primaryLight,
+    borderRadius: radius.pill,
+    flexDirection: "row",
+    gap: 7,
+    minHeight: 44,
+    paddingHorizontal: spacing.two,
+  },
+  requestButtonText: {
+    color: colors.primary,
+    fontSize: 15,
+    fontWeight: "800",
+  },
+  requestFooter: {
+    alignItems: "center",
+    borderTopColor: colors.line,
+    borderTopWidth: 1,
+    flexDirection: "row",
+    gap: 7,
+    justifyContent: "center",
+    minHeight: 58,
+  },
+  requestFooterText: {
+    color: colors.primary,
+    fontSize: 15,
+    fontWeight: "800",
   },
   resultsGroup: {
     backgroundColor: colors.white,

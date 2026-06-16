@@ -560,6 +560,11 @@ function officialOnlyRecordsForBrand(restaurantId, records) {
     return pdfRecords.length > 0 ? pdfRecords : records;
   }
 
+  if (restaurantId === "shake-shack") {
+    const pdfRecords = records.filter((record) => record.sourceKind === "pdf-matrix");
+    return pdfRecords.length > 0 ? pdfRecords : records;
+  }
+
   if (restaurantId === "little-caesars") {
     const pdfRecords = records.filter((record) => record.sourceKind === "pdf-matrix");
     return pdfRecords.length > 0 ? pdfRecords : records;
@@ -594,7 +599,7 @@ function officialOnlyRecordsForBrand(restaurantId, records) {
     return pdfRecords.length > 0 ? pdfRecords : records;
   }
 
-  if (["buffalo-wild-wings", "red-lobster"].includes(restaurantId)) {
+  if (["buffalo-wild-wings", "red-lobster", "yard-house"].includes(restaurantId)) {
     const pdfRecords = records.filter((record) => record.sourceKind === "pdf-matrix");
     return pdfRecords.length > 0 ? pdfRecords : records;
   }
@@ -829,6 +834,9 @@ async function fetchNutritionixSpecialDietsRecords(source, { baseUrl, sourceLabe
     });
   }
 
+  const baselineNames = new Set(recordsByName.keys());
+  let validAllergenFilterCount = 0;
+
   for (const [allergen, tag] of allergenTags) {
     const containsUrl = nutritionixSpecialDietsUrl(baseUrl, tag, "2");
     const fetched = await fetchSourceWithRetry(containsUrl, source, sourceTypes.api);
@@ -838,7 +846,16 @@ async function fetchNutritionixSpecialDietsRecords(source, { baseUrl, sourceLabe
       continue;
     }
 
-    for (const item of extractNutritionixSpecialDietsItems(fetched.text)) {
+    const filteredItems = extractNutritionixSpecialDietsItems(fetched.text);
+    const filteredNames = new Set(filteredItems.map((item) => item.name));
+
+    if (nutritionixFilterMatchesBaseline(filteredNames, baselineNames)) {
+      continue;
+    }
+
+    validAllergenFilterCount += 1;
+
+    for (const item of filteredItems) {
       const existing = recordsByName.get(item.name) ?? {
         ...item,
         allergens: [],
@@ -853,7 +870,10 @@ async function fetchNutritionixSpecialDietsRecords(source, { baseUrl, sourceLabe
     .filter((item) => isProbablyMenuItemName(item.name))
     .map((item) =>
       createRecord({
-        allergenSourceType: allergenSourceTypes.officialAllergenMenu,
+        allergenSourceType:
+          validAllergenFilterCount > 0
+            ? allergenSourceTypes.officialAllergenMenu
+            : allergenSourceTypes.unavailable,
         allergens: item.allergens,
         category: item.category ?? source.category,
         description: sourceLabel,
@@ -867,6 +887,20 @@ async function fetchNutritionixSpecialDietsRecords(source, { baseUrl, sourceLabe
     );
 
   return { records, sources };
+}
+
+function nutritionixFilterMatchesBaseline(filteredNames, baselineNames) {
+  if (filteredNames.size !== baselineNames.size) {
+    return false;
+  }
+
+  for (const name of filteredNames) {
+    if (!baselineNames.has(name)) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 async function fetchSourceWithRetry(url, source, kind, attempts = 3) {
@@ -4164,7 +4198,128 @@ async function extractBrandPdfItems(text, restaurant, url, buffer) {
     return extractTimHortonsAllergenPdfItems(buffer, restaurant, url);
   }
 
+  if (restaurant.id === "shake-shack" && /Master.*Nut.*Allergen|document\/3481/i.test(url)) {
+    return extractShakeShackNutritionAllergenPdfItems(text, restaurant, url);
+  }
+
   return [];
+}
+
+function extractShakeShackNutritionAllergenPdfItems(text, restaurant, url) {
+  const records = [];
+  const normalizedText = text
+    .replace(/\r/g, "")
+    .replace(/[™®]/g, "")
+    .replace(/[ \t]+/g, " ");
+  const lines = normalizedText
+    .split(/\n+/)
+    .map((line) => cleanText(line))
+    .filter(Boolean);
+  let currentCategory = restaurant.category;
+
+  for (const line of lines) {
+    const category = shakeShackCategoryHeading(line);
+
+    if (category) {
+      currentCategory = category;
+      continue;
+    }
+
+    const containsMatch = line.match(
+      /^(.{2,120}?)\s+Contains:\s+([A-Za-z, ]+?)(?=\s+\d+(?:\.\d+)?(?:\s|$)|$)/i,
+    );
+
+    const nutritionOnlyMatch = containsMatch
+      ? null
+      : line.match(/^(.{2,120}?)\s+\d+(?:\.\d+)?\s+\d+(?:\.\d+)?\s+/);
+    const name = cleanShakeShackPdfName(containsMatch?.[1] ?? nutritionOnlyMatch?.[1]);
+    const allergenText = cleanText(containsMatch?.[2]);
+    const allergens = allergenText ? findAllergensInText(allergenText) : [];
+
+    if (!name || !isProbablyMenuItemName(name) || isShakeShackPdfNoiseName(name)) {
+      continue;
+    }
+    const categoryForItem = shakeShackCategoryForItem(name, currentCategory);
+
+    records.push(
+      createRecord({
+        allergenSourceType: allergenSourceTypes.officialAllergenMenu,
+        allergens,
+        category: categoryForItem,
+        description: "Official Shake Shack nutrition and allergen information.",
+        imageUrl: null,
+        mayContain: [],
+        name,
+        sourceKind: "pdf-matrix",
+        sourceUrl: url,
+        variantGroup: categoryForItem,
+      }),
+    );
+  }
+
+  return uniqueBy(records, (record) => `${record.category}:${record.name}`);
+}
+
+function cleanShakeShackPdfName(value) {
+  return cleanText(value)
+    ?.replace(/\s+/g, " ")
+    .replace(/\s+\*+$/g, "")
+    .trim();
+}
+
+function isShakeShackPdfNoiseName(value) {
+  return /^(?:Calories|Total Fat|Sat Fat|Trans Fat|Cholesterol|Sodium|Total|Carbohydrates|Fiber|Sugars|Protein|Calories per serving|-- \d+ of \d+ --)$/i.test(
+    value,
+  );
+}
+
+function shakeShackCategoryForItem(name, fallbackCategory) {
+  if (/^Add .*(?:Dressing|Croutons|Parmesan|Grilled Chicken|Balsamic|Ceaser|Caesar|Sweety Drop)/i.test(name)) {
+    return "Salads";
+  }
+
+  if (/^Add .*(?:Sauce|Pickles|Slaw|Honey|Seasoning|Peppers|Jalapenos|Onions|Breadcrumbs|Tartar)/i.test(name)) {
+    return "Extras";
+  }
+
+  if (/Lettuce Wrap|Gluten Free Bun/i.test(name)) {
+    return "Lettuce Wraps & Gluten Free Buns";
+  }
+
+  if (/(?:Beer|Ale|IPA|Lager|Pilsner|Cocktail|Vodka|Rum|Gin|Tequila|Whiskey|Bourbon|Martini|Spritz|Mixer|Mai Tai|Shackarita|Red Bull|Club Soda|Tonic|Ginger Beer|Wine|Seltzer|Cider|Draft|Can \\(|Bottle\\))/i.test(name)) {
+    return "Beer, Wines, Cocktails & Non-Alcoholic Drinks";
+  }
+
+  return fallbackCategory;
+}
+
+function shakeShackCategoryHeading(line) {
+  const headings = new Set([
+    "Burgers",
+    "Chicken",
+    "Crinkle Cut Fries",
+    "Fries & Sides",
+    "Extras",
+    "Flat-Top Dogs",
+    "Breakfast",
+    "Shakes",
+    "Cups & Sundaes",
+    "Salads",
+    "Lettuce Wraps & Gluten Free Buns",
+    "Frozen Custard",
+    "Drinks",
+    "Lemonades",
+    "Beer, Wines, Cocktails & Non-Alcoholic Drinks",
+    "Regional Beers",
+    "Beer, Wines & Cocktails",
+    "Retail",
+    "Woof",
+  ]);
+  const normalized = cleanText(line)
+    ?.replace(/[™®]/g, "")
+    .replace(/\s*-\s*/g, "-");
+
+  return headings.has(normalized) ? normalized : null;
 }
 
 function extractCkeNutritionCodePdfItems(text, restaurant, url) {
@@ -4768,17 +4923,29 @@ function isCavaPdfNoise(rowText, name) {
 async function extractYardHouseAllergenPdfItems(buffer, restaurant, url) {
   const rows = clusterPdfRowsByPageAndY(await readPdfPositionRows(buffer), 5);
   const columns = [
-    { allergen: "sesame", x: 395 },
-    { allergen: "shellfish", x: 429 },
-    { allergen: "shellfish", x: 463 },
-    { allergen: "peanut", x: 498 },
-    { allergen: "tree-nut", x: 532 },
-    { allergen: "soy", x: 566 },
-    { allergen: "egg", x: 600 },
-    { allergen: "fish", x: 634 },
-    { allergen: "milk", x: 668 },
-    { allergen: "wheat", x: 709 },
-    { allergen: "gluten", x: 743 },
+    { allergen: "peanut", x: 350 },
+    { allergen: "tree-nut", x: 382 },
+    { allergen: "soy", x: 426 },
+    { allergen: "egg", x: 457 },
+    { allergen: "milk", x: 492 },
+    { allergen: "wheat", x: 524 },
+    { allergen: "gluten", x: 558 },
+    { allergen: "fish", x: 596 },
+    { allergen: "shellfish", x: 623 },
+    { allergen: "shellfish", x: 660 },
+    { allergen: "sesame", x: 700 },
+  ];
+  const broadCrossContactAllergens = [
+    "peanut",
+    "tree-nut",
+    "soy",
+    "egg",
+    "milk",
+    "wheat",
+    "gluten",
+    "fish",
+    "shellfish",
+    "sesame",
   ];
   const records = [];
   let currentCategory = restaurant.category;
@@ -4811,8 +4978,19 @@ async function extractYardHouseAllergenPdfItems(buffer, restaurant, url) {
 
     const allergens = [];
     const mayContain = [];
+    const hasPrepCrossContact = markers.some(
+      (marker) => /^●$/.test(marker.str) && marker.x >= 280 && marker.x <= 340,
+    );
+
+    if (hasPrepCrossContact) {
+      mayContain.push(...broadCrossContactAllergens);
+    }
 
     for (const marker of markers) {
+      if (/^●$/.test(marker.str) && marker.x >= 280 && marker.x <= 340) {
+        continue;
+      }
+
       const allergen = closestAllergenColumn(marker.x, columns, 18);
 
       if (!allergen) {
@@ -4852,16 +5030,22 @@ function cleanYardHousePdfName(value) {
 function cleanYardHouseCategoryName(value) {
   return titleCase(value)
     .replace(/\bSandwi Ches\b/g, "Sandwiches")
+    .replace(/\bSandwi Ch Si Des\b/g, "Sandwich Sides")
     .replace(/\bAppeti Zers\b/g, "Appetizers")
     .replace(/\bChi Cken\b/g, "Chicken")
     .replace(/\bPreparati On\b/g, "Preparation")
-    .replace(/\bPi Zzas\b/g, "Pizzas");
+    .replace(/\bPi Zzas\b/g, "Pizzas")
+    .replace(/^Gs\b/g, "Gluten-Sensitive")
+    .replace(/\bM Ai Ns\b/g, "Mains")
+    .replace(/\bSi Des\b/g, "Sides")
+    .replace(/\bSweet\b/g, "Sweets")
+    .replace(/^Ki D'S M Enu$/g, "Kids Menu");
 }
 
 function isYardHousePdfNoise(rowText, name) {
   return /^(?:KEY TO|KEY TO THI S GUI DE|ALLERGEN GUIDE|Printed information|The information|current version|grill or fryer|If you have|COMMON ALLERGENS|PREPARATION|Fried|Soybean Oil|Grilled|Peanuts Tree Nuts|Menu items marked|Dairy|Page \d+ of \d+|-- \d+ of \d+ --)$/i.test(
     rowText,
-  ) || /^(?:KEY TO THI S GUI DE|served with pickles and choice of side|served lettuce wrapped|served on flour tortillas|served on corn tortillas)$/i.test(name);
+  ) || /^(?:KEY TO THI S GUI DE|Peanuts|Tree Nuts|Soy|Eggs|Fish|Molluscs|Crustacean|Sesame|Dairy|Wheat|Gluten|served with pickles and choice of side|served lettuce wrapped|served on flour tortillas|served on corn tortillas)$/i.test(name);
 }
 
 async function extractCheddarsAllergenPdfItems(buffer, restaurant, url) {
@@ -7158,8 +7342,7 @@ async function extractBuffaloWildWingsAllergenPdfItems(buffer, restaurant, url) 
         allergenSourceType: allergenSourceTypes.officialAllergenMenu,
         allergens: [],
         category: currentCategory,
-        description:
-          "Official Buffalo Wild Wings allergen and preparation guide PDF. Direct-allergen bullets are encoded as non-text PDF marks, so the parser keeps these rows conservative with cross-contact review.",
+        description: "Buffalo Wild Wings menu item from the official allergen guide.",
         evidenceText:
           "Official BWW allergen guide row parsed; direct marker glyphs are not text-extractable, so cross-contact review is retained.",
         imageUrl: null,
@@ -8262,6 +8445,10 @@ function isProbablyMenuItemName(name) {
   const cleaned = cleanMenuName(name);
 
   if (!cleaned || cleaned.length < 3 || cleaned.length > 90) {
+    return false;
+  }
+
+  if (/^(?:name|description|nutrition allergen statement)$/i.test(cleaned)) {
     return false;
   }
 

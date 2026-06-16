@@ -545,7 +545,10 @@ export const restaurantSources = [
     category: "Burger",
     domain: "shakeshack.com",
     menuUrls: ["https://shakeshack.com/menu"],
-    allergenUrls: ["https://shakeshack.com/nutrition-allergens"],
+    allergenUrls: [
+      "https://shakeshack.com/nutrition-allergens",
+      "https://shakeshack.com/sites/default/files/2026-01/_Master%20Nut%20%26%20Allergen%201.6.26.pdf",
+    ],
     apiUrls: ["https://www.nutritionix.com/shake-shack/nutrition-calculator"],
   },
   {
