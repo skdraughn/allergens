@@ -1,14 +1,21 @@
 import { Check } from "lucide-react-native";
 import type { LucideIcon } from "lucide-react-native";
+import type { ComponentType } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { colors, radius, spacing } from "@/constants/theme";
+
+type SelectionIconProps = {
+  color?: string;
+  size?: number;
+  strokeWidth?: number;
+};
 
 export type SelectionOption = {
   id: string;
   label: string;
   detail: string;
-  Icon: LucideIcon;
+  Icon: LucideIcon | ComponentType<SelectionIconProps>;
   accent: string;
   surface: string;
 };
@@ -16,12 +23,14 @@ export type SelectionOption = {
 type SelectionGroupProps = {
   title: string;
   meta: string;
+  hideHeader?: boolean;
   options: SelectionOption[];
   selectedIds: string[];
   onToggle: (id: string) => void;
 };
 
 export function SelectionGroup({
+  hideHeader = false,
   title,
   meta,
   options,
@@ -30,10 +39,12 @@ export function SelectionGroup({
 }: SelectionGroupProps) {
   return (
     <View style={styles.group}>
-      <View style={styles.groupHeader}>
-        <Text style={styles.groupTitle}>{title}</Text>
-        <Text style={styles.groupMeta}>{meta}</Text>
-      </View>
+      {hideHeader ? null : (
+        <View style={styles.groupHeader}>
+          <Text style={styles.groupTitle}>{title}</Text>
+          <Text style={styles.groupMeta}>{meta}</Text>
+        </View>
+      )}
 
       {options.map((option, index) => (
         <SelectionRow
@@ -66,7 +77,7 @@ function SelectionRow({ option, selected, isLast, onPress }: SelectionRowProps) 
       style={[styles.row, !isLast && styles.rowDivider]}
     >
       <View style={[styles.symbol, { backgroundColor: option.surface }]}>
-        <Icon color={option.accent} size={21} strokeWidth={2.35} />
+        <Icon color={option.accent} size={30} strokeWidth={2.35} />
       </View>
       <View style={styles.rowText}>
         <Text style={styles.rowTitle}>{option.label}</Text>
@@ -111,14 +122,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     gap: 12,
-    minHeight: 70,
+    minHeight: 62,
     paddingHorizontal: spacing.two,
-    paddingVertical: 10,
+    paddingVertical: 8,
   },
   rowDetail: {
     color: colors.muted,
-    fontSize: 13,
-    lineHeight: 18,
+    fontSize: 12,
+    lineHeight: 16,
     marginTop: 1,
   },
   rowDivider: {
@@ -130,7 +141,7 @@ const styles = StyleSheet.create({
   },
   rowTitle: {
     color: colors.ink,
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: "600",
   },
   selection: {
@@ -150,8 +161,8 @@ const styles = StyleSheet.create({
   symbol: {
     alignItems: "center",
     borderRadius: radius.sm,
-    height: 42,
+    height: 38,
     justifyContent: "center",
-    width: 42,
+    width: 38,
   },
 });

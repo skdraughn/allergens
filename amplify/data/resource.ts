@@ -56,6 +56,7 @@ const schema = a.schema({
       createdBy: a.string(),
     })
     .authorization((allow) => [
+      allow.publicApiKey().to(["create"]),
       allow.owner().to(["create", "read"]),
       allow.authenticated().to(["read"]),
       allow.group("Admins").to(["read", "update", "delete"]),
@@ -115,5 +116,8 @@ export const data = defineData({
   schema,
   authorizationModes: {
     defaultAuthorizationMode: "userPool",
+    apiKeyAuthorizationMode: {
+      expiresInDays: 30,
+    },
   },
 });

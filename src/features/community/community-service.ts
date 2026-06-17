@@ -46,7 +46,10 @@ type CommunityModels = {
 };
 
 type CommunityModel = {
-  create: (input: { [key: string]: unknown }) => Promise<{ data?: unknown; errors?: unknown }>;
+  create: (
+    input: { [key: string]: unknown },
+    options?: { authMode?: "apiKey" | "userPool" | "identityPool" },
+  ) => Promise<{ data?: unknown; errors?: unknown }>;
   list: (input?: { filter?: Record<string, unknown> }) => Promise<{ data?: unknown[] }>;
 };
 
@@ -115,17 +118,20 @@ export async function submitRestaurantRequest(input: CreateRestaurantRequestInpu
     allowUrlFields: ["website"],
   });
   assertValidation(validation);
-  await assertSignedInAndThrottle("restaurant-request");
+  await assertThrottle("restaurant-request");
 
   const models = communityModels();
   assertModel(models.RestaurantRequest, "Restaurant requests");
   const createdBy = await getCurrentUserId();
 
-  return models.RestaurantRequest.create({
-    ...validation.values,
-    createdBy,
-    status: "pending",
-  });
+  return models.RestaurantRequest.create(
+    {
+      ...validation.values,
+      createdBy,
+      status: "pending",
+    },
+    createdBy ? undefined : { authMode: "apiKey" },
+  );
 }
 
 export async function submitCommunityMenuItem(input: CreateCommunityMenuItemInput) {
@@ -200,7 +206,10 @@ export function allergenIdsFromOptions(options: AllergyOption[], selectedIds: st
 
 async function assertSignedInAndThrottle(scope: string) {
   await assertSignedIn();
+  await assertThrottle(scope);
+}
 
+async function assertThrottle(scope: string) {
   const key = `community-submit/${scope}`;
   const now = Date.now();
   const previous = Number(await AsyncStorage.getItem(key));

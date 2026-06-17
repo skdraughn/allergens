@@ -37,7 +37,7 @@ export function SelectedAllergenBadges({
               },
             ]}
           >
-            <Icon color={option.accent} size={12} strokeWidth={2.4} />
+            <Icon color={option.accent} size={18} strokeWidth={2.4} />
           </View>
         );
       })}

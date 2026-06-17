@@ -7,6 +7,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Authenticator } from "@aws-amplify/ui-react-native";
 
 import "@/lib/amplify";
+import { SnackbarProvider } from "@/components/snackbar-provider";
 import { colors } from "@/constants/theme";
 import { AllergyProfileProvider, useAllergyProfile } from "@/features/profile/allergy-profile-context";
 import { RestaurantDataProvider } from "@/features/restaurants/restaurant-data-context";
@@ -62,11 +63,13 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider>
-        {isAmplifyConfigured ? (
-          <Authenticator.Provider>{app}</Authenticator.Provider>
-        ) : (
-          app
-        )}
+        <SnackbarProvider>
+          {isAmplifyConfigured ? (
+            <Authenticator.Provider>{app}</Authenticator.Provider>
+          ) : (
+            app
+          )}
+        </SnackbarProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

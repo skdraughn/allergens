@@ -18,7 +18,7 @@ const maxLengths: Record<string, number> = {
   description: 700,
   locationHint: 160,
   name: 120,
-  notes: 700,
+  notes: 2400,
   reason: 80,
   reviewNotes: 700,
   sourceUrl: 260,

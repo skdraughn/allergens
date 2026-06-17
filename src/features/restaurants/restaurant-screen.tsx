@@ -3,6 +3,7 @@ import {
   AlertTriangle,
   CheckCircle2,
   ChevronLeft,
+  CircleHelp,
   ExternalLink,
   Flag,
   MessageCircle,
@@ -18,7 +19,6 @@ import {
   Linking,
   Modal,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -27,6 +27,7 @@ import {
 } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { AllergyIconGuideModal } from "@/components/allergy-icon-guide-modal";
 import { IconButton } from "@/components/icon-button";
 import { MenuItemDetailsModal } from "@/components/menu-item-details-modal";
 import { ModalScreen } from "@/components/modal-screen";
@@ -48,18 +49,10 @@ import { getMenuItemSafety, getRestaurantSafety } from "@/lib/safety";
 
 type MenuFilter = "all" | "ok" | "caution" | "avoid";
 type RestaurantTab = "official" | "community";
-type MenuCategoryFilter = "all" | string;
 type MenuListRow =
-  | { id: string; type: "header"; category: string; count: number }
+  | { id: string; type: "header"; category: string; count: number; first: boolean }
   | { id: string; type: "item"; item: MenuItem; last: boolean }
   | { id: string; type: "empty" };
-
-const filters: Array<{ id: MenuFilter; label: string }> = [
-  { id: "all", label: "All" },
-  { id: "ok", label: "Looks OK" },
-  { id: "caution", label: "Review" },
-  { id: "avoid", label: "Avoid" },
-];
 
 export function RestaurantScreen() {
   const router = useRouter();
@@ -69,9 +62,9 @@ export function RestaurantScreen() {
   const { getRestaurantById } = useRestaurantData();
   const [activeTab, setActiveTab] = useState<RestaurantTab>("official");
   const [filter, setFilter] = useState<MenuFilter>("all");
-  const [categoryFilter, setCategoryFilter] = useState<MenuCategoryFilter>("all");
   const [contributionItem, setContributionItem] = useState<MenuItem | null>(null);
   const [contributionMode, setContributionMode] = useState<ContributionMode | null>(null);
+  const [iconGuideVisible, setIconGuideVisible] = useState(false);
   const [menuQuery, setMenuQuery] = useState("");
   const [sourceModalVisible, setSourceModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
@@ -86,24 +79,6 @@ export function RestaurantScreen() {
     router.replace("/home");
   };
 
-  const menuCategories = useMemo(() => {
-    if (!restaurant) {
-      return [];
-    }
-
-    const byCategory = new Map<string, number>();
-
-    for (const item of restaurant.items) {
-      const category = item.category || restaurant.category;
-      byCategory.set(category, (byCategory.get(category) ?? 0) + 1);
-    }
-
-    return Array.from(byCategory.entries()).map(([category, count]) => ({
-      category,
-      count,
-    }));
-  }, [restaurant]);
-
   const filteredItems = useMemo(() => {
     if (!restaurant) {
       return [];
@@ -113,10 +88,6 @@ export function RestaurantScreen() {
 
     return restaurant.items.filter((item) => {
       const safety = getMenuItemSafety(item, selectedAllergyIds);
-
-      if (categoryFilter !== "all" && item.category !== categoryFilter) {
-        return false;
-      }
 
       const matchesStatus =
         filter === "all" ||
@@ -146,7 +117,7 @@ export function RestaurantScreen() {
 
       return searchable.includes(normalizedQuery);
     });
-  }, [categoryFilter, filter, menuQuery, restaurant, selectedAllergyIds]);
+  }, [filter, menuQuery, restaurant, selectedAllergyIds]);
 
   const menuRows = useMemo<MenuListRow[]>(() => {
     if (filteredItems.length === 0) {
@@ -160,10 +131,18 @@ export function RestaurantScreen() {
       sections.set(category, [...(sections.get(category) ?? []), item]);
     }
 
-    return Array.from(sections.entries()).flatMap(([category, items]) => {
-      const showHeader = categoryFilter === "all" || sections.size > 1;
+    return Array.from(sections.entries()).flatMap(([category, items], sectionIndex) => {
+      const showHeader = sections.size > 1;
       const rows: MenuListRow[] = showHeader
-        ? [{ id: `header-${category}`, type: "header", category, count: items.length }]
+        ? [
+            {
+              id: `header-${category}`,
+              type: "header",
+              category,
+              count: items.length,
+              first: sectionIndex === 0,
+            },
+          ]
         : [];
 
       rows.push(
@@ -177,7 +156,7 @@ export function RestaurantScreen() {
 
       return rows;
     });
-  }, [categoryFilter, filteredItems]);
+  }, [filteredItems]);
 
   if (!restaurant) {
     return (
@@ -196,6 +175,16 @@ export function RestaurantScreen() {
 
   const summary = getRestaurantSafety(restaurant, selectedAllergyIds);
   const brand = getRestaurantBrand(restaurant.id);
+  const officialItemCount =
+    restaurant.allergenDataStatus?.officialItemCount ??
+    restaurant.items.filter((item) => item.allergenSourceType !== "unavailable").length;
+  const totalItemCount = restaurant.items.length;
+  const filterOptions: Array<{ count: number; id: MenuFilter; label: string }> = [
+    { count: totalItemCount, id: "all", label: "All" },
+    { count: summary.okCount, id: "ok", label: "Ok" },
+    { count: summary.cautionCount, id: "caution", label: "Review" },
+    { count: summary.avoidCount, id: "avoid", label: "Avoid" },
+  ];
   const communitySnapshot = community.data ?? { comments: [], items: [] };
   const openContribution = (mode: ContributionMode, item: MenuItem | null = null) => {
     setContributionItem(item);
@@ -204,7 +193,12 @@ export function RestaurantScreen() {
   const renderMenuRow: ListRenderItem<MenuListRow> = ({ item }) => {
     if (item.type === "header") {
       return (
-        <View style={styles.categorySectionHeader}>
+        <View
+          style={[
+            styles.categorySectionHeader,
+            item.first && styles.categorySectionHeaderFirst,
+          ]}
+        >
           <Text style={styles.categorySectionTitle}>{item.category}</Text>
           <Text style={styles.categorySectionCount}>{item.count}</Text>
         </View>
@@ -236,8 +230,16 @@ export function RestaurantScreen() {
         <View style={styles.nav}>
           <IconButton Icon={ChevronLeft} label="Back" onPress={goBack} />
           <View style={styles.navActions}>
-            <SourceBadge onPress={() => setSourceModalVisible(true)} restaurant={restaurant} />
             <Pressable
+              accessibilityLabel="Open allergy icon guide"
+              accessibilityRole="button"
+              onPress={() => setIconGuideVisible(true)}
+              style={styles.sourceButton}
+            >
+              <CircleHelp color={colors.primary} size={20} strokeWidth={2.35} />
+            </Pressable>
+            <Pressable
+              accessibilityLabel="Open restaurant website"
               accessibilityRole="button"
               onPress={() => Linking.openURL(restaurant.guideUrl)}
               style={styles.sourceButton}
@@ -250,20 +252,23 @@ export function RestaurantScreen() {
         <FlatList
           ListHeaderComponent={
             <>
-              <View style={[styles.heroCard, { backgroundColor: `${brand.color}14` }]}>
-                <RestaurantLogo brand={brand} borderRadius={22} size={72} />
-              </View>
-
-              <View style={styles.copyBlock}>
-                <Text style={styles.kicker}>#{restaurant.rank} · {restaurant.category}</Text>
-                <Text style={styles.title}>{restaurant.name}</Text>
-                <Text style={styles.description}>{brand.description}</Text>
-              </View>
-
-              <View style={styles.summaryGroup}>
-                <SummaryMetric label="Avoid" value={summary.avoidCount} tone="warning" />
-                <SummaryMetric label="Review" value={summary.cautionCount} tone="caution" />
-                <SummaryMetric label="Looks OK" value={summary.okCount} tone="ok" />
+              <View style={styles.restaurantHeader}>
+                <View style={[styles.restaurantLogoFrame, { backgroundColor: `${brand.color}14` }]}>
+                  <RestaurantLogo brand={brand} borderRadius={18} size={58} />
+                </View>
+                <View style={styles.restaurantHeaderText}>
+                  <Text style={styles.title}>{restaurant.name}</Text>
+                  <Pressable
+                    accessibilityRole="button"
+                    onPress={() => setSourceModalVisible(true)}
+                    style={styles.headerSourcePill}
+                  >
+                    <CheckCircle2 color={colors.primary} size={14} strokeWidth={2.45} />
+                    <Text style={styles.headerSourceText}>
+                      Official source {officialItemCount}/{totalItemCount}
+                    </Text>
+                  </Pressable>
+                </View>
               </View>
 
               <RestaurantTabs activeTab={activeTab} onSelect={setActiveTab} />
@@ -293,37 +298,19 @@ export function RestaurantScreen() {
                     ) : null}
                   </View>
 
-                  <View style={styles.filters}>
-                    {filters.map((nextFilter) => (
-                      <Pressable
-                        accessibilityRole="button"
+                  <View style={styles.filterSegmentGroup}>
+                    {filterOptions.map((nextFilter) => (
+                      <MenuFilterSegment
+                        active={filter === nextFilter.id}
+                        count={nextFilter.count}
+                        filter={nextFilter.id}
                         key={nextFilter.id}
+                        label={nextFilter.label}
                         onPress={() => setFilter(nextFilter.id)}
-                        style={[
-                          styles.filterButton,
-                          filter === nextFilter.id && styles.filterButtonActive,
-                        ]}
-                      >
-                        <Text
-                          style={[
-                            styles.filterText,
-                            filter === nextFilter.id && styles.filterTextActive,
-                          ]}
-                        >
-                          {nextFilter.label}
-                        </Text>
-                      </Pressable>
+                      />
                     ))}
                   </View>
 
-                  <CategoryRail
-                    categories={menuCategories}
-                    onSelect={setCategoryFilter}
-                    selectedCategory={categoryFilter}
-                    totalCount={restaurant.items.length}
-                  />
-
-                  <View style={styles.groupTop} />
                 </>
               ) : (
                 <CommunityTab
@@ -392,32 +379,12 @@ export function RestaurantScreen() {
           restaurant={restaurant}
           visible={sourceModalVisible}
         />
+        <AllergyIconGuideModal
+          onClose={() => setIconGuideVisible(false)}
+          visible={iconGuideVisible}
+        />
       </SafeAreaView>
     </ScreenBackground>
-  );
-}
-
-function SourceBadge({
-  onPress,
-  restaurant,
-}: {
-  onPress: () => void;
-  restaurant: Restaurant;
-}) {
-  const officialCount =
-    restaurant.allergenDataStatus?.officialItemCount ??
-    restaurant.items.filter((item) => item.allergenSourceType !== "unavailable").length;
-  const itemCount = restaurant.items.length;
-
-  return (
-    <Pressable
-      accessibilityLabel={`Source coverage ${officialCount} of ${itemCount} menu items`}
-      accessibilityRole="button"
-      onPress={onPress}
-      style={styles.sourceButton}
-    >
-      <CheckCircle2 color={colors.primary} size={20} strokeWidth={2.35} />
-    </Pressable>
   );
 }
 
@@ -683,126 +650,46 @@ function CommunityTab({
   );
 }
 
-function SummaryMetric({
-  label,
-  tone,
-  value,
-}: {
-  label: string;
-  tone: "warning" | "caution" | "ok";
-  value: number;
-}) {
-  const toneStyle =
-    tone === "ok" ? styles.metricOk : tone === "caution" ? styles.metricCaution : styles.metricWarn;
-
-  return (
-    <View style={styles.metric}>
-      <Text style={[styles.metricValue, toneStyle]}>{value}</Text>
-      <Text style={styles.metricLabel}>{label}</Text>
-    </View>
-  );
-}
-
-function CategoryRail({
-  categories,
-  onSelect,
-  selectedCategory,
-  totalCount,
-}: {
-  categories: Array<{ category: string; count: number }>;
-  onSelect: (category: MenuCategoryFilter) => void;
-  selectedCategory: MenuCategoryFilter;
-  totalCount: number;
-}) {
-  if (categories.length <= 1) {
-    return null;
-  }
-
-  return (
-    <View style={styles.categoryRailBlock}>
-      <ScrollView
-        contentContainerStyle={styles.categoryRail}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-      >
-        <CategoryChip
-          active={selectedCategory === "all"}
-          count={totalCount}
-          label="All categories"
-          onPress={() => onSelect("all")}
-        />
-        {categories.map((category) => (
-          <CategoryChip
-            active={selectedCategory === category.category}
-            count={category.count}
-            key={category.category}
-            label={category.category}
-            onPress={() => onSelect(category.category)}
-          />
-        ))}
-      </ScrollView>
-    </View>
-  );
-}
-
-function CategoryChip({
+function MenuFilterSegment({
   active,
   count,
+  filter,
   label,
   onPress,
 }: {
   active: boolean;
   count: number;
+  filter: MenuFilter;
   label: string;
   onPress: () => void;
 }) {
+  const isOk = filter === "ok";
+  const isCaution = filter === "caution";
+  const isAvoid = filter === "avoid";
+  const toneStyle = isOk
+    ? styles.filterTextOk
+    : isCaution
+      ? styles.filterTextCaution
+      : isAvoid
+        ? styles.filterTextAvoid
+        : styles.filterTextAll;
+
   return (
     <Pressable
       accessibilityRole="button"
       onPress={onPress}
-      style={[styles.categoryChip, active && styles.categoryChipActive]}
+      style={[
+        styles.filterSegment,
+        active && styles.filterSegmentActive,
+      ]}
     >
-      <Text style={[styles.categoryChipLabel, active && styles.categoryChipLabelActive]}>
-        {label}
-      </Text>
-      <Text style={[styles.categoryChipCount, active && styles.categoryChipCountActive]}>
+      <Text numberOfLines={1} style={[styles.filterCount, toneStyle]}>
         {count}
       </Text>
+      <Text numberOfLines={1} style={styles.filterText}>
+        {label}
+      </Text>
     </Pressable>
-  );
-}
-
-function MenuCategorySection({
-  last,
-  onItemPress,
-  section,
-  selectedAllergyIds,
-  showHeader,
-}: {
-  last: boolean;
-  onItemPress: (item: MenuItem) => void;
-  section: { category: string; items: MenuItem[] };
-  selectedAllergyIds: string[];
-  showHeader: boolean;
-}) {
-  return (
-    <View style={!last && styles.categorySectionDivider}>
-      {showHeader ? (
-        <View style={styles.categorySectionHeader}>
-          <Text style={styles.categorySectionTitle}>{section.category}</Text>
-          <Text style={styles.categorySectionCount}>{section.items.length}</Text>
-        </View>
-      ) : null}
-      {section.items.map((item, index) => (
-        <MenuRow
-          item={item}
-          key={item.id}
-          last={index === section.items.length - 1}
-          onPress={() => onItemPress(item)}
-          selectedAllergyIds={selectedAllergyIds}
-        />
-      ))}
-    </View>
   );
 }
 
@@ -823,7 +710,8 @@ function MenuRow({
   const isAvoid = safety.status === "avoid";
   const isCaution = safety.status === "caution";
   const Icon: LucideIcon = isAvoid || isCaution ? AlertTriangle : CheckCircle2;
-  const tone = isAvoid ? "#FF3B30" : isCaution ? "#FF9F0A" : "#34C759";
+  const tone = isAvoid ? "#FF3B30" : isCaution ? "#B25E00" : "#1F8A4C";
+  const statusSurface = isAvoid ? "#FFF0F0" : isCaution ? "#FFF6E5" : "#EAF8EF";
   const statusLabel =
     safety.status === "unknown"
       ? "Set allergies"
@@ -831,7 +719,7 @@ function MenuRow({
         ? "Avoid"
         : isCaution
           ? "Review"
-          : "Looks OK";
+          : "Ok";
 
   return (
     <Pressable
@@ -841,10 +729,6 @@ function MenuRow({
     >
       <View style={styles.menuText}>
         <Text style={styles.menuName}>{item.name}</Text>
-        <View style={styles.menuMetaRow}>
-          <Text style={styles.menuMeta}>{item.category}</Text>
-          <Icon color={tone} size={15} strokeWidth={2.5} />
-        </View>
         {safety.directMatchLabels.length > 0 ? (
           <Text style={styles.conflicts}>Contains {safety.directMatchLabels.join(", ")}</Text>
         ) : null}
@@ -862,7 +746,12 @@ function MenuRow({
         {sourceLabel ? <Text style={styles.sourceLabel}>{sourceLabel}</Text> : null}
         <AllergenIconStrip item={item} selectedAllergyIds={selectedAllergyIds} />
       </View>
-      <Text style={[styles.statusLabel, { color: tone }]}>{statusLabel}</Text>
+      <View
+        accessibilityLabel={statusLabel}
+        style={[styles.statusIconBadge, { backgroundColor: statusSurface }]}
+      >
+        <Icon color={tone} size={18} strokeWidth={2.65} />
+      </View>
     </Pressable>
   );
 }
@@ -883,7 +772,7 @@ function AllergenIconStrip({
   }
 
   if (directIcons.length === 0 && crossContactIcons.length === 0 && !broadCrossContact) {
-    return <Text style={styles.noListedAllergens}>No listed allergens</Text>;
+    return <Text style={styles.noListedAllergens}>No common allergens</Text>;
   }
 
   return (
@@ -891,7 +780,6 @@ function AllergenIconStrip({
       {directIcons.length > 0 ? (
         <AllergenIconGroup
           icons={directIcons}
-          label="Contains"
           selectedAllergyIds={selectedAllergyIds}
         />
       ) : null}
@@ -915,12 +803,12 @@ function AllergenIconGroup({
 }: {
   broad?: boolean;
   icons: ReturnType<typeof getAllergenIcons>;
-  label: string;
+  label?: string;
   selectedAllergyIds: string[];
 }) {
   return (
     <View style={styles.allergenIconGroup}>
-      <Text style={styles.allergenIconGroupLabel}>{label}</Text>
+      {label ? <Text style={styles.allergenIconGroupLabel}>{label}</Text> : null}
       <View style={styles.allergenIconStrip}>
         {icons.map((allergen) => {
           const selected = selectedAllergyIds.includes(allergen.id);
@@ -939,7 +827,7 @@ function AllergenIconGroup({
             >
               <Icon
                 color={selected ? "#B42318" : allergen.option.accent}
-                size={15}
+                size={22}
                 strokeWidth={2.4}
               />
             </View>
@@ -998,11 +886,11 @@ const styles = StyleSheet.create({
     width: 30,
   },
   allergenGroups: {
-    gap: 8,
-    marginTop: 10,
+    gap: 5,
+    marginTop: 5,
   },
   allergenIconGroup: {
-    gap: 5,
+    gap: 4,
   },
   allergenIconGroupLabel: {
     color: colors.muted,
@@ -1024,56 +912,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: 28,
   },
-  categoryChip: {
-    alignItems: "center",
-    backgroundColor: colors.white,
-    borderColor: colors.line,
-    borderRadius: radius.pill,
-    borderWidth: 1,
-    flexDirection: "row",
-    gap: 7,
-    minHeight: 42,
-    paddingHorizontal: 14,
-  },
-  categoryChipActive: {
-    backgroundColor: colors.ink,
-    borderColor: colors.ink,
-  },
-  categoryChipCount: {
-    color: colors.muted,
-    fontSize: 13,
-    fontWeight: "800",
-  },
-  categoryChipCountActive: {
-    color: "rgba(255,255,255,0.72)",
-  },
-  categoryChipLabel: {
-    color: colors.ink,
-    fontSize: 15,
-    fontWeight: "700",
-  },
-  categoryChipLabelActive: {
-    color: colors.white,
-  },
-  categoryRail: {
-    gap: 8,
-    paddingRight: spacing.three,
-  },
-  categoryRailBlock: {
-    marginBottom: spacing.two,
-  },
   categorySectionCount: {
     color: colors.muted,
     fontSize: 13,
     fontWeight: "800",
   },
-  categorySectionDivider: {
-    borderBottomColor: colors.line,
-    borderBottomWidth: 1,
-  },
   categorySectionHeader: {
     alignItems: "center",
-    backgroundColor: "#FAFAFC",
+    backgroundColor: "#F7F7FA",
     borderBottomColor: colors.line,
     borderBottomWidth: 1,
     borderColor: colors.line,
@@ -1082,7 +928,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: spacing.two,
-    paddingVertical: 11,
+    paddingTop: 10,
+    paddingBottom: 9,
+  },
+  categorySectionHeaderFirst: {
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    borderTopWidth: 1,
+    overflow: "hidden",
   },
   categorySectionTitle: {
     color: colors.ink,
@@ -1241,11 +1094,7 @@ const styles = StyleSheet.create({
   content: {
     paddingBottom: 92,
     paddingHorizontal: spacing.three,
-    paddingTop: spacing.four,
-  },
-  copyBlock: {
-    marginBottom: spacing.three,
-    paddingHorizontal: spacing.one,
+    paddingTop: spacing.three,
   },
   description: {
     color: colors.muted,
@@ -1279,27 +1128,54 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "700",
   },
-  filterButton: {
-    backgroundColor: "#F2F2F7",
-    borderRadius: radius.pill,
-    paddingHorizontal: 15,
-    paddingVertical: 9,
+  filterCount: {
+    fontSize: 13,
+    fontWeight: "900",
   },
-  filterButtonActive: {
-    backgroundColor: colors.primary,
+  filterSegment: {
+    alignItems: "center",
+    borderRadius: 18,
+    flex: 1,
+    flexDirection: "row",
+    gap: 3,
+    justifyContent: "center",
+    minHeight: 38,
+    minWidth: 0,
+    paddingHorizontal: 4,
+  },
+  filterSegmentActive: {
+    backgroundColor: colors.white,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+  },
+  filterSegmentGroup: {
+    alignSelf: "stretch",
+    backgroundColor: "#F2F2F7",
+    borderRadius: 22,
+    flexDirection: "row",
+    gap: 2,
+    marginBottom: spacing.two,
+    padding: 4,
   },
   filterText: {
     color: colors.ink,
-    fontSize: 15,
-    fontWeight: "600",
+    flexShrink: 1,
+    fontSize: 12,
+    fontWeight: "800",
   },
-  filterTextActive: {
-    color: colors.white,
+  filterTextAll: {
+    color: colors.ink,
   },
-  filters: {
-    flexDirection: "row",
-    gap: 8,
-    marginBottom: spacing.two,
+  filterTextAvoid: {
+    color: "#FF3B30",
+  },
+  filterTextCaution: {
+    color: "#FF9F0A",
+  },
+  filterTextOk: {
+    color: "#34C759",
   },
   floatingDisclaimer: {
     backgroundColor: "rgba(250,250,252,0.96)",
@@ -1327,25 +1203,38 @@ const styles = StyleSheet.create({
     marginBottom: spacing.two,
     overflow: "hidden",
   },
-  groupTop: {
-    backgroundColor: colors.white,
-    borderColor: colors.line,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    borderTopWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    height: 12,
-    overflow: "hidden",
-  },
-  heroCard: {
+  headerSourcePill: {
     alignItems: "center",
-    alignSelf: "center",
-    borderRadius: 34,
-    height: 116,
+    alignSelf: "flex-start",
+    backgroundColor: colors.primaryLight,
+    borderRadius: radius.pill,
+    flexDirection: "row",
+    gap: 5,
+    marginTop: 3,
+    minHeight: 26,
+    paddingHorizontal: 9,
+  },
+  headerSourceText: {
+    color: colors.primary,
+    fontSize: 12,
+    fontWeight: "800",
+  },
+  restaurantHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.two,
+    marginBottom: spacing.two,
+    paddingHorizontal: spacing.one,
+  },
+  restaurantHeaderText: {
+    flex: 1,
+  },
+  restaurantLogoFrame: {
+    alignItems: "center",
+    borderRadius: 26,
+    height: 76,
     justifyContent: "center",
-    marginBottom: spacing.three,
-    width: 116,
+    width: 76,
   },
   kicker: {
     color: colors.primary,
@@ -1359,22 +1248,11 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     marginTop: 3,
   },
-  menuMeta: {
-    color: colors.muted,
-    fontSize: 13,
-    fontWeight: "700",
-    lineHeight: 18,
-  },
-  menuMetaRow: {
-    alignItems: "center",
-    flexDirection: "row",
-    gap: 6,
-    marginTop: 6,
-  },
   menuName: {
     color: colors.ink,
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: "700",
+    lineHeight: 21,
   },
   menuRow: {
     alignItems: "flex-start",
@@ -1383,9 +1261,9 @@ const styles = StyleSheet.create({
     borderLeftWidth: 1,
     borderRightWidth: 1,
     flexDirection: "row",
-    gap: 12,
+    gap: 10,
     paddingHorizontal: spacing.two,
-    paddingVertical: 12,
+    paddingVertical: 10,
   },
   menuText: {
     flex: 1,
@@ -1406,30 +1284,6 @@ const styles = StyleSheet.create({
   mayContainIconPill: {
     borderColor: "rgba(178,94,0,0.24)",
     borderWidth: 1,
-  },
-  metric: {
-    alignItems: "center",
-    flex: 1,
-    paddingVertical: 15,
-  },
-  metricCaution: {
-    color: "#FF9F0A",
-  },
-  metricLabel: {
-    color: colors.muted,
-    fontSize: 13,
-    fontWeight: "700",
-    marginTop: 4,
-  },
-  metricOk: {
-    color: "#34C759",
-  },
-  metricValue: {
-    fontSize: 28,
-    fontWeight: "800",
-  },
-  metricWarn: {
-    color: "#FF3B30",
   },
   nav: {
     alignItems: "center",
@@ -1453,7 +1307,7 @@ const styles = StyleSheet.create({
     color: colors.muted,
     fontSize: 13,
     fontWeight: "700",
-    marginTop: 10,
+    marginTop: 5,
   },
   pendingLabel: {
     alignSelf: "flex-start",
@@ -1560,11 +1414,13 @@ const styles = StyleSheet.create({
     marginTop: 6,
     textTransform: "uppercase",
   },
-  statusLabel: {
-    fontSize: 13,
-    fontWeight: "800",
-    maxWidth: 82,
-    textAlign: "right",
+  statusIconBadge: {
+    alignItems: "center",
+    borderRadius: 14,
+    height: 28,
+    justifyContent: "center",
+    marginTop: 1,
+    width: 28,
   },
   submitButton: {
     alignItems: "center",
@@ -1600,19 +1456,23 @@ const styles = StyleSheet.create({
   },
   tabButton: {
     alignItems: "center",
-    borderRadius: 20,
+    borderRadius: 18,
     flex: 1,
     justifyContent: "center",
-    minHeight: 42,
+    minHeight: 38,
   },
   tabButtonActive: {
-    backgroundColor: colors.ink,
+    backgroundColor: colors.white,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
   },
   tabGroup: {
     backgroundColor: "#F2F2F7",
-    borderRadius: 24,
+    borderRadius: 22,
     flexDirection: "row",
-    gap: 4,
+    gap: 2,
     marginBottom: spacing.two,
     padding: 4,
   },
@@ -1622,21 +1482,12 @@ const styles = StyleSheet.create({
     fontWeight: "800",
   },
   tabTextActive: {
-    color: colors.white,
-  },
-  summaryGroup: {
-    backgroundColor: colors.white,
-    borderColor: colors.line,
-    borderRadius: 24,
-    borderWidth: 1,
-    flexDirection: "row",
-    marginBottom: spacing.two,
-    overflow: "hidden",
+    color: colors.ink,
   },
   title: {
     color: colors.ink,
-    fontSize: 34,
+    fontSize: 31,
     fontWeight: "700",
-    lineHeight: 40,
+    lineHeight: 36,
   },
 });

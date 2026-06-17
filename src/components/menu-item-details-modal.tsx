@@ -36,7 +36,7 @@ export function MenuItemDetailsModal({
         ? "Avoid"
         : isCaution
           ? "Review"
-          : "Looks OK";
+          : "Ok";
   const firstSource = item?.sourceUrls?.[0];
   const sourceHost = firstSource ? getSourceHost(firstSource) : null;
   const allergenSourceLabel = item ? getAllergenSourceLabel(item) : null;
@@ -190,7 +190,7 @@ function AllergenChips({
     return (
       <View style={styles.allergenWrap}>
         <View style={styles.noAllergenChip}>
-          <Text style={styles.noAllergenText}>No listed allergens</Text>
+          <Text style={styles.noAllergenText}>No common allergens</Text>
         </View>
       </View>
     );

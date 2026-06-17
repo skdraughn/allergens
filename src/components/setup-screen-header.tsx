@@ -6,7 +6,7 @@ import { colors, spacing } from "@/constants/theme";
 import { SetupHeroMark } from "./setup-hero-mark";
 
 type SetupScreenHeaderProps = {
-  Icon: LucideIcon;
+  Icon?: LucideIcon;
   title: string;
   subtitle: string;
 };
@@ -14,9 +14,11 @@ type SetupScreenHeaderProps = {
 export function SetupScreenHeader({ Icon, title, subtitle }: SetupScreenHeaderProps) {
   return (
     <View style={styles.wrap}>
-      <View style={styles.heroWrap}>
-        <SetupHeroMark Icon={Icon} />
-      </View>
+      {Icon ? (
+        <View style={styles.heroWrap}>
+          <SetupHeroMark Icon={Icon} />
+        </View>
+      ) : null}
 
       <View style={styles.copyBlock}>
         <Text style={styles.title}>{title}</Text>

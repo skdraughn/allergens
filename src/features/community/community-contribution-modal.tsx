@@ -1,6 +1,6 @@
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
 import { Check, X } from "lucide-react-native";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   Modal,
@@ -14,6 +14,7 @@ import {
 
 import { ModalScreen } from "@/components/modal-screen";
 import { PrimaryButton } from "@/components/primary-button";
+import { useSnackbar } from "@/components/snackbar-provider";
 import { SecondaryButton } from "@/components/secondary-button";
 import { allergyOptions } from "@/constants/allergies";
 import { colors, radius, spacing } from "@/constants/theme";
@@ -47,6 +48,14 @@ type FormState = {
   website: string;
 };
 
+type RequestMenuDraft = {
+  allergens: string[];
+  category: string;
+  description: string;
+  mayContain: string[];
+  name: string;
+};
+
 const defaultForm: FormState = {
   allergyContext: "",
   allergens: [],
@@ -63,6 +72,14 @@ const defaultForm: FormState = {
   website: "",
 };
 
+const emptyRequestMenuDraft = (): RequestMenuDraft => ({
+  allergens: [],
+  category: "",
+  description: "",
+  mayContain: [],
+  name: "",
+});
+
 const reportReasons = [
   { id: "outdated-allergen-info", label: "Outdated allergen info" },
   { id: "missing-allergen", label: "Missing allergen" },
@@ -78,6 +95,7 @@ export function CommunityContributionModal({
   onSignInRequired,
   restaurant,
 }: CommunityContributionModalProps) {
+  const { showSnackbar } = useSnackbar();
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
   const submissions = useCommunitySubmission(restaurant?.id);
   const [form, setForm] = useState<FormState>(() => ({
@@ -85,7 +103,7 @@ export function CommunityContributionModal({
     category: item?.category ?? "",
     name: initialRestaurantName ?? "",
   }));
-  const [error, setError] = useState<string | null>(null);
+  const [requestMenuItems, setRequestMenuItems] = useState<RequestMenuDraft[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const content = mode ? modalContent(mode, restaurant?.name, item?.name) : null;
   const isSubmitting =
@@ -93,6 +111,20 @@ export function CommunityContributionModal({
     submissions.submitMenuItem.isPending ||
     submissions.submitReport.isPending ||
     submissions.submitRestaurantRequest.isPending;
+
+  useEffect(() => {
+    if (!mode) {
+      return;
+    }
+
+    setSubmitted(false);
+    setForm({
+      ...defaultForm,
+      category: item?.category ?? "",
+      name: initialRestaurantName ?? "",
+    });
+    setRequestMenuItems([]);
+  }, [initialRestaurantName, item?.category, mode]);
 
   const canSubmit = useMemo(() => {
     if (!mode) {
@@ -115,12 +147,10 @@ export function CommunityContributionModal({
   }, [form, mode, restaurant?.id]);
 
   const update = (field: keyof FormState, value: string) => {
-    setError(null);
     setForm((current) => ({ ...current, [field]: value }));
   };
 
   const toggleAllergen = (field: "allergens" | "mayContain", id: string) => {
-    setError(null);
     setForm((current) => ({
       ...current,
       [field]: current[field].includes(id)
@@ -129,8 +159,50 @@ export function CommunityContributionModal({
     }));
   };
 
+  const addRequestMenuItem = () => {
+    setRequestMenuItems((current) => [...current, emptyRequestMenuDraft()]);
+  };
+
+  const removeRequestMenuItem = (index: number) => {
+    setRequestMenuItems((current) => current.filter((_, nextIndex) => nextIndex !== index));
+  };
+
+  const updateRequestMenuItem = (
+    index: number,
+    field: Exclude<keyof RequestMenuDraft, "allergens" | "mayContain">,
+    value: string,
+  ) => {
+    setRequestMenuItems((current) =>
+      current.map((draft, nextIndex) =>
+        nextIndex === index ? { ...draft, [field]: value } : draft,
+      ),
+    );
+  };
+
+  const toggleRequestMenuAllergen = (
+    index: number,
+    field: "allergens" | "mayContain",
+    id: string,
+  ) => {
+    setRequestMenuItems((current) =>
+      current.map((draft, nextIndex) => {
+        if (nextIndex !== index) {
+          return draft;
+        }
+
+        return {
+          ...draft,
+          [field]: draft[field].includes(id)
+            ? draft[field].filter((value) => value !== id)
+            : [...draft[field], id],
+        };
+      }),
+    );
+  };
+
   const submit = async () => {
-    if (authStatus !== "authenticated") {
+    if (mode !== "restaurant-request" && authStatus !== "authenticated") {
+      onClose();
       onSignInRequired();
       return;
     }
@@ -139,14 +211,12 @@ export function CommunityContributionModal({
       return;
     }
 
-    setError(null);
-
     try {
       if (mode === "restaurant-request") {
         await submissions.submitRestaurantRequest.mutateAsync({
           locationHint: form.locationHint,
           name: form.name,
-          notes: form.notes,
+          notes: formatRestaurantRequestNotes(form.notes, requestMenuItems),
           website: form.website,
         });
       } else if (mode === "menu-item" && restaurant) {
@@ -178,7 +248,8 @@ export function CommunityContributionModal({
 
       setSubmitted(true);
     } catch (nextError) {
-      setError(nextError instanceof Error ? nextError.message : "Submission failed.");
+      const message = nextError instanceof Error ? nextError.message : "Submission failed.";
+      showSnackbar({ message, title: "Submission Error", tone: "error" });
     }
   };
 
@@ -243,6 +314,13 @@ export function CommunityContributionModal({
                     onChangeText={(value) => update("notes", value)}
                     placeholder="Why should we add it?"
                     value={form.notes}
+                  />
+                  <RestaurantRequestMenuSection
+                    items={requestMenuItems}
+                    onAdd={addRequestMenuItem}
+                    onRemove={removeRequestMenuItem}
+                    onToggleAllergen={toggleRequestMenuAllergen}
+                    onUpdate={updateRequestMenuItem}
                   />
                 </>
               ) : null}
@@ -326,8 +404,6 @@ export function CommunityContributionModal({
                 </>
               ) : null}
 
-              {error ? <Text style={styles.error}>{error}</Text> : null}
-
               <PrimaryButton
                 disabled={!canSubmit || isSubmitting}
                 label={isSubmitting ? "Submitting..." : content.submitLabel}
@@ -339,6 +415,85 @@ export function CommunityContributionModal({
         </ModalScreen>
       ) : null}
     </Modal>
+  );
+}
+
+function RestaurantRequestMenuSection({
+  items,
+  onAdd,
+  onRemove,
+  onToggleAllergen,
+  onUpdate,
+}: {
+  items: RequestMenuDraft[];
+  onAdd: () => void;
+  onRemove: (index: number) => void;
+  onToggleAllergen: (index: number, field: "allergens" | "mayContain", id: string) => void;
+  onUpdate: (
+    index: number,
+    field: Exclude<keyof RequestMenuDraft, "allergens" | "mayContain">,
+    value: string,
+  ) => void;
+}) {
+  return (
+    <View style={styles.optionalMenu}>
+      <View style={styles.optionalMenuHeader}>
+        <View style={styles.optionalMenuText}>
+          <Text style={styles.optionalMenuTitle}>Optional menu info</Text>
+          <Text style={styles.optionalMenuCopy}>
+            Add item names and allergen details if you already have them.
+          </Text>
+        </View>
+        <Pressable accessibilityRole="button" onPress={onAdd} style={styles.addMenuButton}>
+          <Text style={styles.addMenuButtonText}>{items.length ? "Add" : "Add item"}</Text>
+        </Pressable>
+      </View>
+
+      {items.map((draft, index) => (
+        <View key={index} style={styles.requestMenuCard}>
+          <View style={styles.requestMenuCardHeader}>
+            <Text style={styles.requestMenuCardTitle}>Menu item {index + 1}</Text>
+            <Pressable
+              accessibilityLabel={`Remove menu item ${index + 1}`}
+              accessibilityRole="button"
+              onPress={() => onRemove(index)}
+              style={styles.removeMenuButton}
+            >
+              <X color={colors.muted} size={16} strokeWidth={2.6} />
+            </Pressable>
+          </View>
+          <Field
+            label="Item name"
+            onChangeText={(value) => onUpdate(index, "name", value)}
+            placeholder="Menu item"
+            value={draft.name}
+          />
+          <Field
+            label="Category"
+            onChangeText={(value) => onUpdate(index, "category", value)}
+            placeholder="Entrees, sides, drinks..."
+            value={draft.category}
+          />
+          <Field
+            label="Description"
+            multiline
+            onChangeText={(value) => onUpdate(index, "description", value)}
+            placeholder="Optional item details"
+            value={draft.description}
+          />
+          <AllergenPicker
+            label="Contains"
+            onToggle={(id) => onToggleAllergen(index, "allergens", id)}
+            selectedIds={draft.allergens}
+          />
+          <AllergenPicker
+            label="Cross-contact"
+            onToggle={(id) => onToggleAllergen(index, "mayContain", id)}
+            selectedIds={draft.mayContain}
+          />
+        </View>
+      ))}
+    </View>
   );
 }
 
@@ -469,6 +624,58 @@ function modalContent(mode: ContributionMode, restaurantName?: string, itemName?
   };
 }
 
+function formatRestaurantRequestNotes(notes: string, menuItems: RequestMenuDraft[]) {
+  const cleanNotes = notes.trim();
+  const filledItems = menuItems
+    .map((item) => ({
+      allergens: labelsForAllergens(item.allergens),
+      category: item.category.trim(),
+      description: item.description.trim(),
+      mayContain: labelsForAllergens(item.mayContain),
+      name: item.name.trim(),
+    }))
+    .filter(
+      (item) =>
+        item.name || item.category || item.description || item.allergens || item.mayContain,
+    );
+
+  if (filledItems.length === 0) {
+    return cleanNotes;
+  }
+
+  const menuNotes = filledItems
+    .map((item, index) => {
+      const lines = [`${index + 1}. ${item.name || "Unnamed item"}`];
+
+      if (item.category) {
+        lines.push(`Category: ${item.category}`);
+      }
+
+      if (item.description) {
+        lines.push(`Description: ${item.description}`);
+      }
+
+      if (item.allergens) {
+        lines.push(`Contains: ${item.allergens}`);
+      }
+
+      if (item.mayContain) {
+        lines.push(`Cross-contact: ${item.mayContain}`);
+      }
+
+      return lines.join("; ");
+    })
+    .join("\n");
+
+  return [cleanNotes, "Suggested menu/allergen info:", menuNotes].filter(Boolean).join("\n\n");
+}
+
+function labelsForAllergens(ids: string[]) {
+  return ids
+    .map((id) => allergyOptions.find((option) => option.id === id)?.label ?? id)
+    .join(", ");
+}
+
 const styles = StyleSheet.create({
   chip: {
     backgroundColor: colors.white,
@@ -527,18 +734,25 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     textAlign: "center",
   },
-  error: {
-    color: "#B42318",
-    fontSize: 14,
-    fontWeight: "700",
-    lineHeight: 20,
-  },
   field: {
     gap: 8,
   },
   fieldLabel: {
     color: colors.ink,
     fontSize: 15,
+    fontWeight: "800",
+  },
+  addMenuButton: {
+    alignItems: "center",
+    backgroundColor: colors.primaryLight,
+    borderRadius: radius.pill,
+    justifyContent: "center",
+    minHeight: 36,
+    paddingHorizontal: 13,
+  },
+  addMenuButtonText: {
+    color: colors.primary,
+    fontSize: 14,
     fontWeight: "800",
   },
   helper: {
@@ -567,6 +781,34 @@ const styles = StyleSheet.create({
     minHeight: 112,
     textAlignVertical: "top",
   },
+  optionalMenu: {
+    backgroundColor: "#F8F8FA",
+    borderColor: colors.line,
+    borderRadius: 22,
+    borderWidth: 1,
+    gap: spacing.two,
+    padding: spacing.two,
+  },
+  optionalMenuCopy: {
+    color: colors.muted,
+    fontSize: 13,
+    fontWeight: "600",
+    lineHeight: 18,
+    marginTop: 2,
+  },
+  optionalMenuHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.two,
+  },
+  optionalMenuText: {
+    flex: 1,
+  },
+  optionalMenuTitle: {
+    color: colors.ink,
+    fontSize: 16,
+    fontWeight: "800",
+  },
   reason: {
     backgroundColor: colors.white,
     borderColor: colors.line,
@@ -589,6 +831,32 @@ const styles = StyleSheet.create({
   },
   reasonTextActive: {
     color: colors.primary,
+  },
+  removeMenuButton: {
+    alignItems: "center",
+    backgroundColor: "#F2F2F7",
+    borderRadius: 15,
+    height: 30,
+    justifyContent: "center",
+    width: 30,
+  },
+  requestMenuCard: {
+    backgroundColor: colors.white,
+    borderColor: colors.line,
+    borderRadius: 20,
+    borderWidth: 1,
+    gap: spacing.two,
+    padding: spacing.two,
+  },
+  requestMenuCardHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  requestMenuCardTitle: {
+    color: colors.ink,
+    fontSize: 15,
+    fontWeight: "800",
   },
   title: {
     color: colors.ink,

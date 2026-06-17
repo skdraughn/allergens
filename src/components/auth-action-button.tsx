@@ -1,18 +1,22 @@
 import type { ReactNode } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { colors, spacing } from "@/constants/theme";
 
 type AuthActionButtonProps = {
+  disabled?: boolean;
   label: string;
+  loading?: boolean;
   onPress: () => void;
   leading: ReactNode;
   variant?: "neutral" | "primarySoft";
 };
 
 export function AuthActionButton({
+  disabled = false,
   label,
   leading,
+  loading = false,
   onPress,
   variant = "neutral",
 }: AuthActionButtonProps) {
@@ -21,10 +25,20 @@ export function AuthActionButton({
   return (
     <Pressable
       accessibilityRole="button"
+      disabled={disabled || loading}
       onPress={onPress}
-      style={[styles.button, primarySoft ? styles.buttonPrimarySoft : styles.buttonNeutral]}
+      style={[
+        styles.button,
+        primarySoft ? styles.buttonPrimarySoft : styles.buttonNeutral,
+        (disabled || loading) && styles.buttonDisabled,
+      ]}
     >
       <View style={styles.leading}>{leading}</View>
+      {loading ? (
+        <View style={styles.trailing}>
+          <ActivityIndicator color={primarySoft ? colors.primary : colors.ink} />
+        </View>
+      ) : null}
       <Text style={[styles.label, primarySoft && styles.labelPrimary]}>{label}</Text>
     </Pressable>
   );
@@ -71,6 +85,9 @@ const styles = StyleSheet.create({
     borderColor: colors.line,
     borderWidth: 1,
   },
+  buttonDisabled: {
+    opacity: 0.58,
+  },
   buttonPrimarySoft: {
     backgroundColor: colors.primaryLight,
   },
@@ -87,5 +104,9 @@ const styles = StyleSheet.create({
   leading: {
     left: spacing.two,
     position: "absolute",
+  },
+  trailing: {
+    position: "absolute",
+    right: spacing.two,
   },
 });

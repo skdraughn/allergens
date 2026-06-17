@@ -1,20 +1,19 @@
 import { useFocusEffect, useRouter } from "expo-router";
-import { ClipboardList, Plus, Search, UserRound } from "lucide-react-native";
-import { useCallback, useMemo, useState } from "react";
+import { Plus, Search, UserRound } from "lucide-react-native";
+import { useCallback, useMemo, useRef, useState } from "react";
 import {
+  Animated,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { IconButton } from "@/components/icon-button";
 import { RestaurantLogo } from "@/components/restaurant-logo";
 import { ScreenBackground } from "@/components/screen-background";
-import { SelectedAllergenBadges } from "@/components/selected-allergen-badges";
 import { colors, radius, spacing } from "@/constants/theme";
 import { getRestaurantBrand } from "@/data/brand-assets";
 import { type Restaurant } from "@/data/restaurants";
@@ -28,8 +27,10 @@ import { getRestaurantSafety } from "@/lib/safety";
 
 export function HomeScreen() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { selectedAllergyIds } = useAllergyProfile();
   const { restaurants } = useRestaurantData();
+  const scrollY = useRef(new Animated.Value(0)).current;
   const [query, setQuery] = useState("");
   const [contributionMode, setContributionMode] = useState<ContributionMode | null>(null);
   const [pendingRestaurantId, setPendingRestaurantId] = useState<string | null>(null);
@@ -52,28 +53,84 @@ export function HomeScreen() {
       .filter(({ matchRank }) => !normalizedQuery || matchRank < Number.POSITIVE_INFINITY)
       .sort((a, b) => a.matchRank - b.matchRank || a.restaurant.rank - b.restaurant.rank);
   }, [query, restaurants, selectedAllergyIds]);
+  const stickySearchOpacity = scrollY.interpolate({
+    inputRange: [44, 86],
+    outputRange: [0, 1],
+    extrapolate: "clamp",
+  });
+  const stickySearchTranslateY = scrollY.interpolate({
+    inputRange: [44, 86],
+    outputRange: [10, 0],
+    extrapolate: "clamp",
+  });
+  const heroSearchOpacity = scrollY.interpolate({
+    inputRange: [24, 76],
+    outputRange: [1, 0],
+    extrapolate: "clamp",
+  });
+  const heroSearchScale = scrollY.interpolate({
+    inputRange: [0, 86],
+    outputRange: [1, 0.96],
+    extrapolate: "clamp",
+  });
+  const navShadowOpacity = scrollY.interpolate({
+    inputRange: [12, 80],
+    outputRange: [0, 0.1],
+    extrapolate: "clamp",
+  });
 
   return (
     <ScreenBackground>
       <SafeAreaView style={styles.safeArea}>
-        <View style={styles.nav}>
-          <View style={styles.profileButtonWrap}>
-            <IconButton
-              Icon={ClipboardList}
-              label="Edit allergy profile"
-              onPress={() => router.push("/profile")}
+        <Animated.View style={[styles.nav, { shadowOpacity: navShadowOpacity }]}>
+          <Animated.View
+            style={[
+              styles.stickySearchWrap,
+              {
+                opacity: stickySearchOpacity,
+                transform: [{ translateY: stickySearchTranslateY }],
+              },
+            ]}
+          >
+            <Search color={colors.muted} size={17} strokeWidth={2.4} />
+            <TextInput
+              autoCapitalize="none"
+              autoCorrect={false}
+              onChangeText={setQuery}
+              placeholder="Search"
+              placeholderTextColor="#8E8E93"
+              style={styles.stickySearchInput}
+              value={query}
             />
-            <SelectedAllergenBadges selectedIds={selectedAllergyIds} />
-          </View>
+          </Animated.View>
           <IconButton Icon={UserRound} label="Account" onPress={() => router.push("/account")} />
-        </View>
+        </Animated.View>
 
-        <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        <Animated.ScrollView
+          contentContainerStyle={[
+            styles.content,
+            { paddingBottom: Math.max(insets.bottom + 94, 112) },
+          ]}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            { useNativeDriver: false },
+          )}
+          scrollEventThrottle={16}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.copyBlock}>
             <Text style={styles.title}>Restaurants</Text>
           </View>
 
-          <View style={styles.searchGroup}>
+          <Animated.View
+            style={[
+              styles.searchGroup,
+              {
+                opacity: heroSearchOpacity,
+                transform: [{ scale: heroSearchScale }],
+              },
+            ]}
+          >
             <Search color={colors.muted} size={20} strokeWidth={2.4} />
             <TextInput
               autoCapitalize="none"
@@ -84,7 +141,7 @@ export function HomeScreen() {
               style={styles.searchInput}
               value={query}
             />
-          </View>
+          </Animated.View>
 
           <View style={styles.resultsGroup}>
             {reviewedRestaurants.map(({ restaurant, summary }, index) => (
@@ -120,18 +177,23 @@ export function HomeScreen() {
                   <Text style={styles.requestButtonText}>Request this restaurant</Text>
                 </Pressable>
               </View>
-            ) : (
-              <Pressable
-                accessibilityRole="button"
-                onPress={() => setContributionMode("restaurant-request")}
-                style={styles.requestFooter}
-              >
-                <Plus color={colors.primary} size={17} strokeWidth={2.6} />
-                <Text style={styles.requestFooterText}>Missing a restaurant? Request it.</Text>
-              </Pressable>
-            )}
+            ) : null}
           </View>
-        </ScrollView>
+        </Animated.ScrollView>
+
+        <View
+          pointerEvents="box-none"
+          style={[styles.floatingRequestWrap, { bottom: Math.max(insets.bottom + 14, 24) }]}
+        >
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => setContributionMode("restaurant-request")}
+            style={styles.floatingRequestButton}
+          >
+            <Plus color={colors.primary} size={17} strokeWidth={2.6} />
+            <Text style={styles.floatingRequestText}>Missing a restaurant? Request it</Text>
+          </Pressable>
+        </View>
 
         <CommunityContributionModal
           initialRestaurantName={query}
@@ -279,7 +341,7 @@ const styles = StyleSheet.create({
   content: {
     paddingBottom: spacing.four,
     paddingHorizontal: spacing.three,
-    paddingTop: spacing.four,
+    paddingTop: spacing.two,
   },
   copyBlock: {
     marginBottom: spacing.three,
@@ -302,16 +364,46 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "800",
   },
+  floatingRequestButton: {
+    alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.96)",
+    borderColor: "rgba(0,122,255,0.18)",
+    borderRadius: radius.pill,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: 6,
+    justifyContent: "center",
+    minHeight: 40,
+    paddingHorizontal: 14,
+    shadowColor: "#000000",
+    shadowOffset: { height: 5, width: 0 },
+    shadowOpacity: 0.1,
+    shadowRadius: 14,
+  },
+  floatingRequestText: {
+    color: colors.primary,
+    fontSize: 13,
+    fontWeight: "800",
+  },
+  floatingRequestWrap: {
+    alignItems: "center",
+    left: spacing.three,
+    position: "absolute",
+    right: spacing.three,
+  },
   nav: {
     alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.88)",
     flexDirection: "row",
-    justifyContent: "space-between",
-    paddingBottom: spacing.three,
+    justifyContent: "flex-end",
+    minHeight: 64,
+    paddingBottom: spacing.two,
     paddingHorizontal: spacing.three,
     paddingTop: spacing.one,
-  },
-  profileButtonWrap: {
-    position: "relative",
+    shadowColor: "#000000",
+    shadowOffset: { height: 5, width: 0 },
+    shadowRadius: 14,
+    zIndex: 4,
   },
   logoWrap: {
     alignItems: "center",
@@ -359,20 +451,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "800",
   },
-  requestFooter: {
-    alignItems: "center",
-    borderTopColor: colors.line,
-    borderTopWidth: 1,
-    flexDirection: "row",
-    gap: 7,
-    justifyContent: "center",
-    minHeight: 58,
-  },
-  requestFooterText: {
-    color: colors.primary,
-    fontSize: 15,
-    fontWeight: "800",
-  },
   resultsGroup: {
     backgroundColor: colors.white,
     borderColor: colors.line,
@@ -402,6 +480,26 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 17,
     minHeight: 48,
+  },
+  stickySearchInput: {
+    color: colors.ink,
+    flex: 1,
+    fontSize: 15,
+    fontWeight: "600",
+    minHeight: 38,
+  },
+  stickySearchWrap: {
+    alignItems: "center",
+    backgroundColor: "#F2F2F7",
+    borderRadius: radius.pill,
+    flexDirection: "row",
+    gap: 7,
+    height: 38,
+    left: spacing.three,
+    paddingHorizontal: 13,
+    position: "absolute",
+    right: 78,
+    top: 9,
   },
   title: {
     color: colors.ink,

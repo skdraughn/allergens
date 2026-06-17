@@ -11,12 +11,13 @@ const DOT_SIZE = 7;
 
 type SetupHeroMarkProps = {
   Icon: LucideIcon;
+  scale?: number;
 };
 
-export function SetupHeroMark({ Icon }: SetupHeroMarkProps) {
+export function SetupHeroMark({ Icon, scale = 1 }: SetupHeroMarkProps) {
   return (
-    <View style={styles.wrap}>
-      <View style={styles.ring}>
+    <View style={[styles.wrap, { height: SIZE * scale }]}>
+      <View style={[styles.ring, { transform: [{ scale }] }]}>
         {DOTS.map((_, index) => {
           const angle = (index / DOTS.length) * Math.PI * 2;
 
@@ -69,6 +70,7 @@ const styles = StyleSheet.create({
   },
   wrap: {
     alignItems: "center",
+    justifyContent: "center",
     width: "100%",
   },
 });
