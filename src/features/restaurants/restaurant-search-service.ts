@@ -1,3 +1,5 @@
+import * as Location from "expo-location";
+
 import { normalizeAllergyIds } from "@/constants/allergies";
 import type { Restaurant } from "@/data/restaurants";
 import { getRestaurantBrand } from "@/data/brand-assets";
@@ -70,7 +72,24 @@ const searchEndpoint = ((amplifyOutputs as AmplifyCustomOutputs).custom?.restaur
   .trim();
 
 export async function getRestaurantSearchLocation(): Promise<RestaurantSearchLocation | null> {
-  return null;
+  try {
+    const permission = await Location.getForegroundPermissionsAsync();
+
+    if (permission.status !== "granted") {
+      return null;
+    }
+
+    const position = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.Balanced,
+    });
+
+    return {
+      lat: position.coords.latitude,
+      lng: position.coords.longitude,
+    };
+  } catch {
+    return null;
+  }
 }
 
 export async function searchRestaurants({
