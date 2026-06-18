@@ -69,6 +69,36 @@ export function useRestaurantData() {
   return useContext(RestaurantDataContext);
 }
 
+export function useRestaurantDetail(restaurantId: string | undefined, snapshotPath?: string) {
+  const context = useRestaurantData();
+  const fallbackRestaurant = restaurantId ? context.getRestaurantById(restaurantId) : undefined;
+  const normalizedPath = snapshotPath?.trim() || null;
+  const query = useQuery<Restaurant | undefined>({
+    enabled: Boolean(restaurantId && normalizedPath && isAmplifyConfigured),
+    gcTime: 1000 * 60 * 60 * 24,
+    initialData: fallbackRestaurant,
+    queryFn: async () => {
+      if (!normalizedPath) {
+        return fallbackRestaurant;
+      }
+
+      const result = await downloadData({ path: normalizedPath }).result;
+      const text = await result.body.text();
+      const parsed = parseRestaurantDetail(text);
+
+      return parsed ?? fallbackRestaurant;
+    },
+    queryKey: ["restaurant-detail", restaurantId, normalizedPath, restaurantDataCacheVersion],
+    retry: 1,
+    staleTime: 1000 * 60 * 60 * 6,
+  });
+
+  return {
+    isRefreshing: query.isFetching,
+    restaurant: query.data ?? fallbackRestaurant,
+  };
+}
+
 async function fetchRestaurantRepository(): Promise<RestaurantRepository> {
   await removeStaleRestaurantCaches();
   const cached = await readCachedRepository();
@@ -152,6 +182,29 @@ function parseRestaurantRepository(
   }
 }
 
+function parseRestaurantDetail(value: string) {
+  try {
+    const parsed = JSON.parse(value) as unknown;
+
+    if (isValidRestaurant(parsed)) {
+      return parsed;
+    }
+
+    if (
+      parsed &&
+      typeof parsed === "object" &&
+      "restaurant" in parsed &&
+      isValidRestaurant((parsed as { restaurant?: unknown }).restaurant)
+    ) {
+      return (parsed as { restaurant: Restaurant }).restaurant;
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 function bundledRepository(): RestaurantRepository {
   return {
     restaurants: bundledRestaurants,
@@ -160,12 +213,18 @@ function bundledRepository(): RestaurantRepository {
   };
 }
 
-function isValidRestaurant(restaurant: Restaurant) {
+function isValidRestaurant(restaurant: unknown): restaurant is Restaurant {
+  if (!restaurant || typeof restaurant !== "object") {
+    return false;
+  }
+
+  const record = restaurant as Partial<Restaurant>;
+
   return (
-    typeof restaurant.id === "string" &&
-    typeof restaurant.name === "string" &&
-    typeof restaurant.rank === "number" &&
-    Array.isArray(restaurant.items) &&
-    restaurant.items.every((item) => typeof item.name === "string" && Array.isArray(item.allergens))
+    typeof record.id === "string" &&
+    typeof record.name === "string" &&
+    typeof record.rank === "number" &&
+    Array.isArray(record.items) &&
+    record.items.every((item) => typeof item.name === "string" && Array.isArray(item.allergens))
   );
 }

@@ -19,12 +19,14 @@ import type { Schema } from "../../../amplify/data/resource";
 
 type AllergyProfileState = {
   activeProfileId: string;
-  createProfile: () => Promise<void>;
+  createProfile: () => Promise<AllergyProfile>;
   isLoading: boolean;
   onboardingComplete: boolean;
   profiles: AllergyProfile[];
   selectedAllergyIds: string[];
   completeOnboarding: () => Promise<void>;
+  deleteProfile: (id: string) => Promise<void>;
+  renameProfile: (id: string, name: string) => Promise<void>;
   resetOnboarding: () => Promise<void>;
   switchProfile: (id: string) => Promise<void>;
   syncProfilesFromCloud: () => Promise<void>;
@@ -264,6 +266,53 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
     [onboardingComplete, profiles, writeState],
   );
 
+  const renameProfile = useCallback(
+    (id: string, name: string) => {
+      const trimmedName = name.trim();
+      if (!trimmedName) {
+        return Promise.resolve();
+      }
+
+      const nextProfiles = profiles.map((profile) =>
+        profile.id === id
+          ? {
+              ...profile,
+              name: trimmedName,
+            }
+          : profile,
+      );
+
+      return writeState(onboardingComplete, nextProfiles, activeProfileId);
+    },
+    [activeProfileId, onboardingComplete, profiles, writeState],
+  );
+
+  const deleteProfile = useCallback(
+    async (id: string) => {
+      if (profiles.length <= 1 || !profiles.some((profile) => profile.id === id)) {
+        return;
+      }
+
+      const nextProfiles = profiles.filter((profile) => profile.id !== id);
+      const nextActiveProfileId =
+        activeProfileId === id ? nextProfiles[0].id : activeProfileId;
+
+      await writeLocalState(onboardingComplete, nextProfiles, nextActiveProfileId);
+
+      if (!isAmplifyConfigured || id.startsWith("profile-") || id === DEFAULT_PROFILE_ID) {
+        return;
+      }
+
+      try {
+        await getCurrentUser();
+        await allergyProfileClient.models.AllergyProfile.delete({ id });
+      } catch {
+        // Keep the local delete even if the cloud delete has to retry through a later sync.
+      }
+    },
+    [activeProfileId, onboardingComplete, profiles, writeLocalState],
+  );
+
   const createProfile = useCallback(async () => {
     let nextProfile: AllergyProfile = {
       id: `profile-${Date.now()}`,
@@ -296,6 +345,7 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
     ];
 
     await writeState(onboardingComplete, nextProfiles, nextProfile.id);
+    return nextProfile;
   }, [onboardingComplete, profiles, writeState]);
 
   const toggleAllergy = useCallback(
@@ -325,9 +375,11 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
       activeProfileId,
       completeOnboarding,
       createProfile,
+      deleteProfile,
       isLoading,
       onboardingComplete,
       profiles,
+      renameProfile,
       resetOnboarding,
       selectedAllergyIds,
       switchProfile,
@@ -338,9 +390,11 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
       activeProfileId,
       completeOnboarding,
       createProfile,
+      deleteProfile,
       isLoading,
       onboardingComplete,
       profiles,
+      renameProfile,
       resetOnboarding,
       selectedAllergyIds,
       switchProfile,

@@ -7,14 +7,15 @@ import {
   KeyRound,
   LifeBuoy,
   LogOut,
-  Plus,
   ShieldCheck,
   Trash2,
   UserRound,
   X,
 } from "lucide-react-native";
+import type { ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 import {
+  ActivityIndicator,
   KeyboardAvoidingView,
   Linking,
   Platform,
@@ -27,13 +28,13 @@ import {
 } from "react-native";
 import { getCurrentUser, signIn, signOut, signUp, type AuthUser } from "aws-amplify/auth";
 
+import { AllergyIconChips } from "@/components/allergy-icon-chips";
 import { AuthActionButton, AuthActionIconBadge } from "@/components/auth-action-button";
 import { AuthProviderLogo } from "@/components/auth-provider-logo";
-import { AllergyProfilePicker } from "@/components/allergy-profile-picker";
 import { ModalScreen } from "@/components/modal-screen";
 import { SetupHeroMark } from "@/components/setup-hero-mark";
 import { useSnackbar } from "@/components/snackbar-provider";
-import { colors, radius, spacing } from "@/constants/theme";
+import { colors, spacing } from "@/constants/theme";
 import {
   completeNativeSocialSignIn,
   isSocialSignInCancelled,
@@ -41,8 +42,8 @@ import {
   signInWithGoogleNative,
   signOutFromNativeSocialProviders,
 } from "@/features/account/native-social-auth";
+import { AllergyProfileManagerModal } from "@/features/profile/allergy-profile-manager-modal";
 import { useAllergyProfile } from "@/features/profile/allergy-profile-context";
-import type { AllergyProfile } from "@/features/profile/allergy-profile-context";
 import { isAmplifyConfigured } from "@/lib/amplify";
 
 type AuthMode = "options" | "password";
@@ -71,17 +72,14 @@ export function AccountScreen() {
   const { returnTo } = useLocalSearchParams<{ returnTo?: string }>();
   const {
     activeProfileId,
-    createProfile,
     onboardingComplete,
     profiles,
     selectedAllergyIds,
-    switchProfile,
     syncProfilesFromCloud,
-    toggleAllergy,
   } = useAllergyProfile();
   const [authMode, setAuthMode] = useState<AuthMode>("options");
   const [passwordIntent, setPasswordIntent] = useState<PasswordIntent>("create");
-  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
+  const [currentUser, setCurrentUser] = useState<AuthUser | null | undefined>(undefined);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loadingProvider, setLoadingProvider] = useState<LoadingProvider>(null);
@@ -247,12 +245,11 @@ export function AccountScreen() {
               activeProfileId={activeProfileId}
               profiles={profiles}
               selectedAllergyIds={selectedAllergyIds}
-              onAddProfile={createProfile}
-              onSwitchProfile={switchProfile}
               isSigningOut={loadingProvider === "sign-out"}
               onSignOut={handleSignOut}
-              onToggleAllergy={toggleAllergy}
             />
+          ) : currentUser === undefined ? (
+            <AccountLoadingContent />
           ) : (
             <CreateAccountContent
               authMode={authMode}
@@ -275,6 +272,15 @@ export function AccountScreen() {
         </ScrollView>
       </KeyboardAvoidingView>
     </ModalScreen>
+  );
+}
+
+function AccountLoadingContent() {
+  return (
+    <View style={styles.loadingAccount}>
+      <ActivityIndicator color={colors.primary} />
+      <Text style={styles.loadingAccountText}>Loading account...</Text>
+    </View>
   );
 }
 
@@ -490,22 +496,16 @@ function SignedInAccount({
   activeProfileId,
   accountLabel,
   isSigningOut,
-  onAddProfile,
   onSignOut,
-  onSwitchProfile,
-  onToggleAllergy,
   profiles,
   selectedAllergyIds,
 }: {
   activeProfileId: string;
   accountLabel: string;
   isSigningOut: boolean;
-  onAddProfile: () => Promise<void>;
   onSignOut: () => void;
-  onSwitchProfile: (id: string) => Promise<void>;
-  onToggleAllergy: (id: string) => void;
-  profiles: AllergyProfile[];
   selectedAllergyIds: string[];
+  profiles: ReturnType<typeof useAllergyProfile>["profiles"];
 }) {
   const openUrl = (url: string) => {
     void Linking.openURL(url);
@@ -514,6 +514,8 @@ function SignedInAccount({
   const openSupport = () => {
     void Linking.openURL("mailto:truflag@dnatechgroup.com?subject=Allergy%20App%20Support");
   };
+  const [profileManagerOpen, setProfileManagerOpen] = useState(false);
+  const activeProfile = profiles.find((profile) => profile.id === activeProfileId) ?? profiles[0];
 
   return (
     <View style={styles.signedInContent}>
@@ -521,61 +523,33 @@ function SignedInAccount({
       <Text style={styles.title}>Account</Text>
       <Text style={styles.subtitle}>{accountLabel}</Text>
 
-      <View style={styles.profileSection}>
-        <View style={styles.sectionHeader}>
-          <View style={styles.sectionTitleWrap}>
-            <ClipboardList color={colors.primary} size={19} strokeWidth={2.5} />
-            <Text style={styles.sectionTitle}>Allergy Profiles</Text>
-          </View>
-          <Pressable
-            accessibilityRole="button"
-            onPress={() => void onAddProfile()}
-            style={({ pressed }) => [styles.addProfileButton, pressed ? styles.pressed : null]}
-          >
-            <Plus color={colors.primary} size={17} strokeWidth={2.7} />
-            <Text style={styles.addProfileText}>Add</Text>
-          </Pressable>
-        </View>
-
-        <ScrollView
-          contentContainerStyle={styles.profileTabsContent}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-        >
-          {profiles.map((profile) => {
-            const active = profile.id === activeProfileId;
-
-            return (
-              <Pressable
-                accessibilityRole="button"
-                accessibilityState={{ selected: active }}
-                key={profile.id}
-                onPress={() => void onSwitchProfile(profile.id)}
-                style={({ pressed }) => [
-                  styles.profileTab,
-                  active ? styles.profileTabActive : null,
-                  pressed ? styles.pressed : null,
-                ]}
-              >
-                <Text style={[styles.profileTabText, active ? styles.profileTabTextActive : null]}>
-                  {profile.name}
-                </Text>
-                <Text style={[styles.profileTabMeta, active ? styles.profileTabMetaActive : null]}>
-                  {profile.selectedAllergyIds.length || "No"} selected
-                </Text>
-              </Pressable>
-            );
-          })}
-        </ScrollView>
-
-        <AllergyProfilePicker
-          embedded
-          onToggleAllergy={onToggleAllergy}
-          selectedAllergyIds={selectedAllergyIds}
-        />
-      </View>
+      <AllergyProfileManagerModal
+        onClose={() => setProfileManagerOpen(false)}
+        visible={profileManagerOpen}
+      />
 
       <View style={styles.settingsGroup}>
+        <SettingsRow
+          Icon={ClipboardList}
+          label="Allergy Profile"
+          onPress={() => setProfileManagerOpen(true)}
+          subcontent={
+            <View style={styles.profileSummary}>
+              <Text style={[styles.settingsSublabel, styles.profileSummaryText]}>
+                {activeProfile?.name ?? "My Profile"} · {profiles.length} profile
+                {profiles.length === 1 ? "" : "s"}
+              </Text>
+              <AllergyIconChips
+                allergyIds={selectedAllergyIds}
+                compact
+                highlightedIds={[]}
+                overlap
+                size={22}
+                style={styles.profileSummaryIcons}
+              />
+            </View>
+          }
+        />
         <SettingsRow
           Icon={Bell}
           label="Notification Settings"
@@ -629,12 +603,14 @@ function SettingsRow({
   Icon,
   label,
   onPress,
+  subcontent,
   sublabel,
   tone = "default",
 }: {
   Icon: typeof UserRound;
   label: string;
   onPress: () => void;
+  subcontent?: ReactNode;
   sublabel?: string;
   tone?: "default" | "danger";
 }) {
@@ -653,6 +629,7 @@ function SettingsRow({
         <Text style={[styles.settingsLabel, isDanger ? styles.settingsLabelDanger : null]}>
           {label}
         </Text>
+        {subcontent}
         {sublabel ? <Text style={styles.settingsSublabel}>{sublabel}</Text> : null}
       </View>
       <ChevronRight color="#C7C7CC" size={18} strokeWidth={2.6} />
@@ -672,10 +649,6 @@ function AccountMark() {
 }
 
 const styles = StyleSheet.create({
-  actions: {
-    marginTop: spacing.three,
-    width: "100%",
-  },
   authOptions: {
     gap: 10,
     marginTop: spacing.four,
@@ -704,30 +677,10 @@ const styles = StyleSheet.create({
   field: {
     width: "100%",
   },
-  addProfileButton: {
-    alignItems: "center",
-    backgroundColor: colors.primaryLight,
-    borderRadius: radius.pill,
-    flexDirection: "row",
-    gap: 4,
-    minHeight: 32,
-    paddingHorizontal: 11,
-  },
-  addProfileText: {
-    color: colors.primary,
-    fontSize: 13,
-    fontWeight: "800",
-  },
   passwordFlow: {
     gap: 13,
     marginTop: spacing.four,
     width: "100%",
-  },
-  formCopy: {
-    color: colors.muted,
-    fontSize: 15,
-    fontWeight: "600",
-    lineHeight: 21,
   },
   heroWrap: {
     alignItems: "center",
@@ -766,6 +719,19 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontSize: 14,
     fontWeight: "800",
+  },
+  loadingAccount: {
+    alignItems: "center",
+    alignSelf: "center",
+    gap: 12,
+    justifyContent: "center",
+    minHeight: 280,
+    width: "100%",
+  },
+  loadingAccountText: {
+    color: colors.muted,
+    fontSize: 16,
+    fontWeight: "700",
   },
   signedInContent: {
     width: "100%",
@@ -840,61 +806,18 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.65,
   },
-  profileSection: {
-    marginTop: spacing.three,
-    width: "100%",
-  },
-  profileTab: {
-    backgroundColor: "#F7F7FA",
-    borderColor: colors.line,
-    borderRadius: 17,
-    borderWidth: 1,
-    minWidth: 116,
-    paddingHorizontal: 13,
-    paddingVertical: 10,
-  },
-  profileTabActive: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
-  },
-  profileTabMeta: {
-    color: colors.muted,
-    fontSize: 11,
-    fontWeight: "700",
-    marginTop: 3,
-  },
-  profileTabMetaActive: {
-    color: colors.white,
-    opacity: 0.82,
-  },
-  profileTabText: {
-    color: colors.ink,
-    fontSize: 14,
-    fontWeight: "800",
-  },
-  profileTabTextActive: {
-    color: colors.white,
-  },
-  profileTabsContent: {
-    gap: 9,
-    paddingBottom: 2,
-    paddingRight: spacing.three,
-    paddingTop: 12,
-  },
-  sectionHeader: {
+  profileSummary: {
     alignItems: "center",
     flexDirection: "row",
-    justifyContent: "space-between",
+    flexWrap: "wrap",
+    gap: 7,
+    marginTop: 1,
   },
-  sectionTitle: {
-    color: colors.ink,
-    fontSize: 19,
-    fontWeight: "800",
+  profileSummaryIcons: {
+    marginTop: 0,
   },
-  sectionTitleWrap: {
-    alignItems: "center",
-    flexDirection: "row",
-    gap: 8,
+  profileSummaryText: {
+    marginTop: 0,
   },
   title: {
     color: colors.ink,

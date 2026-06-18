@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { useFocusEffect, useRouter } from "expo-router";
 import { Plus, Search, UserRound } from "lucide-react-native";
 import { useCallback, useMemo, useRef, useState } from "react";
@@ -16,14 +17,20 @@ import { RestaurantLogo } from "@/components/restaurant-logo";
 import { ScreenBackground } from "@/components/screen-background";
 import { colors, radius, spacing } from "@/constants/theme";
 import { getRestaurantBrand } from "@/data/brand-assets";
-import { type Restaurant } from "@/data/restaurants";
 import {
   CommunityContributionModal,
   type ContributionMode,
 } from "@/features/community/community-contribution-modal";
 import { useAllergyProfile } from "@/features/profile/allergy-profile-context";
 import { useRestaurantData } from "@/features/restaurants/restaurant-data-context";
-import { getRestaurantSafety } from "@/lib/safety";
+import {
+  fallbackRestaurantSearch,
+  getRestaurantSearchLocation,
+  getSearchResultSummary,
+  searchRestaurants,
+  type RestaurantSearchResult,
+  type RestaurantSearchSummary,
+} from "@/features/restaurants/restaurant-search-service";
 
 export function HomeScreen() {
   const router = useRouter();
@@ -34,6 +41,33 @@ export function HomeScreen() {
   const [query, setQuery] = useState("");
   const [contributionMode, setContributionMode] = useState<ContributionMode | null>(null);
   const [pendingRestaurantId, setPendingRestaurantId] = useState<string | null>(null);
+  const locationQuery = useQuery({
+    gcTime: 1000 * 60 * 30,
+    queryFn: getRestaurantSearchLocation,
+    queryKey: ["restaurant-search-location"],
+    retry: false,
+    staleTime: 1000 * 60 * 10,
+  });
+  const normalizedQuery = normalizeSearchText(query);
+  const searchQuery = useQuery({
+    gcTime: 1000 * 60 * 30,
+    queryFn: () =>
+      searchRestaurants({
+        fallbackRestaurants: restaurants,
+        limit: 36,
+        location: locationQuery.data,
+        query,
+      }),
+    queryKey: [
+      "restaurant-search",
+      normalizedQuery,
+      locationQuery.data?.lat ?? null,
+      locationQuery.data?.lng ?? null,
+      restaurants.length,
+    ],
+    placeholderData: () => fallbackRestaurantSearch(restaurants, normalizedQuery, 36),
+    staleTime: 1000 * 60 * 5,
+  });
 
   useFocusEffect(
     useCallback(() => {
@@ -41,48 +75,39 @@ export function HomeScreen() {
     }, []),
   );
 
-  const reviewedRestaurants = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
-
-    return restaurants
-      .map((restaurant) => ({
-        matchRank: getRestaurantSearchMatchRank(restaurant, normalizedQuery),
+  const reviewedRestaurants = useMemo(
+    () =>
+      (searchQuery.data ?? []).map((restaurant) => ({
         restaurant,
-        summary: getRestaurantSafety(restaurant, selectedAllergyIds),
-      }))
-      .filter(({ matchRank }) => !normalizedQuery || matchRank < Number.POSITIVE_INFINITY)
-      .sort((a, b) => a.matchRank - b.matchRank || a.restaurant.rank - b.restaurant.rank);
-  }, [query, restaurants, selectedAllergyIds]);
+        summary: getSearchResultSummary(restaurant, selectedAllergyIds),
+      })),
+    [searchQuery.data, selectedAllergyIds],
+  );
   const stickySearchOpacity = scrollY.interpolate({
-    inputRange: [44, 86],
+    inputRange: [96, 148],
     outputRange: [0, 1],
     extrapolate: "clamp",
   });
   const stickySearchTranslateY = scrollY.interpolate({
-    inputRange: [44, 86],
+    inputRange: [96, 148],
     outputRange: [10, 0],
     extrapolate: "clamp",
   });
   const heroSearchOpacity = scrollY.interpolate({
-    inputRange: [24, 76],
+    inputRange: [78, 132],
     outputRange: [1, 0],
     extrapolate: "clamp",
   });
   const heroSearchScale = scrollY.interpolate({
-    inputRange: [0, 86],
+    inputRange: [0, 148],
     outputRange: [1, 0.96],
-    extrapolate: "clamp",
-  });
-  const navShadowOpacity = scrollY.interpolate({
-    inputRange: [12, 80],
-    outputRange: [0, 0.1],
     extrapolate: "clamp",
   });
 
   return (
     <ScreenBackground>
       <SafeAreaView style={styles.safeArea}>
-        <Animated.View style={[styles.nav, { shadowOpacity: navShadowOpacity }]}>
+        <Animated.View style={styles.nav}>
           <Animated.View
             style={[
               styles.stickySearchWrap,
@@ -97,7 +122,7 @@ export function HomeScreen() {
               autoCapitalize="none"
               autoCorrect={false}
               onChangeText={setQuery}
-              placeholder="Search"
+              placeholder="Search restaurants"
               placeholderTextColor="#8E8E93"
               style={styles.stickySearchInput}
               value={query}
@@ -136,7 +161,7 @@ export function HomeScreen() {
               autoCapitalize="none"
               autoCorrect={false}
               onChangeText={setQuery}
-              placeholder="Search restaurants or menu items"
+              placeholder="Search restaurants"
               placeholderTextColor="#8E8E93"
               style={styles.searchInput}
               value={query}
@@ -147,16 +172,23 @@ export function HomeScreen() {
             {reviewedRestaurants.map(({ restaurant, summary }, index) => (
               <RestaurantRow
                 disabled={pendingRestaurantId !== null}
-                key={restaurant.id}
+                key={`${restaurant.restaurantId}:${restaurant.locationId ?? "national"}`}
                 last={index === reviewedRestaurants.length - 1}
-                loading={pendingRestaurantId === restaurant.id}
+                loading={pendingRestaurantId === restaurant.restaurantId}
                 onPress={() => {
                   if (pendingRestaurantId !== null) {
                     return;
                   }
 
-                  setPendingRestaurantId(restaurant.id);
-                  router.push(`/restaurant/${restaurant.id}`);
+                  setPendingRestaurantId(restaurant.restaurantId);
+                  router.push({
+                    params: {
+                      id: restaurant.restaurantId,
+                      locationId: restaurant.locationId ?? "national",
+                      snapshotPath: restaurant.snapshotPath ?? "",
+                    },
+                    pathname: "/restaurant/[id]",
+                  });
                 }}
                 restaurant={restaurant}
                 summary={summary}
@@ -166,7 +198,7 @@ export function HomeScreen() {
               <View style={styles.emptySearch}>
                 <Text style={styles.emptySearchTitle}>No restaurant matches</Text>
                 <Text style={styles.emptySearchCopy}>
-                  Request it and we’ll look for official allergen sources.
+                  Request it and share any address or menu details you already have.
                 </Text>
                 <Pressable
                   accessibilityRole="button"
@@ -206,52 +238,15 @@ export function HomeScreen() {
   );
 }
 
-function getRestaurantSearchMatchRank(restaurant: Restaurant, normalizedQuery: string) {
-  if (!normalizedQuery) {
-    return 0;
-  }
-
-  const restaurantName = restaurant.name.toLowerCase();
-
-  if (restaurantName === normalizedQuery) {
-    return 0;
-  }
-
-  if (restaurantName.startsWith(normalizedQuery)) {
-    return 1;
-  }
-
-  if (restaurantName.includes(normalizedQuery)) {
-    return 2;
-  }
-
-  const restaurantDetails = [
-    restaurant.category,
-    getRestaurantBrand(restaurant.id).description,
-  ]
-    .join(" ")
-    .toLowerCase();
-
-  if (restaurantDetails.includes(normalizedQuery)) {
-    return 3;
-  }
-
-  const menuItemNames = restaurant.items.map((item) => item.name).join(" ").toLowerCase();
-
-  if (menuItemNames.includes(normalizedQuery)) {
-    return 4;
-  }
-
-  const menuItemDescriptions = restaurant.items
-    .map((item) => item.description)
-    .join(" ")
-    .toLowerCase();
-
-  if (menuItemDescriptions.includes(normalizedQuery)) {
-    return 5;
-  }
-
-  return Number.POSITIVE_INFINITY;
+function normalizeSearchText(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/['’]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
 }
 
 function RestaurantRow({
@@ -266,13 +261,15 @@ function RestaurantRow({
   last: boolean;
   loading: boolean;
   onPress: () => void;
-  restaurant: Restaurant;
-  summary: ReturnType<typeof getRestaurantSafety>;
+  restaurant: RestaurantSearchResult;
+  summary: RestaurantSearchSummary;
 }) {
-  const brand = getRestaurantBrand(restaurant.id);
+  const brand = getRestaurantBrand(restaurant.restaurantId);
   const compatibleCount = summary.okCount;
   const compatiblePercent =
     summary.totalCount > 0 ? Math.round((compatibleCount / summary.totalCount) * 100) : 0;
+  const locationLabel = getRestaurantLocationLabel(restaurant);
+  const itemCount = restaurant.totalItemCount ?? summary.totalCount;
 
   return (
     <Pressable
@@ -291,7 +288,9 @@ function RestaurantRow({
       <View style={styles.restaurantText}>
         <Text style={styles.restaurantName}>{restaurant.name}</Text>
         <Text style={styles.restaurantMeta}>
-          {restaurant.category} · {restaurant.items.length} guide items
+          {[locationLabel, restaurant.category, `${itemCount} guide items`]
+            .filter(Boolean)
+            .join(" · ")}
         </Text>
       </View>
       <View style={styles.compatibilityBlock}>
@@ -305,6 +304,22 @@ function RestaurantRow({
       </View>
     </Pressable>
   );
+}
+
+function getRestaurantLocationLabel(restaurant: RestaurantSearchResult) {
+  if (typeof restaurant.distanceMiles === "number") {
+    return `${restaurant.distanceMiles} mi`;
+  }
+
+  if (restaurant.city && restaurant.region) {
+    return `${restaurant.city}, ${restaurant.region}`;
+  }
+
+  if (restaurant.displayAddress) {
+    return restaurant.displayAddress;
+  }
+
+  return null;
 }
 
 const styles = StyleSheet.create({
@@ -400,9 +415,6 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.two,
     paddingHorizontal: spacing.three,
     paddingTop: spacing.one,
-    shadowColor: "#000000",
-    shadowOffset: { height: 5, width: 0 },
-    shadowRadius: 14,
     zIndex: 4,
   },
   logoWrap: {
@@ -485,8 +497,7 @@ const styles = StyleSheet.create({
     color: colors.ink,
     flex: 1,
     fontSize: 15,
-    fontWeight: "600",
-    minHeight: 38,
+    minHeight: 48,
   },
   stickySearchWrap: {
     alignItems: "center",
@@ -494,12 +505,12 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
     flexDirection: "row",
     gap: 7,
-    height: 38,
+    height: 48,
     left: spacing.three,
     paddingHorizontal: 13,
     position: "absolute",
-    right: 78,
-    top: 9,
+    right: 80,
+    top: 8,
   },
   title: {
     color: colors.ink,

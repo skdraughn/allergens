@@ -34,14 +34,32 @@ export type Restaurant = {
   rank: number;
   name: string;
   category: string;
+  address?: {
+    addressLine1?: string | null;
+    addressLine2?: string | null;
+    city?: string | null;
+    country?: string | null;
+    displayAddress?: string | null;
+    postalCode?: string | null;
+    region?: string | null;
+  } | null;
+  addressLine1?: string | null;
+  addressLine2?: string | null;
+  city?: string | null;
+  country?: string | null;
+  displayAddress?: string | null;
   guideUrl: string;
   guideLabel: string;
+  lat?: number | null;
+  lng?: number | null;
+  locationId?: string | null;
+  postalCode?: string | null;
+  region?: string | null;
   updated: string;
   coveragePercent?: number;
   coverageStatus?: "complete" | "blocked" | "kept-previous";
   lastKnownGoodAt?: string | null;
   regionalScope?: string;
-  snapshotVersion?: number;
   sourceUpdatedAt?: string;
   sourceStatus?: {
     failed: number;
@@ -49,10 +67,7 @@ export type Restaurant = {
     total: number;
   };
   allergenDataStatus?: {
-    itemCount: number;
     officialItemCount: number;
-    totalOfficialItemCount?: number;
-    unavailableItemCount: number;
   };
   sourceUrls?: string[];
   items: MenuItem[];
@@ -659,7 +674,6 @@ type GeneratedRepository = {
     coverageStatus?: Restaurant["coverageStatus"];
     lastKnownGoodAt?: Restaurant["lastKnownGoodAt"];
     regionalScope?: Restaurant["regionalScope"];
-    snapshotVersion?: Restaurant["snapshotVersion"];
     sourceUpdatedAt?: Restaurant["sourceUpdatedAt"];
     allergenDataStatus?: Restaurant["allergenDataStatus"];
     sourceUrls?: string[];
@@ -716,10 +730,11 @@ const generatedById = new Map(
         coverageStatus: restaurant.coverageStatus,
         lastKnownGoodAt: restaurant.lastKnownGoodAt,
         regionalScope: restaurant.regionalScope,
-        snapshotVersion: restaurant.snapshotVersion,
         sourceUpdatedAt: restaurant.sourceUpdatedAt,
         sourceStatus: restaurant.sourceStatus,
-        allergenDataStatus: restaurant.allergenDataStatus,
+        allergenDataStatus: restaurant.allergenDataStatus
+          ? { officialItemCount: restaurant.allergenDataStatus.officialItemCount }
+          : undefined,
         sourceUrls: restaurant.sourceUrls,
         updated: restaurant.updated ?? "scraped",
       } satisfies Restaurant,

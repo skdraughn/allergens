@@ -7,6 +7,7 @@ import { spacing } from "@/constants/theme";
 
 import { ModalIconButton } from "./modal-icon-button";
 import { ScreenBackground } from "./screen-background";
+import { SnackbarViewport } from "./snackbar-provider";
 
 type ModalScreenProps = {
   children: ReactNode;
@@ -38,6 +39,7 @@ export function ModalScreen({
           {actionPosition === "right" ? actionButton : <View style={styles.spacer} />}
         </View>
         {children}
+        <SnackbarViewport />
       </SafeAreaView>
     </ScreenBackground>
   );

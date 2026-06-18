@@ -63,22 +63,76 @@ Amplify defines a scheduled `refresh-restaurant-data` Lambda and a `restaurantDa
 
 ```txt
 restaurant-data/latest.json
+restaurant-data/restaurants/{restaurantId}/latest.json
 restaurant-data/runs/{timestamp}.json
 restaurant-data/manifests/{timestamp}.json
 ```
 
-The Lambda reads the previous `latest.json` before publishing. If a chain does not meet 100% official coverage on a refresh, the pipeline keeps the previous known-good chain snapshot and records the failed attempt in the manifest.
+The Lambda reads the previous `latest.json` before publishing and also imports the bundled generated snapshot as a seed fallback. If a chain does not meet 100% official coverage on a refresh, the pipeline keeps the previous known-good chain snapshot and records the failed attempt in the manifest. Eligible S3 known-good data wins over the bundled seed, but the bundled seed prevents a chain that is already good in the app bundle from disappearing just because prod S3 did not previously have a known-good copy.
 
 The app loads bundled generated data first, then attempts to fetch `restaurant-data/latest.json` from Amplify Storage, validates the snapshot schema, and caches the last valid remote snapshot in AsyncStorage.
 
-`.github/workflows/refresh-restaurant-data.yml` still runs the local pipeline on a daily cron and on manual dispatch for repository-level auditing. It:
+`snapshotVersion` is a schema compatibility gate, not a freshness selector. The app always pulls `restaurant-data/latest.json`; timestamped `runs/` and `manifests/` objects are for audit/debugging.
 
-- Runs `npm ci`
-- Runs the scraper without raw-file output
-- Runs the pipeline tests
-- Runs `npm run typecheck`
-- Uploads the generated snapshot and run manifest as an artifact
-- Pushes changed generated data to `bot/refresh-restaurant-data`
+## DynamoDB Search Index
+
+Restaurant discovery is backed by DynamoDB instead of client-side filtering over the full menu snapshot. The scheduled refresh Lambda builds and syncs rows in `RestaurantSearchIndex`:
+
+```txt
+META#{restaurantId}#{locationId}  METADATA
+POPULAR#GLOBAL                   {rank}#{restaurantId}#{locationId}
+TOKEN#{token}                    {rank}#{restaurantId}#{locationId}
+GEO#{geohashPrefix}              {rank}#{restaurantId}#{locationId}
+```
+
+The `search-restaurants` Lambda exposes:
+
+- `searchRestaurants(query, lat?, lng?, limit?, cursor?)`
+- `listNearbyRestaurants(lat, lng, limit?, cursor?)`
+- `getRestaurantSnapshotPath(restaurantId, locationId?)`
+
+Current app behavior:
+
+- Home search is restaurant-name search only.
+- Empty query returns popular supported restaurants, or nearby rows when location permission is already granted.
+- Home rows use compact compatibility summary fields and do not download full menus.
+- Restaurant detail pages fetch `restaurant-data/restaurants/{restaurantId}/latest.json`.
+- If the search endpoint is unavailable, the app falls back to the bundled/remote repository.
+
+The index intentionally stores compact allergen summary fields:
+
+- total item count
+- official item count
+- direct-allergen counts and exact item indexes by allergen id
+- cross-contact counts and exact item indexes by allergen id
+- unavailable item count and exact item indexes
+
+The exact item indexes let the app compute user-specific `Ok`, `Review`, and `Avoid` counts without double-counting items that contain multiple selected allergens.
+
+## Location And Address Policy
+
+National chain records use `locationId = "national"` and do not need an address. Local restaurants and physical chain locations should store:
+
+- `lat`
+- `lng`
+- `addressLine1`
+- `addressLine2`
+- `city`
+- `region`
+- `postalCode`
+- `country`
+- `displayAddress`
+
+Physical rows also get `GEO#{geohashPrefix}` index rows. The Lambda queries the current geohash area and neighbors, then calculates exact distance from `lat`/`lng` before returning nearby results.
+
+Restaurant-level derived counts are intentionally compact:
+
+- `items.length` is the total published item count.
+- `allergenDataStatus.officialItemCount` is the official allergen-covered item count.
+- `coveragePercent` is retained for the coverage gate and manifests.
+- Per-restaurant `snapshotVersion`, `itemCount`, `totalOfficialItemCount`, and `unavailableItemCount` are no longer produced because they duplicate repository-level or derivable values.
+
+The previous GitHub Actions refresh workflow has been removed from this repo. Scheduled refreshes should run through the Amplify Lambda/S3 path above, not GitHub.
 
 ## Current Caveat
 

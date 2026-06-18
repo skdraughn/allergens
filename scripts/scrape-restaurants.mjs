@@ -504,9 +504,7 @@ async function scrapeRestaurant(source) {
       updated: runDate.slice(0, 7),
       sourceStatus,
       allergenDataStatus: {
-        itemCount: items.length,
         officialItemCount,
-        unavailableItemCount: items.length - officialItemCount,
       },
       sourceUrls: Array.from(new Set(sourceResults.map((entry) => entry.finalUrl ?? entry.url))),
       items,

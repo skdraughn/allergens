@@ -33,16 +33,22 @@ type CommunityContributionModalProps = {
 };
 
 type FormState = {
+  addressLine1: string;
+  addressLine2: string;
   allergyContext: string;
   allergens: string[];
   body: string;
   category: string;
+  city: string;
   comment: string;
+  country: string;
   description: string;
   locationHint: string;
   mayContain: string[];
   name: string;
   notes: string;
+  postalCode: string;
+  region: string;
   reason: string;
   sourceUrl: string;
   website: string;
@@ -57,16 +63,22 @@ type RequestMenuDraft = {
 };
 
 const defaultForm: FormState = {
+  addressLine1: "",
+  addressLine2: "",
   allergyContext: "",
   allergens: [],
   body: "",
   category: "",
+  city: "",
   comment: "",
+  country: "",
   description: "",
   locationHint: "",
   mayContain: [],
   name: "",
   notes: "",
+  postalCode: "",
+  region: "",
   reason: "outdated-allergen-info",
   sourceUrl: "",
   website: "",
@@ -214,9 +226,16 @@ export function CommunityContributionModal({
     try {
       if (mode === "restaurant-request") {
         await submissions.submitRestaurantRequest.mutateAsync({
+          addressLine1: form.addressLine1,
+          addressLine2: form.addressLine2,
+          city: form.city,
+          country: form.country,
+          displayAddress: formatDisplayAddress(form),
           locationHint: form.locationHint,
           name: form.name,
           notes: formatRestaurantRequestNotes(form.notes, requestMenuItems),
+          postalCode: form.postalCode,
+          region: form.region,
           website: form.website,
         });
       } else if (mode === "menu-item" && restaurant) {
@@ -285,7 +304,7 @@ export function CommunityContributionModal({
             </View>
           ) : (
             <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-              <Text style={styles.helper}>{content.helper}</Text>
+              {content.helper ? <Text style={styles.helper}>{content.helper}</Text> : null}
 
               {mode === "restaurant-request" ? (
                 <>
@@ -308,6 +327,56 @@ export function CommunityContributionModal({
                     placeholder="City, state, or region"
                     value={form.locationHint}
                   />
+                  <Field
+                    label="Street address"
+                    onChangeText={(value) => update("addressLine1", value)}
+                    placeholder="Optional"
+                    value={form.addressLine1}
+                  />
+                  <Field
+                    label="Unit or suite"
+                    onChangeText={(value) => update("addressLine2", value)}
+                    placeholder="Optional"
+                    value={form.addressLine2}
+                  />
+                  <View style={styles.fieldRow}>
+                    <View style={styles.fieldRowPrimary}>
+                      <Field
+                        label="City"
+                        onChangeText={(value) => update("city", value)}
+                        placeholder="Optional"
+                        value={form.city}
+                      />
+                    </View>
+                    <View style={styles.fieldRowRegion}>
+                      <Field
+                        autoCapitalize="characters"
+                        label="State"
+                        onChangeText={(value) => update("region", value)}
+                        placeholder="ST"
+                        value={form.region}
+                      />
+                    </View>
+                  </View>
+                  <View style={styles.fieldRow}>
+                    <View style={styles.fieldRowPrimary}>
+                      <Field
+                        label="ZIP"
+                        onChangeText={(value) => update("postalCode", value)}
+                        placeholder="Optional"
+                        value={form.postalCode}
+                      />
+                    </View>
+                    <View style={styles.fieldRowRegion}>
+                      <Field
+                        autoCapitalize="characters"
+                        label="Country"
+                        onChangeText={(value) => update("country", value)}
+                        placeholder="US"
+                        value={form.country}
+                      />
+                    </View>
+                  </View>
                   <Field
                     label="Notes"
                     multiline
@@ -591,7 +660,7 @@ function modalContent(mode: ContributionMode, restaurantName?: string, itemName?
 
   if (mode === "restaurant-request") {
     return {
-      helper: "Tell us what to add. We’ll look for official allergen sources before publishing.",
+      helper: null,
       kicker: "Suggest",
       submitLabel: "Request restaurant",
       title: "Request Restaurant",
@@ -670,6 +739,19 @@ function formatRestaurantRequestNotes(notes: string, menuItems: RequestMenuDraft
   return [cleanNotes, "Suggested menu/allergen info:", menuNotes].filter(Boolean).join("\n\n");
 }
 
+function formatDisplayAddress(form: FormState) {
+  const cityRegion = [form.city.trim(), form.region.trim()].filter(Boolean).join(", ");
+
+  return [
+    form.addressLine1.trim(),
+    form.addressLine2.trim(),
+    [cityRegion, form.postalCode.trim()].filter(Boolean).join(" "),
+    form.country.trim(),
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
 function labelsForAllergens(ids: string[]) {
   return ids
     .map((id) => allergyOptions.find((option) => option.id === id)?.label ?? id)
@@ -741,6 +823,16 @@ const styles = StyleSheet.create({
     color: colors.ink,
     fontSize: 15,
     fontWeight: "800",
+  },
+  fieldRow: {
+    flexDirection: "row",
+    gap: spacing.two,
+  },
+  fieldRowPrimary: {
+    flex: 1,
+  },
+  fieldRowRegion: {
+    width: 98,
   },
   addMenuButton: {
     alignItems: "center",

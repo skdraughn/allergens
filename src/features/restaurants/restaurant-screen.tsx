@@ -28,6 +28,7 @@ import {
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { AllergyIconGuideModal } from "@/components/allergy-icon-guide-modal";
+import { AllergyIconChips } from "@/components/allergy-icon-chips";
 import { IconButton } from "@/components/icon-button";
 import { MenuItemDetailsModal } from "@/components/menu-item-details-modal";
 import { ModalScreen } from "@/components/modal-screen";
@@ -44,7 +45,7 @@ import {
 import { type CommunityComment } from "@/features/community/community-service";
 import { useRestaurantCommunity } from "@/features/community/use-restaurant-community";
 import { useAllergyProfile } from "@/features/profile/allergy-profile-context";
-import { useRestaurantData } from "@/features/restaurants/restaurant-data-context";
+import { useRestaurantDetail } from "@/features/restaurants/restaurant-data-context";
 import { getMenuItemSafety, getRestaurantSafety } from "@/lib/safety";
 
 type MenuFilter = "all" | "ok" | "caution" | "avoid";
@@ -57,9 +58,8 @@ type MenuListRow =
 export function RestaurantScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id, snapshotPath } = useLocalSearchParams<{ id: string; snapshotPath?: string }>();
   const { selectedAllergyIds } = useAllergyProfile();
-  const { getRestaurantById } = useRestaurantData();
   const [activeTab, setActiveTab] = useState<RestaurantTab>("official");
   const [filter, setFilter] = useState<MenuFilter>("all");
   const [contributionItem, setContributionItem] = useState<MenuItem | null>(null);
@@ -68,7 +68,7 @@ export function RestaurantScreen() {
   const [menuQuery, setMenuQuery] = useState("");
   const [sourceModalVisible, setSourceModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
-  const restaurant = getRestaurantById(id);
+  const { restaurant } = useRestaurantDetail(id, snapshotPath);
   const community = useRestaurantCommunity(restaurant?.id ?? "");
   const goBack = () => {
     if (router.canGoBack()) {
@@ -810,29 +810,14 @@ function AllergenIconGroup({
     <View style={styles.allergenIconGroup}>
       {label ? <Text style={styles.allergenIconGroupLabel}>{label}</Text> : null}
       <View style={styles.allergenIconStrip}>
-        {icons.map((allergen) => {
-          const selected = selectedAllergyIds.includes(allergen.id);
-          const Icon = allergen.option.Icon;
-
-          return (
-            <View
-              accessibilityLabel={allergen.label}
-              key={`${allergen.tone}-${allergen.id}`}
-              style={[
-                styles.allergenIconPill,
-                { backgroundColor: allergen.option.surface },
-                allergen.tone === "mayContain" && styles.mayContainIconPill,
-                selected && styles.selectedAllergenIconPill,
-              ]}
-            >
-              <Icon
-                color={selected ? "#B42318" : allergen.option.accent}
-                size={22}
-                strokeWidth={2.4}
-              />
-            </View>
-          );
-        })}
+        <AllergyIconChips
+          allergyIds={icons.map((allergen) => allergen.id)}
+          crossContact={icons.some((allergen) => allergen.tone === "mayContain")}
+          emptyLabel={null}
+          highlightedIds={selectedAllergyIds}
+          labelPrefix={label}
+          style={styles.allergenIconChips}
+        />
         {broad ? <Text style={styles.crossContactText}>Shared prep risk</Text> : null}
       </View>
     </View>
@@ -878,16 +863,12 @@ function getSourceHost(url: string) {
 }
 
 const styles = StyleSheet.create({
-  allergenIconPill: {
-    alignItems: "center",
-    borderRadius: 15,
-    height: 30,
-    justifyContent: "center",
-    width: 30,
-  },
   allergenGroups: {
     gap: 5,
     marginTop: 5,
+  },
+  allergenIconChips: {
+    marginTop: 0,
   },
   allergenIconGroup: {
     gap: 4,
@@ -1281,10 +1262,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "800",
   },
-  mayContainIconPill: {
-    borderColor: "rgba(178,94,0,0.24)",
-    borderWidth: 1,
-  },
   nav: {
     alignItems: "center",
     flexDirection: "row",
@@ -1344,11 +1321,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "600",
     minHeight: 54,
-  },
-  selectedAllergenIconPill: {
-    backgroundColor: "#FFE9E7",
-    borderColor: "rgba(255,59,48,0.25)",
-    borderWidth: 1,
   },
   sourceButton: {
     alignItems: "center",

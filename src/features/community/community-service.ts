@@ -54,9 +54,16 @@ type CommunityModel = {
 };
 
 type CreateRestaurantRequestInput = {
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  country: string;
+  displayAddress: string;
   locationHint: string;
   name: string;
   notes: string;
+  postalCode: string;
+  region: string;
   website: string;
 };
 

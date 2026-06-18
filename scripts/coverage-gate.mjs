@@ -1,35 +1,48 @@
 import { coverageStatuses, snapshotVersion } from "./restaurant-adapters.mjs";
 
 export function addCoverageMetadata(restaurant, adapter, generatedAt) {
-  const totalOfficialItemCount = restaurant.items.length;
+  const totalItemCount = restaurant.items.length;
   const officialItemCount = restaurant.items.filter(
     (item) => item.allergenSourceType && item.allergenSourceType !== "unavailable",
   ).length;
   const coveragePercent =
-    totalOfficialItemCount > 0
-      ? Math.round((officialItemCount / totalOfficialItemCount) * 100)
+    totalItemCount > 0
+      ? Math.round((officialItemCount / totalItemCount) * 100)
       : 0;
-  const meetsMinimumItemCount = totalOfficialItemCount >= (adapter.minOfficialItemCount ?? 1);
+  const meetsMinimumItemCount = totalItemCount >= (adapter.minOfficialItemCount ?? 1);
   const complete =
-    totalOfficialItemCount > 0 &&
+    totalItemCount > 0 &&
     meetsMinimumItemCount &&
     coveragePercent >= (adapter.coverageRequiredPercent ?? 100);
 
-  return {
+  return cleanRestaurantSnapshot({
     ...restaurant,
     coveragePercent,
     coverageStatus: complete ? coverageStatuses.complete : coverageStatuses.blocked,
     lastKnownGoodAt: complete ? generatedAt : restaurant.lastKnownGoodAt ?? null,
     regionalScope: adapter.regionalScope,
-    snapshotVersion,
     sourceUpdatedAt: generatedAt,
     allergenDataStatus: {
       ...restaurant.allergenDataStatus,
-      itemCount: totalOfficialItemCount,
       officialItemCount,
-      totalOfficialItemCount,
-      unavailableItemCount: totalOfficialItemCount - officialItemCount,
     },
+  });
+}
+
+export function combinePreviousKnownGoodRepositories(...repositories) {
+  const previousById = new Map();
+
+  for (const repository of repositories) {
+    for (const restaurant of repository?.restaurants ?? []) {
+      if (isEligiblePreviousKnownGood(restaurant)) {
+        previousById.set(restaurant.id, restaurant);
+      }
+    }
+  }
+
+  return {
+    restaurants: Array.from(previousById.values()),
+    snapshotVersion,
   };
 }
 
@@ -52,7 +65,7 @@ export function applyCoverageGate(repository, previousRepository = null) {
         coveragePercent: restaurant.coveragePercent,
         itemCount: restaurant.items.length,
       });
-      return restaurant;
+      return cleanRestaurantSnapshot(restaurant);
     }
 
     const previous = previousById.get(restaurant.id);
@@ -64,7 +77,7 @@ export function applyCoverageGate(repository, previousRepository = null) {
         keptSnapshotGeneratedAt: previous.sourceUpdatedAt ?? previous.lastKnownGoodAt,
       });
 
-      return {
+      return cleanRestaurantSnapshot({
         ...previous,
         coverageStatus: coverageStatuses.keptPrevious,
         failedRefresh: {
@@ -73,7 +86,7 @@ export function applyCoverageGate(repository, previousRepository = null) {
           attemptedItemCount: restaurant.items.length,
           reason: "Refresh did not meet 100% official coverage.",
         },
-      };
+      });
     }
 
     manifest.blocked.push({
@@ -83,7 +96,7 @@ export function applyCoverageGate(repository, previousRepository = null) {
       reason: "No previous 100% official snapshot exists.",
     });
 
-    return restaurant;
+    return cleanRestaurantSnapshot(restaurant);
   });
 
   return {
@@ -110,6 +123,22 @@ function isEligiblePreviousKnownGood(restaurant) {
   }
 
   return true;
+}
+
+function cleanRestaurantSnapshot(restaurant) {
+  const { snapshotVersion: _snapshotVersion, ...cleaned } = restaurant;
+  const officialItemCount =
+    restaurant.allergenDataStatus?.officialItemCount ??
+    (restaurant.items ?? []).filter(
+      (item) => item.allergenSourceType && item.allergenSourceType !== "unavailable",
+    ).length;
+
+  return {
+    ...cleaned,
+    allergenDataStatus: {
+      officialItemCount,
+    },
+  };
 }
 
 export function validateRestaurantRepository(repository) {

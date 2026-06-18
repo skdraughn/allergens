@@ -23,13 +23,15 @@ type SnackbarOptions = {
 };
 
 type SnackbarContextValue = {
+  animation: Animated.Value;
+  hideSnackbar: () => void;
+  snackbar: SnackbarOptions | null;
   showSnackbar: (options: SnackbarOptions) => void;
 };
 
 const SnackbarContext = createContext<SnackbarContextValue | null>(null);
 
 export function SnackbarProvider({ children }: PropsWithChildren) {
-  const insets = useSafeAreaInsets();
   const [snackbar, setSnackbar] = useState<SnackbarOptions | null>(null);
   const animation = useRef(new Animated.Value(0)).current;
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -79,47 +81,15 @@ export function SnackbarProvider({ children }: PropsWithChildren) {
     };
   }, []);
 
-  const value = useMemo(() => ({ showSnackbar }), [showSnackbar]);
-  const tone = snackbar?.tone ?? "error";
+  const value = useMemo(
+    () => ({ animation, hideSnackbar, showSnackbar, snackbar }),
+    [animation, hideSnackbar, showSnackbar, snackbar],
+  );
 
   return (
     <SnackbarContext.Provider value={value}>
       {children}
-      {snackbar ? (
-        <Animated.View
-          pointerEvents="box-none"
-          style={[
-            styles.overlay,
-            {
-              bottom: Math.max(insets.bottom, spacing.two),
-              opacity: animation,
-              transform: [
-                {
-                  translateY: animation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [28, 0],
-                  }),
-                },
-              ],
-            },
-          ]}
-        >
-          <View style={[styles.snackbar, styles[tone]]}>
-            <View style={styles.copy}>
-              {snackbar.title ? <Text style={styles.title}>{snackbar.title}</Text> : null}
-              <Text style={styles.message}>{snackbar.message}</Text>
-            </View>
-            <Pressable
-              accessibilityLabel="Dismiss message"
-              accessibilityRole="button"
-              onPress={hideSnackbar}
-              style={styles.closeButton}
-            >
-              <X color={colors.muted} size={18} strokeWidth={2.5} />
-            </Pressable>
-          </View>
-        </Animated.View>
-      ) : null}
+      <SnackbarViewport />
     </SnackbarContext.Provider>
   );
 }
@@ -132,6 +102,54 @@ export function useSnackbar() {
   }
 
   return context;
+}
+
+export function SnackbarViewport() {
+  const insets = useSafeAreaInsets();
+  const context = useContext(SnackbarContext);
+
+  if (!context?.snackbar) {
+    return null;
+  }
+
+  const { animation, hideSnackbar, snackbar } = context;
+  const tone = snackbar.tone ?? "error";
+
+  return (
+    <Animated.View
+      pointerEvents="box-none"
+      style={[
+        styles.overlay,
+        {
+          bottom: Math.max(insets.bottom, spacing.two),
+          opacity: animation,
+          transform: [
+            {
+              translateY: animation.interpolate({
+                inputRange: [0, 1],
+                outputRange: [28, 0],
+              }),
+            },
+          ],
+        },
+      ]}
+    >
+      <View style={[styles.snackbar, styles[tone]]}>
+        <View style={styles.copy}>
+          {snackbar.title ? <Text style={styles.title}>{snackbar.title}</Text> : null}
+          <Text style={styles.message}>{snackbar.message}</Text>
+        </View>
+        <Pressable
+          accessibilityLabel="Dismiss message"
+          accessibilityRole="button"
+          onPress={hideSnackbar}
+          style={styles.closeButton}
+        >
+          <X color={colors.muted} size={18} strokeWidth={2.5} />
+        </Pressable>
+      </View>
+    </Animated.View>
+  );
 }
 
 const styles = StyleSheet.create({
