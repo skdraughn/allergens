@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "afghan-bistro-springfield-va-dc-metro",
+  "name": "Afghan Bistro",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T20:27:32.756Z",
+  "updatedAt": "2026-07-14T20:39:09.826Z",
+  "completedAt": "2026-07-14T20:39:09.826Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 116,
+      "sourceItemCount": 117,
+      "notes": [
+        "Every frozen row was reconciled against Afghan Bistro's current restaurant-issued lunch, dinner, chutney, and raw-marinated-meat menus for the Springfield location.",
+        "The official site publishes 202 meal-period presentations that consolidate to 117 distinct named products across 11 real categories.",
+        "All 114 real frozen products remain current exact-name matches. The other two frozen rows, CHOPS AND KABOBS and SOUPS & SALADS, are headings rather than products, while Nakhoud & Mushroom Sabzi Lawaan, Firni, and Raw Shoulder Chops-1lb are current products omitted from the frozen catalog.",
+        "Exact repeated lunch/dinner presentations are consolidated without collapsing separately named official products. Kadoo Turnovers and Samarooq Turnovers preserve both meal-period descriptions because the dinner presentations add yogurt accompaniments."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Afghan Bistro publishes current item names, descriptions, modifier choices, and item-specific gluten-free badges but no complete allergen matrix, complete recipes, or kitchen cross-contact policy.",
+        "Positive fields are limited to fixed published ingredient terms and mandatory named formats. Optional salad proteins, vegan substitutions, and flavor-specific allergens that are not common to every cake choice are excluded from fixed fields.",
+        "The home-page statement that almost everything is gluten free is not converted into item-level negative allergen claims. The correction also asserts that no positive wheat/gluten signal contradicts an item-specific official gluten-free badge.",
+        "Twenty-six of 114 applicable frozen product rows underreported current fixed signals, principally wheat/gluten in croutons, wraps, turnovers, dumplings, aushak, mantu, and sambosa, plus milk in rice pudding and the common cake flavor choices. No frozen product overreported a corrected signal under the reviewed semantics."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen official API names were broadly current, but the merge flattened 106 products into Items, retained two section headings as products, used two additional fake categories, omitted three current products, and lost meal-period/category context.",
+        "The correction reads the official menu's explicit section and item data hooks across all four current menu surfaces, asserts 96 lunch, 93 dinner, four chutney, and nine raw-meat presentations, then consolidates exact repeated names into 117 products.",
+        "Ingredient extraction distinguishes a format named by the product from marketing language: the avocado-yogurt chutney's recommendation to pair it with turnovers does not add wheat/gluten to the chutney.",
+        "The final-stage repair is guarded by verified item/category/source counts, artifact and fake-category exclusions, omitted-product restoration, fixed-signal sentinels, optional-protein exclusion, and final category order."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-home-review",
+      "kind": "official_site",
+      "url": "https://www.afghanbistro.com/",
+      "attemptedAt": "2026-07-14T20:27:50.590Z",
+      "outcome": "Confirmed the Springfield restaurant identity, current menu navigation, diet statements, address, and the absence of a complete allergen matrix on the home page.",
+      "notes": []
+    },
+    {
+      "id": "official-lunch-menu-review",
+      "kind": "linked_source",
+      "url": "https://www.afghanbistro.com/menu-1",
+      "attemptedAt": "2026-07-14T20:27:50.976Z",
+      "outcome": "Captured and reviewed 96 current restaurant-issued lunch and dessert presentations with section context, descriptions, modifiers, and item labels.",
+      "notes": []
+    },
+    {
+      "id": "official-dinner-menu-review",
+      "kind": "linked_source",
+      "url": "https://www.afghanbistro.com/menu-1?location=Alban+Road&menu=dinner-menu-1",
+      "attemptedAt": "2026-07-14T20:29:05.323Z",
+      "outcome": "Captured and reviewed 93 current restaurant-issued dinner and dessert presentations with section context, descriptions, modifiers, and item labels.",
+      "notes": []
+    },
+    {
+      "id": "official-specialty-menu-review",
+      "kind": "linked_source",
+      "url": "https://www.afghanbistro.com/menu-1?location=Alban+Road&menu=chutneys",
+      "attemptedAt": "2026-07-14T20:29:08.559Z",
+      "outcome": "Captured and reviewed the four current chutneys and nine current raw-marinated-meat products from the two restaurant-issued specialty menu tabs.",
+      "notes": [
+        "The raw-marinated-meat source is https://www.afghanbistro.com/menu-1?location=Alban+Road&menu=marinated-raw-meats."
+      ]
+    },
+    {
+      "id": "current-allergen-disclosure-review",
+      "kind": "targeted_search",
+      "url": "https://www.afghanbistro.com/menu-1",
+      "attemptedAt": "2026-07-14T20:29:08.559Z",
+      "outcome": "Full-text review of the current official home, lunch, dinner, chutney, raw-meat, and online-order surfaces found item descriptions and gluten-free badges but no complete allergen matrix, complete recipes, or cross-contact policy.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "flattened-incomplete-current-menu",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen 116-row catalog retained two section headings as products, omitted three current products, and collapsed almost every real product into fake generic categories despite 11 current official sections.",
+      "evidenceIds": [
+        "official-menu",
+        "official-dinner-menu",
+        "official-chutneys-menu",
+        "official-raw-meats-menu"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 117 distinct current products from 202 official presentations, removed both heading artifacts, restored the three omissions and 11 real categories, and consolidated exact repeated meal-period presentations."
+    },
+    {
+      "id": "underreported-published-allergen-signals",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Twenty-six of 114 real frozen product rows omitted fixed current signals supported by official ingredient text, common configurable choices, or mandatory named formats.",
+      "evidenceIds": [
+        "official-menu",
+        "official-dinner-menu",
+        "official-chutneys-menu",
+        "official-raw-meats-menu"
+      ],
+      "resolved": true,
+      "resolution": "Restored the missing fixed signals, excluded optional proteins and substitutions, retained 46 products as unavailable where positive item-level evidence is insufficient, and asserted no conflict with official item-specific gluten-free labels."
+    },
+    {
+      "id": "lost-source-context-and-configurability",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "The frozen merge discarded official section, meal-period, modifier, and duplicate-presentation context, preventing reliable menu identity and allergen review.",
+      "evidenceIds": [
+        "official-menu",
+        "official-dinner-menu"
+      ],
+      "resolved": true,
+      "resolution": "Parsed explicit official section/item/modifier hooks, preserved configurability and changed meal-period descriptions, and added source-count assertions so a future official page-shape change fails focused verification."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-afghan-bistro-current-menu",
+      "status": "verified",
+      "summary": "Prepared and targeted-tested a 117-item current Afghan Bistro catalog across 11 official categories with 71 positive published-signal rows, 46 unavailable rows, no heading artifacts or fake categories, three restored products, and source-bounded allergen semantics.",
+      "files": [
+        "scripts/pipeline/afghan-bistro-audit-catalog.mjs",
+        "scripts/pipeline/afghan-bistro-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/afghan-bistro-springfield-va-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/afghan-bistro-audit-catalog.test.mjs scripts/pipeline/afghan-bistro-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/afghan-bistro-repository.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 117 items, 11 categories, 71 official-ingredient rows, 46 unavailable rows, no heading artifacts or fake categories, three restored current products, correct allergen sentinels, and raw meats last)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 162748be6cf9b0865c9b556677ebbe8381760ce9c916621d251e343bc197f67d.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":114,\"artifact\":2},\"allergens\":{\"accurately_unavailable\":45,\"verified\":43,\"mismatch\":26,\"not_applicable\":2},\"mismatchKinds\":{\"underreported\":26}}.",
+    "Current corrected catalog counts: 202 official presentations, 117 distinct products, 11 categories, 71 positive published-signal rows, and 46 accurately unavailable rows.",
+    "Focused official source-count, category, unique-id, exact duplicate consolidation, changed meal-period description, omitted-product, artifact exclusion, modifier, optional-protein, chutney marketing-context, gluten-free-label conflict, mandatory-format, all 116 frozen-row reconciliation, and final repair checks passed."
+  ]
+}

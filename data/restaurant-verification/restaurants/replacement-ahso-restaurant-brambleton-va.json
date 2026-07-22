@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "replacement-ahso-restaurant-brambleton-va",
+  "name": "Ahso Restaurant",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T21:21:40.697Z",
+  "updatedAt": "2026-07-14T21:28:55.753Z",
+  "completedAt": "2026-07-14T21:28:55.753Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 22,
+      "sourceItemCount": 42,
+      "notes": [
+        "Every frozen row was reconciled against the current identities and menu surfaces for Ahso Restaurant and Ahso Cellars.",
+        "All 22 frozen rows came solely from Ahso Cellars at suite #105, which explicitly calls itself the sister to Ahso Restaurant; the audited restaurant is at suite #108.",
+        "The correction contains 42 current Ahso Restaurant formulations across the restaurant-issued dinner menu, directly linked ordering menu, and recurring Monday and Wednesday food sections.",
+        "Exact duplicate presentations were consolidated, differing fixed descriptions were retained as distinct formulations, and standalone add-ons, alcohol, and variable weekly specials were excluded."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Ahso publishes fixed item descriptions and a general dietary-accommodation FAQ, but no complete item-level allergen matrix, complete recipes, or cross-contact policy.",
+        "The FAQ statement that most of the menu happens to be gluten-free is not an item-level absence claim and was not assigned to products.",
+        "Thirty-five current formulations have positive signals supported by fixed text or an unavoidable named format; seven remain unavailable rather than inferred.",
+        "All 22 frozen allergen rows are not applicable because their sole evidence belongs to the separate sister business."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic-site replacement resolved the audited Ahso Restaurant identity to an Ahso Cellars Toast source with a different business name, suite number, and business description.",
+        "The correction pins restaurant-issued content to suite #108 and treats the operational Toast catalog as restaurant-linked vendor evidence only because Ahso Restaurant's own homepage links to it.",
+        "Restaurant-issued and ordering formulations are kept separate where their descriptions differ; general dietary prose is not converted into item allergens."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-home-review",
+      "kind": "official_site",
+      "url": "https://www.ahsoresto.com/",
+      "attemptedAt": "2026-07-14T21:22:13.936Z",
+      "outcome": "Confirmed Ahso Restaurant at suite #108 and its directly linked ordering route.",
+      "notes": []
+    },
+    {
+      "id": "official-dinner-review",
+      "kind": "linked_source",
+      "url": "https://www.ahsoresto.com/toeat",
+      "attemptedAt": "2026-07-14T21:22:14.355Z",
+      "outcome": "Captured and reviewed the current restaurant-issued dinner menu and its warning that kitchen changes can precede website updates.",
+      "notes": []
+    },
+    {
+      "id": "official-faq-review",
+      "kind": "targeted_search",
+      "url": "https://www.ahsoresto.com/faq",
+      "attemptedAt": "2026-07-14T21:22:14.692Z",
+      "outcome": "Captured the restaurant's dietary-accommodation statement; found no complete item-level allergen matrix, recipes, or cross-contact policy.",
+      "notes": []
+    },
+    {
+      "id": "actual-restaurant-toast-review",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/ahso-restaurant",
+      "attemptedAt": "2026-07-14T21:27:48.000Z",
+      "outcome": "Reviewed the current directly linked Ahso Restaurant ordering catalog at suite #108, including its scheduled food sections; direct ledger capture returned HTTP 403, so reproducible row identifiers were recorded from the accessible representation.",
+      "notes": []
+    },
+    {
+      "id": "sister-business-toast-review",
+      "kind": "third_party",
+      "url": "https://www.toasttab.com/local/order/ahso-cellars-22855-brambleton-plz-105",
+      "attemptedAt": "2026-07-14T21:27:48.000Z",
+      "outcome": "Confirmed that the frozen source is Ahso Cellars at suite #105 and that the source explicitly identifies it as Ahso Restaurant's sister business.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "wrong-sister-business-source",
+      "severity": "high",
+      "kind": "location_identity",
+      "summary": "Every frozen row was extracted from Ahso Cellars at suite #105 rather than the audited Ahso Restaurant at suite #108.",
+      "evidenceIds": [
+        "official-home",
+        "official-dinner-menu",
+        "official-toast-order",
+        "sister-toast-baseline-source"
+      ],
+      "resolved": true,
+      "resolution": "Removed all 22 sister-business rows and rebuilt the catalog exclusively from Ahso Restaurant's current restaurant-issued and directly linked surfaces."
+    },
+    {
+      "id": "missing-current-ahso-restaurant-menu",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen catalog contained none of Ahso Restaurant's current menu as a source-valid restaurant catalog.",
+      "evidenceIds": [
+        "official-dinner-menu",
+        "official-toast-order"
+      ],
+      "resolved": true,
+      "resolution": "Prepared 42 current formulations across 11 source-and-meal categories, including recurring scheduled food sections."
+    },
+    {
+      "id": "unsupported-frozen-allergen-unavailability",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "The frozen rows reported allergen data as unavailable for the audited restaurant even though the rows and their source belonged to another business.",
+      "evidenceIds": [
+        "official-faq",
+        "official-dinner-menu",
+        "official-toast-order",
+        "sister-toast-baseline-source"
+      ],
+      "resolved": true,
+      "resolution": "Classified all frozen allergen verdicts as not applicable and computed 35 positive source-bounded results for the actual restaurant while retaining seven unavailable rows."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-ahso-restaurant-current-menu",
+      "status": "verified",
+      "summary": "Prepared and focused-tested a 42-formulation Ahso Restaurant catalog across 11 current categories with 35 positive rows, seven unavailable rows, and no Ahso Cellars, alcohol, add-on, or variable weekly-special contamination.",
+      "files": [
+        "scripts/pipeline/ahso-audit-catalog.mjs",
+        "scripts/pipeline/ahso-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/replacement-ahso-restaurant-brambleton-va/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/ahso-audit-catalog.test.mjs scripts/pipeline/ahso-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/ahso-repository.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 42 items, 11 categories, 35 positive rows, seven unavailable rows, and zero Ahso Cellars sources)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 2b0f0aefce43e60ca37616931a94159cb64be729919cd8460d7159dec1af325b.",
+    "Reconciliation counts: {\"dispositions\":{\"location_mismatch\":22},\"allergens\":{\"not_applicable\":22},\"currentExactNameOverlaps\":1}.",
+    "Current corrected catalog counts: 42 formulations, 43 presentations, 11 categories, 35 positive rows, and seven unavailable rows."
+  ]
+}

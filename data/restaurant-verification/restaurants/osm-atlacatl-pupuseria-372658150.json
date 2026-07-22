@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-atlacatl-pupuseria-372658150",
+  "name": "Atlacatl Pupuseria",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T16:28:23.670Z",
+  "updatedAt": "2026-07-15T16:38:43.901Z",
+  "completedAt": "2026-07-15T16:38:43.901Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 85,
+      "sourceItemCount": 85,
+      "notes": [
+        "The current restaurant-issued menu contains 85 actual menu items across 15 sections; the frozen generated record contains only 33 rows representing 25 unique official titles.",
+        "Sol corrected Terra's single false missing-item claim: Taquitos de Lengua is present on the current menu and matches frozen item 33 by description.",
+        "Post-repair recheck reconciled all 85 current restaurant-issued menu titles in 15 sections with 85 unique generated items.",
+        "Frozen reconciliation: 12 exact matches, 13 variant matches, 8 artifacts or duplicate fragments, and no stale extras."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "No comprehensive allergen matrix, complete ingredient list, allergen legend, negative-claim coverage, or cross-contact policy was located.",
+        "Restaurant-authored menu prose can support direct positive ingredient signals only; absent terms are not negative assurances.",
+        "51 items retain only fixed positive signals directly supported by restaurant-authored names or descriptions; 34 items are accurately unavailable.",
+        "The flour-or-corn choices on Tacos al Carbon and Tortilla remain unavailable rather than treating optional wheat as a fixed ingredient.",
+        "No negative or cross-contact claim is inferred from the absence of a comprehensive guide."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The generic website extraction emitted eight section, navigation, price, social, or description artifacts and substituted descriptions for twelve item titles.",
+        "The extraction also omitted most of the current official menu.",
+        "Restaurant-specific verified snapshot replaces the incomplete generic extraction, preserves official titles, categories, and descriptions, and removes page-structure artifacts."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site",
+      "kind": "official_site",
+      "url": "https://restauranteatlacatl.com/",
+      "attemptedAt": "2026-07-15T16:30:00.000Z",
+      "outcome": "Official restaurant site identified Atlacatl Restaurant as Salvadoran Cuisine and Pupuseria and linked the current menu.",
+      "notes": []
+    },
+    {
+      "id": "linked-source",
+      "kind": "linked_source",
+      "url": "https://restauranteatlacatl.com/2020/05/28/menu/",
+      "attemptedAt": "2026-07-15T16:30:00.000Z",
+      "outcome": "The restaurant-issued legacy route presented the same menu family and independently exposed the social-page boilerplate artifact.",
+      "notes": []
+    },
+    {
+      "id": "ordering-vendor",
+      "kind": "ordering_vendor",
+      "url": null,
+      "attemptedAt": "2026-07-15T16:30:00.000Z",
+      "outcome": "No restaurant-linked ordering-vendor menu or allergen surface was identified from the official site.",
+      "notes": []
+    },
+    {
+      "id": "targeted-search",
+      "kind": "targeted_search",
+      "url": "https://restauranteatlacatl.com/menu/",
+      "attemptedAt": "2026-07-15T16:30:00.000Z",
+      "outcome": "Targeted current-menu and allergen searches found the official menu but no restaurant-issued allergen guide or cross-contact policy.",
+      "notes": []
+    },
+    {
+      "id": "archive",
+      "kind": "archive",
+      "url": "https://restauranteatlacatl.com/2020/05/28/menu/",
+      "attemptedAt": "2026-07-15T16:30:00.000Z",
+      "outcome": "The dated official menu route remained publicly readable and corroborated the current menu structure.",
+      "notes": []
+    },
+    {
+      "id": "third-party",
+      "kind": "third_party",
+      "url": "https://www.restaurantji.com/va/arlington/atlacatl-restaurant-/",
+      "attemptedAt": "2026-07-15T16:30:00.000Z",
+      "outcome": "Third-party listing corroborated the Arlington restaurant identity only and was not used as allergen authority.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "incomplete-and-artifacted-menu-extraction",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The 33-row generated record omitted 60 titles from the current 85-item official menu and included eight non-item or duplicate artifacts.",
+      "evidenceIds": [
+        "official-current-menu",
+        "official-legacy-menu"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt the full current 85-item menu and removed all eight frozen artifacts or duplicate fragments."
+    },
+    {
+      "id": "description-substituted-item-titles",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "Thirteen generated rows used description text as the item identity instead of the restaurant's displayed item title.",
+      "evidenceIds": [
+        "official-current-menu"
+      ],
+      "resolved": true,
+      "resolution": "Reconciled all thirteen fragments to canonical official titles, preserving their descriptions on the correct items."
+    },
+    {
+      "id": "no-comprehensive-allergen-or-cross-contact-source",
+      "severity": "medium",
+      "kind": "allergen_source",
+      "summary": "The official menu provides selected direct ingredient prose but no comprehensive allergen matrix, complete ingredients, negative-claim coverage, or cross-contact policy.",
+      "evidenceIds": [
+        "official-current-menu"
+      ],
+      "resolved": true,
+      "resolution": "Retained only fixed direct positive disclosures, marked all other results unavailable, and published no negative or cross-contact claims."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "rebuild-atlacatl-current-menu",
+      "status": "verified",
+      "summary": "Rebuilt Atlacatl's current 85-item restaurant-issued menu and conservative positive-disclosure allergen data.",
+      "files": [
+        "data/restaurant-verification/repairs/osm-atlacatl-pupuseria-372658150/corrected-menu.json",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/osm-atlacatl-pupuseria-372658150/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test --test-name-pattern='Atlacatl rebuilds the current official menu' scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Terra research: gpt-5.6-terra low, worker run 2026-07-15T15-57-56-396Z-3313d1.",
+    "Sol adjudication: gpt-5.6-sol medium. Sol upheld discrepancy_found and corrected Terra's false claim that Taquitos de Lengua was absent.",
+    "Canonical item checks remain pending until the complete repaired menu and frozen-item reconciliation are verified.",
+    "Focused Atlacatl regression passed: 85 unique current items in 15 sections, 51 fixed direct positive disclosures, and 34 accurately unavailable results.",
+    "Tacos al Carbon and Tortilla remain unavailable because their wheat disclosure is configuration-dependent (flour or corn), not a fixed item ingredient.",
+    "Post-repair menu recheck: 85 current official titles, 51 fixed direct positive disclosures, 34 accurately unavailable allergen results."
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-adyar-ananda-bhavan-638589103",
+  "name": "Adyar Ananda Bhavan",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T20:13:41.753Z",
+  "updatedAt": "2026-07-14T20:27:18.217Z",
+  "completedAt": "2026-07-14T20:27:18.217Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 167,
+      "sourceItemCount": 158,
+      "notes": [
+        "Every frozen row was reconciled against Adyar Ananda Bhavan's current Herndon menu page and restaurant-linked Toast catalog.",
+        "The corrected catalog contains 158 distinct current products across 18 real categories: all 147 products currently published on the official site plus 11 distinct currently available Toast-only additions.",
+        "The frozen 167-row merge contained 23 category/description fragments as products and one stale Badhusha row. Duplicate and configurable presentations were consolidated, while official-site sweets and savories remain current even when the time-specific Golden Hour Toast surface marked the corresponding sellable SKU out of stock.",
+        "The Toast-only packaging row named Large was excluded, configurable flavor SKUs were consolidated into their official bases, and all beverages were placed after food, sweets, and savories."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The official menu publishes item descriptions but no complete allergen matrix, complete recipe set, or kitchen-wide cross-contact policy. Fixed positive fields therefore come only from explicit ingredient text or mandatory food formats.",
+        "Seven packaged products published on the official site also have restaurant-linked Toast package labels. Their contains statements were kept separate from facility-handling cautions; wheat, barley, soy, peanut, and tree-nut facility language is represented as may-contain rather than fixed ingredients.",
+        "Eleven Toast-only additions remain allergen-source unavailable because restaurant-linked vendor text is not promoted to restaurant-issued allergen authority. Ingredient Intelligence may still provide its separately labeled signal.",
+        "Of 143 applicable frozen rows, 57 had incorrect allergen fields: 30 underreported fixed signals, 22 overreported unsupported signals, and five incorrectly promoted facility handling to fixed contains claims."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic website merge treated six headings and 17 descriptions as products, duplicated presentation rows, used a fake Indian category, and shifted neighboring metadata into products.",
+        "The correction parses the current official page's menu blocks and the time-specific linked Toast rendering independently, asserts raw source counts, excludes out-of-scope packaging, reconciles aliases and configurable products, and preserves the official category order with beverages last.",
+        "Allergen semantics explicitly avoid mapping coconut to tree nut, besan/rice/lentil/corn flour to wheat, or eggplant to egg; rava/semolina and mandatory croutons correctly map to wheat and gluten, and optional flavor choices do not become fixed base-product allergens.",
+        "The final-stage repair is guarded by verified item/category/source counts, artifact and stale-row exclusions, package-scope and allergen sentinels, vendor-only unavailable behavior, and beverage order."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-home-review",
+      "kind": "official_site",
+      "url": "https://a2bva.com/",
+      "attemptedAt": "2026-07-14T20:13:49.628Z",
+      "outcome": "Confirmed the Herndon restaurant identity and its current official menu link.",
+      "notes": []
+    },
+    {
+      "id": "official-menu-review",
+      "kind": "linked_source",
+      "url": "https://a2bva.com/menu/",
+      "attemptedAt": "2026-07-14T20:13:53.313Z",
+      "outcome": "Captured and reviewed 147 current restaurant-issued menu products across 18 food, sweets, savories, dessert, and beverage sections.",
+      "notes": [
+        "The page publishes names and descriptions but no complete allergen matrix or cross-contact guide."
+      ]
+    },
+    {
+      "id": "restaurant-linked-toast-review",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/a2b-herndon-645-elden-st",
+      "attemptedAt": "2026-07-14T20:13:57.022Z",
+      "outcome": "Direct automated retrieval returned HTTP 403. The retained render-proxy artifact exposed 153 time-specific Golden Hour rows, including 126 available and 27 out-of-stock rows, and corroborated current products, 11 distinct additions, and seven package labels.",
+      "notes": [
+        "The linked vendor catalog was used for current menu corroboration and package-label scope, not promoted to restaurant-issued authority for vendor-only item names."
+      ]
+    },
+    {
+      "id": "current-allergen-disclosure-review",
+      "kind": "targeted_search",
+      "url": "https://a2bva.com/menu/",
+      "attemptedAt": "2026-07-14T20:13:57.022Z",
+      "outcome": "Full-text review of the official site and linked ordering catalog found item descriptions and seven linked package labels but no complete restaurant-issued allergen matrix, recipe guide, or kitchen-wide cross-contact policy.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "corrupted-generic-menu-merge",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen 167-row catalog contained 23 headings/descriptions as products, one stale Badhusha row, duplicate/configurable presentation rows, a fake Indian category, and omitted current products.",
+      "evidenceIds": [
+        "official-menu",
+        "third-party-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 158 distinct current products across 18 real categories, removed all 23 artifacts and stale Badhusha, consolidated aliases and configurable choices, excluded packaging, and kept beverages last."
+    },
+    {
+      "id": "incorrect-frozen-allergen-signals",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Fifty-seven of 143 applicable frozen rows had incorrect allergen fields: 30 underreported, 22 overreported, and five confused facility handling with fixed contains claims.",
+      "evidenceIds": [
+        "official-menu",
+        "third-party-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Re-derived fixed signals only from current published ingredients and mandatory formats, separated contains from may-contain handling language, and left 83 current products unavailable where authoritative item-level evidence is insufficient."
+    },
+    {
+      "id": "ingredient-token-false-positives",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "Frozen signals incorrectly treated coconut as tree nut, non-wheat flours as wheat/gluten, and eggplant as egg, while missing explicit rava, dairy, nut, bread, noodle, momo, samosa, and crouton signals.",
+      "evidenceIds": [
+        "official-menu"
+      ],
+      "resolved": true,
+      "resolution": "Applied reviewed ingredient semantics with explicit exclusions and mandatory-format assertions, including milk/wheat/gluten for Cream of Tomato Soup because its official description names butter and fried croutons."
+    },
+    {
+      "id": "allergen-source-authority-inflation",
+      "severity": "high",
+      "kind": "source_semantics",
+      "summary": "The frozen catalog claimed official ingredient authority for 78 rows without a complete restaurant-issued allergen source and did not distinguish fixed package contains statements from facility handling.",
+      "evidenceIds": [
+        "official-home",
+        "official-menu",
+        "third-party-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Limited official-ingredient status to 75 current rows with positive published support, left 83 rows unavailable, kept linked-vendor-only additions non-official, and represented package facility handling as may-contain."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-adyar-current-menu",
+      "status": "verified",
+      "summary": "Prepared and targeted-tested a 158-item current Adyar catalog with 18 real categories, source-correct fixed and may-contain semantics, unavailable vendor-only signals, no frozen artifacts or stale Badhusha, and beverages last.",
+      "files": [
+        "scripts/pipeline/adyar-audit-catalog.mjs",
+        "scripts/pipeline/adyar-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/osm-adyar-ananda-bhavan-638589103/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/adyar-audit-catalog.test.mjs scripts/pipeline/adyar-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/adyar-repository.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 158 items, 18 categories, 75 official-ingredient rows, 83 unavailable rows, no stale Badhusha or parser artifacts, correct package/allergen sentinels, and beverages last)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: cf6b80ec3a947a780dc7f3cb11e6f10028713d96f181d1368a52fc1611fde992.",
+    "Reconciliation counts: {\"dispositions\":{\"artifact\":23,\"variant_match\":22,\"exact_match\":121,\"stale_extra\":1},\"allergens\":{\"not_applicable\":24,\"mismatch\":57,\"verified\":32,\"accurately_unavailable\":54},\"mismatchKinds\":{\"overreported\":22,\"fixed_to_may_contain\":5,\"underreported\":30}}.",
+    "Current corrected catalog counts: 158 items, 18 categories, 75 positive published-signal rows, and 83 accurately unavailable rows.",
+    "Focused source-count, artifact exclusion, compact-catalog, optional-choice, flour, coconut, eggplant, fixed-ingredient, package-scope, linked-vendor authority, all 167 frozen-row reconciliation, category, unique-id, beverage-scope, and beverage-order checks passed."
+  ]
+}

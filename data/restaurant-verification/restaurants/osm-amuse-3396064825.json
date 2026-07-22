@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-amuse-3396064825",
+  "name": "Amuse",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T04:57:18.623Z",
+  "updatedAt": "2026-07-15T05:08:45.410Z",
+  "completedAt": "2026-07-15T05:08:45.410Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 11,
+      "sourceItemCount": 0,
+      "notes": [
+        "Marriott's current Le Méridien Arlington dining page explicitly says its bar and restaurant are temporarily closed for renovation. No current operating Amuse menu is published.",
+        "All 11 frozen rows were reconciled: three are food or drink rows belonging to other Rosslyn businesses, and eight are directory chrome, unrelated business cards, address text, or interview copy."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "accurately_unavailable",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Marriott publishes no current Amuse allergen matrix, ingredient disclosure, cross-contact disclosure, or operating menu while the restaurant is closed.",
+        "The Rosslyn district directory and OpenTable were not promoted to restaurant-issued allergen evidence. The two frozen 'official-ingredients' classifications came from other restaurants on a district-wide feature page and were removed."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic-website extraction combined Amuse's Rosslyn identity page with 13 unrelated Rosslyn directory, restaurant, feature, and interview URLs. That cross-location source expansion is the complete cause of all 11 bad rows.",
+        "The restaurant-specific repair changes the canonical source to Marriott's current hotel dining page, removes every contaminated row, and quarantines the record until first-party reopening evidence and a current menu exist."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "amuse-official-site-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.marriott.com/en-us/hotels/wasrl-le-meridien-arlington/dining/",
+      "attemptedAt": "2026-07-15T04:58:24.432Z",
+      "outcome": "HTTP 200. The current first-party page identifies Amuse but states that the bar and restaurant are temporarily closed for renovation. It publishes no menu or allergen disclosure.",
+      "notes": [
+        "The old hours rendered below the closure banner are treated as stale conflicting fields, not evidence that the restaurant is open."
+      ]
+    },
+    {
+      "id": "amuse-linked-marriott-detail-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://www.marriott.com/en-us/dining/restaurant-bar/wasrl-le-meridien-arlington/5979289-amuse.mi",
+      "attemptedAt": "2026-07-15T05:03:43.331Z",
+      "outcome": "HTTP 200 error shell saying the page is no longer available. Its embedded Marriott outlet record has menuURL null and provides no current item catalog or allergen disclosure.",
+      "notes": []
+    },
+    {
+      "id": "amuse-opentable-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://www.opentable.com/r/amuse-arlington",
+      "attemptedAt": "2026-07-15T05:04:30.000Z",
+      "outcome": "The Marriott-linked OpenTable identity was found, but direct artifact capture failed and the public result says the restaurant is not available on OpenTable. Search-rendered breakfast text was not treated as a current operating menu or official allergen evidence.",
+      "notes": [
+        "The official Marriott page's reservation URL identifies OpenTable profile 82636."
+      ]
+    },
+    {
+      "id": "amuse-targeted-search-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://www.marriott.com/en-us/hotels/wasrl-le-meridien-arlington/dining/",
+      "attemptedAt": "2026-07-15T05:02:30.000Z",
+      "outcome": "Targeted searches for a current Amuse menu, allergen guide, renovation status, and reopening date produced the current Marriott closure page, the retired Marriott restaurant detail, and stale third-party menu text; no current first-party menu or allergen source was found.",
+      "notes": []
+    },
+    {
+      "id": "amuse-archive-2026-07-15",
+      "kind": "archive",
+      "url": "https://web.archive.org/cdx/search/cdx?url=www.marriott.com/en-us/dining/restaurant-bar/wasrl-le-meridien-arlington/5979289-amuse.mi",
+      "attemptedAt": "2026-07-15T05:06:50.000Z",
+      "outcome": "The Wayback CDX request timed out after 20 seconds with no response. Historical captures would not override Marriott's current closure notice in any event.",
+      "notes": []
+    },
+    {
+      "id": "amuse-third-party-identity-2026-07-15",
+      "kind": "third_party",
+      "url": "https://www.rosslynva.org/go/amuse",
+      "attemptedAt": "2026-07-15T04:58:24.822Z",
+      "outcome": "HTTP 200. The Rosslyn district page corroborates Amuse's hotel identity, address, and phone but does not publish a current item catalog or allergen disclosure.",
+      "notes": [
+        "Other Rosslyn pages referenced by the frozen record belong to different businesses and cannot be merged into Amuse."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "amuse-cross-location-source-contamination",
+      "severity": "critical",
+      "kind": "menu-location-mismatch",
+      "summary": "Every frozen Amuse row came from an unrelated Rosslyn page rather than an Amuse menu.",
+      "evidenceIds": [
+        "official-marriott-dining",
+        "rosslyn-identity-page"
+      ],
+      "resolved": true,
+      "resolution": "Removed all 11 rows, replaced the canonical source with Marriott, and quarantined the temporarily closed restaurant with zero current items."
+    },
+    {
+      "id": "amuse-false-official-allergen-attribution",
+      "severity": "high",
+      "kind": "allergen-source-misattribution",
+      "summary": "The apple crisp bowl and Cajun shrimp salad carried official ingredient allergens even though both rows belonged to other Rosslyn businesses.",
+      "evidenceIds": [
+        "official-marriott-dining",
+        "rosslyn-identity-page"
+      ],
+      "resolved": true,
+      "resolution": "Removed both cross-location rows and all associated allergen claims from Amuse."
+    },
+    {
+      "id": "amuse-current-closure-conflicts-with-stale-hours",
+      "severity": "medium",
+      "kind": "operational-status-conflict",
+      "summary": "Marriott's current closure banner conflicts with old hours still rendered lower on the same page and embedded in the retired detail response.",
+      "evidenceIds": [
+        "official-marriott-dining",
+        "official-marriott-retired-amuse-detail"
+      ],
+      "resolved": true,
+      "resolution": "The explicit current renovation closure notice governs; stale hours and third-party menu text were not used as proof of an operating menu."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "amuse-current-closure-quarantine",
+      "status": "verified",
+      "summary": "Removed the 11 contaminated rows, switched identity and closure sourcing to Marriott, recorded temporary closure, and quarantined Amuse with zero current items until reopening.",
+      "files": [
+        "scripts/pipeline/amuse-audit-catalog.mjs",
+        "scripts/pipeline/amuse-audit-catalog.test.mjs",
+        "scripts/pipeline/amuse-audit-reconciliation.mjs",
+        "scripts/pipeline/amuse-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/osm-amuse-3396064825/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/amuse-audit-catalog.test.mjs scripts/pipeline/amuse-audit-reconciliation.test.mjs",
+        "node scripts/pipeline/amuse-audit-reconciliation.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=osm-amuse-3396064825 node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 355c10c6ac098bc270dc6f2db9054afc8508aa75a31396b273b04b6d8f0a46cd.",
+    "Official Marriott dining artifact SHA-256: 26472e85680ce3f283ece77a0b5a6a006100d16534b51a48b6969193763a0703.",
+    "Retired Marriott detail artifact SHA-256: 27a7d64b1f100c81823b2d4e5a72afd3cf5ae0f4b9bb8b5470a609b9464a75e4.",
+    "Rosslyn identity artifact SHA-256: 3872a55b52f32b9abbefcee5352757f9d3034383034b113171fe5f25f7605209.",
+    "Live target SHA-256 after repair: 8be73b093f218009c09e64fd25fa82429bbdf92ebfbebbc80de81808137f957c.",
+    "Live non-target restaurant projection SHA-256 remained 55db018c98ec747a158f908e002bed02e0a8d12e5fd895f68bde7bb716cb338c.",
+    "A second target-only repair run produced the same target hash and exactly one repair note."
+  ]
+}

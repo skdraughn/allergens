@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-anatolian-bistro-6230019077",
+  "name": "Anatolian Bistro",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T05:21:44.583Z",
+  "updatedAt": "2026-07-15T05:39:50.102Z",
+  "completedAt": "2026-07-15T05:39:50.102Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 111,
+      "sourceItemCount": 105,
+      "notes": [
+        "The current restaurant-issued lunch and dinner pages contain 158 presentations representing 105 unique product identities across 13 categories. The restaurant-issued pickup page independently exposes 100 of those current product IDs, while the lunch/dinner union supplies all 105.",
+        "All 111 frozen rows were reconciled: 78 rows represent 97 current meal-period products, 14 are stale or duplicate historical rows, and 19 are description fragments, headings, navigation/source links, review cards, or an alcohol-column extraction artifact.",
+        "The frozen snapshot omitted eight current nonalcoholic beverages: Apricot Juice, Coke, Cranberry Juice, Ginger-Ale, Orange Juice, Sour Cherry Juice, Sparkling Water, and Sprite. The corrected catalog retains all current food and nonalcoholic products, keeps the single currently sold-out Kabak Tatlisi row, separates lunch and dinner products, and places Beverages last."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Anatolian Bistro publishes current first-party item names, descriptions, item-specific GF labels, and a universal statement that all entrées are served with homemade bread. It does not publish a complete allergen matrix or cross-contact disclosure.",
+        "Sixty-three current products have direct restaurant-issued positive ingredient, named-component, mandatory-formulation, or universal-bread evidence. Forty-two remain accurately unavailable because the current menu does not disclose enough item-level ingredients; missing terms are never treated as negative assurances.",
+        "The site's 27 GF labels suppress contradictory wheat/gluten inference but are not represented as cross-contact or broad safety claims. Optional tahini and ice-cream additions are not fixed allergens, and no may-contain claim was invented."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic extraction merged current product pages with still-accessible but superseded 2022 PDFs, collapsed lunch and dinner variants into a generic turkish category, emitted description text and home-page cards as products, and concatenated the historical alcohol menu's Marker’s Mark price with Old Fashioned into one false dessert row.",
+        "The reproducible parser now reads the current menu's category panels and stable product IDs, consolidates only identical product identities across lunch and dinner, preserves all 158 source presentations, verifies the pickup page is a subset, and rejects category/page artifacts.",
+        "The two old PDFs were rendered and visually inspected across all nine pages. They explain historical rows such as Caesar Salad and Carrot Tarator and the alcohol-column artifact, but the current menu index links the live HTML lunch and dinner pages rather than those PDFs, so the PDFs are retained only as historical extraction-path evidence."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "anatolian-home-2026-07-15",
+      "kind": "official_site",
+      "url": "https://anatolianbistro.com/",
+      "attemptedAt": "2026-07-15T05:22:15.402Z",
+      "outcome": "HTTP 200. Confirmed the active Anatolian Bistro identity, 13029 Worldgate Dr address, phone, current site, and links to the restaurant's menu and ordering surfaces.",
+      "notes": []
+    },
+    {
+      "id": "anatolian-current-menu-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://anatolianbistro.com/menu/",
+      "attemptedAt": "2026-07-15T05:22:15.671Z",
+      "outcome": "HTTP 200. The current first-party menu index links the live HTML lunch and dinner catalogs and a separate wine menu. Parsed 77 lunch and 81 dinner presentations from those linked pages.",
+      "notes": []
+    },
+    {
+      "id": "anatolian-pickup-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://anatolianbistro.com/order/",
+      "attemptedAt": "2026-07-15T05:26:36.500Z",
+      "outcome": "HTTP 200. The restaurant-hosted pickup surface exposed 100 unique current product IDs, all of which are present in the 105-product lunch/dinner union; it introduced no extra product identity.",
+      "notes": [
+        "This is restaurant-issued menu corroboration hosted on Anatolian Bistro's own domain, not third-party allergen evidence."
+      ]
+    },
+    {
+      "id": "anatolian-targeted-allergen-search-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://anatolianbistro.com/dinner-menu/",
+      "attemptedAt": "2026-07-15T05:27:00.000Z",
+      "outcome": "Targeted official-domain searches for allergen, allergy, cross-contact, gluten-free, product, and PDF sources returned the current menu and historical menu PDFs but no restaurant-issued allergen matrix, nutrition guide, or cross-contact disclosure.",
+      "notes": []
+    },
+    {
+      "id": "anatolian-historical-pdfs-2026-07-15",
+      "kind": "archive",
+      "url": "https://anatolianbistro.com/wp-content/uploads/2022/09/Dinner.pdf",
+      "attemptedAt": "2026-07-15T05:35:46.458Z",
+      "outcome": "The still-accessible four-page lunch and five-page dinner PDFs were captured, rendered, and visually reviewed. Their older prices and discontinued rows explain the frozen merge, while the historical dinner alcohol page proves that MARKER’S MARK 12 OLD FASHIONED is a two-column extraction artifact rather than a menu item.",
+      "notes": [
+        "The current restaurant menu index does not link these PDFs; they are extraction-history evidence, not the governing current catalog."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "anatolian-frozen-menu-corruption",
+      "severity": "critical",
+      "kind": "menu-artifacts-and-duplicates",
+      "summary": "Thirty-three frozen rows were not valid current products: 14 were stale or duplicate historical rows and 19 were description, heading, navigation, review, source-link, or alcohol-column artifacts.",
+      "evidenceIds": [
+        "official-anatolian-home",
+        "official-anatolian-lunch",
+        "official-anatolian-dinner",
+        "historical-anatolian-lunch-pdf",
+        "historical-anatolian-dinner-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt the catalog from stable current product IDs and retained only the 105 current food and nonalcoholic products."
+    },
+    {
+      "id": "anatolian-current-menu-undercoverage",
+      "severity": "high",
+      "kind": "menu-incomplete",
+      "summary": "The frozen catalog omitted eight current restaurant-issued nonalcoholic beverages and collapsed distinct lunch and dinner products into generic rows.",
+      "evidenceIds": [
+        "official-anatolian-lunch",
+        "official-anatolian-dinner",
+        "official-anatolian-order"
+      ],
+      "resolved": true,
+      "resolution": "Restored all eight beverages and represented all 105 current product identities across their 13 published categories."
+    },
+    {
+      "id": "anatolian-allergen-signal-errors",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Forty-four current frozen rows had incorrect allergen outcomes, including unsupported milk on American Coffee, unsupported shellfish on tilapia and salmon, unsupported fish on a falafel description fragment, omitted fish/shellfish on current seafood, and omitted direct milk, sesame, wheat, or gluten signals.",
+      "evidenceIds": [
+        "official-anatolian-lunch",
+        "official-anatolian-dinner"
+      ],
+      "resolved": true,
+      "resolution": "Recomputed only direct positive first-party signals, retained insufficient rows as unavailable, and added no negative or may-contain claims."
+    },
+    {
+      "id": "anatolian-gf-and-optional-semantics",
+      "severity": "high",
+      "kind": "source-semantics-error",
+      "summary": "The frozen merge duplicated current GF products under unlabelled historical names, asserted wheat/gluten on an old White Rice row, and did not reliably distinguish item-specific GF labels or optional add-ons from fixed allergens.",
+      "evidenceIds": [
+        "official-anatolian-lunch",
+        "official-anatolian-dinner",
+        "historical-anatolian-lunch-pdf",
+        "historical-anatolian-dinner-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Preserved the restaurant's 27 current GF labels without broadening them to cross-contact assurances, removed unlabelled duplicates, and excluded optional tahini and ice-cream additions from fixed signals."
+    },
+    {
+      "id": "anatolian-historical-current-source-merge",
+      "severity": "high",
+      "kind": "source-currentness-error",
+      "summary": "The extraction path combined superseded 2022 PDF rows with the current HTML catalog and failed to respect the current menu index as the governing source surface.",
+      "evidenceIds": [
+        "official-anatolian-menu-index",
+        "historical-anatolian-lunch-pdf",
+        "historical-anatolian-dinner-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Made the current linked HTML lunch and dinner pages authoritative and retained the old PDFs only as hashed historical evidence."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "anatolian-current-catalog-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt Anatolian Bistro from its current first-party lunch, dinner, and pickup surfaces; reconciled every frozen row; corrected current allergen semantics; and preserved the historical PDFs only as extraction-path evidence.",
+      "files": [
+        "scripts/pipeline/anatolian-bistro-audit-catalog.mjs",
+        "scripts/pipeline/anatolian-bistro-audit-catalog.test.mjs",
+        "scripts/pipeline/anatolian-bistro-audit-reconciliation.mjs",
+        "scripts/pipeline/anatolian-bistro-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/osm-anatolian-bistro-6230019077/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/anatolian-bistro-audit-catalog.test.mjs scripts/pipeline/anatolian-bistro-audit-reconciliation.test.mjs",
+        "node scripts/pipeline/anatolian-bistro-audit-catalog.mjs",
+        "node scripts/pipeline/anatolian-bistro-audit-reconciliation.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=osm-anatolian-bistro-6230019077 node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 94c6b01502dd43438123b53011243714d4278faea4760e2b3a234f8cd8a37ba1.",
+    "Current lunch artifact SHA-256: 2e0c20bcf31fd5ffc6176fbdce9d9bde04899968357bee306904fbe7f4044363.",
+    "Current dinner artifact SHA-256: 0995cbcd0bdcfea5bb7214e3cf2e4ce41bfbb9e4ea28df80815c140ef3b3491c.",
+    "Current pickup artifact SHA-256: 05e8e820d5cbb556cb47fcf7778745c107405868bcf0b1324737d2146163eb89.",
+    "Historical lunch PDF SHA-256: e877acbb440f75ac4b535204a495db558486adaa2894c5a732aaea8657520970.",
+    "Historical dinner PDF SHA-256: 55711b162776196845b1cbe330ed55422d58153b66248fa79ea5a3b316c9c459.",
+    "Frozen live target SHA-256 before repair: 614dea50eaa39374560798edeed207147281130bcdcc1c920eccc728a339b34f.",
+    "Live target SHA-256 after repair: 85892f13ab30ec432d646613028a35f26ab4e286422519fdfb29ff569f813d15.",
+    "Live non-target restaurant projection SHA-256 remained b5baa64eb225102881d83f4c0005c36a7ffe2f291b4741d94ee092db5b80c53e.",
+    "A second target-only repair run produced the same target hash and exactly one Anatolian Bistro repair note.",
+    "The repaired repository contains 113754 live menu items; the top-level historical itemCount field was intentionally not used as verification evidence."
+  ]
+}

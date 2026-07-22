@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "amparo-fondita-dc",
+  "name": "Amparo Fondita",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T02:36:47.502Z",
+  "updatedAt": "2026-07-15T03:02:48.200Z",
+  "completedAt": "2026-07-15T03:02:48.200Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 6,
+      "sourceItemCount": 88,
+      "notes": [
+        "Every one of the six frozen rows was reconciled against the current restaurant-issued on-page tasting image and all 91 presentations in the current exact-address restaurant-linked Toast catalog.",
+        "Three frozen formulations remain current; Aguachile de Naranja, Palmiitos con Chayote, and Halibut en Mole Coloradito belong only to the older contradictory PDF and were removed as stale.",
+        "The corrected catalog contains 88 current formulations across 97 published presentations and 13 categories. It restores 85 current formulations omitted by the frozen six-row record and keeps Bebidas, Sake, and Cocktails last.",
+        "Four exact duplicate Toast presentations, two obvious Toast naming aliases, and three cross-surface tasting/Toast overlaps were consolidated without dropping any source presentation.",
+        "Three Toast description-only blocks lacked item names; they were preserved as source anomalies and not invented as products."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Neither the old PDF nor the current tasting image is an allergen menu. The frozen official-allergen-menu classification was false even where its positive allergen set happened to be correct.",
+        "Six current on-page tasting formulations have restaurant-issued positive ingredient or unambiguous formulation signals and are labeled official-ingredients; 82 formulations remain officially unavailable.",
+        "Current linked Toast descriptions are retained only as restaurant-linked-vendor evidence and separately labeled Ingredient Intelligence, never promoted to restaurant-issued allergen claims.",
+        "No current complete allergen matrix, item-level may-contain disclosure, shared-equipment statement, or negative safety assurance was found. The page's dietary-restrictions/server-alert language is not converted into cross-contact data."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen extraction followed a still-linked but visually stale PDF, ignored the contradictory current on-page tasting image, omitted the current restaurant-linked operational catalog, and mislabeled dish descriptions as an official allergen menu.",
+        "The repair parses every current Toast item presentation, stock state, category, vendor ID, available description, price, and configuration marker from a hash-pinned mirror of the browser-readable direct page, then merges the reviewed current tasting image by canonical formulation.",
+        "Ingredient Intelligence was reviewed item by item. Narrow overrides remove Niman Ranch dressing and oat-milk dairy false positives, preserve explicit egg/cheese cues, keep probable panko at medium confidence, and translate unambiguous Spanish fish/shellfish names without changing official authority.",
+        "Fourteen focused tests pass; the target-only repair is idempotent at SHA-256 0214853ff1149136feb0d34b0b8348b99de6d0dfebe79e88cc7a96c6ac4b8036 and preserves all 1,494 non-target restaurants at SHA-256 f12c8817660fe743c787c67e2f6a7c6090e0473cb9b93221f733062abad2765e."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-current-site-review",
+      "kind": "official_site",
+      "url": "https://amparofondita.com/",
+      "attemptedAt": "2026-07-15T02:38:53.643Z",
+      "outcome": "Captured the current identity page and current menu navigation, confirming 2002 P St NW, phone 202-621-8166, and the restaurant-linked Toast ordering destination.",
+      "notes": []
+    },
+    {
+      "id": "current-tasting-and-pdf-review",
+      "kind": "official_site",
+      "url": "https://amparofondita.com/tasting-menu",
+      "attemptedAt": "2026-07-15T02:39:52.495Z",
+      "outcome": "Captured and visually reviewed the current on-page winter tasting image and the page's linked one-page PDF; the documents publish different six-course menus.",
+      "notes": [
+        "The current on-page image is used for current formulations. The older PDF is retained as stale source-history evidence."
+      ]
+    },
+    {
+      "id": "linked-toast-current-review",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/amparo-fondita-2002-p-street-northwest",
+      "attemptedAt": "2026-07-15T02:41:10.104Z",
+      "outcome": "Browser review and a hash-pinned transport mirror exposed 91 current exact-address item presentations across Dinner, Amparo's Masa, and Bar; direct ledger and curl retrieval returned HTTP 403.",
+      "notes": [
+        "The direct browser-readable page remains restaurant-linked-vendor authority; the mirror is third-party transport evidence only."
+      ]
+    },
+    {
+      "id": "uber-current-corroboration",
+      "kind": "third_party",
+      "url": "https://www.ubereats.com/store/amparo-fondita/Bzvkos1TT7ag4NX_bE7g5Q",
+      "attemptedAt": "2026-07-15T02:40:31.000Z",
+      "outcome": "Browser-readable exact-address Uber Eats page corroborated the active Toast categories and core current formulations; direct ledger retrieval returned HTTP 403.",
+      "notes": [
+        "Used as corroboration only, never official allergen evidence."
+      ]
+    },
+    {
+      "id": "conflicting-sample-menu-review",
+      "kind": "official_site",
+      "url": "https://amparofondita.com/menu",
+      "attemptedAt": "2026-07-15T02:39:51.910Z",
+      "outcome": "Captured and visually reviewed six sample menu images from a publicly accessible but currently unlinked page; the image set conflicts with the current operational catalog and on-page tasting image.",
+      "notes": [
+        "Retained as source history, not used to expand the current catalog or make current allergen claims."
+      ]
+    },
+    {
+      "id": "allergen-source-search",
+      "kind": "targeted_search",
+      "url": "https://amparofondita.com/",
+      "attemptedAt": "2026-07-15T02:42:00.000Z",
+      "outcome": "Reviewed the current official pages, current image menus, linked ordering catalog, targeted web results, and corroborating exact-address vendor page; no current restaurant-issued allergen matrix or item-level cross-contact disclosure was found.",
+      "notes": [
+        "Server-alert and dietary-restriction language is not a may-contain statement."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "amparo-stale-pdf-seeded-current-app",
+      "severity": "critical",
+      "kind": "source_freshness",
+      "summary": "The frozen six-row app catalog came from an older tasting PDF that the current page still links even though its on-page tasting image now publishes a different menu.",
+      "evidenceIds": [
+        "official-tasting-menu",
+        "official-tasting-image",
+        "official-tasting-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Quarantined the contradictory PDF as stale history, removed its three obsolete-only dishes, and used the current on-page image plus current linked operational catalog."
+    },
+    {
+      "id": "amparo-menu-severely-incomplete",
+      "severity": "high",
+      "kind": "menu_incomplete",
+      "summary": "The frozen record contained six tasting courses and omitted 85 formulations from the current 88-formulation catalog.",
+      "evidenceIds": [
+        "official-tasting-image",
+        "toast-browser-review",
+        "toast-current-menu-mirror"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 88 formulations from all 97 current source presentations across 13 categories, restoring every omitted formulation and preserving presentation provenance."
+    },
+    {
+      "id": "amparo-false-official-allergen-menu-semantics",
+      "severity": "high",
+      "kind": "allergen_source_misclassification",
+      "summary": "All six frozen rows were labeled official-allergen-menu even though the cited source only published dish descriptions and no allergen matrix.",
+      "evidenceIds": [
+        "official-tasting-pdf",
+        "official-tasting-image",
+        "official-tasting-menu"
+      ],
+      "resolved": true,
+      "resolution": "Removed the false matrix classification, limited official-ingredients to six current positive formulations, left 82 rows officially unavailable, and invented no negative or cross-contact claims."
+    },
+    {
+      "id": "amparo-conflicting-official-menu-surfaces",
+      "severity": "high",
+      "kind": "source_conflict",
+      "summary": "The official domain exposes a current on-page tasting image, an older linked PDF, and a separate unlinked six-image sample menu that conflict with one another and the current operational catalog.",
+      "evidenceIds": [
+        "official-menu-hub",
+        "official-menu-image-page-1",
+        "official-menu-image-page-2",
+        "official-tasting-menu",
+        "official-tasting-image",
+        "official-tasting-pdf",
+        "toast-browser-review"
+      ],
+      "resolved": true,
+      "resolution": "Applied freshness and navigability boundaries: current linked Toast plus the current on-page tasting image define the working catalog; contradictory unlinked/old documents remain source history only."
+    },
+    {
+      "id": "amparo-generic-extraction-path-lost-current-sources",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "The generic frozen path selected the stale PDF, omitted the linked Toast catalog and new tasting image, and promoted ingredient descriptions to official allergen-menu status.",
+      "evidenceIds": [
+        "official-tasting-menu",
+        "official-tasting-image",
+        "toast-browser-review",
+        "toast-current-menu-mirror"
+      ],
+      "resolved": true,
+      "resolution": "Added a guarded reviewed parser/manifest that parses all Toast presentations, merges the current image fixture, enforces source authority, consolidates variants, and passes focused verification."
+    },
+    {
+      "id": "amparo-ingredient-intelligence-semantics",
+      "severity": "medium",
+      "kind": "allergen_inference",
+      "summary": "Generic Ingredient Intelligence treated Niman Ranch as ranch dressing, oat milk as dairy, and explicit egg batter as necessarily wheat while missing several unambiguous Spanish seafood and quesillo cues.",
+      "evidenceIds": [
+        "toast-browser-review",
+        "toast-current-menu-mirror"
+      ],
+      "resolved": true,
+      "resolution": "Added narrow reviewed inference corrections without promoting any linked-vendor clue to official authority."
+    },
+    {
+      "id": "amparo-address-metadata",
+      "severity": "medium",
+      "kind": "identity_metadata",
+      "summary": "The frozen generated record omitted Amparo Fondita's current street address.",
+      "evidenceIds": [
+        "official-home",
+        "toast-browser-review"
+      ],
+      "resolved": true,
+      "resolution": "Set the display address to 2002 P St NW, Washington, DC 20036."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "amparo-current-catalog-source-and-inference-repair",
+      "status": "verified",
+      "summary": "Quarantined the contradictory old PDF; removed three stale rows; restored 85 omitted formulations; produced an 88-formulation, 97-presentation current catalog with beverages last; corrected all six frozen source semantics; limited official positive signals to six current on-page courses; kept 82 rows officially unavailable; and corrected narrow Ingredient Intelligence edge cases.",
+      "files": [
+        "data/fixtures/amparo-fondita-current-tasting-menu.json",
+        "scripts/pipeline/amparo-fondita-audit-catalog.mjs",
+        "scripts/pipeline/amparo-fondita-audit-catalog.test.mjs",
+        "scripts/pipeline/amparo-fondita-audit-reconciliation.mjs",
+        "scripts/pipeline/amparo-fondita-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json",
+        "data/restaurant-verification/repairs/amparo-fondita-dc/corrected-menu.json",
+        "data/restaurant-verification/item-checks/amparo-fondita-dc.jsonl"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/amparo-fondita-dc/official-home.html",
+        "data/restaurant-verification/artifacts/amparo-fondita-dc/official-menu-hub.html",
+        "data/restaurant-verification/artifacts/amparo-fondita-dc/official-tasting-menu.html",
+        "data/restaurant-verification/artifacts/amparo-fondita-dc/official-tasting-image.png",
+        "data/restaurant-verification/artifacts/amparo-fondita-dc/official-tasting-pdf.pdf",
+        "data/restaurant-verification/artifacts/amparo-fondita-dc/toast-current-menu-mirror.txt",
+        "data/fixtures/amparo-fondita-current-tasting-menu.json",
+        "data/restaurant-verification/repairs/amparo-fondita-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/amparo-fondita-audit-catalog.test.mjs scripts/pipeline/amparo-fondita-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=amparo-fondita-dc node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Current address: 2002 P St NW, Washington, DC 20036.",
+    "Corrected snapshot SHA-256: 9a961f9347cf34b8887d459a3060ad0b62c31385987339db9d96d86d1158f9fb.",
+    "Reviewed current tasting fixture SHA-256: 163c7ea657f649e45479ab427067a6c74340dd02ed59314e0319738964abbf13.",
+    "Target generated SHA-256 after two identical target-only repairs: 0214853ff1149136feb0d34b0b8348b99de6d0dfebe79e88cc7a96c6ac4b8036.",
+    "All 1,494 non-target restaurants remained unchanged at SHA-256 f12c8817660fe743c787c67e2f6a7c6090e0473cb9b93221f733062abad2765e.",
+    "No safe dedicated audit worktree exists because the checkout remains dirty, so no checkpoint commit was created."
+  ]
+}

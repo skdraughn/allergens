@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "replacement-amelie-dc-bistro-and-wine-bar-washington-dc",
+  "name": "Amélie DC Bistro & Wine Bar",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T02:07:35.764Z",
+  "updatedAt": "2026-07-15T02:31:00.000Z",
+  "completedAt": "2026-07-15T02:31:00.000Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 48,
+      "sourceItemCount": 43,
+      "notes": [
+        "All 48 frozen rows were adjudicated: 29 exact matches, 13 normalized matches, four variant matches, and two stale rows.",
+        "The current restaurant-issued surfaces contain 99 food presentations, collapsed without loss of source traceability into 43 formulations across seven categories.",
+        "Six current formulations omitted from the frozen record were restored: Plateau Apéro, Maryland Seared Monkfish, Extra Breadbasket, the expanded side bundle, Banana Crème Brûlée, and Vanilla Crème Brûlée."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Thirty-five current formulations have positive signals supported by direct restaurant-menu ingredient terms or unambiguous formulation identity; eight remain unavailable because the restaurant does not disclose enough fixed ingredient detail.",
+        "The menus are not complete allergen matrices: absent ingredients are not negative assurances, and the server-alert instruction is not a may-contain or cross-contact statement.",
+        "The repair corrects 21 frozen allergen results: 20 underreported formulations and one overreported Grilled Octopus milk signal. All 43 current rows retain empty mayContain arrays."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "Reviewed restaurant identity, all four current menu surfaces, alcohol-only exclusions, 99 extracted presentations, consolidation into 43 formulations, every frozen item mapping, direct positive allergen semantics, unavailable semantics, and final generated fields.",
+        "Eleven focused tests pass; five captured artifact hashes match; all 48 item evidence references resolve; and the generated target matches the reviewed snapshot on every core menu and allergen field.",
+        "The target-only repair is idempotent at SHA-256 afa2165cdb506ca325cbfb34ef8e343f2b2aee6fb69b14f3a852d16b0084fbe9 and preserved all 1,494 non-target restaurants at SHA-256 20adb3d1b56b18a0b5b1b18fd0d770fbdf021367604c5231e77de4fa3ace3341."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-current-menu-surfaces",
+      "kind": "official_site",
+      "url": "https://www.ameliedc.com/",
+      "attemptedAt": "2026-07-15T02:08:11.879Z",
+      "outcome": "captured the current home, lunch, dinner, brunch, and happy-hour pages; parsed 99 food presentations into 43 formulations",
+      "notes": [
+        "All five responses returned HTTP 200 and are hash-pinned in the evidence ledger."
+      ]
+    },
+    {
+      "id": "official-allergen-source-search",
+      "kind": "targeted_search",
+      "url": "https://www.ameliedc.com/",
+      "attemptedAt": "2026-07-15T02:08:13.033Z",
+      "outcome": "no separate restaurant-issued allergen guide, matrix, or item-level cross-contact disclosure located",
+      "notes": [
+        "Each menu asks guests to alert a server about allergies; that instruction is not promoted to a may-contain signal."
+      ]
+    },
+    {
+      "id": "current-menu-reconciliation",
+      "kind": "linked_source",
+      "url": "https://www.ameliedc.com/dinner",
+      "attemptedAt": "2026-07-15T02:15:00.000Z",
+      "outcome": "reconciled all 48 frozen rows against every current restaurant-issued presentation and identified 2 stale rows, 6 omitted formulations, and 21 allergen mismatches",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "amelie-menu-drift-and-duplication",
+      "severity": "high",
+      "kind": "menu_incomplete",
+      "summary": "The frozen 48-row record mixed surface duplicates and spelling or pricing variants, retained two stale formulations, and omitted six current formulations.",
+      "evidenceIds": [
+        "official-lunch",
+        "official-dinner",
+        "official-brunch",
+        "official-happy-hour"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the frozen rendering with 43 current formulations across 99 retained presentations; consolidated spelling, service, and pricing variants; removed both stale rows; and restored all six omitted formulations."
+    },
+    {
+      "id": "amelie-allergen-result-mismatches",
+      "severity": "high",
+      "kind": "allergen_extraction",
+      "summary": "Twenty-one frozen allergen results differed from the current menu evidence: 20 underreported positive signals and one overreported signal.",
+      "evidenceIds": [
+        "official-lunch",
+        "official-dinner",
+        "official-brunch",
+        "official-happy-hour"
+      ],
+      "resolved": true,
+      "resolution": "Corrected all 21 mismatches in the reviewed snapshot: 20 underreported positive signals and the single unsupported dairy signal on Grilled Octopus."
+    },
+    {
+      "id": "amelie-current-formulation-replacements",
+      "severity": "high",
+      "kind": "source_freshness",
+      "summary": "Maryland Rockfish and Local Roasted Chicken are absent from the current dinner menu, which instead publishes Maryland Seared Monkfish and Roasted Lemon Chicken.",
+      "evidenceIds": [
+        "official-dinner"
+      ],
+      "resolved": true,
+      "resolution": "Removed Maryland Rockfish, published Maryland Seared Monkfish, and mapped the former Local Roasted Chicken row to the current Roasted Lemon Chicken formulation."
+    },
+    {
+      "id": "amelie-server-alert-semantics",
+      "severity": "high",
+      "kind": "source_semantics",
+      "summary": "The restaurant instructs guests to alert a server about allergies, but that is not an item-level allergen matrix or a cross-contact disclosure.",
+      "evidenceIds": [
+        "official-lunch",
+        "official-dinner",
+        "official-brunch",
+        "official-happy-hour"
+      ],
+      "resolved": true,
+      "resolution": "Kept the server-alert language as a source warning only; every mayContain array remains empty because no item-level cross-contact statement was published."
+    },
+    {
+      "id": "amelie-creamy-octopus-false-dairy",
+      "severity": "high",
+      "kind": "allergen_inference",
+      "summary": "The frozen Grilled Octopus row carried milk even though the current formulation supports shellfish only; generic creamy-equals-dairy inference created an unsupported contains claim.",
+      "evidenceIds": [
+        "official-lunch",
+        "official-dinner"
+      ],
+      "resolved": true,
+      "resolution": "Set Grilled Octopus to shellfish only and removed the unsupported milk contains claim."
+    },
+    {
+      "id": "amelie-address-metadata",
+      "severity": "medium",
+      "kind": "identity_metadata",
+      "summary": "The frozen record did not carry the complete current street address.",
+      "evidenceIds": [
+        "official-home"
+      ],
+      "resolved": true,
+      "resolution": "Set the current display address to 1315 14th St NW, Washington, DC 20005."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "amelie-current-menu-and-allergen-repair",
+      "status": "verified",
+      "summary": "Replaced 48 duplicate and stale frozen rows with 43 current formulations across 99 source presentations; removed two stale formulations, restored six omitted formulations, consolidated variants, corrected 21 allergen results, preserved eight unavailable rows, and prevented the server-alert notice from becoming a cross-contact claim.",
+      "files": [
+        "scripts/pipeline/amelie-dc-audit-catalog.mjs",
+        "scripts/pipeline/amelie-dc-audit-catalog.test.mjs",
+        "scripts/pipeline/amelie-dc-audit-reconciliation.mjs",
+        "scripts/pipeline/amelie-dc-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json",
+        "data/restaurant-verification/repairs/replacement-amelie-dc-bistro-and-wine-bar-washington-dc/corrected-menu.json",
+        "data/restaurant-verification/item-checks/replacement-amelie-dc-bistro-and-wine-bar-washington-dc.jsonl"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/replacement-amelie-dc-bistro-and-wine-bar-washington-dc/official-home.html",
+        "data/restaurant-verification/artifacts/replacement-amelie-dc-bistro-and-wine-bar-washington-dc/official-lunch.html",
+        "data/restaurant-verification/artifacts/replacement-amelie-dc-bistro-and-wine-bar-washington-dc/official-dinner.html",
+        "data/restaurant-verification/artifacts/replacement-amelie-dc-bistro-and-wine-bar-washington-dc/official-brunch.html",
+        "data/restaurant-verification/artifacts/replacement-amelie-dc-bistro-and-wine-bar-washington-dc/official-happy-hour.html"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/amelie-dc-audit-catalog.test.mjs scripts/pipeline/amelie-dc-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=replacement-amelie-dc-bistro-and-wine-bar-washington-dc node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Current address: 1315 14th St NW, Washington, DC 20005.",
+    "The current pages contain 99 food presentations, consolidated to 43 formulations across seven categories.",
+    "No safe dedicated audit worktree exists because the checkout remains dirty, so no checkpoint commit was created."
+  ]
+}

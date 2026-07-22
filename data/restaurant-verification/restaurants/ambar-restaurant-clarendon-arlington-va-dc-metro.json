@@ -1,0 +1,209 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "ambar-restaurant-clarendon-arlington-va-dc-metro",
+  "name": "AMBAR Restaurant, Clarendon",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T01:25:01.954Z",
+  "updatedAt": "2026-07-15T01:58:34.551Z",
+  "completedAt": "2026-07-15T01:58:34.551Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 39,
+      "sourceItemCount": 98,
+      "notes": [
+        "All 39 frozen rows were adjudicated: 15 exact matches, 13 normalized matches, five service/formulation variants, five stale extras, and one descriptionless parser artifact.",
+        "The current asserted catalog contains 98 food and nonalcoholic formulations across 238 source presentations; 33 current formulations match frozen rows and 65 were omitted from the frozen catalog.",
+        "Alcohol-only rows and unique legacy dishes absent from the current May/June 2026 menu surfaces were excluded."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Sixty-four current formulations have direct restaurant-issued D/G/N/SF/E/S item labels, ten have fixed positive signals from restaurant-issued ingredient wording, and 24 remain unavailable from restaurant-issued evidence.",
+        "Twenty-three frozen rows had allergen mismatches: 20 underreported supported allergens, two mixed omitted and invented signals, and one overreported signal.",
+        "The manufacturer ingredient page for Heineken 0.0 supports an Ingredient Intelligence gluten signal from barley malt but is not promoted to restaurant-issued allergen evidence; no wheat signal is asserted from barley."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "Reviewed Clarendon identity and address, current menu-surface selection, all current PDF legends, asterisk modification semantics, the mislabeled allergy wrapper, current/legacy joins, service-presentation consolidation, alcohol exclusions, generic-crawler artifacts, and final generated fields.",
+        "Nine focused catalog/reconciliation tests pass. All 22 captured artifact hashes match, and every item-level evidence id resolves.",
+        "The target-only repair is idempotent at target SHA-256 215e4bc1d39efd188d26fd1c5732c64e3171ea63a6903ce85379944ec4541d8c and preserved all 1,494 non-target restaurants at SHA-256 3b0c05cd0d8590a3627862663378306d9fa9fa4ee7c455b5b8e2d49badd0c915."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-location-current",
+      "kind": "official_site",
+      "url": "https://ambarrestaurant.com/ambarclarendon",
+      "attemptedAt": "2026-07-15T01:45:06.197Z",
+      "outcome": "captured_current_location_identity_and_address",
+      "notes": []
+    },
+    {
+      "id": "official-menu-index-current",
+      "kind": "official_site",
+      "url": "https://ambarrestaurant.com/page/clarendon-menus",
+      "attemptedAt": "2026-07-15T01:45:06.197Z",
+      "outcome": "captured_current_public_menu_surface_index",
+      "notes": []
+    },
+    {
+      "id": "official-ordering-current",
+      "kind": "ordering_vendor",
+      "url": "https://ambarrestaurant.com/menu/ambarclarendon",
+      "attemptedAt": "2026-07-15T01:45:06.197Z",
+      "outcome": "captured_location_specific_current_ordering_catalog",
+      "notes": []
+    },
+    {
+      "id": "official-allergen-search",
+      "kind": "targeted_search",
+      "url": "https://ambarrestaurant.com/page/clarendon-allergy-brunch-menu",
+      "attemptedAt": "2026-07-15T01:45:06.197Z",
+      "outcome": "located_mislabeled_lunch_dinner_free_from_pdf;_not_used_as_brunch_evidence",
+      "notes": []
+    },
+    {
+      "id": "manufacturer-heineken",
+      "kind": "linked_source",
+      "url": "https://www.heineken.com/us/en/our-beers/heineken-0-0",
+      "attemptedAt": "2026-07-15T01:45:06.197Z",
+      "outcome": "captured_manufacturer_ingredient_page_for_current_non_alcoholic_product",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "clarendon-generic-crawl-incomplete-and-polluted",
+      "severity": "high",
+      "kind": "menu_incomplete",
+      "summary": "The frozen generic crawl mixed broad and stale surfaces, emitted one descriptionless child row, retained five stale formulations, and omitted 65 current Clarendon formulations.",
+      "evidenceIds": [
+        "official-menu-index",
+        "official-online-menu",
+        "official-a-la-carte-pdf",
+        "official-unlimited-brunch-pdf",
+        "official-unlimited-lunch-pdf",
+        "official-unlimited-dinner-pdf",
+        "official-desserts-pdf",
+        "official-drinks-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 98 current food and nonalcoholic formulations across 238 source presentations; removed one parser artifact and five stale rows."
+    },
+    {
+      "id": "clarendon-twenty-three-frozen-allergen-mismatches",
+      "severity": "high",
+      "kind": "allergen_mismatch",
+      "summary": "Twenty-three frozen rows disagreed with current evidence: 20 underreported supported allergens, two mixed omitted and invented signals, and one overreported signal; Mushroom Pizza falsely mapped oyster mushroom to shellfish while omitting milk, wheat, and gluten.",
+      "evidenceIds": [
+        "official-online-menu",
+        "official-a-la-carte-pdf",
+        "official-unlimited-brunch-pdf",
+        "official-unlimited-lunch-pdf",
+        "official-unlimited-dinner-pdf",
+        "official-desserts-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the frozen rows with current formulations, removed invented milk and shellfish signals, and added only allergens supported by direct current labels or current item wording."
+    },
+    {
+      "id": "clarendon-direct-label-semantics",
+      "severity": "high",
+      "kind": "source_semantics",
+      "summary": "The current menus use D=dairy, G=gluten, N=nuts, SF=shellfish, E=eggs, and S=sesame; an asterisk means the allergen can be modified, not that it is absent. Missing codes do not establish freedom from allergens outside the six-code legend.",
+      "evidenceIds": [
+        "official-a-la-carte-pdf",
+        "official-unlimited-brunch-pdf",
+        "official-unlimited-lunch-pdf",
+        "official-unlimited-dinner-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Kept starred allergens in default formulations, added wheat only where the formulation identifies wheat food, and never inverted absent codes into contains, free-from, or cross-contact claims."
+    },
+    {
+      "id": "clarendon-allergy-brunch-wrapper-mislabeled",
+      "severity": "medium",
+      "kind": "source_semantics",
+      "summary": "The official page labeled Clarendon Allergy Brunch links a PDF titled and populated as Allergy Capitol and Clarendon - Lunch and Dinner.",
+      "evidenceIds": [
+        "official-allergy-brunch-page",
+        "official-allergy-brunch-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Did not use the linked PDF as brunch evidence; used it only as a supplemental semantics check for still-current matching lunch/dinner formulations and recorded the configured-source warning."
+    },
+    {
+      "id": "clarendon-manufacturer-evidence-authority",
+      "severity": "high",
+      "kind": "source_authority",
+      "summary": "Heineken's manufacturer page identifies barley malt, but manufacturer evidence cannot be represented as restaurant-issued allergen evidence, and the generic Ingredient Intelligence alias incorrectly inferred wheat from barley.",
+      "evidenceIds": [
+        "official-drinks-pdf",
+        "manufacturer-heineken-0-0"
+      ],
+      "resolved": true,
+      "resolution": "Kept the restaurant's product identity separate from the manufacturer ingredient disclosure; represented gluten only as Ingredient Intelligence, left restaurant allergen status unavailable, and suppressed the false wheat inference."
+    },
+    {
+      "id": "clarendon-address-truncated",
+      "severity": "medium",
+      "kind": "identity_metadata",
+      "summary": "The frozen record displayed only Arlington, VA instead of the current Clarendon street address.",
+      "evidenceIds": [
+        "official-location"
+      ],
+      "resolved": true,
+      "resolution": "Set the display address to 2901 Wilson Blvd, Arlington, VA 22201 and the guide to the current Clarendon menu index."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "ambar-clarendon-complete-current-catalog",
+      "status": "verified",
+      "summary": "Replaced the polluted 39-row crawl with 98 current Clarendon food and nonalcoholic formulations across 238 source presentations; corrected 23 frozen allergen results, removed one parser artifact and five stale rows, restored 65 omitted formulations, and preserved manufacturer evidence as Ingredient Intelligence.",
+      "files": [
+        "scripts/pipeline/ambar-clarendon-audit-catalog.mjs",
+        "scripts/pipeline/ambar-clarendon-audit-catalog.test.mjs",
+        "scripts/pipeline/ambar-clarendon-audit-reconciliation.mjs",
+        "scripts/pipeline/ambar-clarendon-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json",
+        "data/restaurant-verification/repairs/ambar-restaurant-clarendon-arlington-va-dc-metro/corrected-menu.json",
+        "data/restaurant-verification/item-checks/ambar-restaurant-clarendon-arlington-va-dc-metro.jsonl"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/ambar-restaurant-clarendon-arlington-va-dc-metro/official-a-la-carte-pdf.pdf",
+        "data/restaurant-verification/artifacts/ambar-restaurant-clarendon-arlington-va-dc-metro/official-unlimited-brunch-pdf.pdf",
+        "data/restaurant-verification/artifacts/ambar-restaurant-clarendon-arlington-va-dc-metro/official-unlimited-lunch-pdf.pdf",
+        "data/restaurant-verification/artifacts/ambar-restaurant-clarendon-arlington-va-dc-metro/official-unlimited-dinner-pdf.pdf",
+        "data/restaurant-verification/artifacts/ambar-restaurant-clarendon-arlington-va-dc-metro/official-desserts-pdf.pdf",
+        "data/restaurant-verification/artifacts/ambar-restaurant-clarendon-arlington-va-dc-metro/official-drinks-pdf.pdf",
+        "data/restaurant-verification/artifacts/ambar-restaurant-clarendon-arlington-va-dc-metro/official-online-menu.html",
+        "data/restaurant-verification/artifacts/ambar-restaurant-clarendon-arlington-va-dc-metro/manufacturer-heineken-0-0.html"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/ambar-clarendon-audit-catalog.test.mjs scripts/pipeline/ambar-clarendon-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=ambar-restaurant-clarendon-arlington-va-dc-metro node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Current address: 2901 Wilson Blvd, Arlington, VA 22201.",
+    "Current a-la-carte, lunch, and dinner PDFs were created June 23, 2026; brunch, desserts, drinks, and happy-hour PDFs were created May 11, 2026.",
+    "The older vegan/vegetarian guide remains in the sitemap but is absent from the current menu index; unique legacy dishes were excluded.",
+    "No safe dedicated audit worktree exists because the checkout remains dirty, so no checkpoint commit was created."
+  ]
+}

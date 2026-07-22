@@ -1,0 +1,34 @@
+{
+  "repairs": [
+    {
+      "id": "rebuild-augies-alexandria-current-catalog",
+      "status": "implemented",
+      "summary": "Scoped the source registry to Alexandria; rebuilt 122 current food and nonalcoholic products across 12 sections; removed six fragments and nine Annapolis-only rows; consolidated repeated owner, Toast, brunch, and late-night presentations; restored 71 omitted products; applied the global gluten cross-contact warning; and introduced restaurant-linked source types so Toast evidence is not mislabeled official.",
+      "files": [
+        "scripts/dc-metro-expansion-sources.mjs",
+        "scripts/pipeline/augies-alexandria-audit-catalog.mjs",
+        "scripts/pipeline/augies-alexandria-audit-catalog.test.mjs",
+        "scripts/pipeline/augies-alexandria-audit-reconciliation.mjs",
+        "scripts/pipeline/augies-alexandria-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs",
+        "src/data/restaurants.ts",
+        "src/components/menu-item-details-modal.tsx"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/augie-s-mussel-house-and-beer-garden-alexandria-va-dc-metro/source-manifest.json",
+        "data/restaurant-verification/repairs/augie-s-mussel-house-and-beer-garden-alexandria-va-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/augies-alexandria-audit-catalog.test.mjs scripts/pipeline/augies-alexandria-audit-reconciliation.test.mjs",
+        "node --test --test-name-pattern=\"Augie's Alexandria\" scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Targeted catalog and frozen-reconciliation tests passed: 8/8.",
+    "Targeted generated-data regression passed: 1/1.",
+    "The first generated regression exposed three verified mocktails being rejected by a generic drink-only classifier; a restaurant-scoped exception now preserves the current nonalcoholic rows."
+  ],
+  "status": "repair_in_progress"
+}

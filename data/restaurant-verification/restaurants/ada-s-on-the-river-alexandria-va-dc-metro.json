@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "ada-s-on-the-river-alexandria-va-dc-metro",
+  "name": "Ada's on the River",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T20:00:15.325Z",
+  "updatedAt": "2026-07-14T20:13:26.383Z",
+  "completedAt": "2026-07-14T20:13:26.383Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 49,
+      "sourceItemCount": 99,
+      "notes": [
+        "Every frozen row was reconciled against Ada's current restaurant-issued structured dinner, seafood-bar, lunch, brunch, dessert, social-hour, and beverage menus, with the restaurant-linked Toast pickup surface used only as corroborating third-party evidence.",
+        "The corrected allergen-focused catalog contains 99 distinct current products across 18 real categories after consolidating duplicate meal-period presentations; it retains 89 positive published-signal rows and leaves 10 rows unavailable.",
+        "The frozen 49-row pickup subset retained 45 current or renamed products, three stale kids products, and one optional sauce incorrectly flattened as a standalone item. It omitted 54 current distinct products, collapsed every category to American, and repeatedly shifted neighboring product names into variantGroup.",
+        "Alcohol-only cocktails, beer, wine, and whiskey remain outside this allergen-focused catalog. Six zero-proof products and Heineken 0.0 are retained after all food and dessert rows."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Ada's publishes current item descriptions and defines V as vegetarian that may include egg or dairy and G as gluten free, but it publishes no complete allergen matrix, complete recipes, or cross-contact guide.",
+        "V and G are not converted into positive allergen claims. Positive fields come only from fixed published ingredients, named fish or shellfish species, and mandatory food formats; optional salad proteins, substitutions, and modifier sauces are excluded.",
+        "Coconut is not promoted to tree nut. The asparagus therefore carries fixed milk and egg from white-chocolate béarnaise, not the frozen tree-nut claim. Ginger beer is not treated as gluten-bearing beer.",
+        "Twenty-five of the 45 surviving frozen rows had incorrect allergen fields: 22 underreported positive signals, two were mixed over/understatements, and one overreported an unsupported signal."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic Toast extraction was stale and flattened, used a fake American category, and populated variantGroup from adjacent product names rather than real option semantics.",
+        "The official website's current JavaScript loader fetches the retained /wp-json/api/v1/get_menus endpoint. The correction parses that restaurant-issued object, filters meal sections explicitly, preserves fixed section context, excludes alcohol and optional sauces, consolidates known duplicate meal presentations, and keeps beverages last.",
+        "The parser asserts raw menu-period counts before producing the compact catalog so a future source-shape or scope change fails focused verification instead of silently changing data.",
+        "The final-stage repair replaces Ada's only when verified count, category count, stale-row exclusions, sentinel allergen semantics, unavailable-row behavior, or beverage order regress."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-home-and-menu-loader-review",
+      "kind": "official_site",
+      "url": "https://adasontheriver.com/",
+      "attemptedAt": "2026-07-14T20:00:36.364Z",
+      "outcome": "Confirmed the Alexandria restaurant identity and current in-page menu UI; retained the official page and its menu-loader JavaScript, which identifies the restaurant-issued WordPress JSON endpoint.",
+      "notes": []
+    },
+    {
+      "id": "official-structured-menu-review",
+      "kind": "linked_source",
+      "url": "https://adasontheriver.com/wp-json/api/v1/get_menus",
+      "attemptedAt": "2026-07-14T20:01:20.332Z",
+      "outcome": "Captured and reviewed the current structured payload: 378 total menu rows across all surfaces and 155 in the food, dessert, social-bite, zero-proof, and 0.0-beer scope, producing 99 distinct current products after documented consolidation.",
+      "notes": [
+        "The endpoint is restaurant-issued and is the data source rendered by the official website."
+      ]
+    },
+    {
+      "id": "restaurant-linked-toast-review",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/adas-on-the-river",
+      "attemptedAt": "2026-07-14T20:12:19.000Z",
+      "outcome": "Direct automated retrieval returned HTTP 403. The retained render-proxy artifact corroborates the current pickup identity and a smaller current dinner-oriented subset, but was not promoted to official authority.",
+      "notes": [
+        "The restaurant-issued structured endpoint, not the proxy, is authoritative for corrected menu and ingredient text."
+      ]
+    },
+    {
+      "id": "current-allergen-disclosure-review",
+      "kind": "targeted_search",
+      "url": "https://adasontheriver.com/",
+      "attemptedAt": "2026-07-14T20:01:20.332Z",
+      "outcome": "Full-text review of the current official page, loader, structured menus, and linked pickup surface found menu descriptions and the V/G legends but no complete allergen matrix, complete ingredient guide, or cross-contact policy.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "stale-incomplete-flattened-pickup-subset",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen catalog contained only 49 flattened pickup rows in a fake American category, retained three stale kids rows and an optional sauce as a product, and omitted 54 distinct current products.",
+      "evidenceIds": [
+        "official-home-and-menus",
+        "official-structured-menus",
+        "third-party-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 99 distinct current products across 18 real categories, removed stale kids rows and the modifier artifact, consolidated duplicate meal presentations, and placed retained nonalcoholic beverages last."
+    },
+    {
+      "id": "shifted-neighbor-variant-groups",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "Frozen variantGroup values repeatedly contained adjacent product names, demonstrating broken row association rather than real option groups.",
+      "evidenceIds": [
+        "official-structured-menus",
+        "official-menu-loader-script"
+      ],
+      "resolved": true,
+      "resolution": "Restored current restaurant-issued categories and source contexts and preserved configurability only where the structured source actually publishes cost options."
+    },
+    {
+      "id": "incorrect-frozen-allergen-signals",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Twenty-five of 45 surviving frozen products had incorrect allergen fields, principally omitted shellfish, fish, egg, milk, soy, mustard, wheat, or gluten signals, with two mixed errors and one unsupported claim.",
+      "evidenceIds": [
+        "official-structured-menus"
+      ],
+      "resolved": true,
+      "resolution": "Re-derived only fixed positive signals from current published descriptions, named species, and mandatory formats; kept V/G labels and optional choices out of positive fields and left ten unsupported current products unavailable."
+    },
+    {
+      "id": "official-structured-source-unused",
+      "severity": "high",
+      "kind": "source_semantics",
+      "summary": "The official website currently renders a comprehensive restaurant-issued JSON menu, while the frozen output relied on a smaller stale Toast extraction and lost most categories and products.",
+      "evidenceIds": [
+        "official-home-and-menus",
+        "official-menu-loader-script",
+        "official-structured-menus"
+      ],
+      "resolved": true,
+      "resolution": "Made the official website's current structured menu the deterministic correction source and retained Toast only as corroborating third-party evidence."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-adas-river-current-menu",
+      "status": "verified",
+      "summary": "Prepared and targeted-tested a 99-item current Ada's catalog spanning current food, dessert, social-hour, and nonalcoholic surfaces with source-correct positive allergen semantics and beverages last.",
+      "files": [
+        "scripts/pipeline/adas-river-audit-catalog.mjs",
+        "scripts/pipeline/adas-river-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/ada-s-on-the-river-alexandria-va-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/adas-river-audit-catalog.test.mjs scripts/pipeline/adas-river-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/adas-river-repository.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 99 unique rows, 18 categories, 89 official-ingredient rows, 10 unavailable rows, no stale kids rows or standalone House Steak Sauce, correct sentinel allergen semantics, and beverages last)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 6bbcc2556fdce5c5f1f459223d0f222aa1f8acc686ce0c155df50d27dc6d66c7.",
+    "Reconciliation counts: {\"dispositions\":{\"variant_match\":14,\"exact_match\":27,\"normalized_match\":4,\"artifact\":1,\"stale_extra\":3},\"allergens\":{\"verified\":20,\"mismatch\":25,\"not_applicable\":4},\"mismatchKinds\":{\"underreported\":22,\"mixed\":2,\"overreported\":1}}.",
+    "Current corrected catalog counts: 99 items, 18 categories, 89 positive published-signal rows, and 10 accurately unavailable rows.",
+    "Focused source-shape, scope-count, compact-deduplication, all 49 frozen-row reconciliation, category, unique-id, optional-choice, V/G legend, coconut, mandatory-format, beverage-scope, and beverage-order checks passed."
+  ]
+}

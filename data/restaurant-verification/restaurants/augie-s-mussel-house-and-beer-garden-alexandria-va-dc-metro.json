@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "augie-s-mussel-house-and-beer-garden-alexandria-va-dc-metro",
+  "name": "Augie's Mussel House and Beer Garden",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T16:55:44.834Z",
+  "updatedAt": "2026-07-15T17:23:38.603Z",
+  "completedAt": "2026-07-15T17:23:38.603Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 122,
+      "sourceItemCount": 122,
+      "notes": [
+        "All 69 frozen rows were reconciled exactly once: 43 exact, 3 normalized, 8 variant, 6 extraction artifacts, and 9 Annapolis-only location mismatches.",
+        "The live restaurant-issued Alexandria menu publishes a materially larger current food and nonalcoholic catalog, so a complete deterministic rebuild is required before the source item count can be pinned.",
+        "Post-repair recheck pinned 122 unique current Alexandria food and nonalcoholic products across 12 ordered sections from 104 Toast products plus 19 owner-only products, with one duplicate Avocado presentation consolidated.",
+        "All 69 frozen rows remain reconciled exactly once: 43 exact, 3 normalized, 8 variant, 6 artifacts, and 9 Annapolis-only location mismatches."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The restaurant-issued Alexandria menu says Augie's is not a gluten-free kitchen and asks guests to notify their server; this is a restaurant-wide gluten cross-contact warning, not a complete allergen matrix or a wheat claim.",
+        "The restaurant-linked Alexandria Toast catalog supplies partial positive labels for Cheese Fries, Fried Mozzarella, Steak & Cheese Eggrolls, Tuna Tartar, Chicken Sliders, Hummus Dip, and Pretzels & Beer Cheese; those labels remain vendor provenance and missing labels are not negative claims.",
+        "Every current row carries may-contain gluten from the restaurant-issued kitchen-wide warning; this is not translated into wheat or any other cross-contact claim.",
+        "68 rows have restaurant-issued direct positive ingredient signals, 14 have only the official global warning, 7 preserve explicit restaurant-linked Toast allergen labels, 5 preserve unavoidable restaurant-linked product identities, and 28 Toast-only rows remain allergen-unavailable with Ingredient Intelligence separate.",
+        "The app now labels restaurant-linked menu evidence distinctly instead of presenting it as an official source."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The generic source configuration merged separate Alexandria and Annapolis location menus, admitted six headings or continuation fragments, lost real section context, and omitted many current Alexandria products.",
+        "Optional sauces, proteins, and add-ons must not be smeared across every configurable presentation.",
+        "The source registry is Alexandria-only; the verified snapshot restores real sections, removes fragments and Annapolis rows, consolidates repeated presentations, places mocktails last, and preserves all current source products.",
+        "Optional toppings, sauces, add-ons, and the raw-food advisory do not become fixed allergen claims; the shared classifier has a restaurant-scoped exception for the three current nonalcoholic mocktails it previously rejected."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site",
+      "kind": "official_site",
+      "url": "https://www.eataugies.com/augies-alexandria-menu",
+      "attemptedAt": "2026-07-15T16:55:51.515Z",
+      "outcome": "Accessible restaurant-issued Alexandria menu captured with current products, descriptions, location scope, and global gluten cross-contact warning.",
+      "notes": []
+    },
+    {
+      "id": "linked-source",
+      "kind": "linked_source",
+      "url": null,
+      "attemptedAt": "2026-07-15T16:55:51.515Z",
+      "outcome": "No separate restaurant-issued allergen guide or complete matrix was located.",
+      "notes": []
+    },
+    {
+      "id": "ordering-vendor",
+      "kind": "ordering_vendor",
+      "url": "https://www.toasttab.com/local/order/augies-mussel-house-patio",
+      "attemptedAt": "2026-07-15T16:55:51.515Z",
+      "outcome": "Live Alexandria Toast catalog identified the 1106 King Street location and supplied a partial set of item-level positive allergen labels; coordinator artifact capture returned HTTP 403.",
+      "notes": [
+        "Toast's generic Allergies modifier is a customer-instruction control, not an item allergen matrix."
+      ]
+    },
+    {
+      "id": "targeted-search",
+      "kind": "targeted_search",
+      "url": "https://www.toasttab.com/local/order/augies-mussel-house-patio",
+      "attemptedAt": "2026-07-15T16:55:51.515Z",
+      "outcome": "Targeted review found the active restaurant-linked ordering surface and no complete allergen matrix.",
+      "notes": []
+    },
+    {
+      "id": "archive",
+      "kind": "archive",
+      "url": null,
+      "attemptedAt": "2026-07-15T16:55:51.515Z",
+      "outcome": "No material archived allergen source was required because current primary menu evidence was accessible.",
+      "notes": []
+    },
+    {
+      "id": "third-party",
+      "kind": "third_party",
+      "url": "https://www.doordash.com/en/store/augie%27s-mussel-house-%26-patio-alexandria-23147096/",
+      "attemptedAt": "2026-07-15T16:55:51.515Z",
+      "outcome": "A third-party Alexandria listing was found but was not used for fixed allergen claims.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "alexandria-annapolis-source-contamination",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The Alexandria record was built from both location menus and contained nine Annapolis-only rows plus six non-product fragments.",
+      "evidenceIds": [
+        "alexandria-current-menu",
+        "annapolis-comparison-menu"
+      ],
+      "resolved": true,
+      "resolution": "Scoped configured menu input to Alexandria, removed all fifteen contaminated rows, and retained Annapolis only as audit comparison evidence."
+    },
+    {
+      "id": "current-alexandria-catalog-incomplete",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The frozen mixed-location catalog omitted many current Alexandria products and lost real section structure.",
+      "evidenceIds": [
+        "alexandria-current-menu",
+        "alexandria-current-toast"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt and pinned the full 122-product owner/Toast union across 12 consumer sections, including all current nonalcoholic products."
+    },
+    {
+      "id": "global-gluten-cross-contact-omitted",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "Every retained frozen row omitted the restaurant-issued Alexandria kitchen-wide gluten cross-contact warning.",
+      "evidenceIds": [
+        "alexandria-current-menu"
+      ],
+      "resolved": true,
+      "resolution": "Applied exactly may-contain gluten to every current row without adding wheat or unrelated allergens."
+    },
+    {
+      "id": "partial-toast-positive-label-conflicts",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "Seven current Toast rows publish positive labels that conflicted with or extended frozen signals.",
+      "evidenceIds": [
+        "alexandria-current-toast"
+      ],
+      "resolved": true,
+      "resolution": "Reconciled all seven labels, preserved direct owner terms, ignored missing-label negatives and generic allergy modifiers, and introduced restaurant-linked source types and UI labeling rather than promoting vendor evidence to official."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "rebuild-augies-alexandria-current-catalog",
+      "status": "verified",
+      "summary": "Verified the complete 122-product Alexandria catalog, its location scope, source authority, global gluten cross-contact semantics, partial Toast positives, and conservative optional-choice handling.",
+      "files": [
+        "scripts/dc-metro-expansion-sources.mjs",
+        "scripts/pipeline/augies-alexandria-audit-catalog.mjs",
+        "scripts/pipeline/augies-alexandria-audit-catalog.test.mjs",
+        "scripts/pipeline/augies-alexandria-audit-reconciliation.mjs",
+        "scripts/pipeline/augies-alexandria-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs",
+        "src/data/restaurants.ts",
+        "src/components/menu-item-details-modal.tsx"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/augie-s-mussel-house-and-beer-garden-alexandria-va-dc-metro/source-manifest.json",
+        "data/restaurant-verification/repairs/augie-s-mussel-house-and-beer-garden-alexandria-va-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/augies-alexandria-audit-catalog.test.mjs scripts/pipeline/augies-alexandria-audit-reconciliation.test.mjs",
+        "node --test --test-name-pattern=\"Augie's Alexandria\" scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Terra research: gpt-5.6-terra low; Sol adjudication: gpt-5.6-sol medium; coordinator-strength review corrected both workers' location-scope and cross-contact omissions.",
+    "The worker result is ingested only as discrepancy evidence; its proposed ten-row patch and accurately_unavailable grouping are rejected.",
+    "Targeted catalog and frozen-reconciliation tests passed: 8/8.",
+    "Targeted generated-data regression passed: 1/1.",
+    "The first generated regression exposed three verified mocktails being rejected by a generic drink-only classifier; a restaurant-scoped exception now preserves the current nonalcoholic rows.",
+    "Targeted audit/reconciliation suite passed 8/8 and the generated-data regression passed 1/1.",
+    "Generated snapshot counts: 122 total; 68 restaurant-issued ingredients; 14 official global-note-only; 7 restaurant-linked product-label; 5 restaurant-linked identity; 28 unavailable."
+  ]
+}

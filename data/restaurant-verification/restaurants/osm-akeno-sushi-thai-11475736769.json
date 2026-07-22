@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-akeno-sushi-thai-11475736769",
+  "name": "Akeno Sushi Bar & Thai",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T21:34:21.083Z",
+  "updatedAt": "2026-07-14T21:47:21.494Z",
+  "completedAt": "2026-07-14T21:47:21.494Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 224,
+      "sourceItemCount": 234,
+      "notes": [
+        "Every one of the 224 frozen rows was reconciled against the current Annandale/Alexandria menu representation reviewed on 2026-07-14.",
+        "The restaurant home page identifies the audited Annandale location as 6550 Little River Turnpike Unit F, Alexandria, VA 22312; the unsuffixed /menu surface is that location's menu, despite the frozen ledger region label saying Arlington/Falls Church.",
+        "The current surface publishes 235 presentations representing 234 formulations across 28 categories; Lemonade is the only duplicated presentation, appearing under Non-Alcoholic and Juices.",
+        "Four frozen rows are promoted modifiers or duplicate sauce names, three are stale, eight are current spelling/name variants, and 17 current products were absent from the frozen catalog.",
+        "Five current sauce products were incorrectly filed under Hosomaki in the frozen extraction and are restored to Sauce."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "The current menu publishes item names and selected ingredient descriptions but no complete allergen matrix, complete recipes, or cross-contact policy.",
+        "Positive signals are limited to explicit fixed ingredients and unavoidable named formats; absent text is never treated as an allergen-free claim.",
+        "Of 224 frozen rows, 98 disagree with the current fixed-text interpretation: 79 underreported, nine mixed, and ten overreported.",
+        "Optional protein choices are masked; imitation crab is fish rather than shellfish; coconut is not classified as milk or tree nut; and standalone sauce names do not establish their recipe allergens.",
+        "The corrected current catalog has 164 formulations with supported positive ingredient signals and 70 whose allergen data remains unavailable."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen extraction was only six days old and retained most current names, but it omitted products, retained stale rows, promoted modifiers, duplicated sauces, and lost category boundaries around Sauce and Hosomaki.",
+        "The correction constrains the catalog to the complete current 235-presentation manifest, consolidates only the duplicate Lemonade formulation, and preserves all 28 source categories.",
+        "Allergen mapping is recomputed from fixed current description text with explicit exceptions for optional choices, imitation crab, coconut, and insufficient standalone sauce names.",
+        "The direct command-line evidence capture received Cloudflare HTTP 403; the current web-accessible representation was exhaustively reviewed and is anchored by location, category counts, and sentinel row identifiers."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-home-review",
+      "kind": "official_site",
+      "url": "https://akenosushibar.com/",
+      "attemptedAt": "2026-07-14T21:45:52.000Z",
+      "outcome": "Confirmed Akeno's three locations and the audited Annandale/Alexandria street address.",
+      "notes": []
+    },
+    {
+      "id": "annandale-menu-review",
+      "kind": "linked_source",
+      "url": "https://akenosushibar.com/menu",
+      "attemptedAt": "2026-07-14T21:45:52.000Z",
+      "outcome": "Exhaustively reviewed all 235 current presentations across 28 categories on the Annandale ordering-menu representation.",
+      "notes": [
+        "The ledger CLI's direct capture was blocked with HTTP 403, so reproducibility uses stable location, category-count, and item-row anchors from the accessible current representation."
+      ]
+    },
+    {
+      "id": "allergen-disclosure-review",
+      "kind": "targeted_search",
+      "url": "https://akenosushibar.com/menu",
+      "attemptedAt": "2026-07-14T21:45:52.000Z",
+      "outcome": "Found selected fixed ingredient descriptions but no complete restaurant allergen matrix, recipes, or cross-contact disclosure.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "current-menu-structure-drift",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen 224-row catalog omitted 17 current products, retained three stale products, promoted or duplicated four non-products, and misplaced five sauces under Hosomaki.",
+      "evidenceIds": [
+        "current-annandale-menu"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 234 current formulations and 235 presentations across all 28 current categories, removed every stale/artifact row, restored current products, and corrected category boundaries."
+    },
+    {
+      "id": "frozen-allergen-misclassification",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Ninety-eight applicable frozen rows disagree with the reviewed fixed ingredient text, including omitted fish/soy/wheat signals and unsupported optional-protein, coconut, imitation-crab, egg, and sauce-name classifications.",
+      "evidenceIds": [
+        "current-annandale-menu"
+      ],
+      "resolved": true,
+      "resolution": "Recomputed only source-supported positive signals, removed unsupported classifications, and left 70 current formulations unavailable rather than inferring negative claims."
+    },
+    {
+      "id": "flattened-category-and-row-boundaries",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "The frozen parser lost menu boundary semantics, causing sauce/category fragments, duplicate products, and incomplete current coverage even though the source snapshot was recent.",
+      "evidenceIds": [
+        "current-annandale-menu"
+      ],
+      "resolved": true,
+      "resolution": "Constrained the repair to the complete reviewed presentation manifest and added focused invariants for categories, variants, stale rows, and allergen semantics."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-akeno-annandale-current-menu",
+      "status": "verified",
+      "summary": "Prepared and focused-tested a 234-formulation, 235-presentation Akeno Annandale catalog across 28 categories with 164 supported positive rows, 70 unavailable rows, and all known stale, artifact, category, and allergen defects corrected.",
+      "files": [
+        "scripts/pipeline/akeno-audit-catalog.mjs",
+        "scripts/pipeline/akeno-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/osm-akeno-sushi-thai-11475736769/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/akeno-audit-catalog.test.mjs scripts/pipeline/akeno-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/akeno-repository.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 234 items, 28 categories, 164 positive rows, 70 unavailable rows, and no known stale/artifact rows)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 41a480d7f87f2095eedbd6127b162ef38acaf61268e1263402ee223a18f4d0e4.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":209,\"variant_match\":8,\"stale_extra\":3,\"artifact\":4},\"allergens\":{\"mismatch\":98,\"verified\":64,\"accurately_unavailable\":55,\"not_applicable\":7},\"mismatchKinds\":{\"underreported\":79,\"mixed\":9,\"overreported\":10}}.",
+    "Current corrected catalog counts: 234 formulations, 235 presentations, 28 categories, 164 positive rows, and 70 unavailable rows."
+  ]
+}

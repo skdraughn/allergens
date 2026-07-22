@@ -1,0 +1,128 @@
+{
+  "checks": {
+    "menu": {
+      "verdict": "mismatch",
+      "reviewedItemCount": 37,
+      "sourceItemCount": 46,
+      "notes": [
+        "The March 2025 restaurant-issued U.S. guide publishes 46 current product concepts across ten sections; the frozen 37-row record is a stale product/component abstraction derived from a revised-May-2016 chart.",
+        "All 37 frozen rows were reconciled exactly once: 3 exact, 2 normalized, 16 variant, 5 process artifacts, and 11 stale products."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "mismatch",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The current U.S. guide contains a 39-product direct allergen matrix and separately warns that all food and beverages may contact egg, fish, milk, peanut, sesame, shellfish, soy, tree nut, and wheat.",
+        "The current guide does not identify gluten; the frozen record omits the global may-contain semantics and contains eight direct-signal differences."
+      ]
+    },
+    "extraction": {
+      "verdict": "mismatch",
+      "parserReviewed": true,
+      "semanticsVerified": false,
+      "notes": [
+        "The extraction treated processing components and preparation states as consumer products, retained stale formulations, and failed to combine the current nutrition tables with the direct matrix and page-one global warning.",
+        "The Mexico-hosted legacy chart is stale comparison evidence, not proof that every frozen row was a geographic mismatch."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site",
+      "kind": "official_site",
+      "url": "https://www.auntieannes.com/nutrition",
+      "attemptedAt": "2026-07-15T17:24:03.314Z",
+      "outcome": "Located the current restaurant-issued U.S. nutrition and allergen guide linked from the brand's nutrition surface.",
+      "notes": []
+    },
+    {
+      "id": "linked-source",
+      "kind": "linked_source",
+      "url": "https://assets.ctfassets.net/zqt8tllj2cy0/2jjVNaTNGDoMGd4QVucpSy/0f94c0d0541ec11a334dba7ce6fc56b0/Auntie-Annes-Nutrition-Guide.pdf",
+      "attemptedAt": "2026-07-15T17:24:03.314Z",
+      "outcome": "Captured the eight-page March 2025 current U.S. guide with nutrition tables, direct matrix, and global cross-contact statement.",
+      "notes": []
+    },
+    {
+      "id": "archive",
+      "kind": "archive",
+      "url": "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf",
+      "attemptedAt": "2026-07-15T17:24:10.509Z",
+      "outcome": "Captured the frozen source document and verified that its content is explicitly revised May 13, 2016.",
+      "notes": []
+    },
+    {
+      "id": "targeted-search",
+      "kind": "targeted_search",
+      "url": "https://www.auntieannes.com/nutrition",
+      "attemptedAt": "2026-07-15T17:24:03.314Z",
+      "outcome": "Current primary-source review found no newer U.S. guide superseding the March 2025 document.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "stale-2016-source",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "The frozen record relies on a chart explicitly revised in 2016 instead of the current March 2025 U.S. guide.",
+      "evidenceIds": ["official-us-nutrition-guide-2025", "legacy-2016-allergen-chart"],
+      "resolved": false,
+      "resolution": null
+    },
+    {
+      "id": "current-product-boundary-mismatch",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The frozen 37-row component abstraction does not represent the current 46-product consumer catalog.",
+      "evidenceIds": ["official-us-nutrition-guide-2025"],
+      "resolved": false,
+      "resolution": null
+    },
+    {
+      "id": "global-may-contain-omitted",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "Every frozen row omits the current guide's all-food-and-beverage nine-allergen cross-contact warning.",
+      "evidenceIds": ["official-us-nutrition-guide-2025"],
+      "resolved": false,
+      "resolution": null
+    },
+    {
+      "id": "direct-matrix-signal-drift",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "Eight retained or renamed frozen concepts have direct contains signals that differ from the current matrix.",
+      "evidenceIds": ["official-us-nutrition-guide-2025", "legacy-2016-allergen-chart"],
+      "resolved": false,
+      "resolution": null
+    }
+  ],
+  "repairs": [
+    {
+      "id": "rebuild-auntie-annes-current-guide",
+      "status": "planned",
+      "summary": "Rebuild the current 46-product catalog from the March 2025 guide, preserve 39 direct matrix rows and seven global-note-only fountain rows, apply the exact global may-contain set, and remove stale components/products without inferring gluten.",
+      "files": [
+        "scripts/pipeline/auntie-annes-audit-catalog.mjs",
+        "scripts/pipeline/auntie-annes-audit-catalog.test.mjs",
+        "scripts/pipeline/auntie-annes-audit-reconciliation.mjs",
+        "scripts/pipeline/auntie-annes-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/auntie-annes/source-manifest.json",
+        "data/restaurant-verification/repairs/auntie-annes/source-reconciliation.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/auntie-annes-audit-catalog.test.mjs scripts/pipeline/auntie-annes-audit-reconciliation.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Terra research: gpt-5.6-terra low; Sol adjudication: gpt-5.6-sol medium; coordinator review rejected the worker's blanket location-mismatch classification and pinned the current guide semantics."
+  ],
+  "status": "discrepancy_found"
+}

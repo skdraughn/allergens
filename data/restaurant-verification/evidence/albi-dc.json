@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "albi-dc",
+  "sources": [
+    {
+      "id": "official-menu-index",
+      "url": "https://www.albidc.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "both",
+      "retrievedAt": "2026-07-14T22:31:17.478Z",
+      "contentType": "text/html",
+      "finalUrl": "https://www.albidc.com/menu",
+      "httpStatus": 200,
+      "byteLength": 132121,
+      "sha256": "a8400ef5e0c93f971ce958cab4dd54db2e2bd67a9716b94a6225353081ff4918",
+      "artifactPath": "artifacts/albi-dc/official-menu-index.html",
+      "excerpt": "The current restaurant-issued menu page links the live Dinner and Sweets PDF menus used for this audit.",
+      "rowIdentifiers": [
+        "Dinner",
+        "Sweets"
+      ],
+      "request": {
+        "method": "GET"
+      },
+      "notes": [
+        "This page establishes that both captured S3 PDFs are current restaurant-issued menu surfaces."
+      ]
+    },
+    {
+      "id": "official-faq",
+      "url": "https://www.albidc.com/faq",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "retrievedAt": "2026-07-14T22:31:17.903Z",
+      "contentType": "text/html",
+      "finalUrl": "https://www.albidc.com/faq",
+      "httpStatus": 200,
+      "byteLength": 76712,
+      "sha256": "7a9dc7e6e2d023d8f27ec5fb13951cc688bca53338b0ba223388bd80c5686ac3",
+      "artifactPath": "artifacts/albi-dc/official-faq.html",
+      "excerpt": "Due to the nature of our kitchen, we cannot guarantee an allergen-free environment. Unfortunately, we are unable to accommodate certain sensitivities such as allium (garlic and onion), nightshades (including tomatoes and peppers), and sesame.",
+      "rowIdentifiers": [
+        "Dietary Restrictions",
+        "cannot guarantee an allergen-free environment",
+        "unable to accommodate ... sesame"
+      ],
+      "request": {
+        "method": "GET"
+      },
+      "notes": [
+        "The specific inability to accommodate sesame is represented as a global sesame cross-contact caution.",
+        "The broader no-guarantee language is not expanded into unsupported may-contain claims for every allergen."
+      ]
+    },
+    {
+      "id": "official-dinner-pdf",
+      "url": "https://albimenu.s3.us-east-1.amazonaws.com/Albi_Menu_Dinner.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "both",
+      "retrievedAt": "2026-07-14T22:31:18.262Z",
+      "contentType": "application/pdf",
+      "finalUrl": "https://albimenu.s3.us-east-1.amazonaws.com/Albi_Menu_Dinner.pdf",
+      "httpStatus": 200,
+      "byteLength": 4390493,
+      "sha256": "0d14642ebd871616028aa4c3c1b0121ccd2885badb2bb7272a5b0dfee91c1ee0",
+      "artifactPath": "artifacts/albi-dc/official-dinner-pdf.pdf",
+      "excerpt": "Eight-page restaurant-issued dinner PDF; pages 2-7 contain SOFRA plus 23 named formulations across Snacks, Kibbeh Naya, Khubz +, Mezze, and Mashawi.",
+      "rowIdentifiers": [
+        "SOFRA",
+        "SFEEHA",
+        "OYSTER",
+        "CRISPY KIBBEH",
+        "ARAYES",
+        "JERICHO DATES",
+        "YELLOWFIN TUNA",
+        "SMOKED PEA",
+        "MUSHROOMS LIGHTLY SMOKED",
+        "SMOKED GOAT AWARMA",
+        "FUL MEDAMES",
+        "LABNE TABAT",
+        "SALATA ARABIYA",
+        "FATTOUSH",
+        "BATATA HARRA",
+        "KOUSA MAHSHI",
+        "SHISH BARAK",
+        "WARAK DAWALI",
+        "GAMBARI",
+        "WOLFE RANCH QUAIL",
+        "TROUT STEAMED IN GRAPE LEAVES",
+        "BBQ’D LAMB KEBABS",
+        "SLOW COOKED LONG RIB",
+        "MAQLUBA"
+      ],
+      "request": {
+        "method": "GET"
+      },
+      "notes": [
+        "All eight pages were rendered with PDFKit; every nonempty menu page (2-7) was reviewed visually against the extracted inventory.",
+        "Alcohol-only nightcap products were reviewed and excluded from the food/nonalcoholic catalog."
+      ]
+    },
+    {
+      "id": "official-sweets-pdf",
+      "url": "https://albimenu.s3.us-east-1.amazonaws.com/Albi_Sweets.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "both",
+      "retrievedAt": "2026-07-14T22:31:19.259Z",
+      "contentType": "application/pdf",
+      "finalUrl": "https://albimenu.s3.us-east-1.amazonaws.com/Albi_Sweets.pdf",
+      "httpStatus": 200,
+      "byteLength": 59419,
+      "sha256": "4c0fb6a48dc5e3f39d4f16781fef4b3dc1fc5b0d9f65f4aa3d6e93fbf7daf844",
+      "artifactPath": "artifacts/albi-dc/official-sweets-pdf.pdf",
+      "excerpt": "Four-page restaurant-issued sweets PDF; pages 2-4 contain 17 food and nonalcoholic formulations across Alhalwaa, Soft Serve, Small Bites, Hot Tea, and Qahwah.",
+      "rowIdentifiers": [
+        "KNAFEH",
+        "HALAWA BAR",
+        "MAHALABIYA",
+        "LABNE",
+        "STRAWBERRY",
+        "TWIST",
+        "AFFOGATO",
+        "Baklawa",
+        "Turkish Delight",
+        "Ma’amoul",
+        "Qatayef",
+        "Namoura",
+        "BLACK TEA",
+        "GREEN TEA",
+        "HERBAL TEA (CAFFEINE FREE)",
+        "‘TRADITIONAL’ SERVICE",
+        "ARABIC PRESS"
+      ],
+      "request": {
+        "method": "GET"
+      },
+      "notes": [
+        "All four pages were rendered with PDFKit; every nonempty menu page (2-4) was reviewed visually against the extracted inventory.",
+        "The final nightcap page was reviewed; alcohol-only products were excluded."
+      ]
+    }
+  ]
+}

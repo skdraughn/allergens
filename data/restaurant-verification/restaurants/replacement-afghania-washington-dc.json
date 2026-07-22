@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "replacement-afghania-washington-dc",
+  "name": "Afghania",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T20:46:22.221Z",
+  "updatedAt": "2026-07-14T20:56:38.088Z",
+  "completedAt": "2026-07-14T20:56:38.088Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 152,
+      "sourceItemCount": 103,
+      "notes": [
+        "Every frozen row was reconciled against Afghania's current restaurant-issued dinner and raw-marinated-meat menus for the 2811 M Street Northwest location.",
+        "The current official site publishes 103 unique section-level presentations across 12 real categories: 94 dinner presentations and nine raw marinated meats.",
+        "Only 73 frozen names remain current. Seventy-three frozen rows belong to sister restaurant Afghan Bistro, six older Afghania rows are no longer current, and all nine current raw-marinated-meat products were omitted from the frozen catalog.",
+        "Repeated names remain separate when they appear in regular, vegetarian, and vegan sections because the published formulations and fixed allergen signals differ."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Afghania publishes current item names, descriptions, modifier choices, vegan section context, and item-specific gluten-free badges, but no complete allergen matrix, complete recipes, or kitchen cross-contact policy.",
+        "Positive fields are limited to fixed published ingredient terms and mandatory named formats. Non-dairy yogurt does not produce milk, mustard greens do not produce mustard, eggplant does not produce egg, and positive wheat/gluten signals cannot contradict an item-specific gluten-free badge.",
+        "Twenty-four frozen allergen results mismatch the current source-bounded result: nine collapsed names represent current presentations with different formulations, 11 underreport current fixed signals, three overreport them, and one has both omitted and invented signals.",
+        "Fifty-nine current presentations remain unavailable where the restaurant does not publish enough positive item-level evidence; unavailable is not interpreted as allergen-free."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen API merge combined Afghania with Afghan Bistro, flattened real menu sections into synthetic buckets, collapsed same-name section presentations, and omitted the entire current raw-meat menu.",
+        "The correction reads explicit official section and item hooks from both current menu surfaces, asserts 94 dinner and nine raw presentations, and preserves category plus name as the product identity.",
+        "The review distinguishes fixed ingredients from incidental language and section context, including regular yogurt versus non-dairy yogurt and named wheat formats such as bread, brioche, croutons, noodles, dumplings, turnovers, sambosa, quroti, and baklava.",
+        "The final repair is guarded by item, category, unique-identity, positive-signal, sister-row exclusion, raw-meat restoration, regular/vegan distinction, family-special signal, false-positive, and final category-order checks."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-home-review",
+      "kind": "official_site",
+      "url": "https://www.afghaniadc.com/",
+      "attemptedAt": "2026-07-14T20:46:38.278Z",
+      "outcome": "Confirmed the Georgetown Afghania identity, address, current menu navigation, and absence of a complete public allergen matrix on the home surface.",
+      "notes": []
+    },
+    {
+      "id": "official-dinner-menu-review",
+      "kind": "linked_source",
+      "url": "https://www.afghaniadc.com/menu-1",
+      "attemptedAt": "2026-07-14T20:46:38.685Z",
+      "outcome": "Captured and reviewed 94 current restaurant-issued dinner presentations across 11 sections with names, descriptions, modifiers, labels, and section context.",
+      "notes": []
+    },
+    {
+      "id": "official-raw-meats-review",
+      "kind": "linked_source",
+      "url": "https://www.afghaniadc.com/menu-1?location=2811+M+Street+Northwest&menu=marinated-raw-meats",
+      "attemptedAt": "2026-07-14T20:47:00.282Z",
+      "outcome": "Captured and reviewed all nine current raw-marinated-meat presentations that were absent from the frozen catalog.",
+      "notes": []
+    },
+    {
+      "id": "current-allergen-disclosure-review",
+      "kind": "targeted_search",
+      "url": "https://www.afghaniadc.com/menu-1",
+      "attemptedAt": "2026-07-14T20:47:00.639Z",
+      "outcome": "Full-text review of the current official home, dinner, raw-meat, and online-order surfaces found item descriptions, vegan context, and gluten-free labels but no complete allergen matrix, recipes, or cross-contact policy.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "cross-location-contaminated-menu",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen 152-row menu included 73 products belonging to sister restaurant Afghan Bistro, retained six stale Afghania products, and omitted all nine current raw-marinated-meat products.",
+      "evidenceIds": [
+        "official-dinner-menu",
+        "official-raw-meats-menu"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt the catalog from Afghania's current location-specific official surfaces, removed all sister-location and stale rows, and restored the omitted raw-meat section."
+    },
+    {
+      "id": "collapsed-section-presentations",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "The frozen merge collapsed same-name regular, vegetarian, and vegan products even when their published formulations and allergen signals differ.",
+      "evidenceIds": [
+        "official-dinner-menu"
+      ],
+      "resolved": true,
+      "resolution": "Preserved category plus name as identity for all 103 current presentations, including separate regular and vegan versions with source-bounded allergen fields."
+    },
+    {
+      "id": "incorrect-frozen-allergen-results",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Twenty-four applicable frozen rows disagree with current published ingredient or mandatory-format evidence, including nine names that cannot represent multiple current formulations with one result.",
+      "evidenceIds": [
+        "official-dinner-menu",
+        "official-raw-meats-menu"
+      ],
+      "resolved": true,
+      "resolution": "Recomputed source-bounded signals per presentation, restored omitted wheat/gluten, milk, tree-nut, and fish evidence, removed unsupported fields, and left 59 rows unavailable where positive evidence is insufficient."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-afghania-current-menu",
+      "status": "verified",
+      "summary": "Prepared and focused-tested a 103-presentation current Afghania catalog across 12 official categories with 44 positive published-signal rows, 59 unavailable rows, no sister-location contamination, nine restored raw meats, and formulation-specific regular/vegan identities.",
+      "files": [
+        "scripts/pipeline/afghania-audit-catalog.mjs",
+        "scripts/pipeline/afghania-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/replacement-afghania-washington-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/afghania-audit-catalog.test.mjs scripts/pipeline/afghania-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/afghania-repository.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 103 presentations, 12 categories, 44 positive rows, 59 unavailable rows, 9 raw meats last, unique presentation ids, sister-row exclusion, and allergen sentinels)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 4885f700d2b4a356a7f073a1c6c3c0ca6d2346261e12b1831397893f191ec14f.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":57,\"location_mismatch\":73,\"stale_extra\":6,\"variant_match\":16},\"allergens\":{\"verified\":14,\"not_applicable\":79,\"accurately_unavailable\":35,\"mismatch\":24},\"mismatchKinds\":{\"collapsed_presentations\":9,\"overreported\":3,\"underreported\":11,\"mixed\":1}}.",
+    "Current corrected catalog counts: 103 section-level presentations, 12 categories, 44 positive published-signal rows, and 59 accurately unavailable rows.",
+    "Focused source-count, section identity, unique-id, sister-contamination exclusion, stale-row, current-raw-meat, non-dairy-yogurt, vegan-context, gluten-free-label conflict, named-format, false-positive, all 152 frozen-row reconciliation, and isolated final repair checks passed."
+  ]
+}

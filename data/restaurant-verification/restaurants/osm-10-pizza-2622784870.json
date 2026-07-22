@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-10-pizza-2622784870",
+  "name": "10 Pizza",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T16:47:13.144Z",
+  "updatedAt": "2026-07-14T16:53:29.166Z",
+  "completedAt": "2026-07-14T16:53:29.166Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 57,
+      "sourceItemCount": 52,
+      "notes": [
+        "The browser-rendered Toast source contains 56 cards representing 52 unique current menu items after four merchandising duplicates are removed.",
+        "The frozen baseline has 46 direct name matches, four renamed matches, seven artifacts, and omits VODKA and the CLASSIC calzone.",
+        "The corrected snapshot preserves each card’s actual section, name, description, and item URL."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "accurately_unavailable",
+      "highestAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "Neither the restaurant website nor its linked Toast menu publishes an allergen guide, allergen matrix, or ingredient statements.",
+        "Menu descriptions mentioning cheese, milk, or other foods are not ingredient disclosures and cannot support official allergen labels.",
+        "All 52 corrected items therefore use allergenSourceType unavailable with no asserted allergens."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "Verified the rendered Toast card DOM directly rather than relying on cross-paired generic card output.",
+        "Verified that description text was incorrectly promoted to official-ingredients in the baseline; the correction removes those claims."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site-review",
+      "kind": "official_site",
+      "url": "https://10pizza.com/",
+      "attemptedAt": "2026-07-14T16:47:22.390Z",
+      "outcome": "Restaurant site fetched successfully; it links to Toast and contains no allergen or ingredient disclosure.",
+      "notes": []
+    },
+    {
+      "id": "toast-menu-review",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/10pizza",
+      "attemptedAt": "2026-07-14T16:48:06.553Z",
+      "outcome": "Browser-rendered linked Toast menu preserved; 56 cards, 52 unique current items, no allergen disclosure.",
+      "notes": []
+    },
+    {
+      "id": "allergen-source-search",
+      "kind": "targeted_search",
+      "url": "https://10pizza.com/",
+      "attemptedAt": "2026-07-14T16:53:22.441Z",
+      "outcome": "Targeted searches of the restaurant and Toast domains found menu pages but no official allergen source.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "10pizza-false-official-allergens",
+      "severity": "high",
+      "kind": "unsupported_allergen_claims",
+      "summary": "Twenty-seven baseline rows promoted menu-description words to official ingredient allergen claims without an ingredient or allergen source.",
+      "evidenceIds": [
+        "official-site",
+        "toast-browser-menu"
+      ],
+      "resolved": true,
+      "resolution": "The corrected 52-item snapshot marks allergen information unavailable for every item."
+    },
+    {
+      "id": "10pizza-cross-paired-cards",
+      "severity": "high",
+      "kind": "menu_structure",
+      "summary": "Baseline descriptions, categories, and variant groups were cross-paired between unrelated Toast cards.",
+      "evidenceIds": [
+        "toast-browser-menu"
+      ],
+      "resolved": true,
+      "resolution": "The audit snapshot reads each name, description, URL, and section from the same rendered menu card."
+    },
+    {
+      "id": "10pizza-artifacts-and-omissions",
+      "severity": "high",
+      "kind": "menu_identity",
+      "summary": "The baseline contains seven non-item artifacts, truncates four current names, and omits two current menu items.",
+      "evidenceIds": [
+        "official-site",
+        "toast-browser-menu"
+      ],
+      "resolved": true,
+      "resolution": "The correction contains the 52 unique current Toast items, including VODKA and CLASSIC, with artifacts removed."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "10pizza-corrected-data-snapshot",
+      "status": "verified",
+      "summary": "Prepared a corrected 52-item menu snapshot from the restaurant-linked Toast cards; all allergen fields are accurately unavailable.",
+      "files": [
+        "scripts/restaurant-verification-ledger.mjs",
+        "scripts/restaurant-verification-ledger.test.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/osm-10-pizza-2622784870/corrected-menu.json",
+        "data/scraped/raw/osm-10-pizza-2622784870/2026-07-14/09dbc9a72eb4bc7190d423376a76ea9263bba7e79ac5c6e4e5942bbbfe86393b.html"
+      ],
+      "verificationCommands": [
+        "node --test scripts/restaurant-verification-ledger.test.mjs scripts/pipeline/andpizza-extractor.test.mjs",
+        "npm run verify:restaurants -- toast-snapshot --id=osm-10-pizza-2622784870 --url=https://order.toasttab.com/online/10pizza --input=data/scraped/raw/osm-10-pizza-2622784870/2026-07-14/09dbc9a72eb4bc7190d423376a76ea9263bba7e79ac5c6e4e5942bbbfe86393b.html --output=data/restaurant-verification/repairs/osm-10-pizza-2622784870/corrected-menu.json"
+      ]
+    }
+  ],
+  "notes": [
+    "The audit fixes the data specification. It does not treat inferred ingredients or pipeline behavior as the audit subject.",
+    "No published repository was overwritten.",
+    "Rechecked all 57 frozen rows against the 52-item corrected Toast snapshot."
+  ]
+}

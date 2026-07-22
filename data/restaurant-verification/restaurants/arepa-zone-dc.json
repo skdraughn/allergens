@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "arepa-zone-dc",
+  "name": "Arepa Zone",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T09:34:44.984Z",
+  "updatedAt": "2026-07-15T09:52:21.662Z",
+  "completedAt": "2026-07-15T09:52:21.662Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 49,
+      "sourceItemCount": 75,
+      "notes": [
+        "Arepa Zone's dc-metro row was reconciled to the live restaurant-linked Square catalogs for Mosaico, 14th Street, and Western Market. Those menus publish 47, 56, and 52 products respectively and deduplicate to 75 stable product IDs across 14 categories.",
+        "All 49 frozen rows were reconciled: 2 exact products, 15 normalized products, 4 multi-section variants, 25 stale matrix-era rows, and 3 names produced by concatenating adjacent PDF rows. The matched frozen rows represent 24 current products; 51 current products were absent.",
+        "Forty-seven current products are not sold at all three DC locations. The repaired variantGroup records each product's live location set instead of implying metro-wide availability.",
+        "The current owner Shopify collection is an express-catering catalog, so it was used for corroborating owner product text, not as a replacement for the live regular ordering menus."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The owner allergen page currently links a five-page, 71-row matrix created in July 2024. Visual inspection transcribed the graphical allergen dots and the guide's global statement that all listed products are made in a facility processing wheat, milk, and eggs.",
+        "Thirty-three current products have unambiguous formulation matches to matrix rows. Matrix dots are stored as fixed allergens, while the wheat/milk/egg facility statement is stored separately as non-redundant mayContain signals on 30 rows.",
+        "Viuda Arepa is contact-only: the matrix marks wheat while also labeling the row gluten-free, and the current owner catalog also labels it gluten-free. No fixed wheat or negative safety claim is published; the facility contact warning remains.",
+        "Forty-one newer, packaged, or otherwise unmatched current products remain unavailable. The restaurant-linked Square field that names celery on Cruzado is retained in evidence but is not relabeled as restaurant-issued or forced into the app's profile vocabulary.",
+        "The current owner allergen page warns that supplier information, substitutions, and shared preparation can change exposure, so matrix coverage is not represented as a guarantee."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen PDF text parser recovered row labels but dropped the vector-dot coordinates, leaving almost every official matrix row with an empty fixed-allergen array and omitting the facility warning.",
+        "The frozen parser also collapsed duplicate names across matrix sections and concatenated adjacent rows, producing names such as Patacón Viudo Tres Leches and Perro Caraqueño Pepito Fondue.",
+        "The reviewed builder contracts the three live location counts, deduplicates by stable Square product ID, records location scope, matches only defensible current formulations to a visually reviewed matrix transcription, and fails closed when any source count changes.",
+        "Focused tests cover all 75 current products, all 49 frozen dispositions, representative matrix dots, fixed-versus-facility semantics, the Viuda conflict, linked-vendor authority, beverages ordering, generated repair invariants, target-only isolation, and idempotency."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "arepa-zone-owner-allergen-page-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.arepazone.com/pages/nutrition-allergens",
+      "attemptedAt": "2026-07-15T09:35:09.237Z",
+      "outcome": "HTTP 200. Captured the current owner allergen page, its shared-preparation and supplier/substitution warning, and its active link to the five-page guide.",
+      "notes": []
+    },
+    {
+      "id": "arepa-zone-owner-guide-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://cdn.shopify.com/s/files/1/0901/7707/7557/files/Nutrition_and_Allergens_Arepa_Zone_Mosaico_1.pdf?v=1731433077",
+      "attemptedAt": "2026-07-15T09:35:09.752Z",
+      "outcome": "HTTP 200. Captured and visually reviewed all five matrix pages, 71 row presentations, eight allergen columns, nutrition labels, and the wheat/milk/egg facility statement.",
+      "notes": [
+        "The PDF was created July 12, 2024 but remains the guide linked from the current owner page."
+      ]
+    },
+    {
+      "id": "arepa-zone-live-ordering-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://order.arepazone.com/order",
+      "attemptedAt": "2026-07-15T09:35:52.881Z",
+      "outcome": "HTTP 200. The restaurant-linked Per Diem/Square ordering app exposed five active locations and current product APIs; the three DC catalogs contained 47, 56, and 52 products.",
+      "notes": []
+    },
+    {
+      "id": "arepa-zone-current-owner-products-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://www.arepazone.com/collections/all/products.json?limit=250",
+      "attemptedAt": "2026-07-15T09:41:45.995Z",
+      "outcome": "HTTP 200. Captured 74 current owner Shopify products and used matching text to corroborate positive owner-named ingredients, current common-fryer language, and the Viuda gluten-free conflict.",
+      "notes": [
+        "This is an express-catering catalog and was not used as the regular-menu boundary."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "arepa-zone-graphical-matrix-dots-dropped",
+      "severity": "critical",
+      "kind": "allergen-extraction-corruption",
+      "summary": "The frozen PDF parser extracted labels but lost the graphical allergen dots, causing nearly every matrix row to appear to have no fixed allergens.",
+      "evidenceIds": [
+        "official-arepa-zone-allergen-guide"
+      ],
+      "resolved": true,
+      "resolution": "Visually transcribed and regression-tested all 71 matrix rows, then mapped only defensible current formulations."
+    },
+    {
+      "id": "arepa-zone-current-menu-omissions-and-stale-rows",
+      "severity": "critical",
+      "kind": "menu-reconciliation-mismatch",
+      "summary": "Only 24 of 75 current DC products were represented by matched frozen rows; 51 current products were omitted, 25 matrix-era rows were stale, and three frozen names were concatenation artifacts.",
+      "evidenceIds": [
+        "arepa-zone-mosaico-products-api",
+        "arepa-zone-14th-street-products-api",
+        "arepa-zone-western-market-products-api",
+        "official-arepa-zone-allergen-guide"
+      ],
+      "resolved": true,
+      "resolution": "Published the deduplicated 75-product live DC union and removed every stale or concatenated row."
+    },
+    {
+      "id": "arepa-zone-facility-warning-dropped",
+      "severity": "high",
+      "kind": "cross-contact-extraction-mismatch",
+      "summary": "All 21 matched frozen rows omitted the guide's wheat/milk/egg facility-processing statement.",
+      "evidenceIds": [
+        "official-arepa-zone-allergen-guide",
+        "official-arepa-zone-allergens-page"
+      ],
+      "resolved": true,
+      "resolution": "Stored facility processing separately as mayContain signals without turning it into fixed ingredients."
+    },
+    {
+      "id": "arepa-zone-location-scope-loss",
+      "severity": "high",
+      "kind": "location-scope-mismatch",
+      "summary": "The frozen dc-metro row did not preserve that 47 current products are available at fewer than all three DC locations.",
+      "evidenceIds": [
+        "arepa-zone-live-locations-api",
+        "arepa-zone-mosaico-products-api",
+        "arepa-zone-14th-street-products-api",
+        "arepa-zone-western-market-products-api"
+      ],
+      "resolved": true,
+      "resolution": "Preserved each product's live location set in variantGroup and in its evidence summary."
+    },
+    {
+      "id": "arepa-zone-viuda-owner-source-conflict",
+      "severity": "medium",
+      "kind": "official-source-conflict",
+      "summary": "The guide marks wheat for Arepa Viuda while the same row and current owner catalog label the product gluten-free.",
+      "evidenceIds": [
+        "official-arepa-zone-allergen-guide",
+        "official-arepa-zone-shopify-products-api"
+      ],
+      "resolved": true,
+      "resolution": "Published no fixed claim for Viuda Arepa and retained only the explicit facility-contact warning."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "arepa-zone-current-dc-catalog-and-matrix-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt the current three-location DC catalog, restored visual matrix and facility semantics, preserved location scope, removed stale/concatenated rows, and left unmatched current products unavailable.",
+      "files": [
+        "scripts/pipeline/arepa-zone-audit-catalog.mjs",
+        "scripts/pipeline/arepa-zone-audit-catalog.test.mjs",
+        "scripts/pipeline/arepa-zone-audit-reconciliation.mjs",
+        "scripts/pipeline/arepa-zone-audit-reconciliation.test.mjs",
+        "scripts/pipeline/arepa-zone-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/arepa-zone-dc/official-arepa-zone-allergen-guide.pdf",
+        "data/restaurant-verification/artifacts/arepa-zone-dc/official-arepa-zone-allergens-page.html",
+        "data/restaurant-verification/artifacts/arepa-zone-dc/arepa-zone-live-locations-api.json",
+        "data/restaurant-verification/artifacts/arepa-zone-dc/arepa-zone-mosaico-products-api.json",
+        "data/restaurant-verification/artifacts/arepa-zone-dc/arepa-zone-14th-street-products-api.json",
+        "data/restaurant-verification/artifacts/arepa-zone-dc/arepa-zone-western-market-products-api.json",
+        "data/restaurant-verification/artifacts/arepa-zone-dc/official-arepa-zone-shopify-products-api.json",
+        "data/restaurant-verification/repairs/arepa-zone-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/arepa-zone-audit-catalog.mjs",
+        "node scripts/pipeline/arepa-zone-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/arepa-zone-audit-catalog.test.mjs scripts/pipeline/arepa-zone-audit-reconciliation.test.mjs scripts/pipeline/arepa-zone-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=arepa-zone-dc node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 648780139444c588ddc2bf01ac73f0ce5e0aed9b2987dc98eb564a8535ce1884.",
+    "Current owner-linked allergen guide SHA-256: f98f540daa0f6441d01297b7e53aefedd918f021ba2ba383d038e6c7030929b7.",
+    "Frozen baseline item fingerprint: bf82191467d7c9ddce54d7a033786d3ab069b6abf89b0ffa3c51415840e34bea.",
+    "Live target SHA-256 after repair: 03553bd1460cdc60747ff3bee5a1d6e10220af13a18fa4395dc8ff1c6aefcd75.",
+    "Live non-target restaurant projection SHA-256 remained bb0ae52459d0c79b7378716dd77096b79bd7a44e0c4b251813296bb46e9aa412.",
+    "Two consecutive target-only repair runs produced the same target hash and exactly one Arepa Zone verified repair note.",
+    "The repaired repository contains 113739 live menu items; the frozen ledger remains anchored to its original 112873-item hashed baseline."
+  ]
+}

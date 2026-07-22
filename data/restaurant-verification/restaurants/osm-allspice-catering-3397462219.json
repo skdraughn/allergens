@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-allspice-catering-3397462219",
+  "name": "AllSpice Cafe & Catering",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T00:00:04.338Z",
+  "updatedAt": "2026-07-15T00:21:46.557Z",
+  "completedAt": "2026-07-15T00:21:46.557Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 108,
+      "sourceItemCount": 209,
+      "notes": [
+        "Reconciled all 108 frozen rows against the complete restaurant-issued WordPress food-menu API (210 published presentations) and overlapping WooCommerce product API (191 published presentations), with sitemap and taxonomy captures confirming pagination and category coverage.",
+        "After excluding two non-food food-menu rows and three non-food product rows, consolidating duplicated API surfaces, and folding three pack-size aliases into their canonical formulations, the current catalog contains 209 food and nonalcoholic formulations and 396 retained source presentations.",
+        "The frozen crawl retained 51 current formulations, admitted 57 navigation, category, nested component, or bundled-menu fragment rows, and omitted 158 current formulations. Every frozen row now has a terminal item disposition."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "AllSpice does not publish a complete recipe-level allergen matrix or item-level cross-contact disclosure. Positive claims are limited to direct fixed ingredient terms and genuinely mandatory named formats in current restaurant-issued menu text; 44 formulations without adequate wording remain unavailable.",
+        "Among the 51 retained frozen formulations, 12 fixed-allergen sets were verified, three were accurately unavailable, and 36 required correction: 35 were underreported and one both added a supported mustard signal and removed an unsupported egg assumption.",
+        "Variable ranch, Caesar, remoulade, breading, selectable sides, optional holiday dishes, and generic gluten-free or vegetarian labels are not promoted into fixed allergen or cross-contact claims."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic-website crawl stopped at its 25-source limit after following tag, sharing, taxonomy, and general site pages. It retained 108 rows after discarding 419 candidates, but the result was structurally partial and split nested menu text into standalone products.",
+        "The audited extractor consumes every page of the restaurant's first-party food_menu and product APIs, resolves the deepest first-party food taxonomy, retains source presentations, excludes three non-food commerce concepts, and canonicalizes three five-pack aliases without conflating distinct formulations.",
+        "The old fixed-allergen pass promoted lexical or conventional-preparation assumptions such as ranch, aioli, remoulade, fried chicken, and crab cake. The corrected audit restricts official ingredient claims to what the restaurant actually states and leaves unsupported details unavailable.",
+        "The shared quality classifier incorrectly treated Rosemary-Merlot Flank Steak as a wine-list row because both merlot and wine appeared in a real dish description; a food-dish guard now preserves wine-prepared dishes. Repeated adjacent CMS option blocks are also collapsed without removing unique wording."
+      ]
+    }
+  },
+  "sourceAttempts": [],
+  "findings": [
+    {
+      "id": "partial-structurally-polluted-crawl",
+      "severity": "high",
+      "kind": "menu_reconciliation",
+      "summary": "The frozen 108-row app catalog contains 57 structural artifacts and omits 158 of the restaurant's 209 current formulations.",
+      "evidenceIds": [
+        "official-food-api-p1",
+        "official-food-api-p2",
+        "official-food-api-p3",
+        "official-product-api-p1",
+        "official-product-api-p2",
+        "official-food-categories",
+        "official-sitemap-index"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the entry with the complete 209-formulation first-party catalog, retained 396 source presentations, removed all 57 frozen artifacts, excluded three non-food commerce concepts, consolidated duplicated surfaces and pack aliases, and restored all 158 omitted formulations."
+    },
+    {
+      "id": "incorrect-fixed-allergen-semantics",
+      "severity": "high",
+      "kind": "allergen_reconciliation",
+      "summary": "Thirty-six retained frozen formulations have incorrect fixed allergen sets, while the old crawl also exposed fragment-level allergen claims for rows that are not products.",
+      "evidenceIds": [
+        "official-food-api-p1",
+        "official-food-api-p2",
+        "official-food-api-p3",
+        "official-product-api-p1",
+        "official-product-api-p2"
+      ],
+      "resolved": true,
+      "resolution": "Applied formulation-level review of restaurant-issued ingredient wording, added supported fixed signals, removed unsupported assumptions for variable sauces and preparation methods, and left 44 insufficiently disclosed formulations unavailable."
+    },
+    {
+      "id": "wine-prepared-dish-misclassified",
+      "severity": "medium",
+      "kind": "quality_classifier",
+      "summary": "Rosemary-Merlot Flank Steak was rejected as a wine-list row even though its name and description clearly identify a food dish prepared with red wine.",
+      "evidenceIds": [
+        "official-food-api-p2"
+      ],
+      "resolved": true,
+      "resolution": "Narrowed the wine-list heuristic with the existing food-dish detector and added focused coverage proving that every adjudicated AllSpice formulation survives classification."
+    },
+    {
+      "id": "repeated-cms-option-blocks",
+      "severity": "low",
+      "kind": "description_normalization",
+      "summary": "Several first-party API descriptions repeat the same adjacent topping or selectable-side block three or four times because of CMS rendering duplication.",
+      "evidenceIds": [
+        "official-food-api-p2"
+      ],
+      "resolved": true,
+      "resolution": "Added conservative adjacent token-run collapse for blocks of at least three tokens and locked the Crostini, Chicken Piccata, and Hoisin Pork descriptions in focused tests."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "allspice-verified-catalog-repair",
+      "status": "verified",
+      "summary": "Added complete first-party AllSpice catalog and reconciliation fixtures, corrected allergen/source semantics, added narrow shared quality and target-only persistence safeguards, and persisted only the audited generated entry.",
+      "files": [
+        "scripts/pipeline/allspice-audit-catalog.mjs",
+        "scripts/pipeline/allspice-audit-reconciliation.mjs",
+        "scripts/menu-item-quality.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "scripts/pipeline/allspice-audit-catalog.test.mjs",
+        "scripts/pipeline/allspice-audit-reconciliation.test.mjs",
+        "data/restaurant-verification/repairs/osm-allspice-catering-3397462219/corrected-menu.json",
+        "data/restaurant-verification/artifacts/osm-allspice-catering-3397462219/official-food-api-p1.json",
+        "data/restaurant-verification/artifacts/osm-allspice-catering-3397462219/official-food-api-p2.json",
+        "data/restaurant-verification/artifacts/osm-allspice-catering-3397462219/official-food-api-p3.json",
+        "data/restaurant-verification/artifacts/osm-allspice-catering-3397462219/official-product-api-p1.json",
+        "data/restaurant-verification/artifacts/osm-allspice-catering-3397462219/official-product-api-p2.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/allspice-audit-catalog.test.mjs scripts/pipeline/allspice-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=tmp/allspice-scope/repository.json RESTAURANT_REPAIR_ONLY_ID=osm-allspice-catering-3397462219 node scripts/repair-final-generated-regressions.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=osm-allspice-catering-3397462219 node scripts/repair-final-generated-regressions.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "AllSpice identity was confirmed through its restaurant-issued home and menu surfaces; the current site lists its Arlington operation at 6017 Wilson Boulevard and a Washington, DC operation.",
+    "Corrected snapshot SHA-256: 166f7e18d0868295d17547f4abc67ea789ec518f5b9dc2425cd0b97f3091ca0d.",
+    "A deliberately corrupted temporary repository repaired only osm-allspice-catering-3397462219; all 1,494 non-target restaurant hashes remained unchanged. A second target-only run against the actual repository was byte-for-byte idempotent."
+  ]
+}

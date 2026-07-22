@@ -1,0 +1,313 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-ay-e-meze-lounge-13134929927",
+  "name": "AYŞE Meze Lounge",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T18:15:26.604Z",
+  "updatedAt": "2026-07-15T21:16:03.311Z",
+  "completedAt": "2026-07-15T21:16:03.311Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 151,
+      "sourceItemCount": 151,
+      "notes": [
+        "The owner homepage currently links restaurant-issued main, kids, June brunch, May dessert, July King Farm Express lunch, May happy-hour, May drinks, and dated-special menus; the linked Toast catalog completes the current 151-product food and nonalcoholic boundary.",
+        "All 106 frozen rows reconcile exactly once: 94 exact matches, two normalized matches, three concatenation or modifier artifacts, and seven duplicate or stale extras. The 96 retained current matches leave 55 current products absent from the frozen catalog.",
+        "Post-repair recheck pins 151 unique current food and nonalcoholic products across the owner-linked main, kids, June brunch, May dessert, July King Farm Express lunch, May happy-hour, May drinks, current specials, and linked Toast surfaces.",
+        "All 106 frozen rows reconcile exactly once: 94 exact matches, two normalized matches, three artifacts, and seven stale extras; all 55 previously omitted current products are restored."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "One hundred nine current products retain narrow direct positives from restaurant-issued menus, four retain restaurant-linked affirmative product disclosures, one retains a restaurant-linked ingredient positive, and thirty-seven remain unavailable; all may-contain arrays are empty.",
+        "The frozen reconciliation contains 30 verified, 18 accurately unavailable, 48 mismatch, and 10 not-applicable allergen outcomes. Owner-menu positives and linked Toast positives require distinct provenance, and neither source family supplies negatives, a complete matrix, or cross-contact evidence.",
+        "The corrected catalog contains exactly 109 restaurant-issued ingredient-positive rows, four restaurant-linked product-disclosure rows, one restaurant-linked menu-ingredient row, and 37 unavailable rows, with zero may-contain rows.",
+        "Frozen allergen outcomes finish at 30 verified, 18 accurately unavailable, 48 corrected mismatches, and 10 not applicable; linked positives remain vendor provenance and silence is never negative evidence."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen extraction concatenated three non-products, retained duplicate families and stale specials, and severely undercovered current brunch, express-lunch, dessert, happy-hour, drinks, kids, and dated-special products.",
+        "Six configured legacy HTML menu routes now return HTTP 404, while the configured March and May lunch PDFs are superseded by the owner-linked July King Farm Express lunch menu.",
+        "The hash-pinned service-aware rebuild removes concatenation artifacts, consolidates duplicate families, excludes stale specials, normalizes the current soup and strawberry-sundae presentations, and preserves materially different service formulations.",
+        "The six 404 legacy HTML routes and two superseded lunch PDFs are excluded in favor of the current homepage-linked sources."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-home",
+      "kind": "official_site",
+      "url": "https://aysemeze.com/",
+      "attemptedAt": "2026-07-15T21:00:00.000Z",
+      "outcome": "Captured the current owner homepage and its active service-menu and Toast links.",
+      "notes": []
+    },
+    {
+      "id": "official-main-menu",
+      "kind": "linked_source",
+      "url": "https://aysemeze.com/wp-content/uploads/2026/05/AY-MENU.pdf",
+      "attemptedAt": "2026-07-15T18:15:55.949Z",
+      "outcome": "Captured and hash-pinned the current restaurant-issued main menu.",
+      "notes": []
+    },
+    {
+      "id": "official-kids-menu",
+      "kind": "linked_source",
+      "url": "https://aysemeze.com/wp-content/uploads/2026/03/KIDS-MENU.pdf",
+      "attemptedAt": "2026-07-15T21:00:00.000Z",
+      "outcome": "Verified the current restaurant-issued kids menu; its bytes match the captured kids-menu artifact.",
+      "notes": []
+    },
+    {
+      "id": "official-brunch-menu",
+      "kind": "linked_source",
+      "url": "https://aysemeze.com/wp-content/uploads/2026/06/AY-Brunch-Menu.pdf",
+      "attemptedAt": "2026-07-15T21:00:00.000Z",
+      "outcome": "Verified and hash-pinned the current June restaurant-issued brunch menu.",
+      "notes": []
+    },
+    {
+      "id": "official-dessert-menu",
+      "kind": "linked_source",
+      "url": "https://aysemeze.com/wp-content/uploads/2026/05/AyDessertMenu.pdf",
+      "attemptedAt": "2026-07-15T21:00:00.000Z",
+      "outcome": "Verified and hash-pinned the current May restaurant-issued dessert menu.",
+      "notes": []
+    },
+    {
+      "id": "official-express-lunch-menu",
+      "kind": "linked_source",
+      "url": "https://aysemeze.com/wp-content/uploads/2026/07/king-farm-express-lunch-menu.pdf",
+      "attemptedAt": "2026-07-15T21:00:00.000Z",
+      "outcome": "Verified and hash-pinned the current July King Farm Express lunch menu.",
+      "notes": []
+    },
+    {
+      "id": "official-happy-hour-menu",
+      "kind": "linked_source",
+      "url": "https://aysemeze.com/wp-content/uploads/2026/05/AY-Happy-Hour-Menu.pdf",
+      "attemptedAt": "2026-07-15T21:00:00.000Z",
+      "outcome": "Verified and hash-pinned the current May restaurant-issued happy-hour menu.",
+      "notes": []
+    },
+    {
+      "id": "official-drinks-menu",
+      "kind": "linked_source",
+      "url": "https://aysemeze.com/wp-content/uploads/2026/05/AY-DRINKMENU.pdf",
+      "attemptedAt": "2026-07-15T21:00:00.000Z",
+      "outcome": "Verified and hash-pinned the current May restaurant-issued drinks menu; alcohol-only rows are excluded from the canonical food catalog.",
+      "notes": []
+    },
+    {
+      "id": "official-current-specials",
+      "kind": "linked_source",
+      "url": "https://aysemeze.com/wp-content/uploads/2026/07/7.15-dinner.jpg",
+      "attemptedAt": "2026-07-15T21:00:00.000Z",
+      "outcome": "Verified and hash-pinned the current dated restaurant-issued specials image.",
+      "notes": []
+    },
+    {
+      "id": "ordering-vendor",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/ayse",
+      "attemptedAt": "2026-07-15T21:00:00.000Z",
+      "outcome": "Reviewed the current restaurant-linked Toast catalog and pinned the local capture used for item identities, four affirmative product disclosures, and one ingredient-positive formulation.",
+      "notes": [
+        "Missing Toast terms are not negative evidence."
+      ]
+    },
+    {
+      "id": "legacy-brunch-html",
+      "kind": "archive",
+      "url": "https://aysemeze.com/foodmenu/brunch-menu/",
+      "attemptedAt": "2026-07-15T21:00:00.000Z",
+      "outcome": "HTTP 404; superseded by the current homepage-linked June brunch PDF.",
+      "notes": []
+    },
+    {
+      "id": "legacy-lunch-html",
+      "kind": "archive",
+      "url": "https://aysemeze.com/foodmenu/lunch-menu/",
+      "attemptedAt": "2026-07-15T21:00:00.000Z",
+      "outcome": "HTTP 404; superseded by the current homepage-linked July King Farm Express lunch PDF.",
+      "notes": []
+    },
+    {
+      "id": "legacy-dinner-html",
+      "kind": "archive",
+      "url": "https://aysemeze.com/foodmenu/dinner-menu/",
+      "attemptedAt": "2026-07-15T21:00:00.000Z",
+      "outcome": "HTTP 404; superseded by the current homepage-linked main menu PDF.",
+      "notes": []
+    },
+    {
+      "id": "legacy-banquet-html",
+      "kind": "archive",
+      "url": "https://aysemeze.com/banquet-menu/",
+      "attemptedAt": "2026-07-15T21:00:00.000Z",
+      "outcome": "HTTP 404; not part of the current public service-menu boundary.",
+      "notes": []
+    },
+    {
+      "id": "legacy-bar-html",
+      "kind": "archive",
+      "url": "https://aysemeze.com/foodmenu/bar-menu/",
+      "attemptedAt": "2026-07-15T21:00:00.000Z",
+      "outcome": "HTTP 404; superseded by the current homepage-linked May drinks menu.",
+      "notes": []
+    },
+    {
+      "id": "legacy-happy-hour-html",
+      "kind": "archive",
+      "url": "https://aysemeze.com/foodmenu/happy-hour-menu/",
+      "attemptedAt": "2026-07-15T21:00:00.000Z",
+      "outcome": "HTTP 404; superseded by the current homepage-linked May happy-hour PDF.",
+      "notes": []
+    },
+    {
+      "id": "superseded-may-express-lunch-pdf",
+      "kind": "archive",
+      "url": "https://aysemeze.com/wp-content/uploads/2026/05/king-farm-express-lunch-menu.pdf",
+      "attemptedAt": "2026-07-15T21:00:00.000Z",
+      "outcome": "Configured older lunch PDF; superseded by the homepage-linked July King Farm Express lunch menu.",
+      "notes": []
+    },
+    {
+      "id": "superseded-march-lunch-pdf",
+      "kind": "archive",
+      "url": "https://aysemeze.com/wp-content/uploads/2026/03/AY-LunchMenu.pdf",
+      "attemptedAt": "2026-07-15T21:00:00.000Z",
+      "outcome": "Configured older lunch PDF; superseded by the homepage-linked July King Farm Express lunch menu.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "concatenation-and-modifier-artifacts",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "Three frozen rows concatenate separately orderable products, modifier choices, or headings and are not current products.",
+      "evidenceIds": [
+        "official-main-menu-current",
+        "official-kids-menu-may-current",
+        "current-linked-toast-catalog"
+      ],
+      "resolved": true,
+      "resolution": "Removed all three non-product concatenation or modifier artifacts from the canonical catalog."
+    },
+    {
+      "id": "duplicate-families-and-stale-specials",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "Seven frozen rows are stale extras: five duplicate representations of retained current products and two dated specials absent from the current owner-linked boundary.",
+      "evidenceIds": [
+        "official-main-menu-current",
+        "official-kids-menu-may-current",
+        "official-specials-current",
+        "current-linked-toast-catalog"
+      ],
+      "resolved": true,
+      "resolution": "Consolidated the five duplicate frozen presentations and removed the two superseded specials while retaining their current canonical families where applicable."
+    },
+    {
+      "id": "severe-current-service-undercoverage",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The frozen output represents only 96 of 151 current products and omits 55 products across the current brunch, express-lunch, dessert, happy-hour, drinks, kids, main, and dated-special surfaces.",
+      "evidenceIds": [
+        "official-main-menu-current",
+        "official-kids-menu-may-current",
+        "official-brunch-menu-current",
+        "official-dessert-menu-current",
+        "official-express-lunch-current",
+        "official-happy-hour-menu-current",
+        "official-drinks-menu-current",
+        "official-specials-current",
+        "current-linked-toast-catalog"
+      ],
+      "resolved": true,
+      "resolution": "Restored all 55 omitted products and pinned the complete 151-product current service boundary."
+    },
+    {
+      "id": "allergen-and-provenance-mismatches",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "Forty-eight reconciled frozen rows have direct allergen arrays or provenance inconsistent with the current source-specific narrow-positive semantics.",
+      "evidenceIds": [
+        "official-main-menu-current",
+        "official-kids-menu-may-current",
+        "official-brunch-menu-current",
+        "official-dessert-menu-current",
+        "official-express-lunch-current",
+        "official-happy-hour-menu-current",
+        "official-specials-current",
+        "current-linked-toast-catalog"
+      ],
+      "resolved": true,
+      "resolution": "Corrected all 48 allergen or provenance mismatches while preserving direct positive evidence and leaving unsupported direct and cross-contact status unavailable."
+    },
+    {
+      "id": "owner-versus-linked-source-semantics",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "Four product-disclosure rows and one ingredient-positive formulation depend on restaurant-linked Toast evidence and must not be promoted into the 109 restaurant-issued ingredient rows; neither source family supports negative or cross-contact claims.",
+      "evidenceIds": [
+        "official-home-current",
+        "official-main-menu-current",
+        "current-linked-toast-catalog"
+      ],
+      "resolved": true,
+      "resolution": "Pinned the exact 109 owner-issued, four linked-product, one linked-menu ingredient, and 37 unavailable split with zero invented negatives or may-contain claims."
+    },
+    {
+      "id": "legacy-source-configuration-stale",
+      "severity": "medium",
+      "kind": "menu_extraction",
+      "summary": "Six configured legacy HTML menu routes return HTTP 404, and two configured older lunch PDFs are superseded by the owner-linked July King Farm Express menu.",
+      "evidenceIds": [
+        "official-home-current",
+        "official-express-lunch-current"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the stale configured routes with the current homepage-linked service menu set and July Express lunch source."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "rebuild-ayse-current-service-catalog",
+      "status": "verified",
+      "summary": "Verified the 151-product current boundary, complete frozen reconciliation, exact owner-versus-linked authority split, removed artifacts and stale extras, and empty cross-contact semantics.",
+      "files": [
+        "scripts/pipeline/ayse-audit-catalog.mjs",
+        "scripts/pipeline/ayse-audit-catalog.test.mjs",
+        "scripts/pipeline/ayse-audit-reconciliation.mjs",
+        "scripts/pipeline/ayse-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/osm-ay-e-meze-lounge-13134929927/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/ayse-audit-catalog.test.mjs scripts/pipeline/ayse-audit-reconciliation.test.mjs",
+        "node --test --test-name-pattern=\"AYŞE preserves the full current service boundary and narrow source authority\" scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Terra low research was escalated to Sol medium; coordinator review replaced the worker's incomplete current-source boundary with the full homepage-linked service set and corrected the frozen reconciliation.",
+    "The targeted AYŞE catalog/reconciliation suite and generated-data regression passed.",
+    "Generated counts: 151 total; 109 official ingredients; four restaurant-linked product disclosures; one restaurant-linked menu ingredient; 37 unavailable; zero may-contain."
+  ]
+}

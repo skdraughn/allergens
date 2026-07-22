@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-aventino-cucina-romana-12342520793",
+  "name": "Aventino Cucina Romana",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T18:02:22.003Z",
+  "updatedAt": "2026-07-15T18:06:18.198Z",
+  "completedAt": "2026-07-15T18:06:18.198Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 19,
+      "sourceItemCount": 52,
+      "notes": [
+        "The record resolves to the same 4747 Bethesda Avenue restaurant as aventino-bethesda, whose current canonical menu has 52 formulations.",
+        "All 19 frozen rows reconcile exactly once: 15 exact, one normalized, one stale product, and two non-product artifacts.",
+        "All 19 frozen duplicate-record rows reconcile exactly once to the canonical Aventino audit: 15 exact, one normalized, one stale, and two artifacts.",
+        "The generated repository now contains only aventino-bethesda for the 4747 Bethesda Avenue restaurant."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Five frozen allergen or provenance outcomes conflict with the current owner ingredients and partial restaurant-linked affirmative labels; two rows are accurately unavailable.",
+        "The linked ordering surface is not a complete restaurant-issued allergen matrix and omitted labels are not negative evidence.",
+        "Nine frozen rows are verified, five mismatches are corrected through the canonical repair, two are accurately unavailable, and three non-current or artifact rows are not applicable.",
+        "Restaurant-issued ingredient evidence remains distinct from partial restaurant-linked affirmative labels, with no inferred negatives or cross-contact claims."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "This OSM-derived record duplicates the canonical Aventino record rather than representing another location.",
+        "Its frozen output also includes a membership/navigation row and a press link as products.",
+        "The duplicate identity, same-address source graph, and all frozen row mappings were reviewed against the canonical service-aware catalog.",
+        "The duplicate record and its two non-product artifacts are absent from generated application data."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site",
+      "kind": "official_site",
+      "url": "https://aventinocucina.com/menus/",
+      "attemptedAt": "2026-07-15T18:02:22.246Z",
+      "outcome": "Captured the same current restaurant-issued menu artifact used for the canonical Aventino record.",
+      "notes": []
+    },
+    {
+      "id": "linked-source",
+      "kind": "linked_source",
+      "url": "https://aventinocucina.com/faq/",
+      "attemptedAt": "2026-07-15T18:02:22.773Z",
+      "outcome": "Captured the official identity and Toast-linkage page for the same Bethesda address.",
+      "notes": []
+    },
+    {
+      "id": "ordering-vendor",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/aventino-extended-csd",
+      "attemptedAt": "2026-07-15T17:35:00.000Z",
+      "outcome": "Terra, Sol, and coordinator web review accessed the same linked ordering menu; coordinator artifact capture returned HTTP 403.",
+      "notes": [
+        "The page identifies 4747 Bethesda Avenue and supplies partial affirmative labels."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "duplicate-canonical-restaurant",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "This OSM record is a duplicate of aventino-bethesda at the same address and on the same owner and ordering sources.",
+      "evidenceIds": [
+        "official-menus-current",
+        "official-faq-current",
+        "linked-toast-current"
+      ],
+      "resolved": true,
+      "resolution": "Removed the OSM duplicate and retained aventino-bethesda as the only generated record."
+    },
+    {
+      "id": "duplicate-record-artifacts-and-staleness",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "One stale product and two navigation or press artifacts are represented as food rows in the duplicate record.",
+      "evidenceIds": [
+        "official-menus-current",
+        "linked-toast-current"
+      ],
+      "resolved": true,
+      "resolution": "Classified the stale row and both artifacts explicitly and excluded them from canonical generated data."
+    },
+    {
+      "id": "duplicate-record-allergen-provenance",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "Five matched rows require allergen or provenance correction before the duplicate can be terminally reconciled.",
+      "evidenceIds": [
+        "official-menus-current",
+        "linked-toast-current"
+      ],
+      "resolved": true,
+      "resolution": "Mapped the five rows to the corrected canonical formulations and exact source-authority semantics."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "remove-osm-aventino-duplicate",
+      "status": "verified",
+      "summary": "Verified duplicate removal, complete 19-row reconciliation, source-authority mapping, and canonical keeper integrity.",
+      "files": [
+        "scripts/pipeline/aventino-audit-reconciliation.mjs",
+        "scripts/pipeline/aventino-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/aventino-bethesda/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/aventino-audit-reconciliation.test.mjs",
+        "node --test --test-name-pattern=\"Aventino preserves service formulations\" scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Terra low and Sol medium both routed this record to coordinator review; the coordinator established duplicate identity and full frozen-row reconciliation.",
+    "Targeted frozen reconciliation and generated duplicate-absence regression passed.",
+    "The audit ledger retains this baseline record terminally even though it is intentionally absent from generated application data."
+  ]
+}

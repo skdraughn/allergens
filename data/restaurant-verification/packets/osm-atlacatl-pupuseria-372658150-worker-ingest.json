@@ -1,0 +1,192 @@
+{
+  "checks": {
+    "menu": {
+      "verdict": "mismatch",
+      "reviewedItemCount": 33,
+      "sourceItemCount": 85,
+      "notes": [
+        "The current restaurant-issued menu contains 85 actual menu items across 15 sections; the frozen generated record contains only 33 rows representing 25 unique official titles.",
+        "Sol corrected Terra's single false missing-item claim: Taquitos de Lengua is present on the current menu and matches frozen item 33 by description."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "mismatch",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "No comprehensive allergen matrix, complete ingredient list, allergen legend, negative-claim coverage, or cross-contact policy was located.",
+        "Restaurant-authored menu prose can support direct positive ingredient signals only; absent terms are not negative assurances."
+      ]
+    },
+    "extraction": {
+      "verdict": "mismatch",
+      "parserReviewed": true,
+      "semanticsVerified": false,
+      "notes": [
+        "The generic website extraction emitted eight section, navigation, price, social, or description artifacts and substituted descriptions for twelve item titles.",
+        "The extraction also omitted most of the current official menu."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site",
+      "kind": "official_site",
+      "url": "https://restauranteatlacatl.com/",
+      "attemptedAt": "2026-07-15T16:30:00.000Z",
+      "outcome": "Official restaurant site identified Atlacatl Restaurant as Salvadoran Cuisine and Pupuseria and linked the current menu.",
+      "notes": []
+    },
+    {
+      "id": "linked-source",
+      "kind": "linked_source",
+      "url": "https://restauranteatlacatl.com/2020/05/28/menu/",
+      "attemptedAt": "2026-07-15T16:30:00.000Z",
+      "outcome": "The restaurant-issued legacy route presented the same menu family and independently exposed the social-page boilerplate artifact.",
+      "notes": []
+    },
+    {
+      "id": "ordering-vendor",
+      "kind": "ordering_vendor",
+      "url": null,
+      "attemptedAt": "2026-07-15T16:30:00.000Z",
+      "outcome": "No restaurant-linked ordering-vendor menu or allergen surface was identified from the official site.",
+      "notes": []
+    },
+    {
+      "id": "targeted-search",
+      "kind": "targeted_search",
+      "url": "https://restauranteatlacatl.com/menu/",
+      "attemptedAt": "2026-07-15T16:30:00.000Z",
+      "outcome": "Targeted current-menu and allergen searches found the official menu but no restaurant-issued allergen guide or cross-contact policy.",
+      "notes": []
+    },
+    {
+      "id": "archive",
+      "kind": "archive",
+      "url": "https://restauranteatlacatl.com/2020/05/28/menu/",
+      "attemptedAt": "2026-07-15T16:30:00.000Z",
+      "outcome": "The dated official menu route remained publicly readable and corroborated the current menu structure.",
+      "notes": []
+    },
+    {
+      "id": "third-party",
+      "kind": "third_party",
+      "url": "https://www.restaurantji.com/va/arlington/atlacatl-restaurant-/",
+      "attemptedAt": "2026-07-15T16:30:00.000Z",
+      "outcome": "Third-party listing corroborated the Arlington restaurant identity only and was not used as allergen authority.",
+      "notes": []
+    }
+  ],
+  "evidence": [
+    {
+      "id": "official-current-menu",
+      "url": "https://restauranteatlacatl.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "both",
+      "retrievedAt": "2026-07-15T16:30:00.000Z",
+      "contentType": "text/html",
+      "finalUrl": "https://restauranteatlacatl.com/menu/",
+      "httpStatus": null,
+      "byteLength": null,
+      "sha256": null,
+      "artifactPath": null,
+      "excerpt": "Current menu lists 85 item headings from Nachos Mexicanos through Tortilla, including Taquitos de Lengua with the description 'Three beef tongue tacos. Served with rice and a side salad.' It publishes item prose but no comprehensive allergen or cross-contact guide.",
+      "rowIdentifiers": [
+        "Appetizers > Nachos Mexicanos",
+        "Tacos > Taquitos de Lengua",
+        "Sides > Tortilla"
+      ],
+      "request": {
+        "method": "GET",
+        "result": "Coordinator artifact capture returned HTTP 403; Terra and Sol research workers and the coordinator's web retrieval accessed the live restaurant-issued page."
+      },
+      "notes": [
+        "Restaurant-issued current menu; direct positive ingredient wording is partial evidence, not a complete allergen matrix."
+      ]
+    },
+    {
+      "id": "official-legacy-menu",
+      "url": "https://restauranteatlacatl.com/2020/05/28/menu/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-15T16:30:00.000Z",
+      "contentType": "text/html",
+      "finalUrl": "https://restauranteatlacatl.com/2020/05/28/menu/",
+      "httpStatus": null,
+      "byteLength": null,
+      "sha256": null,
+      "artifactPath": null,
+      "excerpt": "Dated restaurant-issued menu route corroborates the current hierarchy and Taquitos de Lengua while showing 'Like this:' as page boilerplate rather than menu data.",
+      "rowIdentifiers": [
+        "Menu",
+        "Taquitos de Lengua",
+        "Like this:"
+      ],
+      "request": {
+        "method": "GET",
+        "result": "Coordinator artifact capture was blocked by the site's browser challenge; research workers accessed the public page."
+      },
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "incomplete-and-artifacted-menu-extraction",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The 33-row generated record omits 60 titles from the current 85-item official menu and includes eight non-item or duplicate artifacts from headings, navigation, a price, social boilerplate, and description fragments.",
+      "evidenceIds": [
+        "official-current-menu",
+        "official-legacy-menu"
+      ],
+      "resolved": false,
+      "resolution": null
+    },
+    {
+      "id": "description-substituted-item-titles",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "Thirteen generated rows use description text as the item identity instead of the restaurant's displayed item title, including Chorizos Salvadoreños, Side of Fried Yucca, Lengua Empanizada, and Camarones al Ajillo.",
+      "evidenceIds": [
+        "official-current-menu"
+      ],
+      "resolved": false,
+      "resolution": null
+    },
+    {
+      "id": "no-comprehensive-allergen-or-cross-contact-source",
+      "severity": "medium",
+      "kind": "allergen_source",
+      "summary": "The official menu provides selected direct ingredient prose but no comprehensive allergen matrix, complete ingredients, negative-claim coverage, or cross-contact policy.",
+      "evidenceIds": [
+        "official-current-menu"
+      ],
+      "resolved": false,
+      "resolution": null
+    }
+  ],
+  "repairs": [
+    {
+      "id": "rebuild-atlacatl-current-menu",
+      "status": "planned",
+      "summary": "Replace the corrupted partial extraction with the current 85-item restaurant-issued menu, preserve section titles and descriptions, and retain only direct positive ingredient signals.",
+      "files": [
+        "data/restaurant-verification/repairs/osm-atlacatl-pupuseria-372658150/corrected-menu.json",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/osm-atlacatl-pupuseria-372658150/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test --test-name-pattern='Atlacatl rebuilds the current official menu' scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Terra research: gpt-5.6-terra low, worker run 2026-07-15T15-57-56-396Z-3313d1.",
+    "Sol adjudication: gpt-5.6-sol medium. Sol upheld discrepancy_found and corrected Terra's false claim that Taquitos de Lengua was absent.",
+    "Canonical item checks remain pending until the complete repaired menu and frozen-item reconciliation are verified."
+  ],
+  "status": "discrepancy_found"
+}

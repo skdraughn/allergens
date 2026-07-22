@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "arenas-georgetown-dc",
+  "name": "Arena's Georgetown",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T09:15:02.701Z",
+  "updatedAt": "2026-07-15T09:34:22.341Z",
+  "completedAt": "2026-07-15T09:34:22.341Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 90,
+      "sourceItemCount": 101,
+      "notes": [
+        "Arena's Georgetown was reconciled against the restaurant's July 2026 owner PDF, the kids menu still linked from its current owner menu page, and the current restaurant-linked Toast catalog. The canonical result contains 101 products across 10 source categories.",
+        "All 90 frozen rows were reconciled: 82 exact-name product matches, 2 normalized matches, 3 section-heading artifacts, and 3 stale products. Seventeen current products were absent from the frozen output.",
+        "The frozen output assigned every row to the generic American category. The repair restores the current source sections and descriptions, including Starters, Salads, Classic Sandwiches, Chicken Sandwiches, Seafood & Entrees, Soft Drinks, Sides, and Kids Menu.",
+        "The direct Toast archival request returned HTTP 403. A current readable proxy of the restaurant-linked Toast page supplied 86 unique linked products; the current owner menu and actively linked kids PDF completed sides and kids products suppressed from the closed-hours Toast rendering."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Arena's publishes menu descriptions, not a complete item-level allergen matrix or cross-contact policy. Sixty-nine canonical rows have limited positive fixed signals supported by allergen-bearing ingredients expressly named in restaurant-issued menu text; 32 rows remain accurately unavailable.",
+        "Restaurant-linked Toast text was used to establish current menu presence, but it was not promoted to restaurant-issued allergen evidence. Linked-only products remain unavailable even when their vendor descriptions appear suggestive.",
+        "Bread, batter, wrap, pita, dressing, and dish-format risks are retained as Ingredient Intelligence unless the owner explicitly names an allergen-bearing ingredient. Explicit whole-wheat descriptions support both wheat and gluten in the app vocabulary.",
+        "Arena's sources do not make row-level shared-fryer, shared-equipment, or facility claims, so every mayContain array remains empty rather than inventing cross-contact semantics."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The reviewed catalog builder deduplicates 89 Toast presentations into 86 unique products, excludes Featured Items duplicates, unions the current owner-linked sides and kids products, and fails closed if the captured Toast product count changes.",
+        "The frozen extraction promoted three section headings to products, retained three products absent from both current menu surfaces, omitted 17 current products, flattened all categories, and disagreed with the reviewed fixed-allergen set on 20 matched rows.",
+        "Focused tests cover the 101-product boundary, product/category composition, owner-versus-linked allergen authority, whole-wheat semantics, all 90 frozen dispositions, current omissions, generated repair invariants, non-target isolation, and repair idempotency."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "arenas-owner-site-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.arenasdeliandbar.com/menu/",
+      "attemptedAt": "2026-07-15T09:15:22.653Z",
+      "outcome": "HTTP 200. Captured the current owner menu index and Georgetown location page; the menu index links the July 2026 main menu and the still-current kids-menu surface.",
+      "notes": []
+    },
+    {
+      "id": "arenas-owner-pdfs-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://www.arenasdeliandbar.com/wp-content/uploads/2018/01/Arenas-Menu-7-2026.pdf",
+      "attemptedAt": "2026-07-15T09:15:43.472Z",
+      "outcome": "HTTP 200. Captured and visually reviewed the two-page July 2026 owner menu plus the three-page kids menu actively linked from the current owner page.",
+      "notes": [
+        "The kids PDF is dated September 2022 but remains part of the current owner-controlled menu navigation and names Georgetown among its locations."
+      ]
+    },
+    {
+      "id": "arenas-toast-direct-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/arenas-georgetown",
+      "attemptedAt": "2026-07-15T09:16:00.000Z",
+      "outcome": "Direct archival GET returned HTTP 403 under the ledger user agent. The restaurant-linked URL was then read through a text transport and treated only as linked-vendor menu evidence.",
+      "notes": []
+    },
+    {
+      "id": "arenas-current-menu-search-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://order.toasttab.com/online/arenas-georgetown",
+      "attemptedAt": "2026-07-15T09:17:58.675Z",
+      "outcome": "Targeted search and the readable proxy confirmed the current Toast catalog. Search output also exposed current sides and kids presentations that the closed-hours proxy suppressed, which were independently reconciled to owner-linked menu documents.",
+      "notes": []
+    },
+    {
+      "id": "arenas-toast-readable-transport-2026-07-15",
+      "kind": "third_party",
+      "url": "https://r.jina.ai/http://order.toasttab.com/online/arenas-georgetown",
+      "attemptedAt": "2026-07-15T09:17:58.675Z",
+      "outcome": "HTTP 200. Retained a hashed readable rendering of the restaurant-linked Toast catalog containing 89 presentations and 86 unique product slugs.",
+      "notes": [
+        "The transport is third-party. It preserves the linked menu boundary but is not official allergen evidence."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "arenas-section-heading-artifacts",
+      "severity": "critical",
+      "kind": "parser-structure-corruption",
+      "summary": "The frozen catalog promoted Chicken Sandwiches, Classic Sandwiches, and Veggie Options & Burgers section headings to food products with fixed allergen claims.",
+      "evidenceIds": [
+        "official-arenas-georgetown-july-2026-menu",
+        "arenas-toast-readable-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Removed all three heading artifacts and used the same text as category boundaries for actual products."
+    },
+    {
+      "id": "arenas-current-catalog-omissions-and-stale-products",
+      "severity": "critical",
+      "kind": "menu-reconciliation-mismatch",
+      "summary": "The frozen output retained three products absent from both current menu surfaces and omitted 17 current products, including six sandwiches, beverages, Soup of the Day, and Avocado.",
+      "evidenceIds": [
+        "official-arenas-georgetown-july-2026-menu",
+        "official-arenas-kids-menu",
+        "arenas-toast-readable-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Published the reconciled 101-product union, removed the three stale rows, and restored all 17 current omissions."
+    },
+    {
+      "id": "arenas-fixed-allergen-overpromotion",
+      "severity": "high",
+      "kind": "allergen-authority-mismatch",
+      "summary": "The frozen output treated inferred keywords, dish formats, and restaurant-linked vendor descriptions as official fixed-allergen evidence, producing 20 fixed-set disagreements and 5 provenance disagreements among matched products.",
+      "evidenceIds": [
+        "official-arenas-georgetown-july-2026-menu",
+        "official-arenas-kids-menu",
+        "arenas-toast-readable-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Limited official fixed signals to allergen-bearing ingredients expressly named in owner-issued menu text, preserved format-based risks as Ingredient Intelligence, and left linked-only products unavailable."
+    },
+    {
+      "id": "arenas-category-and-description-corruption",
+      "severity": "high",
+      "kind": "menu-content-mismatch",
+      "summary": "All 84 matched frozen products had incorrect generic category assignment and/or stale or shifted descriptions.",
+      "evidenceIds": [
+        "official-arenas-georgetown-july-2026-menu",
+        "arenas-toast-readable-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Restored 10 current source categories and the reconciled current product descriptions."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "arenas-georgetown-current-catalog-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt Arena's Georgetown from the current owner and restaurant-linked menu surfaces, removed structure/staleness corruption, restored omitted products and categories, and corrected allergen authority semantics.",
+      "files": [
+        "scripts/pipeline/arenas-georgetown-audit-catalog.mjs",
+        "scripts/pipeline/arenas-georgetown-audit-catalog.test.mjs",
+        "scripts/pipeline/arenas-georgetown-audit-reconciliation.mjs",
+        "scripts/pipeline/arenas-georgetown-audit-reconciliation.test.mjs",
+        "scripts/pipeline/arenas-georgetown-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/arenas-georgetown-dc/official-arenas-georgetown-location.html",
+        "data/restaurant-verification/artifacts/arenas-georgetown-dc/official-arenas-menu-page.html",
+        "data/restaurant-verification/artifacts/arenas-georgetown-dc/official-arenas-georgetown-july-2026-menu.pdf",
+        "data/restaurant-verification/artifacts/arenas-georgetown-dc/official-arenas-kids-menu.pdf",
+        "data/restaurant-verification/artifacts/arenas-georgetown-dc/arenas-toast-readable-proxy.txt",
+        "data/restaurant-verification/repairs/arenas-georgetown-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/arenas-georgetown-audit-catalog.mjs",
+        "node scripts/pipeline/arenas-georgetown-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/arenas-georgetown-audit-catalog.test.mjs scripts/pipeline/arenas-georgetown-audit-reconciliation.test.mjs scripts/pipeline/arenas-georgetown-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=arenas-georgetown-dc node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 8fa3f27328e79bf5fb99a179fdc635448b61cc5ca001227e163dce673510e3ac.",
+    "Owner July 2026 menu and currently linked kids-menu PDF SHA-256: ad09b7ddf1d0f95c8210403c966d7fea2b1ca18a5e6ccda3cd82dfab4fc857bf / 27474889bb3c60bcfbb8ca3761e652d2e0f765f244ed964db62eb74382750dd5.",
+    "Derived raw main-menu and kids-menu text SHA-256: 25d73b069add11274551b9cb42db77efc094c739c12ecc7576177bfdf3d7aba1 / 732ba3dcfea4203d0a615061ab7dc6c176996c309b6626cbcfa174ba04efc45c.",
+    "Frozen baseline item fingerprint: e09271178a08fbf9c5a341e9186959467f4bcafed3757248025de754249b0a84.",
+    "Live target SHA-256 after repair: b239233b868fb455030a3a0fcc01d74cf2c965138b3947f921f2f0dc4a5dbc40.",
+    "Live non-target restaurant projection SHA-256 remained 96ef71d607cac35488fa3e3e4677f56f0353bb4a772dba0c366e7066090255e5.",
+    "Two consecutive target-only repair runs produced the same target hash and exactly one Arena's Georgetown verified repair note.",
+    "The repaired repository contains 113713 live menu items; the frozen ledger remains anchored to its original 112873-item hashed baseline."
+  ]
+}

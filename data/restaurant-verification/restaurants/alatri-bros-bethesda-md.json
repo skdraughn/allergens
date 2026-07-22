@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "alatri-bros-bethesda-md",
+  "name": "Alatri Bros.",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T22:18:32.706Z",
+  "updatedAt": "2026-07-14T22:30:34.454Z",
+  "completedAt": "2026-07-14T22:30:34.454Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 66,
+      "sourceItemCount": 84,
+      "notes": [
+        "Every frozen row was reconciled against Alatri Bros.' current restaurant-issued menu and the current restaurant-linked Toast representation reviewed on 2026-07-14.",
+        "The current catalog contains 84 unique formulations and 202 source presentations across the official dine-in menu plus Toast's Dinner and Dinner (3PD) channels.",
+        "Sixty-two frozen rows represent current formulations; the current sources contain 22 additional formulations omitted from the frozen output.",
+        "The four rejected frozen rows are two promotional phrases, the Crostini section heading, and a Shrimp Parmesan description promoted into a duplicate product.",
+        "Featured Toast rows repeat products from their real sections and are not counted as additional formulations."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The restaurant-issued site and restaurant-linked Toast menu publish selected fixed ingredient descriptions but no complete item-level allergen matrix or recipes.",
+        "Seventy-four current formulations have positive contains signals from fixed text or mandatory named formats; ten have no supported fixed signal.",
+        "The official menu states that Alatri offers no guarantee food is completely gluten- or nut-free. That global caution applies to all 84 food formulations as may-contain peanut, tree nut, and gluten.",
+        "All 62 real frozen rows underreported the current semantics because none retained the global caution; many also omitted fixed milk, egg, wheat/gluten, fish, shellfish, soy, tree-nut, or mustard signals.",
+        "Optional proteins, pizza toppings, meatball additions, gluten-free substitutions, and configurable choices are not promoted into fixed allergens."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen Toast/site merge flattened every product into Italian / Pizza and assigned adjacent item names or categories as variant groups.",
+        "It omitted 22 current formulations, promoted four nonproducts, and discarded the restaurant's explicit global gluten/nut caution.",
+        "It only partially mapped fixed ingredients, including missing pizza/calzone dough, pasta, bread, dairy, egg, fish, shellfish, soy, and mustard signals.",
+        "The correction rebuilds the current channel and section structure, deduplicates channel/featured repetitions, retains 84 formulations with 202 presentations, and separates fixed contains claims from global cross-contact."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-menu-review",
+      "kind": "official_site",
+      "url": "https://www.alatribros.com/menu",
+      "attemptedAt": "2026-07-14T22:18:45.590Z",
+      "outcome": "Captured and exhaustively reviewed the current restaurant-issued menu: identity, 51 products, six visible sections, descriptions, optional additions, pizza disclaimer, and global gluten/nut caution.",
+      "notes": []
+    },
+    {
+      "id": "toast-current-review",
+      "kind": "ordering_vendor",
+      "url": "https://www.toasttab.com/local/order/alatri-bros",
+      "attemptedAt": "2026-07-14T22:19:00.000Z",
+      "outcome": "Exhaustively reviewed the current web-accessible Toast representation for Alatri Bros. at 4926 Cordell Avenue: 84 unique formulations and 151 Toast channel presentations across Dinner and Dinner (3PD).",
+      "notes": [
+        "The representation is restaurant-linked vendor evidence and is not promoted to a restaurant-issued allergen matrix."
+      ]
+    },
+    {
+      "id": "toast-direct-capture-attempt",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/alatri-bros",
+      "attemptedAt": "2026-07-14T22:18:50.000Z",
+      "outcome": "Direct command-line capture returned HTTP 403; the current menu remained accessible through the reviewed web representation and stable item URLs.",
+      "notes": []
+    },
+    {
+      "id": "allergen-disclosure-review",
+      "kind": "targeted_search",
+      "url": "https://www.alatribros.com/menu",
+      "attemptedAt": "2026-07-14T22:19:00.000Z",
+      "outcome": "Found selected fixed descriptions and the restaurant-issued global gluten/nut caution, but no complete matrix, recipes, or allergen-specific item legend.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "flattened-channel-and-section-structure",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen catalog flattened current site/Toast sections, fabricated adjacency-based variants, omitted 22 formulations, and retained four promotional, heading, or description artifacts.",
+      "evidenceIds": [
+        "official-menu",
+        "toast-menu"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 84 current formulations with 202 official-site and Toast channel presentations, restored all omissions, deduplicated channel repetitions, removed every fabricated variant, and rejected only the four source-proven nonproducts."
+    },
+    {
+      "id": "discarded-global-cross-contact",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Every real frozen row discarded Alatri's restaurant-issued statement that food cannot be guaranteed completely gluten- or nut-free; many also omitted fixed positive ingredients.",
+      "evidenceIds": [
+        "official-menu",
+        "toast-menu"
+      ],
+      "resolved": true,
+      "resolution": "Applied may-contain peanut, tree nut, and gluten to all 84 food formulations as a global cross-contact note, separately mapped 74 positive contains rows, and left optional choices out of fixed claims."
+    },
+    {
+      "id": "generic-toast-merge-context-loss",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "The generic source merge lost current channel, section, alias, configuration, fixed-ingredient, and global-warning semantics.",
+      "evidenceIds": [
+        "official-menu",
+        "toast-menu"
+      ],
+      "resolved": true,
+      "resolution": "Prepared a guarded current-menu manifest correction with exact formulation/presentation counts, official aliases, configurable-choice semantics, global caution separation, and focused invariants."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-alatri-bros-current-menu",
+      "status": "verified",
+      "summary": "Prepared and focused-tested an 84-formulation, 202-presentation Alatri Bros. catalog with 74 fixed-positive rows, ten cross-contact-only rows, all 66 frozen rows reconciled, and every current omission/artifact corrected.",
+      "files": [
+        "scripts/pipeline/alatri-bros-audit-catalog.mjs",
+        "scripts/pipeline/alatri-bros-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/alatri-bros-bethesda-md/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/alatri-bros-audit-catalog.test.mjs scripts/pipeline/alatri-bros-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=tmp/restaurant-verification/alatri-isolated.generated.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 84 items, ten canonical categories, 74 fixed-positive rows, ten cross-contact-only rows, the global caution on every item, all sampled additions, artifact removal, and idempotent guard behavior)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 4e62ea57b0fff7902e0938783da210df9d9454a2918f10ada4e4b50dcae98c3e.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":61,\"normalized_match\":1,\"artifact\":4},\"allergens\":{\"mismatch\":62,\"not_applicable\":4},\"mismatchKinds\":{\"underreported\":62}}.",
+    "Current corrected catalog counts: 84 formulations, 202 presentations, 23 source sections, 74 fixed-positive rows, and ten cross-contact-only rows."
+  ]
+}

@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "amoo-s-restaurant-mclean-va-dc-metro",
+  "name": "Amoo's Restaurant",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T02:20:59.314Z",
+  "updatedAt": "2026-07-15T02:49:00.000Z",
+  "completedAt": "2026-07-15T02:49:00.000Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 19,
+      "sourceItemCount": 71,
+      "notes": [
+        "All 19 frozen rows were adjudicated: 16 location mismatches from Chopped NYC Ann Arbor and three exact current Amoo's matches.",
+        "The current working catalog contains 71 exact-address formulations across 13 categories, with beverages last; all 68 current formulations omitted from the frozen record were restored.",
+        "Six formulations are directly corroborated by the current official homepage; the remaining current catalog is corroborated by exact-address current vendor sources and separately labeled as non-official."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The 13 frozen official-ingredients rows all belonged to Chopped NYC and were removed.",
+        "Only Family Platter for 2 (bread: wheat/gluten) and Persian Saffron Ice Cream (cream/pistachio: milk/tree nut) have current restaurant-issued positive allergen wording.",
+        "The other 69 formulations remain officially unavailable. Third-party descriptions feed separately labeled Ingredient Intelligence only, and no mayContain claim is invented from the legacy broad gluten/nut statement."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "Reviewed current restaurant identity, all six official featured formulations, the complete 71-row Nuxt delivery payload, current exact-address vendor corroboration, both menu images, both legacy PDFs, all 19 frozen source associations, authority boundaries, Ingredient Intelligence, and final generated fields.",
+        "Twelve focused tests pass; eight captured artifact hashes match; all 19 item evidence references resolve; and the generated target matches the reviewed snapshot on every core and inference field.",
+        "The target-only repair is idempotent at SHA-256 5116c5f18f714636985c943b8334d793632b926eba7d1b5fb40c2738567d9c04 and preserved all 1,494 non-target restaurants at SHA-256 613bdb0173df8ab911fbf7981f8e46f70181ff5fd759b13b9a2300d93c5321a8."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-current-site",
+      "kind": "official_site",
+      "url": "https://amoosrestaurant.com/",
+      "attemptedAt": "2026-07-15T02:21:29.136Z",
+      "outcome": "captured current exact identity and six featured formulations; found inert full-menu download buttons and a foreign Chopped NYC order link",
+      "notes": []
+    },
+    {
+      "id": "official-current-pdf-links",
+      "kind": "linked_source",
+      "url": "https://www.amoosrestaurant.com/uploads/1/2/3/2/123203214/dine_in_menu_for_website-2_2.pdf",
+      "attemptedAt": "2026-07-15T02:21:56.000Z",
+      "outcome": "current www PDF URLs returned HTTP 404; former Weebly-origin files remained accessible but were last modified in March/April 2024",
+      "notes": [
+        "Legacy PDFs were captured as historical corroboration only."
+      ]
+    },
+    {
+      "id": "official-order-links",
+      "kind": "ordering_vendor",
+      "url": "https://order.online/business/-12248",
+      "attemptedAt": "2026-07-15T02:21:59.000Z",
+      "outcome": "business endpoints returned HTTP 403 and one visible official-site order link explicitly targeted Chopped NYC Ann Arbor",
+      "notes": [
+        "No order.online content was accepted as Amoo's current evidence."
+      ]
+    },
+    {
+      "id": "current-exact-address-menu",
+      "kind": "third_party",
+      "url": "https://www.orderspoon.com/delivery/virginia/mclean/amoo-s-restaurant?source=mealme",
+      "attemptedAt": "2026-07-15T02:23:38.965Z",
+      "outcome": "captured complete current exact-address catalog with 71 items in 13 categories",
+      "notes": [
+        "All menu descriptions remain third-party and are not promoted to official."
+      ]
+    },
+    {
+      "id": "current-vendor-corroboration",
+      "kind": "ordering_vendor",
+      "url": "https://www.ubereats.com/store/amoos-restaurant/57pS1OArXBKuwUyqRl9Seg",
+      "attemptedAt": "2026-07-15T02:22:00.000Z",
+      "outcome": "browser-readable exact-address menu corroborated categories, featured formulations, prices, and current 2026 activity; ledger user-agent received HTTP 403",
+      "notes": []
+    },
+    {
+      "id": "allergen-source-search",
+      "kind": "targeted_search",
+      "url": "https://amoosrestaurant.com/",
+      "attemptedAt": "2026-07-15T02:27:23.170Z",
+      "outcome": "no current restaurant-issued allergen matrix, ingredient guide, or item-level cross-contact statement located",
+      "notes": [
+        "Only two current first-party featured descriptions directly name top-allergen ingredients."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "amoos-cross-location-chopped-contamination",
+      "severity": "critical",
+      "kind": "location_mismatch",
+      "summary": "Sixteen of the 19 frozen Amoo's rows came from a Chopped NYC Ann Arbor ordering URL and belong to another restaurant.",
+      "evidenceIds": [
+        "official-home",
+        "mislinked-chopped-nyc-ann-arbor",
+        "orderspoon-current-menu"
+      ],
+      "resolved": true,
+      "resolution": "Removed all 16 location-mismatched Chopped NYC rows and quarantined their source association; none remains in Amoo's generated catalog."
+    },
+    {
+      "id": "amoos-menu-severely-incomplete",
+      "severity": "high",
+      "kind": "menu_incomplete",
+      "summary": "The frozen record retained only three real Amoo's formulations and omitted 68 formulations from the current 71-row exact-address catalog.",
+      "evidenceIds": [
+        "official-home",
+        "orderspoon-current-menu",
+        "uber-eats-browser-review"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the three-row effective Amoo's catalog with 71 current formulations across 13 categories, restoring all 68 omitted current rows."
+    },
+    {
+      "id": "amoos-foreign-allergens-promoted-official",
+      "severity": "critical",
+      "kind": "allergen_source_misclassification",
+      "summary": "Thirteen frozen Chopped NYC rows were labeled official-ingredients for Amoo's, creating foreign milk/egg contains claims under the wrong restaurant.",
+      "evidenceIds": [
+        "mislinked-chopped-nyc-ann-arbor"
+      ],
+      "resolved": true,
+      "resolution": "Removed every foreign milk/egg claim and recalculated official evidence strictly from current Amoo's first-party wording."
+    },
+    {
+      "id": "amoos-current-official-menu-links-broken",
+      "severity": "high",
+      "kind": "source_freshness",
+      "summary": "The current homepage advertises full-menu downloads without link targets, current www PDF paths return 404, and the surviving restaurant-issued PDFs are from 2024.",
+      "evidenceIds": [
+        "official-home",
+        "legacy-official-dine-in-menu",
+        "legacy-official-takeout-menu"
+      ],
+      "resolved": true,
+      "resolution": "Recorded the broken current links, retained the old restaurant-issued PDFs only as historical evidence, and based the complete working catalog on current exact-address vendor evidence without promoting its authority."
+    },
+    {
+      "id": "amoos-current-allergen-authority-limited",
+      "severity": "high",
+      "kind": "allergen_source_missing",
+      "summary": "Only two of 71 current formulations have positive allergen wording on the restaurant-issued current homepage; all other current descriptions are third-party or historical.",
+      "evidenceIds": [
+        "official-home",
+        "orderspoon-current-menu",
+        "legacy-official-takeout-menu"
+      ],
+      "resolved": true,
+      "resolution": "Limited official positive allergens to Family Platter for 2 and Persian Saffron Ice Cream; marked the other 69 current formulations officially unavailable and kept third-party cues separate."
+    },
+    {
+      "id": "amoos-ingredient-inference-semantics",
+      "severity": "high",
+      "kind": "allergen_inference",
+      "summary": "Generic inference incorrectly treated suggested bread and an either-or vinegar/lemon description as fixed chimichurri ingredients, and risked treating barley itself as wheat.",
+      "evidenceIds": [
+        "orderspoon-current-menu"
+      ],
+      "resolved": true,
+      "resolution": "Suppressed fixed-allergen inference for Extra Chimichurri Sauce and represented Soupe Jo Kurdi barley as gluten-high while keeping noodle-derived wheat separate at medium confidence."
+    },
+    {
+      "id": "amoos-address-metadata",
+      "severity": "medium",
+      "kind": "identity_metadata",
+      "summary": "The frozen record carried only McLean, VA instead of the current complete street address.",
+      "evidenceIds": [
+        "official-home",
+        "orderspoon-current-menu"
+      ],
+      "resolved": true,
+      "resolution": "Set the display address to 6271 Old Dominion Dr, McLean, VA 22101."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "amoos-current-catalog-and-source-repair",
+      "status": "verified",
+      "summary": "Removed 16 foreign Chopped NYC rows and their false official allergen claims, retained three real frozen Amoo's formulations, restored 68 omitted formulations, produced a 71-row current catalog with beverages last, limited official allergens to two first-party positive disclosures, preserved 69 unavailable rows, and corrected two Ingredient Intelligence edge cases.",
+      "files": [
+        "scripts/pipeline/amoos-restaurant-audit-catalog.mjs",
+        "scripts/pipeline/amoos-restaurant-audit-catalog.test.mjs",
+        "scripts/pipeline/amoos-restaurant-audit-reconciliation.mjs",
+        "scripts/pipeline/amoos-restaurant-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json",
+        "data/restaurant-verification/repairs/amoo-s-restaurant-mclean-va-dc-metro/corrected-menu.json",
+        "data/restaurant-verification/item-checks/amoo-s-restaurant-mclean-va-dc-metro.jsonl"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/amoo-s-restaurant-mclean-va-dc-metro/official-home.html",
+        "data/restaurant-verification/artifacts/amoo-s-restaurant-mclean-va-dc-metro/grubhub-current-menu.html",
+        "data/restaurant-verification/artifacts/amoo-s-restaurant-mclean-va-dc-metro/restaurantji-current-page.html",
+        "data/restaurant-verification/artifacts/amoo-s-restaurant-mclean-va-dc-metro/orderspoon-current-menu.html",
+        "data/restaurant-verification/artifacts/amoo-s-restaurant-mclean-va-dc-metro/restaurantji-menu-image-desktop.jpg",
+        "data/restaurant-verification/artifacts/amoo-s-restaurant-mclean-va-dc-metro/restaurantji-menu-image-mobile.jpg",
+        "data/restaurant-verification/artifacts/amoo-s-restaurant-mclean-va-dc-metro/legacy-official-dine-in-menu.pdf",
+        "data/restaurant-verification/artifacts/amoo-s-restaurant-mclean-va-dc-metro/legacy-official-takeout-menu.pdf"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/amoos-restaurant-audit-catalog.test.mjs scripts/pipeline/amoos-restaurant-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=amoo-s-restaurant-mclean-va-dc-metro node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Current address: 6271 Old Dominion Dr, McLean, VA 22101.",
+    "The working current catalog contains 71 formulations across 13 categories; beverages are ordered last.",
+    "No safe dedicated audit worktree exists because the checkout remains dirty, so no checkpoint commit was created."
+  ]
+}

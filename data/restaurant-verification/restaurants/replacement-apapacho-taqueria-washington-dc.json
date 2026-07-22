@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "replacement-apapacho-taqueria-washington-dc",
+  "name": "Apapacho Taqueria",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T07:40:11.032Z",
+  "updatedAt": "2026-07-15T07:58:59.392Z",
+  "completedAt": "2026-07-15T07:58:59.392Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 51,
+      "sourceItemCount": 40,
+      "notes": [
+        "Apapacho's current owner-issued two-page PDF and live Square order categories reconcile to 40 food and non-alcoholic products across seven sections.",
+        "All 51 frozen rows were reconciled: 28 exact matches, four normalized matches, three reviewed variants, and sixteen stale inventory/event/alcohol/preorder rows. The 35 matched frozen presentations represent 34 current products, leaving six current omissions.",
+        "The raw 80-product Square response is inventory history, not a complete current-menu signal. Expired Valentine's, Día de Muertos, tamale preorder, Rosca de Reyes, one-night tasting, alcohol, happy-hour duplicate, and service-control SKUs were not retained solely because the API still returns them."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Apapacho publishes ingredient descriptions but no complete allergen matrix, may-contain statement, or cross-contact policy. Fourteen current products have supported positive signals and twenty-six remain accurately unavailable.",
+        "Seven matched frozen allergen outcomes were wrong: oyster mushroom was falsely treated as shellfish; corn masa was falsely treated as wheat/gluten; breaded chicken and battered shrimp omitted wheat/gluten; arroz con leche omitted milk; the historical happy-hour milanesa repeated the breading omission; and the cookie's unsupported wheat/gluten inference was removed.",
+        "Optional flour-tortilla and sunny-side-egg/meat additions are not applied to default corn-tortilla or base chilaquiles presentations, and absent terms are never treated as negative assurances."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic extractor flattened every item into Restaurant, treated the 80-row Square inventory endpoint as current menu evidence, retained sixteen obsolete or out-of-scope rows, omitted six current products, and performed unsafe token-only allergen matching.",
+        "The reviewed parser asserts the owner-linked PDF anchors, the 80-row inventory shape, and fourteen current Square category records; uses the PDF as the in-house menu authority; accepts only six newer API-only products that are visible, fulfillable, and assigned to a live order category; and keeps beverages last.",
+        "Focused tests cover source shape, every frozen-row disposition, current omissions, historical-inventory exclusions, oyster-mushroom/corn-masa semantics, published repair invariants, target-only isolation, and idempotency."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "apapacho-owner-home-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.apapachotaqueria.com/",
+      "attemptedAt": "2026-07-15T07:43:05.701Z",
+      "outcome": "HTTP 200. Confirmed Apapacho Taqueria, its 1280 4th Street Northeast address, owner-controlled menu route, and Square ordering infrastructure.",
+      "notes": []
+    },
+    {
+      "id": "apapacho-square-products-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://www.apapachotaqueria.com/app/store/api/v28/editor/users/149682741/sites/916428179789760537/products?page=1&per_page=200&include=images,media_files,discounts",
+      "attemptedAt": "2026-07-15T07:43:11.437Z",
+      "outcome": "HTTP 200. Captured 80 owner-domain Square inventory products with visibility, fulfillment, category, description, price, and availability metadata.",
+      "notes": [
+        "The response contains historical inventory and cannot establish current-menu status without the PDF and live category surface."
+      ]
+    },
+    {
+      "id": "apapacho-current-pdf-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.apapachotaqueria.com/uploads/b/7b001730-3593-11ef-a80d-fb22eb17238f/3a960d90-f595-11f0-9cc0-1bb54b8fbc87.pdf",
+      "attemptedAt": "2026-07-15T07:43:17.762Z",
+      "outcome": "HTTP 200. Captured the two-page owner-issued Winter Specials menu, rendered both pages, and visually verified item-to-description layout.",
+      "notes": [
+        "PDF metadata was created January 15, 2026; the restaurant currently embeds this exact file on its Menu page."
+      ]
+    },
+    {
+      "id": "apapacho-menu-page-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.apapachotaqueria.com/menu",
+      "attemptedAt": "2026-07-15T07:44:30.638Z",
+      "outcome": "HTTP 200. Confirmed the current Menu page embeds the captured PDF and offers the restaurant's Order Online route.",
+      "notes": []
+    },
+    {
+      "id": "apapacho-order-page-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://www.apapachotaqueria.com/s/order",
+      "attemptedAt": "2026-07-15T07:44:59.987Z",
+      "outcome": "HTTP 200. Captured the owner-domain order page and its fourteen live Square categories, including newer Breakfast Tacos.",
+      "notes": []
+    },
+    {
+      "id": "apapacho-targeted-allergen-review-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://www.apapachotaqueria.com/menu",
+      "attemptedAt": "2026-07-15T07:46:00.000Z",
+      "outcome": "Reviewed the owner-issued PDF, current order categories, and all reconciled product text. Found no complete allergen matrix, may-contain statement, shared-equipment disclosure, or item-level negative assurance.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "apapacho-square-inventory-history",
+      "severity": "critical",
+      "kind": "menu-reconciliation-mismatch",
+      "summary": "The frozen extraction treated Square's 80-product inventory history as current menu evidence and retained expired or out-of-scope products.",
+      "evidenceIds": [
+        "official-apapacho-square-products",
+        "official-apapacho-menu-page",
+        "official-apapacho-winter-specials-pdf",
+        "official-apapacho-order-page"
+      ],
+      "resolved": true,
+      "resolution": "Used the embedded current PDF as in-house authority, required live category membership for six newer API-only additions, and removed sixteen frozen historical/event/alcohol/preorder rows."
+    },
+    {
+      "id": "apapacho-oyster-mushroom-false-shellfish",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "The frozen token matcher interpreted the culinary mushroom name 'oyster mushroom' as shellfish.",
+      "evidenceIds": [
+        "official-apapacho-winter-specials-pdf",
+        "official-apapacho-square-products"
+      ],
+      "resolved": true,
+      "resolution": "Added the exact oyster-mushroom exclusion before shellfish matching and removed shellfish from Tacos de Mushrooms."
+    },
+    {
+      "id": "apapacho-corn-masa-false-wheat",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Fried Corn Quesadilla explicitly uses corn masa, but the frozen output added wheat and gluten.",
+      "evidenceIds": [
+        "official-apapacho-winter-specials-pdf",
+        "official-apapacho-square-products"
+      ],
+      "resolved": true,
+      "resolution": "Limited wheat/gluten positives to fixed flour tortilla, breaded, or battered terms; the current quesadilla retains only milk."
+    },
+    {
+      "id": "apapacho-breading-and-name-signal-omissions",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "The frozen output omitted wheat/gluten from breaded chicken and battered shrimp and omitted milk from Arroz con Leche.",
+      "evidenceIds": [
+        "official-apapacho-winter-specials-pdf",
+        "official-apapacho-square-products"
+      ],
+      "resolved": true,
+      "resolution": "Mapped only the fixed breaded, battered, mayo, shrimp, cheese/crema, and leche terms while leaving incomplete items unavailable."
+    },
+    {
+      "id": "apapacho-flat-category-and-omission-set",
+      "severity": "high",
+      "kind": "parser-structure-corruption",
+      "summary": "Every frozen product was flattened to Restaurant and six current products were omitted.",
+      "evidenceIds": [
+        "official-apapacho-winter-specials-pdf",
+        "official-apapacho-order-page",
+        "official-apapacho-square-products"
+      ],
+      "resolved": true,
+      "resolution": "Restored seven sections and current Chilaquiles, Seasonal Popsicle, Bottled Water, Mexican Coke, Diet Coke, and Sangria Señorial."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "apapacho-current-menu-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt Apapacho's current food/non-alcoholic catalog and corrected stale inventory, structure, omissions, allergen semantics, and evidence boundaries.",
+      "files": [
+        "scripts/pipeline/apapacho-taqueria-audit-catalog.mjs",
+        "scripts/pipeline/apapacho-taqueria-audit-catalog.test.mjs",
+        "scripts/pipeline/apapacho-taqueria-audit-reconciliation.mjs",
+        "scripts/pipeline/apapacho-taqueria-audit-reconciliation.test.mjs",
+        "scripts/pipeline/apapacho-taqueria-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/replacement-apapacho-taqueria-washington-dc/official-apapacho-home.html",
+        "data/restaurant-verification/artifacts/replacement-apapacho-taqueria-washington-dc/official-apapacho-menu-page.html",
+        "data/restaurant-verification/artifacts/replacement-apapacho-taqueria-washington-dc/official-apapacho-order-page.html",
+        "data/restaurant-verification/artifacts/replacement-apapacho-taqueria-washington-dc/official-apapacho-square-products.json",
+        "data/restaurant-verification/artifacts/replacement-apapacho-taqueria-washington-dc/official-apapacho-winter-specials-pdf.pdf",
+        "data/restaurant-verification/artifacts/replacement-apapacho-taqueria-washington-dc/official-apapacho-winter-specials-pdf.txt",
+        "data/restaurant-verification/repairs/replacement-apapacho-taqueria-washington-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/apapacho-taqueria-audit-catalog.mjs",
+        "node scripts/pipeline/apapacho-taqueria-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/apapacho-taqueria-audit-catalog.test.mjs scripts/pipeline/apapacho-taqueria-audit-reconciliation.test.mjs scripts/pipeline/apapacho-taqueria-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=replacement-apapacho-taqueria-washington-dc node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 6a817e3e00fdede163cae8ffd319464f2036b4e708d84476dd1fa0aaa46eb66a.",
+    "Official home SHA-256: 4c290132756b0a751d88dd36f76c4e5925a5aee3898cb1e8b22c7a3530f59357.",
+    "Official menu page SHA-256: 8d7d441c058949d51810b6475c8c3753443040e032d98b9f0e193cc4fd057660.",
+    "Official order page SHA-256: 32f1d605fcdf93fcfe89f4a4317a327c6fbfc7cb0335e09a01b4796de691d764.",
+    "Official Square products SHA-256: c5e3dd98711606382876798b5a38525ffd0cdbc7246329aede1b2e760cc8c978.",
+    "Official PDF SHA-256: 285ca31aea1aace82ba568f3b4e73aad8f44714458f20ec93e5e5c0094f5ea9a; deterministic text derivative SHA-256: cf9bf90b8ae9f4ab6bf186f227fbf5406fe72b7f2177b61fd3dcf662e573c197.",
+    "Frozen live target SHA-256 before repair: 44b07afbc9570576fb06eeece5867bcecb120d711a72410cbe4575a62cc00002.",
+    "Live target SHA-256 after repair: 98fddc085ec0cc7918a8f7678cea7405c02b60cb85712178173c07db7e7716c5.",
+    "Live non-target restaurant projection SHA-256 remained 43f455f85ae6ad8325576b8ad24c6126ed947a6b177eefa4f4a32eef29b5ea87.",
+    "Two consecutive target-only repair runs produced the same target hash and exactly one Apapacho verified repair note.",
+    "The repaired repository contains 113706 live menu items; the frozen ledger remains anchored to its original 112873-item hashed baseline."
+  ]
+}

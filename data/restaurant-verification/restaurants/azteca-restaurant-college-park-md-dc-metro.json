@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "azteca-restaurant-college-park-md-dc-metro",
+  "name": "Azteca Restaurant",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T18:15:26.812Z",
+  "updatedAt": "2026-07-15T21:02:20.535Z",
+  "completedAt": "2026-07-15T21:02:20.535Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 94,
+      "sourceItemCount": 94,
+      "notes": [
+        "The current College Park ordering catalog contains 103 rendered forms, 95 unique vendor item identifiers, and 94 canonical products after deterministic duplicate consolidation.",
+        "All three frozen rows reconcile: two exact products and one current named variant. Ninety-one current products were absent from the frozen catalog.",
+        "Post-repair recheck pins ninety-four unique canonical products in the source order across all nineteen current menu categories.",
+        "All three frozen rows reconcile exactly once; eight repeated vendor identifiers and the repeated Picadera presentation are consolidated without losing evidence."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "The owner homepage establishes identity and links to a same-domain FOX Ordering menu, but the menu content is vendor infrastructure and is not promoted to restaurant-issued authority.",
+        "Sixty-five products contain narrow direct positive ingredient or unavoidable fish/shellfish signals; twenty-nine remain unavailable. No complete matrix, negative assurance, or cross-contact policy was found.",
+        "Sixty-five products retain narrow direct positives from linked-menu text and twenty-nine remain unavailable.",
+        "No wheat/gluten inference, negative assurance, or cross-contact claim is published from incomplete menu wording."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen three-row repair used a different restaurant domain, omitted ninety-one current products, and overstated wheat/gluten for Grilled Quesadilla from flour-tortilla wording.",
+        "Eight repeated vendor item identifiers and the duplicated Plato Picadera Especial presentation require canonical consolidation.",
+        "The hash-pinned parser preserves source categories, descriptions, configurable products, and both Picadera vendor presentations.",
+        "The generated snapshot contains exactly ninety-four products with zero official-source promotions."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site",
+      "kind": "official_site",
+      "url": "https://www.aztecarestaurantcantinamd.com/",
+      "attemptedAt": "2026-07-15T18:15:54.536Z",
+      "outcome": "Captured the current restaurant homepage and its linkage to the College Park ordering surface.",
+      "notes": [
+        "The homepage supplies identity and linkage, not an allergen matrix."
+      ]
+    },
+    {
+      "id": "ordering-vendor",
+      "kind": "ordering_vendor",
+      "url": "https://aztecarestaurantcantinamd.com/azteca-restaurant-cantina/menu/9505-Baltimore-Ave/",
+      "attemptedAt": "2026-07-15T18:15:54.927Z",
+      "outcome": "Captured the full current FOX Ordering catalog with item identifiers, categories, descriptions, and configurable presentations.",
+      "notes": [
+        "Same-domain hosting does not change the vendor platform's authority tier; silence is not negative evidence."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "severe-current-catalog-undercoverage",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The frozen catalog contains only three of ninety-four current canonical products.",
+      "evidenceIds": [
+        "official-home-current",
+        "official-order-menu-current"
+      ],
+      "resolved": true,
+      "resolution": "Restored all ninety-one omitted current products and pinned the complete ninety-four-product catalog."
+    },
+    {
+      "id": "wrong-domain-and-authority",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "All frozen rows cite a different restaurant domain and label partial menu descriptions as official ingredient evidence.",
+      "evidenceIds": [
+        "official-home-current",
+        "official-order-menu-current"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the stale domain and classified every product as restaurant-linked menu evidence or unavailable."
+    },
+    {
+      "id": "unsupported-wheat-gluten",
+      "severity": "high",
+      "kind": "allergen_extraction",
+      "summary": "The frozen Grilled Quesadilla promotes flour-tortilla wording to wheat and gluten despite no explicit source disclosure.",
+      "evidenceIds": [
+        "official-order-menu-current"
+      ],
+      "resolved": true,
+      "resolution": "Removed unsupported wheat/gluten and retained only the directly supported milk signal."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "rebuild-azteca-college-park-catalog",
+      "status": "verified",
+      "summary": "Verified the complete catalog boundary, deterministic duplicate handling, linked-vendor authority, direct-positive semantics, and empty cross-contact arrays.",
+      "files": [
+        "scripts/pipeline/azteca-college-park-audit-catalog.mjs",
+        "scripts/pipeline/azteca-college-park-audit-catalog.test.mjs",
+        "scripts/pipeline/azteca-college-park-audit-reconciliation.mjs",
+        "scripts/pipeline/azteca-college-park-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/azteca-restaurant-college-park-md-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/azteca-college-park-audit-catalog.test.mjs scripts/pipeline/azteca-college-park-audit-reconciliation.test.mjs",
+        "node --test --test-name-pattern=\"Azteca College Park\" scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Terra low was escalated to Sol medium; coordinator review corrected the platform authority and exact deduplication boundary.",
+    "Focused catalog/reconciliation tests passed 4/4 and the generated snapshot regression passed 1/1.",
+    "Generated counts: 94 total; 65 restaurant-linked menu positives; 29 unavailable; zero official; zero wheat/gluten; zero may-contain."
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "status": "recheck_required",
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 59,
+      "sourceItemCount": 60,
+      "notes": [
+        "All 59 frozen rows were reconciled: 40 exact matches, eleven normalized matches, one variant match, four duplicate-description artifacts, and three stale extras. The 52 matched rows cover 52 unique current products; eight current products were restored.",
+        "The owner-published source boundary contains 53 lunch, 52 dinner, 32 gluten-sensitive lunch, and 33 gluten-sensitive dinner presentations, consolidated into 60 current offerings.",
+        "The kids Gluten Free Penne Pasta & Red Sauce remains a distinct named product; regular and gluten-sensitive variants of the same named item are otherwise consolidated with their documented modifications."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Forty-nine products have direct positive restaurant-menu ingredient or formulation signals; eleven have no positive fixed signal and are supported only by the gluten-sensitive menu's official gluten cross-contact warning.",
+        "The warning is applied as mayContain gluten only to the 37 products represented on a gluten-sensitive menu. It is not a full allergen matrix, is not spread to regular-only products, and does not establish absence of other allergens.",
+        "Forty-five matched frozen rows had a fixed-allergen, cross-contact, or provenance mismatch. The four artifacts and three stale extras are not applicable allergen rows.",
+        "The menus' raw-or-undercooked notices are foodborne-illness language and are not represented as allergen cross-contact."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic website/ordering extraction promoted four descriptions into products, retained three stale standalone rows, omitted eight current offerings, and failed to model the product-scoped gluten-sensitive warning.",
+        "The hash-pinned builder fails closed unless the owner website and all four owner PDFs retain their reviewed hashes and the source-presentation and 60-product boundaries remain exact.",
+        "Three focused catalog, reconciliation, and repaired-output tests pass. A consecutive target-only repair run preserved both the Artie's target hash and the full non-target restaurant projection hash.",
+        "Per-restaurant application uses RESTAURANT_REPAIR_ONLY_ID so unrelated repair blocks cannot mutate other restaurants."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "arties-official-site-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.artiesva.com/",
+      "attemptedAt": "2026-07-15T12:11:21.000Z",
+      "outcome": "The owner site was captured and identifies four current restaurant-issued menu PDFs: lunch, dinner, gluten-sensitive lunch, and gluten-sensitive dinner.",
+      "notes": []
+    },
+    {
+      "id": "arties-regular-menu-pdfs-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://www.artiesva.com/",
+      "attemptedAt": "2026-07-15T12:11:20.000Z",
+      "outcome": "Both four-page regular menus were captured, text-extracted, rendered, and visually reviewed. Their 105 food presentations consolidate into the regular portion of the current catalog.",
+      "notes": []
+    },
+    {
+      "id": "arties-gluten-sensitive-pdfs-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://www.artiesva.com/",
+      "attemptedAt": "2026-07-15T12:11:21.000Z",
+      "outcome": "Both two-page gluten-sensitive menus were captured, text-extracted, rendered, and visually reviewed. They contain 65 presentations and an explicit shared-preparation gluten warning.",
+      "notes": []
+    },
+    {
+      "id": "arties-ordering-vendor-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://order.greatamericanrestaurants.com/menu/arties",
+      "attemptedAt": "2026-07-15T12:12:00.000Z",
+      "outcome": "The current Olo shell was captured, but its server HTML contains no menu rows. The historical vendor API URL in the frozen source returned HTTP 403 and was not used as current evidence.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "arties-current-product-boundary-corruption",
+      "severity": "critical",
+      "kind": "product-boundary-corruption",
+      "summary": "The frozen 59-row output contained four duplicated-description artifacts and three stale standalone products while omitting eight current offerings.",
+      "evidenceIds": [
+        "official-site",
+        "official-lunch-menu",
+        "official-dinner-menu",
+        "official-gluten-sensitive-lunch-menu",
+        "official-gluten-sensitive-dinner-menu"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt the owner-published 60-product boundary, removed all seven invalid rows, restored all eight omissions, and preserved documented variants without duplicating lunch and dinner presentations."
+    },
+    {
+      "id": "arties-allergen-and-provenance-mismatches",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Forty-five of the 52 matched frozen products had an incorrect fixed-allergen set, omitted product-scoped gluten cross-contact, or incorrect evidence provenance.",
+      "evidenceIds": [
+        "official-lunch-menu",
+        "official-dinner-menu",
+        "official-gluten-sensitive-lunch-menu",
+        "official-gluten-sensitive-dinner-menu"
+      ],
+      "resolved": true,
+      "resolution": "Re-reviewed every current product description, retained 49 direct positive ingredient/formulation rows, retained eleven cross-contact-only rows, and limited mayContain gluten to the 37 products documented on gluten-sensitive surfaces."
+    },
+    {
+      "id": "arties-warning-semantics",
+      "severity": "high",
+      "kind": "source-semantics",
+      "summary": "The frozen extraction did not distinguish the gluten-sensitive menus' shared-preparation warning from the unrelated raw-or-undercooked foodborne-illness footnote.",
+      "evidenceIds": [
+        "official-lunch-menu",
+        "official-dinner-menu",
+        "official-gluten-sensitive-lunch-menu",
+        "official-gluten-sensitive-dinner-menu"
+      ],
+      "resolved": true,
+      "resolution": "Represented the shared-preparation statement as product-scoped mayContain gluten, ignored undercooking language for allergen purposes, and made no negative allergen claims."
+    },
+    {
+      "id": "arties-stale-ordering-source",
+      "severity": "high",
+      "kind": "stale-source-boundary",
+      "summary": "The frozen output relied on an ordering-vendor API that is no longer accessible and did not represent the complete current owner-published PDF set.",
+      "evidenceIds": [
+        "official-site",
+        "linked-ordering-shell"
+      ],
+      "resolved": true,
+      "resolution": "Pinned the owner website and all four current restaurant-issued PDFs by SHA-256 and made the audit catalog fail closed on hash or source-boundary changes."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "arties-current-catalog-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt all 60 current Artie's offerings, corrected positive and cross-contact allergen semantics, removed seven invalid frozen rows, restored eight omissions, and constrained repair application to the target restaurant.",
+      "files": [
+        "scripts/pipeline/arties-audit-catalog.mjs",
+        "scripts/pipeline/arties-audit-catalog.test.mjs",
+        "scripts/pipeline/arties-audit-reconciliation.mjs",
+        "scripts/pipeline/arties-audit-reconciliation.test.mjs",
+        "scripts/pipeline/arties-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/artie-s-fairfax-va-dc-metro/official-arties-site.html",
+        "data/restaurant-verification/artifacts/artie-s-fairfax-va-dc-metro/official-arties-lunch.pdf",
+        "data/restaurant-verification/artifacts/artie-s-fairfax-va-dc-metro/official-arties-dinner.pdf",
+        "data/restaurant-verification/artifacts/artie-s-fairfax-va-dc-metro/official-arties-gluten-sensitive-lunch.pdf",
+        "data/restaurant-verification/artifacts/artie-s-fairfax-va-dc-metro/official-arties-gluten-sensitive-dinner.pdf",
+        "data/restaurant-verification/repairs/artie-s-fairfax-va-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/arties-audit-catalog.mjs",
+        "node scripts/pipeline/arties-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/arties-audit-catalog.test.mjs scripts/pipeline/arties-audit-reconciliation.test.mjs scripts/pipeline/arties-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=artie-s-fairfax-va-dc-metro node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: dbe4bb01cad2189dbb88e2d6a16dcebaee689dfaad82a99d2c544b03f0c612a5.",
+    "Frozen reconciled item-check SHA-256: f99a367fba14bb6f432fdb3cad39753d9ae7a101c9db0b08e375d1a458aeddbc.",
+    "Evidence manifest SHA-256: 16a6b74795ee4198cdc371f77b047a42b7a8969a41cd469076a4b1a16c68d404.",
+    "Live target SHA-256 changed from e65e83e670c07cda5a4bf4745c2807f9514307adfd8ce2e46052ef6a6be4e506 to d25e543a815ca0d5457f34159dcef2cc836ca43319d596f0a4e13f0ebd9cf988.",
+    "Consecutive target-only repair non-target projection SHA-256 remained d70c6b125ae21cab871ba5251966aa1880b8f067a0cd1a211ac541f49a836e27."
+  ]
+}

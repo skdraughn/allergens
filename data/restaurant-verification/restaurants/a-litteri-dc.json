@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "a-litteri-dc",
+  "name": "A. Litteri",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T19:13:20.427Z",
+  "updatedAt": "2026-07-14T19:27:03.539Z",
+  "completedAt": "2026-07-14T19:27:03.539Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 18,
+      "sourceItemCount": 42,
+      "notes": [
+        "Every frozen row was reconciled against the current FoodBooking menu linked directly by A. Litteri and the two current catering-menu images embedded on the official site.",
+        "The corrected catalog contains 42 real products across six categories: 21 active top-level ordering products and 21 official catering products. Ordering sizes and modifiers remain configuration, not separate products.",
+        "Three frozen rows are exact current matches, eight are current variants, three are modifier-group artifacts, and four are stale products absent from both current menu surfaces.",
+        "The official catering images remain necessary current menu surfaces; they were not discarded merely because their products are not offered through online ordering."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "A. Litteri publishes current product names and selected fixed ingredient descriptions, but no complete allergen matrix, full recipes, or cross-contact guide was found on the official site or linked ordering data.",
+        "Thirty-three corrected rows have direct restaurant-published positive ingredient or mandatory-format signals; nine rows remain unavailable rather than being presented as allergen-free.",
+        "Optional cheese, condiment, dressing, meat, and topping groups are excluded from fixed allergen signals. Conventional assumptions such as mayonnaise in salad or ricotta in cannoli are also excluded without published ingredient support.",
+        "FoodBooking is classified as a restaurant-linked vendor. The old SinglePlatform listing is third-party and cannot support the frozen official-ingredients classification."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen extraction flattened a stale SinglePlatform page into one generic category, promoted modifier groups to standalone products, omitted nearly all current ordering and catering products, and assigned third-party menu text an official allergen source type.",
+        "The audited catalog reads only active top-level FoodBooking items, preserves sizes and modifier groups as configurability, manually transcribes the two restaurant-issued catering images, and keeps restaurant-issued versus restaurant-linked provenance distinct.",
+        "The final-stage correction replaces only A. Litteri when its verified count, categories, artifact exclusions, or sentinel allergen semantics regress."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site-review",
+      "kind": "official_site",
+      "url": "https://alitteri.com/",
+      "attemptedAt": "2026-07-14T19:13:50.975Z",
+      "outcome": "Confirmed the A. Litteri identity and address, the direct FoodBooking ordering link, and two embedded current catering-menu images. No restaurant-issued allergen matrix or cross-contact statement was present.",
+      "notes": []
+    },
+    {
+      "id": "restaurant-linked-foodbooking-review",
+      "kind": "ordering_vendor",
+      "url": "https://www.foodbooking.com/ordering/restaurant/menu?restaurant_uid=147fa865-9a3b-4e85-af3f-d35dff10e20d",
+      "attemptedAt": "2026-07-14T19:15:52.467Z",
+      "outcome": "The restaurant-linked API confirmed the location identity and exposed 21 active top-level ordering products across four categories with item descriptions, sizes, and modifier groups. It exposed no allergen fields or complete ingredient records.",
+      "notes": []
+    },
+    {
+      "id": "targeted-allergen-search",
+      "kind": "targeted_search",
+      "url": "https://www.google.com/search?q=A.+Litteri+allergen+menu+allergy+ingredients",
+      "attemptedAt": "2026-07-14T19:25:20.327Z",
+      "outcome": "Targeted current searches plus full-text review of the official site and linked FoodBooking payload found no A. Litteri allergen matrix, allergy guide, complete ingredient list, or cross-contact policy.",
+      "notes": []
+    },
+    {
+      "id": "third-party-singleplatform-review",
+      "kind": "third_party",
+      "url": "https://places.singleplatform.com/a-litteri-inc/menu",
+      "attemptedAt": "2026-07-14T19:25:20.327Z",
+      "outcome": "The frozen catalog traced to an old third-party SinglePlatform menu whose products, names, quantities, and flattened modifier groups conflict with the current restaurant-controlled and restaurant-linked surfaces. It was not promoted to official evidence.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "stale-incomplete-flattened-catalog",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen 18-row single-category catalog omitted most of the current 42-product menu and retained stale names, quantities, and products from an old third-party listing.",
+      "evidenceIds": [
+        "official-home",
+        "linked-foodbooking-menu",
+        "official-catering-platters",
+        "official-catering-trays"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt the current catalog from all 21 linked-ordering products and all 21 official catering products, preserving six real categories and configurability."
+    },
+    {
+      "id": "modifier-groups-promoted-to-products",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "Cheese (limit 2), Meats (limit 2), and Condiments were option groups incorrectly exposed as standalone menu products.",
+      "evidenceIds": [
+        "linked-foodbooking-menu"
+      ],
+      "resolved": true,
+      "resolution": "Removed all three artifact rows and retained their current FoodBooking groups only as options on configurable products."
+    },
+    {
+      "id": "third-party-source-promoted-to-official",
+      "severity": "high",
+      "kind": "source_semantics",
+      "summary": "Thirteen frozen rows labeled third-party SinglePlatform descriptions as official-ingredients even though the restaurant did not issue that source or an allergen guide.",
+      "evidenceIds": [
+        "official-home",
+        "linked-foodbooking-restaurant",
+        "linked-foodbooking-menu"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the source with restaurant-issued catering images and the restaurant-linked FoodBooking catalog, retained distinct provenance, and marked only direct fixed published signals as official ingredients."
+    },
+    {
+      "id": "incorrect-frozen-allergen-signals",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Five of eleven matched frozen products had incorrect allergen fields: three underreported mandatory bread allergens, one invented fixed cookie allergens without published ingredients, and one both omitted bread allergens and retained stale milk.",
+      "evidenceIds": [
+        "linked-foodbooking-menu",
+        "official-catering-platters",
+        "official-catering-trays"
+      ],
+      "resolved": true,
+      "resolution": "Re-derived fixed positive signals from current item names, descriptions, and mandatory formats; isolated optional modifiers; and left nine unsupported products unavailable."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-a-litteri-current-menu",
+      "status": "verified",
+      "summary": "Prepared and targeted-tested a 42-item current A. Litteri catalog combining restaurant-linked ordering data with both official catering menus, excluding modifier artifacts and limiting allergen fields to fixed published signals.",
+      "files": [
+        "scripts/pipeline/a-litteri-audit-catalog.mjs",
+        "scripts/pipeline/a-litteri-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/a-litteri-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/a-litteri-audit-catalog.test.mjs scripts/pipeline/a-litteri-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/allergy-a-litteri-repair.json node scripts/repair-final-generated-regressions.mjs (targeted copy; verified 42 rows, six categories, 33 official-ingredient rows, nine unavailable rows, no modifier/stale artifacts, and restaurant-linked FoodBooking provenance)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 866707f3a4d60b09090614e1f882e5a5071fae308923115733d523c4466f8d68.",
+    "Reconciliation counts: {\"dispositions\":{\"stale_extra\":4,\"variant_match\":8,\"artifact\":3,\"exact_match\":3},\"allergens\":{\"not_applicable\":7,\"verified\":6,\"mismatch\":5}}.",
+    "Current corrected catalog counts: 42 items, six categories, 33 direct restaurant-published ingredient rows, and nine accurately unavailable rows.",
+    "Focused catalog construction, full frozen-row reconciliation, modifier isolation, source-tier separation, unique-id checks, artifact exclusion, and targeted repair-copy checks passed."
+  ]
+}

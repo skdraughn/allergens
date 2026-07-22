@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "aventino-bethesda",
+  "name": "Aventino Cucina",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T17:49:24.495Z",
+  "updatedAt": "2026-07-15T18:06:17.876Z",
+  "completedAt": "2026-07-15T18:06:17.876Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 52,
+      "sourceItemCount": 52,
+      "notes": [
+        "The current restaurant-issued menus and linked ordering surface resolve to 52 canonical food formulations across dinner, lunch, brunch, dessert, happy hour, and online ordering.",
+        "All 55 frozen rows reconcile exactly once: 44 exact, one normalized, three stale seasonal products, and seven alcohol-section artifacts. Forty-five frozen presentations map to 43 current formulations; nine current formulations were absent from the frozen catalog.",
+        "Post-repair recheck pins 52 unique current formulations and excludes stale seasonal, alcohol-only, navigation, and press rows.",
+        "All 55 frozen rows remain reconciled exactly once: 44 exact, one normalized, three stale, and seven artifacts; 45 matched frozen presentations collapse to 43 current formulations and nine current formulations were restored."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The owner menu provides positive ingredient text but no complete allergen matrix, negative assurances, or global cross-contact disclosure.",
+        "Twenty-seven current formulations support narrow restaurant-issued positives, twelve use partial affirmative labels from the restaurant-linked Toast surface, and thirteen remain unavailable. Seventeen frozen allergen or provenance outcomes require correction.",
+        "Twenty-seven rows retain narrow restaurant-issued ingredient positives, twelve retain restaurant-linked partial affirmative labels, and thirteen remain unavailable.",
+        "All may-contain arrays are empty because no global cross-contact disclosure was published; missing linked-menu labels are never treated as negative evidence."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The generic extraction admitted seven Italian Vermouth products into the food catalog, retained three stale seasonal items, omitted nine current formulations, and collapsed two duplicate frozen presentations plus materially different service preparations.",
+        "The separate OSM record is the same restaurant at 4747 Bethesda Avenue and must not remain as a second restaurant.",
+        "The dedicated reconstruction preserves service presentations and separates materially different Rigatoni, Prosciutto, Burger, and Pesce formulations.",
+        "The duplicate OSM record is absent from the generated repository while its frozen rows remain fully reconciled in its own audit dossier."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site",
+      "kind": "official_site",
+      "url": "https://aventinocucina.com/menus/",
+      "attemptedAt": "2026-07-15T17:49:24.697Z",
+      "outcome": "Captured the current restaurant-issued menus and their structured service-specific product descriptions.",
+      "notes": []
+    },
+    {
+      "id": "linked-source",
+      "kind": "linked_source",
+      "url": "https://aventinocucina.com/faq/",
+      "attemptedAt": "2026-07-15T17:49:25.135Z",
+      "outcome": "Captured the restaurant-issued FAQ confirming the Bethesda identity, Toast relationship, and request that guests disclose allergies.",
+      "notes": [
+        "No comprehensive allergen matrix or cross-contact policy is published here."
+      ]
+    },
+    {
+      "id": "ordering-vendor",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/aventino-extended-csd",
+      "attemptedAt": "2026-07-15T17:35:00.000Z",
+      "outcome": "Terra, Sol, and coordinator web review accessed the live restaurant-linked ordering surface and its partial affirmative item labels; coordinator artifact capture returned HTTP 403.",
+      "notes": [
+        "Missing linked-menu labels are not negative evidence."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "stale-and-alcohol-catalog-contamination",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The frozen catalog contains three stale seasonal products and seven alcohol-only Italian Vermouth rows.",
+      "evidenceIds": [
+        "official-menus-current",
+        "linked-toast-current"
+      ],
+      "resolved": true,
+      "resolution": "Removed all three stale products and seven alcohol-only rows from the canonical food catalog."
+    },
+    {
+      "id": "current-formulation-boundary-drift",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "Nine current formulations were absent, two frozen presentations were duplicates, and materially different Rigatoni, Prosciutto, Burger, and Pesce preparations were collapsed or smeared.",
+      "evidenceIds": [
+        "official-menus-current",
+        "linked-toast-current"
+      ],
+      "resolved": true,
+      "resolution": "Restored all nine current formulations, collapsed two duplicate frozen presentations, and pinned service-aware formulation identities."
+    },
+    {
+      "id": "allergen-and-source-authority-mismatch",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "Seventeen frozen rows have direct allergen arrays or provenance inconsistent with the current owner ingredients and partial linked-menu affirmative labels.",
+      "evidenceIds": [
+        "official-menus-current",
+        "official-faq-current",
+        "linked-toast-current"
+      ],
+      "resolved": true,
+      "resolution": "Corrected all seventeen outcomes and preserved the exact restaurant-issued, restaurant-linked, and unavailable provenance split."
+    },
+    {
+      "id": "duplicate-restaurant-record",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The OSM Aventino Cucina Romana record represents the same restaurant and address as aventino-bethesda.",
+      "evidenceIds": [
+        "official-faq-current",
+        "linked-toast-current"
+      ],
+      "resolved": true,
+      "resolution": "Removed the duplicate from the generated repository and retained aventino-bethesda as the canonical restaurant."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "rebuild-aventino-and-remove-duplicate",
+      "status": "verified",
+      "summary": "Verified the current 52-formulation boundary, source authority split, empty cross-contact semantics, stale/artifact removal, restored formulations, and duplicate disposition.",
+      "files": [
+        "scripts/pipeline/aventino-audit-catalog.mjs",
+        "scripts/pipeline/aventino-audit-catalog.test.mjs",
+        "scripts/pipeline/aventino-audit-reconciliation.mjs",
+        "scripts/pipeline/aventino-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/aventino-bethesda/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/aventino-audit-catalog.test.mjs scripts/pipeline/aventino-audit-reconciliation.test.mjs",
+        "node --test --test-name-pattern=\"Aventino preserves service formulations\" scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Terra low research was escalated to Sol medium; coordinator review corrected seasonal-menu, formulation, and source-authority boundaries.",
+    "Targeted catalog/reconciliation suite passed 6/6 and generated-data regression passed 1/1.",
+    "Generated snapshot counts: 52 total; 27 restaurant-issued ingredient-positive; 12 linked product-label; 13 unavailable; zero may-contain."
+  ]
+}

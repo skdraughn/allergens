@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-armetta-s-italian-pizzeria-3935138350",
+  "name": "Armetta's Italian Grill & Pizzeria",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T10:25:44.353Z",
+  "updatedAt": "2026-07-15T10:39:29.301Z",
+  "completedAt": "2026-07-15T10:39:29.301Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 238,
+      "sourceItemCount": 225,
+      "notes": [
+        "The current owner-hosted ordering menu contains 225 unique standalone products across 19 categories at 5524 Staple Mill Plaza, Dale City, VA 22193.",
+        "All 238 frozen rows were reconciled: 186 exact products, five normalized products, and 47 artifacts created from toppings, sauces, proteins, quantity choices, and other modifiers. The 191 product rows map one-to-one to 191 current products, and 34 current products were missing.",
+        "A transient 242-product indexed view from the legacy Minnieville alias included stale products such as Chef Salad, Tartufo, Broccoli Cheese Balls, fountain drinks, and half-and-half specialties. Opening those item links returns the current 225-product menu without the selected stale product, so they were not promoted to the current catalog.",
+        "The corrected category order follows the current owner menu while placing the complete To Go Drinks section last."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Armetta's publishes no complete allergen matrix, negative allergen claims, or cross-contact disclosure. Its current owner-menu names and descriptions support partial positive ingredient evidence on 191 products; 34 products remain accurately unavailable.",
+        "The frozen output had 142 fixed-signal mismatches and 29 provenance mismatches among its real products. It also labeled 158 rows official while the restaurant record simultaneously said no official allergen source had been found.",
+        "Direct positive terms and unambiguous product forms support milk, egg, fish, shellfish, mustard, tree nut, wheat, and gluten where stated. Configurable gluten-free create-your-own pasta has no fixed wheat or gluten claim, and optional cheese or sauce choices are not treated as fixed ingredients.",
+        "Every mayContain array is empty because neither the owner page nor the ordering surface publishes item-level or global cross-contact language."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic structured parser flattened nested modifiers into standalone products, lost the current category boundary, omitted 34 current products, and attached the same broad six source URLs to every row.",
+        "The reproducible parser reads only priced product links beneath the 19 current owner-menu categories, ignores the duplicated Most ordered presentation, retains stable Owner item tokens, excludes navigation and stale indexed entries, and places beverages last.",
+        "The direct domain is protected by a Cloudflare managed challenge for the archival client. The page remained browser-readable, and a separately labeled Jina transport produced a 49,720-byte hash-stable copy; transport authority was not promoted to restaurant-issued evidence.",
+        "Focused tests cover all 225 current products, all 238 frozen dispositions, category and stale-product exclusions, configurable allergen semantics, generated repair invariants, target-only isolation, and idempotency."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "armettas-official-menu-2026-07-15",
+      "kind": "official_site",
+      "url": "https://armettasrestaurant.com/menu",
+      "attemptedAt": "2026-07-15T10:27:30.497Z",
+      "outcome": "The current restaurant-issued page is browser-readable and exposes 225 unique priced products across 19 categories. The archival client received HTTP 403 from a Cloudflare managed challenge, so a separately labeled readable transport was retained and hashed.",
+      "notes": [
+        "No complete allergen guide, negative claim, or cross-contact disclosure appears on the current menu."
+      ]
+    },
+    {
+      "id": "armettas-legacy-menu-alias-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://armettasrestaurant.com/armettas-miniville-menu",
+      "attemptedAt": "2026-07-15T10:25:50.000Z",
+      "outcome": "The legacy Minnieville URL redirects to /menu. A transient indexed presentation exposed 242 rows, but item links for its 17 stale-only products open the current menu without those products; the live 225-product surface controls.",
+      "notes": []
+    },
+    {
+      "id": "armettas-owner-ordering-platform-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://armettasrestaurant.com/menu",
+      "attemptedAt": "2026-07-15T10:27:30.497Z",
+      "outcome": "The restaurant-domain ordering catalog is powered by Owner and provides stable item tokens, current prices, product descriptions, category placement, and the exact Dale City pickup address.",
+      "notes": [
+        "The restaurant-controlled domain makes the menu restaurant-issued; the hosting platform does not provide a separate allergen matrix."
+      ]
+    },
+    {
+      "id": "armettas-targeted-allergen-search-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://armettasrestaurant.com/menu",
+      "attemptedAt": "2026-07-15T10:26:00.000Z",
+      "outcome": "Targeted searches for Armetta's allergen, allergy, ingredient, gluten-free, and cross-contact disclosures returned the current menu, a customer review mentioning accommodation, and a catering inquiry field, but no restaurant-issued allergen guide or safety assurance.",
+      "notes": []
+    },
+    {
+      "id": "armettas-readable-transport-2026-07-15",
+      "kind": "third_party",
+      "url": "https://r.jina.ai/http://armettasrestaurant.com/menu",
+      "attemptedAt": "2026-07-15T10:27:30.497Z",
+      "outcome": "HTTP 200 hash-stable readable copy of the current owner menu. It was used only as transport and never treated as an independent restaurant-issued allergen source.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "armettas-modifiers-published-as-products",
+      "severity": "critical",
+      "kind": "product-boundary-corruption",
+      "summary": "The frozen structured extraction published 47 toppings, sauces, protein choices, quantities, and other modifiers as standalone restaurant products.",
+      "evidenceIds": [
+        "official-armettas-current-menu",
+        "armettas-current-menu-jina-transport"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt the catalog from current priced product links only and removed every modifier artifact."
+    },
+    {
+      "id": "armettas-current-menu-undercoverage",
+      "severity": "critical",
+      "kind": "menu-incomplete",
+      "summary": "The frozen output omitted 34 live products, including current vodka dishes, dressings, desserts, sauces, and the complete To Go Drinks section.",
+      "evidenceIds": [
+        "official-armettas-current-menu",
+        "armettas-current-menu-jina-transport"
+      ],
+      "resolved": true,
+      "resolution": "Restored all 34 current products into the contracted 225-product owner-menu catalog."
+    },
+    {
+      "id": "armettas-allergen-and-provenance-mismatches",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Among real frozen products, 142 fixed-allergen outcomes and 29 provenance outcomes differed from the current owner-menu evidence, while the restaurant metadata contradicted its own 158 official labels.",
+      "evidenceIds": [
+        "official-armettas-current-menu",
+        "armettas-current-menu-jina-transport"
+      ],
+      "resolved": true,
+      "resolution": "Applied only current direct positive terms and unambiguous product forms to 191 rows, left 34 rows unavailable, and preserved empty cross-contact fields."
+    },
+    {
+      "id": "armettas-configurable-variant-overclaim",
+      "severity": "high",
+      "kind": "variant-allergen-overclaim",
+      "summary": "Configurable pasta and optional cheese or sauce paths could be misrepresented as fixed allergens when flattened into one product row.",
+      "evidenceIds": [
+        "official-armettas-current-menu",
+        "armettas-current-menu-jina-transport"
+      ],
+      "resolved": true,
+      "resolution": "Kept gluten-free create-your-own pasta free of fixed wheat and removed optional cheese or sauce choices from fixed allergen signals."
+    },
+    {
+      "id": "armettas-stale-indexed-menu-state",
+      "severity": "high",
+      "kind": "source-state-drift",
+      "summary": "A transient indexed 242-product presentation from the legacy alias contained stale-only rows that are absent from the live 225-product menu.",
+      "evidenceIds": [
+        "official-armettas-retired-menu-alias",
+        "official-armettas-current-menu"
+      ],
+      "resolved": true,
+      "resolution": "Rechecked stale item links against the current page and used the reproducibly captured 225-product live menu boundary."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "armettas-current-owner-menu-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt Armetta's current standalone product catalog, removed modifier and stale-index artifacts, restored omissions, and corrected positive allergen and variant semantics.",
+      "files": [
+        "scripts/pipeline/armettas-audit-catalog.mjs",
+        "scripts/pipeline/armettas-audit-catalog.test.mjs",
+        "scripts/pipeline/armettas-audit-reconciliation.mjs",
+        "scripts/pipeline/armettas-audit-reconciliation.test.mjs",
+        "scripts/pipeline/armettas-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/osm-armetta-s-italian-pizzeria-3935138350/armettas-current-menu-jina-transport.txt",
+        "data/restaurant-verification/repairs/osm-armetta-s-italian-pizzeria-3935138350/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/armettas-audit-catalog.mjs",
+        "node scripts/pipeline/armettas-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/armettas-audit-catalog.test.mjs scripts/pipeline/armettas-audit-reconciliation.test.mjs scripts/pipeline/armettas-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=osm-armetta-s-italian-pizzeria-3935138350 node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: c2614e8bfacea5b6554a9a40b585267e170f121be2212e985b22f4d405b336c4.",
+    "Readable current-menu transport artifact SHA-256: 987b4d118f4f0bd35e1bfdc42cb4debe4866e143814a0a790dfa6e4d4841089e.",
+    "Frozen baseline item fingerprint: 69561e3987cbbceb98bb30a332f48ebe3d36644f287f77cfe21ba6ca9562c047.",
+    "Live target SHA-256 before repair: bb4bf7439510e47bfe115fa751921f058375e9a2da8623d80a89c569b3f6a4f1.",
+    "Live target SHA-256 after repair: 9270d639bddc499eec8f694b3cdf024ffa7bcf4be040281b778416f61583f14f.",
+    "Live non-target restaurant projection SHA-256 remained f8f8920aad580489334eee4ac3ac82bf727981a9a29e95d0e3ef1a55d8cb267c.",
+    "Two consecutive target-only repair runs produced the same target hash and exactly one Armetta's verified repair note.",
+    "The repaired repository contains 113847 live menu items; the frozen ledger remains anchored to its original 112873-item hashed baseline."
+  ]
+}

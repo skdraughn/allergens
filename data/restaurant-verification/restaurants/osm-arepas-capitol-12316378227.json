@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-arepas-capitol-12316378227",
+  "name": "Arepas Capitol",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T09:52:33.496Z",
+  "updatedAt": "2026-07-15T10:05:38.546Z",
+  "completedAt": "2026-07-15T10:05:38.546Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 9,
+      "sourceItemCount": 85,
+      "notes": [
+        "The frozen nine-row output was a homepage-card scrape, not a menu: five rows were category or promotional tiles, and eight of nine descriptions were the truncated text 'iew'.",
+        "The current exact-address DoorDash menu, current Beyond Menu listing, current Uber Eats listing, and April 2026 reviewed PDF reconcile to 86 presentations and 85 canonical products across 13 categories; 8 Tostones is the one repeated presentation.",
+        "All nine frozen rows were reconciled as one exact product, three normalized products, and five artifacts. The four matched rows represent four current products; 81 current products were omitted.",
+        "The restaurant identity is 1000 Cannons Ct Unit 105, Woodbridge, VA 22191. The old 22193 address in the third-party PDF is historical and was not used as the current location scope."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "accurately_unavailable",
+      "highestAuthorityTier": "third_party",
+      "notes": [
+        "No current restaurant-issued allergen matrix, complete ingredient list, item-level allergen section, or cross-contact disclosure was found.",
+        "Current exact-address menu wording is third-party evidence even where DoorDash states that prices are merchant-set. It is retained only as labeled Ingredient Intelligence and is not promoted to an official fixed, negative, or may-contain claim.",
+        "All 85 current products therefore have allergenSourceType unavailable with empty fixed and mayContain arrays. Explicit clues such as fish, shellfish, milk, egg, mustard, wheat, and barley gluten remain in the separate inference layer.",
+        "The frozen official milk claim on Ham & Cheese Arepa and the wheat/gluten/egg claim on the non-product Cakes tile were not supported by a current restaurant-issued allergen source."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The generic website parser promoted homepage cards and category labels to products, assigned a generic Venezuelan category to every row, and clipped the link label View to 'iew'.",
+        "The prior output also relabeled generic homepage wording as official ingredient evidence and omitted 81 current products.",
+        "The reviewed catalog contracts the 85-product boundary, consolidates the repeated 8 Tostones presentation, places drinks and natural juices last, keeps all official allergen fields unavailable, and separates third-party wording into Ingredient Intelligence.",
+        "Focused tests cover the full catalog count, duplicate consolidation, all nine frozen dispositions, unsupported official-claim removal, corn-versus-wheat semantics, barley gluten semantics, generated repair invariants, target-only isolation, and idempotency."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "arepas-capitol-retired-official-domain-2026-07-15",
+      "kind": "official_site",
+      "url": "http://www.arepascapitolusa.com/",
+      "attemptedAt": "2026-07-15T09:53:00.000Z",
+      "outcome": "The configured owner domain no longer resolves. The newer restaurant-branded domain now returns HTTP 200 but serves a generic FromTheRestaurant app-download page with no restaurant identity or menu.",
+      "notes": [
+        "The live replacement-domain artifact was captured and hashed."
+      ]
+    },
+    {
+      "id": "arepas-capitol-linked-source-search-2026-07-15",
+      "kind": "linked_source",
+      "url": "http://arepascapitoldalecityva.com/",
+      "attemptedAt": "2026-07-15T09:56:19.481Z",
+      "outcome": "HTTP 200 generic app-download page. It exposes no restaurant-linked order URL, product API, ingredient source, or allergen guide.",
+      "notes": []
+    },
+    {
+      "id": "arepas-capitol-current-ordering-vendors-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://www.doordash.com/store/arepas-capitol-dale-city-929219/",
+      "attemptedAt": "2026-07-15T09:54:00.000Z",
+      "outcome": "Current exact-address DoorDash menu reviewed through the public web index; archival user-agent returned HTTP 403. The catalog publishes 13 sections and says prices are set directly by the merchant. Current Beyond Menu and Uber Eats surfaces corroborate identity and formulations.",
+      "notes": [
+        "Delivery descriptions are not relabeled as restaurant-issued allergen evidence."
+      ]
+    },
+    {
+      "id": "arepas-capitol-targeted-menu-and-allergen-search-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://www.doordash.com/store/arepas-capitol-dale-city-929219/",
+      "attemptedAt": "2026-07-15T09:55:00.000Z",
+      "outcome": "Targeted searches recovered the full current menu, exact 1000 Cannons Ct Unit 105 identity, and corroborating menus, but found no restaurant-issued allergen guide or complete ingredient disclosure.",
+      "notes": []
+    },
+    {
+      "id": "arepas-capitol-archive-review-2026-07-15",
+      "kind": "archive",
+      "url": "https://wnam-cdn.menuweb.menu/storage/media/companies_menu_pdf/114493331/arepas-capitol-woodbridge-menu.pdf",
+      "attemptedAt": "2026-07-15T09:56:29.610Z",
+      "outcome": "Captured and visually reviewed all six pages of an April 23, 2026 third-party menu PDF. It corroborates most menu products but carries the prior Woodbridge 22193 location and is not an allergen guide.",
+      "notes": []
+    },
+    {
+      "id": "arepas-capitol-third-party-corroboration-2026-07-15",
+      "kind": "third_party",
+      "url": "https://www.beyondmenu.com/61039/woodbridge/arepas-capitol-woodbridge-22191.aspx",
+      "attemptedAt": "2026-07-15T09:55:30.000Z",
+      "outcome": "The current exact-address Beyond Menu listing provides a complete 13-section menu and is corroborated by DoorDash and Uber Eats. The ledger archival request returned HTTP 502, so a reviewed excerpt and stable item identifiers are retained instead of relabeling it as official.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "arepas-capitol-homepage-tiles-published-as-menu",
+      "severity": "critical",
+      "kind": "menu-extraction-corruption",
+      "summary": "The frozen output published nine homepage tiles as the menu, including five category shells, eight clipped 'iew' descriptions, and only four rows corresponding to current products.",
+      "evidenceIds": [
+        "arepas-capitol-doordash-current-menu",
+        "arepas-capitol-beyond-current-menu",
+        "arepas-capitol-menuweb-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the shell with 85 canonical products from 86 current exact-address menu presentations and reconciled every frozen row."
+    },
+    {
+      "id": "arepas-capitol-unsupported-official-allergen-claims",
+      "severity": "critical",
+      "kind": "allergen-provenance-overclaim",
+      "summary": "The frozen parser promoted homepage wording to official milk for Ham & Cheese Arepa and wheat, gluten, and egg for the non-product Cakes tile without a current restaurant-issued allergen source.",
+      "evidenceIds": [
+        "arepas-capitol-replacement-domain-live",
+        "arepas-capitol-doordash-current-menu",
+        "arepas-capitol-menuweb-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Removed every official fixed claim, kept all 85 current rows officially unavailable, and preserved explicit third-party wording only as labeled Ingredient Intelligence."
+    },
+    {
+      "id": "arepas-capitol-current-owner-surface-unavailable",
+      "severity": "high",
+      "kind": "source-identity-drift",
+      "summary": "The configured owner domain no longer resolves and the newer restaurant-branded domain now serves a generic app-download page, leaving no current owner menu or allergen surface.",
+      "evidenceIds": [
+        "arepas-capitol-replacement-domain-live"
+      ],
+      "resolved": true,
+      "resolution": "Used current exact-address third-party menus for product scope, labeled their authority accurately, and failed closed on official allergen claims."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "arepas-capitol-current-menu-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt the current 85-product catalog, removed homepage artifacts and unsupported official claims, consolidated the duplicate presentation, and separated third-party wording into Ingredient Intelligence.",
+      "files": [
+        "scripts/pipeline/arepas-capitol-audit-catalog.mjs",
+        "scripts/pipeline/arepas-capitol-audit-catalog.test.mjs",
+        "scripts/pipeline/arepas-capitol-audit-reconciliation.mjs",
+        "scripts/pipeline/arepas-capitol-audit-reconciliation.test.mjs",
+        "scripts/pipeline/arepas-capitol-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/osm-arepas-capitol-12316378227/arepas-capitol-replacement-domain-live.html",
+        "data/restaurant-verification/artifacts/osm-arepas-capitol-12316378227/arepas-capitol-menuweb-pdf.pdf",
+        "data/restaurant-verification/repairs/osm-arepas-capitol-12316378227/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/arepas-capitol-audit-catalog.mjs",
+        "node scripts/pipeline/arepas-capitol-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/arepas-capitol-audit-catalog.test.mjs scripts/pipeline/arepas-capitol-audit-reconciliation.test.mjs scripts/pipeline/arepas-capitol-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=osm-arepas-capitol-12316378227 node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 1d05ba4d4afb02d763745fb3982891d6477ed42889a55363b8c251dc50ac20b4.",
+    "Reviewed six-page third-party PDF SHA-256: 92291894bf442328c2cac2de0c3c2644a288bfd3f80bd07a35ee6c09c72606fc.",
+    "Live replacement-domain artifact SHA-256: af51a16548177d0d2b3daf5e5e6aabb9d2d425a779fdbf21bc3262b6994b6009.",
+    "Frozen baseline item fingerprint: 2066db8e87545d0c8a5f0d4a1aa6b62bcf451a1db33f09fe0fb35354e6ac0be6.",
+    "Live target SHA-256 after repair: 5155a59db4de5d5986ae767e40000bbdf75ada29f1f415ba11105f65bd5a8741.",
+    "Live non-target restaurant projection SHA-256 remained ea7fb59fcaf378b776cf69ddee8f53b02ca3c510a96a62bdac3454e2e3df2713.",
+    "Two consecutive target-only repair runs produced the same target hash and exactly one Arepas Capitol verified repair note.",
+    "The repaired repository contains 113815 live menu items; the frozen ledger remains anchored to its original 112873-item hashed baseline."
+  ]
+}

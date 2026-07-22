@@ -1,0 +1,71 @@
+{
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 257,
+      "sourceItemCount": 257,
+      "notes": [
+        "Post-repair recheck reconciled every frozen item to the repaired generated restaurant."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "87 items retain only positive signals directly supported by restaurant-authored names or descriptions; 170 items are accurately unavailable.",
+        "No negative or cross-contact claim is inferred from the absence of a comprehensive guide."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "Scoped restaurant repair removes unsupported cake and wonton culinary inference while retaining explicit item-text disclosures."
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "unsupported-culinary-name-allergen-inference",
+      "severity": "high",
+      "kind": "allergen_extraction",
+      "summary": "A scoped subset of generated allergen claims was inferred from culinary names without explicit support in restaurant-authored Toast text.",
+      "evidenceIds": [
+        "toast-current-menu"
+      ],
+      "resolved": true,
+      "resolution": "Removed unsupported signals from six cake/wonton items and narrowed Crab Cake to explicit shellfish; retained direct ingredient disclosures elsewhere."
+    },
+    {
+      "id": "no-comprehensive-allergen-or-cross-contact-source",
+      "severity": "medium",
+      "kind": "allergen_source",
+      "summary": "The current restaurant-linked menu contains selected positive ingredient disclosures but no comprehensive allergen matrix, complete ingredients, allergen legend, negative-claim coverage, or cross-contact policy.",
+      "evidenceIds": [
+        "toast-current-menu"
+      ],
+      "resolved": true,
+      "resolution": "The limitation is accurately represented: only direct positive disclosures are retained, remaining items are unavailable, and no negative or cross-contact conclusions are published."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "scope-asian-grill-allergen-inference",
+      "status": "verified",
+      "summary": "Removed unsupported cake and wonton culinary-name allergen inferences while preserving allergens directly disclosed by restaurant-authored item names and descriptions; Crab Cake retains only explicit shellfish.",
+      "files": [
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [],
+      "verificationCommands": [
+        "node --test --test-name-pattern='Asian Grill preserves direct menu disclosures' scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Post-repair item recheck: 257 exact menu matches; 87 verified direct positive disclosures; 170 accurately unavailable allergen results."
+  ],
+  "status": "recheck_required"
+}

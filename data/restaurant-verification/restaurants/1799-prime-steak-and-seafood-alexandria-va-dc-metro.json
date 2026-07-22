@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "1799-prime-steak-and-seafood-alexandria-va-dc-metro",
+  "name": "1799 Prime Steak & Seafood",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T17:42:33.563Z",
+  "updatedAt": "2026-07-14T17:46:41.629Z",
+  "completedAt": "2026-07-14T17:46:41.629Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 53,
+      "sourceItemCount": 98,
+      "notes": [
+        "This ledger row represents the same Alexandria restaurant/domain as the preceding OSM-derived record but has a broader source profile that explicitly includes the cocktail menu.",
+        "Every frozen row was reconciled against the current July 2026 dinner menu and June 2026 cocktail menu.",
+        "The corrected represented surface contains 68 food items, 18 nonalcoholic beverages, and 12 current cocktails, with all beverage categories after food and dessert."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Direct contains signals come only from official item names/descriptions; cocktail descriptions are partial and silence remains unavailable.",
+        "The dinner menu GF warning is preserved as mayContain gluten on GF rows rather than a negative claim.",
+        "Lena Marie is current but its official description provides no supported major-allergen signal, so it remains accurately unavailable."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen row set used an older dinner menu, included navigation/dress-code/composite artifacts, and produced 22 incorrect or incomplete allergen rows among current matches.",
+        "The broader corrected snapshot retains the current cocktail source instead of discarding the one cocktail row present in this record."
+      ]
+    }
+  },
+  "sourceAttempts": [],
+  "findings": [
+    {
+      "id": "duplicate-restaurant-record",
+      "severity": "medium",
+      "kind": "identity_duplication",
+      "summary": "This row and osm-1799-prime-204629784 represent the same 1799 Prime Alexandria restaurant under different IDs and source scopes.",
+      "evidenceIds": [
+        "official-home"
+      ],
+      "resolved": true,
+      "resolution": "Audited this frozen row independently and preserved its broader cocktail-menu scope; no ledger rows were deleted or merged."
+    },
+    {
+      "id": "stale-menu-and-web-artifacts",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "Seventeen of 53 frozen rows were stale dishes or non-items, including navigation, dress-code text, protein modifiers, and collapsed side groups.",
+      "evidenceIds": [
+        "official-home",
+        "official-dinner-july-2026",
+        "official-cocktail-june-2026"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the stale output with 98 current rows spanning food, nonalcoholic beverages, and the current cocktail menu."
+    },
+    {
+      "id": "incorrect-allergen-signals",
+      "severity": "high",
+      "kind": "allergen_accuracy",
+      "summary": "Twenty-two of 36 surviving baseline rows had incorrect contains, may-contain, or source semantics.",
+      "evidenceIds": [
+        "official-dinner-july-2026",
+        "official-cocktail-june-2026"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt signals from current item text, removed adjacent-row bleed, and kept undisclosed rows unavailable."
+    },
+    {
+      "id": "gf-cross-contact-dropped",
+      "severity": "high",
+      "kind": "source_semantics",
+      "summary": "The baseline omitted the official warning that GF foods may contact gluten in the shared kitchen.",
+      "evidenceIds": [
+        "official-dinner-july-2026"
+      ],
+      "resolved": true,
+      "resolution": "Mapped the warning to mayContain gluten on all covered GF rows without converting GF into a safety guarantee."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-1799-prime-broader-current-snapshot",
+      "status": "verified",
+      "summary": "Prepared and targeted-tested a 98-item current snapshot for the broader duplicate record, including current cocktails and explicit GF cross-contact semantics.",
+      "files": [
+        "scripts/pipeline/1799-prime-audit-catalog.mjs",
+        "scripts/pipeline/1799-prime-cocktail-audit-catalog.mjs",
+        "scripts/pipeline/1799-prime-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/1799-prime-steak-and-seafood-alexandria-va-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/1799-prime-audit-catalog.test.mjs scripts/pipeline/1799-prime-audit-reconciliation.test.mjs scripts/pipeline/1799-prime-cocktail-audit-catalog.test.mjs scripts/pipeline/1799-prime-cocktail-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=tmp/restaurant-verification/1799-prime-broader-repair-input.json node scripts/repair-final-generated-regressions.mjs (targeted copy; verified 98 rows, 51 direct disclosures, 16 cross-contact-only rows, 31 unavailable rows, and zero known artifacts)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: e63374847307f54f29a7875f48353216c23f24ad64ad3d3eda470ec738ed8520.",
+    "Reconciliation counts: {\"dispositions\":{\"artifact\":11,\"normalized_match\":35,\"stale_extra\":6,\"variant_match\":1},\"allergens\":{\"not_applicable\":17,\"verified\":9,\"mismatch\":22,\"accurately_unavailable\":5}}.",
+    "The dinner PDF pages 4-9 and the cocktail PDF were rendered and visually reviewed before catalog construction."
+  ]
+}

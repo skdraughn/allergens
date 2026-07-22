@@ -1,0 +1,164 @@
+{
+  "status": "recheck_required",
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 22,
+      "sourceItemCount": 242,
+      "notes": [
+        "Every frozen row was reconciled as an artifact: twenty rows are raw or cached vendor-AI descriptions promoted into the name field, and POPULAR plus OFTEN LIKED are ordering-interface badges.",
+        "The owner-domain ordering payload contains 36 lunch and 206 all-day presentations across 21 menu groups, all keyed by 242 unique menuItemId values. All 242 actual named presentations were restored.",
+        "Lunch, main, dinner-combo, and party-tray presentations remain distinct where the ordering source sells them separately; duplicate display names in different sections receive category-qualified internal IDs.",
+        "The Beverages and Soda groups are moved after every food group while all other source category and product order is preserved."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "Asia Garden publishes no official allergen guide, complete ingredient disclosure, or cross-contact statement in the reviewed current sources, so all 242 real products remain allergenSourceType unavailable with empty fixed and mayContain arrays.",
+        "The seven frozen official-ingredients rows were all non-product description artifacts. Their shellfish, sesame, milk, wheat, or gluten claims are not applicable product-level verdicts and are removed with the artifacts.",
+        "Menu item names and the 46 raw ordering descriptions remain available to labeled Ingredient Intelligence, but restaurant-linked vendor text is not promoted to official fixed-allergen evidence.",
+        "The 154 cachedAIMenuItemDesc values are explicitly generated vendor content and are excluded from published descriptions, fixed allergens, cross-contact, and Ingredient Intelligence input."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic HTML-card path selected description text and recommendation badges as product names, discarded 73 rows, and reduced the current 242-presentation menu to 22 invalid rows.",
+        "The current Next.js server payload contains a rawMenus object with the real menuItemName records and a separately labeled cachedAIMenuItemDesc map; the corrected parser consumes only raw menu records and ignores the generated description map.",
+        "The hash-pinned builder fails closed on source hashes, owner identity, disagreement between lunch and all-day raw payloads, exact menu/group counts, source ID uniqueness, modifier-template integrity, canonical ID uniqueness, and raw-versus-AI description counts.",
+        "Three focused catalog, reconciliation, and repaired-output tests pass. Two consecutive target-only repair runs preserved both the repaired target hash and the full non-target restaurant projection hash.",
+        "Per-restaurant application uses RESTAURANT_REPAIR_ONLY_ID so unrelated repair blocks cannot mutate other restaurants."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "asia-garden-owner-home-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.asiagardenalexandria.com/",
+      "attemptedAt": "2026-07-15T12:57:00.000Z",
+      "outcome": "Captured the owner-domain homepage identifying the restaurant, Alexandria address, phone, and current same-domain ordering-menu link.",
+      "notes": []
+    },
+    {
+      "id": "asia-garden-owner-linked-lunch-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://www.asiagardenalexandria.com/jfrrd7sj/asia-garden-alexandria-22310/order-online?menu=Lunch+Menu",
+      "attemptedAt": "2026-07-15T12:57:00.000Z",
+      "outcome": "Captured the current lunch ordering surface and extracted its embedded raw menu payload containing 36 Lunch Special presentations and the same complete two-menu boundary as the all-day surface.",
+      "notes": []
+    },
+    {
+      "id": "asia-garden-owner-linked-all-day-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://www.asiagardenalexandria.com/jfrrd7sj/asia-garden-alexandria-22310/order-online?menu=All+Day+Menu",
+      "attemptedAt": "2026-07-15T12:57:00.000Z",
+      "outcome": "Captured the all-day ordering surface and extracted 206 all-day plus 36 lunch raw product records, 14 modifier templates, 46 raw descriptions, and a separate 154-entry cached AI-description map.",
+      "notes": [
+        "A browser-like user agent was required because bare HTTP requests returned 403.",
+        "The lunch and all-day pages expose byte-different render states but identical rawMenus and cachedAIMenuItemDesc payloads."
+      ]
+    },
+    {
+      "id": "asia-garden-legacy-menu-route-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.asiagardenalexandria.com/jfrrd7sj/restaurant/menu",
+      "attemptedAt": "2026-07-15T12:55:30.000Z",
+      "outcome": "The legacy configured route returned an internal error and was not used as the current source boundary.",
+      "notes": [
+        "The owner homepage now links the location-specific order-online route."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "asia-garden-description-as-product-corruption",
+      "severity": "critical",
+      "kind": "product-boundary-corruption",
+      "summary": "All 22 frozen rows are non-products: twenty description strings and two recommendation badges were promoted into product names, while every real named menu presentation was absent.",
+      "evidenceIds": [
+        "official-lunch-ordering-menu",
+        "official-all-day-ordering-menu"
+      ],
+      "resolved": true,
+      "resolution": "Removed all 22 artifacts and rebuilt the menu from 242 unique raw menuItemName records across the lunch and all-day surfaces."
+    },
+    {
+      "id": "asia-garden-cached-ai-source-semantics",
+      "severity": "critical",
+      "kind": "source-semantics",
+      "summary": "The ordering payload explicitly labels 154 descriptions as cached AI content, but the frozen extractor treated generated descriptions as menu products and ingredient evidence.",
+      "evidenceIds": [
+        "official-lunch-ordering-menu",
+        "official-all-day-ordering-menu"
+      ],
+      "resolved": true,
+      "resolution": "Separated rawMenus from cachedAIMenuItemDesc, excluded every cached AI value from published descriptions and allergen inference, and made the parser fail closed if the reviewed count changes."
+    },
+    {
+      "id": "asia-garden-false-official-artifact-allergens",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Seven frozen description artifacts were labeled official-ingredients and assigned fixed allergens even though no real product row or official allergen source supported that classification.",
+      "evidenceIds": [
+        "official-lunch-ordering-menu",
+        "official-all-day-ordering-menu"
+      ],
+      "resolved": true,
+      "resolution": "Removed the seven invalid artifact claims, kept every current product unavailable for official allergens, and retained only labeled Ingredient Intelligence based on raw menu titles and the 46 non-AI ordering descriptions."
+    },
+    {
+      "id": "asia-garden-incomplete-current-menu",
+      "severity": "critical",
+      "kind": "menu-coverage-mismatch",
+      "summary": "The frozen 22-row output omitted the entire 242-presentation current menu, including lunch, appetizers, soups, noodles, entrees, combos, specialties, sides, party trays, and beverages.",
+      "evidenceIds": [
+        "official-home",
+        "official-lunch-ordering-menu",
+        "official-all-day-ordering-menu"
+      ],
+      "resolved": true,
+      "resolution": "Restored all 242 source presentations, preserved separately sold variants, and put both beverage sections at the end."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "asia-garden-raw-menu-rebuild",
+      "status": "verified",
+      "summary": "Replaced 22 description/badge artifacts with all 242 current raw menu presentations, excluded 154 cached AI descriptions, removed seven spurious official allergen artifact claims, and constrained application to Asia Garden.",
+      "files": [
+        "scripts/pipeline/asia-garden-audit-catalog.mjs",
+        "scripts/pipeline/asia-garden-audit-catalog.test.mjs",
+        "scripts/pipeline/asia-garden-audit-reconciliation.mjs",
+        "scripts/pipeline/asia-garden-audit-reconciliation.test.mjs",
+        "scripts/pipeline/asia-garden-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/osm-asia-garden-11366360044/official-home.html",
+        "data/restaurant-verification/artifacts/osm-asia-garden-11366360044/official-lunch-menu.html",
+        "data/restaurant-verification/artifacts/osm-asia-garden-11366360044/official-all-day-menu.html",
+        "data/restaurant-verification/repairs/osm-asia-garden-11366360044/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/asia-garden-audit-catalog.mjs",
+        "node scripts/pipeline/asia-garden-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/asia-garden-audit-catalog.test.mjs scripts/pipeline/asia-garden-audit-reconciliation.test.mjs scripts/pipeline/asia-garden-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=osm-asia-garden-11366360044 node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: e462fcfe9435157b883b105ce3ddc9cec80bef4f63e394e4f8f5d29b625920ee.",
+    "Frozen reconciled item-check SHA-256: 88d5b895f20b76c2c871c8b6f0e0954b9878365e2c3da653f3d7dc34e3f6c98b.",
+    "Evidence manifest SHA-256: 2ce3e3882cd1aa88a24387fe514dc0262ac4a5b52bf766b7e2a82b7e2f5a7138.",
+    "Live target SHA-256 changed from 710b9780815126e3b2734f8b3c4edbfe7a60036482bc6241d6d9690a52885173 to e589e94fa2117d6bc04c5d041552747647575df6578db11d08a5a2fbaa243bf1.",
+    "Consecutive target-only repair non-target projection SHA-256 remained 1526597b576c6b3afc78202d3d6265110383e76201af2e693ef5abe9284ca753."
+  ]
+}

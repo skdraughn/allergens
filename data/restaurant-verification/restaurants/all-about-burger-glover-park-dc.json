@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "all-about-burger-glover-park-dc",
+  "name": "All About Burger Glover Park",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T23:12:22.169Z",
+  "updatedAt": "2026-07-14T23:16:29.349Z",
+  "completedAt": "2026-07-14T23:16:29.349Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 59,
+      "sourceItemCount": 0,
+      "notes": [
+        "All 59 frozen rows were reconciled as historical rows from a closed-and-replaced restaurant location, not current products.",
+        "All About Burger Glover Park at 2414 Wisconsin Avenue closed in 2023. The chain's current restaurant-issued site lists Clarendon, 4th Street SW, and Chinatown and contains no Glover Park or 2414 Wisconsin location.",
+        "Joia Burger's current official site identifies its active Glover Park restaurant at the exact 2414 Wisconsin Avenue address and publishes current hours.",
+        "The surviving searchable All About Burger Toast representation is stale despite recent search-engine recrawls; its address and menu do not override the closure, current-chain-location, and current-tenant evidence."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "There are no current All About Burger Glover Park products, so there are no current item-level allergen claims to preserve for this location.",
+        "Twenty-one frozen rows carried official-ingredients labels inferred from the historical Toast menu. Those labels are not adjudicated as historically true or false; they are not applicable to a closed restaurant's current catalog.",
+        "The chain's current page publishes a peanut-oil warning for fries and onion rings, but it cannot be attached to the closed Glover Park location or used to revive its stale menu.",
+        "No historical row is converted into a negative or safety claim."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen Toast parser successfully extracted a historical menu surface but did not verify that the restaurant entity and location were still operating.",
+        "Current-state verification must precede menu extraction: a recrawlable vendor page can remain online after the corresponding restaurant closes.",
+        "The correction removes all historical rows from this closed location and uses an idempotent guarded repair that acts only while frozen items remain."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-chain-current-locations",
+      "kind": "official_site",
+      "url": "https://www.aaburger.com/lunch-dinner-menu",
+      "attemptedAt": "2026-07-14T23:13:09.810Z",
+      "outcome": "Captured the current restaurant-issued chain menu and location page; it lists three locations and omits Glover Park and 2414 Wisconsin Avenue.",
+      "notes": [
+        "Artifact SHA-256: dfdb6cb5d0eac22a67ac082661ac08ace63c3d837299e364d425b44f0452c46e."
+      ]
+    },
+    {
+      "id": "contemporaneous-closure-report",
+      "kind": "targeted_search",
+      "url": "https://www.gloverparkdc.com/post/all-about-burger-closes",
+      "attemptedAt": "2026-07-14T23:13:10.327Z",
+      "outcome": "Captured a March 2023 neighborhood report documenting that All About Burger at 2414 Wisconsin Avenue closed and its listings/order links were disconnected.",
+      "notes": [
+        "Artifact SHA-256: 131bed3879f0a9c5d4472098555d3fa0c3decb9ca98514de29922ea434cfe946."
+      ]
+    },
+    {
+      "id": "current-tenant-confirmation",
+      "kind": "targeted_search",
+      "url": "https://www.joiaburgerdc.com/menu/",
+      "attemptedAt": "2026-07-14T23:13:24.850Z",
+      "outcome": "Captured Joia Burger's current official page identifying its active Glover Park location and hours at 2414 Wisconsin Ave NW.",
+      "notes": [
+        "Artifact SHA-256: 4d694dbcc48942cbf63be1e5e93ead06da6ac92a551002eadd29a02f37fb1fa7."
+      ]
+    },
+    {
+      "id": "historical-toast-review",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/all-about-burger-glover-park-2414-wisconsin-ave-nw",
+      "attemptedAt": "2026-07-14T23:13:00.000Z",
+      "outcome": "A historical 59-row menu remains discoverable through indexed Toast item pages, but it is contradicted as current evidence by the closure, current chain locations, and current tenant at the exact address.",
+      "notes": [
+        "Recent crawler dates describe search-engine recrawling, not a restaurant reopening."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "closed-location-stale-catalog",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The app publishes 59 historical products for an All About Burger location that closed and was replaced by another restaurant.",
+      "evidenceIds": [
+        "official-current-menu-locations",
+        "local-closure-report",
+        "current-tenant-official-site"
+      ],
+      "resolved": true,
+      "resolution": "Removed every historical product and represented the closed-and-replaced location with no current menu."
+    },
+    {
+      "id": "historical-allergen-labels-presented-as-current",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Twenty-one historical rows carried official ingredient signals as though the closed Glover Park location still offered those formulations.",
+      "evidenceIds": [
+        "official-current-menu-locations",
+        "local-closure-report",
+        "current-tenant-official-site"
+      ],
+      "resolved": true,
+      "resolution": "Classified all 59 frozen rows stale_extra/not_applicable and removed the menu rather than carrying historical allergen claims into a current restaurant result."
+    },
+    {
+      "id": "vendor-page-liveness-not-verified",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "The ingestion treated an indexed Toast catalog as current without checking whether the restaurant location still existed.",
+      "evidenceIds": [
+        "official-current-menu-locations",
+        "local-closure-report",
+        "current-tenant-official-site"
+      ],
+      "resolved": true,
+      "resolution": "Prepared a guarded zero-item correction backed by the audited chain's current omission, a contemporaneous closure report, and the current tenant's first-party address confirmation."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-closed-all-about-burger-glover-park",
+      "status": "verified",
+      "summary": "Prepared and focused-tested a closed-location correction that removes all 59 historical rows and leaves zero current items or allergen claims.",
+      "files": [
+        "scripts/pipeline/all-about-burger-glover-park-audit-catalog.mjs",
+        "scripts/pipeline/all-about-burger-glover-park-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/all-about-burger-glover-park-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/all-about-burger-glover-park-audit-catalog.test.mjs scripts/pipeline/all-about-burger-glover-park-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=tmp/restaurant-verification/all-about-burger-isolated.generated.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified zero items, removal of all historical claims, and idempotent closed-location guard behavior)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 8a78d25b260d2629eef8ee864158802ae25bed36a5344199bf4d4ebcc7c61759.",
+    "Reconciliation counts: {\"dispositions\":{\"stale_extra\":59},\"allergens\":{\"not_applicable\":59},\"mismatchKinds\":{}}.",
+    "Current corrected catalog counts: zero formulations and zero current allergen claims because the restaurant location is closed and replaced."
+  ]
+}

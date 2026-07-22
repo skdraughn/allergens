@@ -1,0 +1,248 @@
+{
+  "schemaVersion": 1,
+  "verificationContractVersion": 2,
+  "restaurantId": "barmini-dc",
+  "name": "barmini by Jose Andres",
+  "status": "codex_verified",
+  "createdAt": "2026-07-16T16:56:27.393Z",
+  "updatedAt": "2026-07-16T22:15:03.939Z",
+  "completedAt": "2026-07-16T22:15:03.939Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 0,
+      "sourceItemCount": 0,
+      "notes": [
+        "Binding review resolved a complete zero-product POC catalog; category placeholders and non-authoritative leads are excluded.",
+        "POC catalog and every frozen item were coordinator-reconciled."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "accurately_unavailable",
+      "highestAuthorityTier": null,
+      "notes": [
+        "No item rows exist, so no Ingredient Intelligence or item-level allergen claim is produced.",
+        "All four official-matrix search classes completed; direct positives are retained and missing disclosure remains unavailable."
+      ]
+    },
+    "extraction": {
+      "verdict": "not_applicable",
+      "parserReviewed": false,
+      "semanticsVerified": true,
+      "notes": [
+        "Focused readback confirms the generated record has zero products.",
+        "POC closeout uses a verified target-specific catalog transformation; shared-parser review is deferred."
+      ]
+    }
+  },
+  "currentCatalog": {
+    "status": "verified",
+    "reviewedBaselineItemCount": 0,
+    "currentProductCount": 0,
+    "reconciledCurrentProductCount": 0,
+    "inventoryFingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "surfaces": [],
+    "products": [],
+    "notes": [
+      "Coordinator terminal catalog derived from validated Luna research and serialized APPLY output."
+    ]
+  },
+  "adjudication": {
+    "type": "coordinator",
+    "runId": "poc-batch-005-2026-07-16",
+    "decidedAt": "2026-07-16T22:15:03.666Z",
+    "recommendation": "codex_verified",
+    "model": {
+      "id": "codex-poc-coordinator",
+      "reasoningEffort": "high"
+    },
+    "rationale": "Research structure, current product mappings, direct allergen authority, target repair, Ingredient Intelligence timing, focused validation, and idempotency passed the POC terminal gates.",
+    "artifactHashes": [
+      {
+        "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/coordinator-packets/barmini-dc.json",
+        "sha256": "968bbcd78d82358514ef4da1a7101154d65c6c511bcafc86ba873fad77d3367f"
+      },
+      {
+        "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/coordinator-gold/barmini-dc.json",
+        "sha256": "7b3b78e25ce4012ea56ffe772c62abc7f28ce68e936409ba7560caa058687886"
+      },
+      {
+        "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-03-2026-07-16/coordinator-decisions/barmini-dc.json",
+        "sha256": "086e6d91791451adf827f3e9cea5cd580df199646f08403db673cbed5d339f37"
+      }
+    ]
+  },
+  "workerHandoff": {
+    "runId": "poc-batch-005-2026-07-16",
+    "restaurantId": "barmini-dc",
+    "preparedAt": "2026-07-16T22:15:03.663Z",
+    "routeDestination": "sol_medium",
+    "solRequired": true,
+    "artifacts": [
+      {
+        "kind": "poc_job",
+        "path": "worker-runs/poc-batch-005-2026-07-16/jobs/barmini-dc.json",
+        "sha256": "e20caaf4244e8c9ee0906dbd43a0381286c36f085d0d1a0e4d4345769ea9fb5b"
+      },
+      {
+        "kind": "poc_research",
+        "path": "worker-runs/poc-batch-005-2026-07-16/results/barmini-dc.json",
+        "sha256": "07256ca67ce1fe5e28639f46962097620373930fe3ca60ce58722a46fd8c0804"
+      },
+      {
+        "kind": "poc_apply",
+        "path": "worker-runs/poc-batch-005-2026-07-16/apply-results/barmini-dc.json",
+        "sha256": "75bb836f9a162759f2bf6dea24531240306b571ebf429947b600620f82d2af10"
+      },
+      {
+        "kind": "sol_review",
+        "path": "worker-runs/poc-batch-005-2026-07-16/reviews/barmini-dc.json",
+        "sha256": "d3b400a1e9bbe3400303ad1fc9ed7b8518b0c370599cc5b0b7b1279a6f685763"
+      },
+      {
+        "kind": "sol_validation",
+        "path": "worker-runs/poc-batch-005-2026-07-16/review-validations/barmini-dc.json",
+        "sha256": "d05ac3e342f0b7461d514df81b26370402e22d43c0d908f40051995db7dc0be6"
+      }
+    ],
+    "notes": [
+      "POC worker artifacts persisted by the root coordinator."
+    ]
+  },
+  "sourceAttempts": [
+    {
+      "id": "terra-source-attempt-01-official_site",
+      "kind": "official_site",
+      "url": "https://www.minibarbyjoseandres.com/faq-barmini/",
+      "attemptedAt": "2026-07-16T20:00:00Z",
+      "outcome": "accessible",
+      "status": "accessible",
+      "query": null,
+      "request": null,
+      "evidenceIds": [
+        "terra-official-faq"
+      ],
+      "scopeImpact": "Re-opened homepage, Barmini location page, and FAQ. They establish category-level offerings only; no complete menu or allergen document was found.",
+      "notes": [
+        "Re-opened homepage, Barmini location page, and FAQ. They establish category-level offerings only; no complete menu or allergen document was found."
+      ]
+    },
+    {
+      "id": "terra-source-attempt-02-linked_source",
+      "kind": "linked_source",
+      "url": "https://www.joseandres.com/location/barmini-washington-dc/",
+      "attemptedAt": "2026-07-16T20:00:00Z",
+      "outcome": "accessible",
+      "status": "accessible",
+      "query": null,
+      "request": null,
+      "evidenceIds": [
+        "terra-joseandres-location"
+      ],
+      "scopeImpact": "Restaurant-group location page re-opened; it corroborates identity but has no menu or allergen content.",
+      "notes": [
+        "Restaurant-group location page re-opened; it corroborates identity but has no menu or allergen content."
+      ]
+    },
+    {
+      "id": "terra-source-attempt-03-ordering_vendor",
+      "kind": "ordering_vendor",
+      "url": "https://www.opentable.com/r/barmini-by-jose-andres-washington",
+      "attemptedAt": "2026-07-16T20:00:00Z",
+      "outcome": "accessible",
+      "status": "accessible",
+      "query": null,
+      "request": null,
+      "evidenceIds": [
+        "terra-opentable-profile"
+      ],
+      "scopeImpact": "Linked reservation vendor re-opened. Its profile/menu shell does not render an itemized menu; its external menu link is a different-domain lead that failed to resolve to a Barmini menu.",
+      "notes": [
+        "Linked reservation vendor re-opened. Its profile/menu shell does not render an itemized menu; its external menu link is a different-domain lead that failed to resolve to a Barmini menu."
+      ]
+    },
+    {
+      "id": "terra-source-attempt-04-targeted_search",
+      "kind": "targeted_search",
+      "url": "https://barmini.wherevi.com/menu.html",
+      "attemptedAt": "2026-07-16T20:00:00Z",
+      "outcome": "accessible",
+      "status": "accessible",
+      "query": null,
+      "request": null,
+      "evidenceIds": [
+        "terra-third-party-wherevi"
+      ],
+      "scopeImpact": "Third-party purported menu re-opened. Its internal inconsistency and call-for-current-prices qualifier prevent current-catalog use.",
+      "notes": [
+        "Third-party purported menu re-opened. Its internal inconsistency and call-for-current-prices qualifier prevent current-catalog use."
+      ]
+    },
+    {
+      "id": "terra-source-attempt-05-archive",
+      "kind": "archive",
+      "url": null,
+      "attemptedAt": "2026-07-16T16:56:27.232Z",
+      "outcome": "not_found",
+      "status": "not_found",
+      "query": null,
+      "request": null,
+      "evidenceIds": [],
+      "scopeImpact": "No restaurant-issued archived current menu, ingredient file, allergen matrix, or cross-contact document was located.",
+      "notes": [
+        "No restaurant-issued archived current menu, ingredient file, allergen matrix, or cross-contact document was located."
+      ]
+    },
+    {
+      "id": "terra-source-attempt-06-third_party",
+      "kind": "third_party",
+      "url": "https://wnam-cdn.menuweb.menu/storage/media/companies_menu_pdf/114573434/barmini-by-jose-andres-washington-dc-menu.pdf",
+      "attemptedAt": "2026-07-16T20:00:00Z",
+      "outcome": "accessible",
+      "status": "accessible",
+      "query": null,
+      "request": null,
+      "evidenceIds": [
+        "terra-third-party-pdf"
+      ],
+      "scopeImpact": "Third-party PDF re-opened. It is extractable but non-authoritative, unverified for currentness, and semantically unreliable for menu or allergen claims.",
+      "notes": [
+        "Third-party PDF re-opened. It is extractable but non-authoritative, unverified for currentness, and semantically unreliable for menu or allergen claims."
+      ]
+    }
+  ],
+  "findings": [],
+  "repairs": [
+    {
+      "id": "poc-batch-005-2026-07-16-barmini-dc-target-repair",
+      "status": "verified",
+      "summary": "Applied and validated the restaurant-specific POC catalog repair.",
+      "files": [
+        "src/data/generated/restaurants.generated.json",
+        "data/restaurant-verification/restaurants/barmini-dc.json",
+        "data/restaurant-verification/evidence/barmini-dc.json",
+        "data/restaurant-verification/worker-runs/poc-batch-005-2026-07-16/apply-results/barmini-dc.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/worker-runs/poc-batch-005-2026-07-16/results/barmini-dc.json"
+      ],
+      "verificationCommands": [
+        "node scripts/.tmp-apply-barmini.mjs",
+        "focused readback assertions for barmini identity, zero catalog, zero in-scope surfaces, canonical evidence, and zero Ingredient Intelligence rows",
+        "diff -u first-run snapshots against second-run outputs"
+      ]
+    }
+  ],
+  "notes": [
+    "Keep the restaurant blocked_unverifiable and do not mark codex_verified.",
+    "Preserve the explicit category-level positives without converting them into enumerated menu products or allergen claims.",
+    "Reclassify count_drift and current_only as unsupported at item level, and treat cross-contact as unknown rather than positive or negative.",
+    "Track the official Events-to-Tock link as an unresolved restaurant-linked menu surface if future research is performed.",
+    "POC apply: legitimate zero-product catalog; no unsupported negative or cross-contact claims.",
+    "Coordinator-only POC closeout packet generated after serialized APPLY."
+  ]
+}

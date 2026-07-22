@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-anthony-s-7464874523",
+  "name": "Anthony's",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T06:45:40.835Z",
+  "updatedAt": "2026-07-15T07:04:40.474Z",
+  "completedAt": "2026-07-15T07:04:40.474Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 184,
+      "sourceItemCount": 175,
+      "notes": [
+        "Anthony's current restaurant-issued Owner menu publishes 178 category presentations across 20 categories, canonicalized to 175 products after merging only Garidomakaronada, Greek Fries, and Meatball repeats.",
+        "All 184 frozen rows were reconciled: 152 exact matches, fourteen spelling/presentation variants, and eighteen nested modifier or heading artifacts. The 166 matched products leave nine current omissions.",
+        "The repair retains all 175 current top-level products, including the nine restored rows, and preserves the current official menu and item URLs."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The current restaurant-issued menu publishes product names and ingredient descriptions but no complete allergen matrix or cross-contact disclosure. One hundred twenty-nine products have direct positive signals; forty-six remain accurately unavailable.",
+        "Eighty matched frozen allergen outcomes differ from the current product and ingredient text. The repair corrects omitted pasta, bread, dairy, fish, shellfish, and tree-nut signals without treating silence as safety.",
+        "The generic raw-or-undercooked foodborne-illness warning is stripped before item matching and does not create egg, fish, or shellfish allergen signals.",
+        "The Jina Reader artifact is third-party transport corroboration only and is never relabeled as restaurant-issued evidence."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic structured extraction promoted eighteen nested toppings, sauces, protein add-ons, and the KIDS heading into products and shifted 39 descriptions or categories.",
+        "The reviewed parser reads only top-level products under the twenty published category headings, excludes the Most Ordered duplicate rail, parses each official item anchor, and asserts 178 presentations and 175 canonical products.",
+        "Focused tests cover source shape, repeat canonicalization, every frozen-row disposition, raw-warning semantics, official-versus-third-party source separation, published repair invariants, and target-only idempotency."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "anthonys-home-web-reader-2026-07-15",
+      "kind": "official_site",
+      "url": "https://anthonysrestaurantva.com/",
+      "attemptedAt": "2026-07-15T06:46:00.000Z",
+      "outcome": "Public web reader returned the live official page and confirmed Anthony's Restaurant at 3000 Annandale Rd, Falls Church, VA 22042.",
+      "notes": []
+    },
+    {
+      "id": "anthonys-menu-web-reader-2026-07-15",
+      "kind": "official_site",
+      "url": "https://anthonysrestaurantva.com/menu",
+      "attemptedAt": "2026-07-15T06:46:30.000Z",
+      "outcome": "Public web reader returned the current official Owner menu with all twenty category headings, 178 top-level category presentations, descriptions, prices, and item anchors.",
+      "notes": []
+    },
+    {
+      "id": "anthonys-ledger-archive-attempt-2026-07-15",
+      "kind": "official_site",
+      "url": "https://anthonysrestaurantva.com/menu",
+      "attemptedAt": "2026-07-15T06:46:40.000Z",
+      "outcome": "HTTP 403 for the ledger archival user-agent; no artifact was recorded from the failed request.",
+      "notes": []
+    },
+    {
+      "id": "anthonys-browser-archive-attempt-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://anthonysrestaurantva.com/menu",
+      "attemptedAt": "2026-07-15T06:47:00.000Z",
+      "outcome": "Browser-control backend was unavailable, and direct curl with a browser-style user-agent also returned HTTP 403.",
+      "notes": []
+    },
+    {
+      "id": "anthonys-jina-transport-2026-07-15",
+      "kind": "third_party",
+      "url": "https://r.jina.ai/http://anthonysrestaurantva.com/menu",
+      "attemptedAt": "2026-07-15T06:48:00.000Z",
+      "outcome": "HTTP 200. Retained a complete 49,317-byte Markdown transport snapshot and cross-checked its source rows against the live official web-reader output.",
+      "notes": []
+    },
+    {
+      "id": "anthonys-targeted-allergen-review-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://anthonysrestaurantva.com/menu",
+      "attemptedAt": "2026-07-15T06:50:00.000Z",
+      "outcome": "Targeted review of the official menu and linked item surfaces found ingredient descriptions and a raw-food warning but no complete allergen matrix or cross-contact disclosure.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "anthonys-nested-modifier-promotion",
+      "severity": "critical",
+      "kind": "parser-structure-corruption",
+      "summary": "The frozen extraction promoted seventeen nested toppings/sauces/add-ons and the KIDS category heading into standalone products.",
+      "evidenceIds": [
+        "official-anthonys-menu-live",
+        "third-party-jina-menu-transport"
+      ],
+      "resolved": true,
+      "resolution": "Restricted parsing to top-level item anchors within published category sections and added source-shape and artifact regression assertions."
+    },
+    {
+      "id": "anthonys-omitted-current-products",
+      "severity": "high",
+      "kind": "menu-reconciliation-mismatch",
+      "summary": "Nine current products—including Grape Leaves Dinner, Chicken Parmesan Dinner, Kids Hot Dog, four priced side proteins, With Meat Sauce, and Caesar dressing—were absent from the app.",
+      "evidenceIds": [
+        "official-anthonys-menu-live",
+        "third-party-jina-menu-transport"
+      ],
+      "resolved": true,
+      "resolution": "Restored all nine and published the complete 175-product canonical menu."
+    },
+    {
+      "id": "anthonys-allergen-mismatches",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Eighty matched frozen products had missing or overstated signals relative to current official product and ingredient text.",
+      "evidenceIds": [
+        "official-anthonys-menu-live",
+        "third-party-jina-menu-transport"
+      ],
+      "resolved": true,
+      "resolution": "Recomputed positive signals from current product/ingredient text, preserved 46 unavailable rows, and added checks for Garidomakaronada and Tilapia Almandine."
+    },
+    {
+      "id": "anthonys-raw-warning-smear-risk",
+      "severity": "high",
+      "kind": "source-semantics-risk",
+      "summary": "The raw-food consumer warning mentions eggs, seafood, and shellfish but is not item-level allergen evidence and could smear those signals onto steak or kabob rows.",
+      "evidenceIds": [
+        "official-anthonys-menu-live",
+        "third-party-jina-menu-transport"
+      ],
+      "resolved": true,
+      "resolution": "Removed the warning before allergen matching and added a regression asserting that New York Steak retains no signal from the advisory."
+    },
+    {
+      "id": "anthonys-third-party-transport-boundary",
+      "severity": "high",
+      "kind": "evidence-authority-boundary",
+      "summary": "Direct archival agents receive HTTP 403, requiring a transport mirror for a retained full-menu artifact; that mirror cannot be promoted to official authority.",
+      "evidenceIds": [
+        "official-anthonys-menu-live",
+        "third-party-jina-menu-transport"
+      ],
+      "resolved": true,
+      "resolution": "Anchored claims to the independently read official page/item URLs, labeled the mirror third-party, and kept the mirror out of app source URLs."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "anthonys-current-owner-menu-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt Anthony's current menu and corrected modifier promotion, missing products, category shifts, allergen semantics, and source-authority boundaries.",
+      "files": [
+        "scripts/pipeline/anthonys-falls-church-audit-catalog.mjs",
+        "scripts/pipeline/anthonys-falls-church-audit-catalog.test.mjs",
+        "scripts/pipeline/anthonys-falls-church-audit-reconciliation.mjs",
+        "scripts/pipeline/anthonys-falls-church-audit-reconciliation.test.mjs",
+        "scripts/pipeline/anthonys-falls-church-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/osm-anthony-s-7464874523/jina-anthonys-menu.md",
+        "data/restaurant-verification/repairs/osm-anthony-s-7464874523/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/anthonys-falls-church-audit-catalog.mjs",
+        "node scripts/pipeline/anthonys-falls-church-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/anthonys-falls-church-audit-catalog.test.mjs scripts/pipeline/anthonys-falls-church-audit-reconciliation.test.mjs scripts/pipeline/anthonys-falls-church-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=osm-anthony-s-7464874523 node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 1e0484c09317acadf190bae5763204b802b27b084658268072649950cd7ea682.",
+    "Third-party transport artifact SHA-256: 987a2a73513487dc4186d68fef5d9c717eacdac6c6a70c3285d1b62b97c5cf03.",
+    "Frozen live target SHA-256 before repair: 72bba2a2108b7a2b7afd6010c7b6e712627227d0daff0f15ee44d23c2807c0ff.",
+    "Live target SHA-256 after repair: 8754817164cecd26b9986a9e849a844737498b115136da081ce7888e9b72b1e8.",
+    "Live non-target restaurant projection SHA-256 remained 4c5fba5863b1e869e412a6a2cef56a4556b680ab8f3dbd56939d87e05ac07689.",
+    "A second target-only repair run produced the same target hash, retained exactly one Anthony's repair note, and removed the classifier's false rejection of the priced WITH MEAT SAUCE product.",
+    "The repaired repository contains 113735 live menu items; the top-level historical itemCount field was intentionally not used as evidence."
+  ]
+}

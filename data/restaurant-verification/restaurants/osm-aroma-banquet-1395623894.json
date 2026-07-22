@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-aroma-banquet-1395623894",
+  "name": "Aroma Restaurant Bar & Banquet",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T10:55:01.633Z",
+  "updatedAt": "2026-07-15T11:14:36.171Z",
+  "completedAt": "2026-07-15T11:14:36.171Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 110,
+      "sourceItemCount": 99,
+      "notes": [
+        "The restaurant-linked four-page dine-in PDF publishes 99 standalone products across 15 consumer categories; the visible owner-issued Wix ordering menu contains a 90-product subset.",
+        "All 110 frozen rows were reconciled: 94 exact products, one normalized Chicken 65 product, ten parser artifacts, and five superseded Wix-inventory products. The 95 real rows map one-to-one to 95 current products.",
+        "The corrected catalog restores Mint & Coriander, Tamarind, Matter Pulao, and Gulab Jamoon. Nine PDF-backed dine-in products remain valid even though they are not selectable online.",
+        "All 95 matched frozen rows had incorrect generic categories or menu presentation. House Dressings is retained only as a salad subheading, not a product."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Aroma publishes restaurant-issued menu descriptions with positive ingredient wording, but no complete allergen matrix, allergen-free assurance, or item-level cross-contact disclosure was found on the owner site, current PDF, ordering menu, or targeted official-domain search.",
+        "Positive fixed signals are limited to restaurant-named ingredients and unavoidable named formulations. Missing ingredient terms are never inverted into negative claims, and mayContain remains empty for all 99 products.",
+        "Seventeen frozen allergen outcomes were wrong: examples include missed milk from raita-served biryanis, missed milk and cashew on Gajjar Halwa, missed wheat/gluten/soy on Hakka Noodles, false milk from the adjective creamy on Sarso Ka Saag, and false tree-nut promotion from coconut on Bagara Baigan and Coco Mussel Curry.",
+        "The corrected catalog contains 63 restaurant-issued positive ingredient rows, 36 accurately unavailable rows, and four separately labeled Ingredient Intelligence risks for unspecified batter or flavor wording."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic extraction mixed site boilerplate, event pages, menu headings, a dressing heading, and unreferenced Wix inventory into the food catalog; it also omitted four current products and collapsed every real product into Items or indian.",
+        "The reproducible audit parser authenticates to Aroma's owner-issued Wix menu APIs, enforces the exact two-menu visibility contract, uses the owner-linked PDF to authorize the complete 99-product dine-in boundary, and requires the 90-product visible ordering menu to be a subset.",
+        "The parser fails closed if menu visibility, product counts, source IDs, categories, dine-in-only products, or captured source hashes change.",
+        "Twelve focused catalog, reconciliation, and repaired-output tests pass. Two target-only repair runs produced the same target hash and left the non-target restaurant projection unchanged."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "aroma-banquet-owner-menu-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.aromarestaurant.com/restaurant",
+      "attemptedAt": "2026-07-15T10:59:45.368Z",
+      "outcome": "The exact Fairfax restaurant page at 12821 Fair Lakes Parkway links directly to a current four-page dine-in PDF. The captured PDF contains 99 products across 15 categories and no complete allergen or cross-contact matrix.",
+      "notes": [
+        "The PDF was rendered to four PNG pages and visually checked against extracted text before catalog construction."
+      ]
+    },
+    {
+      "id": "aroma-banquet-ordering-menu-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://www.aromarestaurant.com/online-ordering",
+      "attemptedAt": "2026-07-15T11:05:27.183Z",
+      "outcome": "The restaurant's owner-issued Wix ordering surface exposes 90 visible products. Authenticated menu, section, and item API captures contain two menus, 30 sections, and 220 inventory records; the visible ordering menu is a strict subset of the PDF-backed 99-product dine-in catalog.",
+      "notes": [
+        "Hidden and unreferenced Wix inventory was not accepted as current unless the owner-linked PDF independently publishes the product."
+      ]
+    },
+    {
+      "id": "aroma-banquet-targeted-allergen-search-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://www.aromarestaurant.com/menus?menu=online-ordering-menu",
+      "attemptedAt": "2026-07-15T11:00:30.000Z",
+      "outcome": "Targeted official-domain searches for allergen, allergy, cross-contact, and PDF disclosures found the current menu and ingredient descriptions but no restaurant-issued allergen matrix, complete ingredient guide, negative allergen claim, or cross-contact statement.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "aroma-banquet-product-boundary-corruption",
+      "severity": "critical",
+      "kind": "product-boundary-corruption",
+      "summary": "The frozen 110-row catalog included ten non-product artifacts and five superseded Wix-inventory products while omitting four current products.",
+      "evidenceIds": [
+        "official-aroma-banquet-dine-in-menu-pdf",
+        "official-aroma-banquet-online-menu",
+        "official-aroma-banquet-wix-catalog"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt the exact 99-product current catalog, removed all 15 invalid rows, restored all four omissions, and preserved the nine PDF-backed dine-in-only products."
+    },
+    {
+      "id": "aroma-banquet-category-and-description-corruption",
+      "severity": "high",
+      "kind": "menu-content-mismatch",
+      "summary": "Every one of the 95 real matched frozen rows used a generic Items or indian category or otherwise failed to preserve the current menu presentation.",
+      "evidenceIds": [
+        "official-aroma-banquet-dine-in-menu-pdf",
+        "official-aroma-banquet-wix-catalog"
+      ],
+      "resolved": true,
+      "resolution": "Assigned all 99 products to their 15 restaurant-published categories and retained current restaurant-issued names and descriptions."
+    },
+    {
+      "id": "aroma-banquet-allergen-semantic-errors",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Seventeen frozen products had missing or invented fixed allergen signals, including false coconut-to-tree-nut and creamy-to-milk mappings and missed explicitly named wheat, soy, milk, and nut ingredients.",
+      "evidenceIds": [
+        "official-aroma-banquet-dine-in-menu-pdf",
+        "official-aroma-banquet-wix-catalog",
+        "official-aroma-banquet-allergen-source-search"
+      ],
+      "resolved": true,
+      "resolution": "Re-reviewed every current description, corrected all 17 outcomes and ten provenance states, kept unsupported risks separate, and added no negative or cross-contact claim."
+    },
+    {
+      "id": "aroma-banquet-ordering-subset-undercoverage",
+      "severity": "high",
+      "kind": "source-scope-mismatch",
+      "summary": "Using only the visible ordering menu would incorrectly remove nine products that remain published on the restaurant's current dine-in PDF.",
+      "evidenceIds": [
+        "official-aroma-banquet-dine-in-menu-pdf",
+        "official-aroma-banquet-online-menu",
+        "official-aroma-banquet-wix-catalog"
+      ],
+      "resolved": true,
+      "resolution": "Defined the current catalog as the PDF-backed 99-product dine-in menu and treated the 90 orderable products as a strict presentation subset."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "aroma-banquet-current-catalog-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt Aroma's current PDF-backed menu, repaired all product boundaries, categories, omissions, and allergen semantics, and published the corrected 99-product target without changing another restaurant.",
+      "files": [
+        "scripts/pipeline/aroma-banquet-audit-catalog.mjs",
+        "scripts/pipeline/aroma-banquet-audit-catalog.test.mjs",
+        "scripts/pipeline/aroma-banquet-audit-reconciliation.mjs",
+        "scripts/pipeline/aroma-banquet-audit-reconciliation.test.mjs",
+        "scripts/pipeline/aroma-banquet-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/osm-aroma-banquet-1395623894/official-aroma-banquet-dine-in-menu-pdf.pdf",
+        "data/restaurant-verification/artifacts/osm-aroma-banquet-1395623894/official-aroma-banquet-wix-menus.json",
+        "data/restaurant-verification/artifacts/osm-aroma-banquet-1395623894/official-aroma-banquet-wix-sections.json",
+        "data/restaurant-verification/artifacts/osm-aroma-banquet-1395623894/official-aroma-banquet-wix-items.json",
+        "data/restaurant-verification/repairs/osm-aroma-banquet-1395623894/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/aroma-banquet-audit-catalog.mjs --from-artifacts",
+        "node scripts/pipeline/aroma-banquet-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/aroma-banquet-audit-catalog.test.mjs scripts/pipeline/aroma-banquet-audit-reconciliation.test.mjs scripts/pipeline/aroma-banquet-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=osm-aroma-banquet-1395623894 node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: b64444359c84aa8bddae9c9f34ec123691092e49f8797049aff355244432ddc0.",
+    "Frozen 110-row item-check evidence SHA-256: 968421b7ce63e086beac43ee8ef3620d9fd1608c3c0fdb7835d6e524863207a7.",
+    "Owner-linked dine-in PDF SHA-256: 74977f27c4717e91f87394eacd99a0a52c90f43029d6c5bf121798411f6e12f6.",
+    "Captured menu/section/item Wix JSON SHA-256 values: 472f3ed9cdef29acb90f00054e4594c13ca3d81e09bfd79d6fa155eabae26870, d46c061c2c47ee2eba5cd7b639ebe964b51337842773b0f664ac14e41359d20f, and 94e18c200df6597098281156b3d4c78cff0afca9e92b392af78889d4ea6fda9b.",
+    "Frozen baseline item fingerprint: b974d2db4337a257652e2765b9e9fbbf1f2a6db29aec7d54a60e2a962b393a10.",
+    "Live target SHA-256 before repair: 21164f5a392d91141b2107ea982b55d0592146158bf058e658e408ee5fe2a6b7.",
+    "Live target SHA-256 after repair: a378b4652d6dd1f2b50d712df89c07c8b21e58a7b829ba3ad204e7f15ee96e2b.",
+    "Live non-target restaurant projection SHA-256 remained 57e9f01eafa83959e033a3c70382d14b937d4d41a0cd3cbf9405c6736311f9c2.",
+    "Two consecutive target-only repair runs produced the same target hash and exactly one Aroma Restaurant verified repair note.",
+    "The repaired repository contains 113857 live menu items; the ledger remains anchored to its original 112873-item frozen baseline."
+  ]
+}

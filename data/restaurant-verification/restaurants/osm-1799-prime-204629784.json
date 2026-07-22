@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-1799-prime-204629784",
+  "name": "1799 Prime",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T17:33:28.274Z",
+  "updatedAt": "2026-07-14T17:42:17.032Z",
+  "completedAt": "2026-07-14T17:42:17.032Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 53,
+      "sourceItemCount": 86,
+      "notes": [
+        "Every frozen row was reconciled against the current restaurant-issued July 2026 dinner menu and its visually rendered pages.",
+        "The corrected represented surface contains 68 current food items and 18 nonalcoholic beverages; beverage sections are ordered after food and dessert.",
+        "Alcohol-only wine and cocktail pages remain outside this allergen-focused menu surface, consistent with the existing food/nonalcoholic extraction scope."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Direct contains signals are derived only from item names and descriptions in the current official menu.",
+        "The menu explicitly warns that GF items may contact gluten in the shared kitchen and does not guarantee against gluten cross-contact; GF rows therefore carry mayContain gluten rather than a negative claim.",
+        "Variable items such as Soup Du Jour, Fresh Catch, Featured Entree, and Featured Dessert remain allergen-data unavailable unless their current description directly identifies an allergen."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The baseline used an older dinner PDF, mixed website navigation and dress-code text into menu rows, collapsed side dishes and modifier groups, and retained dishes absent from the July 2026 menu.",
+        "The prior extraction dropped the GF cross-contact warning and produced 23 incorrect or incomplete allergen rows among 36 surviving menu matches."
+      ]
+    }
+  },
+  "sourceAttempts": [],
+  "findings": [
+    {
+      "id": "stale-menu-and-web-artifacts",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "Seventeen of 53 frozen rows were stale dishes or non-items, including navigation, dress-code text, protein modifiers, and collapsed side groups.",
+      "evidenceIds": [
+        "official-home",
+        "official-dinner-july-2026"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the stale output with 86 current food/nonalcoholic rows and represented every side as its own item."
+    },
+    {
+      "id": "incorrect-allergen-signals",
+      "severity": "high",
+      "kind": "allergen_accuracy",
+      "summary": "Twenty-three of 36 surviving baseline rows had incorrect contains, may-contain, or source semantics.",
+      "evidenceIds": [
+        "official-dinner-july-2026"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt signals from current item text, removed adjacent-row bleed, and left variable or undisclosed items unavailable."
+    },
+    {
+      "id": "gf-cross-contact-dropped",
+      "severity": "high",
+      "kind": "source_semantics",
+      "summary": "The baseline treated GF labeling without preserving the restaurant’s explicit warning that GF foods may contact gluten.",
+      "evidenceIds": [
+        "official-dinner-july-2026"
+      ],
+      "resolved": true,
+      "resolution": "Mapped the warning to mayContain gluten on every GF item and every Butcher Block selection covered by the section-level GF statement."
+    },
+    {
+      "id": "old-pdf-surface",
+      "severity": "medium",
+      "kind": "source_freshness",
+      "summary": "The baseline referenced Dinner Menu Revamp 6th Edit while the official site now publishes Dinner Menu July 2026.",
+      "evidenceIds": [
+        "official-home",
+        "official-dinner-july-2026"
+      ],
+      "resolved": true,
+      "resolution": "Pinned the correction to the current official July 2026 PDF with retained hash and artifact."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-1799-prime-july-2026-snapshot",
+      "status": "verified",
+      "summary": "Prepared and targeted-tested an 86-item current snapshot with individual side rows, beverages last, direct allergen signals, and GF gluten cross-contact semantics.",
+      "files": [
+        "scripts/pipeline/1799-prime-audit-catalog.mjs",
+        "scripts/pipeline/1799-prime-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/osm-1799-prime-204629784/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/1799-prime-audit-catalog.test.mjs scripts/pipeline/1799-prime-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=tmp/restaurant-verification/1799-prime-repair-input.json node scripts/repair-final-generated-regressions.mjs (targeted copy; verified 86 items, 49 direct disclosures, 16 cross-contact-only rows, 21 unavailable rows, and zero known artifacts)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 220b6b815f545ed3ed4c99f6c442412886fb2c42cc65fac0545516e44af5efa1.",
+    "Reconciliation counts: {\"dispositions\":{\"artifact\":11,\"normalized_match\":35,\"stale_extra\":6,\"variant_match\":1},\"allergens\":{\"not_applicable\":17,\"verified\":9,\"mismatch\":23,\"accurately_unavailable\":4}}.",
+    "The July PDF pages 4-9 were rendered to PNG and visually reviewed to verify column and section boundaries before catalog construction."
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "akira-ramen-and-izakaya-rockville-md-dc-metro",
+  "name": "Akira Ramen & Izakaya",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T21:47:34.329Z",
+  "updatedAt": "2026-07-14T21:53:16.507Z",
+  "completedAt": "2026-07-14T21:53:16.507Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 73,
+      "sourceItemCount": 80,
+      "notes": [
+        "Every frozen row was reconciled to a current product name in the restaurant-linked MealKeyway response captured on 2026-07-14.",
+        "The official site identifies the Rockville restaurant at 1800 Rockville Pike H1, Rockville, MD 20852 and directly links merchant 6c567833364f776d74724c4d686e4e5270446f542b513d3d.",
+        "MealKeyway exposes 83 non-hidden rows; two are standalone sauce add-ons, and two Tuna Ikura rows in the same category and price collapse to one better-described formulation, yielding 80 canonical products across ten categories.",
+        "The current catalog adds Coke, Diet Coke, Sprite, Ginger Ale, Lunch Special, Tuesday Combo, and a separately described second King Dragon formulation beyond the 73 frozen formulations.",
+        "Hidden merchant rows, internal combo choices, alcohol, toppings, and sold-out legacy products are not promoted to public menu products."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "The restaurant-linked merchant response publishes fixed descriptions for many products but no complete allergen matrix, complete recipes, or cross-contact policy.",
+        "All 73 frozen rows had unavailable allergen data even though current fixed text supports positive signals for 65 of them; the other eight remain accurately unavailable.",
+        "The corrected 80-product catalog has 66 positive ingredient-signal rows and 14 unavailable rows; the additional positive row is the second separately described King Dragon formulation.",
+        "Crabstick is interpreted as fish rather than shellfish, while explicit crabmeat remains shellfish; configurable lunch and Tuesday package choices are not promoted to fixed allergens.",
+        "Absent descriptions are never treated as allergen-free claims, and no may-contain or shared-equipment claims are invented."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic extraction retained 73 public names and broad categories but discarded all live merchant descriptions and therefore every available ingredient signal.",
+        "It also omitted public non-alcoholic drinks and configurable package products and did not preserve the current duplicate/add-on distinction.",
+        "The correction parses the restaurant-linked structured merchant response, filters hidden/internal/alcohol/topping rows, excludes two sauce add-ons, and collapses only the same-category duplicate Tuna Ikura row.",
+        "Positive mappings are constrained to fixed published ingredients and unavoidable named formats, with focused tests for surimi, fish cake, tempura/noodle formats, soy, sesame, and configurable packages."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-home-review",
+      "kind": "official_site",
+      "url": "https://www.akiraramenrockville.com/",
+      "attemptedAt": "2026-07-14T21:47:44.734Z",
+      "outcome": "Captured the official site, confirmed the Rockville identity/address, and verified its direct MealKeyway merchant link.",
+      "notes": []
+    },
+    {
+      "id": "mealkeyway-shell-review",
+      "kind": "ordering_vendor",
+      "url": "https://order.mealkeyway.com/customer/release/index",
+      "attemptedAt": "2026-07-14T21:47:45.145Z",
+      "outcome": "Captured the current MealKeyway customer shell used by the restaurant's online-order flow.",
+      "notes": []
+    },
+    {
+      "id": "mealkeyway-menu-review",
+      "kind": "linked_source",
+      "url": "https://order.mealkeyway.com/merchant/6c567833364f776d74724c4d686e4e5270446f542b513d3d/menu?productLine=ONLINE_ORDER",
+      "attemptedAt": "2026-07-14T21:47:45.571Z",
+      "outcome": "Captured and exhaustively reviewed the structured current merchant catalog, including all categories, visibility fields, descriptions, combo rows, and duplicate rows.",
+      "notes": []
+    },
+    {
+      "id": "allergen-disclosure-review",
+      "kind": "targeted_search",
+      "url": "https://www.akiraramenrockville.com/",
+      "attemptedAt": "2026-07-14T21:47:45.571Z",
+      "outcome": "Found current item descriptions but no complete restaurant allergen matrix, recipe disclosure, or cross-contact policy.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "discarded-current-ingredient-descriptions",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "The frozen catalog marked every Akira row unavailable even though the current linked merchant response supplies fixed ingredient text supporting positive signals for 65 of the 73 frozen products.",
+      "evidenceIds": [
+        "mealkeyway-menu"
+      ],
+      "resolved": true,
+      "resolution": "Parsed the structured current descriptions and recomputed only supported positive signals while retaining eight frozen and 14 total current products as unavailable."
+    },
+    {
+      "id": "incomplete-current-product-coverage",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen 73-row catalog omitted current drinks, configurable package products, and one separately described King Dragon formulation while lacking explicit duplicate/add-on handling.",
+      "evidenceIds": [
+        "mealkeyway-menu",
+        "official-home"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 80 canonical current products across ten categories from all 83 non-hidden rows, excluding two add-ons and collapsing one same-category Tuna Ikura duplicate."
+    },
+    {
+      "id": "generic-parser-lost-structured-merchant-fields",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "The generic extraction retained names but discarded current merchant descriptions and visibility/combination semantics, causing both incomplete menu coverage and wholesale allergen underreporting.",
+      "evidenceIds": [
+        "mealkeyway-menu"
+      ],
+      "resolved": true,
+      "resolution": "Prepared a structured merchant-catalog correction with explicit public-row, hidden-row, add-on, duplicate, and allergen-semantic invariants."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-akira-rockville-current-menu",
+      "status": "verified",
+      "summary": "Prepared and focused-tested an 80-product Akira catalog across ten current categories with 66 supported positive rows, 14 unavailable rows, complete current public coverage, and explicit hidden/add-on/duplicate handling.",
+      "files": [
+        "scripts/pipeline/akira-ramen-audit-catalog.mjs",
+        "scripts/pipeline/akira-ramen-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/akira-ramen-and-izakaya-rockville-md-dc-metro/mealkeyway-menu.json",
+        "data/restaurant-verification/repairs/akira-ramen-and-izakaya-rockville-md-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/akira-ramen-audit-catalog.test.mjs scripts/pipeline/akira-ramen-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/akira-ramen-repository.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 80 items, ten categories, 66 positive rows, 14 unavailable rows, and all known hidden/add-on/duplicate invariants)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 00f531c99ca0c08d5b0d56a6a17e421e6a2447d4972959f5b72bb22a235cc206.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":73},\"allergens\":{\"mismatch\":65,\"accurately_unavailable\":8}}.",
+    "Current corrected catalog counts: 83 non-hidden merchant rows, 80 canonical products, ten categories, 66 positive rows, and 14 unavailable rows."
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 85,
+      "sourceItemCount": 85,
+      "notes": [
+        "Post-repair recheck reconciled all 85 current restaurant-issued menu titles in 15 sections with 85 unique generated items.",
+        "Frozen reconciliation: 12 exact matches, 13 variant matches, 8 artifacts or duplicate fragments, and no stale extras."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "51 items retain only fixed positive signals directly supported by restaurant-authored names or descriptions; 34 items are accurately unavailable.",
+        "The flour-or-corn choices on Tacos al Carbon and Tortilla remain unavailable rather than treating optional wheat as a fixed ingredient.",
+        "No negative or cross-contact claim is inferred from the absence of a comprehensive guide."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "Restaurant-specific verified snapshot replaces the incomplete generic extraction, preserves official titles, categories, and descriptions, and removes page-structure artifacts."
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "incomplete-and-artifacted-menu-extraction",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The 33-row generated record omitted 60 titles from the current 85-item official menu and included eight non-item or duplicate artifacts.",
+      "evidenceIds": ["official-current-menu", "official-legacy-menu"],
+      "resolved": true,
+      "resolution": "Rebuilt the full current 85-item menu and removed all eight frozen artifacts or duplicate fragments."
+    },
+    {
+      "id": "description-substituted-item-titles",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "Thirteen generated rows used description text as the item identity instead of the restaurant's displayed item title.",
+      "evidenceIds": ["official-current-menu"],
+      "resolved": true,
+      "resolution": "Reconciled all thirteen fragments to canonical official titles, preserving their descriptions on the correct items."
+    },
+    {
+      "id": "no-comprehensive-allergen-or-cross-contact-source",
+      "severity": "medium",
+      "kind": "allergen_source",
+      "summary": "The official menu provides selected direct ingredient prose but no comprehensive allergen matrix, complete ingredients, negative-claim coverage, or cross-contact policy.",
+      "evidenceIds": ["official-current-menu"],
+      "resolved": true,
+      "resolution": "Retained only fixed direct positive disclosures, marked all other results unavailable, and published no negative or cross-contact claims."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "rebuild-atlacatl-current-menu",
+      "status": "verified",
+      "summary": "Rebuilt Atlacatl's current 85-item restaurant-issued menu and conservative positive-disclosure allergen data.",
+      "files": [
+        "data/restaurant-verification/repairs/osm-atlacatl-pupuseria-372658150/corrected-menu.json",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/osm-atlacatl-pupuseria-372658150/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test --test-name-pattern='Atlacatl rebuilds the current official menu' scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Post-repair menu recheck: 85 current official titles, 51 fixed direct positive disclosures, 34 accurately unavailable allergen results."
+  ],
+  "status": "recheck_required"
+}

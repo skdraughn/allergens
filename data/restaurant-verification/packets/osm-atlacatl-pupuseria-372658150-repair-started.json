@@ -1,0 +1,25 @@
+{
+  "repairs": [
+    {
+      "id": "rebuild-atlacatl-current-menu",
+      "status": "implemented",
+      "summary": "Replaced the corrupted 33-row partial extraction with the current 85-item restaurant-issued menu, removed eight frozen artifacts or duplicates, restored 60 missing official titles, and retained 51 fixed direct positive ingredient disclosures while leaving 34 results unavailable.",
+      "files": [
+        "data/restaurant-verification/repairs/osm-atlacatl-pupuseria-372658150/corrected-menu.json",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/osm-atlacatl-pupuseria-372658150/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test --test-name-pattern='Atlacatl rebuilds the current official menu' scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Focused Atlacatl regression passed: 85 unique current items in 15 sections, 51 fixed direct positive disclosures, and 34 accurately unavailable results.",
+    "Tacos al Carbon and Tortilla remain unavailable because their wheat disclosure is configuration-dependent (flour or corn), not a fixed item ingredient."
+  ],
+  "status": "repair_in_progress"
+}

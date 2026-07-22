@@ -1,0 +1,21 @@
+{
+  "repairs": [
+    {
+      "id": "scope-asian-grill-allergen-inference",
+      "status": "implemented",
+      "summary": "Removed unsupported cake and wonton culinary-name allergen inferences while preserving allergens directly disclosed by restaurant-authored item names and descriptions; Crab Cake now retains only explicit shellfish.",
+      "files": [
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [],
+      "verificationCommands": [
+        "node --test --test-name-pattern='Asian Grill preserves direct menu disclosures' scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Focused Asian Grill regression passed. A pre-existing Applebee's assertion in a broader shared test block remains unrelated to this repair."
+  ],
+  "status": "repair_in_progress"
+}

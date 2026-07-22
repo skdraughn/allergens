@@ -1,0 +1,24 @@
+{
+  "repairs": [
+    {
+      "id": "rebuild-aventino-and-remove-duplicate",
+      "status": "implemented",
+      "summary": "Rebuilt 52 current formulations, preserved 27 restaurant-issued positives, 12 linked-menu positive-label rows, and 13 unavailable rows, removed stale and alcohol-only rows, restored current formulations, and removed the duplicate generated restaurant record.",
+      "files": [
+        "scripts/pipeline/aventino-audit-catalog.mjs",
+        "scripts/pipeline/aventino-audit-catalog.test.mjs",
+        "scripts/pipeline/aventino-audit-reconciliation.mjs",
+        "scripts/pipeline/aventino-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": ["data/restaurant-verification/repairs/aventino-bethesda/corrected-menu.json"],
+      "verificationCommands": [
+        "node --test scripts/pipeline/aventino-audit-catalog.test.mjs scripts/pipeline/aventino-audit-reconciliation.test.mjs",
+        "node --test --test-name-pattern=\"Aventino preserves service formulations\" scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": ["Targeted catalog/reconciliation suite passed 6/6 and generated-data regression passed 1/1."],
+  "status": "repair_in_progress"
+}

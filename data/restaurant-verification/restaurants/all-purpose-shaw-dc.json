@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "all-purpose-shaw-dc",
+  "name": "All-Purpose Shaw",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T23:38:32.681Z",
+  "updatedAt": "2026-07-14T23:47:22.017Z",
+  "completedAt": "2026-07-14T23:47:22.017Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 39,
+      "sourceItemCount": 57,
+      "notes": [
+        "Every frozen row was reconciled against All-Purpose Shaw's current Spring 2026 brunch, dinner, drinks, and happy-hour PDFs plus the live Shaw Toast catalog.",
+        "The corrected catalog contains 57 food and nonalcoholic formulations represented by 82 source presentations across nine canonical categories.",
+        "The frozen catalog omitted 22 current formulations, included the stale Roasted Garlic Knots formulation, and represented three formulations twice under service-period or shortened display names.",
+        "Current nonalcoholic beer, sparkling wine, mocktails, and soft drinks are retained; alcohol-only brunch drinks, beer, wine, and cocktails are excluded.",
+        "All four one-page PDFs were rendered and visually reviewed to confirm column order, section boundaries, ingredient descriptions, and alcohol/nonalcoholic classification."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The restaurant publishes fixed ingredient descriptions, a whole-wheat pizza-dough disclosure, GF substitution context, and an instruction to tell the server about allergies, but no complete recipe-level allergen matrix or cross-contact policy.",
+        "Thirty-nine current formulations have evidence-backed fixed contains signals; 18 remain unavailable for fixed allergen data.",
+        "Three frozen rows overreported allergens: Arancini 'Donatello' asserted wheat/gluten without published support, Breakfast Sandwich asserted fish despite no fish ingredient, and Italian Hash Browns promoted optional smoked salmon into a fixed fish claim.",
+        "The current FAQ says most pizzas can use gluten-free dough and that staff will try to accommodate dietary restrictions. Those substitution and accommodation statements are not negative safety or cross-contact claims.",
+        "Optional pizza toppings, selectable brunch proteins, and Toast allergy-request controls are not promoted into fixed allergens; absent information remains unavailable."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic website extraction mixed older service-period pages and did not reconcile the restaurant's current PDF set with its linked ordering catalog.",
+        "That partial view omitted current dine-in dishes, online-only items, nonalcoholic drinks, and soft drinks while retaining one stale item and duplicate formulations such as AP Caesar/Brunch Caesar and Standard/Standard Pizza.",
+        "The correction preserves each current PDF presentation, adds only live Toast rows absent from the PDFs, consolidates verified aliases, and applies allergen semantics after separating optional choices.",
+        "A guarded repair requires exact item, category, source-type, unavailable-count, stale-item, and critical allergen invariants before replacing the frozen entry."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-current-menu-pdfs",
+      "kind": "official_site",
+      "url": "https://allpurposedc.com/",
+      "attemptedAt": "2026-07-14T23:39:01.827Z",
+      "outcome": "Captured, text-extracted, rendered, and visually reviewed the four current first-party PDFs linked from the Shaw location page: Brunch, Dinner, Drinks, and Happy Hour.",
+      "notes": [
+        "The Brunch, Dinner, and Drinks PDFs are Spring 2026 files published under the site's 2026/04 path; the current Happy Hour PDF is under 2026/02."
+      ]
+    },
+    {
+      "id": "official-live-toast-review",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/all-purpose",
+      "attemptedAt": "2026-07-14T23:38:45.000Z",
+      "outcome": "Reviewed the live restaurant-linked Shaw Toast menu at 1250 9th Street NW, including current dinner, online-only food rows, nonalcoholic drinks, and soft drinks; direct ledger capture was blocked by HTTP 403.",
+      "notes": [
+        "Current live menu content was independently visible through the indexed Toast surface and reconciled only where it identified the Shaw location and a currently listed row."
+      ]
+    },
+    {
+      "id": "official-faq-allergen-review",
+      "kind": "official_site",
+      "url": "https://allpurposedc.com/",
+      "attemptedAt": "2026-07-14T23:40:17.535Z",
+      "outcome": "Captured the current Shaw location/FAQ page and reviewed its dietary-accommodation and gluten-free-dough statements; no complete allergen matrix or cross-contact disclosure was found.",
+      "notes": [
+        "Artifact SHA-256: 47b8f1134a1ea5987e3e17033f9b5fad6d3b40d10e447bfc6ae025a7bf38ae79."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "partial-current-menu-coverage",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen 39-row catalog omitted 22 current Shaw formulations, retained one stale item, and duplicated three current formulations under service-period or shortened names.",
+      "evidenceIds": [
+        "official-brunch-pdf",
+        "official-dinner-pdf",
+        "official-drinks-pdf",
+        "official-happy-hour-pdf",
+        "official-toast-menu"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 57 current formulations from 82 source presentations, removed Roasted Garlic Knots, consolidated three duplicate frozen formulations, and restored every current PDF or live-Toast food/nonalcoholic row."
+    },
+    {
+      "id": "optional-and-unsupported-allergen-overreports",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Three frozen rows asserted fish or wheat/gluten that the current fixed ingredients do not support.",
+      "evidenceIds": [
+        "official-brunch-pdf",
+        "official-dinner-pdf",
+        "official-toast-menu"
+      ],
+      "resolved": true,
+      "resolution": "Removed unsupported wheat/gluten from Arancini 'Donatello', unsupported fish from The Breakfast Sandwich, and optional smoked-salmon fish from Italian Hash Browns while retaining its fixed milk signal."
+    },
+    {
+      "id": "service-period-and-source-flattening",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "The generic extraction did not reconcile current PDF service periods with the live linked ordering catalog, causing omissions, duplicates, and a stale formulation.",
+      "evidenceIds": [
+        "official-location-and-faq",
+        "official-brunch-pdf",
+        "official-dinner-pdf",
+        "official-drinks-pdf",
+        "official-happy-hour-pdf",
+        "official-toast-menu"
+      ],
+      "resolved": true,
+      "resolution": "Prepared a captured-source catalog with explicit alcohol exclusion, exact source presentations, alias consolidation, optional-choice separation, and guarded output invariants."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-all-purpose-shaw-current-menu",
+      "status": "verified",
+      "summary": "Prepared and focused-tested a 57-formulation, 82-presentation current Shaw catalog with 39 fixed-positive rows, 18 unavailable rows, and all 39 frozen rows terminally reconciled.",
+      "files": [
+        "scripts/pipeline/all-purpose-shaw-audit-catalog.mjs",
+        "scripts/pipeline/all-purpose-shaw-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/all-purpose-shaw-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/all-purpose-shaw-audit-catalog.test.mjs scripts/pipeline/all-purpose-shaw-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=tmp/all-purpose-audit/repository.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 57 items, nine categories, 39 fixed-positive rows, 18 unavailable rows, stale-item removal, optional-fish corrections, and identical SHA-256 after a second run)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: a651cd344688d20caa0337a1e213cc4a38866bc39fd5514735dcef38d44b72fe.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":26,\"variant_match\":12,\"stale_extra\":1},\"allergens\":{\"verified\":31,\"accurately_unavailable\":4,\"mismatch\":3,\"not_applicable\":1},\"mismatchKinds\":{\"overreported\":3}}.",
+    "Current corrected catalog counts: 57 formulations, 82 presentations, nine canonical categories, 39 fixed-positive rows, and 18 unavailable rows."
+  ]
+}

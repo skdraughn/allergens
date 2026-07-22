@@ -1,0 +1,24 @@
+{
+  "repairs": [
+    {
+      "id": "rebuild-azteca-college-park-catalog",
+      "status": "implemented",
+      "summary": "Rebuilt ninety-four current products from the pinned FOX Ordering capture, consolidated nine repeated presentations, retained sixty-five linked-menu positive rows, left twenty-nine unavailable, and removed unsupported wheat/gluten claims.",
+      "files": [
+        "scripts/pipeline/azteca-college-park-audit-catalog.mjs",
+        "scripts/pipeline/azteca-college-park-audit-catalog.test.mjs",
+        "scripts/pipeline/azteca-college-park-audit-reconciliation.mjs",
+        "scripts/pipeline/azteca-college-park-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": ["data/restaurant-verification/repairs/azteca-restaurant-college-park-md-dc-metro/corrected-menu.json"],
+      "verificationCommands": [
+        "node --test scripts/pipeline/azteca-college-park-audit-catalog.test.mjs scripts/pipeline/azteca-college-park-audit-reconciliation.test.mjs",
+        "node --test --test-name-pattern=\"Azteca College Park\" scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": ["Focused catalog/reconciliation tests passed 4/4 and the generated snapshot regression passed 1/1."],
+  "status": "repair_in_progress"
+}

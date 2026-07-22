@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "ashburn-biryani-grill-ashburn-va-dc-metro",
+  "name": "Ashburn Biryani Grill",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T12:38:12.011Z",
+  "updatedAt": "2026-07-15T12:54:51.514Z",
+  "completedAt": "2026-07-15T12:54:51.514Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 11,
+      "sourceItemCount": 155,
+      "notes": [
+        "All eleven frozen rows were reconciled to unique current products: nine exact matches and two normalized matches (Mutton Biryani to Mutton Biryani (Goat), and Veg Dum Biryani to Veg Biryani).",
+        "The complete Ashburn-specific linked catalog contains 155 products in fourteen categories, so 144 current offerings absent from the frozen subset were restored.",
+        "Fourteen currently sold-out products remain published in the source catalog and are retained as current offerings; temporary availability is not mistaken for discontinuation.",
+        "Beverages is moved after every food category while the source order of all other categories and products is preserved."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Five products have direct positive restaurant-issued ingredient signals: Paneer Biryani, Paneer Tikka, and Lababdar Paneer contain paneer or cottage cheese; Fish Tikka explicitly names fish; and Hariyali Chicken explicitly names yogurt and cashew.",
+        "The other 150 products remain allergenSourceType unavailable. The linked Square catalog publishes empty ingredient and dietary-preference arrays, so vendor descriptions and familiar dish names are retained only as labeled Ingredient Intelligence context, never promoted to official allergen evidence.",
+        "All eleven frozen rows retain the same conservative empty fixed-allergen and cross-contact sets and unavailable provenance; therefore all eleven allergen verdicts are verified rather than mismatches.",
+        "No product-scoped or global cross-contact disclosure was found. No mayContain signal is inferred from menu silence or accommodation language.",
+        "Creamy wording for Chicken Tikka Masala and Goat Curry is not treated as an explicit milk ingredient, and the owner site's catering accommodation language is not treated as an allergen absence claim."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic/reviewed-delivery path reduced a complete 155-product location catalog to eleven hand-selected rows; this was a menu-completeness failure, not evidence that the omitted products were unavailable.",
+        "The restaurant-issued location page links the Cash App profile; its deterministic locations endpoint identifies the exact Ashburn token; and that token returns a complete catalog with page_info.has_more false, fourteen categories, and 155 products.",
+        "The hash-pinned builder fails closed on source hash, Ashburn identity, pagination, category or product counts, duplicate IDs, nonempty linked ingredient/dietary arrays, missing owner-featured products, or any newly inferred cross-contact data.",
+        "Three focused catalog, reconciliation, and repaired-output tests pass. Two consecutive target-only repair runs preserved the repaired target hash and the complete non-target restaurant projection hash.",
+        "Per-restaurant application uses RESTAURANT_REPAIR_ONLY_ID so unrelated repair blocks cannot mutate other restaurants."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "ashburn-official-brand-menu-2026-07-15",
+      "kind": "official_site",
+      "url": "https://biryanigrill.com/",
+      "attemptedAt": "2026-07-15T12:52:17.000Z",
+      "outcome": "Captured the restaurant-issued brand menu covering all three locations. It publishes nine featured products and direct positive major-allergen ingredient terms for five of them.",
+      "notes": [
+        "The menu is partial rather than a complete allergen matrix."
+      ]
+    },
+    {
+      "id": "ashburn-official-location-page-2026-07-15",
+      "kind": "official_site",
+      "url": "https://biryanigrill.com/ashburn/",
+      "attemptedAt": "2026-07-15T12:38:48.741Z",
+      "outcome": "Captured the owner page identifying the Ashburn address and phone and linking the Biryani Grill Cash App ordering profile.",
+      "notes": []
+    },
+    {
+      "id": "ashburn-linked-square-location-catalog-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://cash.app/$biryanigrill/",
+      "attemptedAt": "2026-07-15T12:42:27.788Z",
+      "outcome": "Resolved the owner-linked Cash App profile to the exact Ashburn Square location token and captured the complete 14-category, 155-product JSON catalog with page_info.has_more false.",
+      "notes": [
+        "Both JSON and protobuf content-negotiation responses were retained and hashed.",
+        "The catalog's product ingredient and dietary-preference arrays are empty."
+      ]
+    },
+    {
+      "id": "ashburn-legacy-subdomain-2026-07-15",
+      "kind": "official_site",
+      "url": "https://ashburn.biryanigrill.com/",
+      "attemptedAt": "2026-07-15T12:40:00.000Z",
+      "outcome": "The legacy Ashburn subdomain returned HTTP 404 and was not used as current menu or allergen evidence.",
+      "notes": [
+        "The live biryanigrill.com/ashburn/ page and its linked ordering catalog supersede this stale address."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "ashburn-frozen-menu-incomplete",
+      "severity": "critical",
+      "kind": "product-boundary-corruption",
+      "summary": "The frozen output published only eleven of the 155 products in the complete current Ashburn catalog, omitting 144 offerings across appetizers, curries, tandoor, breads, biryanis, rice and noodles, family packs, desserts, pulav, specials, and beverages.",
+      "evidenceIds": [
+        "official-location-page",
+        "linked-cash-app-profile",
+        "linked-square-locations-json",
+        "linked-square-ashburn-catalog-json"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt the exact location-specific 155-product boundary, reconciled all eleven frozen rows, restored 144 omissions, retained current sold-out rows, and placed Beverages last."
+    },
+    {
+      "id": "ashburn-linked-catalog-allergen-semantics",
+      "severity": "critical",
+      "kind": "source-semantics",
+      "summary": "The complete menu comes from a restaurant-linked vendor whose descriptions contain familiar allergen-bearing terms, but whose structured ingredient and dietary arrays are empty; promoting those descriptions to official fixed-allergen claims would overstate source authority.",
+      "evidenceIds": [
+        "linked-square-ashburn-catalog-json"
+      ],
+      "resolved": true,
+      "resolution": "Kept 150 products unavailable for official allergens, retained vendor text only for labeled Ingredient Intelligence, and made the builder fail closed if the structured fields become nonempty so they receive a fresh authority review."
+    },
+    {
+      "id": "ashburn-owner-positive-signals-omitted",
+      "severity": "high",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "The frozen subset omitted all five current products for which the restaurant-issued brand menu directly publishes positive major-allergen ingredient terms.",
+      "evidenceIds": [
+        "official-brand-menu",
+        "linked-square-ashburn-catalog-json"
+      ],
+      "resolved": true,
+      "resolution": "Added milk to Paneer Biryani, Paneer Tikka, and Lababdar Paneer; fish to Fish Tikka; and milk plus tree-nut to Hariyali Chicken, without interpreting the partial menu as a complete matrix or absence claim."
+    },
+    {
+      "id": "ashburn-generic-source-path",
+      "severity": "high",
+      "kind": "stale-source-boundary",
+      "summary": "The frozen generic website and reviewed-delivery configuration did not traverse the restaurant-controlled Cash App link to the complete location-specific Square catalog.",
+      "evidenceIds": [
+        "official-location-page",
+        "linked-cash-app-profile",
+        "linked-square-locations-json",
+        "linked-square-ashburn-catalog-json"
+      ],
+      "resolved": true,
+      "resolution": "Pinned the exact owner page, linked profile, location identity response, and complete location catalog by SHA-256 and implemented a deterministic location-aware parser."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "ashburn-current-catalog-rebuild",
+      "status": "verified",
+      "summary": "Replaced the incomplete eleven-row subset with all 155 current Ashburn products, restored 144 omissions, preserved conservative allergen authority, added five owner-supported positive signals, and constrained application to the target restaurant.",
+      "files": [
+        "scripts/pipeline/ashburn-biryani-grill-audit-catalog.mjs",
+        "scripts/pipeline/ashburn-biryani-grill-audit-catalog.test.mjs",
+        "scripts/pipeline/ashburn-biryani-grill-audit-reconciliation.mjs",
+        "scripts/pipeline/ashburn-biryani-grill-audit-reconciliation.test.mjs",
+        "scripts/pipeline/ashburn-biryani-grill-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/ashburn-biryani-grill-ashburn-va-dc-metro/official-brand-site.html",
+        "data/restaurant-verification/artifacts/ashburn-biryani-grill-ashburn-va-dc-metro/official-site.html",
+        "data/restaurant-verification/artifacts/ashburn-biryani-grill-ashburn-va-dc-metro/linked-cash-app-profile.html",
+        "data/restaurant-verification/artifacts/ashburn-biryani-grill-ashburn-va-dc-metro/linked-square-locations.json",
+        "data/restaurant-verification/artifacts/ashburn-biryani-grill-ashburn-va-dc-metro/linked-square-ashburn-catalog.json",
+        "data/restaurant-verification/repairs/ashburn-biryani-grill-ashburn-va-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/ashburn-biryani-grill-audit-catalog.mjs",
+        "node scripts/pipeline/ashburn-biryani-grill-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/ashburn-biryani-grill-audit-catalog.test.mjs scripts/pipeline/ashburn-biryani-grill-audit-reconciliation.test.mjs scripts/pipeline/ashburn-biryani-grill-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=ashburn-biryani-grill-ashburn-va-dc-metro node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: c1042e2f17f8824cad5c63a442f1199d6fdb937587864f147f38392a247cde42.",
+    "Frozen reconciled item-check SHA-256: 871dd558bdf80c4ec95fe71c2a15f69614de7438504e758ab6d45127f4f91f9a.",
+    "Evidence manifest SHA-256: a6c37440338bdfaafd0223b06d7b63cda250086c55f1802f1ea1f5e928645737.",
+    "Live target SHA-256 changed from f24c560f13a0cffa2f4ab6e1278946607c05705bf0406075c9824c13eeafb832 to b2266dcc1ce62e32d45168998d99c08a6107f59d5cf31c9c887c24e90aafd75f.",
+    "Consecutive target-only repair non-target projection SHA-256 remained be9a5665b468f2d9f75434d4f829d843ae1cbb05e5d9a91b0fba46eba6c6955f."
+  ]
+}

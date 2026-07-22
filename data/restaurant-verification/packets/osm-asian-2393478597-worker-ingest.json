@@ -1,0 +1,151 @@
+{
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 257,
+      "sourceItemCount": 257,
+      "notes": [
+        "Terra reconciled all 257 frozen rows against the current restaurant-linked Toast menu; Sol confirmed the restaurant identity and current menu surface."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "mismatch",
+      "highestAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "Toast directly supports positive signals explicitly named in restaurant-authored item names or descriptions, but it is not a comprehensive allergen matrix, complete ingredient list, or cross-contact policy.",
+        "Sol rejected Terra's proposed blanket downgrade and limited the discrepancy to claims inferred from culinary names without explicit restaurant disclosure."
+      ]
+    },
+    "extraction": {
+      "verdict": "mismatch",
+      "parserReviewed": true,
+      "semanticsVerified": false,
+      "notes": [
+        "The toast-menu extraction/repair path must preserve directly disclosed ingredients while removing only unsupported culinary-term inferences."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site",
+      "kind": "official_site",
+      "url": "http://www.asiangrill88.com/",
+      "attemptedAt": "2026-07-15T16:19:10.249Z",
+      "outcome": "Official domain redirected but did not provide a usable current allergen or ingredient source.",
+      "notes": []
+    },
+    {
+      "id": "linked-source",
+      "kind": "linked_source",
+      "url": "https://order.toasttab.com/online/asian-grill-gwtvk",
+      "attemptedAt": "2026-07-15T16:19:10.249Z",
+      "outcome": "Restaurant-linked Toast menu was accessible to the research agents and supplied identity, menu, and selected ingredient disclosures.",
+      "notes": []
+    },
+    {
+      "id": "ordering-vendor",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/asian-grill-gwtvk",
+      "attemptedAt": "2026-07-15T16:19:10.249Z",
+      "outcome": "Live Toast menu reviewed; no comprehensive allergen matrix, allergen legend, complete ingredients, or cross-contact statement was published.",
+      "notes": []
+    },
+    {
+      "id": "targeted-search",
+      "kind": "targeted_search",
+      "url": null,
+      "attemptedAt": "2026-07-15T16:19:10.249Z",
+      "outcome": "No separate restaurant-issued allergen, nutrition, ingredient, or cross-contact guide was located.",
+      "notes": []
+    },
+    {
+      "id": "archive",
+      "kind": "archive",
+      "url": null,
+      "attemptedAt": "2026-07-15T16:19:10.249Z",
+      "outcome": "No relevant official archived allergen or ingredient document was located.",
+      "notes": []
+    },
+    {
+      "id": "third-party",
+      "kind": "third_party",
+      "url": "https://www.restaurantji.com/va/west-springfield/asian-grill-/menu/",
+      "attemptedAt": "2026-07-15T16:19:10.249Z",
+      "outcome": "Third-party menu corroborated identity and selected menu descriptions but was not used as allergen authority.",
+      "notes": []
+    }
+  ],
+  "evidence": [
+    {
+      "id": "toast-current-menu",
+      "url": "https://order.toasttab.com/online/asian-grill-gwtvk",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "both",
+      "retrievedAt": "2026-07-15T16:19:10.249Z",
+      "contentType": "text/html",
+      "finalUrl": "https://order.toasttab.com/online/asian-grill-gwtvk",
+      "httpStatus": null,
+      "byteLength": null,
+      "sha256": null,
+      "artifactPath": null,
+      "excerpt": "Asian Grill, 6228 Rolling Rd # A, Springfield, VA 22152. The live Dinner menu directly names ingredients including fish, shrimp, scallops, cashews, sesame, egg, and peanut dipping sauce, and includes a gluten-free category; it does not publish a comprehensive allergen matrix, complete ingredients, allergen legend, or cross-contact statement.",
+      "rowIdentifiers": [
+        "Asian Grill | 6228 Rolling Rd # A, Springfield, VA 22152",
+        "Dinner",
+        "GLUTEN FREE MENU"
+      ],
+      "request": {
+        "method": "GET",
+        "result": "Coordinator artifact capture returned HTTP 403; research agents accessed the live restaurant-linked page."
+      },
+      "notes": [
+        "Restaurant-linked ordering vendor; not a restaurant-issued comprehensive allergen guide."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "unsupported-culinary-name-allergen-inference",
+      "severity": "high",
+      "kind": "allergen_extraction",
+      "summary": "A scoped subset of generated allergen claims is inferred from culinary names without explicit support in the restaurant-authored Toast text, including claims on cakes and wonton dishes. Direct ingredient words remain valid positive disclosure evidence and must not be blanket-downgraded.",
+      "evidenceIds": [
+        "toast-current-menu"
+      ],
+      "resolved": false,
+      "resolution": null
+    },
+    {
+      "id": "no-comprehensive-allergen-or-cross-contact-source",
+      "severity": "medium",
+      "kind": "allergen_source",
+      "summary": "The current restaurant-linked menu contains selected positive ingredient disclosures but no comprehensive allergen matrix, complete ingredients, allergen legend, negative-claim coverage, or cross-contact policy.",
+      "evidenceIds": [
+        "toast-current-menu"
+      ],
+      "resolved": false,
+      "resolution": null
+    }
+  ],
+  "repairs": [
+    {
+      "id": "scope-asian-grill-allergen-inference",
+      "status": "planned",
+      "summary": "Identify the exact unsupported culinary-term inferences and remove only those claims while preserving allergens directly disclosed by restaurant-authored item names and descriptions.",
+      "files": [
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [],
+      "verificationCommands": [
+        "node --test scripts/restaurant-pipeline.test.mjs --test-name-pattern='Asian Grill'"
+      ]
+    }
+  ],
+  "notes": [
+    "Terra research: gpt-5.6-terra low, worker run 2026-07-15T15-57-56-396Z-3313d1.",
+    "Sol adjudication: gpt-5.6-sol medium. Sol upheld discrepancy_found but rejected Terra's blanket 93-item mismatch characterization.",
+    "Canonical item checks remain pending until the scoped repair and complete recheck are finished."
+  ],
+  "status": "discrepancy_found"
+}

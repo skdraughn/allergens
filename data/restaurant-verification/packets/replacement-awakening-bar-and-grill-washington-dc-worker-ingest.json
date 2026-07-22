@@ -1,0 +1,119 @@
+{
+  "checks": {
+    "menu": {
+      "verdict": "mismatch",
+      "reviewedItemCount": 48,
+      "sourceItemCount": 50,
+      "notes": [
+        "The current owner page publishes 51 raw cards across three visible menu grids; one $2 OFF promotion is not a product, leaving 50 current presentations.",
+        "All 48 frozen rows reconcile exactly once: 42 exact, one mixed-service variant, and five extraction artifacts. Seven current presentations were omitted from the frozen output."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "mismatch",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The owner menu provides narrative product descriptions but no allergen matrix, negative claims, or cross-contact disclosure.",
+        "Thirty-one current presentations have explicit positive ingredients or unavoidable food identities; nineteen remain unavailable. Nineteen matched frozen arrays over-promoted formulation assumptions or omitted an explicit positive signal."
+      ]
+    },
+    "extraction": {
+      "verdict": "mismatch",
+      "parserReviewed": true,
+      "semanticsVerified": false,
+      "notes": [
+        "The generic extraction promoted four homepage/employment cards and one dessert description to products, corrupted seven real descriptions, omitted Braised Kale and Bourbon Bread Pudding, and collapsed repeated cross-menu presentations.",
+        "The current linked SpotApps endpoint is HTTP 200 corroboration but has shopping_cart_active=false and exposes an additional hidden catalog; only the three owner-published menu tabs define the canonical boundary."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site",
+      "kind": "official_site",
+      "url": "https://awakeningdc.com/",
+      "attemptedAt": "2026-07-15T17:39:58.747Z",
+      "outcome": "Captured the current restaurant-issued identity page and confirmed the promotional and employment artifacts.",
+      "notes": []
+    },
+    {
+      "id": "linked-source",
+      "kind": "linked_source",
+      "url": "https://awakeningdc.com/food-menu",
+      "attemptedAt": "2026-07-15T17:39:59.033Z",
+      "outcome": "Captured the three current owner-published menu grids with 51 raw cards and 50 publishable presentations.",
+      "notes": []
+    },
+    {
+      "id": "ordering-vendor",
+      "kind": "ordering_vendor",
+      "url": "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+      "attemptedAt": "2026-07-15T17:45:17.588Z",
+      "outcome": "Captured HTTP 200 restaurant-linked vendor corroboration; excluded a hidden/deactivated extra catalog from the canonical boundary.",
+      "notes": ["The payload reports shopping_cart_active=false."]
+    }
+  ],
+  "findings": [
+    {
+      "id": "non-product-and-description-artifacts",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "Five frozen rows are promotional/employment content or a nested dessert description rather than products.",
+      "evidenceIds": ["official-home-current", "official-food-menu-current"],
+      "resolved": false,
+      "resolution": null
+    },
+    {
+      "id": "current-presentation-boundary-drift",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The frozen output omitted seven current presentations, collapsed repeated cross-menu offerings, and mixed the two Chicken & Waffles service contexts.",
+      "evidenceIds": ["official-food-menu-current", "linked-spotapps-current"],
+      "resolved": false,
+      "resolution": null
+    },
+    {
+      "id": "description-association-corruption",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "Seven real frozen rows contain truncated, missing, cross-associated, or section-level text instead of their current item descriptions.",
+      "evidenceIds": ["official-food-menu-current"],
+      "resolved": false,
+      "resolution": null
+    },
+    {
+      "id": "unsupported-formulation-allergen-promotion",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "Nineteen matched frozen rows contain direct allergen/source outcomes inconsistent with the conservative explicit-positive semantics supported by the owner menu.",
+      "evidenceIds": ["official-food-menu-current"],
+      "resolved": false,
+      "resolution": null
+    }
+  ],
+  "repairs": [
+    {
+      "id": "rebuild-awakening-owner-menu",
+      "status": "planned",
+      "summary": "Rebuild the 50-presentation owner menu with service-aware identities, exact descriptions, conservative positive ingredient evidence, beverages last, and no unsupported cross-contact claims.",
+      "files": [
+        "scripts/pipeline/awakening-audit-catalog.mjs",
+        "scripts/pipeline/awakening-audit-catalog.test.mjs",
+        "scripts/pipeline/awakening-audit-reconciliation.mjs",
+        "scripts/pipeline/awakening-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/replacement-awakening-bar-and-grill-washington-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/awakening-audit-catalog.test.mjs scripts/pipeline/awakening-audit-reconciliation.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Terra low research was escalated to Sol medium; coordinator review retained the extraction findings but corrected the overbroad claim that all owner-description positives must remain unavailable."
+  ],
+  "status": "discrepancy_found"
+}

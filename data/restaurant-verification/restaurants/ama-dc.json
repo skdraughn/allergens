@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "ama-dc",
+  "name": "Ama",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T00:33:53.133Z",
+  "updatedAt": "2026-07-15T00:49:56.304Z",
+  "completedAt": "2026-07-15T00:49:56.304Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 36,
+      "sourceItemCount": 84,
+      "notes": [
+        "Every frozen row has a terminal disposition; 29 current formulations map to frozen rows, two frozen rows are stale extras, and 55 current formulations were absent from the frozen catalog.",
+        "The asserted extractor verifies all 32 Caffè, 34 Lunch & Dinner, and 34 Brunch repeater rows before exclusions, splits the four zero-proof products from their group, and preserves 100 retained presentations as 84 formulations."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Ama publishes ingredient-rich menu descriptions but no complete allergen matrix or item-level cross-contact disclosure.",
+        "Fifty-seven formulations have fixed first-party ingredient signals; 27 remain accurately unavailable rather than receiving culinary assumptions or negative safety claims."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The Wix repeater extraction path, exact source row manifests, service-period consolidation, modifier/alcohol exclusions, category assignment, and generated persistence were reviewed and hash-tested.",
+        "Nine focused catalog/reconciliation tests pass; target-only repair preserved the SHA-256 of every non-Ama restaurant, and a second target-only run preserved Ama’s SHA-256."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "legacy-domain-dead",
+      "kind": "official_site",
+      "url": "https://amadchevychase.com",
+      "attemptedAt": "2026-07-15T00:34:00.000Z",
+      "outcome": "The frozen domain did not resolve; it is not Ama Navy Yard’s current official site.",
+      "notes": [
+        "Current first-party identity is amarestaurant.bar at 885 New Jersey Ave SE."
+      ]
+    },
+    {
+      "id": "toast-current-403",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/ama-dc",
+      "attemptedAt": "2026-07-15T00:35:00.000Z",
+      "outcome": "The current restaurant-linked Toast URL returned HTTP 403 to the audit client.",
+      "notes": [
+        "The official Ama site still links this ordering URL; menu reconciliation therefore uses the complete restaurant-issued Wix pages as the highest-authority accessible evidence."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "wrong-location-identity",
+      "severity": "high",
+      "kind": "identity_mismatch",
+      "summary": "The frozen entry mislabeled Ama Navy Yard as a Chevy Chase restaurant and used the dead amadchevychase.com domain.",
+      "evidenceIds": [
+        "official-home"
+      ],
+      "resolved": true,
+      "resolution": "Corrected the entry to amarestaurant.bar, Navy Yard, and 885 New Jersey Ave SE, Washington, DC 20003."
+    },
+    {
+      "id": "partial-stale-menu",
+      "severity": "high",
+      "kind": "menu_incomplete_and_stale",
+      "summary": "The 36-row frozen Toast-era catalog contained two standalone rows absent from the current menu and omitted 55 current formulations.",
+      "evidenceIds": [
+        "official-caffe-menu",
+        "official-lunch-dinner-menu",
+        "official-brunch-menu",
+        "official-menu-sitemap"
+      ],
+      "resolved": true,
+      "resolution": "Replaced it with 84 current formulations built from 100 first-party source presentations; excluded one alcoholic row and two modifier rows."
+    },
+    {
+      "id": "allergen-discrepancies",
+      "severity": "high",
+      "kind": "allergen_mismatch",
+      "summary": "Seventeen frozen rows disagreed with the current first-party ingredient wording: 14 overreports, two underreports, and one mixed error.",
+      "evidenceIds": [
+        "official-caffe-menu",
+        "official-lunch-dinner-menu",
+        "official-brunch-menu"
+      ],
+      "resolved": true,
+      "resolution": "Recomputed only fixed positive signals supported by current menu wording; optional choices, dietary-label implications, and unsupported cross-contact claims remain excluded."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "ama-current-catalog-and-identity",
+      "status": "verified",
+      "summary": "Corrected Ama’s Navy Yard identity and replaced the stale partial catalog with the asserted 84-formulation current first-party menu and conservative allergen semantics.",
+      "files": [
+        "scripts/pipeline/ama-audit-catalog.mjs",
+        "scripts/pipeline/ama-audit-catalog.test.mjs",
+        "scripts/pipeline/ama-audit-reconciliation.mjs",
+        "scripts/pipeline/ama-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json",
+        "data/restaurant-verification/repairs/ama-dc/corrected-menu.json",
+        "data/restaurant-verification/item-checks/ama-dc.jsonl"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/ama-dc/official-home.html",
+        "data/restaurant-verification/artifacts/ama-dc/official-caffe-menu.html",
+        "data/restaurant-verification/artifacts/ama-dc/official-lunch-dinner-menu.html",
+        "data/restaurant-verification/artifacts/ama-dc/official-brunch-menu.html",
+        "data/restaurant-verification/artifacts/ama-dc/official-aperitivo.html",
+        "data/restaurant-verification/artifacts/ama-dc/official-sitemap.xml",
+        "data/restaurant-verification/artifacts/ama-dc/official-menu-sitemap.xml"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/ama-audit-catalog.test.mjs scripts/pipeline/ama-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=ama-dc node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Aperitivo Hour publishes alcoholic drinks plus complimentary rotating stuzzichini, not separately orderable food formulations, so it is captured as identity/menu-completeness evidence but excluded from the food and nonalcoholic catalog.",
+    "The current Vitello alla Milanese row simultaneously says breaded and clarified butter while carrying GF and DF labels; without a recipe or allergen matrix, no wheat or milk claim is promoted and the row remains allergen-source unavailable."
+  ]
+}

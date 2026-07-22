@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "agora-tysons-va",
+  "name": "Agora Tysons",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T21:05:39.362Z",
+  "updatedAt": "2026-07-14T21:10:39.632Z",
+  "completedAt": "2026-07-14T21:10:39.632Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 54,
+      "sourceItemCount": 83,
+      "notes": [
+        "Every frozen row was reconciled against the current official Agora Tysons dinner, lunch, and brunch PDFs linked from the Tysons menu hub.",
+        "All six PDF pages were rendered and visually reviewed, establishing 83 current products or distinct meal-period formulations across 18 real sections.",
+        "Seven frozen rows are headings or shifted description/dietary-label fragments. The correction restores the omitted current menu and keeps location-specific brunch names."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Agora Tysons publishes descriptions and GF, DF, and NF labels but no complete allergen matrix, complete recipes, or cross-contact policy.",
+        "Positive fields use fixed published ingredients and mandatory named formats; negative dietary labels are not promoted into comprehensive allergen-free claims.",
+        "Eighteen of 47 applicable frozen rows mismatch: ten underreported, three overreported, three mixed, and two collapsed meal-period formulations.",
+        "Oyster mushrooms do not produce shellfish, eggplant does not produce egg, and the general raw-food warning is not assigned to items."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen parser interleaved multi-column PDF text, promoted headings and descriptions, flattened sections, and attached adjacent allergens to unrelated products.",
+        "The correction uses rendered layout as the authority for section and description association and reuses shared Agora formulations only after independent Tysons page comparison.",
+        "Location-specific Lamb Shoulder and Sis Tavuk brunch identities are preserved separately from dinner formulations."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-menu-hub-review",
+      "kind": "official_site",
+      "url": "https://www.agorarestaurants.net/agora-tyson-menus/",
+      "attemptedAt": "2026-07-14T21:05:52.940Z",
+      "outcome": "Confirmed the Tysons identity and current dinner, lunch, and brunch links.",
+      "notes": []
+    },
+    {
+      "id": "official-dinner-review",
+      "kind": "linked_source",
+      "url": "https://www.agorarestaurants.net/wp-content/uploads/2026/06/MASTER-DINNER-MENU-TYSONS-JUNE-17.pdf",
+      "attemptedAt": "2026-07-14T21:05:53.397Z",
+      "outcome": "Rendered and visually reviewed both current dinner pages.",
+      "notes": []
+    },
+    {
+      "id": "official-lunch-review",
+      "kind": "linked_source",
+      "url": "https://www.agorarestaurants.net/wp-content/uploads/2026/07/MASTER-TYSONS-LUNCH-MENU-JULY-8.pdf",
+      "attemptedAt": "2026-07-14T21:06:22.413Z",
+      "outcome": "Rendered and visually reviewed both current lunch pages; the hub now links this July menu rather than the older frozen June URL.",
+      "notes": []
+    },
+    {
+      "id": "official-brunch-review",
+      "kind": "linked_source",
+      "url": "https://www.agorarestaurants.net/wp-content/uploads/2025/11/MASTER-TYSONS-Bottomless-Brunch-1121.pdf",
+      "attemptedAt": "2026-07-14T21:05:54.362Z",
+      "outcome": "Rendered and visually reviewed the current Tysons brunch menu and its location-specific names.",
+      "notes": []
+    },
+    {
+      "id": "allergen-disclosure-review",
+      "kind": "targeted_search",
+      "url": "https://www.agorarestaurants.net/agora-tyson-menus/",
+      "attemptedAt": "2026-07-14T21:06:22.413Z",
+      "outcome": "Found descriptions and dietary labels but no complete allergen matrix, recipes, or cross-contact policy.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "column-interleaved-menu-corruption",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen 54-row catalog promoted seven headings or shifted fragments, omitted current products, and flattened real meal-period sections.",
+      "evidenceIds": [
+        "official-dinner-menu",
+        "official-lunch-menu",
+        "official-brunch-menu"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 83 current products/formulations across 18 visually verified Tysons sections and removed all artifacts."
+    },
+    {
+      "id": "incorrect-frozen-allergens",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Eighteen applicable frozen rows disagree with current official descriptions, including shellfish falsely assigned from oyster mushrooms or adjacent warning text.",
+      "evidenceIds": [
+        "official-dinner-menu",
+        "official-lunch-menu",
+        "official-brunch-menu"
+      ],
+      "resolved": true,
+      "resolution": "Recomputed source-bounded signals per formulation and retained 15 current rows as unavailable where positive evidence is insufficient."
+    },
+    {
+      "id": "lost-location-and-meal-context",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "The frozen merge lost meal-period section ownership and produced three competing Sis Tavuk fragments instead of the two real formulations.",
+      "evidenceIds": [
+        "official-dinner-menu",
+        "official-brunch-menu"
+      ],
+      "resolved": true,
+      "resolution": "Preserved the real dinner Şiş Tavuk and brunch Sis Tavuk formulations, removed the merged fragment, and retained the Tysons-specific brunch Lamb Shoulder name."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-agora-tysons-current-menu",
+      "status": "verified",
+      "summary": "Prepared and focused-tested an 83-product/formulation Agora Tysons catalog across 18 official sections with 68 positive rows, 15 unavailable rows, and location-aware meal-period identities.",
+      "files": [
+        "scripts/pipeline/agora-tysons-audit-catalog.mjs",
+        "scripts/pipeline/agora-tysons-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/agora-tysons-va/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/agora-tysons-audit-catalog.test.mjs scripts/pipeline/agora-tysons-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/agora-tysons-repository.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 83 items, 18 categories, 68 positive rows, 15 unavailable rows, artifacts excluded, and Tysons variants retained)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 4b3849fbe1ec59bcda99f6357a5203ba76e3731af1e52f0ce5022a86df0ade5d.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":39,\"variant_match\":8,\"artifact\":7},\"allergens\":{\"mismatch\":18,\"verified\":27,\"accurately_unavailable\":2,\"not_applicable\":7},\"mismatchKinds\":{\"underreported\":10,\"overreported\":3,\"mixed\":3,\"collapsed_presentations\":2}}.",
+    "Current corrected catalog counts: 83 products/formulations, 18 categories, 68 positive rows, and 15 unavailable rows.",
+    "Rendered-layout review governed all section and description associations because plain PDF extraction interleaves columns."
+  ]
+}

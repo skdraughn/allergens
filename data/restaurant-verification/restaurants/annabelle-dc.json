@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "annabelle-dc",
+  "name": "Annabelle",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T06:14:17.425Z",
+  "updatedAt": "2026-07-15T06:22:35.993Z",
+  "completedAt": "2026-07-15T06:22:35.993Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 26,
+      "sourceItemCount": 33,
+      "notes": [
+        "The current restaurant-issued July 11, 2026 dinner/dessert menu contains 27 products; the current Bar Bites page contains six, for 33 total across six categories.",
+        "All 26 frozen rows were reconciled: 21 map to current products, four are stale seasonal dishes, and Tentsuyu Sauce is a shifted-description artifact. Twelve current products were omitted.",
+        "The corrected catalog retains all 33 current products and strips display-only allergen suffixes from product names while preserving them as structured evidence."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Annabelle explicitly defines item-scoped dairy, gluten, nuts, and shellfish codes. Thirty current products have directly supported positive signals; three Bar Bites remain unavailable.",
+        "Sixteen of 21 matched frozen allergen outcomes were wrong. The repair includes the published labels, direct item ingredients, and no negative or cross-contact assurances.",
+        "The restaurant's generic nuts code does not identify species; it is represented as a non-species-specific tree-nut signal and is not promoted into a peanut-negative claim.",
+        "Coconut is not mapped to tree-nut because current FDA guidance no longer lists coconut as a major tree nut."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The Squarespace menu layout stores continuation descriptions in price slots and prices in adjacent empty rows. The frozen parser lost five continuations and promoted Tentsuyu Sauce into a product.",
+        "The reproducible parser joins only adjacent continuation fields, consumes price-only layout rows, parses six Bar Bites from heading/description pairs, and asserts the current 27/6 source shape.",
+        "Oyster mushrooms are protected from shellfish matching, cashew cream from dairy matching, and coconut from obsolete tree-nut classification."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "annabelle-dinner-2026-07-15",
+      "kind": "official_site",
+      "url": "https://annabelledc.com/dinneranddessert",
+      "attemptedAt": "2026-07-15T06:16:00.000Z",
+      "outcome": "HTTP 200. Parsed 27 products from a recent menu explicitly updated July 11, 2026, plus its item-level allergen legend.",
+      "notes": []
+    },
+    {
+      "id": "annabelle-bar-2026-07-15",
+      "kind": "official_site",
+      "url": "https://annabelledc.com/easter-brunch-menu",
+      "attemptedAt": "2026-07-15T06:16:00.000Z",
+      "outcome": "HTTP 200. Current navigation identifies this historical slug as Bar Menu; parsed six Bar Bites products.",
+      "notes": []
+    },
+    {
+      "id": "annabelle-eat-home-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://annabelledc.com/eat-1",
+      "attemptedAt": "2026-07-15T06:16:00.000Z",
+      "outcome": "HTTP 200. Confirmed current restaurant identity, address, hours, and menu navigation.",
+      "notes": []
+    },
+    {
+      "id": "annabelle-targeted-allergen-search-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://annabelledc.com/dinneranddessert",
+      "attemptedAt": "2026-07-15T06:17:00.000Z",
+      "outcome": "Targeted official-domain review found the published item legend but no separate complete allergen matrix or cross-contact disclosure.",
+      "notes": []
+    },
+    {
+      "id": "fda-coconut-guidance-2026-07-15",
+      "kind": "third_party",
+      "url": "https://www.fda.gov/food/food-allergensgluten-free-guidance-documents-regulatory-information/frequently-asked-questions-food-allergen-labeling-guidance-industry",
+      "attemptedAt": "2026-07-15T06:21:06.000Z",
+      "outcome": "HTTP 200. Current FDA guidance confirms coconut is no longer listed as a major tree nut.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "annabelle-layout-boundary-corruption",
+      "severity": "critical",
+      "kind": "parser-structure-corruption",
+      "summary": "The frozen parser promoted Tentsuyu Sauce into a standalone product, attached MF Sliders content to it, and lost continuation text on five matched dinner/dessert rows.",
+      "evidenceIds": [
+        "official-annabelle-dinner-dessert",
+        "official-annabelle-bar-bites"
+      ],
+      "resolved": true,
+      "resolution": "Implemented and tested layout-aware dinner and heading-aware Bar Bites parsers."
+    },
+    {
+      "id": "annabelle-stale-and-omitted-products",
+      "severity": "high",
+      "kind": "menu-reconciliation-mismatch",
+      "summary": "Four frozen seasonal products are stale and twelve current products, including all six Bar Bites, were absent from the app.",
+      "evidenceIds": [
+        "official-annabelle-dinner-dessert",
+        "official-annabelle-bar-bites"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the frozen catalog with all 33 current restaurant-issued products."
+    },
+    {
+      "id": "annabelle-ignored-allergen-legend",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Sixteen matched products had missing or overstated signals because the frozen extraction did not correctly apply Annabelle's item-scoped allergen legend.",
+      "evidenceIds": [
+        "official-annabelle-dinner-dessert"
+      ],
+      "resolved": true,
+      "resolution": "Applied each published code only to its marked item and combined it with direct item ingredient evidence."
+    },
+    {
+      "id": "annabelle-substring-false-positives",
+      "severity": "critical",
+      "kind": "allergen-tokenization-error",
+      "summary": "Prime Angus Teres Major was falsely marked shellfish from oyster mushrooms, and Crispy Broccolini was falsely marked dairy from cashew cream.",
+      "evidenceIds": [
+        "official-annabelle-dinner-dessert"
+      ],
+      "resolved": true,
+      "resolution": "Added phrase-aware protections and focused regression tests for both false-positive patterns."
+    },
+    {
+      "id": "annabelle-obsolete-coconut-classification",
+      "severity": "high",
+      "kind": "allergen-taxonomy-mismatch",
+      "summary": "Snapper was marked tree-nut solely from coconut, which current FDA guidance no longer includes in its major-allergen Tree Nut List.",
+      "evidenceIds": [
+        "official-annabelle-dinner-dessert",
+        "fda-current-tree-nut-guidance"
+      ],
+      "resolved": true,
+      "resolution": "Removed the unsupported tree-nut signal while retaining direct fish and lobster/shellfish signals."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "annabelle-current-menu-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt Annabelle's current catalog and corrected structural, source-semantic, substring, and allergen-taxonomy errors.",
+      "files": [
+        "scripts/pipeline/annabelle-audit-catalog.mjs",
+        "scripts/pipeline/annabelle-audit-catalog.test.mjs",
+        "scripts/pipeline/annabelle-audit-reconciliation.mjs",
+        "scripts/pipeline/annabelle-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/annabelle-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/annabelle-audit-catalog.mjs",
+        "node scripts/pipeline/annabelle-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/annabelle-audit-catalog.test.mjs scripts/pipeline/annabelle-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=annabelle-dc node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: d532572d05074b871c67f49c0181ee351deca0374cf2c2186d31cdcf6c456bc0.",
+    "Dinner/dessert artifact SHA-256: a1f0ed84cb9a77a529f2e507d726c8fc3aa175611824712635b56f1c59264b12.",
+    "Bar Bites artifact SHA-256: 7ef69042d8f3faf78dc8c36a86b67365bf7d43957974fd85f0333c2f281638e2.",
+    "FDA guidance artifact SHA-256: 4b3d3da8032024bfa6a49410ba307f11792c9d1c04f1db89b1b4271cf2b65a1a.",
+    "Frozen live target SHA-256 before repair: f497c72979f4a7c2ab317a697aeb3fd58e3ac510dc2b106a7e7d75764a96db99.",
+    "Live target SHA-256 after repair: 831ed13f67b031c625cc5f8151b34d10910674f16eaf8e80c46a08c26c22e08a.",
+    "Live non-target restaurant projection SHA-256 remained c6f68e5d208522a1b8bcb8111adc536ccede0a5fc24ffe6607f7e97aa3a76a8c.",
+    "A second target-only repair run produced the same target hash and retained exactly one Annabelle repair note.",
+    "The repaired repository contains 113753 live menu items; the top-level historical itemCount field was intentionally not used as evidence."
+  ]
+}

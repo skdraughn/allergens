@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "ala-bethesda-dc-metro",
+  "name": "ala Bethesda",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T21:58:06.282Z",
+  "updatedAt": "2026-07-14T22:02:26.014Z",
+  "completedAt": "2026-07-14T22:02:26.014Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 34,
+      "sourceItemCount": 35,
+      "notes": [
+        "Every frozen row was reconciled against the current restaurant-linked Toast representation reviewed on 2026-07-14.",
+        "Toast identifies ala I Bethesda at 4948 Fairmont Avenue, Bethesda, MD 20814 and publishes 35 unique products across Cold Mezze, Hot Mezze, Large Plates, and Sweets.",
+        "All 34 frozen names remain current; Layali Lubnan is the one additional current product.",
+        "The frozen generic Mediterranean category and adjacency-derived variant groups do not reflect the current source structure.",
+        "Featured items repeat products from their real sections and are not counted as additional formulations."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "The restaurant-linked Toast menu publishes selected fixed descriptions and dietary labels but no complete allergen matrix, complete recipes, or cross-contact policy.",
+        "Twenty-seven current products have positive signals supported by fixed text or unavoidable named formats; eight remain unavailable rather than inferred.",
+        "Fifteen frozen rows underreported current signals; eleven are verified as published and eight remain accurately unavailable.",
+        "Vegan and gluten-free labels are not converted into negative allergen claims, and oat milk is not classified as milk.",
+        "Hummus and falafel remain unavailable because their current descriptions do not publish tahini or a complete recipe."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen Toast parser retained current names but flattened every product into Mediterranean and assigned neighboring product names as variant groups.",
+        "It omitted Layali Lubnan and lost fixed signals from lavash, bulgur, pita crumbs, phyllo, dumplings, pide, baklava, semolina, labneh, mustard, and other explicit text.",
+        "The correction rebuilds the four current Toast sections, deduplicates featured-item repetitions, and recomputes positive signals from fixed descriptions only.",
+        "The current web representation was fully reviewed; direct command-line fetches of both aladc.com and Toast were blocked and are documented without promoting Toast to restaurant-issued authority."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site-attempt",
+      "kind": "official_site",
+      "url": "https://www.aladc.com/",
+      "attemptedAt": "2026-07-14T21:58:06.500Z",
+      "outcome": "Direct fetch failed before an HTTP response; the audit did not use the failed response as menu evidence.",
+      "notes": []
+    },
+    {
+      "id": "toast-menu-review",
+      "kind": "linked_source",
+      "url": "https://order.toasttab.com/online/ala-bethesda",
+      "attemptedAt": "2026-07-14T21:58:20.000Z",
+      "outcome": "Exhaustively reviewed the current web-accessible Toast representation: identity, address, four sections, 35 unique products, descriptions, prices, and dietary labels.",
+      "notes": [
+        "The ledger CLI's direct capture received HTTP 403, so reproducibility uses stable location, section, and item-row anchors from the current representation."
+      ]
+    },
+    {
+      "id": "toast-direct-capture-attempt",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/ala-bethesda",
+      "attemptedAt": "2026-07-14T21:58:07.000Z",
+      "outcome": "Direct command-line capture returned HTTP 403; the same current menu was accessible through the reviewed web representation.",
+      "notes": []
+    },
+    {
+      "id": "allergen-disclosure-review",
+      "kind": "targeted_search",
+      "url": "https://order.toasttab.com/online/ala-bethesda",
+      "attemptedAt": "2026-07-14T21:58:20.000Z",
+      "outcome": "Found fixed ingredient descriptions and dietary labels but no complete allergen matrix, recipes, or cross-contact disclosure.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "flattened-toast-sections-and-variants",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen catalog lost all four current section identities, assigned neighboring products as variant groups, and omitted the current Layali Lubnan dessert.",
+      "evidenceIds": [
+        "toast-menu"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt all 35 current products across the four live Toast sections, restored Layali Lubnan, and removed every corrupted adjacency-based variant group."
+    },
+    {
+      "id": "underreported-fixed-allergens",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Fifteen frozen rows omitted allergens directly supported by current fixed descriptions, including milk, wheat/gluten, fish, tree nut, and mustard signals.",
+      "evidenceIds": [
+        "toast-menu"
+      ],
+      "resolved": true,
+      "resolution": "Recomputed 27 supported positive rows from current fixed text while leaving eight incomplete recipes unavailable and preserving label/authority semantics."
+    },
+    {
+      "id": "generic-toast-parser-context-loss",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "The generic Toast extraction retained names but failed to preserve section and row boundaries and did not fully interpret the current fixed ingredient text.",
+      "evidenceIds": [
+        "toast-menu"
+      ],
+      "resolved": true,
+      "resolution": "Prepared a current menu-manifest correction with exact section counts, current additions, featured-item deduplication, and source-bounded allergen invariants."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-ala-bethesda-current-menu",
+      "status": "verified",
+      "summary": "Prepared and focused-tested a 35-product ala Bethesda catalog across four current Toast sections with 27 supported positive rows, eight unavailable rows, and every frozen structural/allergen defect corrected.",
+      "files": [
+        "scripts/pipeline/ala-bethesda-audit-catalog.mjs",
+        "scripts/pipeline/ala-bethesda-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/ala-bethesda-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/ala-bethesda-audit-catalog.test.mjs scripts/pipeline/ala-bethesda-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/ala-bethesda-repository.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 35 items, four categories, 27 positive rows, eight unavailable rows, and all current-section/source-semantic invariants)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 4a5df7afaa55de5a74bbb4475d394eb357ce9cd1296ad9ec36868ba738ae5e1c.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":34},\"allergens\":{\"mismatch\":15,\"verified\":11,\"accurately_unavailable\":8}}.",
+    "Current corrected catalog counts: 35 products, four categories, 27 positive rows, and eight unavailable rows."
+  ]
+}

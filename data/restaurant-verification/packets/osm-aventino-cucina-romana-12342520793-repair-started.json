@@ -1,0 +1,22 @@
+{
+  "repairs": [
+    {
+      "id": "remove-osm-aventino-duplicate",
+      "status": "implemented",
+      "summary": "Removed the duplicate generated restaurant, reconciled all 19 frozen rows to the canonical 52-formulation Aventino catalog, and preserved this audit trail as the verified duplicate disposition.",
+      "files": [
+        "scripts/pipeline/aventino-audit-reconciliation.mjs",
+        "scripts/pipeline/aventino-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": ["data/restaurant-verification/repairs/aventino-bethesda/corrected-menu.json"],
+      "verificationCommands": [
+        "node --test scripts/pipeline/aventino-audit-reconciliation.test.mjs",
+        "node --test --test-name-pattern=\"Aventino preserves service formulations\" scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": ["Targeted frozen reconciliation and generated duplicate-absence regression passed."],
+  "status": "repair_in_progress"
+}

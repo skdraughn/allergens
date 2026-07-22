@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "albi-dc",
+  "name": "Albi",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T22:30:58.829Z",
+  "updatedAt": "2026-07-14T22:46:39.547Z",
+  "completedAt": "2026-07-14T22:46:39.547Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 29,
+      "sourceItemCount": 41,
+      "notes": [
+        "Every frozen row was reconciled against Albi's current restaurant-issued dinner and sweets PDFs captured and visually reviewed on 2026-07-14.",
+        "The current catalog contains 41 food and nonalcoholic formulations across 11 real sections: 24 dinner formulations and 17 sweets, small-bite, tea, or qahwah formulations.",
+        "Twenty-five frozen rows represent current formulations. GRILLED BONE-IN STRIP and CUCUMBER & GREEN STRAWBERRY are stale; KHUBZ + is a section heading; the malformed second MAHALABIYA row is a parser artifact.",
+        "The current PDFs contain 16 formulations omitted from the frozen output, including SOFRA, SMOKED PEA, LABNE TABAT, SLOW COOKED LONG RIB, five additional Alhalwaa/soft-serve products, five small bites, and two qahwah products.",
+        "The dinner and sweets nightcap pages were reviewed; alcohol-only products remain outside the food/nonalcoholic catalog."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The current official menu PDFs publish selected fixed components but no complete ingredient recipes or item-level allergen matrix.",
+        "Thirty-one current formulations have positive contains signals from fixed published terms or mandatory named food formats; ten have no supported fixed signal.",
+        "Albi's official FAQ says the kitchen cannot guarantee an allergen-free environment and cannot accommodate sesame sensitivities. The specific sesame limitation is represented as global may-contain sesame for all 41 formulations.",
+        "The broader no-guarantee statement is not expanded into invented may-contain claims for every allergen, and the restaurant's allium/nightshade limitations are not converted into app allergen fields.",
+        "All 25 current frozen rows require correction: 24 omitted at least one current fixed or global signal; BBQ’D LAMB KEBABS already had fixed sesame but lacked the distinct global sesame cross-contact scope."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic PDF extraction collapsed 11 source sections into broad Mashawi, Mezze, and Middle Eastern buckets, omitted 16 current formulations, retained two stale dishes, and promoted a section heading and duplicate glyph/price fragment into products.",
+        "It incompletely mapped fixed ingredient text and did not incorporate the official FAQ's sesame limitation.",
+        "The correction rebuilds every current formulation from the visually reviewed PDFs, retains configurable SOFRA and herbal-tea semantics, and separates fixed contains signals from global FAQ cross-contact.",
+        "The shared menu-item classifier falsely rejected three real sweets because rose/arak resembled alcohol-list bleed; its food recognition now considers section context and explicit soft-serve and Middle Eastern pastry names."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-menu-index-review",
+      "kind": "official_site",
+      "url": "https://www.albidc.com/menu",
+      "attemptedAt": "2026-07-14T22:31:17.478Z",
+      "outcome": "Captured the restaurant-issued menu index and confirmed its current Dinner and Sweets PDF links.",
+      "notes": []
+    },
+    {
+      "id": "official-dinner-pdf-review",
+      "kind": "linked_source",
+      "url": "https://albimenu.s3.us-east-1.amazonaws.com/Albi_Menu_Dinner.pdf",
+      "attemptedAt": "2026-07-14T22:31:18.262Z",
+      "outcome": "Captured all eight pages and visually reviewed every nonempty food page, yielding 24 current dinner formulations across six real sections.",
+      "notes": [
+        "The nightcap page was reviewed and alcohol-only products were excluded."
+      ]
+    },
+    {
+      "id": "official-sweets-pdf-review",
+      "kind": "linked_source",
+      "url": "https://albimenu.s3.us-east-1.amazonaws.com/Albi_Sweets.pdf",
+      "attemptedAt": "2026-07-14T22:31:19.259Z",
+      "outcome": "Captured all four pages and visually reviewed every nonempty food/nonalcoholic page, yielding 17 current formulations across five real sections.",
+      "notes": [
+        "The nightcap page was reviewed and alcohol-only products were excluded."
+      ]
+    },
+    {
+      "id": "official-faq-allergen-review",
+      "kind": "official_site",
+      "url": "https://www.albidc.com/faq",
+      "attemptedAt": "2026-07-14T22:31:17.903Z",
+      "outcome": "Captured the current FAQ and verified its no-allergen-free guarantee plus inability to accommodate allium, nightshade, and sesame sensitivities.",
+      "notes": [
+        "Only the specific sesame limitation maps to the app's allergen taxonomy."
+      ]
+    },
+    {
+      "id": "allergen-matrix-review",
+      "kind": "targeted_search",
+      "url": "https://www.albidc.com/menu",
+      "attemptedAt": "2026-07-14T22:40:00.000Z",
+      "outcome": "Found current fixed menu descriptions and the official FAQ warning, but no complete item-level allergen matrix, recipe disclosure, or negative safety claims.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "stale-flattened-pdf-catalog",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen 29-row catalog flattened the current PDF structure, omitted 16 formulations, retained two stale dishes, and promoted two nonproducts.",
+      "evidenceIds": [
+        "official-menu-index",
+        "official-dinner-pdf",
+        "official-sweets-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 41 current formulations across all 11 source sections, restored every omission, removed both stale dishes, and rejected the KHUBZ + heading and duplicate malformed MAHALABIYA row."
+    },
+    {
+      "id": "missing-fixed-and-global-allergen-semantics",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "All 25 current frozen rows had incomplete semantics because fixed menu signals and the official FAQ's sesame limitation were not fully represented.",
+      "evidenceIds": [
+        "official-faq",
+        "official-dinner-pdf",
+        "official-sweets-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Mapped 31 fixed-positive formulations from published terms and mandatory named formats, kept ten formulations fixed-signal-free, applied only global may-contain sesame, and avoided unsupported negative or every-allergen claims."
+    },
+    {
+      "id": "generic-pdf-and-classifier-context-loss",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "Generic extraction lost section, configuration, currentness, fixed-ingredient, and FAQ context; the shared quality classifier also rejected three real sweets as alcohol bleed.",
+      "evidenceIds": [
+        "official-dinner-pdf",
+        "official-sweets-pdf",
+        "official-faq"
+      ],
+      "resolved": true,
+      "resolution": "Prepared a guarded current-menu manifest with exact invariants and narrowly taught the classifier to preserve food rows when section context or explicit soft-serve and Middle Eastern pastry names establish a dish."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-albi-current-menu",
+      "status": "verified",
+      "summary": "Prepared and focused-tested a 41-formulation Albi catalog across 11 sections with 31 fixed-positive rows, ten cross-contact-only rows, all 29 frozen rows reconciled, and the shared classifier false positive corrected.",
+      "files": [
+        "scripts/pipeline/albi-audit-catalog.mjs",
+        "scripts/pipeline/albi-audit-reconciliation.mjs",
+        "scripts/menu-item-quality.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/albi-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/albi-audit-catalog.test.mjs scripts/pipeline/albi-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=tmp/restaurant-verification/albi-isolated.generated.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 41 items, 11 categories, 31 fixed-positive rows, ten cross-contact-only rows, global sesame caution on every item, all sampled restorations, stale/artifact removal, classifier retention, and idempotent Albi guard behavior)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: e2a4f37da5b470e10e5b759c72e6d9143243607ed5089c7ba5fd4b4911056043.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":17,\"variant_match\":3,\"stale_extra\":2,\"artifact\":2,\"normalized_match\":5},\"allergens\":{\"mismatch\":25,\"not_applicable\":4},\"mismatchKinds\":{\"underreported\":24,\"cross_contact_scope_added\":1}}.",
+    "Current corrected catalog counts: 41 formulations, 41 presentations, 11 source sections, 31 fixed-positive rows, and ten cross-contact-only rows."
+  ]
+}

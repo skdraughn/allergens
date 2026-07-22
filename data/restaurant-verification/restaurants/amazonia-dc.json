@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "amazonia-dc",
+  "name": "Amazonia",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T00:50:19.046Z",
+  "updatedAt": "2026-07-15T00:59:07.860Z",
+  "completedAt": "2026-07-15T00:59:07.860Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 20,
+      "sourceItemCount": 34,
+      "notes": [
+        "All 20 frozen rows have exact current formulation matches; 14 additional current formulations were absent from the frozen dinner-only catalog.",
+        "The asserted parser validates 23 dinner CMS rows, eight Anticuchería rows, 46 cold/hot display rows, 12 Sour Hour rows, three desserts, four zero-proof rows, the nonalcoholic sparkling product, and espresso before consolidation."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Twenty-four current formulations have fixed restaurant-issued positive ingredient signals and ten remain accurately unavailable.",
+        "Seven frozen rows were underreported; no frozen positive claim was overreported against the current first-party wording."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "Reviewed Webflow conditional visibility, section-parent association, cross-menu consolidation, dietary legend semantics, alcohol exclusions, and generated persistence.",
+        "Ten focused tests pass; target-only repair preserved every non-Amazonia record hash, and a second target-only run preserved Amazonia’s record hash."
+      ]
+    }
+  },
+  "sourceAttempts": [],
+  "findings": [
+    {
+      "id": "dinner-only-partial-catalog",
+      "severity": "high",
+      "kind": "menu_incomplete",
+      "summary": "The frozen 20-row dinner extraction omitted three current dinner formulations and every separately published Sour Hour food, dessert, coffee, and zero-proof formulation.",
+      "evidenceIds": [
+        "official-amazonia",
+        "official-dinner",
+        "official-sour-hour",
+        "official-dessert",
+        "official-drinks"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 34 current formulations from all four food/nonalcoholic menu surfaces and consolidated 43 source presentations."
+    },
+    {
+      "id": "seven-allergen-underreports",
+      "severity": "high",
+      "kind": "allergen_underreport",
+      "summary": "Seven frozen rows omitted current positive allergen signals: five anticucho options lost the parent soy-sauce marinade and two explicit octopus dishes lost shellfish.",
+      "evidenceIds": [
+        "official-dinner"
+      ],
+      "resolved": true,
+      "resolution": "Associated each Anticuchería child with its restaurant-issued section description and mapped explicitly named octopus to the app shellfish category."
+    },
+    {
+      "id": "dietary-legend-semantics",
+      "severity": "medium",
+      "kind": "source_semantics",
+      "summary": "Amazonia’s c/d/e/g/s letters are absence or accommodation codes, with parenthesized letters indicating modifiability; they are not positive contains fields or a complete allergen matrix.",
+      "evidenceIds": [
+        "official-dinner",
+        "official-amazonia"
+      ],
+      "resolved": true,
+      "resolution": "Preserved codes in source presentations for auditability but derived positive allergens only from fixed ingredient wording; no negative or unsupported cross-contact claim was created."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "amazonia-complete-current-catalog",
+      "status": "verified",
+      "summary": "Replaced Amazonia’s partial dinner-only catalog with the asserted 34-formulation current first-party food and nonalcoholic catalog and corrected seven allergen underreports.",
+      "files": [
+        "scripts/pipeline/amazonia-audit-catalog.mjs",
+        "scripts/pipeline/amazonia-audit-catalog.test.mjs",
+        "scripts/pipeline/amazonia-audit-reconciliation.mjs",
+        "scripts/pipeline/amazonia-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json",
+        "data/restaurant-verification/repairs/amazonia-dc/corrected-menu.json",
+        "data/restaurant-verification/item-checks/amazonia-dc.jsonl"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/amazonia-dc/official-home.html",
+        "data/restaurant-verification/artifacts/amazonia-dc/official-amazonia.html",
+        "data/restaurant-verification/artifacts/amazonia-dc/official-dinner.html",
+        "data/restaurant-verification/artifacts/amazonia-dc/official-sour-hour.html",
+        "data/restaurant-verification/artifacts/amazonia-dc/official-dessert.html",
+        "data/restaurant-verification/artifacts/amazonia-dc/official-drinks.html",
+        "data/restaurant-verification/artifacts/amazonia-dc/official-sitemap.xml"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/amazonia-audit-catalog.test.mjs scripts/pipeline/amazonia-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=amazonia-dc node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "The dinner legend defines c as celiac friendly (no cross contamination), d as dairy free, e as egg free, g as gluten friendly, s as soy free, v as vegetarian, ve as vegan, and parentheses as modifiable for allergies.",
+    "Amazonia’s current overview links Dinner, Drinks, Dessert, and Sour Hour as separate official menu surfaces; alcoholic beverage rows were excluded while published zero-proof beverages and espresso were retained."
+  ]
+}

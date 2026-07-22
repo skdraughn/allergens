@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-aracosia-3584164912",
+  "name": "Aracosia",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T08:38:59.168Z",
+  "updatedAt": "2026-07-15T08:55:18.069Z",
+  "completedAt": "2026-07-15T08:55:18.069Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 139,
+      "sourceItemCount": 107,
+      "notes": [
+        "Aracosia currently publishes four owner-issued Wix menus: Lunch, Dinner, Marinated Meats & Vegetables, and Chutneys. Their 194 current section presentations contain 124 unique displayed names and reconcile to 107 canonical products after consolidating identical lunch/dinner copies.",
+        "All 139 frozen rows were reconciled: 98 exact current matches, 18 meal-period or renamed variants, and 23 products whose item or containing menu is now hidden. Nine current products were absent from the frozen catalog: Firni and eight ready-to-grill meat or fish products.",
+        "The corrected catalog uses the 12 current owner section families instead of guessing categories from dish words. This fixes examples such as Afghania Chicken being incorrectly classified as Vegetarian Entrees and side dishes being mixed into entree categories."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Aracosia publishes item names, descriptions, and dietary badges but no complete allergen matrix, item-level negative assurance, may-contain disclosure, or restaurant cross-contact policy.",
+        "Fifty-seven current products have positive fixed signals supported by allergen-bearing ingredients explicitly named in Aracosia's owner-issued item text. Fifty remain accurately unavailable for fixed allergen evidence; absence of a named ingredient is never treated as an allergen-free claim.",
+        "Twenty-seven products have separately labeled Ingredient Intelligence for common dough, bread, brioche, cake, or baklava risks. These signals are not promoted to restaurant-issued evidence. The repair removes false mustard inference from mustard greens and unsupported sesame inference from an unspecified burger bun.",
+        "Thirty-three matched frozen allergen outcomes were wrong: seven fixed-signal differences, 32 Ingredient Intelligence differences, and five source-provenance differences, with overlap among those groups."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The reviewed extractor follows the current owner menu-to-section-to-item relationships across all three Wix APIs, requires the exact four visible-menu contract, rejects hidden menus and items, and fails closed on an unreviewed section.",
+        "The frozen pipeline fetched item rows without preserving their menu and section relationships. It retained hidden kids and event products, dropped nine published products, collapsed official categories through keyword guesses, and mixed format inference into official ingredient provenance.",
+        "Focused tests cover exact source shape and counts, all 139 frozen dispositions, the 23-item stale set, nine current omissions, meal-period consolidation, explicit-versus-inferred allergen semantics, current published repair invariants, target-only isolation, and idempotency."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "aracosia-owner-home-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.aracosiamclean.com/",
+      "attemptedAt": "2026-07-15T08:39:21.538Z",
+      "outcome": "HTTP 200. Captured the owner home page and confirmed Aracosia at 1381 Beverly Road in McLean, Virginia.",
+      "notes": []
+    },
+    {
+      "id": "aracosia-owner-menu-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.aracosiamclean.com/menu-1?location=Beverly+Road",
+      "attemptedAt": "2026-07-15T08:39:21.866Z",
+      "outcome": "HTTP 200. Captured the owner menu surface, current lunch and dinner hours, sections, item descriptions, prices, and gluten-free/vegetarian/vegan badges.",
+      "notes": [
+        "Dietary badges were reviewed as restaurant-issued dietary claims, not as a complete allergen matrix."
+      ]
+    },
+    {
+      "id": "aracosia-wix-access-and-catalog-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://www.aracosiamclean.com/_api/v1/access-tokens",
+      "attemptedAt": "2026-07-15T08:52:19.828Z",
+      "outcome": "HTTP 200. Used the public site-scoped Wix restaurant-menu token to capture all eight menu records, 40 section records, and 334 item records from Aracosia's same-origin owner APIs without persisting the ephemeral token.",
+      "notes": [
+        "Four menus are visible and four are hidden. Current visible relationships produce 194 menu/section presentations, 124 unique displayed names, and 107 reviewed canonical products."
+      ]
+    },
+    {
+      "id": "aracosia-targeted-allergen-review-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://www.aracosiamclean.com/menu-1?location=Beverly+Road",
+      "attemptedAt": "2026-07-15T08:53:00.000Z",
+      "outcome": "Reviewed the owner home and all current menu surfaces, searched the owner menu content for allergen and cross-contact disclosures, and reviewed every current item description and dietary badge. Found no complete allergen matrix, may-contain disclosure, item-level negative assurance, or restaurant cross-contact policy.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "aracosia-hidden-and-omitted-catalog",
+      "severity": "critical",
+      "kind": "menu-reconciliation-mismatch",
+      "summary": "The frozen catalog retained 23 products from hidden menus or hidden item records while omitting nine current public products.",
+      "evidenceIds": [
+        "official-aracosia-wix-menus",
+        "official-aracosia-wix-sections",
+        "official-aracosia-wix-items"
+      ],
+      "resolved": true,
+      "resolution": "Published the 107-product catalog reachable through current visible menu, section, and item relationships; removed the 23 hidden products and restored Firni plus eight ready-to-grill products."
+    },
+    {
+      "id": "aracosia-section-relationship-loss",
+      "severity": "critical",
+      "kind": "parser-structure-corruption",
+      "summary": "The frozen extraction discarded Wix menu and section relationships, causing 99 category or description mismatches and obvious category errors such as meat qormas labeled Vegetarian Entrees.",
+      "evidenceIds": [
+        "official-aracosia-menu-page",
+        "official-aracosia-wix-menus",
+        "official-aracosia-wix-sections",
+        "official-aracosia-wix-items"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt every current product from its official menu-section-item graph and retained the 12 owner section families."
+    },
+    {
+      "id": "aracosia-allergen-and-provenance-errors",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Thirty-three matched frozen rows had fixed-signal, Ingredient Intelligence, or provenance mismatches; format inferences were inconsistently omitted or promoted to official ingredients.",
+      "evidenceIds": [
+        "official-aracosia-menu-page",
+        "official-aracosia-wix-items"
+      ],
+      "resolved": true,
+      "resolution": "Limited official fixed signals to explicit owner-named ingredients on 57 products, kept 27 format risks separately labeled as Ingredient Intelligence, and left the remaining 50 fixed-allergen outcomes unavailable."
+    },
+    {
+      "id": "aracosia-false-mustard-and-sesame-inference",
+      "severity": "critical",
+      "kind": "ingredient-intelligence-false-positive",
+      "summary": "The frozen data treated mustard greens as mustard-allergen evidence and asserted sesame for an unspecified brioche burger bun.",
+      "evidenceIds": [
+        "official-aracosia-wix-items"
+      ],
+      "resolved": true,
+      "resolution": "Removed mustard from Sabzi presentations and sesame from Bistro Burger while retaining only separately labeled, supported format risks."
+    },
+    {
+      "id": "aracosia-meal-period-duplicates",
+      "severity": "high",
+      "kind": "menu-identity-duplication",
+      "summary": "Lunch and dinner copies with identical composition were published as separate products because the old extraction did not reconcile meal-period aliases.",
+      "evidenceIds": [
+        "official-aracosia-wix-menus",
+        "official-aracosia-wix-sections",
+        "official-aracosia-wix-items"
+      ],
+      "resolved": true,
+      "resolution": "Consolidated 124 current displayed names into 107 canonical products while retaining all source item IDs, menu names, section names, and URLs on the reviewed snapshot."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "aracosia-current-menu-and-allergen-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt Aracosia from its current owner Wix menu graph and corrected hidden/stale products, omissions, duplicate meal-period presentations, categories, explicit allergen signals, Ingredient Intelligence boundaries, and source provenance.",
+      "files": [
+        "scripts/pipeline/aracosia-audit-catalog.mjs",
+        "scripts/pipeline/aracosia-audit-catalog.test.mjs",
+        "scripts/pipeline/aracosia-audit-reconciliation.mjs",
+        "scripts/pipeline/aracosia-audit-reconciliation.test.mjs",
+        "scripts/pipeline/aracosia-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/osm-aracosia-3584164912/official-aracosia-home.html",
+        "data/restaurant-verification/artifacts/osm-aracosia-3584164912/official-aracosia-menu-page.html",
+        "data/restaurant-verification/artifacts/osm-aracosia-3584164912/official-aracosia-wix-menus.json",
+        "data/restaurant-verification/artifacts/osm-aracosia-3584164912/official-aracosia-wix-sections.json",
+        "data/restaurant-verification/artifacts/osm-aracosia-3584164912/official-aracosia-wix-items.json",
+        "data/restaurant-verification/repairs/osm-aracosia-3584164912/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/aracosia-audit-catalog.mjs",
+        "node scripts/pipeline/aracosia-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/aracosia-audit-catalog.test.mjs scripts/pipeline/aracosia-audit-reconciliation.test.mjs scripts/pipeline/aracosia-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=osm-aracosia-3584164912 node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 5e37cf4b2e2a42141b028a48410cf4cad015c241898765181cca3ba5243c944f.",
+    "Official home/menu HTML SHA-256: 925c909700f23e91b5a35885ed11a858e785bde6edd4ca5318980f87c13554f0 / 807f3564b7beab9db05aa96efc12114dff04453ccd98469c2106dc3b8731488f.",
+    "Official Wix menus/sections/items SHA-256: b2479a5b10ef75ffad3a9519d4ed5a0c9db33b84b5912bd2d6b652a957e87318 / 93406f8fab844e816aab731b7dc9acbe130697bb1187b293ab9b9a3a4d52e288 / 4c5c56ddc37fde33a2b30ffefd4ba9db7a40adc22465bf23f794aedbd7ea7d30.",
+    "Frozen live target SHA-256 before repair: 4f8e48739d0b53946eec04885329f480aefd9a7102ca93dcd98f5ee084fa8f3f.",
+    "Live target SHA-256 after repair: e066d906fea6f1a90f567a094c27977bb9ff5d961f355a262d0b7099c30d7856.",
+    "Live non-target restaurant projection SHA-256 remained 6c986beefb70a599ec465cd6757963e90819e00f46d3d2d6e46b00ce7e924b5e.",
+    "Two consecutive target-only repair runs produced the same target hash and exactly one Aracosia verified repair note.",
+    "The repaired repository contains 113690 live menu items; the frozen ledger remains anchored to its original 112873-item hashed baseline."
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "ninety-second-pizza-georgetown-dc",
+  "name": "90 Second Pizza Georgetown",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T18:28:22.593Z",
+  "updatedAt": "2026-07-14T18:40:21.804Z",
+  "completedAt": "2026-07-14T18:40:21.804Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 23,
+      "sourceItemCount": 35,
+      "notes": [
+        "Every frozen row was reconciled against the current Georgetown Toast menu linked from the restaurant's official site.",
+        "All 23 frozen rows remain current: 20 are exact name matches and three are current renamed variants. The current menu adds 12 rows that were absent from the frozen catalog.",
+        "The corrected represented surface contains 35 current items in five real sections and places the nine beverage rows last."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The restaurant-issued FAQ says it does not make gluten-free pizza, uses one brick oven, and cannot guarantee a gluten-free product; this is represented as pizza cross-contact guidance rather than a fixed wheat claim.",
+        "The FAQ says peanuts and peanut oil are not used, but some supplier plants also process nut products and the restaurant cannot guarantee all products are nut-free; the supplier warning is represented as cross-contact, not as a fixed ingredient.",
+        "The corrected current catalog has 14 rows with fixed menu-text allergen signals, 12 additional rows with only the official global cross-contact caution, and nine beverage rows accurately left unavailable.",
+        "Manufacturer pages for the two named Bindi desserts were retained as ingredient-intelligence context only and were not promoted to restaurant-issued allergen evidence."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen output collapsed all 23 rows into one Pizza category, omitted 12 current rows, and did not preserve the restaurant's global cross-contact guidance.",
+        "All 23 frozen rows had allergen mismatches after current FAQ cautions were applied; Campania also omitted the fish signal plainly supported by anchovies in the current menu description.",
+        "The current deterministic snapshot keeps fixed ingredient signals separate from global cross-contact guidance and leaves undisclosed beverage allergens unavailable."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "direct-toast-artifact-fetch",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/90-second-pizza-1077-wisconsin-avenue-nw",
+      "attemptedAt": "2026-07-14T18:45:00.000Z",
+      "outcome": "Direct browser rendering succeeded, but the reproducible ledger artifact fetch returned Cloudflare HTTP 403.",
+      "notes": [
+        "The restaurant-linked vendor page was reviewed directly in-browser.",
+        "A third-party text rendering of the same URL was retained separately and remains classified third_party."
+      ]
+    },
+    {
+      "id": "official-georgetown-path",
+      "kind": "official_site",
+      "url": "https://www.90secondpizza.com/georgetown",
+      "attemptedAt": "2026-07-14T18:29:55.000Z",
+      "outcome": "The guessed location-specific path returned HTTP 404; the official home page itself identifies the Georgetown location and links its ordering menu.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "incomplete-flat-current-menu",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen 23-row catalog used one generic Pizza category and omitted 12 current Georgetown items, including a vegan configurable item, two desserts, and nine beverages.",
+      "evidenceIds": [
+        "official-home-menu",
+        "linked-georgetown-toast-browser",
+        "third-party-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Replaced it with the 35-item current Georgetown catalog in Pizza, Vegan Pizza, Desserts, Miscellaneous, and Drinks, with beverages ordered last."
+    },
+    {
+      "id": "omitted-global-cross-contact-guidance",
+      "severity": "high",
+      "kind": "allergen_accuracy",
+      "summary": "The frozen rows omitted the restaurant-issued FAQ's single-oven gluten caution and supplier nut-processing caution from every applicable item.",
+      "evidenceIds": [
+        "official-faq",
+        "linked-georgetown-toast-browser"
+      ],
+      "resolved": true,
+      "resolution": "Represented the FAQ statements as may-contain cross-contact signals, separate from fixed menu ingredients and without inventing negative safety claims."
+    },
+    {
+      "id": "campania-fish-omission",
+      "severity": "high",
+      "kind": "allergen_accuracy",
+      "summary": "Campania was labeled only for milk even though the current restaurant-linked description explicitly lists anchovies.",
+      "evidenceIds": [
+        "linked-georgetown-toast-browser",
+        "third-party-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Added fish to Campania from the current anchovy description while retaining milk from mozzarella and parmesan."
+    },
+    {
+      "id": "manufacturer-context-not-restaurant-authority",
+      "severity": "medium",
+      "kind": "source_semantics",
+      "summary": "Current manufacturer pages corroborate the identity and composition of two named Bindi desserts but are not restaurant-issued allergen disclosures.",
+      "evidenceIds": [
+        "manufacturer-bindi-tiramisu",
+        "manufacturer-bindi-cannoli"
+      ],
+      "resolved": true,
+      "resolution": "Retained both as ingredient_intelligence context and did not promote their information into restaurant-official allergen arrays."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-90-second-pizza-current-georgetown-menu-and-faq",
+      "status": "verified",
+      "summary": "Prepared and targeted-tested a 35-item current Georgetown snapshot with real sections, current names, conservative fixed ingredient signals, official FAQ cross-contact semantics, and nine accurately unavailable beverage rows.",
+      "files": [
+        "scripts/pipeline/90-second-pizza-audit-catalog.mjs",
+        "scripts/pipeline/90-second-pizza-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/restaurants.ts",
+        "src/components/menu-item-details-modal.tsx"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/ninety-second-pizza-georgetown-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/90-second-pizza-audit-catalog.test.mjs scripts/pipeline/90-second-pizza-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/restaurant-verification-90-second-input.json node scripts/repair-final-generated-regressions.mjs (targeted copy; verified 35 unique items, five source sections, 14 fixed-signal rows, 12 global-cross-contact-only rows, nine unavailable rows, configurable Half and Half preservation, FAQ evidence attribution, Campania fish, and beverages last)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 1d312b70287e72ae02bf2b53b12fc516bc77fbe83779890caa3e19dc5db8aadb.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":20,\"variant_match\":3},\"allergens\":{\"mismatch\":23}}.",
+    "Current corrected catalog counts: 35 items, 14 fixed menu-text rows, 12 global-cross-contact-only rows, and nine accurately unavailable rows.",
+    "Focused catalog parsing, complete frozen-row reconciliation, targeted repair-copy, unique-id, category-order, source-authority, cross-contact, configurable-item, and evidence-attribution checks passed."
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 50,
+      "sourceItemCount": 50,
+      "notes": [
+        "Post-repair recheck pins 50 unique current presentations from three owner-published menu grids, with the one discount promotion excluded and beverages last.",
+        "All 48 frozen rows remain reconciled exactly once: 42 exact, one mixed-service variant, and five artifacts; seven current presentations were restored."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Thirty-one rows preserve narrow explicit owner-menu positives and nineteen remain unavailable; all may-contain arrays are empty because no cross-contact disclosure was published.",
+        "Nineteen frozen allergen/source outcomes were corrected without promoting bread, wrapper, sauce, pasta, batter, or other formulation knowledge into official claims."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The dedicated parser scopes descriptions to each menu-item holder, preserves numeric source IDs and service contexts, rejects promotions, and never attaches section-level add-protein text to an item.",
+        "The inactive linked-vendor extra catalog remains corroboration only and is not treated as an owner-published active menu."
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "non-product-and-description-artifacts",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "Five frozen rows are promotional/employment content or a nested dessert description rather than products.",
+      "evidenceIds": ["official-home-current", "official-food-menu-current"],
+      "resolved": true,
+      "resolution": "Removed all five frozen artifacts and restored Bourbon Bread Pudding with its description nested correctly."
+    },
+    {
+      "id": "current-presentation-boundary-drift",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The frozen output omitted seven current presentations, collapsed repeated cross-menu offerings, and mixed the two Chicken & Waffles service contexts.",
+      "evidenceIds": ["official-food-menu-current", "linked-spotapps-current"],
+      "resolved": true,
+      "resolution": "Pinned all 50 current owner-published presentations with surface-aware IDs and distinct Lunch & Dinner, Brunch, and Happy Hour contexts."
+    },
+    {
+      "id": "description-association-corruption",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "Seven real frozen rows contain truncated, missing, cross-associated, or section-level text instead of their current item descriptions.",
+      "evidenceIds": ["official-food-menu-current"],
+      "resolved": true,
+      "resolution": "Reparsed item-scoped descriptions and guarded against section-level text association."
+    },
+    {
+      "id": "unsupported-formulation-allergen-promotion",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "Nineteen matched frozen rows contain direct allergen/source outcomes inconsistent with the conservative explicit-positive semantics supported by the owner menu.",
+      "evidenceIds": ["official-food-menu-current"],
+      "resolved": true,
+      "resolution": "Corrected all nineteen rows, retaining only explicit owner-menu positives and leaving all other direct and cross-contact status unavailable."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "rebuild-awakening-owner-menu",
+      "status": "verified",
+      "summary": "Verified the 50-presentation current menu boundary, item descriptions, service scopes, source authority, 31/19 evidence split, and empty cross-contact semantics.",
+      "files": [
+        "scripts/pipeline/awakening-audit-catalog.mjs",
+        "scripts/pipeline/awakening-audit-catalog.test.mjs",
+        "scripts/pipeline/awakening-audit-reconciliation.mjs",
+        "scripts/pipeline/awakening-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/replacement-awakening-bar-and-grill-washington-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/awakening-audit-catalog.test.mjs scripts/pipeline/awakening-audit-reconciliation.test.mjs",
+        "node --test --test-name-pattern=\"Awakening preserves current service presentations\" scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Generated snapshot counts: 50 total; 31 official ingredient-positive; 19 unavailable; 0 may-contain."
+  ],
+  "status": "recheck_required"
+}

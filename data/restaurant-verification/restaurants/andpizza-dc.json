@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "andpizza-dc",
+  "name": "&pizza",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T16:25:28.902Z",
+  "updatedAt": "2026-07-14T16:46:44.622Z",
+  "completedAt": "2026-07-14T16:46:44.622Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 50,
+      "sourceItemCount": 62,
+      "notes": [
+        "The frozen 50-row baseline was reconciled against all 62 current public menu cards.",
+        "Current menu categories are Pies, Extras, Salads, Desserts, Beverages, Fountain Sodas, and Side Sauces & Drizzles.",
+        "Prices, images, and nutrition were intentionally outside this identity/structure audit except where useful for matching."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The restaurant-issued guide contains 107 matrix rows across 12 sections; only rows matching canonical current menu cards are published.",
+        "The repaired candidate has 56 items with row-level official guide evidence and six explicitly unavailable items; no global allergen warning is smeared onto individual items."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "R/check markers are interpreted as direct allergen presence; blank cells are retained as official negative rows.",
+        "The guide-wide shared-preparation warning remains source context and is not converted into item-level may-contain claims.",
+        "The current public menu is canonical; ingredient component tables are used only to enrich exact, explicitly normalized menu equivalents."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-menu-fetch",
+      "kind": "official_site",
+      "url": "https://andpizza.com/menu-listing/",
+      "attemptedAt": "2026-07-14T16:27:26.018Z",
+      "outcome": "Fetched 200; 62 canonical current menu cards after brand-specific extraction.",
+      "notes": []
+    },
+    {
+      "id": "official-allergen-fetch",
+      "kind": "linked_source",
+      "url": "https://andpizza.com/allergen-guide/",
+      "attemptedAt": "2026-07-14T16:27:26.409Z",
+      "outcome": "Fetched 200; 107 rows across 12 official matrix sections.",
+      "notes": []
+    },
+    {
+      "id": "official-nutrition-fetch",
+      "kind": "official_site",
+      "url": "https://andpizza.com/nutritional-information/",
+      "attemptedAt": "2026-07-14T16:27:26.800Z",
+      "outcome": "Fetched 200 and preserved as corroborating restaurant-issued evidence; nutrition values were outside audit scope.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "andpizza-component-catalog-contamination",
+      "severity": "high",
+      "kind": "catalog_contamination",
+      "summary": "Ingredient component rows from the guide were published as standalone menu items.",
+      "evidenceIds": [
+        "official-menu",
+        "official-allergen-guide"
+      ],
+      "resolved": true,
+      "resolution": "The current public menu is now canonical; component rows only enrich explicitly mapped current menu equivalents."
+    },
+    {
+      "id": "andpizza-incomplete-menu-catalog",
+      "severity": "high",
+      "kind": "menu_omission",
+      "summary": "The baseline contained 50 allergen-positive guide rows instead of the complete current 62-item menu.",
+      "evidenceIds": [
+        "official-menu",
+        "official-allergen-guide"
+      ],
+      "resolved": true,
+      "resolution": "The dedicated menu-card extractor retains all current menu rows, including nonalcoholic beverages and @ME DON’T SUB ME."
+    },
+    {
+      "id": "andpizza-negative-rows-dropped",
+      "severity": "high",
+      "kind": "allergen_extraction",
+      "summary": "Official guide rows with no marked allergen were discarded.",
+      "evidenceIds": [
+        "official-allergen-guide"
+      ],
+      "resolved": true,
+      "resolution": "Blank matrix rows are retained as row-level official negative evidence when they match a current menu item."
+    },
+    {
+      "id": "andpizza-category-collapse",
+      "severity": "medium",
+      "kind": "menu_structure",
+      "summary": "Every baseline row was collapsed into the generic Pizza category.",
+      "evidenceIds": [
+        "official-menu",
+        "official-allergen-guide"
+      ],
+      "resolved": true,
+      "resolution": "Both menu and guide parsers now resolve the nearest real Divi section heading."
+    },
+    {
+      "id": "andpizza-vegan-mozzarella-drift",
+      "severity": "medium",
+      "kind": "allergen_drift",
+      "summary": "The frozen baseline marked Vegan Mozzarella as tree nut; the current guide marks soy.",
+      "evidenceIds": [
+        "official-allergen-guide"
+      ],
+      "resolved": true,
+      "resolution": "Vegan Mozzarella is not a current standalone menu item and is removed; the current soy marker remains available only as component evidence."
+    },
+    {
+      "id": "andpizza-generic-html-noise",
+      "severity": "medium",
+      "kind": "parser_noise",
+      "summary": "Generic HTML fallbacks could emit developer credits, headings, and narrative cards as food rows.",
+      "evidenceIds": [
+        "official-menu",
+        "official-allergen-guide"
+      ],
+      "resolved": true,
+      "resolution": "The two exact &pizza document profiles are exclusive, preventing generic fallback contamination."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "andpizza-exclusive-canonical-parsers",
+      "status": "verified",
+      "summary": "Added exclusive &pizza menu/allergen profiles, canonical menu reconciliation, safe aliasing, negative-row retention, beverage opt-in, and punctuation/diacritic-aware matching.",
+      "files": [
+        "scripts/pipeline/legacy-scrape-engine.mjs",
+        "scripts/restaurant-sources.mjs",
+        "scripts/pipeline/andpizza-extractor.test.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/andpizza-dc/official-menu.html",
+        "data/restaurant-verification/artifacts/andpizza-dc/official-allergen-guide.html",
+        "data/restaurant-verification/repairs/andpizza-dc/restaurants-final-2.generated.json",
+        "data/restaurant-verification/repairs/andpizza-dc/run-final-2.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/andpizza-extractor.test.mjs scripts/restaurant-verification-ledger.test.mjs",
+        "node scripts/scrape-restaurants.mjs --chain=andpizza-dc --output=data/restaurant-verification/repairs/andpizza-dc/restaurants-final-2.generated.json --runOutput=data/restaurant-verification/repairs/andpizza-dc/run-final-2.json"
+      ]
+    }
+  ],
+  "notes": [
+    "Prepared and verified in an isolated audit output; the published generated repository was not overwritten.",
+    "Official allergen evidence is tiered as restaurant-issued. No third-party source was promoted to official.",
+    "Focused parser tests and the isolated 62-item candidate both passed after final reconciliation."
+  ]
+}

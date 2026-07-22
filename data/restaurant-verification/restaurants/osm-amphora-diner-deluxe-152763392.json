@@ -1,0 +1,213 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-amphora-diner-deluxe-152763392",
+  "name": "Amphora Diner Deluxe",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T03:03:22.140Z",
+  "updatedAt": "2026-07-15T04:43:53.175Z",
+  "completedAt": "2026-07-15T04:43:53.175Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 100,
+      "sourceItemCount": 300,
+      "notes": [
+        "Every one of the 100 frozen rows was reconciled against the current restaurant-issued 33-page menu and the exact-address restaurant-linked FastOrder catalog for 1151 Elden Street in Herndon.",
+        "Sixteen frozen rows were headings, modifier instructions, description fragments, a photo caption, a shared service rule, or a restaurant promo card rather than menu formulations.",
+        "The other 84 frozen rows correspond to 83 current formulations; one collision was a duplicate Lavazza presentation. The frozen record omitted 217 current formulations.",
+        "The corrected catalog contains 300 current formulations represented by 320 retained source presentations across 28 categories. Shakes and Sundaes, Breakfast Beverages, and Beverages are placed after food and bakery categories.",
+        "The restaurant-linked FastOrder catalog contributed 296 live presentations, including six sold-out and 174 configurable presentations. Twenty-four real formulations appearing only in the current restaurant PDF were retained as current even though they are not orderable online."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The current restaurant PDF is a full menu, not an allergen matrix. Positive allergens are labeled official-ingredients only when the restaurant-issued formulation text directly names the ingredient or allergen.",
+        "The corrected catalog has 174 official-ingredients rows and 126 officially unavailable rows. It makes no item-level may-contain, shared-equipment, or negative safety claims.",
+        "The repeated raw-or-undercooked-food advisory was not promoted to item allergens or cross-contact. Optional configurator choices were excluded from fixed-formulation allergens.",
+        "Among the 84 real frozen formulations, 45 frozen source/allergen records were wrong and 39 matched the reviewed current semantics; the 16 artifact rows were not applicable."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen extraction over-read PDF headings, option labels, adjacent descriptions, photo text, and the repeated raw-food advisory while omitting most of the live operational catalog.",
+        "The reviewed parser preserves all 296 FastOrder presentations, vendor IDs, option groups, configurability, stock state, prices, descriptions, and categories before consolidating exact duplicate presentations and three naming aliases by formulation.",
+        "Current restaurant-PDF evidence is merged by formulation, and historical 2023 and 2021 PDFs are retained only as source history. Linked-vendor descriptions remain restaurant-linked-vendor evidence and are never promoted to restaurant-issued allergen claims.",
+        "Twenty focused catalog and reconciliation tests pass. Two identical target-only repair runs produced target SHA-256 7a955b56b5cbadf45436c195c0d0acd045fa3b12a57b224e22d361a8e6761f68 and preserved all 1,494 non-target records at SHA-256 da9676bce67985ea47fa0a4485d524521498a364aefbd586ed0485eb95ded243."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-current-site-review",
+      "kind": "official_site",
+      "url": "https://amphoragroup.com/amphoras-diner-deluxe/",
+      "attemptedAt": "2026-07-15T03:04:39.703Z",
+      "outcome": "Captured the current Amphora Diner Deluxe page, confirmed the Herndon identity and address, and followed its current menu and ordering links.",
+      "notes": []
+    },
+    {
+      "id": "official-current-pdf-review",
+      "kind": "official_site",
+      "url": "https://amphoragroup.com/wp-content/uploads/2025/11/DINER-DX-MENU-2025.pdf",
+      "attemptedAt": "2026-07-15T03:04:40.981Z",
+      "outcome": "Captured the 1,949,427-byte current restaurant PDF, extracted all 33 pages, and visually reviewed every page for menu boundaries, formulation text, and source semantics.",
+      "notes": [
+        "The PDF is a current menu and contains no complete allergen matrix or item-level cross-contact disclosure."
+      ]
+    },
+    {
+      "id": "linked-fastorder-review",
+      "kind": "ordering_vendor",
+      "url": "https://www.fastordernow.com/order/menu/amphoradeluxe",
+      "attemptedAt": "2026-07-15T03:05:11.034Z",
+      "outcome": "Captured the exact-address restaurant-linked catalog and parsed 27 source categories, 296 live presentations, six sold-out presentations, and every available option group and vendor ID.",
+      "notes": [
+        "FastOrder is current restaurant-linked-vendor menu evidence, not restaurant-issued allergen authority."
+      ]
+    },
+    {
+      "id": "historical-pdf-review",
+      "kind": "official_site",
+      "url": "https://amphoragroup.com/wp-content/uploads/2023/01/FULLMENU-12-23.pdf",
+      "attemptedAt": "2026-07-15T03:05:09.361Z",
+      "outcome": "Captured the hidden 2023 PDF and the linked 2021 takeout PDF, compared them with the current surfaces, and retained them only as source history.",
+      "notes": []
+    },
+    {
+      "id": "allergen-source-search",
+      "kind": "targeted_search",
+      "url": "https://amphoragroup.com/amphoras-diner-deluxe/",
+      "attemptedAt": "2026-07-15T03:06:00.000Z",
+      "outcome": "Reviewed the current official site, current full-menu PDF, exact-address linked ordering catalog, historical restaurant PDFs, and targeted results; no current restaurant-issued allergen matrix or item-level cross-contact disclosure was found.",
+      "notes": [
+        "Only direct positive restaurant-issued formulation terms were retained as official ingredient evidence."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "amphora-frozen-menu-severely-incomplete",
+      "severity": "critical",
+      "kind": "menu_incomplete",
+      "summary": "The frozen 100-row record omitted 217 current formulations and did not represent the live exact-address ordering catalog.",
+      "evidenceIds": [
+        "official-current-page",
+        "official-current-menu-pdf",
+        "fast-order-current-menu"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 300 current formulations from all 320 retained presentations and preserved both orderable and current restaurant-PDF-only formulations."
+    },
+    {
+      "id": "amphora-frozen-parser-artifacts",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "Sixteen frozen rows were section headings, option instructions, description fragments, a photo caption, a shared rule, or a promotional card.",
+      "evidenceIds": [
+        "official-current-page",
+        "official-current-menu-pdf",
+        "fast-order-current-menu"
+      ],
+      "resolved": true,
+      "resolution": "Quarantined all 16 non-formulation rows and added focused tests for the exact artifact classes."
+    },
+    {
+      "id": "amphora-frozen-allergen-smear",
+      "severity": "critical",
+      "kind": "allergen_source_misclassification",
+      "summary": "The frozen PDF path promoted adjacent text and the repeated raw-food advisory into item allergens; 45 of 84 real frozen formulations had wrong source or allergen semantics.",
+      "evidenceIds": [
+        "official-current-menu-pdf",
+        "fast-order-current-menu"
+      ],
+      "resolved": true,
+      "resolution": "Limited official claims to direct positive restaurant-issued formulation terms, removed invented may-contain claims, and left unsupported rows officially unavailable."
+    },
+    {
+      "id": "amphora-option-and-formulation-boundaries",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "The frozen path confused configurable toppings, substitutions, and shared service rules with fixed formulations.",
+      "evidenceIds": [
+        "official-current-menu-pdf",
+        "fast-order-current-menu"
+      ],
+      "resolved": true,
+      "resolution": "Preserved configurator option groups as option provenance while excluding optional choices from fixed-formulation ingredients and allergens."
+    },
+    {
+      "id": "amphora-duplicate-presentations",
+      "severity": "medium",
+      "kind": "menu_duplicates",
+      "summary": "The live catalog contains 17 exact normalized duplicate groups plus three clear naming aliases across menu surfaces.",
+      "evidenceIds": [
+        "official-current-menu-pdf",
+        "fast-order-current-menu"
+      ],
+      "resolved": true,
+      "resolution": "Consolidated presentations by canonical formulation without discarding prices, categories, vendor IDs, stock state, or source provenance."
+    },
+    {
+      "id": "amphora-historical-menu-boundary",
+      "severity": "medium",
+      "kind": "source_freshness",
+      "summary": "Older 2023 and 2021 restaurant PDFs remain accessible and could be mistaken for the current operating menu.",
+      "evidenceIds": [
+        "official-current-menu-pdf",
+        "official-hidden-2023-menu-pdf",
+        "official-legacy-2021-menu-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Marked both older PDFs as history and used the current 2025 PDF plus current exact-address ordering catalog for the repaired record."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "amphora-current-catalog-and-source-semantics-repair",
+      "status": "verified",
+      "summary": "Removed 16 artifacts, restored 217 omitted formulations, consolidated 320 presentations into 300 current formulations, preserved configurable option provenance, corrected 45 frozen source/allergen mismatches, and enforced restaurant-issued versus linked-vendor authority boundaries.",
+      "files": [
+        "scripts/pipeline/amphora-diner-deluxe-audit-catalog.mjs",
+        "scripts/pipeline/amphora-diner-deluxe-audit-catalog.test.mjs",
+        "scripts/pipeline/amphora-diner-deluxe-audit-reconciliation.mjs",
+        "scripts/pipeline/amphora-diner-deluxe-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json",
+        "data/restaurant-verification/repairs/osm-amphora-diner-deluxe-152763392/corrected-menu.json",
+        "data/restaurant-verification/item-checks/osm-amphora-diner-deluxe-152763392.jsonl"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/osm-amphora-diner-deluxe-152763392/official-current-page.html",
+        "data/restaurant-verification/artifacts/osm-amphora-diner-deluxe-152763392/official-current-menu-pdf.pdf",
+        "data/restaurant-verification/artifacts/osm-amphora-diner-deluxe-152763392/fast-order-current-menu.html",
+        "data/restaurant-verification/artifacts/osm-amphora-diner-deluxe-152763392/official-hidden-2023-menu-pdf.pdf",
+        "data/restaurant-verification/artifacts/osm-amphora-diner-deluxe-152763392/official-legacy-2021-menu-pdf.pdf",
+        "data/restaurant-verification/repairs/osm-amphora-diner-deluxe-152763392/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/amphora-diner-deluxe-audit-catalog.test.mjs scripts/pipeline/amphora-diner-deluxe-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=osm-amphora-diner-deluxe-152763392 node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Current identity: Amphora’s Diner Deluxe, 1151 Elden St, Herndon, VA 20170.",
+    "Current official page SHA-256: 3d34bb677c9dd45535159a17f13ec0914c7e59dae8caa4dd4387f37aa2eb9ecc.",
+    "Current official 33-page PDF SHA-256: 6f12db0400f33b544288f0051d5b5b4858834461137b37f806ebe259462281e2.",
+    "Current exact-address FastOrder artifact SHA-256: b709db700308c5df8d2fb96c38793ad20fe199b4d81b5672d3c1a0f63c4552e0.",
+    "Corrected snapshot SHA-256: 0594f07803aa62a246daf9bc0da69892e8ecf8b7b3b8d3ccf74976a33ce60a5c.",
+    "Target generated SHA-256 after two identical target-only repairs: 7a955b56b5cbadf45436c195c0d0acd045fa3b12a57b224e22d361a8e6761f68.",
+    "All 1,494 non-target restaurants remained unchanged at SHA-256 da9676bce67985ea47fa0a4485d524521498a364aefbd586ed0485eb95ded243.",
+    "The recovered live repository preserves every frozen item fingerprint for all 1,443 pending restaurants; no safe dedicated audit worktree exists, so no checkpoint commit was created."
+  ]
+}

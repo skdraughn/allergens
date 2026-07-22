@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "alara-georgetown-dc",
+  "name": "Alara Georgetown",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T22:02:40.494Z",
+  "updatedAt": "2026-07-14T22:18:16.093Z",
+  "completedAt": "2026-07-14T22:18:16.093Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 104,
+      "sourceItemCount": 100,
+      "notes": [
+        "Every frozen row was reconciled against Alara Georgetown's current restaurant-issued menu index, rendered brunch route, and six currently linked PDFs reviewed on 2026-07-14.",
+        "The current catalog contains 100 food and nonalcoholic formulations represented by 156 meal-period presentations across 25 source sections.",
+        "Ninety-four frozen rows represent current formulations; six current formulations are missing from the frozen output: Taste of Alara for the Entire Party, Fries, Coffee, Matmazel, Alara Blush, and Stella Artois 0.0 Non-Alcoholic.",
+        "Seven frozen rows are course headings, component text, or fused choice artifacts; three isolated alcohol rows are scope artifacts from an otherwise omitted alcohol list.",
+        "Current meal-period names and presentations remain distinct where the source does, including Tzatziki versus Tzatziki Dip and Beef Pide versus Ground Beef Pide."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Alara's restaurant-issued menus publish selected fixed ingredient descriptions but no complete allergen matrix, complete recipes, or cross-contact policy.",
+        "Seventy-one current formulations have positive signals supported by fixed published ingredients, mandatory named formats, or Alara's own published component recipes; 29 remain unavailable rather than inferred.",
+        "Twenty-eight frozen rows underreported current positive ingredient signals; 42 frozen rows are verified and 24 are accurately unavailable.",
+        "Vegetarian, vegan, dairy-free, and gluten-free labels are not converted into negative claims, and the page-wide raw-food warning is not assigned to individual products.",
+        "Configurable later courses, cold-mezze choices, juice choices, and optional additions are not promoted to fixed allergens."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic website extraction flattened dinner, lunch, brunch, dessert, catering, and cocktail surfaces into inconsistent categories and did not retain presentation structure.",
+        "It promoted four course headings and parenthetical component text, fused Homemade Ice Cream and Kunefe into one nonexistent item, duplicated Lentil Soup as a package choice, and retained three isolated alcohol rows while omitting the rest of that list.",
+        "It omitted six current formulations and 28 positive allergen signals from fixed text, including bulgur, flatbread, pita, dough, pastry, bechamel, nuts, sesame, egg, and dairy terms.",
+        "The correction stores 100 canonical formulations with 156 source presentations, source-bounded positive evidence, no may-contain claims, and 29 explicitly unavailable rows."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-menu-index-review",
+      "kind": "official_site",
+      "url": "https://www.alarageorgetown.com/menus/",
+      "attemptedAt": "2026-07-14T22:02:40.784Z",
+      "outcome": "Captured the current restaurant-issued menu index and verified that it currently links the reviewed dinner, lunch, brunch, dessert, catering, and cocktail PDFs.",
+      "notes": []
+    },
+    {
+      "id": "official-pdf-menu-review",
+      "kind": "linked_source",
+      "url": "https://www.alarageorgetown.com/menus/",
+      "attemptedAt": "2026-07-14T22:05:18.958Z",
+      "outcome": "Captured, hashed, rendered, and visually reviewed every page of all six current restaurant-issued PDFs; inventoried every food and nonalcoholic row, description, section, package choice, and alcohol boundary.",
+      "notes": [
+        "Each PDF is retained under data/restaurant-verification/artifacts/alara-georgetown-dc and independently SHA-256 anchored in the evidence manifest."
+      ]
+    },
+    {
+      "id": "official-rendered-brunch-review",
+      "kind": "official_site",
+      "url": "https://www.alarageorgetown.com/menu/brunch/",
+      "attemptedAt": "2026-07-14T22:02:41.180Z",
+      "outcome": "Captured the restaurant's rendered brunch route and reconciled its structured and visible item names and descriptions with the current brunch PDF.",
+      "notes": []
+    },
+    {
+      "id": "allergen-disclosure-review",
+      "kind": "targeted_search",
+      "url": "https://www.alarageorgetown.com/menus/",
+      "attemptedAt": "2026-07-14T22:05:18.958Z",
+      "outcome": "Reviewed all current menu surfaces for allergen disclosure semantics; found fixed ingredient text and dietary labels but no complete matrix, recipes, or item-level cross-contact disclosure.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "flattened-multi-surface-menu",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen catalog flattened six current menu surfaces, omitted six current formulations, lost meal-period presentation structure, and retained ten heading, fused-choice, or scope artifacts.",
+      "evidenceIds": [
+        "official-menus",
+        "official-dinner-pdf",
+        "official-lunch-pdf",
+        "official-brunch",
+        "official-brunch-pdf",
+        "official-dessert-pdf",
+        "official-catering-pdf",
+        "official-cocktail-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 100 current formulations with 156 source presentations, restored all six omissions, and removed only the seven structural/fusion artifacts and three isolated alcohol-scope artifacts documented by the source layouts."
+    },
+    {
+      "id": "underreported-fixed-allergens",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Twenty-eight frozen rows omitted positive allergens supported by current fixed ingredient text, mandatory named formats, or Alara's own published component recipes.",
+      "evidenceIds": [
+        "official-dinner-pdf",
+        "official-lunch-pdf",
+        "official-brunch",
+        "official-brunch-pdf",
+        "official-dessert-pdf",
+        "official-catering-pdf",
+        "official-cocktail-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Recomputed 71 supported positive formulations, verified 42 frozen rows, retained 29 current formulations as unavailable, and assigned no unsupported may-contain or negative claims."
+    },
+    {
+      "id": "generic-parser-boundary-loss",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "The generic parser lost section, course, presentation, and alcohol-scope boundaries and only partially interpreted the restaurant's published ingredient descriptions.",
+      "evidenceIds": [
+        "official-menus",
+        "official-dinner-pdf",
+        "official-lunch-pdf",
+        "official-brunch",
+        "official-brunch-pdf",
+        "official-dessert-pdf",
+        "official-catering-pdf",
+        "official-cocktail-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Prepared a guarded current-menu manifest correction with exact item/presentation/category counts, source aliases, configurable-choice semantics, and focused regression invariants."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-alara-current-menu",
+      "status": "verified",
+      "summary": "Prepared and focused-tested a 100-formulation, 156-presentation Alara catalog across all current restaurant-issued food and nonalcoholic surfaces, with 71 supported positive rows, 29 unavailable rows, and every frozen menu/allergen defect reconciled.",
+      "files": [
+        "scripts/pipeline/alara-georgetown-audit-catalog.mjs",
+        "scripts/pipeline/alara-georgetown-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/alara-georgetown-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/alara-georgetown-audit-catalog.test.mjs scripts/pipeline/alara-georgetown-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=tmp/restaurant-verification/alara-isolated.generated.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 100 items, 17 canonical categories, 71 positive rows, 29 unavailable rows, all six current additions, and removal of all documented artifacts)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 8c776e781a7595fd273e1a520484c63e04ddb5791f454ad2ff605166916f8e79.",
+    "Reconciliation counts: {\"dispositions\":{\"artifact\":10,\"exact_match\":89,\"variant_match\":5},\"allergens\":{\"not_applicable\":10,\"accurately_unavailable\":24,\"verified\":42,\"mismatch\":28},\"mismatchKinds\":{\"underreported\":28}}.",
+    "Current corrected catalog counts: 100 formulations, 156 presentations, 25 source sections, 71 positive rows, and 29 unavailable rows."
+  ]
+}

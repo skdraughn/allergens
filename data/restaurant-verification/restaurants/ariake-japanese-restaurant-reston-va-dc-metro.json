@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "ariake-japanese-restaurant-reston-va-dc-metro",
+  "name": "Ariake Japanese Restaurant",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T10:05:50.380Z",
+  "updatedAt": "2026-07-15T10:25:23.297Z",
+  "completedAt": "2026-07-15T10:25:23.297Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 190,
+      "sourceItemCount": 235,
+      "notes": [
+        "The frozen 190-row catalog mixed Ariake's Reston and Fairfax owner menus and promoted ordering hours, a sushi-choice line, and four dinner-bento components to standalone products.",
+        "The current Reston catalog contains 235 canonical non-alcohol food products across 23 categories: 159 live restaurant-linked Toast food products plus 34 owner-menu lunch products, 12 happy-hour products, 25 nigiri or sashimi products, and five owner dinner products absent from the time-dependent Toast view.",
+        "All 190 frozen rows were reconciled as 117 exact matches, 55 normalized matches, two split variants, ten Fairfax location mismatches, and six artifacts. They map to 168 current Reston products, and 67 current products were omitted from the frozen output.",
+        "Twenty-nine alcohol products, seven merchandise products, two nested owner-menu helpers, and embedded dinner-bento components were excluded from the consumer food catalog."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Ariake publishes no complete allergen matrix or cross-contact disclosure. Direct positive ingredient terms on the current restaurant-issued Reston menu and restaurant-linked Toast items support 186 official-ingredient rows; the remaining 49 rows are accurately unavailable.",
+        "The frozen catalog suppressed 141 current direct positive allergen signals and labeled their provenance unavailable. The repaired catalog represents only explicit positive terms and never interprets an absent term as a negative or cross-contact assurance.",
+        "The explicit Toast allergy note that Hire Katsu is marinated in milk supports milk. Kani and crabstick are treated as fish-based imitation crab rather than shellfish, while explicit shrimp, scallop, oyster, and soft-shell crab terms remain shellfish.",
+        "Every mayContain array remains empty because no current owner or restaurant-linked source makes an item-level or global cross-contact disclosure."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic website extraction merged two locations, retained headings and nested options as products, omitted 67 current Reston products, and left direct positive ingredient evidence unavailable.",
+        "The reproducible catalog parser scopes the owner page and linked ordering surface to Reston, unions the time-dependent Toast view with current owner-menu supplements, excludes alcohol, merchandise, and helper rows, and preserves stable Toast product identifiers where available.",
+        "The source semantics were checked through the owner Reston HTML, the owner-controlled ordering link, the direct Toast URL, and a separately labeled readable transport. The transport does not change the restaurant-linked authority of the underlying Toast catalog.",
+        "Focused tests contract source extraction, all 235 catalog rows, all 190 frozen dispositions, explicit allergen semantics, generated repair invariants, target-only isolation, and idempotency."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "ariake-reston-official-menu-2026-07-15",
+      "kind": "official_site",
+      "url": "https://ariakerestaurant.com/reston-menu",
+      "attemptedAt": "2026-07-15T10:06:10.804Z",
+      "outcome": "HTTP 200. Captured the current restaurant-issued Reston menu with 235 source presentations, including 194 non-alcohol food presentations after excluding 41 alcohol presentations.",
+      "notes": [
+        "The owner menu includes lunch, happy hour, dinner, noodles and nabe, and nigiri or sashimi sections but no complete allergen matrix or cross-contact disclosure."
+      ]
+    },
+    {
+      "id": "ariake-reston-owner-ordering-link-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://ariakerestaurant.com/https/wwwtoasttabcom/ariake-japanese-restaurant-reston-12184-glade-dr",
+      "attemptedAt": "2026-07-15T10:06:11.227Z",
+      "outcome": "HTTP 200. Captured Ariake's owner-controlled page linking the Reston restaurant to the Toast catalog at 12184 Glade Drive.",
+      "notes": []
+    },
+    {
+      "id": "ariake-reston-toast-ordering-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/ariake-japanese-restaurant-reston-12184-glade-dr",
+      "attemptedAt": "2026-07-15T10:06:39.227Z",
+      "outcome": "The direct archival request returned HTTP 403. A separately captured readable transport exposed 195 stable Toast product IDs; after excluding 29 alcohol and seven merchandise products, 159 live food products remained.",
+      "notes": [
+        "Toast is linked by the restaurant and supports current product identity and direct menu wording. The Jina artifact is recorded separately as third-party transport."
+      ]
+    },
+    {
+      "id": "ariake-reston-targeted-allergen-search-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://ariakerestaurant.com/reston-menu",
+      "attemptedAt": "2026-07-15T10:07:00.000Z",
+      "outcome": "Targeted review of the owner site, linked ordering surface, product text, and allergy-related terms found direct positive ingredients and one explicit milk-marination allergy note, but no complete allergen guide, negative claim, or cross-contact disclosure.",
+      "notes": []
+    },
+    {
+      "id": "ariake-reston-third-party-transport-review-2026-07-15",
+      "kind": "third_party",
+      "url": "https://r.jina.ai/http://order.toasttab.com/online/ariake-japanese-restaurant-reston-12184-glade-dr",
+      "attemptedAt": "2026-07-15T10:06:39.227Z",
+      "outcome": "HTTP 200 readable copy of the current restaurant-linked Toast catalog. It was used only as transport and never promoted to restaurant-issued evidence in its own right.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "ariake-reston-cross-location-contamination",
+      "severity": "critical",
+      "kind": "location-scope-corruption",
+      "summary": "The Reston record included ten products sourced only from Ariake's Fairfax menu and even published the Fairfax ordering-hours heading as a product.",
+      "evidenceIds": [
+        "official-ariake-reston-menu",
+        "official-ariake-ordering-page",
+        "ariake-reston-toast"
+      ],
+      "resolved": true,
+      "resolution": "Removed every Fairfax-only row and scoped the rebuilt catalog to the owner Reston menu and exact-address Reston Toast catalog."
+    },
+    {
+      "id": "ariake-reston-current-menu-undercoverage",
+      "severity": "critical",
+      "kind": "menu-incomplete",
+      "summary": "The frozen catalog omitted 67 current Reston products and represented several split choices and nested components incorrectly.",
+      "evidenceIds": [
+        "official-ariake-reston-menu",
+        "ariake-reston-toast",
+        "ariake-toast-jina-transport"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt a 235-product current union, reconciled every frozen row, restored all 67 omissions, and excluded non-product helpers."
+    },
+    {
+      "id": "ariake-reston-positive-allergen-suppression",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "The frozen output left 141 rows unavailable even though current owner or restaurant-linked menu text directly names positive allergen ingredients.",
+      "evidenceIds": [
+        "official-ariake-reston-menu",
+        "ariake-reston-toast",
+        "ariake-toast-jina-transport"
+      ],
+      "resolved": true,
+      "resolution": "Published only direct positive signals on 186 current products, left 49 incomplete rows unavailable, and invented no negative or may-contain claim."
+    },
+    {
+      "id": "ariake-reston-imitation-crab-semantics",
+      "severity": "high",
+      "kind": "allergen-taxonomy-risk",
+      "summary": "Generic crab token handling could misclassify kani or crabstick imitation crab as crustacean shellfish rather than fish.",
+      "evidenceIds": [
+        "official-ariake-reston-menu",
+        "ariake-reston-toast"
+      ],
+      "resolved": true,
+      "resolution": "Contracted kani and crabstick as fish while retaining shellfish for explicit shrimp, scallop, oyster, and soft-shell crab ingredients."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "ariake-reston-current-catalog-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt Ariake Reston's current non-alcohol food catalog, removed Fairfax and non-product contamination, restored omissions, and corrected direct positive allergen semantics while preserving authority boundaries.",
+      "files": [
+        "scripts/pipeline/ariake-reston-audit-catalog.mjs",
+        "scripts/pipeline/ariake-reston-audit-catalog.test.mjs",
+        "scripts/pipeline/ariake-reston-audit-reconciliation.mjs",
+        "scripts/pipeline/ariake-reston-audit-reconciliation.test.mjs",
+        "scripts/pipeline/ariake-reston-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/ariake-japanese-restaurant-reston-va-dc-metro/official-ariake-reston-menu.html",
+        "data/restaurant-verification/artifacts/ariake-japanese-restaurant-reston-va-dc-metro/official-ariake-ordering-page.html",
+        "data/restaurant-verification/artifacts/ariake-japanese-restaurant-reston-va-dc-metro/ariake-toast-jina-transport.txt",
+        "data/restaurant-verification/repairs/ariake-japanese-restaurant-reston-va-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/ariake-reston-audit-catalog.mjs",
+        "node scripts/pipeline/ariake-reston-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/ariake-reston-audit-catalog.test.mjs scripts/pipeline/ariake-reston-audit-reconciliation.test.mjs scripts/pipeline/ariake-reston-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=ariake-japanese-restaurant-reston-va-dc-metro node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: c605f8acea578066c8d0b24b7c329ca292586c7c339fba51940b47d8af28934a.",
+    "Official Reston menu artifact SHA-256: 94f445b678cc6c09c5f66ba96d7d85995338b71a00387b3fe2c1d82044efd2a3.",
+    "Official ordering-link artifact SHA-256: 0df1af3435efe077f7a04f2f6df2c7083f3b9a1d138b22547593d7a87a833a14.",
+    "Readable Toast transport artifact SHA-256: 8df29d7059e248c20910193301e88c4e4f9f422edf87256b7c76dc740da8183f.",
+    "Frozen baseline item fingerprint: c842a8e4196257631be917965e1c57ffb08497b31db638b574e099dbeb5cdd79.",
+    "Live target SHA-256 before repair: 1e6545248a159d14362334a814ac53eddf4f88700e8d87d2c2a88ac2ec907ed0.",
+    "Live target SHA-256 after repair: 6341b51858367c184a4b6c59c4265f3ef3dcb5acf3baa1957878bd2648acf294.",
+    "Live non-target restaurant projection SHA-256 remained 0273240a0d9c74b8521761f53fa51fee9ca9d4d84101fbfdf072cf111b09a930.",
+    "Two consecutive target-only repair runs produced the same target hash and exactly one Ariake Reston verified repair note.",
+    "The repaired repository contains 113860 live menu items; the frozen ledger remains anchored to its original 112873-item hashed baseline."
+  ]
+}

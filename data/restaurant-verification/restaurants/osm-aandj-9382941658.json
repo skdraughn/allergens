@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-aandj-9382941658",
+  "name": "A&J Restaurant",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T19:27:22.728Z",
+  "updatedAt": "2026-07-14T19:38:12.502Z",
+  "completedAt": "2026-07-14T19:38:12.502Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 217,
+      "sourceItemCount": 79,
+      "notes": [
+        "Every frozen row was reconciled against the current 67-product restaurant-issued Squarespace menu and the primary restaurant-linked Toast carry-out menu.",
+        "The corrected compact catalog contains 79 unique products across nine real categories: 67 official-site products plus 12 current Toast-only additions.",
+        "The frozen 217 rows included 149 translated or price-menu variants mapping to current products, 64 current official-site rows, three flattened category headings, and one press-quote/navigation artifact.",
+        "The current Toast GrubHub Deep Copy is a near-complete higher-price duplicate, not a second food catalog. Four Toast rows marked out of stock remain on the official current menu, and six individual Bubble Tea flavor SKUs are represented by the official configurable Bubble Tea product rather than duplicated."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "A&J publishes item descriptions and an explicit ^^ contains peanuts legend on its official menu, but no complete allergen matrix, complete ingredient list, or cross-contact guide was found.",
+        "Forty-six corrected products have positive fixed signals supported by published ingredients, the peanut footnote, or mandatory wheat formats; thirty-three products remain unavailable rather than being presented as allergen-free.",
+        "The restaurant-linked Toast menu is kept distinct from restaurant-issued menu evidence. The retained Jina artifact is third-party retrieval infrastructure and is not promoted to restaurant-issued authority.",
+        "Configurable Bubble Tea is not assigned milk because milk tea is one published choice among multiple flavors, and mustard greens are not misclassified as a fixed mustard condiment signal."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen merge duplicated pickup and GrubHub price-copy presentations, flattened all Toast rows into a fake chinese category, admitted headings and a press quote, truncated descriptions after w/, and dropped three official Chinese-titled drinks.",
+        "The audited parser reads all official Squarespace menu sections directly, preserves complete descriptions and footnote labels, selects only 12 distinct active Toast additions, consolidates Bubble Tea flavors, and keeps beverages last.",
+        "The final-stage correction replaces only A&J when its verified count, category count, artifact exclusions, source semantics, beverage order, or sentinel allergen signals regress."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site-and-menu-review",
+      "kind": "official_site",
+      "url": "https://www.aandjrestaurant.com/menu",
+      "attemptedAt": "2026-07-14T19:27:35.293Z",
+      "outcome": "Confirmed the Annandale identity and address, 67 current products across eight official menu sections, complete public descriptions, the explicit contains-peanuts footnote, and the direct Toast carry-out link. No complete allergen matrix or cross-contact disclosure was present.",
+      "notes": []
+    },
+    {
+      "id": "restaurant-linked-toast-review",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/a-j-resraurant-annandale-4316-markham-street",
+      "attemptedAt": "2026-07-14T19:28:17.520Z",
+      "outcome": "Direct automated retrieval returned HTTP 403. The restaurant link and a retained render-proxy artifact exposed 83 primary-menu rows, including four out-of-stock rows and one repeated Vegetable placement, followed by a near-complete GrubHub price-copy menu. Twelve active products were distinct additions to the official compact catalog.",
+      "notes": [
+        "The render proxy is recorded as third-party evidence even though the underlying Toast menu is restaurant-linked."
+      ]
+    },
+    {
+      "id": "targeted-allergen-search",
+      "kind": "targeted_search",
+      "url": "https://www.google.com/search?q=A%26J+Restaurant+Annandale+allergen+menu+allergy+ingredients",
+      "attemptedAt": "2026-07-14T19:31:00.000Z",
+      "outcome": "Targeted current searches plus full-text review of the official site and linked ordering menu found no A&J allergen matrix, complete ingredient guide, or cross-contact policy beyond the official menu's contains-peanuts footnote.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "duplicated-price-copy-and-non-item-rows",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen 217-row catalog duplicated pickup and GrubHub price-menu presentations, flattened real sections into chinese, and admitted three category headings plus a Washington Post quote as products.",
+      "evidenceIds": [
+        "official-home",
+        "official-menu",
+        "third-party-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 79 unique current products in nine real categories and removed all four non-item artifacts and price-copy duplication."
+    },
+    {
+      "id": "incomplete-and-truncated-official-menu",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The official-site parser returned only 64 of 67 current rows, dropped Sprite, Coca Cola, and Mineral Water because their titles are Chinese-only, and truncated descriptions such as Spicy Noodle w/Sliced Beef and Chinese Sesame Biscuit w/ Sliced Beef.",
+      "evidenceIds": [
+        "official-menu"
+      ],
+      "resolved": true,
+      "resolution": "Parsed all menu-item DOM blocks directly, retained all 67 official rows and their complete descriptions, and generated stable IDs for Chinese-only titles."
+    },
+    {
+      "id": "underreported-positive-allergen-signals",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Seventy-one frozen row presentations omitted one or more supported positive signals, chiefly mandatory wheat formats, soy from bean-curd ingredients, and mustard explicitly listed in the chicken salad.",
+      "evidenceIds": [
+        "official-menu",
+        "third-party-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Re-derived fixed positive signals from current published names, descriptions, the official peanut footnote, and mandatory formats while leaving 33 unsupported products unavailable."
+    },
+    {
+      "id": "ordering-source-provenance-collapsed",
+      "severity": "high",
+      "kind": "source_semantics",
+      "summary": "The frozen html-card rows did not distinguish restaurant-linked Toast product text from restaurant-issued menu evidence and treated two delivery-price surfaces as separate catalog products.",
+      "evidenceIds": [
+        "official-home",
+        "third-party-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Retained restaurant-issued and restaurant-linked source types separately, labeled the render proxy third-party, and used Toast only for 12 distinct current additions."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-aandj-current-menu",
+      "status": "verified",
+      "summary": "Prepared and targeted-tested a 79-item current A&J catalog with complete official menu extraction, distinct linked-ordering additions, deduplicated price surfaces, source-correct positive allergen signals, and beverages last.",
+      "files": [
+        "scripts/pipeline/aandj-audit-catalog.mjs",
+        "scripts/pipeline/aandj-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/osm-aandj-9382941658/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/aandj-audit-catalog.test.mjs scripts/pipeline/aandj-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/allergy-aandj-repair.json node scripts/repair-final-generated-regressions.mjs (targeted copy; verified 79 unique rows, nine categories, 46 official-ingredient rows, 33 unavailable rows, no artifacts, source-kind separation, and beverages last)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 887cc35a7ab7027cc691628e05be3bf51ebd02c4fcb38c778d00073bb6d086a8.",
+    "Reconciliation counts: {\"dispositions\":{\"variant_match\":149,\"artifact\":4,\"exact_match\":61,\"normalized_match\":3},\"allergens\":{\"mismatch\":71,\"verified\":142,\"not_applicable\":4},\"mismatchKinds\":{\"underreported\":71}}.",
+    "Current corrected catalog counts: 79 items, nine categories, 46 positive published-signal rows, and 33 accurately unavailable rows.",
+    "Focused full-menu parsing, all 217 frozen-row reconciliation, duplicate-price-surface removal, Chinese-title retention, description-integrity, source-tier, unique-id, configurability, artifact exclusion, allergen-signal, and beverage-order checks passed."
+  ]
+}

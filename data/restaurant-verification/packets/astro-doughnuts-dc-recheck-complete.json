@@ -1,0 +1,71 @@
+{
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 39,
+      "sourceItemCount": 40,
+      "notes": [
+        "Post-repair menu contains 40 current items: 36 retained frozen items plus four current specials; three frozen rotating specials are reconciled as stale extras."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "15 frozen items retain direct positive official-menu disclosures, 21 are accurately unavailable, and three stale items are not applicable.",
+        "No negative or cross-contact conclusion is inferred from the absence of a comprehensive allergen guide."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "Verified repair reconciles current monthly specials and restricts fixed positive claims to explicit official menu wording."
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "rotating-specials-stale-and-omitted",
+      "severity": "high",
+      "kind": "menu",
+      "summary": "Three frozen rotating specials were stale and four current official specials were omitted.",
+      "evidenceIds": ["official-dc-menu"],
+      "resolved": true,
+      "resolution": "Removed Chocolate S'mores, Peach Melba, and Strawberry Shortcake; added Peach Cobbler, Chocolate Birthday Cake, Cherry Pie, and Classic Cruller."
+    },
+    {
+      "id": "unsupported-culinary-name-allergen-inference",
+      "severity": "high",
+      "kind": "allergen_extraction",
+      "summary": "Several baseline allergen claims relied on culinary product names rather than explicit restaurant-authored allergen wording.",
+      "evidenceIds": ["official-dc-menu"],
+      "resolved": true,
+      "resolution": "Removed unsupported brioche, quesadilla, cake, bun, mayo, cookie, and peanut-butter dairy inferences while retaining explicit milk, egg, wheat, peanut, and other direct terms."
+    },
+    {
+      "id": "no-comprehensive-allergen-source",
+      "severity": "medium",
+      "kind": "allergen_source",
+      "summary": "The official menu contains selected positive ingredient prose but no comprehensive allergen matrix, complete ingredients, negative-claim coverage, or cross-contact policy.",
+      "evidenceIds": ["official-dc-menu"],
+      "resolved": true,
+      "resolution": "The limitation is accurately represented by retaining only direct positives and marking unsupported results unavailable."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "reconcile-astro-dc-menu-and-allergens",
+      "status": "verified",
+      "summary": "Removed three stale specials, added four current specials, and narrowed positive allergen signals to explicit official menu wording.",
+      "files": ["scripts/repair-final-generated-regressions.mjs", "scripts/restaurant-pipeline.test.mjs"],
+      "fixturePaths": ["data/restaurant-verification/artifacts/astro-doughnuts-dc/official-dc-menu.html"],
+      "verificationCommands": ["node --test --test-name-pattern='Astro DC reconciles current specials' scripts/restaurant-pipeline.test.mjs"]
+    }
+  ],
+  "notes": [
+    "Focused Astro DC regression passed; all 39 frozen item checks are non-pending."
+  ],
+  "status": "recheck_required"
+}

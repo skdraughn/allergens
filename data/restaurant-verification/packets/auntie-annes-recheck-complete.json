@@ -1,0 +1,97 @@
+{
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 46,
+      "sourceItemCount": 46,
+      "notes": [
+        "Post-repair recheck pins 46 unique current products across ten ordered sections from the March 2025 U.S. guide, with Fountain Drinks last.",
+        "All 37 frozen rows remain reconciled exactly once: 3 exact, 2 normalized, 16 current variants, 5 process artifacts, and 11 stale products."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Thirty-nine products preserve direct contains signals from the current guide's allergen matrix; seven fountain products are explicitly represented as global-note-only rather than assigned unsupported direct allergens.",
+        "Every current product carries the exact page-one may-contain set: egg, fish, milk, peanut, sesame, shellfish, soy, tree nut, and wheat. Gluten is not inferred."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The reconstruction combines the current nutrition tables, direct allergen matrix, and global warning without treating components or preparation states as consumer products.",
+        "The revised-May-2016 chart remains archived comparison evidence only and is no longer a configured production source."
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "stale-2016-source",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "The frozen record relies on a chart explicitly revised in 2016 instead of the current March 2025 U.S. guide.",
+      "evidenceIds": ["official-us-nutrition-guide-2025", "legacy-2016-allergen-chart"],
+      "resolved": true,
+      "resolution": "Replaced the configured source set with the current March 2025 restaurant-issued U.S. guide and retained the 2016 chart only as audit comparison evidence."
+    },
+    {
+      "id": "current-product-boundary-mismatch",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The frozen 37-row component abstraction does not represent the current 46-product consumer catalog.",
+      "evidenceIds": ["official-us-nutrition-guide-2025"],
+      "resolved": true,
+      "resolution": "Rebuilt and pinned all 46 current consumer products across ten sections; removed five process artifacts and eleven stale products."
+    },
+    {
+      "id": "global-may-contain-omitted",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "Every frozen row omits the current guide's all-food-and-beverage nine-allergen cross-contact warning.",
+      "evidenceIds": ["official-us-nutrition-guide-2025"],
+      "resolved": true,
+      "resolution": "Applied the exact nine-member may-contain set to every current product without translating wheat into gluten."
+    },
+    {
+      "id": "direct-matrix-signal-drift",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "Eight retained or renamed frozen concepts have direct contains signals that differ from the current matrix.",
+      "evidenceIds": ["official-us-nutrition-guide-2025", "legacy-2016-allergen-chart"],
+      "resolved": true,
+      "resolution": "Replaced all direct signals with the current 39-product matrix and retained seven fountain products as global-note-only rows."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "rebuild-auntie-annes-current-guide",
+      "status": "verified",
+      "summary": "Verified the complete current 46-product catalog, direct matrix semantics, global cross-contact semantics, removal of stale products and artifacts, and absence of inferred gluten.",
+      "files": [
+        "scripts/pipeline/auntie-annes-audit-catalog.mjs",
+        "scripts/pipeline/auntie-annes-audit-catalog.test.mjs",
+        "scripts/pipeline/auntie-annes-audit-reconciliation.mjs",
+        "scripts/pipeline/auntie-annes-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/auntie-annes/source-manifest.json",
+        "data/restaurant-verification/repairs/auntie-annes/source-reconciliation.json",
+        "data/restaurant-verification/repairs/auntie-annes/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/auntie-annes-audit-catalog.test.mjs scripts/pipeline/auntie-annes-audit-reconciliation.test.mjs",
+        "node --test --test-name-pattern=\"Auntie Anne's uses the current U.S. guide\" scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Targeted audit/reconciliation suite passed 6/6 and the generated-data regression passed 1/1.",
+    "Generated snapshot counts: 46 total; 39 direct matrix; 7 official global-note-only; 0 unavailable; all 46 carry the exact nine-allergen may-contain set."
+  ],
+  "status": "recheck_required"
+}

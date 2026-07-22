@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "acqua-bistecca-washington-dc-dc-metro",
+  "name": "Acqua Bistecca",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T19:46:53.458Z",
+  "updatedAt": "2026-07-14T19:59:40.045Z",
+  "completedAt": "2026-07-14T19:59:40.045Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 25,
+      "sourceItemCount": 76,
+      "notes": [
+        "Every frozen row was reconciled against the Washington location page, its six live MINA Group menu links, the current restaurant-issued PDFs, and the restaurant-linked Toast pickup menu.",
+        "The corrected allergen-focused catalog contains 76 unique current items across 18 real categories: 36 dinner products, 18 brunch-only additions, three happy-hour-only food items, five desserts, and 14 nonalcoholic beverages.",
+        "The frozen 25-row pickup snapshot retained 24 current or renamed products and one stale Green Salad, but omitted 52 current distinct products, collapsed every category to Italian, and assigned several variantGroup values from neighboring products.",
+        "Duplicate meal presentations were consolidated. Six dinner condimenti are optional steak accompaniments rather than standalone products. Alcohol-only cocktails, beer, wine-by-the-glass, and the bottle wine list remain outside this record's existing allergen-focused scope; nonalcoholic beverages are retained after food and dessert."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Acqua Bistecca publishes detailed current menu descriptions and asks guests to alert servers to allergies, but no complete allergen matrix, complete recipe set, or cross-contact guide was found.",
+        "Fifty-five corrected products have positive fixed signals supported by published ingredients, named species, or mandatory food formats; 21 products remain unavailable rather than being presented as free of allergens.",
+        "Optional focaccia spread ingredients are not merged onto the configurable focaccia base. Optional egg and steak additions on brunch products are likewise excluded from fixed signals.",
+        "Almond milk is represented as tree nut without inventing a dairy signal. Il Limone retains supported wheat/gluten from its published cake/crumble format but drops the frozen egg claim because the current partial description does not publish egg."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic website merge used a stale Toast subset, collapsed real sections to Italian, shifted adjacent product names into variantGroup, and treated partial menu text as complete enough to make uneven official ingredient claims.",
+        "The official Washington page now links MINA Group menu shells that deterministically redirect to current PDFs. The older acquabistecca.com/menu/dc-menu HTML page is not the live menu linked by the location page and contains a materially different placeholder-price catalog, so it was retained as evidence but rejected as the corrected source.",
+        "All ten PDF pages across dinner, brunch, happy hour, beverage, wine, and dessert were text-extracted and visually reviewed. The catalog uses the live food, dessert, and nonalcoholic surfaces and preserves source-specific descriptions and category order.",
+        "The final-stage correction replaces only Acqua Bistecca when verified count, category count, stale-row exclusions, configurability, alcohol scope, sentinel allergen semantics, or beverage order regress."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-washington-location-and-menu-resolution",
+      "kind": "official_site",
+      "url": "https://www.acquabistecca.com/location/washington-dc/",
+      "attemptedAt": "2026-07-14T19:47:11.516Z",
+      "outcome": "Confirmed the Washington identity, 14 Ridge Square NW address, phone, direct Toast pickup link, and live Brunch, Dinner, Happy Hour, Beverage, Wine List, and Dessert buttons. Each menu button resolves through MINA Group to a current restaurant-issued PDF.",
+      "notes": []
+    },
+    {
+      "id": "current-official-pdf-review",
+      "kind": "linked_source",
+      "url": "https://theminagroup.com/menu/?rid=196&menu=Dinner",
+      "attemptedAt": "2026-07-14T19:48:45.010Z",
+      "outcome": "Captured all six live menu shells and PDFs. Metadata and visible dates identify July 8-10 2026 dinner/beverage/wine files, July 2026 happy hour, June 2026 brunch, and February 2026 dessert. Text extraction plus page rendering established 76 distinct current food, dessert, and nonalcoholic products after scoped deduplication.",
+      "notes": []
+    },
+    {
+      "id": "restaurant-linked-toast-review",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/acqua-bistecca",
+      "attemptedAt": "2026-07-14T19:47:24.063Z",
+      "outcome": "Direct automated retrieval returned HTTP 403. The official location link and retained third-party render-proxy artifact corroborate the Washington pickup identity and a smaller pickup subset; the proxy was not promoted to official authority.",
+      "notes": [
+        "Current restaurant-issued PDFs, not the render proxy, are authoritative for the corrected menu and ingredient text."
+      ]
+    },
+    {
+      "id": "targeted-allergen-search",
+      "kind": "targeted_search",
+      "url": "https://www.google.com/search?q=site%3Aacquabistecca.com+allergen+allergy+ingredients+Acqua+Bistecca",
+      "attemptedAt": "2026-07-14T19:47:00.000Z",
+      "outcome": "Targeted current searches and full-text review of the official location, live menus, and linked ordering surface found no complete Acqua Bistecca allergen matrix, recipe guide, or cross-contact policy beyond the menus' instruction to alert the server.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "stale-incomplete-single-category-pickup-snapshot",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen catalog contained only 25 pickup rows in a fake Italian category, retained stale Green Salad, and omitted 52 distinct current Washington products across dinner, brunch, happy hour, dessert, and nonalcoholic beverage menus.",
+      "evidenceIds": [
+        "official-dc-location",
+        "official-dinner-pdf",
+        "official-brunch-pdf",
+        "official-happy-hour-pdf",
+        "official-beverage-pdf",
+        "official-dessert-pdf",
+        "third-party-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 76 unique current products across 18 real categories, removed Green Salad and modifier-only condimenti, consolidated duplicate meal presentations, and placed all nonalcoholic beverages last."
+    },
+    {
+      "id": "shifted-variant-groups-and-corrupted-name",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "Frozen variantGroup fields were repeatedly populated with adjacent product names, and Porcnin Butter Roasted Chicken preserved a source/extraction typo instead of the current Porcini spelling.",
+      "evidenceIds": [
+        "official-dinner-pdf",
+        "official-brunch-pdf",
+        "official-happy-hour-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Restored current source categories, corrected the Porcini name, mapped renamed products explicitly, and removed shifted adjacency associations."
+    },
+    {
+      "id": "underreported-and-unsupported-allergen-signals",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Eleven frozen current products omitted supported positive signals, while Il Limone carried an egg claim not supported by the current published partial description.",
+      "evidenceIds": [
+        "official-dinner-pdf",
+        "official-brunch-pdf",
+        "official-happy-hour-pdf",
+        "official-dessert-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Re-derived only positive fixed signals from current published ingredient text, named species, and mandatory formats; restored omitted signals, removed unsupported egg from Il Limone, and left 21 unsupported products unavailable."
+    },
+    {
+      "id": "live-menu-source-drift",
+      "severity": "high",
+      "kind": "source_semantics",
+      "summary": "The official Washington location page now routes menu users to current MINA Group PDF files, while an older Acqua Bistecca HTML menu remains publicly reachable with a materially different placeholder-price menu and is not linked as the live DC menu.",
+      "evidenceIds": [
+        "official-dc-location",
+        "official-dc-menu",
+        "official-mina-script",
+        "official-mina-dinner-shell",
+        "official-dinner-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Followed and retained the location page's actual menu-link chain and used the current restaurant-issued PDF set instead of the obsolete HTML menu or smaller Toast subset."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-acqua-bistecca-current-menu",
+      "status": "verified",
+      "summary": "Prepared and targeted-tested a 76-item current Washington catalog spanning live food, dessert, and nonalcoholic menu surfaces with source-correct positive allergen semantics and beverages last.",
+      "files": [
+        "scripts/pipeline/acqua-bistecca-audit-catalog.mjs",
+        "scripts/pipeline/acqua-bistecca-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/acqua-bistecca-washington-dc-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/acqua-bistecca-audit-catalog.test.mjs scripts/pipeline/acqua-bistecca-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/acqua-bistecca-repository.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 76 unique rows, 18 categories, 55 official-ingredient rows, 21 unavailable rows, no stale Green Salad or alcohol-only rows, correct optional-choice semantics, and beverages last)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 45d7ccbf0823e018ce9482f4648112f99e46b074359e202336d80ff38946833f.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":18,\"variant_match\":4,\"stale_extra\":1,\"normalized_match\":2},\"allergens\":{\"verified\":12,\"mismatch\":12,\"not_applicable\":1},\"mismatchKinds\":{\"underreported\":11,\"overreported\":1}}.",
+    "Current corrected catalog counts: 76 items, 18 categories, 55 positive published-signal rows, and 21 accurately unavailable rows.",
+    "The PDF workflow rendered and visually reviewed all ten current pages; extracted text was used only after layout, headings, column associations, and second pages were visually confirmed.",
+    "Focused full-catalog construction, all 25 frozen-row reconciliation, current-link resolution, source-scope, duplicate consolidation, category order, unique-id, configurability, modifier exclusion, plant-milk semantics, allergen-signal, and beverage-order checks passed."
+  ]
+}

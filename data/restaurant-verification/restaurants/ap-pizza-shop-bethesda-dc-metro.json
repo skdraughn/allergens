@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "ap-pizza-shop-bethesda-dc-metro",
+  "name": "AP Pizza Shop Bethesda",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T07:23:10.580Z",
+  "updatedAt": "2026-07-15T07:39:27.703Z",
+  "completedAt": "2026-07-15T07:39:27.703Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 47,
+      "sourceItemCount": 49,
+      "notes": [
+        "AP Pizza Shop's current restaurant-linked Toast catalog is meal-period dependent: the lunch surface publishes 46 products and the dinner surface publishes 35, yielding 49 unique current products across seven categories.",
+        "All 47 frozen rows were reconciled: 37 exact matches, one renamed variant, seven stale products, and two Toast category-heading artifacts. The 38 matched products leave eleven current omissions.",
+        "The repair publishes the complete 49-product union, including Duke #7, Pizza Kit, and Pizza Dough from dinner, without duplicating the 32 products shared by current meal periods."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "The current restaurant-linked Toast item surfaces publish selected ingredient descriptions but no complete allergen matrix or cross-contact disclosure. Forty-six products have supported positive signals; three remain accurately unavailable.",
+        "Twenty-seven matched frozen allergen outcomes differ from the corrected evidence. The repair adds omitted pizza/focaccia/pasta wheat and gluten, direct dairy, sesame, egg, tree-nut, and fish signals without treating absence as safety.",
+        "AP Caesar explicitly lists anchovy dressing. The Tripper explicitly lists neonata; a separately labeled third-party culinary reference establishes neonata as whitebait/fish but is not promoted to official allergen evidence.",
+        "The retained Jina Reader artifacts are transport corroboration only and are absent from app source URLs."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen output was a stale mixed meal-period snapshot that promoted Deck-Oven Slices and Lunch Pies headings into products, retained seven superseded rows, omitted eleven current products, and flattened 31 matched presentations into the Pizza category or stale descriptions.",
+        "The reviewed parser recovers 46 lunch products from stable Toast item URLs, explicitly adds only the three independently observed dinner-only products, canonicalizes regular and 18-inch pies by reviewed identity, and asserts a 49-product seven-category union.",
+        "Focused tests cover both meal-period counts, every frozen-row disposition, current omissions, stable source-authority boundaries, neonata semantics, published repair invariants, target-only isolation, and idempotency."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "ap-pizza-owner-home-2026-07-15",
+      "kind": "official_site",
+      "url": "https://allpurposedc.com/",
+      "attemptedAt": "2026-07-15T07:24:19.669Z",
+      "outcome": "HTTP 200. Confirmed the current All-Purpose owner site and its AP Pizza Shop Bethesda identity.",
+      "notes": []
+    },
+    {
+      "id": "ap-pizza-toast-ledger-attempt-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://order.toasttab.com/online/ap-pizza-shop-bethesda",
+      "attemptedAt": "2026-07-15T07:24:30.000Z",
+      "outcome": "HTTP 403 for the ledger archival user-agent; no official artifact was recorded from the failed request.",
+      "notes": []
+    },
+    {
+      "id": "ap-pizza-toast-live-dinner-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://order.toasttab.com/online/ap-pizza-shop-bethesda",
+      "attemptedAt": "2026-07-15T07:23:50.000Z",
+      "outcome": "The public web reader returned the live restaurant-linked dinner surface with 35 products, including dinner-only Duke #7, Pizza Kit, and Pizza Dough.",
+      "notes": []
+    },
+    {
+      "id": "ap-pizza-toast-live-lunch-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://order.toasttab.com/online/ap-pizza-shop-bethesda/item-pizza-dough_b1e41024-7d0f-4a2f-89a5-d7c32c5311eb",
+      "attemptedAt": "2026-07-15T07:25:30.000Z",
+      "outcome": "The public web reader returned the live restaurant-linked lunch surface with all 46 products and stable item URLs.",
+      "notes": []
+    },
+    {
+      "id": "ap-pizza-jina-lunch-transport-2026-07-15",
+      "kind": "third_party",
+      "url": "https://r.jina.ai/http://order.toasttab.com/online/ap-pizza-shop-bethesda",
+      "attemptedAt": "2026-07-15T07:24:58.321Z",
+      "outcome": "HTTP 200. Retained a 19,446-byte third-party transport snapshot containing the 46 current lunch product anchors and Toast item URLs.",
+      "notes": []
+    },
+    {
+      "id": "ap-pizza-jina-item-routing-2026-07-15",
+      "kind": "third_party",
+      "url": "https://r.jina.ai/http://order.toasttab.com/online/ap-pizza-shop-bethesda/item-duke-7_55bfc5b3-f9b8-42c5-98b7-540932657cae",
+      "attemptedAt": "2026-07-15T07:26:50.728Z",
+      "outcome": "HTTP 200. The direct Duke #7 route returned a 19,495-byte scheduled lunch surface, corroborating Toast's meal-period routing but not serving as dinner authority.",
+      "notes": []
+    },
+    {
+      "id": "ap-pizza-neonata-semantics-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://www.sydneyfishmarket.com.au/recipe/whitebait-fritters/",
+      "attemptedAt": "2026-07-15T07:36:20.100Z",
+      "outcome": "HTTP 200. Retained a third-party culinary reference explaining that whitebait on Italian restaurant menus is called neonata; used only to interpret the official ingredient term as fish.",
+      "notes": []
+    },
+    {
+      "id": "ap-pizza-targeted-allergen-review-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://order.toasttab.com/online/ap-pizza-shop-bethesda",
+      "attemptedAt": "2026-07-15T07:34:00.000Z",
+      "outcome": "Targeted review of the restaurant-linked lunch and dinner surfaces found ingredient descriptions but no allergen matrix, may-contain statement, shared-equipment disclosure, or negative assurance.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "ap-pizza-meal-period-union",
+      "severity": "critical",
+      "kind": "menu-reconciliation-mismatch",
+      "summary": "The Toast catalog changes by meal period; treating one surface as the complete menu omits current lunch or dinner products.",
+      "evidenceIds": [
+        "restaurant-linked-toast-live-lunch",
+        "restaurant-linked-toast-live-dinner",
+        "third-party-jina-toast-transport"
+      ],
+      "resolved": true,
+      "resolution": "Reconciled the 46-product lunch and 35-product dinner surfaces into a reviewed 49-product unique union."
+    },
+    {
+      "id": "ap-pizza-stale-artifact-and-omission-set",
+      "severity": "high",
+      "kind": "parser-structure-corruption",
+      "summary": "The frozen catalog retained seven stale products, promoted two headings, and omitted eleven current products.",
+      "evidenceIds": [
+        "restaurant-linked-toast-live-lunch",
+        "restaurant-linked-toast-live-dinner"
+      ],
+      "resolved": true,
+      "resolution": "Removed stale/artifact rows and restored every product present on either current meal-period surface."
+    },
+    {
+      "id": "ap-pizza-allergen-mismatches",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Twenty-seven matched frozen products had missing or overstated positive signals relative to current names, categories, and ingredient descriptions.",
+      "evidenceIds": [
+        "restaurant-linked-toast-live-lunch",
+        "restaurant-linked-toast-live-dinner",
+        "third-party-neonata-fish-semantics"
+      ],
+      "resolved": true,
+      "resolution": "Recomputed positive signals from the current item evidence, left three products unavailable, and invented no negative/cross-contact claim."
+    },
+    {
+      "id": "ap-pizza-neonata-fish-semantics",
+      "severity": "high",
+      "kind": "ingredient-semantics-gap",
+      "summary": "The Tripper lists neonata, a whitebait/fish ingredient that the frozen extraction failed to recognize.",
+      "evidenceIds": [
+        "restaurant-linked-toast-live-lunch",
+        "third-party-neonata-fish-semantics"
+      ],
+      "resolved": true,
+      "resolution": "Mapped neonata to fish while preserving the boundary between restaurant-linked occurrence evidence and third-party ingredient semantics."
+    },
+    {
+      "id": "ap-pizza-toast-transport-boundary",
+      "severity": "high",
+      "kind": "evidence-authority-boundary",
+      "summary": "The archival user-agent receives HTTP 403, requiring third-party transport artifacts to retain the full lunch surface.",
+      "evidenceIds": [
+        "restaurant-linked-toast-live-lunch",
+        "restaurant-linked-toast-live-dinner",
+        "third-party-jina-toast-transport",
+        "third-party-jina-toast-dinner-transport"
+      ],
+      "resolved": true,
+      "resolution": "Anchored product claims to independently read live Toast pages/item URLs, labeled Jina captures third-party, and excluded Jina URLs from app data."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "ap-pizza-current-meal-period-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt AP Pizza Shop's current meal-period union and corrected stale/artifact rows, omissions, category/description associations, allergen semantics, and source authority boundaries.",
+      "files": [
+        "scripts/pipeline/ap-pizza-shop-bethesda-audit-catalog.mjs",
+        "scripts/pipeline/ap-pizza-shop-bethesda-audit-catalog.test.mjs",
+        "scripts/pipeline/ap-pizza-shop-bethesda-audit-reconciliation.mjs",
+        "scripts/pipeline/ap-pizza-shop-bethesda-audit-reconciliation.test.mjs",
+        "scripts/pipeline/ap-pizza-shop-bethesda-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/ap-pizza-shop-bethesda-dc-metro/official-all-purpose-home.html",
+        "data/restaurant-verification/artifacts/ap-pizza-shop-bethesda-dc-metro/third-party-jina-toast-transport.txt",
+        "data/restaurant-verification/artifacts/ap-pizza-shop-bethesda-dc-metro/third-party-jina-toast-dinner-transport.txt",
+        "data/restaurant-verification/artifacts/ap-pizza-shop-bethesda-dc-metro/third-party-neonata-fish-semantics.html",
+        "data/restaurant-verification/repairs/ap-pizza-shop-bethesda-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/ap-pizza-shop-bethesda-audit-catalog.mjs",
+        "node scripts/pipeline/ap-pizza-shop-bethesda-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/ap-pizza-shop-bethesda-audit-catalog.test.mjs scripts/pipeline/ap-pizza-shop-bethesda-audit-reconciliation.test.mjs scripts/pipeline/ap-pizza-shop-bethesda-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=ap-pizza-shop-bethesda-dc-metro node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 200b6e71b928867e68a4085714cdd502706b30d4eec640d7715f340e3913241e.",
+    "Official All-Purpose home SHA-256: 47b8f1134a1ea5987e3e17033f9b5fad6d3b40d10e447bfc6ae025a7bf38ae79.",
+    "Third-party lunch transport SHA-256: 9577bedf7c369f8f1b687cb9cd5b3956718e7925d0d05ccc42d5f87db3f31269.",
+    "Third-party linked-item transport SHA-256: a1fcbaca59016400521428cf0be6daac2dbc4e66df008c93d1a1254258865882.",
+    "Third-party neonata semantics artifact SHA-256: 426560023484d69e45f96875efc950c280b35b1f46aa6600bbe2086a4415cadc.",
+    "Frozen live target SHA-256 before repair: 8afbd55c5a14416a9065e16fc5a8174ad6b8fb0f16946848fb544c22dd49b8ba.",
+    "Live target SHA-256 after repair: 60cd460bafec5da16f5fadfcfc3f43f4d965357a9cb2e339303fc0b05b2f140f.",
+    "Live non-target restaurant projection SHA-256 remained b10ae5e4df0bb1958db6303d626738ffd953204871d608d8bbe00088a5ab24a8.",
+    "Two consecutive target-only repair runs produced the same target hash and retained exactly one AP Pizza Shop verified repair note.",
+    "The repaired repository contains 113717 live menu items; the frozen ledger remains anchored to its original 112873-item hashed baseline."
+  ]
+}

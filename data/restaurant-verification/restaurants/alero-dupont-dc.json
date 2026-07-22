@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "alero-dupont-dc",
+  "name": "Alero Dupont Circle",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T22:47:01.374Z",
+  "updatedAt": "2026-07-14T23:00:06.040Z",
+  "completedAt": "2026-07-14T23:00:06.040Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 42,
+      "sourceItemCount": 126,
+      "notes": [
+        "Every frozen row was reconciled against the live Dupont Toast representation and six captured restaurant-issued food pages reviewed on 2026-07-14.",
+        "The corrected catalog contains 126 current food and nonalcoholic formulations and 193 source presentations across eight categories: 125 live Toast products plus the restaurant-issued Fried Calamari, with 68 restaurant-issued presentations.",
+        "All 42 frozen rows remain current, but the frozen extraction omitted 84 current formulations and fabricated an adjacency-based variant group on every row.",
+        "The current Toast representation also exposes a bag fee, an Appetizer divider, featured duplicates, and Mexican/Irish alcoholic coffees; those are not food/nonalcoholic formulations.",
+        "Rapido Salad and Alero Salad publish identical restaurant-issued formulation text and are consolidated as two presentations of one formulation. Responsive-layout duplicates and official lorem-ipsum placeholders are not promoted into products or ingredient claims."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Alero publishes selected fixed ingredient descriptions on six restaurant-issued Dupont food pages and additional restaurant-controlled product names through its linked Toast catalog, but no complete recipes or item-level allergen matrix.",
+        "Sixty-four current formulations have positive contains signals from direct published components or mandatory named food formats; 62 remain unavailable for fixed allergen data.",
+        "Ten current frozen rows underreported fixed signals: Alero Pork Ribs, Alero Salad, Apple Almond Salad, Caesar Salad, Chicken Tamales, Fish Tacos, Salmon Mexicano, Seafood Salad, Seafood Soup, and Taco Salad.",
+        "Configurable proteins and fillings are not promoted into fixed claims. Name-only sauces, soups, sides, and products without a mandatory allergen remain unavailable rather than receiving culinary guesses.",
+        "No current restaurant-issued allergen matrix, global may-contain statement, shared-equipment statement, or negative safety claim was found."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic Toast extraction retained only 42 of 125 live food/nonalcoholic Toast products, flattened all real categories to Mexican, and assigned the next product or section label as variantGroup on every row.",
+        "It did not merge the six restaurant-issued food pages, so it omitted fixed descriptions, the official-site-only Fried Calamari, and the identical Rapido Salad presentation.",
+        "The correction rebuilds the live category structure, consolidates cross-surface aliases and presentations, excludes nonproducts/alcohol-only rows, and separates fixed evidence from unavailable data.",
+        "The shared row classifier now preserves the real configurable Toast product Queso Dip With while retaining its dangling-boundary protection for unverified matrix fragments."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "toast-current-review",
+      "kind": "ordering_vendor",
+      "url": "https://www.toasttab.com/local/order/alero-dupont-circle-1629-connecticut-ave-nw",
+      "attemptedAt": "2026-07-14T22:47:30.000Z",
+      "outcome": "Exhaustively reviewed the current web-accessible Dupont Toast representation: 129 non-featured source rows across eight sections, resolving to 125 food/nonalcoholic formulations after excluding the bag fee, Appetizer divider, and two alcohol-only coffees.",
+      "notes": [
+        "Featured products duplicate their real section products and are not counted again."
+      ]
+    },
+    {
+      "id": "toast-direct-capture-attempt",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/alero-dupont-circle-1629-connecticut-ave-nw",
+      "attemptedAt": "2026-07-14T22:47:40.000Z",
+      "outcome": "Direct command-line capture returned HTTP 403; the current menu remained accessible through the reviewed Toast web representation and stable item links.",
+      "notes": []
+    },
+    {
+      "id": "official-food-pages-review",
+      "kind": "official_site",
+      "url": "https://alerorestaurant.com/menu-soup-and-salads/",
+      "attemptedAt": "2026-07-14T22:47:59.051Z",
+      "outcome": "Captured and exhaustively reviewed all six restaurant-issued Dupont food pages: appetizers, soup/salads, seafood, Mexican entrees, meat/poultry, and sides, yielding 68 source presentations and fixed descriptions for the core catalog.",
+      "notes": [
+        "Every page capture has a retained HTML artifact and SHA-256 hash."
+      ]
+    },
+    {
+      "id": "allergen-disclosure-review",
+      "kind": "targeted_search",
+      "url": "https://alerorestaurant.com/menu-soup-and-salads/",
+      "attemptedAt": "2026-07-14T22:50:00.000Z",
+      "outcome": "Found current fixed menu descriptions and a raw-food advisory, but no complete item-level allergen matrix, recipe disclosure, cross-contact statement, or allergen-specific legend.",
+      "notes": [
+        "The raw-food advisory is a general safety warning and is not converted into item-level may-contain claims."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "partial-flattened-toast-catalog",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen catalog retained only 42 of 126 current formulations, flattened eight categories, and attached a fabricated adjacent variant group to every row.",
+      "evidenceIds": [
+        "toast-menu",
+        "official-appetizers",
+        "official-soups-salads",
+        "official-seafood",
+        "official-mexican-entrees",
+        "official-meat-poultry",
+        "official-sides"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 126 formulations and 193 source presentations across eight categories, restored all 84 omissions, consolidated aliases/duplicates, removed nonproducts and alcohol-only rows, and eliminated every fabricated variant group."
+    },
+    {
+      "id": "underreported-fixed-allergens",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Ten current frozen rows omitted fixed allergens directly supported by restaurant-issued descriptions or mandatory named formats.",
+      "evidenceIds": [
+        "official-soups-salads",
+        "official-seafood",
+        "official-mexican-entrees",
+        "official-meat-poultry",
+        "official-appetizers",
+        "toast-menu"
+      ],
+      "resolved": true,
+      "resolution": "Mapped 64 positive current formulations, corrected all ten frozen underreports, left 62 unsupported rows unavailable, and did not promote configurable choices or inferred recipes into fixed claims."
+    },
+    {
+      "id": "generic-toast-and-classifier-context-loss",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "Generic Toast extraction lost categories, most products, official descriptions, cross-surface aliases, configuration context, and rejected one stable configurable product as a dangling boundary.",
+      "evidenceIds": [
+        "toast-menu",
+        "official-appetizers",
+        "official-soups-salads",
+        "official-seafood",
+        "official-mexican-entrees",
+        "official-meat-poultry",
+        "official-sides"
+      ],
+      "resolved": true,
+      "resolution": "Prepared a guarded current-menu manifest with exact formulation/presentation invariants and narrowly exempted verified configurable restaurant-linked products from the dangling-boundary heuristic."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-alero-dupont-current-menu",
+      "status": "verified",
+      "summary": "Prepared and focused-tested a 126-formulation, 193-presentation Alero Dupont catalog with 64 fixed-positive rows, 62 unavailable rows, all 42 frozen rows reconciled, and stable classifier behavior.",
+      "files": [
+        "scripts/pipeline/alero-dupont-audit-catalog.mjs",
+        "scripts/pipeline/alero-dupont-audit-reconciliation.mjs",
+        "scripts/menu-item-quality.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/alero-dupont-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/alero-dupont-audit-catalog.test.mjs scripts/pipeline/alero-dupont-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=tmp/restaurant-verification/alero-isolated.generated.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 126 items, eight categories, 64 fixed-positive rows, 62 unavailable rows, all sampled restorations, exclusion of nonproducts/alcohol, zero variant groups, classifier retention, and idempotent Alero guard behavior)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 3d194cbc08e461dedc98a5e159e7aecb8e0a076ba39c1b7aac87156b00ac53fa.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":42},\"allergens\":{\"mismatch\":10,\"accurately_unavailable\":26,\"verified\":6},\"mismatchKinds\":{\"underreported\":10}}.",
+    "Current corrected catalog counts: 126 formulations, 193 presentations, eight categories, 64 fixed-positive rows, and 62 unavailable rows."
+  ]
+}

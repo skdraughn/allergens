@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Restaurant verification Sol review result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "runId", "stage", "model", "restaurantId", "verifierOutcome", "recommendation", "confidence", "confirmedFindings", "rejectedFindings", "additionalEvidence", "summary", "coordinatorActions"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 2 },
+    "runId": { "type": "string" },
+    "stage": { "type": "string", "const": "sol_review" },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "reasoningEffort"],
+      "properties": {
+        "id": { "type": "string", "const": "gpt-5.6-sol" },
+        "reasoningEffort": { "type": "string", "const": "medium" }
+      }
+    },
+    "restaurantId": { "type": "string" },
+    "verifierOutcome": { "type": "string", "enum": ["no_discrepancy", "discrepancy_found", "blocked_unverifiable", "low_confidence"] },
+    "recommendation": { "type": "string", "enum": ["return_to_coordinator", "discrepancy_found", "blocked_unverifiable", "needs_more_research", "repair_required"] },
+    "confidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "score", "rationale"],
+      "properties": {
+        "level": { "type": "string", "enum": ["high", "medium", "low"] },
+        "score": { "type": "number" },
+        "rationale": { "type": "string" }
+      }
+    },
+    "confirmedFindings": { "type": "array", "items": { "type": "string" } },
+    "rejectedFindings": { "type": "array", "items": { "type": "string" } },
+    "additionalEvidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["url", "authorityTier", "summary"],
+        "properties": {
+          "url": { "type": "string" },
+          "authorityTier": { "type": "string", "enum": ["restaurant_issued", "restaurant_linked_vendor", "third_party", "ingredient_intelligence"] },
+          "summary": { "type": "string" }
+        }
+      }
+    },
+    "summary": { "type": "string" },
+    "coordinatorActions": { "type": "array", "items": { "type": "string" } }
+  }
+}

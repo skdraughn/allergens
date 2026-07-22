@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "air-restaurant-washington-dc-dc-metro",
+  "name": "Air Restaurant",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T21:29:06.964Z",
+  "updatedAt": "2026-07-14T21:34:06.824Z",
+  "completedAt": "2026-07-14T21:34:06.824Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 30,
+      "sourceItemCount": 40,
+      "notes": [
+        "Every frozen row was reconciled against the current restaurant-issued menu captured on 2026-07-14.",
+        "The live page contains 34 structured food formulations plus six additional prefix-menu formulations embedded in menu prose, for 40 distinct formulations and 45 presentations across 11 categories.",
+        "Five frozen rows are adjacent descriptions or sauces promoted to products, Mimosa Carafe is alcohol, and Hand Cut Truffle Fries is absent from the current page.",
+        "Bottle-service products and alcohol were excluded; same-name food rows were consolidated only when the current formulation matched."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Air publishes selected fixed item descriptions but no complete allergen matrix, complete recipes, or cross-contact policy.",
+        "Eighteen current formulations have positive signals supported by fixed text or unavoidable named formats; 22 remain unavailable rather than inferred.",
+        "Ten applicable frozen rows mismatch: nine underreported and Bowtie Pasta overreported because optional shrimp and salmon add-ons were treated as fixed ingredients.",
+        "The page-wide raw or undercooked-food warning is not assigned to individual products."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic sequential parser promoted descriptions and serving instructions, shifted categories, missed current structured and prefix-menu products, and attached adjacent allergens to unrelated rows.",
+        "The correction uses the page's data-aid title, description, and section relationships for structured menus and separately reviewed prefix-menu prose for its real choices.",
+        "Optional add-on clauses are removed before interpreting Bowtie Pasta's fixed ingredient text, and repeated names remain separate when descriptions or serving context differ."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-home-review",
+      "kind": "official_site",
+      "url": "https://theairdc.com/",
+      "attemptedAt": "2026-07-14T21:29:20.776Z",
+      "outcome": "Confirmed the Air Restaurant identity and current menu navigation.",
+      "notes": []
+    },
+    {
+      "id": "official-menu-review",
+      "kind": "linked_source",
+      "url": "https://theairdc.com/menu",
+      "attemptedAt": "2026-07-14T21:29:21.121Z",
+      "outcome": "Captured and reviewed all current structured food cards, prefix menus, late-night food, and party platters.",
+      "notes": []
+    },
+    {
+      "id": "official-brunch-review",
+      "kind": "linked_source",
+      "url": "https://theairdc.com/brunch",
+      "attemptedAt": "2026-07-14T21:29:21.420Z",
+      "outcome": "Captured current brunch policies; the page does not publish an additional item-level brunch catalog.",
+      "notes": []
+    },
+    {
+      "id": "stale-free-brunch-route-review",
+      "kind": "linked_source",
+      "url": "https://theairdc.com/free-brunch-fridays",
+      "attemptedAt": "2026-07-14T21:29:21.732Z",
+      "outcome": "The frozen source route now redirects to the bottle-service menu and contributes no current food formulations.",
+      "notes": []
+    },
+    {
+      "id": "allergen-disclosure-review",
+      "kind": "targeted_search",
+      "url": "https://theairdc.com/menu",
+      "attemptedAt": "2026-07-14T21:29:21.121Z",
+      "outcome": "Found selected descriptions and a general raw-food warning but no complete allergen matrix, recipes, or cross-contact policy.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "sequential-layout-menu-corruption",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen 30-row catalog promoted descriptions and sauces, shifted categories, omitted current products, retained alcohol, and lost current menu-surface context.",
+      "evidenceIds": [
+        "official-menu"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 40 current food formulations and 45 presentations across 11 restaurant-issued categories and removed all structural, alcohol, and stale rows."
+    },
+    {
+      "id": "incorrect-frozen-allergens",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Ten applicable frozen rows disagree with current fixed published signals, including a burger assigned egg and shellfish from adjacent content and Bowtie Pasta assigned optional proteins.",
+      "evidenceIds": [
+        "official-menu"
+      ],
+      "resolved": true,
+      "resolution": "Recomputed positive signals from fixed descriptions and unavoidable formats, excluded optional add-ons and page-wide warnings, and retained 22 current rows as unavailable."
+    },
+    {
+      "id": "lost-section-and-presentation-context",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "The frozen extraction flattened happy-hour, prefix, dinner, late-night, and party-platter surfaces into generic Restaurant, Sides, and Entrees categories.",
+      "evidenceIds": [
+        "official-menu"
+      ],
+      "resolved": true,
+      "resolution": "Restored all 11 real source-and-section categories and retained distinct same-name formulations where current descriptions differ."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-air-restaurant-current-menu",
+      "status": "verified",
+      "summary": "Prepared and focused-tested a 40-formulation Air Restaurant catalog across 11 current categories with 18 positive rows, 22 unavailable rows, and no promoted-description, alcohol, bottle-service, or stale-product contamination.",
+      "files": [
+        "scripts/pipeline/air-restaurant-audit-catalog.mjs",
+        "scripts/pipeline/air-restaurant-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/air-restaurant-washington-dc-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/air-restaurant-audit-catalog.test.mjs scripts/pipeline/air-restaurant-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/air-restaurant-repository.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 40 items, 11 categories, 18 positive rows, 22 unavailable rows, and all known artifacts excluded)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 860aefb8fed247009a67cd1abc4ef1886f79dba45b3645cbf6cf5191b5712eec.",
+    "Reconciliation counts: {\"dispositions\":{\"artifact\":6,\"exact_match\":22,\"variant_match\":1,\"stale_extra\":1},\"allergens\":{\"not_applicable\":7,\"mismatch\":10,\"accurately_unavailable\":12,\"verified\":1},\"mismatchKinds\":{\"underreported\":9,\"overreported\":1}}.",
+    "Current corrected catalog counts: 40 formulations, 45 presentations, 11 categories, 18 positive rows, and 22 unavailable rows."
+  ]
+}

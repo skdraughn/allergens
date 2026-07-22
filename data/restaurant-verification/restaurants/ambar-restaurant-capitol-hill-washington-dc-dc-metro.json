@@ -1,0 +1,169 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "ambar-restaurant-capitol-hill-washington-dc-dc-metro",
+  "name": "AMBAR Restaurant, Capitol Hill",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T00:59:18.177Z",
+  "updatedAt": "2026-07-15T01:24:37.717Z",
+  "completedAt": "2026-07-15T01:24:37.717Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 39,
+      "sourceItemCount": 104,
+      "notes": [
+        "All 39 frozen rows were adjudicated: 15 exact matches, 15 normalized matches, five service/formulation variants, three stale extras, and one descriptionless parser artifact.",
+        "The current asserted catalog contains 104 food and nonalcoholic formulations across 267 source presentations; 35 current formulations match frozen rows and 69 were omitted from the frozen catalog.",
+        "The expired July 4 special and alcohol-only wine, beer, rakija, and cocktail rows are not part of the current food/nonalcoholic catalog."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Seventy-two current formulations have supported fixed first-party positive allergen signals and 32 remain accurately unavailable; no item-level may-contain claim was published or invented.",
+        "Fifteen frozen rows had allergen mismatches: 14 underreported supported allergens and Mushroom Pizza mixed an invented shellfish signal from oyster mushrooms with missing milk, wheat, and gluten.",
+        "GF, DF, NF, and SF are free-from/accommodation states; underlining means modification is required. Missing free-from icons were not inverted into positive contains claims."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "Reviewed identity, current menu-surface selection, PDF legend semantics, stale-guide/current-menu joins, configurable at-home packages, same-name surface consolidation, alcohol exclusions, generic-crawler artifacts, target-only persistence, and final generated fields.",
+        "Nine focused catalog/reconciliation tests pass. The target-only repair preserved the SHA-256 of every non-AMBAR restaurant at 34555ea87f56cfe21ab6ecbd9ab146ff15d661910685b4511e3a2fb291fd0dbb and is idempotent at target hash e67c788e1be5ee4660030d9f7bfdbcfdebf94b93cd8de9eb034571e158bd4ccf."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site-ledger-user-agent-403",
+      "kind": "official_site",
+      "url": "https://ambarrestaurant.com/ambarcapitolhill",
+      "attemptedAt": "2026-07-15T01:13:17.417Z",
+      "outcome": "HTTP 403 for the ledger fetch user-agent; the same current first-party pages were then captured successfully with curl.",
+      "notes": [
+        "Cloudflare selectively rejected the audit tool user-agent; this was a transport restriction, not source unavailability."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "generic-crawl-incomplete-and-polluted",
+      "severity": "high",
+      "kind": "menu_incomplete",
+      "summary": "The frozen generic crawl mixed stale ordering content with broad site pages, emitted one descriptionless child row, retained three stale formulations, and omitted 69 current Capitol Hill formulations.",
+      "evidenceIds": [
+        "official-menu-index",
+        "official-online-menu",
+        "official-a-la-carte-pdf",
+        "official-unlimited-brunch-pdf",
+        "official-unlimited-lunch-pdf",
+        "official-unlimited-dinner-pdf",
+        "official-desserts-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 104 current food/nonalcoholic formulations from the current May/June 2026 documents and restaurant-linked ordering surface; removed one artifact and three stale rows."
+    },
+    {
+      "id": "fifteen-frozen-allergen-mismatches",
+      "severity": "high",
+      "kind": "allergen_mismatch",
+      "summary": "Fifteen frozen rows disagreed with current first-party evidence: 14 underreported fixed allergens and Mushroom Pizza both falsely mapped oyster mushroom to shellfish and omitted milk, wheat, and gluten.",
+      "evidenceIds": [
+        "official-online-menu",
+        "official-allergy-lunch-dinner-pdf",
+        "official-allergy-brunch-pdf",
+        "official-a-la-carte-pdf",
+        "official-unlimited-brunch-pdf",
+        "official-desserts-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Applied fixed current description signals and narrowly used underlined modification markers; removed the oyster-mushroom shellfish false positive and added only supported allergens."
+    },
+    {
+      "id": "free-from-guide-semantics",
+      "severity": "high",
+      "kind": "source_semantics",
+      "summary": "AMBAR allergy symbols describe GF/DF/NF/SF free-from or accommodation states, with underlining for required modification; treating missing symbols as a contains matrix would create unsupported claims.",
+      "evidenceIds": [
+        "official-allergy-lunch-dinner-page",
+        "official-allergy-lunch-dinner-pdf",
+        "official-allergy-brunch-page",
+        "official-allergy-brunch-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Preserved the visual legend semantics, did not invert absent icons, and did not create unsupported cross-contact or negative safety claims."
+    },
+    {
+      "id": "allergy-guides-lag-current-menus",
+      "severity": "medium",
+      "kind": "source_freshness",
+      "summary": "The allergy PDFs were modified in January 2026, while current food menus were created in May/June 2026 and include additions/replacements.",
+      "evidenceIds": [
+        "official-allergy-lunch-dinner-pdf",
+        "official-allergy-brunch-pdf",
+        "official-a-la-carte-pdf",
+        "official-unlimited-brunch-pdf",
+        "official-unlimited-lunch-pdf",
+        "official-unlimited-dinner-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Joined allergy-guide semantics only to unchanged matching formulations and used current menu descriptions for newer rows; stale guide-only names were not restored."
+    },
+    {
+      "id": "capitol-hill-address-truncated",
+      "severity": "medium",
+      "kind": "identity_metadata",
+      "summary": "The frozen record displayed only Washington, DC instead of the current Capitol Hill street address.",
+      "evidenceIds": [
+        "official-location"
+      ],
+      "resolved": true,
+      "resolution": "Set the display address to 523 8th St SE, Washington, DC 20003 and the guide to the current Capitol Hill menu index."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "ambar-capitol-hill-complete-current-catalog",
+      "status": "verified",
+      "summary": "Replaced the polluted 39-row crawl with 104 current Capitol Hill food/nonalcoholic formulations and 267 source presentations; corrected 15 frozen allergen results and removed one parser artifact plus three stale rows.",
+      "files": [
+        "scripts/pipeline/ambar-capitol-hill-audit-catalog.mjs",
+        "scripts/pipeline/ambar-capitol-hill-audit-catalog.test.mjs",
+        "scripts/pipeline/ambar-capitol-hill-audit-reconciliation.mjs",
+        "scripts/pipeline/ambar-capitol-hill-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json",
+        "data/restaurant-verification/repairs/ambar-restaurant-capitol-hill-washington-dc-dc-metro/corrected-menu.json",
+        "data/restaurant-verification/item-checks/ambar-restaurant-capitol-hill-washington-dc-dc-metro.jsonl"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/ambar-restaurant-capitol-hill-washington-dc-dc-metro/official-allergy-lunch-dinner-pdf.pdf",
+        "data/restaurant-verification/artifacts/ambar-restaurant-capitol-hill-washington-dc-dc-metro/official-allergy-brunch-pdf.pdf",
+        "data/restaurant-verification/artifacts/ambar-restaurant-capitol-hill-washington-dc-dc-metro/official-a-la-carte-pdf.pdf",
+        "data/restaurant-verification/artifacts/ambar-restaurant-capitol-hill-washington-dc-dc-metro/official-unlimited-brunch-pdf.pdf",
+        "data/restaurant-verification/artifacts/ambar-restaurant-capitol-hill-washington-dc-dc-metro/official-unlimited-lunch-pdf.pdf",
+        "data/restaurant-verification/artifacts/ambar-restaurant-capitol-hill-washington-dc-dc-metro/official-unlimited-dinner-pdf.pdf",
+        "data/restaurant-verification/artifacts/ambar-restaurant-capitol-hill-washington-dc-dc-metro/official-desserts-pdf.pdf",
+        "data/restaurant-verification/artifacts/ambar-restaurant-capitol-hill-washington-dc-dc-metro/official-online-menu.html"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/ambar-capitol-hill-audit-catalog.test.mjs scripts/pipeline/ambar-capitol-hill-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=ambar-restaurant-capitol-hill-washington-dc-dc-metro node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Current address: 523 8th St SE, Washington, DC 20003.",
+    "The a-la-carte, lunch, dinner, dessert, drinks, and happy-hour PDFs carry May 2026 creation dates; the current brunch PDF carries a June 30, 2026 creation date.",
+    "At-home packages are configurable and include a variable dessert; only fixed published components were retained as contains signals.",
+    "No safe dedicated audit worktree exists because the checkout remains dirty, so no checkpoint commit was created."
+  ]
+}

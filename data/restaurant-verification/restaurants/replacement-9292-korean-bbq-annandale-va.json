@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "replacement-9292-korean-bbq-annandale-va",
+  "name": "9292 Korean BBQ",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T18:40:34.007Z",
+  "updatedAt": "2026-07-14T18:49:30.005Z",
+  "completedAt": "2026-07-14T18:49:30.005Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 73,
+      "sourceItemCount": 100,
+      "notes": [
+        "Every frozen row was reconciled against the Annandale-branded primary, lunch, and gopchang menu-board photographs retained by the current listing, with a recently updated Restaurantji listing used as corroboration.",
+        "Forty-one frozen rows are exact matches, ten are spelling or current-name variants, two are stale, and twenty are parser artifacts rather than standalone menu items.",
+        "The corrected represented surface contains 100 photographed items in twenty real sections, including combinations, unlimited tiers, specials, lunch, gopchang, and drinks, with beverage sections last."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "accurately_unavailable",
+      "highestAuthorityTier": "third_party",
+      "notes": [
+        "No restaurant-issued allergen guide, item-level allergen matrix, or complete ingredient disclosure was found for the Annandale location.",
+        "The photographed menus publish a raw-or-undercooked-food warning, not an allergen disclosure.",
+        "All 100 corrected rows therefore keep restaurant-official allergen arrays unavailable. Clearly labeled Ingredient Intelligence may still infer signals from names such as Grilled Squid or Soy Sauce Marinated Chicken, but those inferences are not promoted to official data.",
+        "The frozen catalog's four official-ingredients rows were unsupported because their source was an unclaimed third-party listing rather than restaurant-issued evidence."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic-site extraction collapsed most rows into Korean, produced eleven duplicate or malformed beef fragments with a Beef prefix and US suffix, created six fake per-person products from one Unlimited package, and admitted the Own this place? navigation prompt.",
+        "Chicken and Seafood section labels were also treated as dishes and incorrectly promoted to official ingredient evidence.",
+        "The final-stage verified snapshot now deterministically preserves the photographed menu structure while keeping third-party menu evidence distinct from official allergen authority."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "configured-shop-domain-redirect",
+      "kind": "official_site",
+      "url": "https://9292koreanbbq.shop/",
+      "attemptedAt": "2026-07-14T18:41:00.000Z",
+      "outcome": "The configured domain redirects to the unclaimed 9292-korean-bbq.placejoys.com listing and is not a restaurant-controlled source.",
+      "notes": [
+        "The destination explicitly offers Claim This Listing and Add Your Place controls."
+      ]
+    },
+    {
+      "id": "legacy-com-domain-hijacked",
+      "kind": "official_site",
+      "url": "https://9292koreanbbq.com/",
+      "attemptedAt": "2026-07-14T18:41:05.000Z",
+      "outcome": "The former-looking domain redirects to an unrelated Indonesian gambling-results site and cannot be used as restaurant evidence.",
+      "notes": []
+    },
+    {
+      "id": "restaurant-instagram-fetch",
+      "kind": "official_site",
+      "url": "https://www.instagram.com/9292korean_bbq_/",
+      "attemptedAt": "2026-07-14T18:41:10.000Z",
+      "outcome": "The restaurant-associated Instagram account was discoverable through directory records, but the public fetch was throttled and did not expose a reviewable menu or allergen guide.",
+      "notes": []
+    },
+    {
+      "id": "targeted-allergen-search",
+      "kind": "targeted_search",
+      "url": "https://www.google.com/search?q=9292+Korean+BBQ+Annandale+allergen",
+      "attemptedAt": "2026-07-14T18:40:50.000Z",
+      "outcome": "Targeted searches found current menu listings and restaurant-board photographs but no Annandale restaurant-issued allergen or ingredient disclosure.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "third-party-scrape-artifacts",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "Twenty of 73 frozen rows were not standalone menu items: eleven duplicate or malformed US-suffix beef fragments, six Unlimited-package components, two section headings, and one navigation prompt.",
+      "evidenceIds": [
+        "third-party-menu-photo-primary",
+        "third-party-menu-photo-lunch",
+        "third-party-menu-photo-gopchang",
+        "third-party-placejoys-menu"
+      ],
+      "resolved": true,
+      "resolution": "Removed every artifact and rebuilt products at the photographed menu-item or package level."
+    },
+    {
+      "id": "incomplete-flattened-menu",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen catalog flattened the menu into three inaccurate categories, retained two stale products, and omitted photographed combinations, unlimited tiers, specials, lunch variants, gopchang dishes, and drinks.",
+      "evidenceIds": [
+        "third-party-menu-photo-primary",
+        "third-party-menu-photo-lunch",
+        "third-party-menu-photo-gopchang",
+        "third-party-restaurantji"
+      ],
+      "resolved": true,
+      "resolution": "Replaced it with 100 unique photographed rows across twenty real sections and placed beverage sections last."
+    },
+    {
+      "id": "false-official-allergen-coverage",
+      "severity": "high",
+      "kind": "source_semantics",
+      "summary": "The frozen app labeled four rows official-ingredients even though the configured source resolves to an unclaimed third-party directory and no restaurant-issued allergen disclosure was found.",
+      "evidenceIds": [
+        "third-party-placejoys-menu",
+        "third-party-menu-photo-primary"
+      ],
+      "resolved": true,
+      "resolution": "Set restaurant-official allergen data unavailable for all 100 rows; obvious name-based signals remain separately labeled Ingredient Intelligence only."
+    },
+    {
+      "id": "configured-domain-provenance-failure",
+      "severity": "high",
+      "kind": "source_semantics",
+      "summary": "The configured .shop domain redirects to an unclaimed Placejoys listing, while the former-looking .com domain is now hijacked by an unrelated gambling site.",
+      "evidenceIds": [
+        "third-party-placejoys-menu"
+      ],
+      "resolved": true,
+      "resolution": "Classified all retained menu material as third_party and prevented either domain from conferring restaurant-issued authority."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-9292-annandale-photographed-menu",
+      "status": "verified",
+      "summary": "Prepared and targeted-tested a 100-item photographed Annandale menu with real sections, no scrape artifacts, no stale rows, package-level products, drinks last, and zero falsely official allergen rows.",
+      "files": [
+        "scripts/pipeline/9292-korean-bbq-audit-catalog.mjs",
+        "scripts/pipeline/9292-korean-bbq-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/replacement-9292-korean-bbq-annandale-va/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/9292-korean-bbq-audit-catalog.test.mjs scripts/pipeline/9292-korean-bbq-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/restaurant-verification-9292-input.json node scripts/repair-final-generated-regressions.mjs (targeted copy; verified 100 unique items, twenty source sections, zero official allergen rows, thirteen configurable packages, all artifacts removed, third-party evidence attribution, Ingredient Intelligence separation, and beverages last)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: bdfe729970614a89fd98efbed6baf5cb7d1213dac5913492076b96f596dfb75e.",
+    "Reconciliation counts: {\"dispositions\":{\"artifact\":20,\"exact_match\":41,\"variant_match\":10,\"stale_extra\":2},\"allergens\":{\"not_applicable\":22,\"accurately_unavailable\":49,\"mismatch\":2}}.",
+    "Current corrected catalog counts: 100 items, twenty sections, zero restaurant-official allergen rows, and 100 accurately unavailable official rows.",
+    "Focused catalog construction, complete frozen-row reconciliation, targeted repair-copy, unique-id, section-order, artifact-exclusion, source-authority, inference-separation, configurable-package, and beverage-order checks passed."
+  ]
+}

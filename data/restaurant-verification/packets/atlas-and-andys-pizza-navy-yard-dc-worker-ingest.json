@@ -1,0 +1,70 @@
+{
+  "checks": {
+    "menu": {
+      "verdict": "mismatch",
+      "reviewedItemCount": 39,
+      "sourceItemCount": 38,
+      "notes": [
+        "The exact-location restaurant-issued menu and current Navy Yard Toast surface reconcile to 38 current food rows across four consumer sections.",
+        "All 39 frozen rows were reconciled exactly once; the frozen record contains three operational duplicates and one Atlas beverage row, uses two malformed operational names, and omits Dairy Free Margherita, 8 Makes a Pie, and Side of Ranch."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "mismatch",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The exact-location restaurant-issued menu applies a universal 72-hour sourdough crust description to all pizza rows and separately labels Cheese as dairy and wheat; the frozen record omits wheat/gluten throughout the pizza menu.",
+        "Other retained positive claims are limited to direct ingredient wording from current restaurant-authored descriptions; no negative or cross-contact conclusion is inferred."
+      ]
+    },
+    "extraction": {
+      "verdict": "mismatch",
+      "parserReviewed": true,
+      "semanticsVerified": false,
+      "notes": [
+        "The Toast extraction flattened the restaurant-issued menu sections into Pizza and admitted tilde-suffixed rows from the separate Third Party - for Checkmate operational section.",
+        "Underberg Bitters belongs to Atlas Beverages & Merchandise rather than the food-focused Andy's Pizza record."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {"id":"official-site","kind":"official_site","url":"https://atlasbrewworks.com/pages/navy-yard","attemptedAt":"2026-07-15T16:47:25.000Z","outcome":"Restaurant-issued Atlas page verified the Navy Yard identity, address, and co-located Andy's Pizza operation.","notes":[]},
+    {"id":"linked-source","kind":"linked_source","url":"https://www.eatandyspizza.com/menus/","attemptedAt":"2026-07-15T16:47:25.000Z","outcome":"Restaurant-issued Andy's menu provided current menu descriptions and the direct dairy/wheat label on Cheese.","notes":[]},
+    {"id":"ordering-vendor","kind":"ordering_vendor","url":"https://order.toasttab.com/online/atlas-brew-works-navy-yard-1201-half-street-se-suite-120","attemptedAt":"2026-07-15T16:47:25.000Z","outcome":"Restaurant-linked Toast menu provided the current Navy Yard product and section boundary and exposed the separate operational Checkmate section.","notes":[]},
+    {"id":"targeted-search","kind":"targeted_search","url":"https://www.eatandyspizza.com/menus/","attemptedAt":"2026-07-15T16:47:25.000Z","outcome":"Targeted research located current restaurant-issued and location-specific sources; no comprehensive allergen matrix or cross-contact policy was located.","notes":[]},
+    {"id":"archive","kind":"archive","url":null,"attemptedAt":"2026-07-15T16:47:25.000Z","outcome":"No material archived allergen source was needed because current primary sources were accessible.","notes":[]},
+    {"id":"third-party","kind":"third_party","url":"https://restaurantguru.com/Andys-Pizza-Atlas-Navy-Yard-Washington/menu","attemptedAt":"2026-07-15T16:47:25.000Z","outcome":"Third-party mirror was located but not used for menu or allergen authority.","notes":[]}
+  ],
+  "evidence": [
+    {
+      "id": "toast-current-menu",
+      "url": "https://order.toasttab.com/online/atlas-brew-works-navy-yard-1201-half-street-se-suite-120",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-15T16:47:25.000Z",
+      "contentType": "text/html",
+      "finalUrl": "https://order.toasttab.com/online/atlas-brew-works-navy-yard-1201-half-street-se-suite-120",
+      "httpStatus": null,
+      "byteLength": null,
+      "sha256": null,
+      "artifactPath": null,
+      "excerpt": "The current location-specific menu contains 9 Andy's Pizza appetizers, 22 slice/whole pizza rows, and 3 extra sauces. It separately exposes Atlas beverages and a Third Party - for Checkmate operational section.",
+      "rowIdentifiers": ["Andy's Pizza > Appetizers", "Andy's Pizza > Pizza", "Andy's Pizza > Extra Sauce", "Third Party - for Checkmate"],
+      "request": {"method":"GET","result":"Coordinator artifact capture returned HTTP 403; Terra, Sol, and coordinator web retrieval accessed the live restaurant-linked page."},
+      "notes": ["Restaurant-linked location menu; not a comprehensive allergen matrix."]
+    }
+  ],
+  "findings": [
+    {"id":"pizza-crust-omits-wheat","severity":"high","kind":"allergen_source","summary":"The frozen pizza rows omit the exact-location restaurant-issued universal sourdough crust's wheat/gluten disclosure; Cheese also has an explicit dairy/wheat label.","evidenceIds":["andys-navy-yard-menu","andys-current-menu"],"resolved":false,"resolution":null},
+    {"id":"operational-section-contamination","severity":"high","kind":"menu_extraction","summary":"The frozen record contains three operational duplicates, uses two malformed operational names for current products, and omits two products published by the exact-location restaurant-issued menu.","evidenceIds":["andys-navy-yard-menu","toast-current-menu"],"resolved":false,"resolution":null},
+    {"id":"flattened-sections-and-beverage","severity":"medium","kind":"menu_extraction","summary":"The extraction flattened the food rows into Pizza, omitted Side of Ranch, and represented Atlas beverage Underberg Bitters as a Pizza item.","evidenceIds":["andys-navy-yard-menu","toast-current-menu"],"resolved":false,"resolution":null}
+  ],
+  "repairs": [
+    {"id":"reconcile-atlas-andys-current-menu","status":"planned","summary":"Rebuild the 38-row exact-location food boundary, restore four menu sections, normalize current operational names, remove duplicate/non-food rows, add three omitted products, and apply the universal pizza-crust wheat/gluten disclosure.","files":["scripts/repair-final-generated-regressions.mjs","scripts/restaurant-pipeline.test.mjs"],"fixturePaths":[],"verificationCommands":["node --test --test-name-pattern='Atlas and Andy.s reconciles the current Navy Yard menu' scripts/restaurant-pipeline.test.mjs"]}
+  ],
+  "notes": [
+    "Terra research: gpt-5.6-terra low; Sol adjudication: gpt-5.6-sol medium.",
+    "Sol upheld discrepancy_found but rejected characterizing the underlying appetizer concepts as retired; the defect is operational-section contamination."
+  ],
+  "status": "discrepancy_found"
+}

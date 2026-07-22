@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-a-modo-mio-207944730",
+  "name": "A Modo Mio",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T18:49:58.116Z",
+  "updatedAt": "2026-07-14T19:12:58.628Z",
+  "completedAt": "2026-07-14T19:12:58.628Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 165,
+      "sourceItemCount": 185,
+      "notes": [
+        "Every frozen row was reconciled against the current Arlington restaurant site and the restaurant-linked Toast ordering catalog.",
+        "The corrected available catalog contains 185 unique products: 161 current restaurant-site rows plus 24 distinct Toast-only products. Public dinner pizza rows retain their 12-inch/16-inch configurability instead of duplicating each size as a separate product.",
+        "One hundred thirteen frozen rows are exact matches, forty-four are current variants, six are artifacts, and two Toast-only specials are currently out of stock and absent from the public menu.",
+        "All food categories precede refreshment, coffee, spirits, dessert-wine, and online-wine categories."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The restaurant publishes item descriptions plus selected GF and DF labels, but no complete item-by-allergen matrix, full ingredient list, or restaurant-issued cross-contact guide was found.",
+        "One hundred six corrected rows have restaurant-published positive ingredient signals; seventy-nine rows remain officially unavailable rather than being treated as allergen-free.",
+        "Explicit GF and DF labels suppress contradictory inference but are not converted into broad negative safety claims. Optional add-ons are not applied as fixed allergens to every base item.",
+        "A third-party menu reproduces a broad celiac/allergen disclaimer, but it was not promoted to restaurant-issued evidence or copied into official may-contain fields."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen output mixed 59 SpotApps rows with 106 generic HTML-card rows, flattened menu surfaces, admitted navigation/category text, duplicated size variants, and omitted current dining, catering, beverage, and linked-ordering rows.",
+        "The audited extractor parses the four real public menu grids, retains descriptions that continue after embedded prices, identifies size and sauce configurability, adds only distinct available Toast products, and keeps linked-vendor provenance distinct from restaurant-issued menu text.",
+        "The final-stage repair deterministically replaces only A Modo Mio when its verified count or sentinel allergen semantics regress."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site-and-menu-review",
+      "kind": "official_site",
+      "url": "https://amodomiopizza.com/arlington-a-modo-mio-food-menu",
+      "attemptedAt": "2026-07-14T18:50:19.743Z",
+      "outcome": "The current restaurant site exposed 161 products across lunch, dinner, dessert, and catering surfaces, selected GF/DF labels, direct ingredient descriptions, and multi-size or multi-portion options.",
+      "notes": []
+    },
+    {
+      "id": "restaurant-linked-toast-review",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/a-modo-mio-5555-lee-highway",
+      "attemptedAt": "2026-07-14T18:50:20.266Z",
+      "outcome": "The restaurant-linked Toast menu exposed current takeout, lunch, side, dessert, and wine products. Twenty-four available products not already represented by the public menu were retained; out-of-stock products and duplicate size presentations were excluded.",
+      "notes": [
+        "The retained render artifact is third-party retrieval infrastructure; Toast's restaurant-linked status is established by the current restaurant site and is not treated as a restaurant-issued allergen matrix."
+      ]
+    },
+    {
+      "id": "targeted-allergen-search",
+      "kind": "targeted_search",
+      "url": "https://www.google.com/search?q=A+Modo+Mio+Arlington+allergen+menu+ingredients+allergy",
+      "attemptedAt": "2026-07-14T19:10:10.000Z",
+      "outcome": "Targeted current searches returned the restaurant menu, linked Toast catalog, and third-party menu copies but no restaurant-issued allergen matrix, cross-contact policy, or complete ingredient guide.",
+      "notes": []
+    },
+    {
+      "id": "third-party-disclaimer-review",
+      "kind": "third_party",
+      "url": "https://www.allmenus.com/va/arlington/1047253-a-modo-mio/menu/",
+      "attemptedAt": "2026-07-14T19:10:10.000Z",
+      "outcome": "A current third-party menu copy includes a broad celiac/allergen guarantee disclaimer, but no matching restaurant-issued disclosure was found, so it remains third-party context and is not promoted into official app fields.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "incomplete-duplicated-menu-surface",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The 165-row frozen catalog mixed two extraction paths, duplicated online size variants while omitting current public and linked-ordering products, and flattened unrelated menu surfaces into misleading categories.",
+      "evidenceIds": [
+        "official-home",
+        "official-menu",
+        "third-party-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 185 unique available products from the current public menus plus only distinct current Toast additions, retained size/portion configurability, and placed all beverages last."
+    },
+    {
+      "id": "non-item-and-contradictory-row-artifacts",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "Six frozen rows were not verifiable products: a phone/Resy prompt, Yelp link, three category headings, and a duplicate Braised Beef Ravioli row whose Toast title conflicts with a Paccheri-pesto description.",
+      "evidenceIds": [
+        "official-menu",
+        "third-party-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Removed all six artifacts and retained the correctly described current Braised Beef Ravioli product only."
+    },
+    {
+      "id": "stale-unavailable-toast-specials",
+      "severity": "medium",
+      "kind": "menu_quality",
+      "summary": "Butternut ravioli and Pizza Maradona remain visible only as out-of-stock Toast rows and are absent from the current public menu.",
+      "evidenceIds": [
+        "official-menu",
+        "third-party-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Removed both unavailable Toast-only specials from the available user-visible catalog."
+    },
+    {
+      "id": "widespread-allergen-signal-errors",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Only 51 of 157 matched frozen rows had the same allergen signals as current published ingredient evidence; 101 underreported allergens, two overreported, and three both omitted and invented signals.",
+      "evidenceIds": [
+        "official-home",
+        "official-menu",
+        "third-party-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Re-derived positive signals from current descriptions and category-level dough disclosures, preserved configurable sauce ingredients, respected GF/DF labels, removed unsupported egg and milk flags, and left 79 rows officially unavailable."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-a-modo-mio-current-menu",
+      "status": "verified",
+      "summary": "Prepared and targeted-tested a 185-item current A Modo Mio catalog with complete public menu surfaces, distinct available Toast additions, source-correct allergen semantics, configurability, no artifacts, and beverages last.",
+      "files": [
+        "scripts/pipeline/a-modo-mio-audit-catalog.mjs",
+        "scripts/pipeline/a-modo-mio-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/osm-a-modo-mio-207944730/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/a-modo-mio-audit-catalog.test.mjs scripts/pipeline/a-modo-mio-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/restaurant-verification-a-modo-mio-input.json node scripts/repair-final-generated-regressions.mjs (targeted copy; verified 185 unique rows, 106 official-ingredient rows, 79 unavailable rows, 43 categories, configurable pizza/catering products, no artifacts or unavailable specials, source-kind separation, and beverages last)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 3f9b4a387f32ec7beb6d4599877df057585948acebf527ed89c4745893fd95f1.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":113,\"variant_match\":44,\"artifact\":6,\"stale_extra\":2},\"allergens\":{\"verified\":51,\"mismatch\":106,\"not_applicable\":8}}.",
+    "Current corrected catalog counts: 185 items, 43 categories, 106 restaurant-published positive ingredient rows, and 79 accurately unavailable official rows.",
+    "Focused catalog construction, complete frozen-row reconciliation, price-interleaved description retention, optional-add-on isolation, GF/DF contradiction handling, configurable size/sauce checks, targeted repair-copy, unique-id, artifact exclusion, provenance, and beverage-order checks passed."
+  ]
+}

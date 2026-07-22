@@ -1,0 +1,1668 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-041-2026-07-21",
+  "restaurantId": "bullfrog-bagels-dc",
+  "runId": "bullfrog-bagels-dc-research-2026-07-21",
+  "stage": "research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "bullfrog-bagels-dc",
+    "locationId": "eastern-market-dc",
+    "domain": "bullfrogbagels.com",
+    "baselineItemCount": 40,
+    "baselineFingerprint": "1b4182cfd3f834de551e56f26c4e52610f4dd44ec09d19f1358f8dc6f203b328",
+    "frozenItemCheckCount": 40
+  },
+  "identity": {
+    "name": "Bullfrog Bagels",
+    "location": "1341 H Street NE, Washington, DC 20002",
+    "locationId": "eastern-market-dc",
+    "domain": "bullfrogbagels.com",
+    "officialHomepage": "https://www.bullfrogbagels.com/",
+    "confirmed": true,
+    "identityAmbiguous": false,
+    "notes": "Confirmed official Bullfrog Bagels H Street location; no merge with Union Station, Tenleytown, Western Market, or other current locations.",
+    "sourceEvidenceIds": [
+      "ev-home"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-home",
+      "url": "https://www.bullfrogbagels.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "retrievedAt": "2026-07-21T00:00:00Z"
+    },
+    {
+      "evidenceId": "ev-everyday",
+      "url": "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-21T00:00:00Z"
+    },
+    {
+      "evidenceId": "ev-brunch",
+      "url": "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-21T00:00:00Z"
+    },
+    {
+      "evidenceId": "ev-menu-index",
+      "url": "https://www.bullfrogbagels.com/menu-1",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-21T00:00:00Z"
+    },
+    {
+      "evidenceId": "ev-order",
+      "url": "https://www.bullfrogbagels.com/order-now",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-21T00:00:00Z"
+    },
+    {
+      "evidenceId": "ev-api",
+      "url": "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items",
+      "authorityTier": "restaurant_issued",
+      "purpose": "both",
+      "retrievedAt": "2026-07-21T00:00:00Z"
+    },
+    {
+      "evidenceId": "ev-matrix-site",
+      "url": "https://www.bullfrogbagels.com/brunch",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "retrievedAt": "2026-07-21T00:00:00Z"
+    },
+    {
+      "evidenceId": "ev-matrix-docs",
+      "url": "https://www.bullfrogbagels.com/order-now",
+      "authorityTier": "restaurant_issued",
+      "purpose": "other",
+      "retrievedAt": "2026-07-21T00:00:00Z"
+    },
+    {
+      "evidenceId": "ev-matrix-vendor",
+      "url": "https://www.bullfrogbagels.com/order-now",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "retrievedAt": "2026-07-21T00:00:00Z"
+    },
+    {
+      "evidenceId": "ev-matrix-web",
+      "url": "https://www.google.com/search?q=site%3Abullfrogbagels.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "retrievedAt": "2026-07-21T00:00:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "bullfrog-everyday",
+      "url": "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "H Street, Washington, DC",
+      "servicePeriod": "everyday",
+      "current": false,
+      "scopeStatus": "complete",
+      "surfaceType": "html_menu",
+      "currentProductKeys": [],
+      "sourceEvidenceIds": [
+        "ev-everyday",
+        "ev-api"
+      ],
+      "outcome": "Current everyday Bullfrog menu; API-backed products consolidated with HTML presentations."
+    },
+    {
+      "surfaceId": "bullfrog-h-st-brunch",
+      "url": "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "H Street, Washington, DC",
+      "servicePeriod": "weekend_brunch",
+      "current": false,
+      "scopeStatus": "complete",
+      "surfaceType": "service_period_menu",
+      "currentProductKeys": [],
+      "sourceEvidenceIds": [
+        "ev-brunch",
+        "ev-api"
+      ],
+      "outcome": "Current H Street weekend brunch, Saturday-Sunday 10am-2pm, served alongside regular menu; duplicate presentations consolidated."
+    },
+    {
+      "surfaceId": "bullfrog-api",
+      "url": "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "H Street, Washington, DC",
+      "servicePeriod": "all",
+      "current": true,
+      "scopeStatus": "complete",
+      "surfaceType": "structured_api",
+      "currentProductKeys": [
+        "baltimore-braised-brisket",
+        "bacon-egg-and-cheese",
+        "bagel",
+        "bakers-dozen",
+        "bialy",
+        "blt",
+        "bullfrog-benedict-w-homefries",
+        "caesar-salad",
+        "cc-jam",
+        "corned-beef",
+        "corned-beef-egg-and-cheese",
+        "egg-and-cheese",
+        "egg-and-cheese-bagelwiches",
+        "gumbo",
+        "has",
+        "hickory-smoked-turkey",
+        "home-fries",
+        "hot-pastrami",
+        "hot-pastrami-egg-and-cheese",
+        "house-smoked-salmon",
+        "huevos-rancheros",
+        "kale-salad",
+        "matzo-ball-soup",
+        "natitude",
+        "oriole",
+        "parfait",
+        "reuben",
+        "salmon-blt",
+        "sausage-egg-and-cheese",
+        "smoked-salmon-board",
+        "smoked-scottish-salmon",
+        "smoked-whitefish-salad",
+        "sourdough-waffle",
+        "ssa",
+        "tba",
+        "the-elan",
+        "the-wurst",
+        "tuna-melt",
+        "turkey-avocado-egg-and-cheese",
+        "whitefish"
+      ],
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "outcome": "Sole current publishing surface: structured official Wix/API catalog; page-tab presentation membership is not asserted separately."
+    },
+    {
+      "surfaceId": "bullfrog-order",
+      "url": "https://www.bullfrogbagels.com/order-now",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "H Street and linked ordering destinations",
+      "servicePeriod": "carryout",
+      "current": false,
+      "scopeStatus": "complete",
+      "surfaceType": "linked_ordering_vendor",
+      "currentProductKeys": [],
+      "sourceEvidenceIds": [
+        "ev-order"
+      ],
+      "outcome": "Ordering navigation/vendor support; no additional in-scope H Street product boundary published."
+    },
+    {
+      "surfaceId": "bullfrog-locations",
+      "url": "https://www.bullfrogbagels.com/se",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "multiple Bullfrog locations",
+      "servicePeriod": "all",
+      "current": false,
+      "scopeStatus": "complete",
+      "surfaceType": "location_page",
+      "currentProductKeys": [],
+      "sourceEvidenceIds": [
+        "ev-home"
+      ],
+      "outcome": "Location/navigation support only; no cross-location merge."
+    },
+    {
+      "surfaceId": "bullfrog-alcohol",
+      "url": "https://www.bullfrogbagels.com/copy-of-ne",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "H Street, Washington, DC",
+      "servicePeriod": "bar",
+      "current": false,
+      "scopeStatus": "complete",
+      "surfaceType": "alcohol_menu",
+      "currentProductKeys": [],
+      "sourceEvidenceIds": [
+        "ev-home"
+      ],
+      "outcome": "Alcohol/bar content excluded from POC food and nonalcoholic boundary."
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "baltimore-braised-brisket",
+      "name": "★ Baltimore Braised Brisket",
+      "category": "Items",
+      "servicePeriod": "everyday",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Official menu/API product; allergen disclosure unavailable."
+    },
+    {
+      "currentProductKey": "bacon-egg-and-cheese",
+      "name": "Bacon, Egg, & Cheese",
+      "category": "Bagels",
+      "servicePeriod": "everyday",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "milk",
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "bagel",
+      "name": "Bagel",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Official menu/API product; allergen disclosure unavailable."
+    },
+    {
+      "currentProductKey": "bakers-dozen",
+      "name": "Bakers Dozen",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Official menu/API product; allergen disclosure unavailable."
+    },
+    {
+      "currentProductKey": "bialy",
+      "name": "Bialy",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Official menu/API product; allergen disclosure unavailable."
+    },
+    {
+      "currentProductKey": "blt",
+      "name": "BLT",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "bullfrog-benedict-w-homefries",
+      "name": "Bullfrog Benedict w/ homefries",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Official menu/API product; allergen disclosure unavailable."
+    },
+    {
+      "currentProductKey": "caesar-salad",
+      "name": "Caesar Salad",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "cc-jam",
+      "name": "CC + jam",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Official menu/API product; allergen disclosure unavailable."
+    },
+    {
+      "currentProductKey": "corned-beef",
+      "name": "Corned Beef",
+      "category": "Items",
+      "servicePeriod": "everyday",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Official menu/API product; allergen disclosure unavailable."
+    },
+    {
+      "currentProductKey": "corned-beef-egg-and-cheese",
+      "name": "Corned Beef, Egg, & Cheese",
+      "category": "Bagels",
+      "servicePeriod": "everyday",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "milk",
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "egg-and-cheese",
+      "name": "Egg & Cheese",
+      "category": "Bagels",
+      "servicePeriod": "everyday",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "milk",
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "egg-and-cheese-bagelwiches",
+      "name": "Egg & Cheese Bagelwiches",
+      "category": "Brunch",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "milk",
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "gumbo",
+      "name": "Gumbo",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "shellfish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "has",
+      "name": "HAS",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Official menu/API product; allergen disclosure unavailable."
+    },
+    {
+      "currentProductKey": "hickory-smoked-turkey",
+      "name": "Hickory Smoked Turkey",
+      "category": "Items",
+      "servicePeriod": "everyday",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Official menu/API product; allergen disclosure unavailable."
+    },
+    {
+      "currentProductKey": "home-fries",
+      "name": "Home Fries",
+      "category": "Bagels",
+      "servicePeriod": "everyday",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Official menu/API product; allergen disclosure unavailable."
+    },
+    {
+      "currentProductKey": "hot-pastrami",
+      "name": "Hot Pastrami",
+      "category": "Items",
+      "servicePeriod": "everyday",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Official menu/API product; allergen disclosure unavailable."
+    },
+    {
+      "currentProductKey": "hot-pastrami-egg-and-cheese",
+      "name": "Hot Pastrami, Egg, & Cheese",
+      "category": "Bagels",
+      "servicePeriod": "everyday",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "milk",
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "house-smoked-salmon",
+      "name": "House-Smoked Salmon",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "fish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "huevos-rancheros",
+      "name": "Huevos Rancheros",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "kale-salad",
+      "name": "Kale Salad",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "milk",
+        "tree-nut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "matzo-ball-soup",
+      "name": "Matzo Ball Soup",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Official menu/API product; allergen disclosure unavailable."
+    },
+    {
+      "currentProductKey": "natitude",
+      "name": "Natitude",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Official menu/API product; allergen disclosure unavailable."
+    },
+    {
+      "currentProductKey": "oriole",
+      "name": "Oriole",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Official menu/API product; allergen disclosure unavailable."
+    },
+    {
+      "currentProductKey": "parfait",
+      "name": "Parfait",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "reuben",
+      "name": "Reuben",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Official menu/API product; allergen disclosure unavailable."
+    },
+    {
+      "currentProductKey": "salmon-blt",
+      "name": "Salmon BLT",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "fish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "sausage-egg-and-cheese",
+      "name": "Sausage, Egg, & Cheese",
+      "category": "Bagels",
+      "servicePeriod": "everyday",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "milk",
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "smoked-salmon-board",
+      "name": "Smoked Salmon Board",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "egg",
+        "fish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "smoked-scottish-salmon",
+      "name": "Smoked Scottish Salmon",
+      "category": "Items",
+      "servicePeriod": "everyday",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "fish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "smoked-whitefish-salad",
+      "name": "Smoked Whitefish Salad",
+      "category": "Items",
+      "servicePeriod": "everyday",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "fish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "sourdough-waffle",
+      "name": "Sourdough Waffle",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "ssa",
+      "name": "SSA",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "milk",
+        "egg",
+        "fish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "tba",
+      "name": "TBA",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "the-elan",
+      "name": "The Elan",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "fish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "the-wurst",
+      "name": "The Wurst",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "tuna-melt",
+      "name": "Tuna Melt",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "milk",
+        "fish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "turkey-avocado-egg-and-cheese",
+      "name": "Turkey, Avocado, Egg & Cheese",
+      "category": "Bagels",
+      "servicePeriod": "everyday",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [
+        "milk",
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-api"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Direct allergen fields returned by the official Wix restaurant menu API; only named allergens are retained."
+    },
+    {
+      "currentProductKey": "whitefish",
+      "name": "Whitefish",
+      "category": "Items",
+      "servicePeriod": "everyday_and_h_st_weekend_brunch",
+      "sourceEvidenceIds": [
+        "ev-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "presentationReferences": [
+        "https://www.bullfrogbagels.com/brunch?menu=h-st-weekend-brunch",
+        "https://www.bullfrogbagels.com/brunch",
+        "https://www.bullfrogbagels.com/brunch?menu=everyday-bullfrog-menu",
+        "https://www.bullfrogbagels.com/_api/restaurants-menus-item/v1/items"
+      ],
+      "notes": "Official menu/API product; allergen disclosure unavailable."
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "searchClass": "official_site",
+        "locationInspected": "official homepage, menu index, everyday menu, H Street brunch, location/order navigation",
+        "query": "allergen allergy nutrition ingredients",
+        "urls": [
+          "https://www.bullfrogbagels.com/",
+          "https://www.bullfrogbagels.com/menu-1",
+          "https://www.bullfrogbagels.com/brunch"
+        ],
+        "outcome": "No official allergen matrix or cross-contact statement found.",
+        "sourceEvidenceIds": [
+          "ev-matrix-site"
+        ]
+      },
+      {
+        "searchClass": "official_documents",
+        "locationInspected": "official order/menu navigation and linked downloadable/document surfaces",
+        "query": "site:bullfrogbagels.com PDF allergen nutrition ingredients menu",
+        "urls": [
+          "https://www.bullfrogbagels.com/order-now"
+        ],
+        "outcome": "No official allergen, nutrition, or ingredient matrix document found.",
+        "sourceEvidenceIds": [
+          "ev-matrix-docs"
+        ]
+      },
+      {
+        "searchClass": "linked_vendor",
+        "locationInspected": "official Order Now linked vendor destination",
+        "query": "Bullfrog Bagels H Street allergen ingredients",
+        "urls": [
+          "https://www.bullfrogbagels.com/order-now"
+        ],
+        "outcome": "Linked ordering route inspected; no allergen matrix or cross-contact disclosure found.",
+        "sourceEvidenceIds": [
+          "ev-matrix-vendor"
+        ]
+      },
+      {
+        "searchClass": "targeted_web_search",
+        "locationInspected": "web search restricted to restaurant/domain and allergen terms",
+        "query": "site:bullfrogbagels.com allergen allergy nutrition ingredients PDF menu",
+        "urls": [
+          "https://www.google.com/search?q=site%3Abullfrogbagels.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+        ],
+        "outcome": "No real official allergen matrix found; third-party results did not provide authoritative Bullfrog allergen evidence.",
+        "sourceEvidenceIds": [
+          "ev-matrix-web"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [],
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:baltimore-braised-brisket",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "baltimore-braised-brisket"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "2:bacon-egg-and-cheese",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "bacon-egg-and-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "3:bagel",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "bagel"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "4:bakers-dozen",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "bakers-dozen"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "5:bialy",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "bialy"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "6:blt",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "blt"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "7:bullfrog-benedict-w-homefries",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "bullfrog-benedict-w-homefries"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "8:caesar-salad",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "caesar-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "9:cc-jam",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "cc-jam"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "10:corned-beef",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "corned-beef"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "11:corned-beef-egg-and-cheese",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "corned-beef-egg-and-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "12:egg-and-cheese",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "egg-and-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "13:egg-and-cheese-bagelwiches",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "egg-and-cheese-bagelwiches"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "14:gumbo",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "gumbo"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "15:has",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "has"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "16:hickory-smoked-turkey",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "hickory-smoked-turkey"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "17:home-fries",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "home-fries"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "18:hot-pastrami",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "hot-pastrami"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "19:hot-pastrami-egg-and-cheese",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "hot-pastrami-egg-and-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "20:house-smoked-salmon",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "house-smoked-salmon"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "21:huevos-rancheros",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "huevos-rancheros"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "22:kale-salad",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "kale-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "23:matzo-ball-soup",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "matzo-ball-soup"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "24:natitude",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "natitude"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "25:oriole",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "oriole"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "26:parfait",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "parfait"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "27:reuben",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "reuben"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "28:salmon-blt",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "salmon-blt"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "29:sausage-egg-and-cheese",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "sausage-egg-and-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "30:smoked-salmon-board",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "smoked-salmon-board"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "31:smoked-scottish-salmon",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "smoked-scottish-salmon"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "32:smoked-whitefish-salad",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "smoked-whitefish-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "33:sourdough-waffle",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "sourdough-waffle"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "34:ssa",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "ssa"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "35:tba",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "tba"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "36:the-elan",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "the-elan"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "37:the-wurst",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "the-wurst"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "38:tuna-melt",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "tuna-melt"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "39:turkey-avocado-egg-and-cheese",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "turkey-avocado-egg-and-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      },
+      {
+        "auditItemKey": "40:whitefish",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "whitefish"
+        ],
+        "sourceEvidenceIds": [
+          "ev-api"
+        ],
+        "notes": "Frozen product retained in current official API boundary; normalized to currentProductKey."
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": true,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": true,
+    "restaurantSpecificExtraction": true,
+    "parserIssue": true
+  },
+  "proposedChanges": [
+    "Consolidate duplicate everyday/brunch/API presentations under the 40 frozen currentProductKeys.",
+    "Preserve direct official API allergen positives and mark all undisclosed allergens unavailable.",
+    "Keep support/navigation, alcohol, modifier, and duplicate-only surfaces non-publishing."
+  ],
+  "routingSignals": {
+    "lightweightFixes": [
+      "duplicateItems",
+      "nameOrCategoryCleanup",
+      "restaurantSpecificExtraction",
+      "parserIssue"
+    ],
+    "safetyEscalations": []
+  },
+  "blockedReason": null
+}

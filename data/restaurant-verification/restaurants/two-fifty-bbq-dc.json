@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "two-fifty-bbq-dc",
+  "name": "2Fifty Texas BBQ",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T18:15:42.407Z",
+  "updatedAt": "2026-07-14T18:28:02.063Z",
+  "completedAt": "2026-07-14T18:28:02.063Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 62,
+      "sourceItemCount": 74,
+      "notes": [
+        "Every frozen row was reconciled against the current Washington DC Toast menu linked from 2Fifty's official site.",
+        "Forty-nine frozen rows are exact current items, four are older duplicate or singular-name variants of current items, and nine are stale items absent from the current DC menu.",
+        "The corrected represented surface contains 74 current menu items in ten real sections, adds 25 current items omitted by the frozen catalog, excludes eight merchandise products, and places drinks and alcohol last."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The dedicated restaurant-issued allergy guide defines item lists for egg, dairy, tree nuts, gluten, and soy and publishes a general kitchen cross-contact warning; it is not a complete allergen matrix.",
+        "The corrected current catalog has 33 rows with direct guide, explicit ingredient-list, or explicit allergen-free evidence and 41 rows accurately left unavailable.",
+        "The current guide says contains gluten, not contains wheat. Gluten was not automatically promoted to wheat, and coconut in Rice & Beans was not treated as tree nut.",
+        "Poblano Sausage Link remains milk-labeled because the dedicated current allergy guide lists it under dairy even though the current Toast description says no cheese; no-cheese is not equivalent to dairy-free."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen output collapsed all 62 items into Barbecue and labeled every row official-ingredients, despite many rows having no item-level allergen disclosure.",
+        "Forty-nine of the 53 current frozen rows had allergen mismatches, dominated by unsupported wheat/gluten added to plain meats, corn-masa tamales, corn-starch rubs, salads, and catering variants.",
+        "The current reviewed-menu recipe does not itself support those broad wheat/gluten claims, so the frozen snapshot reflects an unsupported older or downstream mutation with no row-level provenance. The final-stage verified snapshot now makes the audited result deterministic."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "direct-toast-artifact-fetch",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/2fifty-bbq-washington-dc",
+      "attemptedAt": "2026-07-14T18:17:19.000Z",
+      "outcome": "Direct browser rendering succeeded, but the reproducible ledger fetch and a browser-user-agent curl request both returned Cloudflare HTTP 403.",
+      "notes": [
+        "The direct restaurant-linked vendor page was reviewed in-browser.",
+        "A third-party text-render artifact of that same URL was retained separately and remains classified third_party rather than official."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "unsupported-wheat-gluten-smear",
+      "severity": "high",
+      "kind": "allergen_accuracy",
+      "summary": "Forty-nine of 53 current frozen rows had allergen mismatches, including unsupported wheat/gluten on plain smoked meats, corn-masa tamales, corn-starch rubs, salads, and catering rows.",
+      "evidenceIds": [
+        "official-allergy-guide",
+        "linked-dc-toast-menu-browser",
+        "third-party-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt every current row from the dedicated guide and explicit current menu text; gluten is no longer converted to wheat and undisclosed rows remain unavailable."
+    },
+    {
+      "id": "stale-incomplete-single-category-menu",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen 62-row catalog used one generic category, retained nine stale items, duplicated four current products under older variants, and omitted 25 current food and beverage items.",
+      "evidenceIds": [
+        "official-home",
+        "linked-dc-toast-menu-browser",
+        "third-party-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Replaced it with the deduplicated 74-item current Washington DC catalog in ten source sections, excluding merchandise and ordering beverages last."
+    },
+    {
+      "id": "false-official-coverage",
+      "severity": "high",
+      "kind": "source_semantics",
+      "summary": "The frozen app reported 100% official ingredient coverage even though many items have neither a guide row nor a complete item-level ingredient disclosure.",
+      "evidenceIds": [
+        "official-allergy-guide",
+        "linked-dc-toast-menu-browser"
+      ],
+      "resolved": true,
+      "resolution": "Limited official-ingredients to 33 directly supported rows and marked the remaining 41 current rows unavailable."
+    },
+    {
+      "id": "coconut-tree-nut-false-positive",
+      "severity": "medium",
+      "kind": "allergen_semantics",
+      "summary": "Rice & Beans and its catering tray were labeled tree-nut solely because their descriptions mention coconut.",
+      "evidenceIds": [
+        "linked-dc-toast-menu-browser",
+        "third-party-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Removed tree-nut from coconut-only rows; regular Rice & Beans retains the source's explicit gluten-free statement without becoming a general safety claim."
+    },
+    {
+      "id": "legacy-about-allergy-legend-conflict",
+      "severity": "medium",
+      "kind": "source_semantics",
+      "summary": "The About-page allergy fragment uses a legacy W/wheat legend and a malformed sesame line, while the dedicated current allergy page uses G/gluten and publishes the actual item lists.",
+      "evidenceIds": [
+        "official-about-allergies",
+        "official-allergy-guide"
+      ],
+      "resolved": true,
+      "resolution": "Used the dedicated /allergies guide as the current controlling source, recorded the About fragment as contradictory legacy evidence, and did not infer wheat from gluten."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-2fifty-current-dc-menu-and-allergy-guide",
+      "status": "verified",
+      "summary": "Prepared and targeted-tested a 74-item current DC snapshot with real menu sections, conservative guide semantics, no unsupported wheat smear, no coconut/tree-nut conflation, and 41 accurately unavailable rows.",
+      "files": [
+        "scripts/pipeline/2fifty-bbq-audit-catalog.mjs",
+        "scripts/pipeline/2fifty-bbq-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/two-fifty-bbq-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/2fifty-bbq-audit-catalog.test.mjs scripts/pipeline/2fifty-bbq-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=tmp/restaurant-verification/2fifty-repair-input.json node scripts/repair-final-generated-regressions.mjs (targeted copy; verified 74 unique items, ten source sections, 33 supported rows, 41 unavailable rows, no wheat signals, no coconut/tree-nut conflation, merchandise excluded, and beverages last)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 6a46825038903e6f385017dc12d1533fce2f555d673572048c2d10c90f947a76.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":49,\"stale_extra\":9,\"variant_match\":4},\"allergens\":{\"mismatch\":49,\"not_applicable\":9,\"verified\":4}}.",
+    "Current corrected catalog counts: 74 items, 33 supported ingredient/guide rows, 41 accurately unavailable rows.",
+    "Focused catalog parsing, full frozen-row reconciliation, targeted repair-copy, unique-id, section-order, authority, gluten/wheat, coconut/tree-nut, and merchandise-exclusion checks passed."
+  ]
+}

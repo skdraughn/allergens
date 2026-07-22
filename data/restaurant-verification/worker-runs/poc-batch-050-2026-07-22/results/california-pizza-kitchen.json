@@ -1,0 +1,3155 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-050-2026-07-22",
+  "restaurantId": "california-pizza-kitchen",
+  "name": "California Pizza Kitchen",
+  "runId": "poc-batch-050-2026-07-22-california-pizza-kitchen-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "california-pizza-kitchen",
+    "name": "California Pizza Kitchen",
+    "locationId": null,
+    "domain": "cpk.com",
+    "baselineItemCount": 101,
+    "baselineFingerprint": "e6d313524c1b81cc50aac59024646d2ae93d11e60cef5f8684e004db22172d48",
+    "frozenItemChecksRead": true,
+    "frozenItemCheckCount": 101,
+    "itemChecksPath": "data/restaurant-verification/item-checks/california-pizza-kitchen.jsonl",
+    "status": "valid"
+  },
+  "identity": {
+    "name": "California Pizza Kitchen",
+    "location": "US national menu; no single restaurant location supplied",
+    "locationId": null,
+    "domain": "cpk.com",
+    "officialHomepage": "https://www.cpk.com/",
+    "confirmed": true,
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "ev-official-home",
+      "ev-official-menu"
+    ],
+    "notes": "Confirmed national California Pizza Kitchen identity and cpk.com domain. No location-specific availability invented or merged."
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-official-home",
+      "url": "https://www.cpk.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "retrievedAt": "2026-07-22T00:00:00.000Z",
+      "title": "California Pizza Kitchen official homepage",
+      "excerpt": "Official CPK domain and national brand homepage."
+    },
+    {
+      "evidenceId": "ev-official-menu",
+      "url": "https://www.cpk.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-22T00:00:00.000Z",
+      "title": "Official CPK current menu",
+      "excerpt": "Current client-rendered national menu surface; food and nonalcoholic menu scope."
+    },
+    {
+      "evidenceId": "ev-toast-menu",
+      "url": "https://order.toasttab.com/online/cpklaxt6",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-22T00:00:00.000Z",
+      "title": "Official-linked Toast ordering menu",
+      "excerpt": "CPK ordering vendor linked by current search results; location-specific ordering presentation not merged into a national availability claim."
+    },
+    {
+      "evidenceId": "ev-frozen-direct-claims",
+      "url": "https://www.cpk.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "retrievedAt": "2026-07-22T00:00:00.000Z",
+      "title": "Frozen direct-positive item semantics",
+      "excerpt": "Explicit frozen packet positive claims retained only for canonical tokens; no negatives or may-contain claims inferred."
+    },
+    {
+      "evidenceId": "ev-matrix-site",
+      "url": "https://www.cpk.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "retrievedAt": "2026-07-22T00:00:00.000Z",
+      "title": "official_site allergen search",
+      "excerpt": "Inspected official homepage, menu navigation, menu app surface, nutrition/dietary/FAQ links; no current official allergen matrix located."
+    },
+    {
+      "evidenceId": "ev-matrix-docs",
+      "url": "https://www.cpk.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "retrievedAt": "2026-07-22T00:00:00.000Z",
+      "title": "official_documents allergen search",
+      "excerpt": "Inspected reachable nutrition, allergen, ingredient, FAQ, PDF, image, sitemap/CDN and downloadable-document surfaces; no current official matrix located."
+    },
+    {
+      "evidenceId": "ev-matrix-vendor",
+      "url": "https://order.toasttab.com/online/cpklaxt6",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "retrievedAt": "2026-07-22T00:00:00.000Z",
+      "title": "linked_vendor allergen search",
+      "excerpt": "Inspected linked Toast ordering surface and item presentations; no complete current official allergen matrix located."
+    },
+    {
+      "evidenceId": "ev-matrix-web",
+      "url": "https://www.google.com/search?q=site%3Acpk.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "retrievedAt": "2026-07-22T00:00:00.000Z",
+      "title": "targeted_web_search allergen search",
+      "excerpt": "Targeted official-domain searches for allergen, allergy, nutrition, ingredients, PDF and menu material found no current official matrix."
+    },
+    {
+      "evidenceId": "ev-safety-correction",
+      "url": "https://www.cpk.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "retrievedAt": "2026-07-22T00:00:00.000Z",
+      "title": "Focused safety correction",
+      "excerpt": "Removed claims supported only by frozen packet semantics or generic dish forms; retained only self-evident named identities and cited the official menu."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-menu",
+      "title": "Official current national menu",
+      "url": "https://www.cpk.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "mediaType": "html-client-rendered",
+      "accessStatus": "accessible",
+      "fullyEnumerated": true,
+      "scopeStatus": "complete",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-official-menu"
+      ],
+      "currentProductKeys": [
+        "barqs-root-beer",
+        "avocado-club-egg-rolls",
+        "banh-mi-sandwich",
+        "bolognese-spaghetti",
+        "build-your-own-kids-pizza-kit",
+        "burnt-ends-bbq-pizza",
+        "butter-cake",
+        "california-club",
+        "california-club-pizza",
+        "california-veggie",
+        "carne-asada",
+        "cedar-plank-salmon",
+        "chicken-piccata",
+        "chicken-tequila-fettuccine",
+        "classic-caesar",
+        "dakota-smashed-pea-barley",
+        "dr-pepper",
+        "dynamite-shrimp",
+        "five-cheese-fresh-tomato",
+        "fresca",
+        "fresh-strawberry-mango-cooler",
+        "freshly-brewed-iced-tea",
+        "half-sandwich",
+        "hawaiian",
+        "italian-chopped",
+        "kids-crispy-chicken",
+        "kids-curly-mac-n-cheese",
+        "kids-grilled-chicken-breast",
+        "kids-original-bbq-chicken-pizza",
+        "kids-pasta",
+        "kids-pizza",
+        "lunch-sized-pasta",
+        "mac-n-cheese",
+        "margherita",
+        "mini-butter-cake-flight",
+        "mushroom-pepperoni-sausage",
+        "new-avocado-club-egg-rolls-protein-packed",
+        "new-baked-short-rib-lasagna",
+        "new-bblt",
+        "new-build-your-own-sundae",
+        "new-california-veggie-pizza-with-cauliflower-crust-plant-forward",
+        "new-cauliflower-steak-piccata-plant-forward",
+        "new-cedar-plank-salmon-over-thai-crispy-rice-salad",
+        "new-cedar-plank-salmon-protein-packed",
+        "new-chicken-tequila-lower-cal",
+        "new-churro-swirl",
+        "new-crispy-chinese-dumpling-salad",
+        "new-filet-skewers-with-chimichurri-duo",
+        "new-garlic-cream-lower-cal",
+        "new-kung-pao-lower-cal",
+        "new-mediterranean-hummus",
+        "new-muffaletta",
+        "new-peruvian-pan-roasted-chicken",
+        "new-spicy-buffalo-cauliflower-lower-cal",
+        "new-spicy-buffalo-chicken-bites",
+        "new-steak-house-salad",
+        "new-take-and-bake-tostada-pizza-lower-cal",
+        "new-take-and-bake-california-veggie-pizza-with-cauliflower-crust-lower-cal",
+        "new-the-charcuterie-salad",
+        "new-tostada-pizza-smart-swap-lower-cal",
+        "new-upside-down-cheesecake",
+        "new-vegetarian-lettuce-wraps-plant-forward",
+        "new-west-coast-burger-the-wcb-bowl-protein-packed",
+        "passion-fruit-mango-iced-tea",
+        "pepperoni",
+        "san-pellegrino-sparkling",
+        "sedona-tortilla",
+        "shrimp-scampi-zucchini",
+        "soup-lunch-size-salad",
+        "spicy-chipotle-chicken",
+        "spicy-chipotle-chicken-pizza",
+        "szechwan-chicken-dumplings",
+        "thai-chicken",
+        "thai-crunch",
+        "the-original-bbq-chicken-chopped-salad",
+        "the-original-bbq-chicken-pizza",
+        "the-works",
+        "tomato-basil-bisque",
+        "tomato-basil-spaghetti",
+        "tostada-pizza",
+        "two-in-a-bowl",
+        "upside-dawn-golden",
+        "wild-mushroom",
+        "zero-sugar-coca-cola"
+      ],
+      "notes": "Sole complete current publishing surface for the national food/nonalcoholic POC boundary."
+    },
+    {
+      "surfaceId": "toast-ordering",
+      "title": "Official-linked Toast ordering surface",
+      "url": "https://order.toasttab.com/online/cpklaxt6",
+      "authorityTier": "restaurant_linked_vendor",
+      "mediaType": "html",
+      "accessStatus": "accessible",
+      "fullyEnumerated": false,
+      "scopeStatus": "supporting",
+      "current": false,
+      "sourceEvidenceIds": [
+        "ev-toast-menu"
+      ],
+      "currentProductKeys": [],
+      "notes": "Linked vendor inspected for corroboration; location-specific vendor scope is not merged into the national catalog."
+    },
+    {
+      "surfaceId": "official-home",
+      "title": "Official homepage/navigation",
+      "url": "https://www.cpk.com/",
+      "authorityTier": "restaurant_issued",
+      "mediaType": "html",
+      "accessStatus": "accessible",
+      "fullyEnumerated": false,
+      "scopeStatus": "supporting",
+      "current": false,
+      "sourceEvidenceIds": [
+        "ev-official-home"
+      ],
+      "currentProductKeys": [],
+      "notes": "Navigation/support surface; zero product keys."
+    },
+    {
+      "surfaceId": "official-documents",
+      "title": "Official documents/nutrition/dietary search surface",
+      "url": "https://www.cpk.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "mediaType": "html/pdf/image search",
+      "accessStatus": "inspected",
+      "fullyEnumerated": false,
+      "scopeStatus": "supporting",
+      "current": false,
+      "sourceEvidenceIds": [
+        "ev-matrix-docs"
+      ],
+      "currentProductKeys": [],
+      "notes": "No current matrix or complete current product document located; zero product keys."
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "barqs-root-beer",
+      "name": "Barq’s Root Beer",
+      "category": "Beverages",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "avocado-club-egg-rolls",
+      "name": "Avocado Club Egg Rolls",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "banh-mi-sandwich",
+      "name": "Banh Mi Sandwich",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "bolognese-spaghetti",
+      "name": "Bolognese Spaghetti",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "build-your-own-kids-pizza-kit",
+      "name": "Build-Your-Own Kids Pizza Kit",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "burnt-ends-bbq-pizza",
+      "name": "Burnt Ends BBQ Pizza",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "butter-cake",
+      "name": "Butter Cake",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "california-club",
+      "name": "California Club",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "california-club-pizza",
+      "name": "California Club Pizza",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "california-veggie",
+      "name": "California Veggie",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "carne-asada",
+      "name": "Carne Asada",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "cedar-plank-salmon",
+      "name": "Cedar Plank Salmon",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [
+        "fish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-official-menu"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "chicken-piccata",
+      "name": "Chicken Piccata",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "chicken-tequila-fettuccine",
+      "name": "Chicken Tequila Fettuccine",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "classic-caesar",
+      "name": "Classic Caesar",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "dakota-smashed-pea-barley",
+      "name": "Dakota Smashed Pea + Barley",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "dr-pepper",
+      "name": "Dr. Pepper",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "dynamite-shrimp",
+      "name": "Dynamite Shrimp",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [
+        "shellfish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-official-menu"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "five-cheese-fresh-tomato",
+      "name": "Five Cheese + Fresh Tomato",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "fresca",
+      "name": "Fresca",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "fresh-strawberry-mango-cooler",
+      "name": "Fresh Strawberry Mango Cooler",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "freshly-brewed-iced-tea",
+      "name": "Freshly Brewed Iced Tea",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "half-sandwich",
+      "name": "Half Sandwich",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "hawaiian",
+      "name": "Hawaiian",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "italian-chopped",
+      "name": "Italian Chopped",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "kids-crispy-chicken",
+      "name": "Kids Crispy Chicken",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "kids-curly-mac-n-cheese",
+      "name": "Kids Curly Mac 'N' Cheese",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "kids-grilled-chicken-breast",
+      "name": "Kids Grilled Chicken Breast",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "kids-original-bbq-chicken-pizza",
+      "name": "Kids Original BBQ Chicken Pizza",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "kids-pasta",
+      "name": "Kids Pasta",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "kids-pizza",
+      "name": "Kids Pizza",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "lunch-sized-pasta",
+      "name": "Lunch-sized Pasta",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "mac-n-cheese",
+      "name": "Mac 'N' Cheese",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "margherita",
+      "name": "Margherita",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "mini-butter-cake-flight",
+      "name": "Mini Butter Cake Flight",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "mushroom-pepperoni-sausage",
+      "name": "Mushroom Pepperoni Sausage",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-avocado-club-egg-rolls-protein-packed",
+      "name": "New Avocado Club Egg Rolls - Protein Packed",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-baked-short-rib-lasagna",
+      "name": "New Baked Short Rib Lasagna",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-bblt",
+      "name": "New BBLT",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-build-your-own-sundae",
+      "name": "New Build Your Own Sundae",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-california-veggie-pizza-with-cauliflower-crust-plant-forward",
+      "name": "New California Veggie Pizza with Cauliflower Crust - Plant Forward",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-cauliflower-steak-piccata-plant-forward",
+      "name": "New Cauliflower Steak Piccata - Plant Forward",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-cedar-plank-salmon-over-thai-crispy-rice-salad",
+      "name": "New Cedar Plank Salmon over Thai Crispy Rice Salad",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [
+        "fish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-official-menu"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-cedar-plank-salmon-protein-packed",
+      "name": "New Cedar Plank Salmon*- Protein Packed",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [
+        "fish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-official-menu"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-chicken-tequila-lower-cal",
+      "name": "New Chicken Tequila - Lower Cal",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-churro-swirl",
+      "name": "New Churro Swirl",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-crispy-chinese-dumpling-salad",
+      "name": "New Crispy Chinese Dumpling Salad",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-filet-skewers-with-chimichurri-duo",
+      "name": "New Filet Skewers with Chimichurri Duo",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-garlic-cream-lower-cal",
+      "name": "New Garlic Cream - Lower Cal",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-kung-pao-lower-cal",
+      "name": "New Kung Pao - Lower Cal",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-mediterranean-hummus",
+      "name": "New Mediterranean Hummus",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-muffaletta",
+      "name": "New Muffaletta",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-peruvian-pan-roasted-chicken",
+      "name": "New Peruvian Pan-Roasted Chicken",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-spicy-buffalo-cauliflower-lower-cal",
+      "name": "New Spicy Buffalo Cauliflower - Lower Cal",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-spicy-buffalo-chicken-bites",
+      "name": "New Spicy Buffalo Chicken Bites",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-steak-house-salad",
+      "name": "New Steak House Salad",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-take-and-bake-tostada-pizza-lower-cal",
+      "name": "New Take & Bake Tostada Pizza - Lower Cal",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-take-and-bake-california-veggie-pizza-with-cauliflower-crust-lower-cal",
+      "name": "New Take and Bake California Veggie Pizza with Cauliflower Crust - Lower Cal",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-the-charcuterie-salad",
+      "name": "New The Charcuterie Salad",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-tostada-pizza-smart-swap-lower-cal",
+      "name": "New Tostada Pizza Smart Swap - Lower Cal",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-upside-down-cheesecake",
+      "name": "New Upside Down Cheesecake",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-official-menu"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-vegetarian-lettuce-wraps-plant-forward",
+      "name": "New Vegetarian Lettuce Wraps - Plant Forward",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "new-west-coast-burger-the-wcb-bowl-protein-packed",
+      "name": "New West Coast Burger \"THE WCB\"* Bowl - Protein Packed",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "passion-fruit-mango-iced-tea",
+      "name": "Passion Fruit Mango Iced Tea",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "pepperoni",
+      "name": "Pepperoni",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "san-pellegrino-sparkling",
+      "name": "San Pellegrino Sparkling",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "sedona-tortilla",
+      "name": "Sedona Tortilla",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "shrimp-scampi-zucchini",
+      "name": "Shrimp Scampi Zucchini",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [
+        "shellfish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-official-menu"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "soup-lunch-size-salad",
+      "name": "Soup + Lunch-size Salad",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "spicy-chipotle-chicken",
+      "name": "Spicy Chipotle Chicken",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "spicy-chipotle-chicken-pizza",
+      "name": "Spicy Chipotle Chicken Pizza",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "szechwan-chicken-dumplings",
+      "name": "Szechwan Chicken Dumplings",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "thai-chicken",
+      "name": "Thai Chicken",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "thai-crunch",
+      "name": "Thai Crunch",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "the-original-bbq-chicken-chopped-salad",
+      "name": "The Original BBQ Chicken Chopped Salad",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "the-original-bbq-chicken-pizza",
+      "name": "The Original BBQ Chicken Pizza",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "the-works",
+      "name": "The Works",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "tomato-basil-bisque",
+      "name": "Tomato Basil Bisque",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "tomato-basil-spaghetti",
+      "name": "Tomato Basil Spaghetti",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "tostada-pizza",
+      "name": "Tostada Pizza",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "two-in-a-bowl",
+      "name": "Two In A Bowl",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "upside-dawn-golden",
+      "name": "Upside Dawn Golden",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "wild-mushroom",
+      "name": "Wild Mushroom",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    },
+    {
+      "currentProductKey": "zero-sugar-coca-cola",
+      "name": "Zero-Sugar Coca-Cola",
+      "category": "Food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Frozen direct-positive semantics retained where canonical and explicit; missing disclosure is unavailable."
+      ]
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "searchClass": "official_site",
+        "location": "https://www.cpk.com/ and https://www.cpk.com/menu/",
+        "query": "Official homepage/menu navigation; allergen allergy nutrition ingredients dietary FAQ",
+        "url": "https://www.cpk.com/menu/",
+        "outcome": "not_found",
+        "sourceEvidenceIds": [
+          "ev-matrix-site"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "searchClass": "official_documents",
+        "location": "cpk.com reachable document, PDF, image, sitemap/CDN and FAQ surfaces",
+        "query": "allergen nutrition ingredients PDF downloadable guide",
+        "url": "https://www.cpk.com/menu/",
+        "outcome": "not_found",
+        "sourceEvidenceIds": [
+          "ev-matrix-docs"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "searchClass": "linked_vendor",
+        "location": "Official-linked Toast ordering surface",
+        "query": "CPK menu item detail and allergen/nutrition disclosure",
+        "url": "https://order.toasttab.com/online/cpklaxt6",
+        "outcome": "not_found",
+        "sourceEvidenceIds": [
+          "ev-matrix-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "searchClass": "targeted_web_search",
+        "location": "Official-domain web search",
+        "query": "site:cpk.com allergen allergy nutrition ingredients PDF menu",
+        "url": "https://www.google.com/search?q=site%3Acpk.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+        "outcome": "not_found",
+        "sourceEvidenceIds": [
+          "ev-matrix-web"
+        ]
+      }
+    ],
+    "notes": "No current official allergen matrix was located after all four required searches; official allergen status is accurately_unavailable. Missing disclosure is not a negative. Focused correction removed stale frozen-only direct claims; no new matrix was asserted."
+  },
+  "restaurantLevelAllergenEvidence": [],
+  "reconciliation": {
+    "frozenKeys": 101,
+    "items": [
+      {
+        "auditItemKey": "1:barqs-root-beer",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "barqs-root-beer"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "2:7-pizza",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Option, alcohol, category/step heading, or catering/package artifact excluded from POC product boundary."
+      },
+      {
+        "auditItemKey": "3:avocado-club-egg-rolls",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "avocado-club-egg-rolls"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "4:banh-mi-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "banh-mi-sandwich"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "5:bolognese-spaghetti",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "bolognese-spaghetti"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "6:bud-light",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Option, alcohol, category/step heading, or catering/package artifact excluded from POC product boundary."
+      },
+      {
+        "auditItemKey": "7:build-your-own-kids-pizza-kit",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "build-your-own-kids-pizza-kit"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "8:burnt-ends-bbq-pizza",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "burnt-ends-bbq-pizza"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "9:butter-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "butter-cake"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "10:california-club",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "california-club"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "11:california-club-pizza",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "california-club-pizza"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "12:california-veggie",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "california-veggie"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "13:carne-asada",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "carne-asada"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "14:cauliflower-crust",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Option, alcohol, category/step heading, or catering/package artifact excluded from POC product boundary."
+      },
+      {
+        "auditItemKey": "15:cedar-plank-salmon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "cedar-plank-salmon"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "16:chicken-piccata",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken-piccata"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "17:chicken-tequila-fettuccine",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken-tequila-fettuccine"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "18:classic-caesar",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "classic-caesar"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "19:cpk-pasta-package",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Option, alcohol, category/step heading, or catering/package artifact excluded from POC product boundary."
+      },
+      {
+        "auditItemKey": "20:cpk-pizza-package",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Option, alcohol, category/step heading, or catering/package artifact excluded from POC product boundary."
+      },
+      {
+        "auditItemKey": "21:cpk-trio-package",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Option, alcohol, category/step heading, or catering/package artifact excluded from POC product boundary."
+      },
+      {
+        "auditItemKey": "22:crispy-thin-crust",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Option, alcohol, category/step heading, or catering/package artifact excluded from POC product boundary."
+      },
+      {
+        "auditItemKey": "23:custom-pasta-combo",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Option, alcohol, category/step heading, or catering/package artifact excluded from POC product boundary."
+      },
+      {
+        "auditItemKey": "24:custom-pizza-combo",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Option, alcohol, category/step heading, or catering/package artifact excluded from POC product boundary."
+      },
+      {
+        "auditItemKey": "25:custom-trio-combo",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Option, alcohol, category/step heading, or catering/package artifact excluded from POC product boundary."
+      },
+      {
+        "auditItemKey": "26:dakota-smashed-pea-barley",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "dakota-smashed-pea-barley"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "27:dr-pepper",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "dr-pepper"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "28:dynamite-shrimp",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "dynamite-shrimp"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "29:five-cheese-fresh-tomato",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "five-cheese-fresh-tomato"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "30:fresca",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "fresca"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "31:fresh-strawberry-mango-cooler",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "fresh-strawberry-mango-cooler"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "32:freshly-brewed-iced-tea",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "freshly-brewed-iced-tea"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "33:half-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "half-sandwich"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "34:hawaiian",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "hawaiian"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "35:italian-chopped",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "italian-chopped"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "36:kids-crispy-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kids-crispy-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "37:kids-curly-mac-n-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kids-curly-mac-n-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "38:kids-grilled-chicken-breast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kids-grilled-chicken-breast"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "39:kids-original-bbq-chicken-pizza",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kids-original-bbq-chicken-pizza"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "40:kids-pasta",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kids-pasta"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "41:kids-pizza",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kids-pizza"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "42:lunch-sized-pasta",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lunch-sized-pasta"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "43:mac-n-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mac-n-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "44:margherita",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "margherita"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "45:mini-butter-cake-flight",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mini-butter-cake-flight"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "46:mushroom-pepperoni-sausage",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mushroom-pepperoni-sausage"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "47:new-avocado-club-egg-rolls-protein-packed",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-avocado-club-egg-rolls-protein-packed"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "48:new-baked-short-rib-lasagna",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-baked-short-rib-lasagna"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "49:new-bblt",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-bblt"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "50:new-build-your-own-sundae",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-build-your-own-sundae"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "51:new-california-veggie-pizza-with-cauliflower-crust-plant-forward",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-california-veggie-pizza-with-cauliflower-crust-plant-forward"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "52:new-cauliflower-steak-piccata-plant-forward",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-cauliflower-steak-piccata-plant-forward"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "53:new-cedar-plank-salmon-over-thai-crispy-rice-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-cedar-plank-salmon-over-thai-crispy-rice-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "54:new-cedar-plank-salmon-protein-packed",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-cedar-plank-salmon-protein-packed"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "55:new-chicken-tequila-lower-cal",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-chicken-tequila-lower-cal"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "56:new-churro-swirl",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-churro-swirl"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "57:new-crispy-chinese-dumpling-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-crispy-chinese-dumpling-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "58:new-filet-skewers-with-chimichurri-duo",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-filet-skewers-with-chimichurri-duo"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "59:new-garlic-cream-lower-cal",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-garlic-cream-lower-cal"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "60:new-kung-pao-lower-cal",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-kung-pao-lower-cal"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "61:new-mediterranean-hummus",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-mediterranean-hummus"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "62:new-muffaletta",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-muffaletta"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "63:new-peruvian-pan-roasted-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-peruvian-pan-roasted-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "64:new-sparkling-rose",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Option, alcohol, category/step heading, or catering/package artifact excluded from POC product boundary."
+      },
+      {
+        "auditItemKey": "65:new-spicy-buffalo-cauliflower-lower-cal",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-spicy-buffalo-cauliflower-lower-cal"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "66:new-spicy-buffalo-chicken-bites",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-spicy-buffalo-chicken-bites"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "67:new-steak-house-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-steak-house-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "68:new-take-and-bake-tostada-pizza-lower-cal",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-take-and-bake-tostada-pizza-lower-cal"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "69:new-take-and-bake-california-veggie-pizza-with-cauliflower-crust-lower-cal",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-take-and-bake-california-veggie-pizza-with-cauliflower-crust-lower-cal"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "70:new-the-charcuterie-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-the-charcuterie-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "71:new-tostada-pizza-smart-swap-lower-cal",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-tostada-pizza-smart-swap-lower-cal"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "72:new-upside-down-cheesecake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-upside-down-cheesecake"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "73:new-vegetarian-lettuce-wraps-plant-forward",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-vegetarian-lettuce-wraps-plant-forward"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "74:new-west-coast-burger-the-wcb-bowl-protein-packed",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-west-coast-burger-the-wcb-bowl-protein-packed"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "75:original-hand-tossed-crust",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Option, alcohol, category/step heading, or catering/package artifact excluded from POC product boundary."
+      },
+      {
+        "auditItemKey": "76:passion-fruit-mango-iced-tea",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "passion-fruit-mango-iced-tea"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "77:pepperoni",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pepperoni"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "78:samuel-adams",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Option, alcohol, category/step heading, or catering/package artifact excluded from POC product boundary."
+      },
+      {
+        "auditItemKey": "79:san-pellegrino-sparkling",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "san-pellegrino-sparkling"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "80:sedona-tortilla",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sedona-tortilla"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "81:shrimp-scampi-zucchini",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "shrimp-scampi-zucchini"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "82:sicilian",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Option, alcohol, category/step heading, or catering/package artifact excluded from POC product boundary."
+      },
+      {
+        "auditItemKey": "83:soup-lunch-size-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "soup-lunch-size-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "84:spicy-chipotle-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "spicy-chipotle-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "85:spicy-chipotle-chicken-pizza",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "spicy-chipotle-chicken-pizza"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "86:step-2-choose-your-pizza",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Option, alcohol, category/step heading, or catering/package artifact excluded from POC product boundary."
+      },
+      {
+        "auditItemKey": "87:step-3-choose-your-soup-or-salad",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Option, alcohol, category/step heading, or catering/package artifact excluded from POC product boundary."
+      },
+      {
+        "auditItemKey": "88:szechwan-chicken-dumplings",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "szechwan-chicken-dumplings"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "89:thai-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thai-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "90:thai-crunch",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thai-crunch"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "91:the-original-bbq-chicken-chopped-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "the-original-bbq-chicken-chopped-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "92:the-original-bbq-chicken-pizza",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "the-original-bbq-chicken-pizza"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "93:the-works",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "the-works"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "94:tomato-basil-bisque",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tomato-basil-bisque"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "95:tomato-basil-spaghetti",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tomato-basil-spaghetti"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "96:tostada-pizza",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tostada-pizza"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "97:twisted-tea-original",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ],
+        "notes": "Option, alcohol, category/step heading, or catering/package artifact excluded from POC product boundary."
+      },
+      {
+        "auditItemKey": "98:two-in-a-bowl",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "two-in-a-bowl"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "99:upside-dawn-golden",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "upside-dawn-golden"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "100:wild-mushroom",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wild-mushroom"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      },
+      {
+        "auditItemKey": "101:zero-sugar-coca-cola",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "zero-sugar-coca-cola"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ],
+        "notes": "Current named product matched to current official menu boundary."
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": true,
+    "restaurantSpecificExtraction": true,
+    "parserIssue": true
+  },
+  "routingSignals": {
+    "lightweightFixSignals": [
+      "catalog drift",
+      "category/name cleanup",
+      "restaurant-specific extraction",
+      "parser artifact cleanup",
+      "focused safety correction: unsupported generic-form allergen positives removed"
+    ],
+    "safetyEscalationSignals": [],
+    "recommendedLane": "luna_fix"
+  },
+  "findings": [],
+  "blockedReason": null,
+  "proposedChanges": [
+    "Use the official national menu boundary and retain only named current food/nonalcoholic products.",
+    "Exclude alcohol, options/crust selectors, category/step headings, and catering/package artifacts.",
+    "Keep direct positive semantics only where frozen claims use canonical tokens; do not infer absent allergens or may-contain values.",
+    "Removed direct positives not self-evident from exact item names; retained only named salmon/shrimp/cheese/butter identities with official-menu evidence."
+  ],
+  "researchComplete": true,
+  "auditCorrection": {
+    "type": "focused_safety_correction",
+    "removedDirectAssertions": 62,
+    "retainedDirectAssertions": 6,
+    "retainedAuthority": "restaurant_issued",
+    "retainedEvidenceId": "ev-official-menu"
+  },
+  "provenanceCorrection": {
+    "type": "reconciliation_menu_evidence_completion",
+    "rowsUpdated": 17,
+    "evidenceId": "ev-official-menu"
+  }
+}

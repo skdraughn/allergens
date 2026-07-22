@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "applebees",
+  "name": "Applebee's",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T08:21:35.463Z",
+  "updatedAt": "2026-07-15T08:38:43.887Z",
+  "completedAt": "2026-07-15T08:38:43.887Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 118,
+      "sourceItemCount": 130,
+      "notes": [
+        "The current owner menu and the Applebee's-linked Nutritionix dataset generated 2026-07-13 establish a 130-product consumer catalog across 16 categories after excluding 84 catering-only and 44 preview/internal rows.",
+        "All 118 frozen rows were reconciled: 106 exact current products and 12 stale or expired presentations. The reviewed current catalog restores 24 products omitted from the frozen data, including sampler choices, current wing bases, Kids Kraft Macaroni & Cheese, and seven beverage groups.",
+        "Beverages are retained as real consumer products and sorted after food categories. Configurable shells are retained when they are public consumer choices rather than internal controls."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Applebee's owner-issued nutrition policy identifies egg, fish, milk, peanut, sesame, shellfish, soy, tree nuts, wheat, gluten, and sulfites and warns that shared preparation and common fryer oil prevent a guarantee that an item is free of allergens or gluten-containing ingredients.",
+        "The item-level matrix is restaurant_linked_vendor evidence from the Nutritionix experience loaded by Applebee's interactive nutrition surface; it is not promoted to restaurant_issued. It supplies 119 active item rows with explicit positive fields. Eleven configurable shells have no fixed positive matrix row and therefore use only the separately labeled owner global cross-contact note.",
+        "All 106 matched frozen rows omitted the current global cross-contact context, and eight also omitted fixed positive signals present in the current item matrix. The repair corrects both layers without interpreting zero-valued matrix fields as an allergen-free assurance.",
+        "Highly refined soybean fryer oil is noted by Applebee's as exempt from allergen labeling, and substitutions can vary. The repair preserves the broad shared-prep warning rather than inferring safety from absent fields."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The reviewed extractor asserts the current Nutritionix dataset shape, 18 source categories, 513 source items, consumer/internal category boundaries, 119 item-level matrix rows, and the exact owner cross-contact disclosure before publishing.",
+        "The parser treats positive item fields as fixed signals, treats zeroes only as absence of a disclosed positive field, and routes the owner-wide shared-prep warning to mayContain for every current consumer product.",
+        "Focused tests cover catalog counts, category filtering, current omissions, all 118 frozen dispositions, the eight fixed-signal mismatches, global cross-contact application, source-shape failure behavior, target-only repair isolation, and idempotency."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "applebees-owner-menu-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.applebees.com/en/menu",
+      "attemptedAt": "2026-07-15T08:21:48.441Z",
+      "outcome": "HTTP 200. Captured the current owner menu surface and verified the public consumer catalog context.",
+      "notes": []
+    },
+    {
+      "id": "applebees-owner-nutrition-pages-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.applebees.com/en/nutrition/interactive-menu",
+      "attemptedAt": "2026-07-15T08:23:45.797Z",
+      "outcome": "Direct automated retrieval returned Cloudflare HTTP 403. The public owner nutrition and interactive-menu pages remained readable through the web reader; deterministic Jina text transports were captured as third-party transport for the owner disclosures and links.",
+      "notes": [
+        "The proxy transport is classified third_party. The owner-authored policy text it preserves does not convert the transport itself into restaurant-issued evidence."
+      ]
+    },
+    {
+      "id": "applebees-linked-nutritionix-dataset-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://nix-vue-inm.s3.amazonaws.com/restaurant/applebees/data/menu-latest.json.gz",
+      "attemptedAt": "2026-07-15T08:21:54.585Z",
+      "outcome": "HTTP 200. Captured the Applebee's-specific Nutritionix dataset generated 2026-07-13, containing 18 categories, 49 templates, 71 groups, 513 items, and 741 modifiers.",
+      "notes": [
+        "The Applebee's Nutritionix landing code explicitly loads this dataset path, establishing restaurant-linked-vendor provenance rather than restaurant-issued provenance."
+      ]
+    },
+    {
+      "id": "applebees-linked-nutritionix-landing-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://restaurant.nutritionix.com/applebees/landing",
+      "attemptedAt": "2026-07-15T08:23:51.208Z",
+      "outcome": "HTTP 200. Captured the Applebee's-branded Nutritionix landing application and verified its explicit menu-latest.json.gz loader route.",
+      "notes": []
+    },
+    {
+      "id": "applebees-ingredient-search-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://www.applebees.com/en/nutrition/interactive-menu",
+      "attemptedAt": "2026-07-15T08:24:00.000Z",
+      "outcome": "The interactive ingredient-search action returned HTTP 402 through the available reader. No ingredient-level assertions were taken from this failed route; the repair relies on the captured item matrix and owner policy.",
+      "notes": []
+    },
+    {
+      "id": "applebees-targeted-allergen-review-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://www.applebees.com/en/nutrition",
+      "attemptedAt": "2026-07-15T08:25:00.000Z",
+      "outcome": "Reviewed the owner nutrition disclosures, the interactive menu surface, every active item-level matrix row, configurable shells, consumer-category exclusions, and all 118 frozen items. Confirmed the global shared-prep/common-fryer warning and isolated eight frozen fixed-signal omissions.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "applebees-global-cross-contact-omission",
+      "severity": "critical",
+      "kind": "allergen-semantics-mismatch",
+      "summary": "Every one of the 106 matched frozen products omitted Applebee's current shared-preparation and common-fryer allergen/gluten warning.",
+      "evidenceIds": [
+        "applebees-nutrition-readable-proxy",
+        "applebees-interactive-nutrition-readable-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Applied the separately labeled owner global cross-contact note to all 130 current consumer products without presenting it as a fixed ingredient claim."
+    },
+    {
+      "id": "applebees-fixed-matrix-omissions",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Eight matched frozen products had fixed positive allergen fields that disagreed with the current Applebee's-linked item matrix.",
+      "evidenceIds": [
+        "applebees-linked-nutritionix-menu",
+        "applebees-linked-nutritionix-landing"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt the current rows from the positive matrix fields for Brownie Bite, four Caesar Salad presentations, Chicken Wonton Tacos, two Oriental Chicken Salads, and Sesame Salmon Bowl."
+    },
+    {
+      "id": "applebees-stale-and-omitted-menu",
+      "severity": "high",
+      "kind": "menu-reconciliation-mismatch",
+      "summary": "The frozen menu retained 12 expired or removed presentations and omitted 24 current consumer products.",
+      "evidenceIds": [
+        "official-applebees-menu",
+        "applebees-linked-nutritionix-menu"
+      ],
+      "resolved": true,
+      "resolution": "Published the reviewed 130-item consumer catalog, removed the 12 stale products, restored the 24 current omissions, and kept internal catering and preview categories excluded."
+    },
+    {
+      "id": "applebees-source-boundary-pollution",
+      "severity": "high",
+      "kind": "source-provenance-mismatch",
+      "summary": "The prior generated record mixed advertising and unrelated transport URLs into product provenance and did not make the owner-policy versus linked-vendor item-matrix boundary explicit.",
+      "evidenceIds": [
+        "official-applebees-menu",
+        "applebees-linked-nutritionix-menu",
+        "applebees-linked-nutritionix-landing"
+      ],
+      "resolved": true,
+      "resolution": "Limited published sources to the owner menu, owner nutrition policy, Applebee's-linked Nutritionix landing, and captured Applebee's dataset, with explicit authority tiers."
+    },
+    {
+      "id": "applebees-legacy-repair-filter-conflict",
+      "severity": "high",
+      "kind": "repair-idempotency-conflict",
+      "summary": "A legacy generic cleanup step removed valid beverages, sampler choices, and base wing presentations after the verified Applebee's repair, so successive runs did not preserve the reviewed catalog.",
+      "evidenceIds": [
+        "applebees-linked-nutritionix-menu"
+      ],
+      "resolved": true,
+      "resolution": "Scoped the legacy filter away from the verified Applebee's source profile. Two consecutive target-only repair runs now produce the same 130-item target hash and exactly one verified repair note."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "applebees-current-menu-and-allergen-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt Applebee's current consumer catalog and corrected stale products, omissions, fixed matrix signals, cross-contact semantics, source provenance, and repair idempotency.",
+      "files": [
+        "scripts/pipeline/applebees-audit-catalog.mjs",
+        "scripts/pipeline/applebees-audit-catalog.test.mjs",
+        "scripts/pipeline/applebees-audit-reconciliation.mjs",
+        "scripts/pipeline/applebees-audit-reconciliation.test.mjs",
+        "scripts/pipeline/applebees-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/applebees/official-applebees-menu.html",
+        "data/restaurant-verification/artifacts/applebees/applebees-linked-nutritionix-menu.json",
+        "data/restaurant-verification/artifacts/applebees/applebees-linked-nutritionix-landing.html",
+        "data/restaurant-verification/artifacts/applebees/applebees-nutrition-readable-proxy.txt",
+        "data/restaurant-verification/artifacts/applebees/applebees-interactive-nutrition-readable-proxy.txt",
+        "data/restaurant-verification/repairs/applebees/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/applebees-audit-catalog.mjs",
+        "node scripts/pipeline/applebees-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/applebees-audit-catalog.test.mjs scripts/pipeline/applebees-audit-reconciliation.test.mjs scripts/pipeline/applebees-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=applebees node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 014a24366d1fbed787d6a95153d39745d95baf4567a4d4204ddce67bc5605ab6.",
+    "Official menu SHA-256: fc2353730b5c900d11ce5fd74e4dbfc359a89427681f36ceb97fa86c0b4de3d7.",
+    "Applebee's-linked Nutritionix dataset SHA-256: 579ed3f2daf9eecfb1982f5fe41e94a87f5db1e6034275309db3b8137bea93a9; linked landing SHA-256: 32b4b0ae401b892019a083f78df2828dd02dee7aabf15596a73f43d692571c91.",
+    "Third-party readable transports for the owner nutrition and interactive pages SHA-256: 04377f4031a24ec72af14c3fc2ed36a3e4b11654e3da7b844bf0c2e11804bfe4 / fd377340bb4ba9197eb35402f0d34ddc8acc0c4d861b5017bc996a03e516460c.",
+    "Frozen live target SHA-256 before repair: b62637f661dcdeb9c1393fa579ab75432c30c2c5f133c646c725f916eed9837f.",
+    "Live target SHA-256 after repair: f089612fae4df2b8ebf49a2465983aec0b3a0390c5967f69a9b243ae87751f9f.",
+    "Live non-target restaurant projection SHA-256 remained 82044a21bbc1807bd5410a3ec731d7b66d89b79d9710fb3a88eadeb834f6846d.",
+    "Two consecutive target-only repair runs produced the same target hash and exactly one Applebee's verified repair note.",
+    "The repaired repository contains 113722 live menu items; the frozen ledger remains anchored to its original 112873-item hashed baseline."
+  ]
+}

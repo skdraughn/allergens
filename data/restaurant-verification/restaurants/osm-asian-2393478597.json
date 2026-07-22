@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-asian-2393478597",
+  "name": "Asian Grill",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T16:19:10.249Z",
+  "updatedAt": "2026-07-15T16:24:24.363Z",
+  "completedAt": "2026-07-15T16:24:24.363Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 257,
+      "sourceItemCount": 257,
+      "notes": [
+        "Terra reconciled all 257 frozen rows against the current restaurant-linked Toast menu; Sol confirmed the restaurant identity and current menu surface.",
+        "Post-repair recheck reconciled every frozen item to the repaired generated restaurant."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "Toast directly supports positive signals explicitly named in restaurant-authored item names or descriptions, but it is not a comprehensive allergen matrix, complete ingredient list, or cross-contact policy.",
+        "Sol rejected Terra's proposed blanket downgrade and limited the discrepancy to claims inferred from culinary names without explicit restaurant disclosure.",
+        "87 items retain only positive signals directly supported by restaurant-authored names or descriptions; 170 items are accurately unavailable.",
+        "No negative or cross-contact claim is inferred from the absence of a comprehensive guide."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The toast-menu extraction/repair path must preserve directly disclosed ingredients while removing only unsupported culinary-term inferences.",
+        "Scoped restaurant repair removes unsupported cake and wonton culinary inference while retaining explicit item-text disclosures."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site",
+      "kind": "official_site",
+      "url": "http://www.asiangrill88.com/",
+      "attemptedAt": "2026-07-15T16:19:10.249Z",
+      "outcome": "Official domain redirected but did not provide a usable current allergen or ingredient source.",
+      "notes": []
+    },
+    {
+      "id": "linked-source",
+      "kind": "linked_source",
+      "url": "https://order.toasttab.com/online/asian-grill-gwtvk",
+      "attemptedAt": "2026-07-15T16:19:10.249Z",
+      "outcome": "Restaurant-linked Toast menu was accessible to the research agents and supplied identity, menu, and selected ingredient disclosures.",
+      "notes": []
+    },
+    {
+      "id": "ordering-vendor",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/asian-grill-gwtvk",
+      "attemptedAt": "2026-07-15T16:19:10.249Z",
+      "outcome": "Live Toast menu reviewed; no comprehensive allergen matrix, allergen legend, complete ingredients, or cross-contact statement was published.",
+      "notes": []
+    },
+    {
+      "id": "targeted-search",
+      "kind": "targeted_search",
+      "url": null,
+      "attemptedAt": "2026-07-15T16:19:10.249Z",
+      "outcome": "No separate restaurant-issued allergen, nutrition, ingredient, or cross-contact guide was located.",
+      "notes": []
+    },
+    {
+      "id": "archive",
+      "kind": "archive",
+      "url": null,
+      "attemptedAt": "2026-07-15T16:19:10.249Z",
+      "outcome": "No relevant official archived allergen or ingredient document was located.",
+      "notes": []
+    },
+    {
+      "id": "third-party",
+      "kind": "third_party",
+      "url": "https://www.restaurantji.com/va/west-springfield/asian-grill-/menu/",
+      "attemptedAt": "2026-07-15T16:19:10.249Z",
+      "outcome": "Third-party menu corroborated identity and selected menu descriptions but was not used as allergen authority.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "unsupported-culinary-name-allergen-inference",
+      "severity": "high",
+      "kind": "allergen_extraction",
+      "summary": "A scoped subset of generated allergen claims was inferred from culinary names without explicit support in restaurant-authored Toast text.",
+      "evidenceIds": [
+        "toast-current-menu"
+      ],
+      "resolved": true,
+      "resolution": "Removed unsupported signals from six cake/wonton items and narrowed Crab Cake to explicit shellfish; retained direct ingredient disclosures elsewhere."
+    },
+    {
+      "id": "no-comprehensive-allergen-or-cross-contact-source",
+      "severity": "medium",
+      "kind": "allergen_source",
+      "summary": "The current restaurant-linked menu contains selected positive ingredient disclosures but no comprehensive allergen matrix, complete ingredients, allergen legend, negative-claim coverage, or cross-contact policy.",
+      "evidenceIds": [
+        "toast-current-menu"
+      ],
+      "resolved": true,
+      "resolution": "The limitation is accurately represented: only direct positive disclosures are retained, remaining items are unavailable, and no negative or cross-contact conclusions are published."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "scope-asian-grill-allergen-inference",
+      "status": "verified",
+      "summary": "Removed unsupported cake and wonton culinary-name allergen inferences while preserving allergens directly disclosed by restaurant-authored item names and descriptions; Crab Cake retains only explicit shellfish.",
+      "files": [
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [],
+      "verificationCommands": [
+        "node --test --test-name-pattern='Asian Grill preserves direct menu disclosures' scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Terra research: gpt-5.6-terra low, worker run 2026-07-15T15-57-56-396Z-3313d1.",
+    "Sol adjudication: gpt-5.6-sol medium. Sol upheld discrepancy_found but rejected Terra's blanket 93-item mismatch characterization.",
+    "Canonical item checks remain pending until the scoped repair and complete recheck are finished.",
+    "Focused Asian Grill regression passed. A pre-existing Applebee's assertion in a broader shared test block remains unrelated to this repair.",
+    "Generated recheck packet from src/data/generated/restaurants.generated.json after the scoped restaurant repair.",
+    "Post-repair item recheck: 257 exact menu matches; 87 verified direct positive disclosures; 170 accurately unavailable allergen results."
+  ]
+}

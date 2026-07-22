@@ -1,0 +1,527 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Restaurant verification Luna scout result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "runId",
+    "stage",
+    "model",
+    "restaurant",
+    "outcome",
+    "confidence",
+    "identity",
+    "sources",
+    "sourceAttempts",
+    "menuSurfaces",
+    "currentProducts",
+    "itemCheckGroups",
+    "riskSignals",
+    "findings",
+    "summary",
+    "coordinatorNotes"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 2 },
+    "runId": { "type": "string", "minLength": 1 },
+    "stage": { "type": "string", "const": "luna_scout" },
+    "model": { "$ref": "#/$defs/lunaModel" },
+    "restaurant": { "$ref": "#/$defs/restaurant" },
+    "outcome": { "$ref": "#/$defs/outcome" },
+    "confidence": { "$ref": "#/$defs/confidence" },
+    "identity": { "$ref": "#/$defs/identity" },
+    "sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "sourceAttempts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/sourceAttempt" }
+    },
+    "menuSurfaces": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/menuSurface" }
+    },
+    "currentProducts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/currentProduct" }
+    },
+    "itemCheckGroups": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/itemCheckGroup" }
+    },
+    "riskSignals": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/riskSignal" }
+    },
+    "findings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/finding" }
+    },
+    "summary": { "type": "string" },
+    "coordinatorNotes": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "lunaModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "reasoningEffort"],
+      "properties": {
+        "id": { "type": "string", "const": "gpt-5.6-luna" },
+        "reasoningEffort": { "type": "string", "const": "low" }
+      }
+    },
+    "restaurant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "restaurantId",
+        "name",
+        "baselineItemCount",
+        "baselineItemFingerprint"
+      ],
+      "properties": {
+        "restaurantId": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "baselineItemCount": { "type": "integer", "minimum": 0 },
+        "baselineItemFingerprint": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "no_discrepancy",
+        "discrepancy_found",
+        "blocked_unverifiable",
+        "low_confidence"
+      ]
+    },
+    "confidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "level",
+        "overall",
+        "menu",
+        "allergenSource",
+        "extraction",
+        "rationale"
+      ],
+      "properties": {
+        "level": { "type": "string", "enum": ["high", "medium", "low"] },
+        "overall": { "type": "number", "minimum": 0, "maximum": 1 },
+        "menu": { "type": "number", "minimum": 0, "maximum": 1 },
+        "allergenSource": { "type": "number", "minimum": 0, "maximum": 1 },
+        "extraction": { "type": "number", "minimum": 0, "maximum": 1 },
+        "rationale": { "type": "string" }
+      }
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verdict",
+        "scope",
+        "confidence",
+        "sourceEvidenceIds",
+        "notes"
+      ],
+      "properties": {
+        "verdict": {
+          "type": "string",
+          "enum": ["verified", "mismatch", "unverifiable"]
+        },
+        "scope": { "type": "string" },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "sourceEvidenceIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidenceId",
+        "url",
+        "authorityTier",
+        "purpose",
+        "title",
+        "retrievedAt",
+        "excerpt",
+        "stableRowId",
+        "contentHash",
+        "artifactSuggested"
+      ],
+      "properties": {
+        "evidenceId": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "minLength": 1 },
+        "authorityTier": { "$ref": "#/$defs/authorityTier" },
+        "purpose": {
+          "type": "string",
+          "enum": [
+            "identity",
+            "menu",
+            "allergen",
+            "ingredients",
+            "cross_contact",
+            "other"
+          ]
+        },
+        "title": { "type": "string" },
+        "retrievedAt": { "type": "string" },
+        "excerpt": { "type": ["string", "null"] },
+        "stableRowId": { "type": ["string", "null"] },
+        "contentHash": { "type": ["string", "null"] },
+        "artifactSuggested": { "type": ["string", "null"] }
+      }
+    },
+    "sourceAttempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "status", "url", "notes"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "official_site",
+            "linked_source",
+            "ordering_vendor",
+            "targeted_search",
+            "archive",
+            "third_party"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["accessible", "not_found", "blocked", "error"]
+        },
+        "url": { "type": ["string", "null"] },
+        "notes": { "type": "string" }
+      }
+    },
+    "menuSurface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "surfaceId",
+        "title",
+        "service",
+        "url",
+        "authorityTier",
+        "mediaType",
+        "accessStatus",
+        "fullyEnumerated",
+        "scopeStatus",
+        "current",
+        "sourceEvidenceIds",
+        "currentProductKeys",
+        "notes"
+      ],
+      "properties": {
+        "surfaceId": { "type": "string", "minLength": 1 },
+        "title": { "type": "string" },
+        "service": { "type": ["string", "null"] },
+        "url": { "type": "string", "minLength": 1 },
+        "authorityTier": { "$ref": "#/$defs/authorityTier" },
+        "mediaType": {
+          "type": "string",
+          "enum": [
+            "html",
+            "json",
+            "pdf",
+            "image",
+            "ocr",
+            "image_pdf",
+            "scanned_pdf",
+            "text",
+            "other"
+          ]
+        },
+        "accessStatus": {
+          "type": "string",
+          "enum": ["accessible", "partial", "blocked", "not_found", "error"]
+        },
+        "fullyEnumerated": { "type": "boolean" },
+        "scopeStatus": {
+          "type": "string",
+          "enum": [
+            "complete",
+            "partial",
+            "unresolved",
+            "excluded",
+            "superseded"
+          ]
+        },
+        "current": { "type": ["boolean", "null"] },
+        "sourceEvidenceIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "currentProductKeys": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "currentProduct": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "currentProductKey",
+        "name",
+        "category",
+        "surfaceIds",
+        "presentationIds",
+        "matchedBaselineAuditItemKeys",
+        "sourceEvidenceIds",
+        "containsAllergens",
+        "mayContainAllergens",
+        "allergenEvidenceStatus",
+        "allergenSourceType",
+        "allergenAuthorityTier",
+        "allergenSourceEvidenceIds",
+        "authorityVerdict",
+        "notes"
+      ],
+      "properties": {
+        "currentProductKey": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "category": { "type": ["string", "null"] },
+        "surfaceIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "presentationIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "matchedBaselineAuditItemKeys": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "sourceEvidenceIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "containsAllergens": { "type": "array", "items": { "type": "string" } },
+        "mayContainAllergens": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "allergenEvidenceStatus": {
+          "type": "string",
+          "enum": [
+            "complete",
+            "partial_positive_only",
+            "unavailable",
+            "not_applicable"
+          ]
+        },
+        "allergenSourceType": {
+          "type": ["string", "null"],
+          "enum": [
+            "restaurant_allergen_document",
+            "restaurant_ingredients",
+            "linked_vendor_allergen",
+            "linked_vendor_ingredients",
+            "third_party_allergen",
+            "ingredient_intelligence",
+            "unavailable",
+            "not_applicable",
+            null
+          ]
+        },
+        "allergenAuthorityTier": {
+          "type": ["string", "null"],
+          "enum": [
+            "restaurant_issued",
+            "restaurant_linked_vendor",
+            "third_party",
+            "ingredient_intelligence",
+            null
+          ]
+        },
+        "allergenSourceEvidenceIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "authorityVerdict": {
+          "type": ["string", "null"],
+          "enum": [
+            "verified",
+            "ambiguous",
+            "unverified",
+            "mismatch",
+            "misclassified",
+            "unverifiable",
+            null
+          ]
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "itemCheckGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "auditItemKeys",
+        "disposition",
+        "allergenVerdict",
+        "matchedCurrentProductKeys",
+        "sourceEvidenceIds",
+        "adjudicatedContainsAllergens",
+        "adjudicatedMayContainAllergens",
+        "adjudicatedAllergenSourceType",
+        "adjudicatedAllergenAuthorityTier",
+        "allergenSourceEvidenceIds"
+      ],
+      "properties": {
+        "auditItemKeys": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "disposition": {
+          "type": "string",
+          "enum": [
+            "exact_match",
+            "normalized_match",
+            "variant_match",
+            "missing_from_source",
+            "stale_extra",
+            "artifact",
+            "location_mismatch"
+          ]
+        },
+        "allergenVerdict": {
+          "type": "string",
+          "enum": [
+            "verified",
+            "accurately_unavailable",
+            "mismatch",
+            "not_applicable"
+          ]
+        },
+        "matchedCurrentProductKeys": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "sourceEvidenceIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "adjudicatedContainsAllergens": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "adjudicatedMayContainAllergens": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "adjudicatedAllergenSourceType": {
+          "type": ["string", "null"],
+          "enum": [
+            "restaurant_allergen_document",
+            "restaurant_ingredients",
+            "linked_vendor_allergen",
+            "linked_vendor_ingredients",
+            "third_party_allergen",
+            "ingredient_intelligence",
+            "unavailable",
+            "not_applicable",
+            null
+          ]
+        },
+        "adjudicatedAllergenAuthorityTier": {
+          "type": ["string", "null"],
+          "enum": [
+            "restaurant_issued",
+            "restaurant_linked_vendor",
+            "third_party",
+            "ingredient_intelligence",
+            null
+          ]
+        },
+        "allergenSourceEvidenceIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "riskSignal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gateId", "triggered", "rationale", "sourceEvidenceIds"],
+      "properties": {
+        "gateId": { "type": "string", "minLength": 1 },
+        "triggered": { "type": "boolean" },
+        "rationale": { "type": "string" },
+        "sourceEvidenceIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "findingId",
+        "severity",
+        "kind",
+        "summary",
+        "sourceEvidenceIds",
+        "affectedAuditItemKeys"
+      ],
+      "properties": {
+        "findingId": { "type": "string", "minLength": 1 },
+        "severity": {
+          "type": "string",
+          "enum": ["critical", "high", "medium", "low"]
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "identity",
+            "menu",
+            "allergen_source",
+            "extraction",
+            "cross_contact",
+            "scope",
+            "other"
+          ]
+        },
+        "summary": { "type": "string" },
+        "sourceEvidenceIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "affectedAuditItemKeys": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "authorityTier": {
+      "type": "string",
+      "enum": [
+        "restaurant_issued",
+        "restaurant_linked_vendor",
+        "third_party",
+        "ingredient_intelligence"
+      ]
+    }
+  }
+}

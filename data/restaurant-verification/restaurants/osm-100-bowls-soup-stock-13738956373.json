@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-100-bowls-soup-stock-13738956373",
+  "name": "100 Bowls Soup & Stock",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T16:54:10.977Z",
+  "updatedAt": "2026-07-14T17:05:42.927Z",
+  "completedAt": "2026-07-14T17:05:42.927Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 9,
+      "sourceItemCount": 57,
+      "notes": [
+        "The restaurant-linked Square storefront publishes 57 soup and broth products across Vegan Soups, Meat Soups, and Broth; five are presently sold out but remain published menu products.",
+        "The 67-product Square response also contains ten non-menu catalog records (classes, merchandise, donation, granola/cookie, and eggs), which the corrected snapshot excludes using the storefront section structure.",
+        "Five baseline rows map to current products; Thai Sweet Potato is stale, Seasonal Vegan Soup and Meat Soup are category placeholders, and Chili ambiguously collapses three distinct current chili products.",
+        "The nine-row baseline omitted 52 current menu products."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "Forty current products have direct restaurant-authored ingredient evidence in the linked Square catalog; seventeen have only descriptions and remain accurately unavailable for detailed item-level allergen data.",
+        "Direct ingredient evidence supports mustard for Caraway Cauliflower, Creamy Mushroom, and Red Lentil Dal, and soy plus sesame for Miso Tofu Low FODMAP.",
+        "The restaurant separately states that its soups and broths are gluten-free and dairy-free. That global statement was not generalized into negative claims for egg, soy, sesame, nuts, fish, shellfish, mustard, sulfites, or cross-contact.",
+        "Coconut milk, dairy garnish suggestions, explicit without-cream wording, and buckwheat-instead-of-barley wording are not treated as contains signals."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen baseline was produced by a hard-coded nine-row fallback in scripts/repair-final-generated-regressions.mjs rather than by item-level Square extraction.",
+        "The replacement fallback consumes a hashed audit snapshot derived from the storefront bootstrap section membership and linked Square product API.",
+        "The audit classifier maps only direct ingredient mentions, preserves unavailable status when item-level disclosure is incomplete, and does not infer sulfites from wine or vinegar."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site-review",
+      "kind": "official_site",
+      "url": "https://100bowlsofsoup.com/",
+      "attemptedAt": "2026-07-14T16:54:11.022Z",
+      "outcome": "Confirmed restaurant identity, Square ordering link, and global gluten/dairy-free statements; the site did not expose the full item catalog itself.",
+      "notes": []
+    },
+    {
+      "id": "linked-square-store-review",
+      "kind": "linked_source",
+      "url": "https://100bowlsonline.square.site/",
+      "attemptedAt": "2026-07-14T16:54:11.925Z",
+      "outcome": "Recovered the official storefront section structure and product identifiers for Vegan Soups, Meat Soups, and Broth.",
+      "notes": []
+    },
+    {
+      "id": "square-products-api-review",
+      "kind": "ordering_vendor",
+      "url": "https://100bowlsonline.square.site/app/store/api/v28/editor/users/130684623/sites/833279542266240048/products?page=1&per_page=200&include=images,media_files,discounts",
+      "attemptedAt": "2026-07-14T16:54:49.000Z",
+      "outcome": "Retrieved all 67 visible Square catalog products and reconciled 57 soup/broth menu products with current descriptions, ingredient text, and availability.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "menu-collapsed-to-nine-fallback-rows",
+      "severity": "high",
+      "kind": "menu-completeness",
+      "summary": "The baseline publishes nine fallback rows instead of the 57 current soup and broth products, including three fabricated category/generic placeholders and one stale item.",
+      "evidenceIds": [
+        "square-store",
+        "square-products-api"
+      ],
+      "resolved": true,
+      "resolution": "Prepared a 57-item corrected Square snapshot and changed the fallback source to consume it."
+    },
+    {
+      "id": "current-allergen-signals-omitted",
+      "severity": "high",
+      "kind": "allergen-coverage",
+      "summary": "The baseline omits current items with direct mustard, soy, and sesame ingredient evidence and marks four matched ingredient-disclosed products unavailable.",
+      "evidenceIds": [
+        "square-products-api",
+        "official-faq"
+      ],
+      "resolved": true,
+      "resolution": "The corrected snapshot preserves 40 direct ingredient disclosures, including all four allergen-bearing products, while keeping 17 incomplete rows unavailable."
+    },
+    {
+      "id": "description-context-can-create-false-positives",
+      "severity": "medium",
+      "kind": "source-semantics",
+      "summary": "Naive keyword scanning would falsely interpret coconut milk, garnish suggestions, without-cream wording, and buckwheat comparison text as included dairy or gluten.",
+      "evidenceIds": [
+        "square-products-api",
+        "official-faq"
+      ],
+      "resolved": true,
+      "resolution": "The audit extraction uses labeled ingredient sections and conservative context suppression; focused tests cover the misleading phrases."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-square-menu-repair",
+      "status": "verified",
+      "summary": "Replaced the static nine-row 100 Bowls fallback with a hashed 57-item Square menu snapshot that preserves direct ingredient evidence and unavailable semantics.",
+      "files": [
+        "data/restaurant-verification/repairs/osm-100-bowls-soup-stock-13738956373/corrected-menu.json",
+        "scripts/restaurant-verification-ledger.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "scripts/restaurant-verification-ledger.test.mjs"
+      ],
+      "verificationCommands": [
+        "node --test scripts/restaurant-verification-ledger.test.mjs scripts/pipeline/andpizza-extractor.test.mjs",
+        "node --check scripts/repair-final-generated-regressions.mjs",
+        "npm run verify:restaurants -- validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: f388dc132e9dd6970e736a25931ac22fd69f4bd0361912a09a5ff4ccb95dd850.",
+    "The frozen generated baseline was not overwritten; it remains the immutable audit input."
+  ]
+}

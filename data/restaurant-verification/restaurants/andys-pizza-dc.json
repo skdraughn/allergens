@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "andys-pizza-dc",
+  "name": "Andy's Pizza",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T05:40:16.532Z",
+  "updatedAt": "2026-07-15T05:55:59.353Z",
+  "completedAt": "2026-07-15T05:55:59.353Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 27,
+      "sourceItemCount": 15,
+      "notes": [
+        "The current restaurant-issued Adams Morgan page contains a 16-row JSON-LD menu: 15 priced products across three categories and one price-less Whole Pie Toppings modifier group.",
+        "All 27 frozen rows were reconciled. Fifteen are current exact-location products, eleven are products published only by other Andy's Pizza locations, and Whole Pie Toppings is a configurable modifier group rather than a standalone product.",
+        "The corrected menu retains all 15 current Adams Morgan products with no omissions and is scoped to 2465 18th St NW, Washington, DC 20009."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The current Adams Morgan menu publishes direct item descriptions and a universal statement that its pizza crust is cold-fermented for 72 hours with a touch of sourdough. It does not publish a complete allergen matrix or cross-contact disclosure.",
+        "All 15 current products have direct restaurant-issued positive signals: milk and/or wheat/gluten from disclosed cheese, breadcrumbs, croutons, and the applicable pizza-crust description. Missing terms are never treated as negative assurances.",
+        "Miller Time remains free of a fixed milk signal because its disclosed cheese is vegan, while wheat/gluten remain fixed from the crust. No may-contain or cross-contact claim was invented."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic extraction combined the exact Adams Morgan page with the restaurant's ten-location all-menus carousel, which caused eleven other-location products and dietary claims to bleed into this location record.",
+        "The reproducible parser selects only the JSON-LD Menu named Adams Morgan, verifies the all-menus page contains a separate 16-row Adams Morgan block, and uses the other nine menus only to prove location mismatches.",
+        "Rows without a priced Offer are classified as modifier groups. The universal crust description is applied only to the current pizza categories, and HTML entities in structured text are decoded before storage."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "andys-adams-menu-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.eatandyspizza.com/menu/adams-morgan/",
+      "attemptedAt": "2026-07-15T05:40:49.543Z",
+      "outcome": "HTTP 200. Parsed the current exact-location Adams Morgan JSON-LD menu with 16 structured rows: 15 priced products and one price-less topping modifier group.",
+      "notes": []
+    },
+    {
+      "id": "andys-all-menus-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://www.eatandyspizza.com/menus/",
+      "attemptedAt": "2026-07-15T05:40:50.191Z",
+      "outcome": "HTTP 200. Parsed ten separately named location menus. The Adams Morgan block matches the exact page; eleven frozen products occur only in one or more of the other nine location catalogs.",
+      "notes": [
+        "Other-location products and dietary labels were retained only as location-mismatch evidence, never promoted into the Adams Morgan catalog."
+      ]
+    },
+    {
+      "id": "andys-adams-location-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.eatandyspizza.com/location/adams-morgan-andys-pizza/",
+      "attemptedAt": "2026-07-15T05:43:18.184Z",
+      "outcome": "HTTP 200. Confirmed the Adams Morgan identity, 2465 18th St NW address, 20009 postal code, phone number, current hours, and the restaurant's ADMO ordering link.",
+      "notes": []
+    },
+    {
+      "id": "andys-admo-order-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://orders.eatandyspizza.com/menu/admo",
+      "attemptedAt": "2026-07-15T05:43:18.480Z",
+      "outcome": "HTTP 200 for the Olo ordering shell linked by the restaurant. It confirms the ADMO ordering slug, but its client API required a Cloudflare browser challenge, so no ordering-only row or allergen claim was used.",
+      "notes": [
+        "The complete current restaurant-issued exact-location menu remained directly accessible and authoritative."
+      ]
+    },
+    {
+      "id": "andys-targeted-allergen-search-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://www.eatandyspizza.com/menu/adams-morgan/",
+      "attemptedAt": "2026-07-15T05:42:00.000Z",
+      "outcome": "Targeted official-domain searches for allergen, allergy, cross-contact, gluten-free, wheat, and dairy sources returned the current menu pages but no restaurant-issued allergen matrix, nutrition guide, or cross-contact disclosure.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "andys-adams-location-bleed",
+      "severity": "critical",
+      "kind": "location-mismatch",
+      "summary": "Eleven of 27 frozen rows were absent from Adams Morgan and came only from other Andy's Pizza location menus, including Buffalo Crispy Chicken, Dairy Free Margherita, Chorizo Fries, and the NOMA-only burgers.",
+      "evidenceIds": [
+        "official-andys-adams-morgan-menu",
+        "official-andys-all-menus",
+        "official-andys-adams-location"
+      ],
+      "resolved": true,
+      "resolution": "Scoped the record to the named Adams Morgan JSON-LD menu and removed all eleven other-location products and claims."
+    },
+    {
+      "id": "andys-whole-pie-toppings-artifact",
+      "severity": "high",
+      "kind": "modifier-group-artifact",
+      "summary": "Whole Pie Toppings was stored as a menu item even though its structured row has no price and contains only topping option descriptions.",
+      "evidenceIds": [
+        "official-andys-adams-morgan-menu"
+      ],
+      "resolved": true,
+      "resolution": "Classified the row as a configurable modifier group and removed it from the standalone item catalog."
+    },
+    {
+      "id": "andys-missing-crust-allergens",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Thirteen of the fifteen current frozen products omitted direct wheat/gluten evidence from the restaurant's universal 72-hour sourdough pizza-crust description or from published breadcrumbs/croutons.",
+      "evidenceIds": [
+        "official-andys-adams-morgan-menu"
+      ],
+      "resolved": true,
+      "resolution": "Applied the universal crust description only to current pizza rows and mapped direct breadcrumbs and croutons for the two applicable starters."
+    },
+    {
+      "id": "andys-location-dietary-label-promotion",
+      "severity": "high",
+      "kind": "source-semantics-error",
+      "summary": "The frozen extraction treated dietary details from other location menus, such as Dairy Free Margherita's cashew/tree-nut and wheat labels, as though they described Adams Morgan products.",
+      "evidenceIds": [
+        "official-andys-adams-morgan-menu",
+        "official-andys-all-menus"
+      ],
+      "resolved": true,
+      "resolution": "Preserved every dietary label at its published location scope and attributed none of the other-location labels to Adams Morgan."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "andys-adams-current-location-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt Andy's Pizza Adams Morgan from its exact current structured menu, removed other-location bleed and a modifier artifact, and corrected positive allergen signals without inventing negative or cross-contact claims.",
+      "files": [
+        "scripts/pipeline/andys-pizza-adams-morgan-audit-catalog.mjs",
+        "scripts/pipeline/andys-pizza-adams-morgan-audit-catalog.test.mjs",
+        "scripts/pipeline/andys-pizza-adams-morgan-audit-reconciliation.mjs",
+        "scripts/pipeline/andys-pizza-adams-morgan-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/andys-pizza-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/andys-pizza-adams-morgan-audit-catalog.test.mjs scripts/pipeline/andys-pizza-adams-morgan-audit-reconciliation.test.mjs",
+        "node scripts/pipeline/andys-pizza-adams-morgan-audit-catalog.mjs",
+        "node scripts/pipeline/andys-pizza-adams-morgan-audit-reconciliation.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=andys-pizza-dc node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 4a2525c06df9e35179f08892bc0e69f8b17f0fea7101f677de1bfacaceb7657c.",
+    "Exact Adams Morgan menu artifact SHA-256: 85b62ba29d7d1c812ce8b793da961e118de4560bdc9d7c9ea56097886fc11309.",
+    "All-location menus artifact SHA-256: bdd63161b601018bad92819c6d2721d023dad1570cdb7b43d94c45d6af2df38b.",
+    "Exact Adams Morgan location artifact SHA-256: 1af698597b044a92da7e6bf1a9dd1312c9c1a6fd17b4a52db8f5ec962151a727.",
+    "Linked Olo ordering shell artifact SHA-256: 481809649581ad709d70b554c3fe865ca71b1ef6389509ceb3344b8aa6806bf0.",
+    "Frozen live target SHA-256 before repair: 19f6362114729e1eab1ef7b9e233b991bd1d1081666e2071d73ac3186207e814.",
+    "Live target SHA-256 after repair: 8645f023fa4ef92b56e887fcec922426406255c255c9e5f9f3b0708756d0bee1.",
+    "Live non-target restaurant projection SHA-256 remained ea374504b852688bbe42367d61333db3b1c2ca4278f476828cba6eb1f38fe8e8.",
+    "A second target-only repair run produced the same target hash, decoded the 18-inch crust text correctly, and retained exactly one Andy's Pizza repair note.",
+    "The repaired repository contains 113742 live menu items; the top-level historical itemCount field was intentionally not used as verification evidence."
+  ]
+}

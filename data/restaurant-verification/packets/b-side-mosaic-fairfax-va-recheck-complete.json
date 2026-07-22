@@ -1,0 +1,111 @@
+{
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 58,
+      "sourceItemCount": 58,
+      "notes": [
+        "Post-repair recheck pins 58 canonical products from 66 current restaurant-issued dinner, brunch, kids, and happy-hour presentations, with alcohol-only rows excluded and nonalcoholic beverages last.",
+        "All 25 frozen products reconcile exactly once; all 33 omitted current products and the repeated cross-service presentation evidence are restored."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The corrected catalog contains exactly 30 official ingredient rows, two restaurant-linked menu-ingredient rows, two restaurant-linked product rows, and 24 unavailable rows.",
+        "Sour Cream & Onion Chicharrones is the sole may-contain row; its linked dairy, gluten, and dairy cross-contact wording remains item-specific vendor evidence and is not generalized into a matrix or restaurant-wide warning."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The hash-pinned catalog preserves all owner-menu service presentations, corrects the stale PDF-column categories, consolidates repeated products deterministically, and keeps beverages last.",
+        "The 25 frozen rows finish with fifteen corrected mismatch outcomes and ten accurately unavailable outcomes; no linked evidence is promoted to restaurant-issued authority."
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "dinner-only-current-menu-undercoverage",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The 25-row frozen catalog is dinner-only and omits 33 products from the current 58-product, 66-presentation boundary across dinner, brunch, kids, happy hour, and nonalcoholic beverages.",
+      "evidenceIds": [
+        "official-dinner-menu-current",
+        "official-brunch-menu-current",
+        "official-kids-menu-current",
+        "official-happy-hour-current"
+      ],
+      "resolved": true,
+      "resolution": "Restored all 33 omitted products and pinned all 66 current source presentations to 58 canonical products."
+    },
+    {
+      "id": "stale-category-boundaries",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The frozen PDF extraction retains stale dinner-column category outcomes and does not preserve repeated products across their current service presentations.",
+      "evidenceIds": [
+        "official-dinner-menu-current",
+        "official-brunch-menu-current",
+        "official-happy-hour-current"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt source-scoped categories and retained every repeated service presentation on its canonical product."
+    },
+    {
+      "id": "stale-allergen-and-source-outcomes",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "Fifteen frozen rows have direct allergen or source outcomes inconsistent with the current owner menus and partial restaurant-linked evidence; ten frozen rows are accurately unavailable.",
+      "evidenceIds": [
+        "official-dinner-menu-current",
+        "official-brunch-menu-current",
+        "official-kids-menu-current",
+        "official-happy-hour-current",
+        "linked-order-menu-current"
+      ],
+      "resolved": true,
+      "resolution": "Corrected all fifteen mismatch outcomes, preserved the ten accurately unavailable rows, and retained exact restaurant-issued versus linked-vendor provenance."
+    },
+    {
+      "id": "linked-chicharrones-cross-contact-omitted",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "The frozen Sour Cream & Onion Chicharrones row omits the linked product's affirmative dairy statement and item-specific gluten-and-dairy cross-contact disclosure.",
+      "evidenceIds": [
+        "linked-order-menu-current"
+      ],
+      "resolved": true,
+      "resolution": "Restored the linked dairy positive and the item-specific milk and gluten may-contain signals without generalizing them to any other product."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "rebuild-b-side-current-menus",
+      "status": "verified",
+      "summary": "Verified the 58-product and 66-presentation boundary, exact authority split, frozen reconciliation, corrected categories, and sole item-specific Chicharrones cross-contact row.",
+      "files": [
+        "scripts/pipeline/b-side-audit-catalog.mjs",
+        "scripts/pipeline/b-side-audit-catalog.test.mjs",
+        "scripts/pipeline/b-side-audit-reconciliation.mjs",
+        "scripts/pipeline/b-side-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/b-side-mosaic-fairfax-va/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/b-side-audit-catalog.test.mjs scripts/pipeline/b-side-audit-reconciliation.test.mjs",
+        "node --test --test-name-pattern=\"B Side preserves\" scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Generated counts: 58 total products from 66 presentations; 30 official ingredients; 2 linked-menu ingredients; 2 linked-product disclosures; 24 unavailable; 1 may-contain row."
+  ],
+  "status": "recheck_required"
+}

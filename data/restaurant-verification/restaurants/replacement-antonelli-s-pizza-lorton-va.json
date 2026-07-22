@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "replacement-antonelli-s-pizza-lorton-va",
+  "name": "Antonelli's Pizza",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T07:05:03.049Z",
+  "updatedAt": "2026-07-15T07:22:32.559Z",
+  "completedAt": "2026-07-15T07:22:32.559Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 100,
+      "sourceItemCount": 80,
+      "notes": [
+        "Antonelli's current restaurant-issued HTML menu and linked June 2025 PDF reconcile to 80 canonical top-level products across 15 food and nonalcoholic-beverage categories.",
+        "All 100 frozen rows were reconciled: 61 exact matches, one normalized match, one truncated-label variant, and 37 promoted headings, modifiers, notes, description fragments, or promotional artifacts. The 63 matched products leave 17 current omissions.",
+        "The repair restores all 17 omitted products, excludes twelve Beer & Wine presentations, and keeps the four nonalcoholic beverage products as the final category."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The owner-published HTML/PDF menus provide product names and selected ingredient descriptions but no complete allergen matrix or cross-contact disclosure. Seventy-three current products have supported positive signals; seven remain accurately unavailable.",
+        "Forty-five matched frozen allergen outcomes differ from the corrected evidence. The repair maps only positive signals supported by current product, category, or ingredient semantics and never treats silence as safety.",
+        "Optional cheese, chicken, bacon, sauces, toppings, meatballs, and deluxe additions are removed before base-product signal mapping so their ingredients do not smear onto the base product.",
+        "Beer & Wine is a catalog boundary, not allergen evidence; its twelve presentations remain excluded."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic extraction promoted 37 structural or promotional rows into products, omitted 17 current products, flattened almost every product into the Pizza category, and published partial descriptions as names.",
+        "The reviewed parser traverses only owner-published top-level price-list products under an explicit category allowlist, handles Buffalo Wings and Plain Cheese structural exceptions, rejects helpers/alcohol, and asserts 97 raw rows, two responsive Plain Cheese tables, 80 products, and 15 categories.",
+        "The hidden responsive HTML table's stale $12.99 medium Plain Cheese price is rejected in favor of the $13.99 current row corroborated by the visually inspected PDF.",
+        "Focused tests cover source shape, stale-table selection, category ordering, helper and alcohol rejection, optional-add-on semantics, every frozen-row disposition, published repair invariants, target-only isolation, and idempotency."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "antonellis-home-2026-07-15",
+      "kind": "official_site",
+      "url": "https://antonellis-pizza.com/",
+      "attemptedAt": "2026-07-15T07:07:42.234Z",
+      "outcome": "HTTP 200. Confirmed Antonelli's Pizza & Subs at 8212 Gunston Corner Lane, Lorton, VA 22079 and the owner-controlled menu links.",
+      "notes": []
+    },
+    {
+      "id": "antonellis-html-menu-2026-07-15",
+      "kind": "official_site",
+      "url": "https://antonellis-pizza.com/menu/",
+      "attemptedAt": "2026-07-15T07:07:47.053Z",
+      "outcome": "HTTP 200. Retained the 522,359-byte current owner-published HTML menu and reviewed all 97 price-list rows plus its responsive Plain Cheese tables.",
+      "notes": []
+    },
+    {
+      "id": "antonellis-pdf-menu-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://antonellis-pizza.com/wp-content/uploads/2025/08/Final-Menu-June-2025.pdf",
+      "attemptedAt": "2026-07-15T07:07:51.896Z",
+      "outcome": "HTTP 200. Retained the 417,421-byte two-page restaurant-issued PDF, rendered and visually inspected both pages at original detail, and corroborated the 80-product catalog and $13.99 medium Plain Cheese price.",
+      "notes": []
+    },
+    {
+      "id": "antonellis-targeted-allergen-review-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://antonellis-pizza.com/menu/",
+      "attemptedAt": "2026-07-15T07:14:00.000Z",
+      "outcome": "Targeted review of the owner-published HTML and PDF found item descriptions but no allergen matrix, may-contain statement, shared-equipment disclosure, or cross-contact assurance.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "antonellis-structural-row-promotion",
+      "severity": "critical",
+      "kind": "parser-structure-corruption",
+      "summary": "The frozen extraction promoted 37 headings, modifiers, global notes, description fragments, and promotional rows into standalone products.",
+      "evidenceIds": [
+        "official-antonellis-menu",
+        "official-antonellis-june-2025-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Restricted extraction to reviewed top-level product rows under explicit menu categories and added complete artifact disposition tests."
+    },
+    {
+      "id": "antonellis-omitted-and-flattened-menu",
+      "severity": "high",
+      "kind": "menu-reconciliation-mismatch",
+      "summary": "The app omitted 17 current products and flattened all 63 matched products into incorrect generic categories or descriptions.",
+      "evidenceIds": [
+        "official-antonellis-menu",
+        "official-antonellis-june-2025-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Published all 80 canonical current products in their 15 owner-published categories with Beverages last."
+    },
+    {
+      "id": "antonellis-allergen-mismatches",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Forty-five matched frozen products had missing or overstated positive signals relative to current product/category/ingredient evidence.",
+      "evidenceIds": [
+        "official-antonellis-menu",
+        "official-antonellis-june-2025-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Recomputed supported positive signals, preserved seven unavailable rows, and invented no negative or cross-contact claim."
+    },
+    {
+      "id": "antonellis-stale-responsive-price-table",
+      "severity": "high",
+      "kind": "source-structure-conflict",
+      "summary": "The HTML retains a stale hidden responsive Plain Cheese row pricing the medium pizza at $12.99 alongside the current $13.99 row.",
+      "evidenceIds": [
+        "official-antonellis-menu",
+        "official-antonellis-june-2025-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Selected the $13.99 row only after the restaurant-issued PDF independently corroborated it, and asserted both HTML candidates in tests."
+    },
+    {
+      "id": "antonellis-optional-addition-smear",
+      "severity": "high",
+      "kind": "source-semantics-risk",
+      "summary": "Optional cheese, chicken, bacon, sauce, topping, meatball, and deluxe text could incorrectly attach its signals to base products.",
+      "evidenceIds": [
+        "official-antonellis-menu",
+        "official-antonellis-june-2025-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Removed optional-addition clauses before positive-signal mapping and added a regression ensuring Grilled Chicken Sub does not inherit optional cheese."
+    },
+    {
+      "id": "antonellis-alcohol-scope",
+      "severity": "low",
+      "kind": "catalog-scope",
+      "summary": "The official menu includes twelve Beer & Wine presentations after its nonalcoholic beverage section.",
+      "evidenceIds": [
+        "official-antonellis-menu",
+        "official-antonellis-june-2025-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Excluded the alcohol presentations while retaining the four current nonalcoholic beverages at the end of the catalog."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "antonellis-current-menu-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt Antonelli's current menu and corrected structural promotion, omissions, category/description associations, stale price selection, allergen semantics, optional-addition smear, and alcohol scope.",
+      "files": [
+        "scripts/pipeline/antonellis-pizza-audit-catalog.mjs",
+        "scripts/pipeline/antonellis-pizza-audit-catalog.test.mjs",
+        "scripts/pipeline/antonellis-pizza-audit-reconciliation.mjs",
+        "scripts/pipeline/antonellis-pizza-audit-reconciliation.test.mjs",
+        "scripts/pipeline/antonellis-pizza-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/replacement-antonelli-s-pizza-lorton-va/official-antonellis-home.html",
+        "data/restaurant-verification/artifacts/replacement-antonelli-s-pizza-lorton-va/official-antonellis-menu.html",
+        "data/restaurant-verification/artifacts/replacement-antonelli-s-pizza-lorton-va/official-antonellis-june-2025-pdf.pdf",
+        "data/restaurant-verification/repairs/replacement-antonelli-s-pizza-lorton-va/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/antonellis-pizza-audit-catalog.mjs",
+        "node scripts/pipeline/antonellis-pizza-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/antonellis-pizza-audit-catalog.test.mjs scripts/pipeline/antonellis-pizza-audit-reconciliation.test.mjs scripts/pipeline/antonellis-pizza-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=replacement-antonelli-s-pizza-lorton-va node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 7a7f47494ddd9450142ebefe1c13cd87545777a05582d747cacf437f7fbd8ef3.",
+    "Official home HTML SHA-256: 7fbe24f4b414dab9e5138612d8d0a68cef15656c1b55e23bd143ec3204cf4161.",
+    "Official menu HTML SHA-256: a5ab5888f17125e91eda2c35133e373aadb0d52c6ec1ac68ff571332f1d9ab36.",
+    "Official PDF SHA-256: b0640ef3de5193ed9cc2bbf927576ccf95ec868a1dc2e0351003db982bee3a6e.",
+    "Frozen live target SHA-256 before repair: ebc8c91d2c9b84ad9c5ca8e5f9ec35a24eb905ee621297e173299d7dc48a9b3b.",
+    "Live target SHA-256 after repair: 52d049cf8e224f0c92643b5d6cc9757561c3f368da5d371be225b37e62cf49ca.",
+    "Live non-target restaurant projection SHA-256 remained 4ccef2a3c6d00369f36359f55ebb08fc1ebc4e6e3bbf630b1eeae95d48642d53.",
+    "Two consecutive target-only repair runs produced the same target hash and retained exactly one Antonelli's verified repair note.",
+    "Both pages of the official PDF were rendered and visually inspected at original detail.",
+    "The repaired repository contains 113715 live menu items; the frozen ledger remains anchored to its original 112873-item hashed baseline."
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "restaurant-1789-dc",
+  "name": "1789 Restaurant",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T17:27:44.709Z",
+  "updatedAt": "2026-07-14T17:33:16.605Z",
+  "completedAt": "2026-07-14T17:33:16.605Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 39,
+      "sourceItemCount": 31,
+      "notes": [
+        "Every frozen row was reconciled against the current official menu page, dinner PDF, dessert PDF, and active Wines of Del Rio menu image.",
+        "The current food catalog contains 31 unique items: 19 dinner, 6 dessert, and 6 active special-event food rows; beverages and wine rows are excluded."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The restaurant provides item names and descriptions but no complete allergen matrix; only directly supported ingredient signals are asserted.",
+        "Silence in a description remains allergen-data unavailable, and coconut milk, cocoa butter, and the phrase milk-fed are not treated as dairy ingredients.",
+        "The app shellfish profile explicitly includes mollusks, so directly named octopus and squid are classified under shellfish."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The baseline combined current menus with expired event menus, emitted three dessert headings/options as standalone items, and duplicated Lobster Fettuccine from PDF and structured HTML spellings.",
+        "The prior allergen pass both missed direct terms and promoted row bleed/common-dish inference as official ingredient evidence."
+      ]
+    }
+  },
+  "sourceAttempts": [],
+  "findings": [
+    {
+      "id": "stale-and-non-item-rows",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "Nine of 39 baseline rows were stale event items, headings/nested options, or a duplicate PDF spelling.",
+      "evidenceIds": [
+        "official-menu-page",
+        "official-dinner-pdf",
+        "official-dessert-pdf",
+        "official-del-rio-menu-image"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the baseline with 31 current unique food rows and excluded beverage headings, nested cheese choices, duplicates, and expired event items."
+    },
+    {
+      "id": "allergen-signal-errors",
+      "severity": "high",
+      "kind": "allergen_accuracy",
+      "summary": "Twenty of 30 surviving baseline items had incorrect or incomplete allergen signals.",
+      "evidenceIds": [
+        "official-menu-page",
+        "official-dinner-pdf",
+        "official-dessert-pdf",
+        "official-del-rio-menu-image"
+      ],
+      "resolved": true,
+      "resolution": "Reclassified current items from direct item-name and description evidence with plant/cocoa/milk-fed exclusions and mollusk-aware shellfish semantics."
+    },
+    {
+      "id": "soft-shell-row-bleed",
+      "severity": "high",
+      "kind": "allergen_extraction",
+      "summary": "Soft Shell Crab inherited egg text from the following Spring Cassoulet row and an unsupported milk signal.",
+      "evidenceIds": [
+        "official-menu-page",
+        "official-dinner-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Restored Soft Shell Crab to the directly supported shellfish signal only and preserved Spring Cassoulet egg on its own row."
+    },
+    {
+      "id": "partial-menu-descriptions",
+      "severity": "medium",
+      "kind": "source_semantics",
+      "summary": "Official menus are descriptive menus rather than a complete allergen disclosure.",
+      "evidenceIds": [
+        "official-menu-page",
+        "official-dinner-pdf",
+        "official-dessert-pdf"
+      ],
+      "resolved": true,
+      "resolution": "Left six current items allergen-data unavailable and did not treat absent terms as negative claims."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-1789-current-menu-snapshot",
+      "status": "verified",
+      "summary": "Prepared and targeted-tested a 31-item current official-food snapshot with corrected menu membership and conservative allergen signals.",
+      "files": [
+        "scripts/pipeline/1789-audit-catalog.mjs",
+        "scripts/pipeline/1789-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/restaurant-1789-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/1789-audit-catalog.test.mjs scripts/pipeline/1789-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=tmp/restaurant-verification/1789-repair-input.json node scripts/repair-final-generated-regressions.mjs (targeted copy; verified 31 items, 25 direct ingredient signals, 6 unavailable, 11 categories, zero known artifacts)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 432ff099536308da1e117d4820f7ae8b0cdf0b5e099c1ee72c21f79f6214bc0e.",
+    "Reconciliation counts: {\"dispositions\":{\"artifact\":4,\"exact_match\":30,\"stale_extra\":5},\"allergens\":{\"not_applicable\":9,\"mismatch\":20,\"accurately_unavailable\":4,\"verified\":6}}."
+  ]
+}

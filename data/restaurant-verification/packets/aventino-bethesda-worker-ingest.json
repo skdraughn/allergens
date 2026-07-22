@@ -1,0 +1,138 @@
+{
+  "checks": {
+    "menu": {
+      "verdict": "mismatch",
+      "reviewedItemCount": 55,
+      "sourceItemCount": 52,
+      "notes": [
+        "The current restaurant-issued menus and linked ordering surface resolve to 52 canonical food formulations across dinner, lunch, brunch, dessert, happy hour, and online ordering.",
+        "All 55 frozen rows reconcile exactly once: 44 exact, one normalized, three stale seasonal products, and seven alcohol-section artifacts. Forty-five frozen presentations map to 43 current formulations; nine current formulations were absent from the frozen catalog."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "mismatch",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The owner menu provides positive ingredient text but no complete allergen matrix, negative assurances, or global cross-contact disclosure.",
+        "Twenty-seven current formulations support narrow restaurant-issued positives, twelve use partial affirmative labels from the restaurant-linked Toast surface, and thirteen remain unavailable. Seventeen frozen allergen or provenance outcomes require correction."
+      ]
+    },
+    "extraction": {
+      "verdict": "mismatch",
+      "parserReviewed": true,
+      "semanticsVerified": false,
+      "notes": [
+        "The generic extraction admitted seven Italian Vermouth products into the food catalog, retained three stale seasonal items, omitted nine current formulations, and collapsed two duplicate frozen presentations plus materially different service preparations.",
+        "The separate OSM record is the same restaurant at 4747 Bethesda Avenue and must not remain as a second restaurant."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site",
+      "kind": "official_site",
+      "url": "https://aventinocucina.com/menus/",
+      "attemptedAt": "2026-07-15T17:49:24.697Z",
+      "outcome": "Captured the current restaurant-issued menus and their structured service-specific product descriptions.",
+      "notes": []
+    },
+    {
+      "id": "linked-source",
+      "kind": "linked_source",
+      "url": "https://aventinocucina.com/faq/",
+      "attemptedAt": "2026-07-15T17:49:25.135Z",
+      "outcome": "Captured the restaurant-issued FAQ confirming the Bethesda identity, Toast relationship, and request that guests disclose allergies.",
+      "notes": ["No comprehensive allergen matrix or cross-contact policy is published here."]
+    },
+    {
+      "id": "ordering-vendor",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/aventino-extended-csd",
+      "attemptedAt": "2026-07-15T17:35:00.000Z",
+      "outcome": "Terra, Sol, and coordinator web review accessed the live restaurant-linked ordering surface and its partial affirmative item labels; coordinator artifact capture returned HTTP 403.",
+      "notes": ["Missing linked-menu labels are not negative evidence."]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "linked-toast-current",
+      "url": "https://order.toasttab.com/online/aventino-extended-csd",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "both",
+      "retrievedAt": "2026-07-15T17:35:00.000Z",
+      "contentType": "text/html",
+      "finalUrl": "https://order.toasttab.com/online/aventino-extended-csd",
+      "httpStatus": null,
+      "byteLength": null,
+      "sha256": null,
+      "artifactPath": null,
+      "excerpt": "The live Bethesda ordering menu labels selected products, including Pizza Rossa, Ricotta, Suppli, Piselli, Tonnarelli, Bucatini, Lumache, Rigatoni Carbonara, Prosciutto Panino, Aventino Burger, Milanese, and Pesce. It identifies the restaurant at 4747 Bethesda Avenue.",
+      "rowIdentifiers": ["Pizza Rossa", "Suppli", "Rigatoni Carbonara", "Prosciutto Panino", "Milanese", "Pesce"],
+      "request": {
+        "method": "GET",
+        "result": "Coordinator artifact capture returned HTTP 403; Terra, Sol, and coordinator web retrieval accessed the live restaurant-linked page."
+      },
+      "notes": ["Restaurant-linked partial affirmative evidence; not a restaurant-issued complete matrix."]
+    }
+  ],
+  "findings": [
+    {
+      "id": "stale-and-alcohol-catalog-contamination",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The frozen catalog contains three stale seasonal products and seven alcohol-only Italian Vermouth rows.",
+      "evidenceIds": ["official-menus-current", "linked-toast-current"],
+      "resolved": false,
+      "resolution": null
+    },
+    {
+      "id": "current-formulation-boundary-drift",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "Nine current formulations were absent, two frozen presentations were duplicates, and materially different Rigatoni, Prosciutto, Burger, and Pesce preparations were collapsed or smeared.",
+      "evidenceIds": ["official-menus-current", "linked-toast-current"],
+      "resolved": false,
+      "resolution": null
+    },
+    {
+      "id": "allergen-and-source-authority-mismatch",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "Seventeen frozen rows have direct allergen arrays or provenance inconsistent with the current owner ingredients and partial linked-menu affirmative labels.",
+      "evidenceIds": ["official-menus-current", "official-faq-current", "linked-toast-current"],
+      "resolved": false,
+      "resolution": null
+    },
+    {
+      "id": "duplicate-restaurant-record",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The OSM Aventino Cucina Romana record represents the same restaurant and address as aventino-bethesda.",
+      "evidenceIds": ["official-faq-current", "linked-toast-current"],
+      "resolved": false,
+      "resolution": null
+    }
+  ],
+  "repairs": [
+    {
+      "id": "rebuild-aventino-and-remove-duplicate",
+      "status": "planned",
+      "summary": "Rebuild the 52-formulation current catalog with service-aware identities and exact provenance, then remove the duplicate generated restaurant record.",
+      "files": [
+        "scripts/pipeline/aventino-audit-catalog.mjs",
+        "scripts/pipeline/aventino-audit-catalog.test.mjs",
+        "scripts/pipeline/aventino-audit-reconciliation.mjs",
+        "scripts/pipeline/aventino-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": ["data/restaurant-verification/repairs/aventino-bethesda/corrected-menu.json"],
+      "verificationCommands": [
+        "node --test scripts/pipeline/aventino-audit-catalog.test.mjs scripts/pipeline/aventino-audit-reconciliation.test.mjs",
+        "node --test --test-name-pattern=\"Aventino preserves service formulations\" scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": ["Terra low research was escalated to Sol medium; coordinator review corrected seasonal-menu, formulation, and source-authority boundaries."],
+  "status": "discrepancy_found"
+}

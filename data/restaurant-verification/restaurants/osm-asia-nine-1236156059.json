@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-asia-nine-1236156059",
+  "name": "Asia Nine",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T13:08:21.063Z",
+  "updatedAt": "2026-07-15T13:28:18.678Z",
+  "completedAt": "2026-07-15T13:28:18.678Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 132,
+      "sourceItemCount": 161,
+      "notes": [
+        "All 132 frozen rows were reconciled: 121 exact matches, five normalized matches preserving the source's double-asterisk notation, and six review-widget artifacts.",
+        "The current owner-issued Wix menu graph contains 81 Thai and 80 sushi products across 16 real sections. Thirty-five current products omitted from the frozen output were restored.",
+        "The raw visible Wix item collection contains 182 records, but 21 generic Wix demo products are absent from both published menu graphs and are excluded deterministically.",
+        "Beverages are moved after every food and sushi section while source order remains stable within all other sections."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Asia Nine publishes current item names and descriptions on its owner domain but no complete allergen matrix, complete recipes, allergen-free assurances, or item-level/global cross-contact statement.",
+        "Ninety-nine items have positive restaurant-issued signals limited to fixed published ingredients or unambiguous food identities; the other 62 remain allergen-unavailable rather than being treated as free from any allergen.",
+        "Thirty-three frozen allergen/source-semantic claims required correction. Coconut is not tree-nut or dairy; selectable shrimp/seafood is not a fixed base-item allergen; and wrapper, noodle, tempura, mayonnaise, surimi/kani, and miso formulation risks remain separately labeled Ingredient Intelligence.",
+        "The menu's raw-or-undercooked foodborne-illness warning is not an allergen cross-contact disclosure, so every mayContain array remains empty."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic path mixed six review-widget labels into the menu, flattened real sections into Items/asian, omitted 35 current products, and treated inferred formulations and optional selections as official fixed allergens.",
+        "The corrected parser consumes Wix's populatedMenus graph embedded in both owner menu tabs, preserves the menu-section-item relationships, and independently verifies the authorized menu/section/item APIs.",
+        "The raw item API exposes 21 generic demo products alongside 161 actual products; only item IDs reachable from the two visible menus and their 16 visible sections are publishable.",
+        "The hash-pinned builder fails closed on owner identity, captured source hashes, tab disagreement, menu/section/item counts, item-ID uniqueness, category structure, and consumer ID uniqueness.",
+        "Five focused catalog, API-boundary, reconciliation, and repaired-output tests pass. Two consecutive target-only repair runs preserved the repaired target hash and the complete non-target restaurant projection hash.",
+        "Per-restaurant application uses RESTAURANT_REPAIR_ONLY_ID so unrelated repair blocks cannot mutate other restaurants."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "asia-nine-owner-home-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.asianinemd.com/",
+      "attemptedAt": "2026-07-15T13:11:42.571Z",
+      "outcome": "Captured the owner-domain homepage identifying Asia Nine in Gaithersburg at 254 Crown Park Ave with phone 301-330-9997 and links to the current menus and ordering provider.",
+      "notes": []
+    },
+    {
+      "id": "asia-nine-owner-menu-tabs-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.asianinemd.com/menus?location=Crown+Park+Avenue&menu=thai-food",
+      "attemptedAt": "2026-07-15T13:11:42.908Z",
+      "outcome": "Captured both owner-issued Thai and sushi menu tabs. Each embeds the identical two-menu populated catalog containing 161 visible products across 16 sections.",
+      "notes": [
+        "The Thai surface contains 81 products and the sushi surface contains 80.",
+        "The published raw-or-undercooked warning concerns foodborne illness, not allergen cross-contact."
+      ]
+    },
+    {
+      "id": "asia-nine-current-wix-apis-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://www.asianinemd.com/_api/restaurants-menus-item/v1/items",
+      "attemptedAt": "2026-07-15T13:25:37.000Z",
+      "outcome": "Resolved the current Wix access token and captured the official-domain menu, section, and item APIs. The visible collection contains 182 items, of which exactly 161 are reachable from the two published menu graphs and 21 are generic Wix demo records.",
+      "notes": [
+        "Authorization is derived at retrieval time from /_api/v1/access-tokens with the restaurant menu as Referer; no token is retained.",
+        "The 161 reachable API IDs agree with the owner menu pages' populatedMenus graph."
+      ]
+    },
+    {
+      "id": "asia-nine-linked-toast-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/asia-nine-gaithersburg-254-crown-park-ave",
+      "attemptedAt": "2026-07-15T13:11:45.500Z",
+      "outcome": "The owner-linked Toast page was browser-accessible and corroborated the Gaithersburg ordering identity, but the ledger fetch received HTTP 403; it was not needed for menu or allergen authority because the complete owner menu and APIs were accessible.",
+      "notes": []
+    },
+    {
+      "id": "asia-nine-targeted-allergen-search-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://www.asianinemd.com/",
+      "attemptedAt": "2026-07-15T13:17:00.000Z",
+      "outcome": "Targeted official-domain searches found the current menus, policies, and a historical catering PDF but no allergen guide, matrix, complete ingredient disclosure, or cross-contact policy.",
+      "notes": [
+        "Historical catering material was not used to alter the current dine-in menu boundary."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "asia-nine-current-menu-boundary-corruption",
+      "severity": "critical",
+      "kind": "product-boundary-corruption",
+      "summary": "The frozen output omitted 35 current products, published six review-widget labels as food, and collapsed the owner menu's 16 real sections into generic Items/asian categories.",
+      "evidenceIds": [
+        "official-thai-menu",
+        "official-sushi-menu",
+        "official-wix-menus",
+        "official-wix-sections"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt all 161 reachable products from the published menu graph, restored real categories and omissions, removed the six widget artifacts, and placed Beverages last."
+    },
+    {
+      "id": "asia-nine-wix-demo-catalog-contamination",
+      "severity": "critical",
+      "kind": "source-semantics",
+      "summary": "The raw Wix item endpoint contains 21 visible generic demo products—including Classic burger, Classic cheesecake, and Tofu skewers—that are not assigned to either published Asia Nine menu.",
+      "evidenceIds": [
+        "official-wix-menus",
+        "official-wix-sections",
+        "official-wix-items"
+      ],
+      "resolved": true,
+      "resolution": "Made menu-to-section-to-item reachability the product boundary and added a focused regression check that fails if the 161/21 split changes."
+    },
+    {
+      "id": "asia-nine-allergen-source-semantic-mismatches",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Thirty-three frozen rows disagreed with the current restaurant-issued evidence, including coconut mapped to tree-nut, optional shrimp treated as fixed, inferred wheat/gluten and mayonnaise egg promoted to official, kani treated as shellfish, and direct fish/soy signals omitted.",
+      "evidenceIds": [
+        "official-thai-menu",
+        "official-sushi-menu",
+        "official-wix-items"
+      ],
+      "resolved": true,
+      "resolution": "Limited official positives to fixed published ingredients or unambiguous food identities, retained formulation risks as labeled Ingredient Intelligence, and left missing claims and cross-contact accurately unavailable."
+    },
+    {
+      "id": "asia-nine-foodborne-warning-semantics",
+      "severity": "high",
+      "kind": "warning-semantics",
+      "summary": "The owner menu warns about consuming raw or undercooked animal foods; interpreting that language as allergen cross-contact would invent a risk statement the restaurant did not make.",
+      "evidenceIds": [
+        "official-thai-menu",
+        "official-sushi-menu"
+      ],
+      "resolved": true,
+      "resolution": "Classified the statement as a foodborne-illness warning only and retained empty mayContain arrays for all 161 products."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "asia-nine-owner-menu-graph-rebuild",
+      "status": "verified",
+      "summary": "Replaced the corrupted 132-row output with all 161 current owner-published products, removed widget and demo artifacts, restored categories, corrected 33 allergen/source-semantic mismatches, separated Ingredient Intelligence, and constrained application to Asia Nine.",
+      "files": [
+        "scripts/pipeline/asia-nine-audit-catalog.mjs",
+        "scripts/pipeline/asia-nine-audit-catalog.test.mjs",
+        "scripts/pipeline/asia-nine-audit-reconciliation.mjs",
+        "scripts/pipeline/asia-nine-audit-reconciliation.test.mjs",
+        "scripts/pipeline/asia-nine-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/osm-asia-nine-1236156059/official-home.html",
+        "data/restaurant-verification/artifacts/osm-asia-nine-1236156059/official-thai-menu.html",
+        "data/restaurant-verification/artifacts/osm-asia-nine-1236156059/official-sushi-menu.html",
+        "data/restaurant-verification/artifacts/osm-asia-nine-1236156059/official-wix-menus.json",
+        "data/restaurant-verification/artifacts/osm-asia-nine-1236156059/official-wix-sections.json",
+        "data/restaurant-verification/artifacts/osm-asia-nine-1236156059/official-wix-items.json",
+        "data/restaurant-verification/repairs/osm-asia-nine-1236156059/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/asia-nine-audit-catalog.mjs",
+        "node scripts/pipeline/asia-nine-audit-catalog.mjs --capture-api",
+        "node scripts/pipeline/asia-nine-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/asia-nine-audit-catalog.test.mjs scripts/pipeline/asia-nine-audit-reconciliation.test.mjs scripts/pipeline/asia-nine-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=osm-asia-nine-1236156059 node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 0d2df04eae1c5104aa100cc3a1262128a3af7ee3adb87ab6eb752a0a55a0c842.",
+    "Frozen reconciled item-check SHA-256: f5547b15f0def3b572308d9a5396983068c5eea37882215cc70304a63d6a21b7.",
+    "Live target SHA-256 changed from b032f04aad859bfe8a49f0438f274b40e3cea2a58e8d378547f2a9f5ddf6c3d1 to d5bdf5056db71ed6c3ad7a8216c0384f5b17a039d00a38423b3974d56e524291.",
+    "Consecutive target-only repair non-target projection SHA-256 remained 469709d7bbe594462d7f87902eaeaaa7c6ea8402cf6e75c112327cbe4bccdc9c.",
+    "Evidence manifest SHA-256: d98f3eb32d2e69e48f22973b5cf26b16a915307a4ec45baecc2416f5c9a9cc02."
+  ]
+}

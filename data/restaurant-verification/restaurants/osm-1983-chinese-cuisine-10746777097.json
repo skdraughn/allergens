@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-1983-chinese-cuisine-10746777097",
+  "name": "1983 Chinese Cuisine",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T17:47:31.232Z",
+  "updatedAt": "2026-07-14T18:01:11.560Z",
+  "completedAt": "2026-07-14T18:01:11.560Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 94,
+      "sourceItemCount": 169,
+      "notes": [
+        "Every frozen row was reconciled against the current restaurant-issued website menu and the restaurant-linked Toast Main Menu, Morning Dim Sum, and Togo All Day surfaces.",
+        "Ninety-three frozen rows are current menu items; the remaining row, Noodles & Fried Rice, was a section heading emitted as an item.",
+        "The corrected catalog contains 169 deduplicated current rows across real sections, with beverages ordered after food and dessert."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The restaurant does not publish a complete allergen matrix; no allergen absence or cross-contact safety claim is made.",
+        "Positive signals are retained only where current restaurant-controlled menu titles explicitly name an allergen-bearing ingredient or species.",
+        "Twenty-three frozen rows had incorrect or incomplete signals; unsupported cake-wide wheat/egg assumptions and coconut-as-tree-nut were removed, while explicit fish, mollusk/crustacean, soy, egg, milk, sesame, peanut, and tree-nut terms were restored."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen output assigned every item the generic category chinese and shifted adjacent headings or item names into variantGroup, which made the displayed menu structure incorrect.",
+        "The frozen extraction also emitted a section heading as an item, duplicated equivalent products across menu surfaces, omitted current menu rows, and overclassified allergens from broad dish-name heuristics.",
+        "The correction parses real menu boundaries, deduplicates current surfaces, keeps the direct Toast page at restaurant_linked_vendor authority, and leaves the text retrieval proxy at third_party authority."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "toast-raw-http-cloudflare",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/1983-restaurant-1101-south-joyce-street-b26",
+      "attemptedAt": "2026-07-14T17:50:38.913Z",
+      "outcome": "Raw non-browser retrieval returned Cloudflare HTTP 403; the public browser-rendered page remained accessible and was reviewed directly.",
+      "notes": [
+        "A text-render proxy was retained only as a third-party reproducibility aid and was not promoted to restaurant-linked authority."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "broken-menu-structure-and-coverage",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "All 94 frozen rows had a generic category, adjacent headings/items bled into variantGroup, one section heading was shown as an item, and 76 current deduplicated items were absent.",
+      "evidenceIds": [
+        "official-home",
+        "linked-toast-current"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt a 169-row current catalog from both restaurant-controlled menu surfaces, using actual categories and deduplicating equivalent rows."
+    },
+    {
+      "id": "incorrect-allergen-signals",
+      "severity": "high",
+      "kind": "allergen_accuracy",
+      "summary": "Twenty-three of 93 real frozen menu rows had incorrect or incomplete allergen signals.",
+      "evidenceIds": [
+        "official-home",
+        "linked-toast-current"
+      ],
+      "resolved": true,
+      "resolution": "Removed unsupported name-based assumptions and rebuilt positive signals only from explicit current menu terms; all other allergens remain unavailable."
+    },
+    {
+      "id": "toast-capture-authority",
+      "severity": "medium",
+      "kind": "source_semantics",
+      "summary": "The direct Toast page is restaurant-linked but raw HTTP capture is Cloudflare-blocked; a third-party text render was needed for reproducible parsing.",
+      "evidenceIds": [
+        "official-home",
+        "linked-toast-current",
+        "third-party-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Verified the direct link and rendered page separately, recorded Toast as restaurant_linked_vendor, and retained the proxy strictly as third_party evidence."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-1983-current-menu-snapshot",
+      "status": "verified",
+      "summary": "Prepared and targeted-tested a 169-item current snapshot with real categories, deduplicated surfaces, beverages last, and conservative source-backed allergen signals.",
+      "files": [
+        "scripts/pipeline/1983-chinese-cuisine-audit-catalog.mjs",
+        "scripts/pipeline/1983-chinese-cuisine-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/osm-1983-chinese-cuisine-10746777097/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/1983-chinese-cuisine-audit-catalog.test.mjs scripts/pipeline/1983-chinese-cuisine-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=tmp/restaurant-verification/1983-repair-input.json node scripts/repair-final-generated-regressions.mjs (targeted copy; verified 169 unique items, nine real category groups, 63 direct signals, 106 unavailable rows, and beverages last)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 4b4f07508ad71ec517e9c08d5c21b38e5c368399321ac9f89b140a27e9a60af2.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":62,\"normalized_match\":31,\"artifact\":1},\"allergens\":{\"mismatch\":23,\"accurately_unavailable\":53,\"verified\":17,\"not_applicable\":1}}.",
+    "Current snapshot counts: 225 raw Toast rows plus 95 official-site rows reconciled to 169 current deduplicated items; 63 have an explicit positive allergen signal and 106 remain allergen-data unavailable.",
+    "Focused catalog, reconciliation, targeted repair-copy, unique-id, category-order, and source-semantics checks passed."
+  ]
+}

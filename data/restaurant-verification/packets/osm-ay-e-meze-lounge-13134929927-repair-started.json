@@ -1,0 +1,28 @@
+{
+  "repairs": [
+    {
+      "id": "rebuild-ayse-current-service-catalog",
+      "status": "implemented",
+      "summary": "Rebuilt 151 current products from the complete owner service-menu set and linked Toast catalog; retained 109 official ingredient rows, four linked-product rows, one linked-menu ingredient row, and 37 unavailable rows; removed three artifacts and seven stale extras; and left all may-contain arrays empty.",
+      "files": [
+        "scripts/pipeline/ayse-audit-catalog.mjs",
+        "scripts/pipeline/ayse-audit-catalog.test.mjs",
+        "scripts/pipeline/ayse-audit-reconciliation.mjs",
+        "scripts/pipeline/ayse-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/osm-ay-e-meze-lounge-13134929927/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/ayse-audit-catalog.test.mjs scripts/pipeline/ayse-audit-reconciliation.test.mjs",
+        "node --test --test-name-pattern=\"AYŞE preserves the full current service boundary and narrow source authority\" scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "The targeted AYŞE catalog/reconciliation suite and generated-data regression passed."
+  ],
+  "status": "repair_in_progress"
+}

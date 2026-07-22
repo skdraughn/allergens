@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "replacement-alhambra-washington-dc",
+  "name": "Alhambra",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T23:00:33.676Z",
+  "updatedAt": "2026-07-14T23:16:29.040Z",
+  "completedAt": "2026-07-14T23:16:29.040Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 113,
+      "sourceItemCount": 107,
+      "notes": [
+        "Every frozen row was reconciled against Alhambra's captured restaurant-issued menu page on 2026-07-14.",
+        "The current first-party page publishes 140 raw structured presentations across Breakfast, Brunch, Lunch, Dinner, and Veranda. Excluding four alcohol-only rows and six CMS/package fragments leaves 130 food/nonalcoholic presentations and 107 current formulations.",
+        "The correction consolidates 23 duplicate meal-period, punctuation, or spelling presentations while retaining each exact published presentation as evidence.",
+        "The frozen catalog included five nonproduct/alcohol artifacts, represented two formulations twice under spelling or meal-period variants, and omitted the current Selection of Juice formulation.",
+        "Restaurant-published typos are retained as aliases and source presentation names while the canonical app names normalize obvious errors such as Avacado, Butermilk, and Mediterr Aenean."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Alhambra publishes current item names and selected ingredient descriptions, but no complete recipe-level allergen matrix or cross-contact disclosure.",
+        "Seventy-five current formulations have positive contains signals from explicit fixed components or unavoidable named formats; 32 remain unavailable for fixed allergen data.",
+        "Of 113 frozen rows, 46 allergen results were wrong: 35 underreported fixed signals, nine overreported optional or unsupported signals, and two both omitted fixed signals and promoted optional choices.",
+        "Optional add-ons and selectable proteins or entrees are not promoted into fixed claims. This removes fixed fish from Avocado Toast, fish and sesame from Alhambra Platter, and fish/shellfish from Organic Quinoa Salad while retaining its fixed burrata and pistachio signals.",
+        "Absent menu text is represented as unavailable, not allergen-free. No global may-contain, shared-equipment, or negative safety claim was found."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The current page exposes a stable application/ld+json Menu payload, but the frozen generic website extraction flattened meal-period presentations into standalone rows without package, optional-choice, alcohol, or duplicate semantics.",
+        "That context loss created standalone Astor component headings, retained two isolated alcohol cocktails, failed to consolidate spelling and meal-period aliases, and omitted Selection of Juice.",
+        "The correction parses the five source menus, preserves their menu/section presentation context, excludes only enumerated CMS and alcohol rows, consolidates verified formulation aliases, and applies fixed-allergen semantics after optional-choice text is separated.",
+        "A guarded repair requires exact current formulation, presentation, category, source-type, and allergen invariants before replacing the frozen snapshot."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-current-menus-review",
+      "kind": "official_site",
+      "url": "https://www.alhambradc.com/our-menus",
+      "attemptedAt": "2026-07-14T23:02:21.710Z",
+      "outcome": "Captured HTTP 200 restaurant-issued HTML and exhaustively reviewed its five structured menus, 27 source sections, and 140 raw menu-item presentations.",
+      "notes": [
+        "The retained artifact is 137,768 bytes with SHA-256 5eca44a82a4617915dce48574a5f4c9ad1b69088a822a582ab42a0fca03ce6fc.",
+        "The page footer identifies Alhambra at 923 16th Street NW, Washington, DC 20006 and publishes 2026 hours."
+      ]
+    },
+    {
+      "id": "allergen-disclosure-review",
+      "kind": "targeted_search",
+      "url": "https://www.alhambradc.com/our-menus",
+      "attemptedAt": "2026-07-14T23:06:00.000Z",
+      "outcome": "Found current fixed menu descriptions but no complete allergen matrix, recipe disclosure, cross-contact policy, shared-equipment statement, or allergen-specific legend.",
+      "notes": [
+        "Positive claims therefore stop at directly published fixed components and unavoidable named formats."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "structured-menu-context-loss",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen 113-row extraction failed to preserve the current structured menu's package, alcohol, alias, and presentation semantics.",
+      "evidenceIds": [
+        "official-current-menus"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 107 current formulations from 130 accepted source presentations, removed five frozen artifacts, consolidated duplicate spellings and meal-period presentations, and restored Selection of Juice."
+    },
+    {
+      "id": "incorrect-fixed-allergen-semantics",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Forty-six frozen rows had incorrect allergen results because the extraction both missed published fixed components and promoted optional choices or unsupported culinary assumptions.",
+      "evidenceIds": [
+        "official-current-menus"
+      ],
+      "resolved": true,
+      "resolution": "Corrected 35 underreports, nine overreports, and two mixed errors; mapped 75 fixed-positive formulations; kept 32 unsupported formulations unavailable; and did not invent cross-contact or negative claims."
+    },
+    {
+      "id": "generic-page-parser-semantic-flattening",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "The generic parser flattened a rich five-menu JSON-LD payload, turning package components and isolated alcohol entries into products and losing formulation identity across meal periods.",
+      "evidenceIds": [
+        "official-current-menus"
+      ],
+      "resolved": true,
+      "resolution": "Prepared a source-specific, captured-payload catalog with exact presentation provenance, enumerated exclusions, alias consolidation, optional-choice separation, and guarded output invariants."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-alhambra-current-menu",
+      "status": "verified",
+      "summary": "Prepared and focused-tested a 107-formulation, 130-presentation Alhambra catalog with 75 fixed-positive rows, 32 unavailable rows, and all 113 frozen rows terminally reconciled.",
+      "files": [
+        "scripts/pipeline/alhambra-audit-catalog.mjs",
+        "scripts/pipeline/alhambra-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/replacement-alhambra-washington-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/alhambra-audit-catalog.test.mjs scripts/pipeline/alhambra-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=tmp/restaurant-verification/alhambra-isolated.generated.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 107 items, 24 canonical categories, 75 fixed-positive rows, 32 unavailable rows, exclusion of CMS/alcohol artifacts, optional-choice semantics, zero variant groups, and idempotent Alhambra guard behavior)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 5d68c10a95aebc3021e8b940f9d422316771a68ad8856d29228678b775173cec.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":101,\"variant_match\":7,\"artifact\":5},\"allergens\":{\"verified\":34,\"mismatch\":46,\"accurately_unavailable\":28,\"not_applicable\":5},\"mismatchKinds\":{\"underreported\":35,\"overreported\":9,\"mixed\":2}}.",
+    "Current corrected catalog counts: 107 formulations, 130 presentations, 24 canonical categories, 75 fixed-positive rows, and 32 unavailable rows."
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "verificationContractVersion": 2,
+  "restaurantId": "blue-ridge-seafood-restaurant-gainesville-va",
+  "name": "Blue Ridge Seafood Restaurant",
+  "status": "codex_verified",
+  "sources": [
+    {
+      "id": "official-menu",
+      "url": "https://www.blueridgeseafood.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-20T00:00:00Z",
+      "contentType": null,
+      "finalUrl": null,
+      "httpStatus": null,
+      "byteLength": null,
+      "sha256": "e26ca401064c438b07e9aea8a7e63a1192f0413de5f230947349e7bfc84766e7",
+      "artifactPath": "artifacts/blue-ridge-seafood-restaurant-gainesville-va/official-menu.html",
+      "excerpt": "Current HTML menu contains seafood steam pots, specials, appetizers, soups and salads, sandwiches, tacos, classics, seafood, land items, baskets, sides, desserts, and kids menu.",
+      "rowIdentifiers": [],
+      "request": null,
+      "notes": []
+    },
+    {
+      "id": "official-menu-pdf",
+      "url": "https://www.blueridgeseafood.com/_files/ugd/6ef709_03cdddafb85c4cd08d8c33bab055dfcb.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-20T00:00:00Z",
+      "contentType": null,
+      "finalUrl": null,
+      "httpStatus": null,
+      "byteLength": null,
+      "sha256": "bd5ec9e292129c2e50087c0c10eb7f465f3166e6afb0c6f2f51d2b0b83576186",
+      "artifactPath": "artifacts/blue-ridge-seafood-restaurant-gainesville-va/official-menu.pdf",
+      "excerpt": "Restaurant-issued PDF menu surface; no allergen matrix located.",
+      "rowIdentifiers": [],
+      "request": null,
+      "notes": []
+    },
+    {
+      "id": "official-steam-pot-pdf",
+      "url": "https://www.blueridgeseafood.com/_files/ugd/6ef709_99de6019c4a04f6299f98e75c63a2487.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "ingredients",
+      "retrievedAt": "2026-07-20T00:00:00Z",
+      "contentType": null,
+      "finalUrl": null,
+      "httpStatus": null,
+      "byteLength": null,
+      "sha256": "5f2a8fd132f92fbd743021d6fd28e54d31229cbd771580714c018a8c2d1e6d9c",
+      "artifactPath": "artifacts/blue-ridge-seafood-restaurant-gainesville-va/official-steam-pot.pdf",
+      "excerpt": "Official instructions describe water, beer or wine, seasoning, culinary bags, seafood, shrimp, and potatoes; no allergen matrix.",
+      "rowIdentifiers": [],
+      "request": null,
+      "notes": []
+    },
+    {
+      "id": "official-home",
+      "url": "https://www.blueridgeseafood.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "retrievedAt": "2026-07-20T00:00:00Z",
+      "contentType": null,
+      "finalUrl": null,
+      "httpStatus": null,
+      "byteLength": null,
+      "sha256": "a861fc2b7f98bf8d6d00e41f46cafd4ffd09c8ed09eaaace40185e46de680c22",
+      "artifactPath": "artifacts/blue-ridge-seafood-restaurant-gainesville-va/official-home.html",
+      "excerpt": "Official homepage identifies Blue Ridge Seafood Restaurant at 15704 Lee Hwy, Gainesville, Virginia.",
+      "rowIdentifiers": [],
+      "request": null,
+      "notes": []
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "location": "official homepage/menu/navigation",
+        "url": "https://www.blueridgeseafood.com/menu",
+        "outcome": "not_found",
+        "sourceEvidenceIds": [
+          "official-home",
+          "official-menu"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "location": "official menu PDFs, steam-pot PDF, linked documents/CDN",
+        "url": "https://www.blueridgeseafood.com/_files/ugd/6ef709_99de6019c4a04f6299f98e75c63a2487.pdf",
+        "outcome": "not_found",
+        "sourceEvidenceIds": [
+          "official-menu-pdf",
+          "official-steam-pot-pdf"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "location": "official order-online and restaurant menu API",
+        "url": "https://www.blueridgeseafood.com/_api/restaurants-menus-item/v1/items",
+        "outcome": "blocked_403_no_matrix",
+        "sourceEvidenceIds": [
+          "official-order",
+          "vendor-blocked"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "location": "site/domain queries for allergen, allergy, nutrition, ingredients, PDF, menu",
+        "url": "https://www.google.com/search?q=site%3Ablueridgeseafood.com+allergen+ingredients+nutrition+menu",
+        "outcome": "not_found",
+        "sourceEvidenceIds": [
+          "targeted-search"
+        ]
+      }
+    ]
+  },
+  "notes": [
+    "No official allergen matrix found after all four searches.",
+    "All 126 direct allergen fields remain unavailable; mayContain is empty and no wheat/gluten inference was applied."
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-aandj-s-northern-chinese-dim-sum-633639009",
+  "name": "A&J's Northern Chinese Dim Sum",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T19:38:38.215Z",
+  "updatedAt": "2026-07-14T19:46:33.407Z",
+  "completedAt": "2026-07-14T19:46:33.407Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 65,
+      "sourceItemCount": 78,
+      "notes": [
+        "Every frozen row was reconciled against the shared current 67-product restaurant-issued menu and the Rockville Toast menu linked directly from the official home page.",
+        "The corrected compact Rockville catalog contains 78 unique products across nine real categories: 67 official-site products plus 11 distinct current Rockville Toast additions.",
+        "The 65 frozen rows comprise 64 current official-site items and one Washington Post press/navigation artifact. The previous official parser omitted three Chinese-only drinks and truncated descriptions containing w/.",
+        "Rockville Toast currently exposes 79 non-featured row placements: four are marked out of stock and Vegetable appears in both Soups and Sides. Separate Bubble Tea flavor SKUs are represented by the official configurable Bubble Tea product rather than duplicated."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "A&J publishes item descriptions and an explicit ^^ contains peanuts legend on its official menu, but no complete allergen matrix, complete ingredient list, or cross-contact guide was found.",
+        "Forty-six corrected products have positive fixed signals supported by published ingredients, the peanut footnote, or mandatory wheat formats; thirty-two products remain unavailable rather than being presented as allergen-free.",
+        "The Rockville Toast menu is kept distinct as restaurant-linked vendor evidence. The retained Jina artifact is third-party retrieval infrastructure and is not promoted to restaurant-issued authority.",
+        "Configurable Bubble Tea is not assigned milk because milk tea is one published choice among multiple flavors, and mustard greens are not misclassified as a fixed mustard condiment signal."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen official-site parser returned only 64 of 67 current rows, admitted a press quote, truncated text after w/, and dropped Sprite, Coca Cola, and Mineral Water because their product titles are Chinese-only.",
+        "The audited extraction reads all official menu-item DOM blocks directly, preserves complete descriptions and footnote labels, selects only 11 distinct active Rockville Toast additions, consolidates Bubble Tea flavors, and keeps beverages last.",
+        "The final-stage correction replaces only this Rockville record when its verified count, category count, artifact exclusions, source semantics, beverage order, or sentinel allergen signals regress."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site-and-menu-review",
+      "kind": "official_site",
+      "url": "https://www.aandjrestaurant.com/menu",
+      "attemptedAt": "2026-07-14T19:38:49.628Z",
+      "outcome": "Confirmed the Rockville address and phone on the official site, the direct Rockville Toast ordering link, 67 current products across eight official menu sections, complete public descriptions, and the explicit contains-peanuts footnote. No complete allergen matrix or cross-contact disclosure was present.",
+      "notes": []
+    },
+    {
+      "id": "restaurant-linked-rockville-toast-review",
+      "kind": "ordering_vendor",
+      "url": "https://www.toasttab.com/a-j-restaurant-1319-rockville-pike-suite-c",
+      "attemptedAt": "2026-07-14T19:39:15.491Z",
+      "outcome": "Direct automated retrieval returned HTTP 403. The official restaurant link and a retained third-party render-proxy artifact exposed 79 non-featured menu row placements, including four out-of-stock products and one repeated Vegetable placement; 11 active products were distinct additions to the official compact catalog.",
+      "notes": [
+        "The render proxy is recorded as third-party evidence even though the underlying Toast menu is restaurant-linked."
+      ]
+    },
+    {
+      "id": "targeted-rockville-allergen-search",
+      "kind": "targeted_search",
+      "url": "https://www.google.com/search?q=A%26J+Restaurant+Rockville+allergen+menu+allergy+ingredients",
+      "attemptedAt": "2026-07-14T19:45:00.000Z",
+      "outcome": "Targeted current searches plus full-text review of the official site and linked ordering menu found no A&J allergen matrix, complete ingredient guide, or cross-contact policy beyond the official menu's contains-peanuts footnote.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "incomplete-official-menu-and-press-artifact",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen 65-row catalog admitted a Washington Post quote as a product, omitted three current Chinese-only drinks, and truncated official descriptions containing w/.",
+      "evidenceIds": [
+        "official-home",
+        "official-menu"
+      ],
+      "resolved": true,
+      "resolution": "Parsed all official menu-item DOM blocks directly, retained all 67 current official products and complete descriptions, removed the press artifact, and generated stable IDs for Chinese-only titles."
+    },
+    {
+      "id": "missing-rockville-ordering-products",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen catalog omitted 11 distinct current Rockville products present on the restaurant-linked ordering surface and had no representation of ordering availability or duplicate placement semantics.",
+      "evidenceIds": [
+        "official-home",
+        "third-party-rockville-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Added the 11 distinct active Rockville Toast products, removed four out-of-stock rows, consolidated the duplicated Vegetable placement, and represented Bubble Tea once as the official configurable product."
+    },
+    {
+      "id": "underreported-positive-allergen-signals",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Forty-two frozen products omitted one or more supported positive signals, chiefly mandatory wheat formats, soy from bean-curd ingredients, the official peanut footnote, and explicit sesame, egg, or mustard terms.",
+      "evidenceIds": [
+        "official-menu",
+        "third-party-rockville-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Re-derived fixed positive signals from current published names, descriptions, the official peanut footnote, and mandatory formats while leaving 32 unsupported products unavailable."
+    },
+    {
+      "id": "ordering-source-authority-boundary",
+      "severity": "high",
+      "kind": "source_semantics",
+      "summary": "Rockville ordering evidence required preserving the distinction between the restaurant-linked Toast menu and the third-party render proxy used to retain its current response.",
+      "evidenceIds": [
+        "official-home",
+        "third-party-rockville-toast-render-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Kept official-site, restaurant-linked vendor, and third-party retrieval authority distinct throughout the corrected snapshot and evidence ledger."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-aandj-rockville-current-menu",
+      "status": "verified",
+      "summary": "Prepared and targeted-tested a 78-item current A&J Rockville catalog with complete official menu extraction, distinct linked-ordering additions, location-correct exclusions, source-correct positive allergen signals, and beverages last.",
+      "files": [
+        "scripts/pipeline/aandj-audit-catalog.mjs",
+        "scripts/pipeline/aandj-rockville-audit-catalog.mjs",
+        "scripts/pipeline/aandj-rockville-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/osm-aandj-s-northern-chinese-dim-sum-633639009/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/aandj-rockville-audit-catalog.test.mjs scripts/pipeline/aandj-rockville-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/aandj-rockville-repository.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 78 unique rows, nine categories, 46 official-ingredient rows, 32 unavailable rows, no press artifact or Diet Coke location mismatch, source-kind separation, and beverages last)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: b504e446d61c3bb3e1d6983e6aa43e2da27ce452ddc1a7fa98bb8f3b1c1e21dc.",
+    "Reconciliation counts: {\"dispositions\":{\"artifact\":1,\"exact_match\":61,\"normalized_match\":3},\"allergens\":{\"not_applicable\":1,\"mismatch\":42,\"verified\":22},\"mismatchKinds\":{\"underreported\":42}}.",
+    "Current corrected catalog counts: 78 items, nine categories, 46 positive published-signal rows, and 32 accurately unavailable rows.",
+    "Focused full-menu parsing, all 65 frozen-row reconciliation, location-specific Toast comparison, Chinese-title retention, description-integrity, source-tier, unique-id, configurability, artifact exclusion, allergen-signal, and beverage-order checks passed."
+  ]
+}

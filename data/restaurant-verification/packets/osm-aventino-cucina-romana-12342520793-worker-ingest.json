@@ -1,0 +1,127 @@
+{
+  "checks": {
+    "menu": {
+      "verdict": "mismatch",
+      "reviewedItemCount": 19,
+      "sourceItemCount": 52,
+      "notes": [
+        "The record resolves to the same 4747 Bethesda Avenue restaurant as aventino-bethesda, whose current canonical menu has 52 formulations.",
+        "All 19 frozen rows reconcile exactly once: 15 exact, one normalized, one stale product, and two non-product artifacts."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "mismatch",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Five frozen allergen or provenance outcomes conflict with the current owner ingredients and partial restaurant-linked affirmative labels; two rows are accurately unavailable.",
+        "The linked ordering surface is not a complete restaurant-issued allergen matrix and omitted labels are not negative evidence."
+      ]
+    },
+    "extraction": {
+      "verdict": "mismatch",
+      "parserReviewed": true,
+      "semanticsVerified": false,
+      "notes": [
+        "This OSM-derived record duplicates the canonical Aventino record rather than representing another location.",
+        "Its frozen output also includes a membership/navigation row and a press link as products."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site",
+      "kind": "official_site",
+      "url": "https://aventinocucina.com/menus/",
+      "attemptedAt": "2026-07-15T18:02:22.246Z",
+      "outcome": "Captured the same current restaurant-issued menu artifact used for the canonical Aventino record.",
+      "notes": []
+    },
+    {
+      "id": "linked-source",
+      "kind": "linked_source",
+      "url": "https://aventinocucina.com/faq/",
+      "attemptedAt": "2026-07-15T18:02:22.773Z",
+      "outcome": "Captured the official identity and Toast-linkage page for the same Bethesda address.",
+      "notes": []
+    },
+    {
+      "id": "ordering-vendor",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/aventino-extended-csd",
+      "attemptedAt": "2026-07-15T17:35:00.000Z",
+      "outcome": "Terra, Sol, and coordinator web review accessed the same linked ordering menu; coordinator artifact capture returned HTTP 403.",
+      "notes": ["The page identifies 4747 Bethesda Avenue and supplies partial affirmative labels."]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "linked-toast-current",
+      "url": "https://order.toasttab.com/online/aventino-extended-csd",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "both",
+      "retrievedAt": "2026-07-15T17:35:00.000Z",
+      "contentType": "text/html",
+      "finalUrl": "https://order.toasttab.com/online/aventino-extended-csd",
+      "httpStatus": null,
+      "byteLength": null,
+      "sha256": null,
+      "artifactPath": null,
+      "excerpt": "The live ordering page identifies Aventino Cucina at 4747 Bethesda Avenue and gives partial affirmative allergen labels for selected current products.",
+      "rowIdentifiers": ["Aventino Burger", "Bucatini", "Milanese", "Ricotta", "Suppli"],
+      "request": {
+        "method": "GET",
+        "result": "Coordinator artifact capture returned HTTP 403; Terra, Sol, and coordinator web retrieval accessed the live restaurant-linked page."
+      },
+      "notes": ["Restaurant-linked partial affirmative evidence; not a complete matrix."]
+    }
+  ],
+  "findings": [
+    {
+      "id": "duplicate-canonical-restaurant",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "This OSM record is a duplicate of aventino-bethesda at the same address and on the same owner and ordering sources.",
+      "evidenceIds": ["official-menus-current", "official-faq-current", "linked-toast-current"],
+      "resolved": false,
+      "resolution": null
+    },
+    {
+      "id": "duplicate-record-artifacts-and-staleness",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "One stale product and two navigation or press artifacts are represented as food rows in the duplicate record.",
+      "evidenceIds": ["official-menus-current", "linked-toast-current"],
+      "resolved": false,
+      "resolution": null
+    },
+    {
+      "id": "duplicate-record-allergen-provenance",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "Five matched rows require allergen or provenance correction before the duplicate can be terminally reconciled.",
+      "evidenceIds": ["official-menus-current", "linked-toast-current"],
+      "resolved": false,
+      "resolution": null
+    }
+  ],
+  "repairs": [
+    {
+      "id": "remove-osm-aventino-duplicate",
+      "status": "planned",
+      "summary": "Remove the duplicate from the generated repository, map every frozen row to the canonical Aventino audit, and retain this dossier as the duplicate-disposition record.",
+      "files": [
+        "scripts/pipeline/aventino-audit-reconciliation.mjs",
+        "scripts/pipeline/aventino-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": ["data/restaurant-verification/repairs/aventino-bethesda/corrected-menu.json"],
+      "verificationCommands": [
+        "node --test scripts/pipeline/aventino-audit-reconciliation.test.mjs",
+        "node --test --test-name-pattern=\"Aventino preserves service formulations\" scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": ["Terra low and Sol medium both routed this record to coordinator review; the coordinator established duplicate identity and full frozen-row reconciliation."],
+  "status": "discrepancy_found"
+}

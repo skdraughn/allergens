@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "replacement-ambassador-restaurant-washington-dc",
+  "name": "Ambassador Restaurant",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T01:59:11.772Z",
+  "updatedAt": "2026-07-15T02:07:21.765Z",
+  "completedAt": "2026-07-15T02:07:21.765Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 19,
+      "sourceItemCount": 26,
+      "notes": [
+        "All 19 frozen rows were adjudicated: seven exact current first-party favorites and 12 page-chrome, marketing, rating, hours, or location artifacts.",
+        "The current asserted catalog contains 26 formulations across 27 presentations: seven first-party guest favorites, with Chicken overlapping a 20-row restaurant-linked delivery catalog; 19 current formulations were omitted from the frozen record.",
+        "The linked Uber channel closed May 5, 2026. Its 20-row catalog is retained only because the same restaurant-matched catalog is preserved in menu imagery on a page updated in May 2026 and substantially corroborated by the longer third-party catalog; unique uncorroborated legacy rows were excluded."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "accurately_unavailable",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "No restaurant-issued allergen guide, matrix, complete ingredient list, or cross-contact statement was located; all 26 item allergenSourceType values remain unavailable.",
+        "Ten items have explicit non-official Ingredient Intelligence cues from reviewed menu wording. These are not official contains claims and do not create negative assurances for other allergens.",
+        "Kitcha Fitfit carries milk and gluten inference from butter and barley bread, but no false wheat inference; Chicken Tibsi carries no ingredient inference because its delivery description is internally corrupted."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "Reviewed restaurant identity, first-party menu scope, restaurant-linked vendor status, current third-party menu imagery, longer catalog corroboration, every frozen artifact, item wording, inference authority, and final generated fields.",
+        "Nine focused tests pass; seven captured artifact hashes match; all 19 item evidence ids resolve; and the generated target exactly matches the 26-item reviewed snapshot.",
+        "The target-only repair is idempotent at SHA-256 ef53e98491ece3456b6c0e62a1dec12f51d367b20aed0aab52c5b6e892d73327 and preserved all 1,494 non-target restaurants at SHA-256 4851b673c4be2f81bec118d650dfdd4cedadadb4d4c9ec8576096d0564807fc5."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site-current",
+      "kind": "official_site",
+      "url": "https://ambassadorwashington.com/menu/",
+      "attemptedAt": "2026-07-15T02:00:00.000Z",
+      "outcome": "captured current first-party seven-row guest-favorites page; no allergen disclosure",
+      "notes": []
+    },
+    {
+      "id": "uber-eats-ledger-user-agent-403",
+      "kind": "ordering_vendor",
+      "url": "https://www.ubereats.com/store/ambassador-eritrean-%26-ethiopian-restaurant/CBbWOUs_SZOy4_p_DciOwg",
+      "attemptedAt": "2026-07-15T02:00:09.900Z",
+      "outcome": "ledger fetch returned HTTP 403; browser-readable page was reviewed and recorded separately",
+      "notes": [
+        "The page identifies the exact address and says the channel closed May 5, 2026."
+      ]
+    },
+    {
+      "id": "doordash-ledger-user-agent-403",
+      "kind": "ordering_vendor",
+      "url": "https://www.doordash.com/store/29173059?pickup=true&src=yp",
+      "attemptedAt": "2026-07-15T02:00:25.800Z",
+      "outcome": "ledger fetch returned HTTP 403; browser exposed the current store shell but no item rows",
+      "notes": []
+    },
+    {
+      "id": "current-third-party-menu-images",
+      "kind": "third_party",
+      "url": "https://www.restaurantji.com/dc/washington/ambassador-restaurant-/",
+      "attemptedAt": "2026-07-15T02:00:10.245Z",
+      "outcome": "captured current identity page and two menu composite images; visually reviewed at original resolution",
+      "notes": []
+    },
+    {
+      "id": "allmenus-corroboration",
+      "kind": "third_party",
+      "url": "https://www.allmenus.com/dc/washington/352924-ambassador-restaurant-bar/menu/",
+      "attemptedAt": "2026-07-15T02:00:10.569Z",
+      "outcome": "captured longer corroborative catalog with explicit currency disclaimer",
+      "notes": [
+        "Unique uncorroborated rows are not treated as current."
+      ]
+    },
+    {
+      "id": "allergen-source-search",
+      "kind": "targeted_search",
+      "url": "https://ambassadorwashington.com/",
+      "attemptedAt": "2026-07-15T02:00:00.000Z",
+      "outcome": "no restaurant-issued allergen guide, matrix, ingredient list, or cross-contact statement located",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "ambassador-generic-crawl-menu-pollution",
+      "severity": "high",
+      "kind": "menu_incomplete",
+      "summary": "The frozen 19-row crawl contained 12 page-chrome or marketing artifacts, represented only seven real menu rows, and omitted 19 current formulations.",
+      "evidenceIds": [
+        "official-home",
+        "official-menu",
+        "uber-eats-menu-browser-review",
+        "restaurantji-current-page",
+        "restaurantji-menu-image-desktop",
+        "restaurantji-menu-image-mobile",
+        "allmenus-menu"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the crawl with 26 current formulations across 27 presentations and removed all 12 non-menu rows."
+    },
+    {
+      "id": "ambassador-source-currency-and-authority",
+      "severity": "high",
+      "kind": "source_freshness",
+      "summary": "The first-party site exposes only seven generic favorites, the restaurant-linked Uber channel closed May 5, 2026, and current menu imagery is third-party; none alone establishes the complete current catalog.",
+      "evidenceIds": [
+        "official-menu",
+        "uber-eats-menu-browser-review",
+        "doordash-store-browser-review",
+        "restaurantji-current-page",
+        "restaurantji-menu-image-desktop",
+        "restaurantji-menu-image-mobile",
+        "allmenus-menu"
+      ],
+      "resolved": true,
+      "resolution": "Used the 20-row delivery catalog only where the exact identity, current imagery, current store shell, and longer catalog corroborate it; excluded unique uncorroborated legacy rows and recorded all authority and freshness warnings."
+    },
+    {
+      "id": "ambassador-no-official-allergen-source",
+      "severity": "high",
+      "kind": "allergen_source_missing",
+      "summary": "No restaurant-issued item-level allergen, ingredient, or cross-contact disclosure was found for any current formulation.",
+      "evidenceIds": [
+        "official-home",
+        "official-menu"
+      ],
+      "resolved": true,
+      "resolution": "Marked all 26 formulations officially unavailable and retained explicit reviewed wording only as separately labeled Ingredient Intelligence."
+    },
+    {
+      "id": "ambassador-corrupt-chicken-tibsi-description",
+      "severity": "high",
+      "kind": "source_semantics",
+      "summary": "The restaurant-linked Chicken Tibsi description incorrectly says fresh lamb strips of tender beef, so using it for ingredient extraction would misstate the formulation.",
+      "evidenceIds": [
+        "uber-eats-menu-browser-review",
+        "restaurantji-menu-image-mobile"
+      ],
+      "resolved": true,
+      "resolution": "Retained the current Chicken Tibsi item identity but excluded the corrupt protein wording from ingredient and allergen inference."
+    },
+    {
+      "id": "ambassador-barley-not-wheat",
+      "severity": "high",
+      "kind": "allergen_inference",
+      "summary": "Generic inference maps barley bread to wheat even though barley supports gluten but is not wheat.",
+      "evidenceIds": [
+        "uber-eats-menu-browser-review",
+        "restaurantji-menu-image-desktop",
+        "allmenus-menu"
+      ],
+      "resolved": true,
+      "resolution": "Stored explicit milk and gluten Ingredient Intelligence for Kitcha Fitfit and suppressed the unsupported wheat signal."
+    },
+    {
+      "id": "ambassador-address-metadata",
+      "severity": "medium",
+      "kind": "identity_metadata",
+      "summary": "The frozen record did not carry the full current street address.",
+      "evidenceIds": [
+        "official-home",
+        "official-menu"
+      ],
+      "resolved": true,
+      "resolution": "Set the display address to 1907 9th St NW, Washington, DC 20001 and the guide to the current first-party menu page."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "ambassador-complete-current-catalog",
+      "status": "verified",
+      "summary": "Replaced 19 mostly non-menu crawl rows with 26 current formulations across 27 source presentations; removed 12 page artifacts, restored 19 omitted formulations, kept restaurant allergen data unavailable, and represented explicit non-official wording only as Ingredient Intelligence.",
+      "files": [
+        "scripts/pipeline/ambassador-restaurant-audit-catalog.mjs",
+        "scripts/pipeline/ambassador-restaurant-audit-catalog.test.mjs",
+        "scripts/pipeline/ambassador-restaurant-audit-reconciliation.mjs",
+        "scripts/pipeline/ambassador-restaurant-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json",
+        "data/restaurant-verification/repairs/replacement-ambassador-restaurant-washington-dc/corrected-menu.json",
+        "data/restaurant-verification/item-checks/replacement-ambassador-restaurant-washington-dc.jsonl"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/replacement-ambassador-restaurant-washington-dc/official-home.html",
+        "data/restaurant-verification/artifacts/replacement-ambassador-restaurant-washington-dc/official-menu.html",
+        "data/restaurant-verification/artifacts/replacement-ambassador-restaurant-washington-dc/restaurantji-current-page.html",
+        "data/restaurant-verification/artifacts/replacement-ambassador-restaurant-washington-dc/restaurantji-menu-image-desktop.jpg",
+        "data/restaurant-verification/artifacts/replacement-ambassador-restaurant-washington-dc/restaurantji-menu-image-mobile.jpg",
+        "data/restaurant-verification/artifacts/replacement-ambassador-restaurant-washington-dc/allmenus-menu.html"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/ambassador-restaurant-audit-catalog.test.mjs scripts/pipeline/ambassador-restaurant-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=replacement-ambassador-restaurant-washington-dc node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Current address: 1907 9th St NW, Washington, DC 20001.",
+    "The current first-party menu page lists Espresso, Ethiopian Stew, Chicken, Beets, Spinach, Lettuce, and Cabbage without item descriptions or allergen disclosures.",
+    "No safe dedicated audit worktree exists because the checkout remains dirty, so no checkpoint commit was created."
+  ]
+}

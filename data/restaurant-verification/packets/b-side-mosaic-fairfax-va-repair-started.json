@@ -1,0 +1,28 @@
+{
+  "repairs": [
+    {
+      "id": "rebuild-b-side-current-menus",
+      "status": "implemented",
+      "summary": "Rebuilt 58 canonical products from 66 current dinner, brunch, kids, and happy-hour presentations; retained 30 official ingredient rows, two linked-menu ingredient rows, two linked product rows, and 24 unavailable rows; and preserved the one Chicharrones may-contain statement.",
+      "files": [
+        "scripts/pipeline/b-side-audit-catalog.mjs",
+        "scripts/pipeline/b-side-audit-catalog.test.mjs",
+        "scripts/pipeline/b-side-audit-reconciliation.mjs",
+        "scripts/pipeline/b-side-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/b-side-mosaic-fairfax-va/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/b-side-audit-catalog.test.mjs scripts/pipeline/b-side-audit-reconciliation.test.mjs",
+        "node --test --test-name-pattern=\"B Side preserves\" scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "The targeted B Side catalog/reconciliation suite and generated-data regression passed."
+  ],
+  "status": "repair_in_progress"
+}

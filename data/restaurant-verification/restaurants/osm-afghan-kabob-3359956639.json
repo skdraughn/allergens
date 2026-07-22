@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-afghan-kabob-3359956639",
+  "name": "Afghan Kabob Restaurant",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T20:39:29.142Z",
+  "updatedAt": "2026-07-14T20:46:06.198Z",
+  "completedAt": "2026-07-14T20:46:06.198Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 12,
+      "sourceItemCount": 58,
+      "notes": [
+        "Every frozen row was reconciled against the current RepasO catalog linked directly by Afghan Kabob Restaurant's official Springfield website.",
+        "The linked identity endpoint resolves the official-site UUID to restaurant 185, Afghan Kabob Restaurant, and the linked detail endpoint publishes the same 6357 Rolling Road address and phone number as the official site.",
+        "The current linked catalog contains 58 unique products across nine real categories. The frozen output retained only eight current or renamed products and four catering/shifted-description artifacts, omitting 50 current products.",
+        "The correction preserves all current catalog identities and categories, places the two beverages last, and does not duplicate the official site's stale appetizer showcase over the current linked catalog."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "The official website and its linked ordering catalog publish menu descriptions but no complete allergen matrix, complete recipes, or kitchen cross-contact policy.",
+        "Positive fields are limited to fixed linked description terms and mandatory named formats. An optional Afghan-bread-or-rice choice on Flame Kabob does not become a fixed wheat/gluten signal.",
+        "Afghan ravioli and dumpling formats support wheat/gluten but do not prove egg. The frozen Aushak egg claim is therefore removed; eggplant is never interpreted as egg.",
+        "Four of eight applicable frozen products had incorrect signals: Aushak and Borani overreported unsupported allergens, while Hummus omitted sesame from tahini and Mashawa Soup omitted milk from yogurt."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic website/card extraction mixed the official site's stale appetizer teaser with a linked ordering route, used a Repas UUID as a category, shifted adjacent descriptions into product names, and extracted the catering heading Our office as food.",
+        "The correction verifies the restaurant UUID through the linked identity endpoint, parses the current 58-row structured catalog, and asserts all nine source category counts and unique item identifiers before building the compact menu.",
+        "Ingredient extraction separates explicit terms from format inference and optional choices, including sesame from tahini, fish from tilapia, milk from yogurt/cream/pudding, and wheat/gluten from pastry, bread, dumplings, and named Afghan formats.",
+        "The final-stage repair is guarded by item/category/source counts, artifact and UUID-category exclusions, fixed-signal sentinels, optional-choice behavior, omitted-menu restoration, and beverage order."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-home-review",
+      "kind": "official_site",
+      "url": "https://www.afghankabobva.com/",
+      "attemptedAt": "2026-07-14T20:39:49.508Z",
+      "outcome": "Confirmed the Springfield restaurant identity, address, phone number, official RepasO ordering link, and a partial stale appetizer showcase.",
+      "notes": [
+        "The official home page does not publish the complete current menu or an allergen guide."
+      ]
+    },
+    {
+      "id": "restaurant-linked-identity-review",
+      "kind": "linked_source",
+      "url": "https://repasorder.com/api/Restaurant/GetRestaurantID?guId=c0dd6eca-b19d-d9ff-b57a-e845078f3443",
+      "attemptedAt": "2026-07-14T20:41:08.287Z",
+      "outcome": "Resolved the restaurant UUID embedded in the official site's ordering link to RepasO restaurant 185, Afghan Kabob Restaurant.",
+      "notes": []
+    },
+    {
+      "id": "restaurant-linked-menu-review",
+      "kind": "ordering_vendor",
+      "url": "https://repasorder.com/api/menu/GetMenuView?restaurantID=185&&offset=0",
+      "attemptedAt": "2026-07-14T20:41:08.856Z",
+      "outcome": "Captured and reviewed all 58 current linked products across nine categories, including names, descriptions, category identities, prices, dietary icons, and availability in the active catalog.",
+      "notes": []
+    },
+    {
+      "id": "restaurant-linked-detail-review",
+      "kind": "linked_source",
+      "url": "https://repasorder.com/api/Restaurant/GetRestaurantDetail?restaurantID=185",
+      "attemptedAt": "2026-07-14T20:41:09.547Z",
+      "outcome": "Confirmed restaurant 185 publishes the same Springfield address, phone number, email, and official UUID as the restaurant website; it also reports the catalog as active for pickup.",
+      "notes": []
+    },
+    {
+      "id": "current-allergen-disclosure-review",
+      "kind": "targeted_search",
+      "url": "https://www.afghankabobva.com/",
+      "attemptedAt": "2026-07-14T20:41:09.547Z",
+      "outcome": "Full-text review of the official website, linked catalog, linked app, and current structured endpoints found descriptions and dietary icons but no complete allergen matrix, complete recipes, or cross-contact policy.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "severely-incomplete-corrupt-menu",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen 12-row catalog contained only eight current or renamed products, four non-product artifacts, a UUID category, and omitted 50 products from the active linked catalog.",
+      "evidenceIds": [
+        "official-home",
+        "restaurant-linked-repas-identity",
+        "restaurant-linked-repas-menu",
+        "restaurant-linked-repas-detail"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt all 58 current linked products across nine real categories, removed all four artifacts and fake categories, and placed beverages last."
+    },
+    {
+      "id": "shifted-page-fragment-extraction",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "The frozen parser promoted adjacent appetizer descriptions and the catering heading Our office to product names, then attached unrelated neighboring descriptions.",
+      "evidenceIds": [
+        "official-home",
+        "restaurant-linked-repas-menu"
+      ],
+      "resolved": true,
+      "resolution": "Replaced page-card fragments with the identity-verified structured linked catalog and added exact source-count, category-count, and unique-identifier assertions."
+    },
+    {
+      "id": "incorrect-frozen-allergen-signals",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Four of the eight real frozen products had incorrect allergens: two unsupported overstatements and two omitted linked ingredient signals.",
+      "evidenceIds": [
+        "official-home",
+        "restaurant-linked-repas-menu"
+      ],
+      "resolved": true,
+      "resolution": "Removed unsupported egg and stale bread signals, restored sesame from tahini and milk from yogurt, limited positive fields to linked text and named formats, and left 34 current products unavailable where positive evidence is insufficient."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-afghan-kabob-current-menu",
+      "status": "verified",
+      "summary": "Prepared and targeted-tested a 58-item current Afghan Kabob catalog across nine linked categories with 24 positive description/format rows, 34 unavailable rows, no fragments or fake categories, corrected frozen allergens, and beverages last.",
+      "files": [
+        "scripts/pipeline/afghan-kabob-audit-catalog.mjs",
+        "scripts/pipeline/afghan-kabob-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/osm-afghan-kabob-3359956639/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/afghan-kabob-audit-catalog.test.mjs scripts/pipeline/afghan-kabob-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/afghan-kabob-repository.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 58 items, nine categories, 24 official-ingredient rows, 34 unavailable rows, no fragments or fake categories, correct signal sentinels, and beverages last)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: c1d5b39e0ea0881ac8fe79a4d07107c51a1a507bc43adcf70c75bcc3141ac59f.",
+    "Reconciliation counts: {\"dispositions\":{\"variant_match\":3,\"exact_match\":5,\"artifact\":4},\"allergens\":{\"mismatch\":4,\"accurately_unavailable\":1,\"not_applicable\":4,\"verified\":3},\"mismatchKinds\":{\"overreported\":2,\"underreported\":2}}.",
+    "Current corrected catalog counts: 58 items, nine categories, 24 positive linked description/format rows, and 34 accurately unavailable rows.",
+    "Focused identity, source-count, category-count, unique-id, artifact exclusion, omitted-menu, sesame, dairy, fish, optional bread-or-rice, ravioli/egg, eggplant, dessert, all 12 frozen-row reconciliation, and beverage-order checks passed."
+  ]
+}

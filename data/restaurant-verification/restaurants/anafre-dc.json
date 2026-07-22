@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "anafre-dc",
+  "name": "Anafre",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T05:08:58.542Z",
+  "updatedAt": "2026-07-15T05:21:12.750Z",
+  "completedAt": "2026-07-15T05:21:12.750Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 47,
+      "sourceItemCount": 100,
+      "notes": [
+        "The current restaurant-issued dine-in menu, happy-hour menu, and nonalcoholic menu contain 59 presentations; the active Mealage ordering catalog linked from Anafre's home page contains 69 retained food, side, and nonalcoholic presentations.",
+        "After consolidating 28 same-formulation spelling and cross-surface variants, the current catalog contains 100 formulations across ten categories. All 47 frozen rows were reconciled: 46 represent current formulations and Chicken Sandwich is a duplicate artifact.",
+        "The frozen snapshot omitted 54 current formulations, including two dine-in pizzas, four happy-hour bites, three first-party sodas, ordering-only foods, sides, gringas, and nonalcoholic beverages. Alcohol-only sections were excluded."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Anafre publishes no allergen matrix or cross-contact disclosure. Direct positive ingredients and unambiguous formulation terms on the restaurant-issued menu support 44 official-ingredient rows; absent terms are never treated as negative assurances.",
+        "The remaining 56 formulations are accurately unavailable because they are linked-vendor-only or lack enough direct first-party ingredient detail. Mealage, DoorDash, and Uber Eats text was not promoted to restaurant-issued allergen evidence, and no may-contain claim was invented."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic website extraction captured most of the restaurant-issued core menu but ignored most happy-hour items, nonalcoholic drinks, and the active linked ordering catalog; it also invented Chicken Sandwich beside the real item Chicken and left every positive ingredient signal unavailable.",
+        "The reproducible parser now reads all three current surfaces, excludes alcohol categories and instruction headings, consolidates explicit aliases, preserves every presentation as evidence, and places Sides and Beverages last.",
+        "Churrasco is categorized as Entrées rather than Pizzas because its steak-with-rice-and-beans formulation and the current Mealage Platos Fuertes category independently contradict the malformed first-party page placement."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "anafre-official-menu-2026-07-15",
+      "kind": "official_site",
+      "url": "https://anafredc.com/menu",
+      "attemptedAt": "2026-07-15T05:09:32.645Z",
+      "outcome": "HTTP 200. Parsed 46 current food presentations with names, categories, prices, and restaurant-issued descriptions; no allergen matrix or cross-contact statement is present.",
+      "notes": []
+    },
+    {
+      "id": "anafre-official-home-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://anafredc.com/",
+      "attemptedAt": "2026-07-15T05:09:33.051Z",
+      "outcome": "HTTP 200. Confirmed Anafre's identity, address, current hours, official menu duplication, six happy-hour food bites, seven nonalcoholic drink presentations, and the restaurant's direct Mealage ordering link.",
+      "notes": []
+    },
+    {
+      "id": "anafre-mealage-ordering-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://www.mealage.com/2foodmenu8.jsp?id=9079",
+      "attemptedAt": "2026-07-15T05:09:33.307Z",
+      "outcome": "HTTP 200. Parsed 69 current food, side, and nonalcoholic ordering presentations after excluding margarita, beer, wine, michelada, and cocktail categories.",
+      "notes": [
+        "The catalog is restaurant-linked menu evidence but not restaurant-issued allergen evidence."
+      ]
+    },
+    {
+      "id": "anafre-targeted-allergen-search-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://anafredc.com/menu",
+      "attemptedAt": "2026-07-15T05:15:00.000Z",
+      "outcome": "Targeted searches for an Anafre allergen or allergy guide returned the current official menu and ordering pages but no restaurant-issued allergen matrix, nutrition guide, or cross-contact disclosure.",
+      "notes": []
+    },
+    {
+      "id": "anafre-third-party-corroboration-2026-07-15",
+      "kind": "third_party",
+      "url": "https://www.doordash.com/store/anafre-washington-23055873/",
+      "attemptedAt": "2026-07-15T05:15:00.000Z",
+      "outcome": "DoorDash and Uber Eats search results corroborated the exact address and several active or historical ordering formulations but were not used as official menu or allergen authority. Uber Eats reports its own channel closed in February 2026, which does not contradict the live restaurant-issued site and Mealage channel.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "anafre-current-menu-undercoverage",
+      "severity": "critical",
+      "kind": "menu-incomplete",
+      "summary": "The frozen 47-row snapshot omitted 54 current Anafre formulations across restaurant-issued and restaurant-linked surfaces.",
+      "evidenceIds": [
+        "official-anafre-menu",
+        "official-anafre-home",
+        "linked-mealage-ordering"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt the current catalog from 128 source presentations, consolidated 28 same-formulation variants, and retained 100 formulations."
+    },
+    {
+      "id": "anafre-missing-positive-allergen-signals",
+      "severity": "high",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Forty-one frozen rows suppressed direct positive allergen ingredients that are explicit on Anafre's restaurant-issued menu.",
+      "evidenceIds": [
+        "official-anafre-menu",
+        "official-anafre-home"
+      ],
+      "resolved": true,
+      "resolution": "Added only direct restaurant-issued positive signals to 44 current formulations while leaving 56 incomplete or vendor-only formulations unavailable."
+    },
+    {
+      "id": "anafre-chicken-sandwich-artifact",
+      "severity": "high",
+      "kind": "duplicate-artifact",
+      "summary": "Chicken Sandwich was invented as a second row beside the actual current Sandwiches item Chicken.",
+      "evidenceIds": [
+        "official-anafre-menu",
+        "linked-mealage-ordering"
+      ],
+      "resolved": true,
+      "resolution": "Removed Chicken Sandwich and retained the restaurant-issued Chicken formulation."
+    },
+    {
+      "id": "anafre-churrasco-category-shift",
+      "severity": "medium",
+      "kind": "category-association-error",
+      "summary": "The first-party HTML places a steak, rice, beans, and salsa Churrasco row at the end of Pizzas even though it is not a pizza.",
+      "evidenceIds": [
+        "official-anafre-menu",
+        "linked-mealage-ordering"
+      ],
+      "resolved": true,
+      "resolution": "Placed Churrasco in Entrées, matching its formulation and the active Mealage Platos Fuertes category."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "anafre-current-catalog-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt Anafre from its current first-party menu, happy-hour and nonalcoholic sections, and linked ordering catalog; reconciled all frozen rows; corrected positive allergen signals; and retained source authority boundaries.",
+      "files": [
+        "scripts/pipeline/anafre-audit-catalog.mjs",
+        "scripts/pipeline/anafre-audit-catalog.test.mjs",
+        "scripts/pipeline/anafre-audit-reconciliation.mjs",
+        "scripts/pipeline/anafre-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/anafre-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/anafre-audit-catalog.test.mjs scripts/pipeline/anafre-audit-reconciliation.test.mjs",
+        "node scripts/pipeline/anafre-audit-catalog.mjs",
+        "node scripts/pipeline/anafre-audit-reconciliation.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=anafre-dc node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 619919a652469521b94dca8b610fc5cb57d4d1d072771db7502766df1a9ba191.",
+    "Official menu artifact SHA-256: 0530e241bd25f8ecce0930b5ee2e3f520e137abaca32c6a2ec5b6a288bd97668.",
+    "Official home artifact SHA-256: 47e064861ddf1964b78ef8917cf9a4878113e14a2a56f01cd6454968e5a78674.",
+    "Linked Mealage artifact SHA-256: bfb60c79f5051b4e0938e024cd608518dbe0902aa0c97e9e4502b04da3ccb5c7.",
+    "Live target SHA-256 after repair: 2728366d89cc23afdbf4ed8bc0eb31aa1fac9703925d3debac881910c85347bd.",
+    "Live non-target restaurant projection SHA-256 remained 5c38f6c45f38987a2459d7e89f7b3eaeb1e6d3515be935a6620e2a04850104e4.",
+    "A second target-only repair run produced the same target hash and exactly one Anafre repair note."
+  ]
+}

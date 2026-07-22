@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "osm-allgorhythms-12234974276",
+  "name": "AllGoRhythms",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T23:48:36.168Z",
+  "updatedAt": "2026-07-14T23:59:50.143Z",
+  "completedAt": "2026-07-14T23:59:50.143Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 82,
+      "sourceItemCount": 76,
+      "notes": [
+        "Reconciled all 82 frozen rows against 73 restaurant-issued main-menu rows and 16 event-menu presentations, plus 82 linked SpotApps rows. The two current surfaces collapse to 76 distinct food formulations and 171 retained source presentations.",
+        "Eight frozen rows are homepage, price, promotional, or alcohol-heading artifacts; Signature Kabob Sizzle/Sizzler is one formulation across service menus; Quesadilla, Fries, and Gulab Groove were absent from the frozen app catalog."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "No complete recipe-level allergen matrix or item-level cross-contact disclosure was found. Positive claims are limited to fixed ingredients and unavoidable named formats in the restaurant-issued menu text; all unsupported rows remain unavailable.",
+        "The general statement that the menu marks gluten-free/vegan options and asks guests to tell a server about allergies is accommodation context, not an item-level negative or cross-contact claim.",
+        "Selectable paneer, shrimp, fish, cheese dip, butter, proteins, sauces, and sides are not promoted into fixed allergens for the parent formulation."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The configured generic-website path fetches the restaurant homepage, the restaurant-issued food-menu HTML, and the restaurant-linked SpotApps Nuxt catalog. extractSpotAppsNuxtMenuItems correctly emits 82 linked vendor rows, but generic homepage/DOM extraction and later source merging admitted non-product cards and kept the Sizzle/Sizzler service-menu spelling as separate formulations.",
+        "The frozen ingredient pass promoted lexical hits from optional choices and ambiguous descriptive language into fixed allergens. The audited catalog replaces that output with per-formulation fixed-source adjudication.",
+        "The quality classifier also treated Gulab Groove as alcohol bleed because rose water matched the rosé vocabulary; the dessert-category food guard now preserves that published dessert."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "embedded-menu-id-routes",
+      "kind": "official_site",
+      "url": "https://gorhythms.com/631994",
+      "attemptedAt": "2026-07-14T23:52:30.000Z",
+      "outcome": "HTTP 404 for both /631994 and /1139171; they are embedded menu identifiers/relative navigation targets, while both menus remain present in the captured /food-menu document.",
+      "notes": [
+        "The direct 404 routes are not used as current menu evidence."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "structurally-polluted-menu-catalog",
+      "severity": "high",
+      "kind": "menu_reconciliation",
+      "summary": "The frozen 82-row app catalog contains eight non-product artifacts, one duplicated formulation, and omits three current food formulations.",
+      "evidenceIds": [
+        "official-home",
+        "official-food-menu",
+        "linked-spotapps-ordering"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the entry with 76 current formulations, retained all 171 source presentations, excluded the eight artifacts, consolidated the duplicate, and restored Quesadilla, Fries, and Gulab Groove."
+    },
+    {
+      "id": "incorrect-fixed-allergen-semantics",
+      "severity": "high",
+      "kind": "allergen_reconciliation",
+      "summary": "Twenty-six frozen formulations have incorrect fixed allergen sets: 16 underreports and 10 overreports.",
+      "evidenceIds": [
+        "official-food-menu",
+        "linked-spotapps-ordering"
+      ],
+      "resolved": true,
+      "resolution": "Applied item-level fixed-ingredient adjudication, added omitted signals such as pizza/pasta/bread/dessert formats, and removed optional or unsupported paneer, shrimp, dairy, and breading signals."
+    },
+    {
+      "id": "dessert-misclassified-as-alcohol",
+      "severity": "medium",
+      "kind": "quality_classifier",
+      "summary": "Gulab Groove was quarantined as alcohol-only menu bleed because its rose-water dessert description matched the rosé token.",
+      "evidenceIds": [
+        "official-food-menu",
+        "linked-spotapps-ordering"
+      ],
+      "resolved": true,
+      "resolution": "Added a narrowly scoped dessert-category food guard to the shared alcohol-bleed classifier and covered the published item in a focused test."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "allgorhythms-verified-catalog-repair",
+      "status": "verified",
+      "summary": "Added a source-backed AllGoRhythms catalog/reconciliation fixture, a guarded generated repair, and the narrow shared classifier correction needed to retain Gulab Groove.",
+      "files": [
+        "scripts/pipeline/allgorhythms-audit-catalog.mjs",
+        "scripts/pipeline/allgorhythms-audit-reconciliation.mjs",
+        "scripts/menu-item-quality.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "scripts/pipeline/allgorhythms-audit-catalog.test.mjs",
+        "scripts/pipeline/allgorhythms-audit-reconciliation.test.mjs",
+        "data/restaurant-verification/repairs/osm-allgorhythms-12234974276/corrected-menu.json",
+        "data/restaurant-verification/artifacts/osm-allgorhythms-12234974276/official-food-menu.html",
+        "data/restaurant-verification/artifacts/osm-allgorhythms-12234974276/linked-spotapps-ordering.html"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/allgorhythms-audit-catalog.test.mjs scripts/pipeline/allgorhythms-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=tmp/allgorhythms-audit/repository.json node scripts/repair-final-generated-regressions.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "AllGoRhythms identity confirmed at 21035 Dulles Town Circle, Sterling, Virginia through its restaurant-issued site and linked ordering catalog.",
+    "Corrected snapshot SHA-256: 9e3784361443daa5b33d8d794b031e856019df1890c20d2b57f071424c24563a.",
+    "A scope comparison of the actual generated repository before/after persistence showed only osm-allgorhythms-12234974276 changed."
+  ]
+}

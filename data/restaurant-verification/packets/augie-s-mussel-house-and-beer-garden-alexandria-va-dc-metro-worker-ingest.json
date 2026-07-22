@@ -1,0 +1,172 @@
+{
+  "checks": {
+    "menu": {
+      "verdict": "mismatch",
+      "reviewedItemCount": 69,
+      "sourceItemCount": null,
+      "notes": [
+        "All 69 frozen rows were reconciled exactly once: 43 exact, 3 normalized, 8 variant, 6 extraction artifacts, and 9 Annapolis-only location mismatches.",
+        "The live restaurant-issued Alexandria menu publishes a materially larger current food and nonalcoholic catalog, so a complete deterministic rebuild is required before the source item count can be pinned."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "mismatch",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The restaurant-issued Alexandria menu says Augie's is not a gluten-free kitchen and asks guests to notify their server; this is a restaurant-wide gluten cross-contact warning, not a complete allergen matrix or a wheat claim.",
+        "The restaurant-linked Alexandria Toast catalog supplies partial positive labels for Cheese Fries, Fried Mozzarella, Steak & Cheese Eggrolls, Tuna Tartar, Chicken Sliders, Hummus Dip, and Pretzels & Beer Cheese; those labels remain vendor provenance and missing labels are not negative claims."
+      ]
+    },
+    "extraction": {
+      "verdict": "mismatch",
+      "parserReviewed": true,
+      "semanticsVerified": false,
+      "notes": [
+        "The generic source configuration merged separate Alexandria and Annapolis location menus, admitted six headings or continuation fragments, lost real section context, and omitted many current Alexandria products.",
+        "Optional sauces, proteins, and add-ons must not be smeared across every configurable presentation."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site",
+      "kind": "official_site",
+      "url": "https://www.eataugies.com/augies-alexandria-menu",
+      "attemptedAt": "2026-07-15T16:55:51.515Z",
+      "outcome": "Accessible restaurant-issued Alexandria menu captured with current products, descriptions, location scope, and global gluten cross-contact warning.",
+      "notes": []
+    },
+    {
+      "id": "linked-source",
+      "kind": "linked_source",
+      "url": null,
+      "attemptedAt": "2026-07-15T16:55:51.515Z",
+      "outcome": "No separate restaurant-issued allergen guide or complete matrix was located.",
+      "notes": []
+    },
+    {
+      "id": "ordering-vendor",
+      "kind": "ordering_vendor",
+      "url": "https://www.toasttab.com/local/order/augies-mussel-house-patio",
+      "attemptedAt": "2026-07-15T16:55:51.515Z",
+      "outcome": "Live Alexandria Toast catalog identified the 1106 King Street location and supplied a partial set of item-level positive allergen labels; coordinator artifact capture returned HTTP 403.",
+      "notes": ["Toast's generic Allergies modifier is a customer-instruction control, not an item allergen matrix."]
+    },
+    {
+      "id": "targeted-search",
+      "kind": "targeted_search",
+      "url": "https://www.toasttab.com/local/order/augies-mussel-house-patio",
+      "attemptedAt": "2026-07-15T16:55:51.515Z",
+      "outcome": "Targeted review found the active restaurant-linked ordering surface and no complete allergen matrix.",
+      "notes": []
+    },
+    {
+      "id": "archive",
+      "kind": "archive",
+      "url": null,
+      "attemptedAt": "2026-07-15T16:55:51.515Z",
+      "outcome": "No material archived allergen source was required because current primary menu evidence was accessible.",
+      "notes": []
+    },
+    {
+      "id": "third-party",
+      "kind": "third_party",
+      "url": "https://www.doordash.com/en/store/augie%27s-mussel-house-%26-patio-alexandria-23147096/",
+      "attemptedAt": "2026-07-15T16:55:51.515Z",
+      "outcome": "A third-party Alexandria listing was found but was not used for fixed allergen claims.",
+      "notes": []
+    }
+  ],
+  "evidence": [
+    {
+      "id": "alexandria-current-toast",
+      "url": "https://www.toasttab.com/local/order/augies-mussel-house-patio",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "both",
+      "retrievedAt": "2026-07-15T16:40:51.000Z",
+      "contentType": "text/html",
+      "finalUrl": "https://www.toasttab.com/local/order/augies-mussel-house-patio",
+      "httpStatus": null,
+      "byteLength": null,
+      "sha256": null,
+      "artifactPath": null,
+      "excerpt": "The live 1106 King Street Toast catalog labels Cheese Fries, Fried Mozzarella, and Steak & Cheese Eggrolls as Gluten and Dairy; Tuna Tartar as Gluten, Dairy, Nut, and Fish; Chicken Sliders as Gluten; Hummus Dip as Dairy and Nut; and Pretzels & Beer Cheese as Dairy and Gluten.",
+      "rowIdentifiers": [
+        "Cheese Fries",
+        "Fried Mozzarella",
+        "Steak & Cheese Eggrolls",
+        "Tuna Tartar",
+        "Chicken Sliders",
+        "Hummus Dip",
+        "Pretzels & Beer Cheese"
+      ],
+      "request": {
+        "method": "GET",
+        "result": "Coordinator artifact capture returned HTTP 403; Terra, Sol, and coordinator review accessed the live restaurant-linked surface."
+      },
+      "notes": ["Restaurant-linked vendor evidence; not restaurant-issued and not a complete matrix."]
+    }
+  ],
+  "findings": [
+    {
+      "id": "alexandria-annapolis-source-contamination",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The Alexandria record was built from both location menus and contains nine Annapolis-only rows plus six non-product fragments.",
+      "evidenceIds": ["alexandria-current-menu", "annapolis-comparison-menu"],
+      "resolved": false,
+      "resolution": null
+    },
+    {
+      "id": "current-alexandria-catalog-incomplete",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The frozen 69-row mixed-location catalog omits many products published on the current restaurant-issued Alexandria menu and loses real section structure.",
+      "evidenceIds": ["alexandria-current-menu"],
+      "resolved": false,
+      "resolution": null
+    },
+    {
+      "id": "global-gluten-cross-contact-omitted",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "Every retained frozen row omits the restaurant-issued Alexandria kitchen-wide gluten cross-contact warning.",
+      "evidenceIds": ["alexandria-current-menu"],
+      "resolved": false,
+      "resolution": null
+    },
+    {
+      "id": "partial-toast-positive-label-conflicts",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "Seven current Toast rows publish positive allergen labels that conflict with or extend the frozen item signals; vendor provenance must be preserved and absent labels must not be interpreted negatively.",
+      "evidenceIds": ["alexandria-current-toast"],
+      "resolved": false,
+      "resolution": null
+    }
+  ],
+  "repairs": [
+    {
+      "id": "rebuild-augies-alexandria-current-catalog",
+      "status": "planned",
+      "summary": "Scope inputs to Alexandria, build a deterministic current restaurant-issued catalog with consolidated Toast presentations, preserve direct and vendor-positive provenance, apply the global gluten may-contain warning, and remove location contamination and parser artifacts.",
+      "files": [
+        "scripts/dc-metro-expansion-sources.mjs",
+        "scripts/pipeline/augies-alexandria-audit-catalog.mjs",
+        "scripts/pipeline/augies-alexandria-audit-catalog.test.mjs",
+        "scripts/pipeline/augies-alexandria-audit-reconciliation.mjs",
+        "scripts/pipeline/augies-alexandria-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [],
+      "verificationCommands": [
+        "node --test scripts/pipeline/augies-alexandria-audit-catalog.test.mjs scripts/pipeline/augies-alexandria-audit-reconciliation.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Terra research: gpt-5.6-terra low; Sol adjudication: gpt-5.6-sol medium; coordinator-strength review corrected both workers' location-scope and cross-contact omissions.",
+    "The worker result is ingested only as discrepancy evidence; its proposed ten-row patch and accurately_unavailable grouping are rejected."
+  ],
+  "status": "discrepancy_found"
+}

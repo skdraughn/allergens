@@ -1,0 +1,90 @@
+{
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 52,
+      "sourceItemCount": 52,
+      "notes": [
+        "Post-repair recheck pins 52 unique current formulations and excludes stale seasonal, alcohol-only, navigation, and press rows.",
+        "All 55 frozen rows remain reconciled exactly once: 44 exact, one normalized, three stale, and seven artifacts; 45 matched frozen presentations collapse to 43 current formulations and nine current formulations were restored."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Twenty-seven rows retain narrow restaurant-issued ingredient positives, twelve retain restaurant-linked partial affirmative labels, and thirteen remain unavailable.",
+        "All may-contain arrays are empty because no global cross-contact disclosure was published; missing linked-menu labels are never treated as negative evidence."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The dedicated reconstruction preserves service presentations and separates materially different Rigatoni, Prosciutto, Burger, and Pesce formulations.",
+        "The duplicate OSM record is absent from the generated repository while its frozen rows remain fully reconciled in its own audit dossier."
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "stale-and-alcohol-catalog-contamination",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The frozen catalog contains three stale seasonal products and seven alcohol-only Italian Vermouth rows.",
+      "evidenceIds": ["official-menus-current", "linked-toast-current"],
+      "resolved": true,
+      "resolution": "Removed all three stale products and seven alcohol-only rows from the canonical food catalog."
+    },
+    {
+      "id": "current-formulation-boundary-drift",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "Nine current formulations were absent, two frozen presentations were duplicates, and materially different Rigatoni, Prosciutto, Burger, and Pesce preparations were collapsed or smeared.",
+      "evidenceIds": ["official-menus-current", "linked-toast-current"],
+      "resolved": true,
+      "resolution": "Restored all nine current formulations, collapsed two duplicate frozen presentations, and pinned service-aware formulation identities."
+    },
+    {
+      "id": "allergen-and-source-authority-mismatch",
+      "severity": "high",
+      "kind": "allergen_source",
+      "summary": "Seventeen frozen rows have direct allergen arrays or provenance inconsistent with the current owner ingredients and partial linked-menu affirmative labels.",
+      "evidenceIds": ["official-menus-current", "official-faq-current", "linked-toast-current"],
+      "resolved": true,
+      "resolution": "Corrected all seventeen outcomes and preserved the exact restaurant-issued, restaurant-linked, and unavailable provenance split."
+    },
+    {
+      "id": "duplicate-restaurant-record",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The OSM Aventino Cucina Romana record represents the same restaurant and address as aventino-bethesda.",
+      "evidenceIds": ["official-faq-current", "linked-toast-current"],
+      "resolved": true,
+      "resolution": "Removed the duplicate from the generated repository and retained aventino-bethesda as the canonical restaurant."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "rebuild-aventino-and-remove-duplicate",
+      "status": "verified",
+      "summary": "Verified the current 52-formulation boundary, source authority split, empty cross-contact semantics, stale/artifact removal, restored formulations, and duplicate disposition.",
+      "files": [
+        "scripts/pipeline/aventino-audit-catalog.mjs",
+        "scripts/pipeline/aventino-audit-catalog.test.mjs",
+        "scripts/pipeline/aventino-audit-reconciliation.mjs",
+        "scripts/pipeline/aventino-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": ["data/restaurant-verification/repairs/aventino-bethesda/corrected-menu.json"],
+      "verificationCommands": [
+        "node --test scripts/pipeline/aventino-audit-catalog.test.mjs scripts/pipeline/aventino-audit-reconciliation.test.mjs",
+        "node --test --test-name-pattern=\"Aventino preserves service formulations\" scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": ["Generated snapshot counts: 52 total; 27 restaurant-issued ingredient-positive; 12 linked product-label; 13 unavailable; zero may-contain."],
+  "status": "recheck_required"
+}

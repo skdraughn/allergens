@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "aroma-pizza-lorton-dc-metro",
+  "name": "Aroma Pizza Company Lorton",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T10:39:58.987Z",
+  "updatedAt": "2026-07-15T10:54:46.767Z",
+  "completedAt": "2026-07-15T10:54:46.767Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 178,
+      "sourceItemCount": 199,
+      "notes": [
+        "The live exact-address Toast catalog contains 199 unique standalone products across 16 consumer categories at 7200 Telegraph Square Drive, Lorton, VA 22079.",
+        "All 178 frozen rows were reconciled: 163 exact products, seven normalized products, and eight heading or duplicate artifacts. The 170 real rows map one-to-one to 170 current products, and 29 current products were missing.",
+        "The corrected catalog restores four Philly Steak Pizza sizes, current sides, two omitted coupons, catering products, and the complete eight-product Drinks section.",
+        "Every frozen row was incorrectly assigned to Pizza. The corrected current category order follows Toast and places Drinks last."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "accurately_unavailable",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "No current restaurant-issued allergen guide, allergen matrix, negative allergen claim, or cross-contact disclosure was found after official-domain, social-profile, ordering-page, and targeted-search review.",
+        "The configured owner domain is currently compromised and serves unrelated gambling/SEO content. It cannot support menu or allergen claims; the exact-address Toast catalog is restaurant-linked vendor evidence only.",
+        "The frozen catalog published 114 official-ingredients rows. Five belonged to section-heading artifacts; all 109 official labels on real products were unsupported and are now unavailable with empty fixed and mayContain fields.",
+        "Toast descriptions remain visible as separate Ingredient Intelligence. They are never presented as restaurant-issued allergen evidence, absence claims, or cross-contact assurances."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic HTML parser promoted seven section headings plus a duplicate manual Chicken Pizza repair, assigned all products to Pizza, truncated descriptions, omitted 29 current products, and promoted vendor wording to official allergen evidence.",
+        "The reproducible audit parser reads 181 stable Toast UUID product links beneath 13 captured sections and unions 18 stable browser-only links: four cheese pizzas, eight drinks, and six coupons.",
+        "The current product boundary is enforced at 199 unique Toast UUIDs; headings, featured duplicates, and the duplicate Chicken Pizza repair are excluded, and drinks are placed last.",
+        "Focused tests cover the 199-product boundary, all 178 frozen dispositions, provenance-safe allergen semantics, restored omissions, target-only isolation, and two-run idempotence."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "aroma-owner-domain-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.aromapizzacompany.com/",
+      "attemptedAt": "2026-07-15T10:40:19.291Z",
+      "outcome": "HTTP 200 returned 266,123 bytes of unrelated Indonesian gambling and SEO-spam content. The configured restaurant domain is compromised and was rejected as menu or allergen authority.",
+      "notes": [
+        "The raw response is retained and SHA-256 hashed."
+      ]
+    },
+    {
+      "id": "aroma-current-toast-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/aroma-pizza-company-new",
+      "attemptedAt": "2026-07-15T10:40:29.922Z",
+      "outcome": "The live Toast page identifies Aroma Pizza Company NEW at 7200 Telegraph Sq drive, Lorton, VA and exposes 199 unique current products. Direct archival capture returned HTTP 403; the browser view and a separately labeled readable transport were reconciled.",
+      "notes": [
+        "Toast is restaurant-linked vendor menu evidence and was not promoted to restaurant-issued allergen authority."
+      ]
+    },
+    {
+      "id": "aroma-instagram-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://www.instagram.com/aromapizzacompany/",
+      "attemptedAt": "2026-07-15T10:42:00.000Z",
+      "outcome": "The current restaurant Instagram handle was identified through current listings, but the profile could not be fetched by the archival client and exposed no indexed allergen guide or disclosure.",
+      "notes": []
+    },
+    {
+      "id": "aroma-targeted-allergen-search-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://order.toasttab.com/online/aroma-pizza-company-new",
+      "attemptedAt": "2026-07-15T10:42:30.000Z",
+      "outcome": "Targeted searches for Aroma Pizza Company Lorton allergens, allergy, ingredients, gluten-free, and cross-contact disclosures returned vendor menus and general listings but no restaurant-issued allergen source.",
+      "notes": []
+    },
+    {
+      "id": "aroma-readable-transport-2026-07-15",
+      "kind": "third_party",
+      "url": "https://r.jina.ai/http://order.toasttab.com/online/aroma-pizza-company-new",
+      "attemptedAt": "2026-07-15T10:40:29.922Z",
+      "outcome": "HTTP 200 produced a 57,444-byte hash-stable readable copy containing 181 unique current Toast product links across 13 sections. It was used only as transport and never as allergen authority.",
+      "notes": [
+        "The 18 live browser-only products are retained in a separate hashed supplement with stable product links."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "aroma-owner-domain-compromised",
+      "severity": "critical",
+      "kind": "source-identity-compromise",
+      "summary": "The configured restaurant owner domain currently serves unrelated gambling and SEO-spam content and cannot support any SafePlate menu or allergen claim.",
+      "evidenceIds": [
+        "official-aroma-domain-compromised"
+      ],
+      "resolved": true,
+      "resolution": "Rejected the compromised domain as content authority and used the exact-address restaurant-linked Toast catalog solely for current menu identity."
+    },
+    {
+      "id": "aroma-menu-boundary-and-category-corruption",
+      "severity": "critical",
+      "kind": "product-boundary-corruption",
+      "summary": "The frozen extraction promoted seven section headings and a duplicate manual Chicken Pizza repair, assigned all 178 rows to Pizza, and failed to preserve current category boundaries.",
+      "evidenceIds": [
+        "aroma-toast-current-browser-view",
+        "aroma-toast-jina-transport"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 199 unique UUID-backed products across 16 current categories and removed all eight artifacts."
+    },
+    {
+      "id": "aroma-current-menu-undercoverage",
+      "severity": "critical",
+      "kind": "menu-incomplete",
+      "summary": "The frozen catalog omitted 29 current products, including four Philly Steak Pizza sizes, sides, coupons, catering products, and all eight drinks.",
+      "evidenceIds": [
+        "aroma-toast-current-browser-view",
+        "aroma-toast-jina-transport"
+      ],
+      "resolved": true,
+      "resolution": "Restored all 29 current products into the contracted 199-product catalog."
+    },
+    {
+      "id": "aroma-unsupported-official-allergen-provenance",
+      "severity": "critical",
+      "kind": "allergen-provenance-overclaim",
+      "summary": "The frozen output labeled 114 rows official-ingredients even though its own restaurant metadata said no official allergen source existed; 109 of those rows were real products.",
+      "evidenceIds": [
+        "official-aroma-domain-compromised",
+        "aroma-toast-current-browser-view",
+        "aroma-allergen-source-search"
+      ],
+      "resolved": true,
+      "resolution": "Set all 199 current products to accurately unavailable, cleared fixed and cross-contact fields, and retained menu wording only as separate Ingredient Intelligence."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "aroma-current-toast-catalog-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt Aroma Pizza's current UUID-backed catalog, restored omissions, repaired categories and product boundaries, and removed every unsupported official allergen claim.",
+      "files": [
+        "scripts/pipeline/aroma-pizza-audit-catalog.mjs",
+        "scripts/pipeline/aroma-pizza-audit-catalog.test.mjs",
+        "scripts/pipeline/aroma-pizza-audit-reconciliation.mjs",
+        "scripts/pipeline/aroma-pizza-audit-reconciliation.test.mjs",
+        "scripts/pipeline/aroma-pizza-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/aroma-pizza-lorton-dc-metro/aroma-toast-jina-transport.txt",
+        "data/restaurant-verification/artifacts/aroma-pizza-lorton-dc-metro/aroma-toast-browser-supplement.json",
+        "data/restaurant-verification/repairs/aroma-pizza-lorton-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/aroma-pizza-audit-catalog.mjs",
+        "node scripts/pipeline/aroma-pizza-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/aroma-pizza-audit-catalog.test.mjs scripts/pipeline/aroma-pizza-audit-reconciliation.test.mjs scripts/pipeline/aroma-pizza-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=aroma-pizza-lorton-dc-metro node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: e27fc87ee8108ac5009faeb450db010fc7f99d0c51fb2f7748a81d8cab07561a.",
+    "Readable Toast transport artifact SHA-256: 489e00280337514d4b3b92900ebbecf57823ac7602a56408dd82e6cb9087f9cf.",
+    "Live-browser supplement artifact SHA-256: e9d7831f93863aacf8d78fae56c96c1392f664b022f77f8aee4af498f0880ff1.",
+    "Compromised owner-domain artifact SHA-256: 0242d109a6c8167c6d6d7af44fe6fe69c808cf2fe0dada05d13b0689be38aa6d.",
+    "Frozen baseline item fingerprint: 982da9088e66adf643bc78f8fde4f54debd48ef1e380472013ff9d8d2e9ea3b5.",
+    "Live target SHA-256 before repair: e17b1f159b5f9aabb6f6341be69d1cb3ab9b34cc5351477a047e3ae066afc91e.",
+    "Live target SHA-256 after repair: 7678c821ad13d24fa13747688a8ee839fbdf66015db567a27765d0cd9c2728ad.",
+    "Live non-target restaurant projection SHA-256 remained 8b24c3940a508d9199f160098694d886c2c5553d8f81b0c616a02147e5049398.",
+    "Two consecutive target-only repair runs produced the same target hash and exactly one Aroma Pizza verified repair note.",
+    "The repaired repository contains 113868 live menu items; the frozen ledger remains anchored to its original 112873-item hashed baseline."
+  ]
+}

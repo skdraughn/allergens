@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "replacement-alta-strada-fairfax-va-fairfax-va",
+  "name": "Alta Strada - Fairfax, VA",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T00:22:03.893Z",
+  "updatedAt": "2026-07-15T00:33:37.080Z",
+  "completedAt": "2026-07-15T00:33:37.080Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 29,
+      "sourceItemCount": 37,
+      "notes": [
+        "Reconciled all 29 frozen rows against Alta Strada's current restaurant-issued Mosaic/Fairfax lunch, dinner, brunch, and happy-hour pages, its Mosaic menu index, location page, order-link page, and sitemap. The four current service menus contain 62 food presentations that consolidate to 37 Fairfax formulations.",
+        "Only five frozen rows map to four current Fairfax formulations: Baby Arugula Salad, Spaghetti AOP, Alta Strada World Famous Garlic Bread, and the configurable Chicken Milanese or Parmigiano row. Twenty-two frozen rows are genuine Wellesley or Foxwoods dishes, and two are Wellesley price/name concatenation artifacts.",
+        "The cross-location frozen crawl omitted 33 current Fairfax formulations. The official Winter 2026 Restaurant Week page was captured but excluded as a stale seasonal menu in July 2026."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Alta Strada publishes current restaurant-issued menu descriptions but no complete recipe-level allergen matrix or item-level cross-contact disclosure. Thirty-three current formulations have direct fixed ingredient or mandatory-format signals; four insufficiently described formulations remain unavailable.",
+        "Of the five retained frozen rows, two allergen sets were verified and three required correction: Spaghetti AOP was missing wheat/gluten, while the two frozen Chicken rows mixed supported and unsupported fixed claims before consolidation into the configurable Fairfax row.",
+        "Optional Parmigiano preparation, add-on chicken or shrimp, aioli and Bearnaise assumptions, pesto nuts, breading not stated in the menu, and generic culinary expectations are not promoted into fixed or cross-contact claims."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic-website extraction followed Wellesley and Foxwoods menu URLs for an entry labeled Fairfax and then merged those other-location rows into one catalog. The current official site now exposes explicit Mosaic/Fairfax menu routes, making location scoping authoritative.",
+        "Two Wellesley rows demonstrate a DOM boundary failure: the prior extractor joined the preceding prices 37 and 61 directly to Grilled Filet Branzino and Prime Flat Iron Steak. The audited catalog asserts every exact current source line and consolidates only known current service-period variants.",
+        "The restaurant-linked Toast Mosaic ordering page returned HTTP 403 to the ledger fetch and multiple browser user-agent requests. The four directly published first-party service menus remain complete, internally linked, and sitemap-listed, so the vendor failure does not prevent current Fairfax reconciliation."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "linked-toast-mosaic-403",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/alta-strada-mosaic",
+      "attemptedAt": "2026-07-15T00:23:51.000Z",
+      "outcome": "HTTP 403 from the ledger fetch and from repeated direct requests using Safari/Chrome, curl, and ledger user agents.",
+      "notes": [
+        "The link itself is current and restaurant-issued on /order-online, but its inaccessible response is not used as item-level evidence."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "cross-location-menu-contamination",
+      "severity": "high",
+      "kind": "menu_reconciliation",
+      "summary": "Twenty-two of 29 frozen Fairfax rows are real dishes from Alta Strada's Wellesley or Foxwoods locations rather than the Mosaic/Fairfax menu.",
+      "evidenceIds": [
+        "official-locations",
+        "official-mosaic-menu-index",
+        "official-mosaic-lunch",
+        "official-mosaic-dinner",
+        "official-mosaic-brunch",
+        "official-mosaic-happy-hour",
+        "official-other-location-wellesley",
+        "official-other-location-foxwoods"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the cross-location crawl with 37 current Fairfax formulations and 62 current Fairfax presentations, removed all 22 other-location rows, consolidated five surviving frozen rows into four current formulations, and restored 33 omitted Fairfax formulations."
+    },
+    {
+      "id": "incorrect-retained-allergen-sets",
+      "severity": "high",
+      "kind": "allergen_reconciliation",
+      "summary": "Three of the five retained frozen rows have incorrect fixed allergen sets, including unsupported milk/tree-nut claims and missing wheat/gluten.",
+      "evidenceIds": [
+        "official-mosaic-lunch",
+        "official-mosaic-dinner",
+        "official-mosaic-happy-hour"
+      ],
+      "resolved": true,
+      "resolution": "Applied fixed-wording review to the current Fairfax descriptions, represented Chicken Milanese or Parmigiano as configurable with only mandatory wheat/gluten fixed, and left unsupported preparation or sauce assumptions out of official claims."
+    },
+    {
+      "id": "wellesley-price-name-concatenation",
+      "severity": "medium",
+      "kind": "extraction_boundary",
+      "summary": "The frozen catalog contains 37Grilled Filet Branzino and 61Prime Flat Iron Steak because adjacent Wellesley prices were concatenated to the following item names.",
+      "evidenceIds": [
+        "official-other-location-wellesley"
+      ],
+      "resolved": true,
+      "resolution": "Classified both malformed rows as artifacts, excluded them from Fairfax, and locked exact current source-line extraction in the focused catalog tests."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "alta-strada-fairfax-verified-catalog-repair",
+      "status": "verified",
+      "summary": "Added a location-scoped Alta Strada Fairfax catalog and reconciliation fixture, replaced the polluted generated entry, and verified target-only idempotent persistence.",
+      "files": [
+        "scripts/pipeline/alta-strada-fairfax-audit-catalog.mjs",
+        "scripts/pipeline/alta-strada-fairfax-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "scripts/pipeline/alta-strada-fairfax-audit-catalog.test.mjs",
+        "scripts/pipeline/alta-strada-fairfax-audit-reconciliation.test.mjs",
+        "data/restaurant-verification/repairs/replacement-alta-strada-fairfax-va-fairfax-va/corrected-menu.json",
+        "data/restaurant-verification/artifacts/replacement-alta-strada-fairfax-va-fairfax-va/official-mosaic-lunch.html",
+        "data/restaurant-verification/artifacts/replacement-alta-strada-fairfax-va-fairfax-va/official-mosaic-dinner.html",
+        "data/restaurant-verification/artifacts/replacement-alta-strada-fairfax-va-fairfax-va/official-mosaic-brunch.html",
+        "data/restaurant-verification/artifacts/replacement-alta-strada-fairfax-va-fairfax-va/official-mosaic-happy-hour.html"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/alta-strada-fairfax-audit-catalog.test.mjs scripts/pipeline/alta-strada-fairfax-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=tmp/alta-strada-scope/repository.json RESTAURANT_REPAIR_ONLY_ID=replacement-alta-strada-fairfax-va-fairfax-va node scripts/repair-final-generated-regressions.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=replacement-alta-strada-fairfax-va-fairfax-va node scripts/repair-final-generated-regressions.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Alta Strada Mosaic/Fairfax identity is confirmed by the restaurant-issued locations page at 2911 District Avenue, Unit 150, Fairfax, Virginia 22031 and by the location-specific Mosaic menu routes.",
+    "Corrected snapshot SHA-256: cc67ba071319658d36b0b65de4ca6f4b3ed1aeb8bc6eb3182080d6136cbe7fc1.",
+    "A deliberately corrupted temporary repository repaired only replacement-alta-strada-fairfax-va-fairfax-va; all 1,494 non-target restaurant hashes remained unchanged. A second target-only run against the actual repository was byte-for-byte idempotent."
+  ]
+}

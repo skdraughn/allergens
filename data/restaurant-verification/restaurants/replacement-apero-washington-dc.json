@@ -1,0 +1,222 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "replacement-apero-washington-dc",
+  "name": "Apéro",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T07:59:23.635Z",
+  "updatedAt": "2026-07-15T08:21:16.953Z",
+  "completedAt": "2026-07-15T08:21:16.953Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 49,
+      "sourceItemCount": 53,
+      "notes": [
+        "Apéro's current owner home page links the captured June 2026 brunch, lunch, dinner, and summer prix-fixe PDFs plus the currently linked Caviar Hour and Pride specials PDFs.",
+        "All 49 frozen rows were reconciled: 14 exact matches, 23 reviewed variants, five PDF extraction artifacts, and seven stale or out-of-scope rows. The 37 matched frozen presentations represent 30 current products, leaving 23 current omissions.",
+        "The canonical current catalog contains 53 unique food presentations across seven sections. Repeated meal-period dishes and Caviar Hour variants were consolidated; caviar size choices remain configurable presentations rather than duplicate products; alcohol, merchandise, and POS controls are excluded."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Apéro publishes current item descriptions but no complete allergen matrix, item-level negative assurance, may-contain statement, or restaurant cross-contact policy. Forty-nine current items have supported positive signals and four remain accurately unavailable.",
+        "Twenty-one matched frozen allergen outcomes were wrong. The repair adds fish and milk to the actual caviar selections, shellfish and bread signals to escargot tartine, mustard to Dijon dishes, missing milk/fish/bread signals where explicit, and removes unsupported egg from the yogurt parfait and unsupported milk from the mussels.",
+        "The current linked Toast menu is corroborative rather than a restaurant-issued matrix. The captured readable proxy remains third-party transport. Nutella milk, tree-nut, and soy signals remain explicitly labeled manufacturer ingredient intelligence and are not promoted to restaurant-issued evidence.",
+        "No absent ingredient term is treated as an allergen-free claim, and no may-contain or cross-contact value is invented."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic PDF extractor misread two-column caviar layouts: it emitted a detached price fragment, promoted four species headings to products, and swallowed adjacent dishes into at least eight descriptions. It also flattened nearly every row into generic French, Plates, or Salads categories.",
+        "The reviewed parser asserts the exact owner-home menu links and captured source anchors, distinguishes 15 actual caviar selections from species headings and size prices, deduplicates meal-period presentations, and fails closed if a reviewed source anchor or the manufacturer label disappears.",
+        "Focused tests cover current-source shape, canonical counts and categories, every frozen-row disposition, artifact/stale classification, current omissions, caviar semantics, high-risk allergen corrections, published repair invariants, target-only isolation, and idempotency."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "apero-owner-home-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.aperodc.com/",
+      "attemptedAt": "2026-07-15T07:59:47.314Z",
+      "outcome": "HTTP 200. Confirmed Apéro at 2622 P Street NW and captured the current owner menu hub linking summer prix-fixe, brunch, lunch, Caviar Hour, dinner, and Pride specials PDFs.",
+      "notes": []
+    },
+    {
+      "id": "apero-owner-pdfs-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.aperodc.com/",
+      "attemptedAt": "2026-07-15T08:00:13.046Z",
+      "outcome": "HTTP 200 for six owner-issued PDFs. Captured 15 pages total, rendered every page, and visually verified item-to-description and two-column caviar associations.",
+      "notes": [
+        "Brunch, lunch, dinner, and summer prix-fixe PDFs were created June 4, 2026. The linked Caviar Hour PDF was created September 23, 2025 and remains on the current menu hub."
+      ]
+    },
+    {
+      "id": "apero-legacy-menu-route-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.aperodc.com/menu",
+      "attemptedAt": "2026-07-15T08:00:00.000Z",
+      "outcome": "HTTP 404. This frozen source URL is obsolete; the owner home page is now the current menu hub.",
+      "notes": []
+    },
+    {
+      "id": "apero-toast-ordering-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/apero-2622-p-nw",
+      "attemptedAt": "2026-07-15T08:04:57.441Z",
+      "outcome": "The direct ledger fetch returned Cloudflare HTTP 403. The public page remained readable through the web reader; a deterministic Jina text transport was captured as third-party evidence and preserved Toast's Apéro identity, current meal-period items, descriptions, explicit linked-menu allergen annotations, caviar catalog, stock state, and retail section.",
+      "notes": [
+        "Toast is restaurant-linked corroboration, not a restaurant-issued complete allergen matrix. The readable proxy is explicitly classified third_party and is never promoted to official evidence."
+      ]
+    },
+    {
+      "id": "apero-nutella-label-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://www.nutella.com/us/en/nutellar-jar-nutellar-united-states-official-website",
+      "attemptedAt": "2026-07-15T08:13:07.592Z",
+      "outcome": "HTTP 200. Captured Nutella's current manufacturer product page and its explicit contains statement for tree nuts (hazelnuts), milk, and soy.",
+      "notes": [
+        "This evidence applies only because Apéro's brunch PDF explicitly names Nutella; it remains manufacturer ingredient intelligence."
+      ]
+    },
+    {
+      "id": "apero-targeted-allergen-review-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://www.aperodc.com/",
+      "attemptedAt": "2026-07-15T08:14:00.000Z",
+      "outcome": "Reviewed every current owner PDF row, every reconciled linked-ordering row, and the manufacturer label. Found no complete Apéro allergen matrix, may-contain statement, item-level negative assurance, or restaurant cross-contact policy.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "apero-two-column-pdf-artifacts",
+      "severity": "critical",
+      "kind": "parser-structure-corruption",
+      "summary": "The frozen extractor treated four caviar species headings and a detached size-price fragment as five food products.",
+      "evidenceIds": [
+        "official-apero-brunch-june-2026",
+        "official-apero-lunch-june-2026",
+        "official-apero-dinner-june-2026"
+      ],
+      "resolved": true,
+      "resolution": "Parsed the visually reviewed caviar columns into 15 named selections, grouped their size choices, and rejected headings and price fragments."
+    },
+    {
+      "id": "apero-adjacent-row-swallowing",
+      "severity": "critical",
+      "kind": "parser-structure-corruption",
+      "summary": "At least eight frozen descriptions swallowed one or more adjacent dishes, causing incorrect item identity, category, and allergen associations.",
+      "evidenceIds": [
+        "official-apero-brunch-june-2026",
+        "official-apero-lunch-june-2026",
+        "official-apero-dinner-june-2026"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt all rows from visually verified page associations and restored the seven actual menu sections."
+    },
+    {
+      "id": "apero-caviar-allergen-omission",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Frozen caviar rows were unavailable even though caviar is fish and Apéro explicitly serves every selection with crème fraîche.",
+      "evidenceIds": [
+        "official-apero-brunch-june-2026",
+        "official-apero-lunch-june-2026",
+        "official-apero-dinner-june-2026"
+      ],
+      "resolved": true,
+      "resolution": "Added fish and milk to each actual caviar selection while declining to infer egg or wheat from unspecified pizzelle recipes."
+    },
+    {
+      "id": "apero-item-allergen-mismatches",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Twenty-one matched frozen presentations had unsupported or missing positive signals, including false egg on yogurt parfait, false milk on mussels, and omitted shellfish on escargot.",
+      "evidenceIds": [
+        "official-apero-brunch-june-2026",
+        "official-apero-lunch-june-2026",
+        "official-apero-dinner-june-2026",
+        "apero-toast-readable-proxy",
+        "nutella-official-product-label"
+      ],
+      "resolved": true,
+      "resolution": "Limited restaurant signals to fixed menu terms and unavoidable named formats, retained linked-source boundaries, and kept Nutella manufacturer evidence separately labeled."
+    },
+    {
+      "id": "apero-stale-and-omitted-catalog",
+      "severity": "high",
+      "kind": "menu-reconciliation-mismatch",
+      "summary": "The frozen catalog retained seven alcohol, merchandise, obsolete, or POS-control rows while omitting 23 current food presentations.",
+      "evidenceIds": [
+        "official-apero-home",
+        "official-apero-brunch-june-2026",
+        "official-apero-lunch-june-2026",
+        "official-apero-dinner-june-2026",
+        "official-apero-caviar-hour",
+        "apero-toast-readable-proxy"
+      ],
+      "resolved": true,
+      "resolution": "Published the 53-item reviewed catalog, consolidated duplicate meal-period variants, and excluded alcohol, retail accessories, and obsolete POS sides."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "apero-current-menu-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt Apéro's current menu and corrected PDF structure, duplicates, omissions, categories, allergen semantics, and evidence boundaries.",
+      "files": [
+        "scripts/pipeline/apero-audit-catalog.mjs",
+        "scripts/pipeline/apero-audit-catalog.test.mjs",
+        "scripts/pipeline/apero-audit-reconciliation.mjs",
+        "scripts/pipeline/apero-audit-reconciliation.test.mjs",
+        "scripts/pipeline/apero-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/replacement-apero-washington-dc/official-apero-home.html",
+        "data/restaurant-verification/artifacts/replacement-apero-washington-dc/official-apero-brunch-june-2026.pdf",
+        "data/restaurant-verification/artifacts/replacement-apero-washington-dc/official-apero-lunch-june-2026.pdf",
+        "data/restaurant-verification/artifacts/replacement-apero-washington-dc/official-apero-dinner-june-2026.pdf",
+        "data/restaurant-verification/artifacts/replacement-apero-washington-dc/official-apero-caviar-hour.pdf",
+        "data/restaurant-verification/artifacts/replacement-apero-washington-dc/apero-toast-readable-proxy.txt",
+        "data/restaurant-verification/artifacts/replacement-apero-washington-dc/nutella-official-product-label.html",
+        "data/restaurant-verification/repairs/replacement-apero-washington-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/apero-audit-catalog.mjs",
+        "node scripts/pipeline/apero-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/apero-audit-catalog.test.mjs scripts/pipeline/apero-audit-reconciliation.test.mjs scripts/pipeline/apero-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=replacement-apero-washington-dc node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 9573bc30501bdb24023b84f0784dc24ee6d3dfbfb940bab20ee38b0b23edb780.",
+    "Official home SHA-256: f5c40f59d12116365a09625f2510a64297ea1e6fc5bb990d64ffc7cc2d0c848c.",
+    "Official summer prix-fixe PDF/text SHA-256: 4881bb4fb0c3df0b11b143bdb0cf052a7889ccb56ab1561b9a197b3c60e596db / 41c2b23561b106b4c506eed19500ba15f414ae87b5f87bb8ece292de343a86ed.",
+    "Official brunch PDF/text SHA-256: 7b3d6c9eaff51064603c153566df44be41b9f3f0777ccdf285c927bbb860d30f / 9dd9250f6db85031d5cbbb188f4be451401c0879a59465c8cfc0c6a4242f2b16.",
+    "Official lunch PDF/text SHA-256: 68eb2f4b3f992c363b2aa5823f7232dd0d069379dcc2c11483e103eadc777bd4 / 1447d5d0ca58a85c1efbae68659abea2be6bb2d4bf861303a87288a8c28834f3.",
+    "Official dinner PDF/text SHA-256: 5eb6f093faaad1128be6ee9e8714cf60954addb8a710cb6c68d85a2763561e85 / 6e0d61bf888844af82fd116663f20376faba71e6c85fa62a91ca017060998355.",
+    "Official Caviar Hour PDF/text SHA-256: 52e845821d63bb2932a7b639ef304b629f26c7ecc174615e163fb0473b24cbcd / c990cd715034c82d3e57d186c5b09693a2d003c8b7ec3cc566106a18bf751578.",
+    "Official Pride specials PDF/text SHA-256: defe4a1d220125d7aba074a2775863db66e72ca2fbf99cab613cafaf2201054b / 5dbcd927f755de6c5f6c743658baebdc8b2c9ac5d99b4afda19c3be47036c6cc.",
+    "Third-party Toast readable transport SHA-256: 343763ee1ad5a27f0e1a74fc2a533caf8223d2f142713c51a1d968494c92cc11; Nutella manufacturer page SHA-256: 8ba13395a5564b29863be69811c296e19aab2907239e19c1225c966b07ba994e.",
+    "Frozen live target SHA-256 before repair: 89eff9b38f5d699003aad101faaa915cb791bd4cd9ec71621cb06520780d4419.",
+    "Live target SHA-256 after repair: 5fff044c281c1230364898b4224e9891184db8605e0d37dc4055fe537e258977.",
+    "Live non-target restaurant projection SHA-256 remained f0f599cac81eb46ebd2e737ba270d2deebe480fb7ec336e1e35c8ce059dbb584.",
+    "Two consecutive target-only repair runs produced the same target hash and exactly one Apéro verified repair note.",
+    "The repaired repository contains 113710 live menu items; the frozen ledger remains anchored to its original 112873-item hashed baseline."
+  ]
+}

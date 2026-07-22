@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "2941-restaurant-falls-church-va-dc-metro",
+  "name": "2941 Restaurant",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T18:09:13.387Z",
+  "updatedAt": "2026-07-14T18:15:08.691Z",
+  "completedAt": "2026-07-14T18:15:08.691Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 25,
+      "sourceItemCount": 51,
+      "notes": [
+        "Every frozen row was reconciled against the current official à-la-carte, prix-fixe, Chef's July tasting, cocktail, and zero-proof menus.",
+        "Twenty-two frozen rows remain exact current items, two are current renamed variants, and Appalachian from Meadow Creek is absent from all current official menus.",
+        "The corrected represented surface contains 51 current official items, adding 27 current food and beverage items that the frozen catalog omitted."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "2941 does not publish a complete allergen matrix; no allergen absence or general cross-contact safety claim is made.",
+        "The frozen app labeled every item unavailable even where official descriptions explicitly name allergens such as milk cheeses, egg, soy/shoyu/miso, fish, shellfish, nuts, bread, pasta, tempura, and aioli.",
+        "The corrected catalog has 35 direct item-text signal rows and 16 accurately unavailable rows; quoted matsutake-shoyu caviar and oyster mushrooms are explicitly protected from false fish/shellfish classification."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen parser extracted only the à-la-carte surface and then discarded every allergen signal despite preserving detailed official ingredient descriptions.",
+        "It retained one stale seasonal cheese, missed two current cheeses and East Coast Oysters, and did not represent current prix-fixe, July tasting, cocktail, or zero-proof offerings.",
+        "The correction uses restaurant-issued current menu text and conservative direct-term classification without converting missing disclosures into negative claims."
+      ]
+    }
+  },
+  "sourceAttempts": [],
+  "findings": [
+    {
+      "id": "all-official-signals-suppressed",
+      "severity": "high",
+      "kind": "allergen_accuracy",
+      "summary": "Twenty-two of 24 current frozen rows had explicit official allergen terms but were shown with allergen data unavailable.",
+      "evidenceIds": [
+        "official-a-la-carte",
+        "official-prix-fixe"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt positive signals from explicit current official item text while leaving all undisclosed allergens unavailable."
+    },
+    {
+      "id": "incomplete-seasonal-menu-surface",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen catalog retained one stale cheese and omitted 27 current items across the à-la-carte, prix-fixe, tasting, cocktail, and zero-proof menus.",
+      "evidenceIds": [
+        "official-home",
+        "official-a-la-carte",
+        "official-prix-fixe",
+        "official-tasting",
+        "official-cocktails"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the frozen 25-row surface with a deduplicated 51-item current official catalog and placed beverages last."
+    },
+    {
+      "id": "culinary-name-false-positive-risk",
+      "severity": "medium",
+      "kind": "allergen_semantics",
+      "summary": "Naive term matching would incorrectly classify oyster mushrooms as shellfish and matsutake-shoyu 'caviar' as fish.",
+      "evidenceIds": [
+        "official-a-la-carte"
+      ],
+      "resolved": true,
+      "resolution": "Added focused exclusions with regression assertions while retaining true East Coast Oysters and Kaviari Baenki Caviar signals."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-2941-current-official-menus",
+      "status": "verified",
+      "summary": "Prepared and targeted-tested a 51-item current official snapshot covering every active public menu surface with beverages last and conservative direct allergen signals.",
+      "files": [
+        "scripts/pipeline/2941-audit-catalog.mjs",
+        "scripts/pipeline/2941-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/2941-restaurant-falls-church-va-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/2941-audit-catalog.test.mjs scripts/pipeline/2941-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=tmp/restaurant-verification/2941-repair-input.json node scripts/repair-final-generated-regressions.mjs (targeted copy; verified 51 unique items, 15 real sections, 35 direct rows, 16 unavailable rows, culinary false-positive exclusions, and beverages last)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: dd9b5fad6ba0c8ed3fec91bbcca473d0445444657ed6cd6c31941826405c5f30.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":22,\"variant_match\":2,\"stale_extra\":1},\"allergens\":{\"mismatch\":22,\"accurately_unavailable\":2,\"not_applicable\":1}}.",
+    "The Chef's tasting page explicitly identifies itself as the July menu and offers two choices in each of five courses.",
+    "Focused catalog, full frozen-row reconciliation, targeted repair-copy, unique-id, section-order, source-authority, and culinary false-positive checks passed."
+  ]
+}

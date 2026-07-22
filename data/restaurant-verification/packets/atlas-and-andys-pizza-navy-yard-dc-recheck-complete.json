@@ -1,0 +1,40 @@
+{
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 38,
+      "sourceItemCount": 38,
+      "notes": [
+        "Post-repair recheck reconciled the exact-location restaurant-issued menu with the current linked Toast surface into 38 unique food products across four sections.",
+        "Frozen reconciliation: 30 exact verified, 3 exact accurately unavailable, 1 variant verified, 2 variants accurately unavailable, 2 stale operational duplicates, and 1 beverage artifact."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "All 24 pizza rows retain wheat and gluten from the exact-location universal sourdough crust statement; direct item wording supplies milk or tree-nut where applicable.",
+        "32 current items have fixed direct positive disclosures and 6 are accurately unavailable; no negative or cross-contact claim is inferred."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The scoped repair restores restaurant-issued sections, excludes the Checkmate operational duplicates and Atlas beverage, and includes every product published by either current exact-location surface."
+      ]
+    }
+  },
+  "findings": [
+    {"id":"cheese-omits-wheat","severity":"high","kind":"allergen_source","summary":"Slice Cheese and Whole Cheese omitted the restaurant-issued wheat disclosure.","evidenceIds":["andys-current-menu","andys-navy-yard-menu"],"resolved":true,"resolution":"Applied wheat and gluten to both Cheese rows as part of the universal pizza-crust repair."},
+    {"id":"pizza-crust-omits-wheat","severity":"high","kind":"allergen_source","summary":"Frozen pizza rows omitted the exact-location universal sourdough crust's wheat/gluten disclosure.","evidenceIds":["andys-navy-yard-menu"],"resolved":true,"resolution":"Applied wheat and gluten to all 24 current pizza rows while retaining only directly supported additional signals."},
+    {"id":"operational-section-contamination","severity":"high","kind":"menu_extraction","summary":"The frozen record contained operational duplicates, malformed names, and current-location omissions.","evidenceIds":["andys-navy-yard-menu","toast-current-menu"],"resolved":true,"resolution":"Removed three duplicate operational rows, normalized Fried Cauliflower and Old Bay Fries, and restored Dairy Free Margherita and 8 Makes a Pie."},
+    {"id":"flattened-sections-and-beverage","severity":"medium","kind":"menu_extraction","summary":"The frozen extraction flattened food sections, omitted Side of Ranch, and misclassified Underberg Bitters as pizza.","evidenceIds":["andys-navy-yard-menu","toast-current-menu"],"resolved":true,"resolution":"Restored four consumer sections, added Side of Ranch, and removed the beverage from the food-focused record."}
+  ],
+  "repairs": [
+    {"id":"reconcile-atlas-andys-current-menu","status":"verified","summary":"Reconciled and verified the complete 38-item exact-location Atlas Navy Yard/Andy's food menu and its conservative direct-positive allergen data.","files":["scripts/repair-final-generated-regressions.mjs","scripts/restaurant-pipeline.test.mjs"],"fixturePaths":[],"verificationCommands":["node --test --test-name-pattern='Atlas and Andy.s reconciles the current Navy Yard menu' scripts/restaurant-pipeline.test.mjs"]}
+  ],
+  "notes": ["Post-repair current menu: 38 unique food products; 32 direct positive disclosures; 6 accurately unavailable results."],
+  "status": "recheck_required"
+}

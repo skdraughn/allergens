@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "replacement-1310-kitchen-and-bar-washington-dc",
+  "name": "1310 Kitchen and Bar",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T17:05:57.326Z",
+  "updatedAt": "2026-07-14T17:27:33.942Z",
+  "completedAt": "2026-07-14T17:27:33.942Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 87,
+      "sourceItemCount": 182,
+      "notes": [
+        "Every frozen baseline row was reconciled against the current restaurant-issued PDF menus and restaurant-linked Toast ordering menu.",
+        "The current deduplicated catalog contains 182 menu items sourced from 286 rendered source rows across the active menus."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Only allergens directly named by item names or menu descriptions are retained as official ingredient signals.",
+        "The menus warn that not all ingredients are listed; empty arrays are classified unavailable and are not negative allergen claims.",
+        "The Toast menu is restaurant-linked vendor evidence and is not promoted to restaurant-issued authority."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The baseline generic PDF extraction collapsed menu sections, emitted headings and OCR fragments as items, and transferred adjacent-column allergen terms between rows.",
+        "The replacement snapshot preserves menu boundaries and only maps direct item-level ingredient terms using conservative plant-milk and nut-butter exclusions."
+      ]
+    }
+  },
+  "sourceAttempts": [],
+  "findings": [
+    {
+      "id": "collapsed-menu-structure",
+      "severity": "high",
+      "kind": "menu_extraction",
+      "summary": "The baseline collapsed multiple current menus into 87 rows all labeled Breakfast, versus 182 current unique menu items across 28 sections.",
+      "evidenceIds": [
+        "official-home",
+        "official-pdf-2265",
+        "official-pdf-f295",
+        "official-pdf-7101",
+        "official-pdf-c557",
+        "official-pdf-bar-bites",
+        "official-pdf-late-night",
+        "linked-toast-current"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the collapsed baseline output with a reviewed, deduplicated snapshot preserving menu and section context."
+    },
+    {
+      "id": "allergen-column-smear",
+      "severity": "high",
+      "kind": "allergen_extraction",
+      "summary": "Nineteen baseline rows had allergen mismatches caused primarily by adjacent-column/row bleed, truncation, or incomplete direct-term mapping.",
+      "evidenceIds": [
+        "official-pdf-2265",
+        "official-pdf-f295",
+        "official-pdf-7101",
+        "official-pdf-c557",
+        "linked-toast-current"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt item-level allergen signals from direct text only and verified all 87 baseline dispositions."
+    },
+    {
+      "id": "artifacts-duplicates-stale-items",
+      "severity": "medium",
+      "kind": "menu_quality",
+      "summary": "The baseline contained 13 headings/modifiers/duplicates/OCR fragments and 12 stale ordering items.",
+      "evidenceIds": [
+        "official-home",
+        "linked-toast-current"
+      ],
+      "resolved": true,
+      "resolution": "Removed non-items, deduplicated current rows, and omitted items absent from all current sources."
+    },
+    {
+      "id": "partial-ingredient-disclosure",
+      "severity": "medium",
+      "kind": "source_semantics",
+      "summary": "Restaurant menus disclose partial item descriptions and explicitly state that not all ingredients are listed.",
+      "evidenceIds": [
+        "official-pdf-2265",
+        "official-pdf-f295",
+        "official-pdf-7101",
+        "official-pdf-c557"
+      ],
+      "resolved": true,
+      "resolution": "Classified 82 insufficiently disclosed items as allergen-data unavailable instead of treating silence as allergen-free."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-1310-current-menu-snapshot",
+      "status": "verified",
+      "summary": "Prepared and targeted-tested a current 182-item replacement snapshot that removes extraction artifacts and preserves only direct allergen evidence.",
+      "files": [
+        "scripts/pipeline/1310-audit-catalog.mjs",
+        "scripts/pipeline/1310-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/replacement-1310-kitchen-and-bar-washington-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/1310-audit-catalog.test.mjs scripts/pipeline/1310-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=tmp/restaurant-verification/1310-repair-input.json node scripts/repair-final-generated-regressions.mjs (targeted copy; verified 182 items, 100 direct ingredient signals, 82 unavailable, 28 categories, zero known artifacts)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: d39de0842dba95562d7ade4a753fd9e889de468051876f46eb0d02b10de03423.",
+    "Reconciliation counts: {\"dispositions\":{\"normalized_match\":35,\"exact_match\":15,\"stale_extra\":12,\"artifact\":13,\"variant_match\":12},\"allergens\":{\"verified\":26,\"mismatch\":19,\"accurately_unavailable\":17,\"not_applicable\":25}}."
+  ]
+}

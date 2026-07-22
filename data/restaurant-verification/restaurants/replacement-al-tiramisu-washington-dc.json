@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "replacement-al-tiramisu-washington-dc",
+  "name": "Al Tiramisu",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T21:53:31.952Z",
+  "updatedAt": "2026-07-14T21:57:51.230Z",
+  "completedAt": "2026-07-14T21:57:51.230Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 30,
+      "sourceItemCount": 25,
+      "notes": [
+        "Every frozen row was reconciled against the current restaurant-issued savory and dessert pages captured on 2026-07-14.",
+        "The current rendered catalog contains 18 savory products and seven desserts across four real sections.",
+        "All 25 frozen product names remain current; the other five frozen rows are the Dolci, INSALATE/ANTIPASTI/ZUPPE, LE PASTE, and SECONDI headings plus Menu Advisory.",
+        "The direct Wix items endpoint returned HTTP 403, but both official pages render the complete names, descriptions, sections, and prices server-side and were retained as hashed artifacts."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Al Tiramisu publishes selected fixed ingredient descriptions but no complete allergen matrix, complete recipes, or cross-contact policy.",
+        "Twenty current products have positive signals supported by fixed menu text or unavoidable composite formats; five remain unavailable rather than inferred.",
+        "Eleven frozen product rows mismatch current evidence: eight underreported, two overreported, and one mixed.",
+        "The explicitly flourless Torta Caprese is not assigned wheat/gluten, unspecified pasta is not assigned egg, and optional pistachio gelato flavor is not assigned as a fixed tree-nut claim across all choices.",
+        "No absent description or omitted allergen is interpreted as a negative or safety claim."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen merge combined 25 Wix item rows with five structured section/advisory blocks and flattened every actual product into a generic Items category.",
+        "The correction reads the server-rendered section/name/description relationships from the two current official menu surfaces and restores all four real categories.",
+        "Positive mappings use only fixed descriptions and narrow composite terms such as ladyfingers and zabaglione; optional flavor text is masked where it is not common to every formulation.",
+        "Focused tests cover all 25 products, all five artifacts, category structure, and the material underreported and overreported allergen cases."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-home-review",
+      "kind": "official_site",
+      "url": "https://www.altiramisu.com/",
+      "attemptedAt": "2026-07-14T21:53:32.252Z",
+      "outcome": "Captured the current official site and confirmed the Washington, DC restaurant identity and menu navigation.",
+      "notes": []
+    },
+    {
+      "id": "official-savory-menu-review",
+      "kind": "linked_source",
+      "url": "https://www.altiramisu.com/menu",
+      "attemptedAt": "2026-07-14T21:53:32.706Z",
+      "outcome": "Captured and exhaustively reviewed 18 current products across the three rendered savory sections.",
+      "notes": []
+    },
+    {
+      "id": "official-dessert-menu-review",
+      "kind": "linked_source",
+      "url": "https://www.altiramisu.com/menu?menu=dessert-menu",
+      "attemptedAt": "2026-07-14T21:53:33.132Z",
+      "outcome": "Captured and exhaustively reviewed all seven current Dolci products and descriptions.",
+      "notes": []
+    },
+    {
+      "id": "wix-items-api-review",
+      "kind": "ordering_vendor",
+      "url": "https://www.altiramisu.com/_api/restaurants-menus-item/v1/items",
+      "attemptedAt": "2026-07-14T21:53:33.500Z",
+      "outcome": "Direct unauthenticated capture returned HTTP 403; the same current item fields were available in the retained server-rendered official pages.",
+      "notes": []
+    },
+    {
+      "id": "allergen-disclosure-review",
+      "kind": "targeted_search",
+      "url": "https://www.altiramisu.com/menu",
+      "attemptedAt": "2026-07-14T21:53:33.500Z",
+      "outcome": "Found selected item ingredient descriptions but no complete allergen matrix, recipes, or cross-contact disclosure.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "section-and-advisory-artifacts",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "Five of the 30 frozen rows are section headings or the menu advisory rather than purchasable products, while all 25 real products were flattened into a generic Items category.",
+      "evidenceIds": [
+        "official-menu",
+        "official-dessert-menu"
+      ],
+      "resolved": true,
+      "resolution": "Removed all five structural rows and rebuilt exactly 25 current products across the four real rendered sections."
+    },
+    {
+      "id": "incorrect-frozen-allergen-signals",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Eleven current products disagree with the frozen signals, including omitted Burrata, breaded calamari, pasta, clam, dessert, and gelato ingredients plus unsupported flourless-cake and optional-flavor claims.",
+      "evidenceIds": [
+        "official-menu",
+        "official-dessert-menu"
+      ],
+      "resolved": true,
+      "resolution": "Recomputed 20 positive rows from fixed current text, removed unsupported claims, and kept five products unavailable without creating negative assertions."
+    },
+    {
+      "id": "flattened-wix-merge",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "The frozen extraction merged Wix item and section structures without respecting row type or section membership, contaminating the product list and losing all four source categories.",
+      "evidenceIds": [
+        "official-menu",
+        "official-dessert-menu"
+      ],
+      "resolved": true,
+      "resolution": "Prepared a rendered-structure correction with explicit section, product, artifact, and source-semantic invariants."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-al-tiramisu-current-menu",
+      "status": "verified",
+      "summary": "Prepared and focused-tested a 25-product Al Tiramisu catalog across four current restaurant-issued sections with 20 supported positive rows, five unavailable rows, and all structural/allergen defects corrected.",
+      "files": [
+        "scripts/pipeline/al-tiramisu-audit-catalog.mjs",
+        "scripts/pipeline/al-tiramisu-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/replacement-al-tiramisu-washington-dc/official-menu.html",
+        "data/restaurant-verification/artifacts/replacement-al-tiramisu-washington-dc/official-dessert-menu.html",
+        "data/restaurant-verification/repairs/replacement-al-tiramisu-washington-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/al-tiramisu-audit-catalog.test.mjs scripts/pipeline/al-tiramisu-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/al-tiramisu-repository.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 25 items, four categories, 20 positive rows, five unavailable rows, and no heading/advisory artifacts)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: de58d52c4fb3830d4e6483945c62f94164bf7ff896e186a9c2c4f0ef060d398f.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":25,\"artifact\":5},\"allergens\":{\"mismatch\":11,\"accurately_unavailable\":5,\"verified\":9,\"not_applicable\":5},\"mismatchKinds\":{\"underreported\":8,\"mixed\":1,\"overreported\":2}}.",
+    "Current corrected catalog counts: 25 products, four categories, 20 positive rows, and five unavailable rows."
+  ]
+}

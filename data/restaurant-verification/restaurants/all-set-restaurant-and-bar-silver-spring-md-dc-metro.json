@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "all-set-restaurant-and-bar-silver-spring-md-dc-metro",
+  "name": "All Set Restaurant & Bar",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T23:16:41.713Z",
+  "updatedAt": "2026-07-14T23:38:15.940Z",
+  "completedAt": "2026-07-14T23:38:15.940Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 101,
+      "sourceItemCount": 104,
+      "notes": [
+        "Every frozen row was reconciled against All Set's restaurant-issued online ordering menu and nine current restaurant-issued PDF menus.",
+        "The corrected catalog contains 104 food and nonalcoholic formulations represented by 131 retained source presentations across 17 canonical categories.",
+        "The frozen extraction contained 13 ordering modifiers or truncated fragments as products, represented seven size or service-period duplicates separately, and omitted 23 current formulations published only in the PDF menu set.",
+        "Alcohol-only cocktails, beer, wine, and spirits are outside this catalog. Current mocktails, zero-proof beer, soft drinks, coffee, espresso, and tea are retained as nonalcoholic products.",
+        "The nine one-page PDFs were rendered and visually reviewed in addition to text extraction; the wine-only PDF was reviewed to confirm it adds no food or nonalcoholic formulation beyond the beverage menu."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "All Set publishes current item names and selected fixed ingredient descriptions, but no complete recipe-level allergen matrix, shared-fryer disclosure, or cross-contact policy.",
+        "Sixty-six current formulations have positive contains signals supported by fixed restaurant-published ingredients or unavoidable named formats; 38 remain unavailable for fixed allergen data.",
+        "Of 101 frozen rows, 37 allergen results were wrong: 27 underreported fixed signals, six overreported unsupported signals, and four both omitted fixed signals and asserted false positives.",
+        "Lexical false positives were removed: oyster mushrooms are not shellfish, and pecan-smoked bacon does not establish tree nuts. Fish was removed from lobster-roll rows because lobster is shellfish, not fish.",
+        "Optional choices such as wing dressings are not promoted into fixed claims. Absent source detail remains unavailable rather than being treated as allergen-free, and no unsupported may-contain or safety claim is created."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic extraction mixed product objects with nested modifier objects from the Owner ordering payload and retained only a partial view of the restaurant's PDF menu set.",
+        "The source payload distinguishes products with prices and categories from nested modifier objects; all Extra-prefixed rows, Blue Cheese & Ranch, and the truncated platter-upcharge fragment are excluded as nonproducts.",
+        "The correction consolidates verified duplicate sizes and service-period names while preserving their aliases and exact source presentations, then overlays the current restaurant-issued PDFs for completeness and ingredient semantics.",
+        "The shared row classifier now respects explicit Non-Alcoholic, Mocktails, and Zero Proof categories so current mocktails and coffee are not mistaken for alcohol-list bleed.",
+        "A guarded repair requires exact item, category, source-type, unavailable-count, and critical allergen invariants before replacing the frozen restaurant entry."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-online-menu-review",
+      "kind": "official_site",
+      "url": "https://allsetrestaurant.com/menu",
+      "attemptedAt": "2026-07-14T23:17:00.000Z",
+      "outcome": "Reviewed the retained restaurant-issued Owner ordering-page capture and its structured product/modifier payload; the current live endpoint returned access-control responses during the audit.",
+      "notes": [
+        "The retained 2026-06-25 HTML artifact is 1,359,183 bytes with SHA-256 084f6e19d1f03a6bd0cc93b9c288630662146a1a1b9a15d1bafdc1d0084af55c.",
+        "The corresponding frozen source snapshot reports a last-known-good extraction at 2026-06-26T16:32:00.231Z."
+      ]
+    },
+    {
+      "id": "official-current-pdf-menu-review",
+      "kind": "official_site",
+      "url": "https://allsetrestaurant.com/page/menu-pdfs",
+      "attemptedAt": "2026-07-14T23:17:46.082Z",
+      "outcome": "Located and captured nine current restaurant-issued Owner PDFs covering Kids, Desserts, Lunch, Daily, Happy Hour, Brunch, Weekly Bar Features, Beverages, and Wine; all nine were text-extracted, rendered, and visually reviewed.",
+      "notes": [
+        "The official menu index identifies the Daily Menu as effective March 17, 2026.",
+        "The PDF set supplies 23 current food and nonalcoholic formulations missing from the frozen catalog."
+      ]
+    },
+    {
+      "id": "allergen-disclosure-review",
+      "kind": "targeted_search",
+      "url": "https://allsetrestaurant.com/page/menu-pdfs",
+      "attemptedAt": "2026-07-14T23:30:00.000Z",
+      "outcome": "Found fixed ingredient descriptions and GF/V labels but no complete allergen matrix, recipe corpus, shared-equipment statement, or cross-contact policy.",
+      "notes": [
+        "Positive fixed signals therefore stop at published ingredients and unavoidable named formats; unsupported rows remain unavailable."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "owner-modifier-objects-published-as-products",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen 101-row catalog included 13 nested ordering modifiers or truncated fragments as if they were standalone menu products and omitted 23 current PDF-published formulations.",
+      "evidenceIds": [
+        "official-online-menu",
+        "official-menu-pdf-01",
+        "official-menu-pdf-02",
+        "official-menu-pdf-04",
+        "official-menu-pdf-05",
+        "official-menu-pdf-07",
+        "official-menu-pdf-08"
+      ],
+      "resolved": true,
+      "resolution": "Removed all 13 nonproduct rows, consolidated seven duplicate formulations, restored 23 current formulations, and rebuilt a 104-formulation current catalog."
+    },
+    {
+      "id": "incorrect-allergen-signals",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Thirty-seven frozen allergen results were wrong due to omitted fixed ingredients, optional-choice promotion, and lexical confusion such as oyster mushrooms and pecan-smoked bacon.",
+      "evidenceIds": [
+        "official-online-menu",
+        "official-menu-pdf-02",
+        "official-menu-pdf-03",
+        "official-menu-pdf-04",
+        "official-menu-pdf-06"
+      ],
+      "resolved": true,
+      "resolution": "Corrected 27 underreports, six overreports, and four mixed errors; retained 66 evidence-backed fixed-positive formulations and kept 38 unsupported formulations unavailable."
+    },
+    {
+      "id": "partial-source-and-category-flattening",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "The generic extraction flattened Owner product/modifier structure, failed to reconcile size and service-period variants, and did not cover the complete current PDF menu set.",
+      "evidenceIds": [
+        "official-online-menu",
+        "official-menu-pdf-01",
+        "official-menu-pdf-02",
+        "official-menu-pdf-03",
+        "official-menu-pdf-04",
+        "official-menu-pdf-05",
+        "official-menu-pdf-06",
+        "official-menu-pdf-07",
+        "official-menu-pdf-08",
+        "official-menu-pdf-09"
+      ],
+      "resolved": true,
+      "resolution": "Prepared a captured-source catalog with explicit nonproduct exclusions, canonical alias consolidation, PDF completeness overlay, fixed-ingredient semantics, and guarded replacement invariants."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-all-set-current-menu",
+      "status": "verified",
+      "summary": "Prepared and focused-tested a 104-formulation, 131-presentation All Set catalog with 66 fixed-positive rows, 38 unavailable rows, and all 101 frozen rows terminally reconciled.",
+      "files": [
+        "scripts/pipeline/all-set-audit-catalog.mjs",
+        "scripts/pipeline/all-set-audit-reconciliation.mjs",
+        "scripts/menu-item-quality.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/all-set-restaurant-and-bar-silver-spring-md-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/all-set-audit-catalog.test.mjs scripts/pipeline/all-set-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=tmp/all-set-audit/repository.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 104 items, 17 categories, 66 fixed-positive rows, 38 unavailable rows, critical allergen corrections, and identical SHA-256 after a second repair run)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 59a49eb1e8f4c46c9b45217bae329ec1c36fb3dc68f33f909ecaa9566231859d.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":54,\"artifact\":13,\"variant_match\":34},\"allergens\":{\"mismatch\":37,\"not_applicable\":13,\"accurately_unavailable\":23,\"verified\":28},\"mismatchKinds\":{\"underreported\":27,\"overreported\":6,\"mixed\":4}}.",
+    "Current corrected catalog counts: 104 formulations, 131 presentations, 17 canonical categories, 66 fixed-positive rows, and 38 unavailable rows."
+  ]
+}

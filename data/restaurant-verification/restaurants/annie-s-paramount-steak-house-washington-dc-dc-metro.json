@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "annie-s-paramount-steak-house-washington-dc-dc-metro",
+  "name": "Annie's Paramount Steak House",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T06:23:41.153Z",
+  "updatedAt": "2026-07-15T06:44:48.699Z",
+  "completedAt": "2026-07-15T06:44:48.699Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 121,
+      "sourceItemCount": 112,
+      "notes": [
+        "The current restaurant-issued May 2026 dinner, lunch, and brunch PDFs plus the Spring 2025 happy-hour food list reconcile to 112 canonical products across 16 categories.",
+        "All 121 frozen rows were reconciled: 78 exact matches, three normalized matches, fourteen variant matches, seventeen stale products, and nine section/title artifacts. The 95 matched frozen rows cover 83 unique current products; 29 current products were omitted.",
+        "Repeated meal-period presentations are canonicalized to one product while retaining every applicable PDF source. Nine current happy-hour food products are retained; alcohol-oriented drink products are outside the food catalog."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "The food PDFs publish product names and selected ingredient descriptions but no item-level allergen matrix. Eighty-eight current products have positive signals supported by explicit product or ingredient terms; twenty-four remain accurately unavailable.",
+        "Fifty-nine matched frozen allergen outcomes differ from the corrected evidence. The repair adds omitted direct positives and removes shifted or optional-protein signals that do not belong to the base product.",
+        "The generic consumer advisory to alert a server is not item-level contains, may-contain, shared-equipment, or negative evidence. No such claim is invented.",
+        "Optional shrimp and salmon add-ons are not smeared onto base salads or pasta, and coconut is not classified as a major tree nut."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen output mixed an older Squarespace HTML catalog with multi-column dated PDFs, promoted nine headings/title cards into products, shifted descriptions and categories, and retained seventeen products absent from the current PDFs.",
+        "The reviewed catalog transcribes each dated PDF section independently, canonicalizes only repeated product presentations, retains per-period source URLs, and asserts product, category, and period counts.",
+        "Focused tests cover the 112-product catalog, every frozen-row disposition, optional-protein and coconut semantics, published repair invariants, and false shellfish regressions. The target-only repair is idempotent and the non-target restaurant projection is unchanged."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "annies-home-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.anniesparamountdc.com/",
+      "attemptedAt": "2026-07-15T06:27:54.781Z",
+      "outcome": "HTTP 200. Confirmed Annie's Paramount Steak House at 1609 17th Street NW, Washington, DC 20009.",
+      "notes": []
+    },
+    {
+      "id": "annies-menus-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.anniesparamountdc.com/menus",
+      "attemptedAt": "2026-07-15T06:28:01.857Z",
+      "outcome": "HTTP 200. Confirmed current menu navigation and links to dated dinner, lunch, brunch, happy-hour, and drink PDFs; embedded HTML rows are an older catalog and were not treated as current where they conflict.",
+      "notes": []
+    },
+    {
+      "id": "annies-dinner-pdf-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://www.anniesparamountdc.com/s/Dinner-Menu-May-2026.pdf",
+      "attemptedAt": "2026-07-15T06:28:12.311Z",
+      "outcome": "HTTP 200. Visually inspected both restaurant-issued May 2026 dinner pages and reconciled 81 canonical products represented there.",
+      "notes": []
+    },
+    {
+      "id": "annies-lunch-pdf-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://www.anniesparamountdc.com/s/Lunch-Menu-May-2026.pdf",
+      "attemptedAt": "2026-07-15T06:28:12.899Z",
+      "outcome": "HTTP 200. Visually inspected both restaurant-issued May 2026 lunch pages and reconciled 92 canonical products represented there.",
+      "notes": []
+    },
+    {
+      "id": "annies-brunch-pdf-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://www.anniesparamountdc.com/s/Brunch-Menu-May-2026.pdf",
+      "attemptedAt": "2026-07-15T06:28:13.501Z",
+      "outcome": "HTTP 200. Visually inspected both restaurant-issued May 2026 brunch pages and reconciled 90 canonical products represented there.",
+      "notes": []
+    },
+    {
+      "id": "annies-happy-hour-pdf-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://www.anniesparamountdc.com/s/Happy-Hour-Menu-Spring-2025.pdf",
+      "attemptedAt": "2026-07-15T06:28:14.092Z",
+      "outcome": "HTTP 200. Visually inspected the restaurant-issued Spring 2025 happy-hour page and retained all nine food products while excluding five alcohol presentations.",
+      "notes": []
+    },
+    {
+      "id": "annies-drink-pdf-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://www.anniesparamountdc.com/s/drink-menu-2026-final-draft.pdf",
+      "attemptedAt": "2026-07-15T06:28:14.628Z",
+      "outcome": "HTTP 200. Visually inspected both pages; excluded thirty alcohol products and the separate non-food Heineken Zero product from the food catalog.",
+      "notes": []
+    },
+    {
+      "id": "annies-legacy-menu-url-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.anniesparamountdc.com/menu",
+      "attemptedAt": "2026-07-15T06:42:00.000Z",
+      "outcome": "HTTP 404. The frozen configured singular /menu URL is no longer a usable source.",
+      "notes": []
+    },
+    {
+      "id": "annies-targeted-allergen-review-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://www.anniesparamountdc.com/menus",
+      "attemptedAt": "2026-07-15T06:35:00.000Z",
+      "outcome": "Targeted review of the official menu surface and all linked current documents found no item-level allergen matrix or cross-contact disclosure beyond the generic consumer advisory.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "annies-mixed-layout-structure-corruption",
+      "severity": "critical",
+      "kind": "parser-structure-corruption",
+      "summary": "The frozen extraction mixed an older HTML menu with multi-column PDFs, promoted nine headings/title cards into products, and shifted descriptions and categories across 84 matched rows.",
+      "evidenceIds": [
+        "official-annies-menus",
+        "official-annies-dinner-may-2026",
+        "official-annies-lunch-may-2026",
+        "official-annies-brunch-may-2026"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt the catalog from visually reviewed, section-scoped dated PDF transcriptions and added structural count assertions."
+    },
+    {
+      "id": "annies-stale-and-omitted-products",
+      "severity": "high",
+      "kind": "menu-reconciliation-mismatch",
+      "summary": "Seventeen older products are absent from the dated menus, while 29 current products—including all current side products and happy-hour snacks—were missing from the app.",
+      "evidenceIds": [
+        "official-annies-dinner-may-2026",
+        "official-annies-lunch-may-2026",
+        "official-annies-brunch-may-2026",
+        "official-annies-happy-hour-spring-2025"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the frozen catalog with all 112 current canonical food products and retained every applicable meal-period source."
+    },
+    {
+      "id": "annies-allergen-extraction-mismatch",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Fifty-nine matched frozen rows had missing or overstated signals relative to explicit product and ingredient text in the current PDFs.",
+      "evidenceIds": [
+        "official-annies-dinner-may-2026",
+        "official-annies-lunch-may-2026",
+        "official-annies-brunch-may-2026",
+        "official-annies-happy-hour-spring-2025"
+      ],
+      "resolved": true,
+      "resolution": "Applied positive signals only from explicit product/ingredient terms and left 24 insufficiently disclosed products accurately unavailable."
+    },
+    {
+      "id": "annies-optional-protein-and-column-smear",
+      "severity": "critical",
+      "kind": "allergen-row-association-error",
+      "summary": "Basil-Pine Nut Pesto Pasta, Country Chicken Salad, Feta Bacon Omelet, and Grilled Atlantic Salmon carried false shellfish signals from optional proteins or neighboring multi-column text.",
+      "evidenceIds": [
+        "official-annies-dinner-may-2026",
+        "official-annies-lunch-may-2026",
+        "official-annies-brunch-may-2026"
+      ],
+      "resolved": true,
+      "resolution": "Made source rows section-scoped, excluded optional add-ons from base-item contains signals, and added focused false-shellfish regression assertions."
+    },
+    {
+      "id": "annies-consumer-advisory-semantics",
+      "severity": "high",
+      "kind": "source-semantics-risk",
+      "summary": "The PDFs publish only a generic instruction to alert the server; it cannot support item-level contains, may-contain, shared-equipment, or negative claims.",
+      "evidenceIds": [
+        "official-annies-dinner-may-2026",
+        "official-annies-lunch-may-2026",
+        "official-annies-brunch-may-2026"
+      ],
+      "resolved": true,
+      "resolution": "Preserved the advisory as source context only and invented no item-level cross-contact or negative assurance."
+    },
+    {
+      "id": "annies-drink-scope",
+      "severity": "low",
+      "kind": "catalog-scope",
+      "summary": "The linked drink and happy-hour files contain 35 alcohol presentations plus one separate non-food zero-alcohol beer product.",
+      "evidenceIds": [
+        "official-annies-happy-hour-spring-2025",
+        "official-annies-drinks-2026"
+      ],
+      "resolved": true,
+      "resolution": "Kept all nine happy-hour foods and excluded the separate drink presentations from the food catalog."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "annies-current-dated-menu-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt Annie's current food catalog and corrected mixed-source structure, stale/omitted products, row associations, and allergen-source semantics.",
+      "files": [
+        "scripts/pipeline/annies-paramount-audit-catalog.mjs",
+        "scripts/pipeline/annies-paramount-audit-catalog.test.mjs",
+        "scripts/pipeline/annies-paramount-audit-reconciliation.mjs",
+        "scripts/pipeline/annies-paramount-audit-reconciliation.test.mjs",
+        "scripts/pipeline/annies-paramount-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/annie-s-paramount-steak-house-washington-dc-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/annies-paramount-audit-catalog.mjs",
+        "node scripts/pipeline/annies-paramount-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/annies-paramount-audit-catalog.test.mjs scripts/pipeline/annies-paramount-audit-reconciliation.test.mjs scripts/pipeline/annies-paramount-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=annie-s-paramount-steak-house-washington-dc-dc-metro node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: d67ae9814e9fc2ad8c93cbd3c1df2a83ac249923a0bd177046e027e902a0a468.",
+    "Dinner PDF SHA-256: c2f3a221ab6a7be55cecdb814676aadc14532e69a2afb72ab19db80b02dfc5aa.",
+    "Lunch PDF SHA-256: 710ff09321ad7cdaa48ac0e19b0e8d32ea8e2835334810d2b9a562b5f1da1ada.",
+    "Brunch PDF SHA-256: 75dfd8d21768f9cf050029f9728f857893f536348b4281266f88b3a1629fba16.",
+    "Happy-hour PDF SHA-256: 79c3ee1d6d9c0ea03dc1ed622364016bedc8b4f4f226ad677b6c1a839ba2a15f.",
+    "Drink PDF SHA-256: 71ac1499a525c9e66eceeae69dc8bcf1ab5b52c1bbfd6c20352f97fb1a4ed804.",
+    "Frozen live target SHA-256 before repair: 300383f1a2b4b44b84dd04592793f04d0b20473d392563a95d673f1b6cbc5307.",
+    "Live target SHA-256 after repair: dc326e1ef3b61ff619b8bffd9351fcf33fbb0f0e6df83598db90917c9125f26c.",
+    "Live non-target restaurant projection SHA-256 remained 1b832115ba88010c8c2fbbfbe23821a6e0fd5cdc6730e94a6ba4ca07d004f621.",
+    "A second target-only repair run produced the same target hash and retained exactly one Annie's repair note.",
+    "All nine pages across the five official PDF artifacts were rendered and visually inspected at original detail.",
+    "The repaired repository contains 113744 live menu items; the top-level historical itemCount field was intentionally not used as evidence."
+  ]
+}

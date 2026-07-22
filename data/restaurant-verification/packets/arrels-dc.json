@@ -1,0 +1,339 @@
+{
+  "status": "recheck_required",
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 5,
+      "sourceItemCount": 0,
+      "notes": [
+        "Arrels permanently closed in late March 2026. The current hotel-owner page no longer names Arrels and describes a transitional breakfast operation while a new dining experience is forthcoming.",
+        "All five frozen rows came from an older third-party Restaurant Week dinner PDF and are stale extras. None appears on a current Arrels menu because no current Arrels menu exists.",
+        "The hotel-linked March 2026 breakfast PDF contains 20 food products, but it is labeled Altair Breakfast Menu and is linked from the generic Arlo DC Restaurant transition page. Those products belong to a replacement/transitional identity and were deliberately not reassigned to Arrels.",
+        "The standalone Arrels site still renders the prior Spanish/Catalan breakfast, brunch, lunch, dinner, happy-hour, dessert, and beverage menus, but it conflicts with the current hotel-owner page and independent closure confirmation and is therefore stale."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "accurately_unavailable",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "There are no current Arrels menu items for which an allergen source can be published.",
+        "Four of the five frozen rows promoted allergen deductions from a third-party Restaurant Week menu description to official-allergen-menu provenance. That provenance was invalid even before the menu became stale.",
+        "The replacement breakfast PDF uses menu badges such as plant based, vegetarian, gluten free, and contains nuts, but it is not an Arrels allergen source and was not transferred across restaurant identities.",
+        "No current Arrels-issued allergen matrix, complete ingredient guide, or cross-contact disclosure was found."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen extraction path accepted a third-party special-menu fixture, inferred allergens from menu prose, and mislabeled four inferred rows as official-allergen-menu.",
+        "The source-selection failure was upstream of item parsing: a stale Restaurant Week menu and a stale standalone site were allowed to outrank the current hotel owner's identity-and-transition page.",
+        "The repair fails closed with zero Arrels items and explicitly separates the 20-item replacement breakfast menu from the closed Arrels identity.",
+        "Two target-only repair runs produced the same target hash, retained exactly one verified repair note, and left every non-target restaurant unchanged. Four focused catalog, reconciliation, and output tests pass."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "arrels-current-hotel-owner-page-2026-07-15",
+      "kind": "official_site",
+      "url": "https://arlohotels.com/washingtondc/eat-and-drink/restaurant/",
+      "attemptedAt": "2026-07-15T11:15:58.983Z",
+      "outcome": "Arlo Hotels' current page identifies the venue only as Arlo DC Restaurant, lists breakfast from 7–11am, and says a fresh new dining experience is on the way while the space transitions. It does not identify the current operation as Arrels.",
+      "notes": [
+        "The page declares a 2026-05-20 modification date and is the strongest current first-party identity evidence for the hotel restaurant space."
+      ]
+    },
+    {
+      "id": "arrels-current-hotel-breakfast-pdf-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://arlohotels.com/washingtondc/wp-content/uploads/sites/11/2026/03/Altair-Breakfast-Menu-3.19.26.pdf",
+      "attemptedAt": "2026-07-15T11:15:59.291Z",
+      "outcome": "The current hotel-owner page links a two-page March 2026 PDF named Altair Breakfast Menu. It presents 20 food products plus beverages, but neither page identifies the menu as Arrels.",
+      "notes": [
+        "Both PDF pages were rendered and visually reviewed. The menu was preserved as replacement-identity evidence, not adopted as an Arrels menu."
+      ]
+    },
+    {
+      "id": "arrels-legacy-standalone-menu-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.arrels-dc.com/menu",
+      "attemptedAt": "2026-07-15T11:17:30.000Z",
+      "outcome": "The old standalone site remains browser-readable and renders Arrels' prior multi-service Spanish/Catalan menu, including daily breakfast and dinner. Direct ledger capture returned HTTP 401. Its continued content conflicts with the current hotel-owner transition page and confirmed closure.",
+      "notes": [
+        "This is retained as stale-source evidence and cannot outrank the venue owner's current identity page."
+      ]
+    },
+    {
+      "id": "arrels-restaurant-week-menu-review-2026-07-15",
+      "kind": "third_party",
+      "url": "https://www.ramw.org/sites/default/files/restaurant-week/menus/Arrels%20-%20Restaurant%20Week%20Dinner.pdf",
+      "attemptedAt": "2026-07-15T11:20:00.000Z",
+      "outcome": "All five frozen rows trace to this third-party Restaurant Week dinner menu. It is neither a current Arrels menu nor an official allergen source.",
+      "notes": [
+        "The frozen fixture preserves the five extracted rows and their source URL for reproducibility."
+      ]
+    },
+    {
+      "id": "arrels-targeted-closure-search-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://dc.eater.com/dc-restaurant-closings/166869/dc-restaurants-closed-february-2026",
+      "attemptedAt": "2026-07-15T11:18:54.578Z",
+      "outcome": "Eater reported that Arrels was scheduled to close in late March and that Renwick Hospitality would open a TBA replacement at the exact 333 G Street NW location. WTOP subsequently listed Arrels among restaurants that had closed in 2026.",
+      "notes": [
+        "The Eater page was captured and hashed. WTOP's page was browser-readable but returned HTTP 403 to the ledger fetcher, so its URL and concise excerpt are retained as corroborating evidence."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "arrels-closed-restaurant-stale-menu",
+      "severity": "critical",
+      "kind": "closed-restaurant-menu-publication",
+      "summary": "The app published five Restaurant Week items for Arrels after the restaurant permanently closed.",
+      "evidenceIds": [
+        "official-arlo-current-restaurant-page",
+        "eater-arrels-closure-announcement",
+        "wtop-arrels-closed-confirmation",
+        "legacy-ramw-restaurant-week-menu"
+      ],
+      "resolved": true,
+      "resolution": "Removed all five stale items and quarantined Arrels with zero current menu items and an explicit permanent-closure status."
+    },
+    {
+      "id": "arrels-replacement-identity-collision",
+      "severity": "high",
+      "kind": "restaurant-identity-mismatch",
+      "summary": "The hotel currently links a breakfast menu for a transitional replacement operation, not for Arrels.",
+      "evidenceIds": [
+        "official-arlo-current-restaurant-page",
+        "official-arlo-current-breakfast-pdf",
+        "eater-arrels-closure-announcement"
+      ],
+      "resolved": true,
+      "resolution": "Excluded all 20 replacement breakfast products from Arrels and recorded the source only as replacement-identity evidence."
+    },
+    {
+      "id": "arrels-third-party-provenance-promotion",
+      "severity": "critical",
+      "kind": "allergen-provenance-overclaim",
+      "summary": "Four frozen Restaurant Week rows labeled allergen deductions from third-party menu descriptions as official-allergen-menu evidence.",
+      "evidenceIds": [
+        "legacy-ramw-restaurant-week-menu"
+      ],
+      "resolved": true,
+      "resolution": "Removed the stale rows and revoked every promoted official-allergen claim; no current Arrels allergen claim remains."
+    },
+    {
+      "id": "arrels-stale-first-party-site-conflict",
+      "severity": "high",
+      "kind": "source-recency-conflict",
+      "summary": "The standalone Arrels site still publishes old menus despite the current hotel-owner transition page and confirmed closure.",
+      "evidenceIds": [
+        "legacy-arrels-menu-review",
+        "official-arlo-current-restaurant-page",
+        "wtop-arrels-closed-confirmation"
+      ],
+      "resolved": true,
+      "resolution": "Made the current venue-owner identity page authoritative and retained the standalone site only as explicitly labeled stale evidence."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "arrels-permanent-closure-quarantine",
+      "status": "verified",
+      "summary": "Removed the five stale Restaurant Week rows, revoked promoted third-party allergen provenance, separated the replacement breakfast identity, and quarantined permanently closed Arrels with zero items.",
+      "files": [
+        "scripts/pipeline/arrels-audit-catalog.mjs",
+        "scripts/pipeline/arrels-audit-catalog.test.mjs",
+        "scripts/pipeline/arrels-audit-reconciliation.mjs",
+        "scripts/pipeline/arrels-audit-reconciliation.test.mjs",
+        "scripts/pipeline/arrels-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/arrels-dc/official-arlo-current-restaurant-page.html",
+        "data/restaurant-verification/artifacts/arrels-dc/official-arlo-current-breakfast-pdf.pdf",
+        "data/restaurant-verification/artifacts/arrels-dc/eater-arrels-closure-announcement.html",
+        "data/restaurant-verification/repairs/arrels-dc/corrected-menu.json",
+        "data/fixtures/arrels-dc-reviewed-ramw-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/arrels-audit-catalog.mjs",
+        "node scripts/pipeline/arrels-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/arrels-audit-catalog.test.mjs scripts/pipeline/arrels-audit-reconciliation.test.mjs scripts/pipeline/arrels-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=arrels-dc node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "official-arlo-current-restaurant-page",
+      "url": "https://arlohotels.com/washingtondc/eat-and-drink/restaurant/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "both",
+      "retrievedAt": "2026-07-15T11:15:58.983Z",
+      "contentType": "text/html",
+      "finalUrl": "https://arlohotels.com/washingtondc/eat-and-drink/restaurant/",
+      "httpStatus": 200,
+      "byteLength": 127340,
+      "sha256": "5d2dc906084dc834650285e00d49b63d0773b23464162e49a5c3a548d46a1ee7",
+      "artifactPath": "artifacts/arrels-dc/official-arlo-current-restaurant-page.html",
+      "excerpt": "Arlo DC Restaurant. Breakfast: 7am–11am. A fresh new dining experience is on the way at Arlo Washington DC. For now, join us each morning for breakfast. As we transition, the space will host select events and occasional evening service.",
+      "rowIdentifiers": [
+        "Arlo DC Restaurant",
+        "333 G Street NW",
+        "page-modified-2026-05-20"
+      ],
+      "request": {
+        "method": "GET"
+      },
+      "notes": [
+        "The current first-party venue page does not name Arrels and explicitly frames service as transitional."
+      ]
+    },
+    {
+      "id": "official-arlo-current-breakfast-pdf",
+      "url": "https://arlohotels.com/washingtondc/wp-content/uploads/sites/11/2026/03/Altair-Breakfast-Menu-3.19.26.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "both",
+      "retrievedAt": "2026-07-15T11:15:59.291Z",
+      "contentType": "application/pdf",
+      "finalUrl": "https://arlohotels.com/washingtondc/wp-content/uploads/sites/11/2026/03/Altair-Breakfast-Menu-3.19.26.pdf",
+      "httpStatus": 200,
+      "byteLength": 204879,
+      "sha256": "f0e96821a5b98220a5a13fc46b677be69ffcb7d9e0f202993bad5362554aaa22",
+      "artifactPath": "artifacts/arrels-dc/official-arlo-current-breakfast-pdf.pdf",
+      "excerpt": "Two-page March 2026 breakfast menu with 20 food products across Breakfast, Sides, and House-made Pastries, plus beverages. The filename is Altair-Breakfast-Menu-3.19.26.pdf; neither rendered page identifies the menu as Arrels.",
+      "rowIdentifiers": [
+        "Overnight Oats",
+        "Arlo Breakfast",
+        "Pain Aux Pistachio",
+        "20-food-products"
+      ],
+      "request": {
+        "method": "GET"
+      },
+      "notes": [
+        "Both pages were rendered to PNG and visually verified.",
+        "This is replacement-operation evidence, not an Arrels menu or allergen source."
+      ]
+    },
+    {
+      "id": "eater-arrels-closure-announcement",
+      "url": "https://dc.eater.com/dc-restaurant-closings/166869/dc-restaurants-closed-february-2026",
+      "authorityTier": "third_party",
+      "purpose": "both",
+      "retrievedAt": "2026-07-15T11:18:54.578Z",
+      "contentType": "text/html",
+      "finalUrl": "https://dc.eater.com/dc-restaurant-closings/166869/dc-restaurants-closed-february-2026",
+      "httpStatus": 200,
+      "byteLength": 265543,
+      "sha256": "43e930303c045d6c3547aa21f3cf1142a3c4d69d95d02f96fee12a91e09d8b8d",
+      "artifactPath": "artifacts/arrels-dc/eater-arrels-closure-announcement.html",
+      "excerpt": "Eater reported on February 25, 2026 that Arrels at 333 G Street NW was scheduled to close in late March and that Renwick Hospitality would open a to-be-announced concept in its place.",
+      "rowIdentifiers": [
+        "Arrels",
+        "late March",
+        "333 G Street NW",
+        "TBA concept"
+      ],
+      "request": {
+        "method": "GET"
+      },
+      "notes": []
+    },
+    {
+      "id": "wtop-arrels-closed-confirmation",
+      "url": "https://wtop.com/food-restaurant/2026/05/restaurant-closures-struggles-downtown-dc/",
+      "authorityTier": "third_party",
+      "purpose": "both",
+      "retrievedAt": "2026-07-15T11:19:00.000Z",
+      "contentType": "text/html",
+      "finalUrl": "https://wtop.com/food-restaurant/2026/05/restaurant-closures-struggles-downtown-dc/",
+      "httpStatus": 403,
+      "byteLength": null,
+      "sha256": null,
+      "artifactPath": null,
+      "excerpt": "WTOP reported on May 11, 2026 that Arrels was among the restaurants that had closed in 2026.",
+      "rowIdentifiers": [
+        "Arrels",
+        "closed-this-year"
+      ],
+      "request": {
+        "method": "GET",
+        "result": "browser-readable; automated ledger capture returned HTTP 403"
+      },
+      "notes": [
+        "Used only to corroborate the closure; the current hotel-owner page remains the primary source for present identity and service."
+      ]
+    },
+    {
+      "id": "legacy-arrels-menu-review",
+      "url": "https://www.arrels-dc.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "both",
+      "retrievedAt": "2026-07-15T11:17:30.000Z",
+      "contentType": "text/html",
+      "finalUrl": "https://www.arrels-dc.com/menu",
+      "httpStatus": 401,
+      "byteLength": null,
+      "sha256": null,
+      "artifactPath": null,
+      "excerpt": "The browser-readable legacy page still shows an A LA CARTE menu with breakfast available daily 7–11am and the prior Arrels breakfast, brunch, lunch, dinner, happy-hour, dessert, and beverage sections.",
+      "rowIdentifiers": [
+        "A LA CARTE",
+        "Available daily from 7am to 11 am",
+        "TORTILLA DE PATATA",
+        "SEAFOOD PAELLA"
+      ],
+      "request": {
+        "method": "GET",
+        "result": "browser-readable; automated ledger capture returned HTTP 401"
+      },
+      "notes": [
+        "The content is stale because it conflicts with the current hotel-owner transition page and confirmed closure."
+      ]
+    },
+    {
+      "id": "legacy-ramw-restaurant-week-menu",
+      "url": "https://www.ramw.org/sites/default/files/restaurant-week/menus/Arrels%20-%20Restaurant%20Week%20Dinner.pdf",
+      "authorityTier": "third_party",
+      "purpose": "both",
+      "retrievedAt": "2026-07-03T16:18:09.522Z",
+      "contentType": "application/pdf",
+      "finalUrl": "https://www.ramw.org/sites/default/files/restaurant-week/menus/Arrels%20-%20Restaurant%20Week%20Dinner.pdf",
+      "httpStatus": null,
+      "byteLength": null,
+      "sha256": null,
+      "artifactPath": null,
+      "excerpt": "Frozen source for Esqueixada, Goat Milk Chocolate Cremeux, Iberico Presa, Squid Ink Fideua, and Torta de Camarones. This was a third-party Restaurant Week dinner menu, not an official allergen guide.",
+      "rowIdentifiers": [
+        "Esqueixada",
+        "Goat Milk Chocolate Cremeux",
+        "Iberico Presa",
+        "Squid Ink Fideua",
+        "Torta de Camarones"
+      ],
+      "request": {
+        "method": "baseline-fixture-review"
+      },
+      "notes": [
+        "The reproducible extracted fixture is data/fixtures/arrels-dc-reviewed-ramw-menu.json."
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: e9d80fa9dd10e27ffd18f462cfad266b72bbaa972144508c5f90b284c26332d1.",
+    "Frozen five-row item-check evidence SHA-256 after reconciliation: 1451d489ab0cd2a3e8f1ec376f91fb87ea0bbf741541f8b714e3ade20026e2fe.",
+    "Frozen baseline item fingerprint: 1bb58f7105e3105eaa232bd3db9cf58c513338035af114d232696daa464e65a4.",
+    "Live target SHA-256 before repair: 9d05f7f5c17e9b988aa9efb91b8a1777e8297faeef7e02484b048251c6481c80.",
+    "Live target SHA-256 after repair: d0a300c74443a8ac10f27486bae87acf8ea0ab3585c2b1f2d68e65a840b9d26e.",
+    "Live non-target restaurant projection SHA-256 remained 6cd8983ba1a87784cfdd9e34917ebe988c4e69c9fde5854f4dd94ed3bde36c8b.",
+    "Two consecutive target-only repair runs produced the same target hash and exactly one Arrels verified repair note.",
+    "The repaired repository contains 113852 live menu items; the ledger remains anchored to its original 112873-item frozen baseline."
+  ]
+}

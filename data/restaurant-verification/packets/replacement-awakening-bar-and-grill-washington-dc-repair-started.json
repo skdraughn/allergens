@@ -1,0 +1,28 @@
+{
+  "repairs": [
+    {
+      "id": "rebuild-awakening-owner-menu",
+      "status": "implemented",
+      "summary": "Rebuilt the current 50-presentation owner menu with service-aware identities, exact descriptions, conservative explicit-positive evidence, beverages last, and no unsupported negative or cross-contact claims.",
+      "files": [
+        "scripts/pipeline/awakening-audit-catalog.mjs",
+        "scripts/pipeline/awakening-audit-catalog.test.mjs",
+        "scripts/pipeline/awakening-audit-reconciliation.mjs",
+        "scripts/pipeline/awakening-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/replacement-awakening-bar-and-grill-washington-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/awakening-audit-catalog.test.mjs scripts/pipeline/awakening-audit-reconciliation.test.mjs",
+        "node --test --test-name-pattern=\"Awakening preserves current service presentations\" scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Targeted catalog/reconciliation suite passed 6/6 and generated-data regression passed 1/1."
+  ],
+  "status": "repair_in_progress"
+}

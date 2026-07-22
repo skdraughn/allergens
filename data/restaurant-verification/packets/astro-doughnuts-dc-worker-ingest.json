@@ -1,0 +1,121 @@
+{
+  "checks": {
+    "menu": {
+      "verdict": "mismatch",
+      "reviewedItemCount": 39,
+      "sourceItemCount": 40,
+      "notes": [
+        "The current official DC menu omits three frozen rotating specials and includes four current monthly specials missing from the baseline."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "mismatch",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Official menu prose supports selected positive ingredient signals but is not a comprehensive allergen matrix, complete ingredient list, or cross-contact policy.",
+        "Several generated signals were derived from culinary product names rather than explicit allergen words in official menu text."
+      ]
+    },
+    "extraction": {
+      "verdict": "mismatch",
+      "parserReviewed": true,
+      "semanticsVerified": false,
+      "notes": [
+        "The generic website repair must reconcile rotating specials and restrict positive claims to explicit official menu wording."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-site",
+      "kind": "official_site",
+      "url": "https://www.astrodoughnuts.com/washington-menus/",
+      "attemptedAt": "2026-07-15T16:24:39.847Z",
+      "outcome": "Current restaurant-issued Washington, D.C. menu captured successfully.",
+      "notes": []
+    },
+    {
+      "id": "linked-source",
+      "kind": "linked_source",
+      "url": "https://www.astrodoughnuts.com/order-online/",
+      "attemptedAt": "2026-07-15T16:24:39.847Z",
+      "outcome": "Official ordering page confirmed the DC identity and restaurant-linked ordering surface.",
+      "notes": []
+    },
+    {
+      "id": "ordering-vendor",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/astrodoughnutsdc",
+      "attemptedAt": "2026-07-15T16:24:39.847Z",
+      "outcome": "Restaurant-linked Toast menu corroborated the current rotating-special lineup.",
+      "notes": []
+    },
+    {
+      "id": "targeted-search",
+      "kind": "targeted_search",
+      "url": null,
+      "attemptedAt": "2026-07-15T16:24:39.847Z",
+      "outcome": "No comprehensive restaurant-issued allergen matrix, complete ingredients, legend, or cross-contact policy was located.",
+      "notes": []
+    },
+    {
+      "id": "archive",
+      "kind": "archive",
+      "url": null,
+      "attemptedAt": "2026-07-15T16:24:39.847Z",
+      "outcome": "Older menu material did not provide a reliable current allergen authority.",
+      "notes": []
+    },
+    {
+      "id": "third-party",
+      "kind": "third_party",
+      "url": "https://www.doordash.com/en/store/astro-doughnuts-%26-fried-chicken-washington-4013/",
+      "attemptedAt": "2026-07-15T16:24:39.847Z",
+      "outcome": "Third-party menu was not used as allergen authority.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "rotating-specials-stale-and-omitted",
+      "severity": "high",
+      "kind": "menu",
+      "summary": "Chocolate S'mores, Peach Melba, and Strawberry Shortcake are stale; Peach Cobbler, Chocolate Birthday Cake, Cherry Pie, and Classic Cruller are current official specials omitted from the baseline.",
+      "evidenceIds": ["official-dc-menu"],
+      "resolved": false,
+      "resolution": null
+    },
+    {
+      "id": "unsupported-culinary-name-allergen-inference",
+      "severity": "high",
+      "kind": "allergen_extraction",
+      "summary": "Several baseline allergen claims rely on culinary product names such as brioche, quesadilla, cake, bun, mayo, cookie, or peanut butter rather than explicit restaurant-authored allergen wording.",
+      "evidenceIds": ["official-dc-menu"],
+      "resolved": false,
+      "resolution": null
+    },
+    {
+      "id": "no-comprehensive-allergen-source",
+      "severity": "medium",
+      "kind": "allergen_source",
+      "summary": "The official menu contains selected positive ingredient prose but no comprehensive allergen matrix, complete ingredients, negative-claim coverage, or cross-contact policy.",
+      "evidenceIds": ["official-dc-menu"],
+      "resolved": false,
+      "resolution": null
+    }
+  ],
+  "repairs": [
+    {
+      "id": "reconcile-astro-dc-menu-and-allergens",
+      "status": "planned",
+      "summary": "Reconcile current rotating specials and retain only positive allergen signals directly stated in official menu text.",
+      "files": ["scripts/repair-final-generated-regressions.mjs", "scripts/restaurant-pipeline.test.mjs"],
+      "fixturePaths": ["data/restaurant-verification/artifacts/astro-doughnuts-dc/official-dc-menu.html"],
+      "verificationCommands": ["node --test --test-name-pattern='Astro DC reconciles current specials' scripts/restaurant-pipeline.test.mjs"]
+    }
+  ],
+  "notes": [
+    "Terra research and Sol-medium adjudication came from worker run 2026-07-15T15-57-56-396Z-3313d1."
+  ],
+  "status": "discrepancy_found"
+}

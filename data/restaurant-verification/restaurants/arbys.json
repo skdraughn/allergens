@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "arbys",
+  "name": "Arby's",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T08:55:31.557Z",
+  "updatedAt": "2026-07-15T09:14:38.667Z",
+  "completedAt": "2026-07-15T09:14:38.667Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 66,
+      "sourceItemCount": 78,
+      "notes": [
+        "Arby's current customer catalog was reconciled across ten owner-issued category pages plus the restaurant-linked July 2026 U.S. nutrition/allergen and ingredient guides. The canonical result contains 78 consumer products across 12 categories.",
+        "All 66 frozen rows were reconciled: 4 exact matches, 16 normalized product/size variants, and 46 ingredient-component, topping, or add-on artifacts. The 20 matched rows represented only 14 distinct current products; 64 current products were absent from the frozen output.",
+        "Twenty-five web presentations are configurable meal, kids-meal, or combo shells. Their underlying entree, side, and drink products are cataloged separately so an incomplete bundle-level allergen result is not presented as covering customer choices.",
+        "The current guide additionally publishes breakfast and optional/regional products even where no national web category page exists; these remain labeled in source-backed Breakfast and Optional & Regional categories."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Seventy-seven of 78 canonical products have current restaurant-issued row-level allergen evidence. Orange Cream Shake is published on the current website but absent from the July 2026 allergen guide, so its allergen outcome remains accurately unavailable.",
+        "Fixed Contains declarations are stored as allergens. The dagger common-fryer disclosure and star facility disclosure are stored separately as mayContain signals on 27 products; they are not promoted to fixed ingredients.",
+        "Eight matched frozen products lost current common-fryer or facility-contact signals even though their fixed allergen declarations were correct. The repaired data restores those signals.",
+        "The Alliance Kitchen sheet is restaurant-issued but explicitly limited to the shared kitchen at 1425 Ellsworth Industrial Boulevard NW in Atlanta. It is not evidence for national Arby's products or cross-contact conditions."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The reviewed extractor uses each category page's pre-rendered consumer names as the national catalog boundary, parses only product rows from the current nutrition/allergen guide, collapses size/count presentations to canonical products, and reads only the first two menu-assembly pages of the ingredient PDF.",
+        "The frozen extraction crossed the product/component boundary: it parsed page-three-and-later ingredient glossary entries, toppings, and sauce additions as products, then mixed location-specific Alliance Kitchen component evidence into the national restaurant.",
+        "Focused tests cover the 78-product contract, all 66 frozen dispositions, component-glossary exclusion, fixed-versus-contact semantics, current omissions, published repair invariants, target-only isolation, and idempotency."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "arbys-current-menu-pages-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.arbys.com/menu/",
+      "attemptedAt": "2026-07-15T09:00:04.402Z",
+      "outcome": "HTTP 200. Captured the owner menu landing page and ten current category pages, yielding 84 published presentations including 25 configurable bundle shells.",
+      "notes": []
+    },
+    {
+      "id": "arbys-current-nutrition-page-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.arbys.com/nutrition/",
+      "attemptedAt": "2026-07-15T08:55:52.367Z",
+      "outcome": "HTTP 200. Captured the current owner nutrition page and verified that it directly links the July 2026 nutrition/allergen and ingredient PDFs plus the March 2025 gluten guide and Alliance Kitchen sheet.",
+      "notes": []
+    },
+    {
+      "id": "arbys-current-pdf-guides-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://assets.ctfassets.net/30q5w5l98nbx/3A0KfHgCWZv8al7gU36Jlg/d4e9d4f7c01a55ec87d630272a0bb072/Arbys_Nutritional_and_Allergen_AUG_2026.pdf",
+      "attemptedAt": "2026-07-15T08:56:20.103Z",
+      "outcome": "HTTP 200. Captured and visually reviewed all ten nutrition/allergen pages and all seven ingredient pages. The guide states that its information is effective July 2026 and explicitly distinguishes fixed allergens, common-fryer contact, facility processing, and optional/regional availability.",
+      "notes": [
+        "The ingredient PDF's first two pages describe consumer product assembly; later pages define component ingredients and must not be emitted as products."
+      ]
+    },
+    {
+      "id": "arbys-alliance-scope-review-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://assets.ctfassets.net/30q5w5l98nbx/dM14iiwpgLa3QB8cGlkFj/0b9c00cd990a33d97d4b5a01e45dc8ea/APR25_Arbys_Allergen_Info_Alliance.pdf",
+      "attemptedAt": "2026-07-15T08:56:20.625Z",
+      "outcome": "HTTP 200. Visual review confirmed the sheet names Alliance Kitchen #9600 at 1425 Ellsworth Industrial Boulevard NW, Atlanta, Georgia and describes that shared kitchen's shellfish and tree-nut environment.",
+      "notes": [
+        "This location-specific sheet was rejected as national product or cross-contact evidence."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "arbys-component-glossary-product-corruption",
+      "severity": "critical",
+      "kind": "parser-structure-corruption",
+      "summary": "The frozen catalog treated ingredient glossary entries, toppings, and sauce additions as consumer products, producing 46 non-product artifacts among 66 rows.",
+      "evidenceIds": [
+        "official-arbys-ingredients-aug-2026",
+        "official-arbys-nutrition-allergen-aug-2026"
+      ],
+      "resolved": true,
+      "resolution": "Limited ingredient extraction to product assembly pages, used current web categories as the national product boundary, and removed every component/topping/add-on artifact."
+    },
+    {
+      "id": "arbys-current-catalog-omissions",
+      "severity": "critical",
+      "kind": "menu-reconciliation-mismatch",
+      "summary": "The frozen output represented only 14 distinct current products and omitted 64 canonical products, including most sandwiches, chicken, sides, value items, breakfast, and regional products.",
+      "evidenceIds": [
+        "official-arbys-menu-meals",
+        "official-arbys-menu-limited-time",
+        "official-arbys-menu-slow-roasted-beef",
+        "official-arbys-menu-crispy-juicy-chicken",
+        "official-arbys-menu-crafted-sandwiches",
+        "official-arbys-menu-sides-snacks",
+        "official-arbys-menu-desserts",
+        "official-arbys-menu-beverages",
+        "official-arbys-menu-kids-menu",
+        "official-arbys-menu-value-menu",
+        "official-arbys-nutrition-allergen-aug-2026"
+      ],
+      "resolved": true,
+      "resolution": "Published the reconciled 78-product consumer catalog and documented 25 configurable bundle presentations separately."
+    },
+    {
+      "id": "arbys-alliance-national-scope-error",
+      "severity": "critical",
+      "kind": "source-scope-mismatch",
+      "summary": "The frozen output used a single Atlanta Alliance Kitchen shared-location sheet as evidence for national Arby's component rows.",
+      "evidenceIds": [
+        "official-arbys-alliance-apr-2025",
+        "official-arbys-nutrition-page"
+      ],
+      "resolved": true,
+      "resolution": "Removed Alliance Kitchen component rows and restricted national products to current U.S. guide and owner menu evidence."
+    },
+    {
+      "id": "arbys-contact-signals-dropped",
+      "severity": "high",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Eight matched frozen products omitted current common-fryer or facility-processing signals, although their fixed Contains declarations matched.",
+      "evidenceIds": [
+        "official-arbys-nutrition-allergen-aug-2026",
+        "official-arbys-ingredients-aug-2026"
+      ],
+      "resolved": true,
+      "resolution": "Restored row-specific fryer/facility signals as mayContain values while retaining fixed allergens separately."
+    },
+    {
+      "id": "arbys-orange-cream-guide-gap",
+      "severity": "low",
+      "kind": "current-source-gap",
+      "summary": "Orange Cream Shake is published on the current owner menu but has no matching row in the current July 2026 allergen guide.",
+      "evidenceIds": [
+        "official-arbys-menu-limited-time",
+        "official-arbys-nutrition-allergen-aug-2026"
+      ],
+      "resolved": true,
+      "resolution": "Retained the current product with allergenSourceType unavailable and made no ingredient, negative, or cross-contact assumption."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "arbys-current-consumer-catalog-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt Arby's from current consumer menu categories and official July 2026 guides, removed component and location-scope corruption, restored omitted products, and separated fixed allergens from common-contact signals.",
+      "files": [
+        "scripts/pipeline/arbys-audit-catalog.mjs",
+        "scripts/pipeline/arbys-audit-catalog.test.mjs",
+        "scripts/pipeline/arbys-audit-reconciliation.mjs",
+        "scripts/pipeline/arbys-audit-reconciliation.test.mjs",
+        "scripts/pipeline/arbys-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/arbys/official-arbys-menu.html",
+        "data/restaurant-verification/artifacts/arbys/official-arbys-nutrition-page.html",
+        "data/restaurant-verification/artifacts/arbys/official-arbys-nutrition-allergen-aug-2026.pdf",
+        "data/restaurant-verification/artifacts/arbys/official-arbys-ingredients-aug-2026.pdf",
+        "data/restaurant-verification/artifacts/arbys/official-arbys-gluten-free-apr-2025.pdf",
+        "data/restaurant-verification/artifacts/arbys/official-arbys-alliance-apr-2025.pdf",
+        "data/restaurant-verification/repairs/arbys/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/arbys-audit-catalog.mjs",
+        "node scripts/pipeline/arbys-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/arbys-audit-catalog.test.mjs scripts/pipeline/arbys-audit-reconciliation.test.mjs scripts/pipeline/arbys-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=arbys node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: d46b96bed53f98427fbf5ae944b28c1c745586b1444e2cb1fd308b0a02dd581e.",
+    "Official nutrition/allergen and ingredient PDF SHA-256: b0dadd995cc98515d64a807bc936bc186501b91e810f04c3149025549c0ccebe / 38f7d519d8a8d0e53facbb427d35018b263a2b1a8574cd184b867197c3d6456f.",
+    "Derived raw nutrition/allergen and ingredient text SHA-256: 0e48fe545c07cf3481e648312a100f25b78f0ba60ea4e9c597b94fd7ea6d7bb6 / 8b386349aec19a9441399534822dab914ac7fdd07dd238b6d0cab38713243dbc.",
+    "Frozen baseline item fingerprint: 3563f382219a9e84d1e378deffaaf68a660595a9b3504f023d647cd1faca40b9.",
+    "Live target SHA-256 after repair: 395851bdd42b67f90ab01715eb1923a1eea176f97ab90c0327929c6e662ba144.",
+    "Live non-target restaurant projection SHA-256 remained 552138db48aceb0dfc9dd1f38ce0075fe6d3ef493c56def31d7b415a80848379.",
+    "Two consecutive target-only repair runs produced the same target hash and exactly one Arby's verified repair note.",
+    "The repaired repository contains 113702 live menu items; the frozen ledger remains anchored to its original 112873-item hashed baseline."
+  ]
+}

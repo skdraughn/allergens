@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "agora-dc",
+  "name": "Agora DC",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T20:56:52.684Z",
+  "updatedAt": "2026-07-14T21:05:07.079Z",
+  "completedAt": "2026-07-14T21:05:07.079Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 63,
+      "sourceItemCount": 83,
+      "notes": [
+        "Every frozen row was reconciled against the current official Agora DC dinner, lunch, and brunch menus linked by the restaurant's menu hub.",
+        "Visual review of all six rendered PDF pages found 83 current products or distinct meal-period formulations across 18 real sections.",
+        "Ten frozen rows are headings, dietary-label fragments, add-on descriptions, or shifted neighboring descriptions; five older products are no longer current. The correction restores the omitted current menu."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Agora publishes item descriptions and GF, DF, and NF labels but no complete allergen matrix, complete recipes, or kitchen cross-contact policy.",
+        "Positive fields use fixed published ingredients and mandatory named formats. Negative dietary labels are not expanded into comprehensive allergen-free claims.",
+        "Twenty-one of 48 applicable frozen product rows mismatch: 11 underreported, six overreported, two mixed, and two collapsed meal-period formulations with different signals.",
+        "The general raw-food advisory is not applied to individual products; oyster mushrooms do not become shellfish and eggplant does not become egg."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen PDF parser interleaved multi-column reading order, assigning neighboring descriptions, section labels, and raw-food warning words to unrelated items and fake categories.",
+        "The correction was transcribed and verified from rendered page layout, preserving section ownership and distinct brunch formulations where ingredients differ.",
+        "The repair is guarded by current counts, unique identities, artifact exclusions, meal-period variants, and sentinel allergen corrections."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-menu-hub-review",
+      "kind": "official_site",
+      "url": "https://www.agorarestaurants.net/agora-dc-menus/",
+      "attemptedAt": "2026-07-14T20:57:15.178Z",
+      "outcome": "Confirmed the DC identity and current official dinner, lunch, and brunch links.",
+      "notes": []
+    },
+    {
+      "id": "official-dinner-review",
+      "kind": "linked_source",
+      "url": "https://www.agorarestaurants.net/wp-content/uploads/2026/06/MASTER-DC-DINNER-MENU-JUNE-21.pdf",
+      "attemptedAt": "2026-07-14T20:57:15.620Z",
+      "outcome": "Rendered and visually reviewed both current dinner pages with section, product, description, and dietary-label associations.",
+      "notes": []
+    },
+    {
+      "id": "official-lunch-review",
+      "kind": "linked_source",
+      "url": "https://www.agorarestaurants.net/wp-content/uploads/2026/07/MASTER-DC-LUNCH-MENU-JULY-8.pdf",
+      "attemptedAt": "2026-07-14T20:57:16.225Z",
+      "outcome": "Rendered and visually reviewed both current lunch pages and all lunch-only products.",
+      "notes": []
+    },
+    {
+      "id": "official-brunch-review",
+      "kind": "linked_source",
+      "url": "https://www.agorarestaurants.net/wp-content/uploads/2025/11/MASTER-DC-Bottomless-Brunch-1121-Print.pdf",
+      "attemptedAt": "2026-07-14T20:57:16.726Z",
+      "outcome": "Rendered and visually reviewed the current brunch menu, including products whose formulations differ from dinner or lunch.",
+      "notes": []
+    },
+    {
+      "id": "allergen-disclosure-review",
+      "kind": "targeted_search",
+      "url": "https://www.agorarestaurants.net/agora-dc-menus/",
+      "attemptedAt": "2026-07-14T20:57:16.726Z",
+      "outcome": "Reviewed all current food surfaces; found dietary labels and descriptions but no complete allergen matrix, recipes, or cross-contact policy.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "column-interleaved-menu-corruption",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen 63-row catalog promoted ten headings or shifted fragments to products, retained five stale products, omitted current products, and assigned fake categories.",
+      "evidenceIds": [
+        "official-dinner-menu",
+        "official-lunch-menu",
+        "official-brunch-menu"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 83 current products/formulations across 18 visually verified meal-period sections and removed all artifacts and stale rows."
+    },
+    {
+      "id": "incorrect-frozen-allergens",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Twenty-one applicable frozen rows disagree with their current rendered descriptions, including shellfish falsely assigned from oyster mushrooms or adjacent warning text.",
+      "evidenceIds": [
+        "official-dinner-menu",
+        "official-lunch-menu",
+        "official-brunch-menu"
+      ],
+      "resolved": true,
+      "resolution": "Recomputed fixed source-bounded signals per product/formulation and retained 15 current rows as unavailable where positive evidence is insufficient."
+    },
+    {
+      "id": "lost-meal-period-formulations",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "The frozen merge collapsed meal-period products and separated descriptions from their actual names, losing ingredient distinctions for same-name formulations.",
+      "evidenceIds": [
+        "official-lunch-menu",
+        "official-brunch-menu"
+      ],
+      "resolved": true,
+      "resolution": "Preserved distinct Mixed Green Salad and Şiş Tavuk formulations where the current menus publish different ingredients."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-agora-current-menu",
+      "status": "verified",
+      "summary": "Prepared and focused-tested an 83-item/formulation Agora DC catalog across 18 current official sections with 68 positive rows, 15 unavailable rows, corrected artifacts, and meal-period-aware identities.",
+      "files": [
+        "scripts/pipeline/agora-audit-catalog.mjs",
+        "scripts/pipeline/agora-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/agora-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/agora-audit-catalog.test.mjs scripts/pipeline/agora-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/agora-repository.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 83 items, 18 categories, 68 positive rows, artifacts excluded, variants retained, and sentinels corrected)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 5aa2016ef63f62dedcc9de6e90b878ad5e337318cd53bc97b731784376b9fc34.",
+    "Reconciliation counts: {\"dispositions\":{\"exact_match\":43,\"variant_match\":5,\"artifact\":10,\"stale_extra\":5},\"allergens\":{\"mismatch\":21,\"verified\":25,\"accurately_unavailable\":2,\"not_applicable\":15},\"mismatchKinds\":{\"underreported\":11,\"mixed\":2,\"overreported\":6,\"collapsed_presentations\":2}}.",
+    "Current corrected catalog counts: 83 products/formulations, 18 categories, 68 positive published-signal rows, and 15 unavailable rows.",
+    "The PDF skill's rendered-layout review determined section and description ownership; text extraction alone was rejected because it visibly interleaved columns."
+  ]
+}

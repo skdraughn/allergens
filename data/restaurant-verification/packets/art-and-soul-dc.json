@@ -1,0 +1,291 @@
+{
+  "status": "recheck_required",
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 52,
+      "sourceItemCount": 54,
+      "notes": [
+        "The current owner-issued source boundary is 27 all-day products, 29 brunch products, and one configurable breakfast buffet: 57 presentations consolidated to 54 formulations.",
+        "All 52 frozen rows were reconciled: 43 exact matches, three normalized matches, three service-variant matches, and three breakfast-buffet heading artifacts. The reconciled rows cover 50 current formulations.",
+        "Crispy Brussels Sprouts, Cinnamon Roll, Fruit, and Grits were current omissions and are restored.",
+        "The current all-day and brunch Angus Burgers and Fried Chicken Sandwiches have different published compositions and remain separate. Caesar Salad, Wedge Salad, and Mac & Cheese are the only genuinely duplicate cross-service formulations and are consolidated.",
+        "The frozen Adult, HOT ITEMS, BAKED ITEMS, and COLD ITEMS rows were replaced by one configurable Breakfast Buffet product that preserves every currently published buffet component."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Art and Soul publishes positive item names and descriptions but no complete allergen matrix, ingredient guide, negative allergen claim, or item-level cross-contact disclosure.",
+        "The corrected catalog has 37 formulations with direct restaurant-menu ingredient or strong explicit formulation signals and 17 formulations whose fixed allergen detail remains unavailable. mayContain is empty for all 54 products.",
+        "Ten frozen allergen or provenance outcomes were incorrect. Misses include shellfish on both crab-cake products, wheat/gluten on Biscuits & Gravy, Spring Bucatini, and Steak & Cheese Eggrolls, and the buffet's explicit egg, milk, wheat, and gluten signals.",
+        "Unsupported fixed signals were removed where the menu only names a broad formulation or adjective: Chocolate Lava Cake and Strawberry Cheesecake Cookie Skillet retain only explicit milk from crème fraîche ice cream; Lemon-Blueberry Pancakes retain only explicit milk from whipped cream; and Seared Salmon does not turn the adjective creamy into a fixed milk ingredient.",
+        "Potential recipe risks beyond explicit current menu text remain Ingredient Intelligence rather than restaurant-issued fixed claims."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic Squarespace extraction emitted breakfast subsection headings as products, omitted four current products, and collapsed service-specific menu variants.",
+        "Its allergen summary was internally inconsistent: officialIngredientDisclosure was one while officialItemCount was 34. The corrected summary is derived from the 54 repaired products and reports 37 official positive ingredient rows consistently.",
+        "The reproducible audit parser verifies all three captured source hashes, exact raw row counts, exact product counts, modifier/heading exclusions, the 57-presentation boundary, and the 54-formulation consolidation contract.",
+        "Four focused catalog, reconciliation, and repaired-output tests pass. Two target-only repair runs produced the same target hash and left the non-target restaurant projection unchanged."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "art-and-soul-current-all-day-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.artandsouldc.com/alldaymenu",
+      "attemptedAt": "2026-07-15T11:24:59.239Z",
+      "outcome": "The owner page publishes 28 Squarespace menu rows across six sections. One add-ons row is not a product, leaving 27 current all-day products.",
+      "notes": []
+    },
+    {
+      "id": "art-and-soul-current-brunch-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.artandsouldc.com/brunch",
+      "attemptedAt": "2026-07-15T11:24:59.411Z",
+      "outcome": "The owner page publishes 31 Squarespace menu rows across six sections. ADDITIONS and Each | 9 are non-product modifier/price rows, leaving 29 current brunch products.",
+      "notes": []
+    },
+    {
+      "id": "art-and-soul-current-breakfast-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.artandsouldc.com/breakfast",
+      "attemptedAt": "2026-07-15T11:24:59.451Z",
+      "outcome": "The owner page publishes one Breakfast Buffet with adult, child, and continental prices and three component subsections. HOT ITEMS, BAKED ITEMS, and COLD ITEMS are headings inside that buffet, not standalone products.",
+      "notes": []
+    },
+    {
+      "id": "art-and-soul-current-menu-index-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://www.artandsouldc.com/menus",
+      "attemptedAt": "2026-07-15T11:24:59.491Z",
+      "outcome": "The current owner index links Breakfast Buffet, Brunch, Bar, and All Day Dining. The food audit uses the breakfast, brunch, and all-day pages; the bar surface is not part of the food catalog.",
+      "notes": []
+    },
+    {
+      "id": "art-and-soul-targeted-allergen-search-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://www.artandsouldc.com/menus",
+      "attemptedAt": "2026-07-15T11:25:20.000Z",
+      "outcome": "Targeted official-domain and hotel-owner searches found the current menus and identity confirmation but no complete restaurant-issued allergen matrix, full ingredient guide, negative allergen claims, or cross-contact disclosure.",
+      "notes": [
+        "The hotel owner independently confirms the current restaurant identity and service hours but does not publish a separate Art and Soul allergen guide."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "art-and-soul-product-boundary-errors",
+      "severity": "critical",
+      "kind": "product-boundary-corruption",
+      "summary": "The frozen catalog published three breakfast subsection headings as products and omitted four current products.",
+      "evidenceIds": [
+        "official-art-and-soul-all-day",
+        "official-art-and-soul-brunch",
+        "official-art-and-soul-breakfast"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the buffet headings with one complete configurable Breakfast Buffet and restored Crispy Brussels Sprouts, Cinnamon Roll, Fruit, and Grits."
+    },
+    {
+      "id": "art-and-soul-service-variant-collapse",
+      "severity": "high",
+      "kind": "menu-variant-collapse",
+      "summary": "The frozen catalog collapsed the all-day and brunch Angus Burger and Fried Chicken Sandwich presentations despite different published compositions.",
+      "evidenceIds": [
+        "official-art-and-soul-all-day",
+        "official-art-and-soul-brunch"
+      ],
+      "resolved": true,
+      "resolution": "Published separate service-specific formulations and consolidated only Caesar Salad, Wedge Salad, and Mac & Cheese, whose current presentations are compositionally equivalent."
+    },
+    {
+      "id": "art-and-soul-allergen-semantic-errors",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Ten frozen rows had missing, invented, or wrongly sourced fixed allergen outcomes.",
+      "evidenceIds": [
+        "official-art-and-soul-all-day",
+        "official-art-and-soul-brunch",
+        "official-art-and-soul-breakfast",
+        "official-art-and-soul-allergen-search"
+      ],
+      "resolved": true,
+      "resolution": "Re-reviewed every current formulation against positive menu text, corrected all ten outcomes, retained 37 positive official-menu rows and 17 unavailable rows, and added no unsupported absence or cross-contact claim."
+    },
+    {
+      "id": "art-and-soul-official-count-inconsistency",
+      "severity": "high",
+      "kind": "allergen-summary-inconsistency",
+      "summary": "The frozen summary reported officialIngredientDisclosure as one while separately claiming 34 official items.",
+      "evidenceIds": [
+        "official-art-and-soul-all-day",
+        "official-art-and-soul-brunch",
+        "official-art-and-soul-breakfast"
+      ],
+      "resolved": true,
+      "resolution": "Recomputed every summary field from the repaired catalog; all official counts now consistently equal 37 of 54."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "art-and-soul-current-catalog-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt Art and Soul's complete current catalog, repaired buffet and service-variant boundaries, restored four omissions, and corrected all ten allergen/provenance outcomes without changing another restaurant.",
+      "files": [
+        "scripts/pipeline/art-and-soul-audit-catalog.mjs",
+        "scripts/pipeline/art-and-soul-audit-catalog.test.mjs",
+        "scripts/pipeline/art-and-soul-audit-reconciliation.mjs",
+        "scripts/pipeline/art-and-soul-audit-reconciliation.test.mjs",
+        "scripts/pipeline/art-and-soul-repair.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/artifacts/art-and-soul-dc/official-art-and-soul-all-day.html",
+        "data/restaurant-verification/artifacts/art-and-soul-dc/official-art-and-soul-brunch.html",
+        "data/restaurant-verification/artifacts/art-and-soul-dc/official-art-and-soul-breakfast.html",
+        "data/restaurant-verification/artifacts/art-and-soul-dc/official-art-and-soul-menu-index.html",
+        "data/restaurant-verification/repairs/art-and-soul-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/art-and-soul-audit-catalog.mjs",
+        "node scripts/pipeline/art-and-soul-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/art-and-soul-audit-catalog.test.mjs scripts/pipeline/art-and-soul-audit-reconciliation.test.mjs scripts/pipeline/art-and-soul-repair.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=art-and-soul-dc node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "official-art-and-soul-all-day",
+      "url": "https://www.artandsouldc.com/alldaymenu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "both",
+      "retrievedAt": "2026-07-15T11:24:59.239Z",
+      "contentType": "text/html",
+      "finalUrl": "https://www.artandsouldc.com/alldaymenu",
+      "httpStatus": 200,
+      "byteLength": 269943,
+      "sha256": "68c50f7c910edb645e2aefc20b371d229be717cb6cc0ca07cc6c48473be87ffb",
+      "artifactPath": "artifacts/art-and-soul-dc/official-art-and-soul-all-day.html",
+      "excerpt": "Current Monday–Friday all-day menu: 28 menu-block rows across For the Table, Sandwiches, Salads, Entrees, Sides, and Desserts; 27 products after excluding the add-ons row.",
+      "rowIdentifiers": [
+        "deviled egg flight",
+        "Maryland Crab Cake",
+        "crispy brussels sprouts",
+        "27-products"
+      ],
+      "request": { "method": "GET" },
+      "notes": []
+    },
+    {
+      "id": "official-art-and-soul-brunch",
+      "url": "https://www.artandsouldc.com/brunch",
+      "authorityTier": "restaurant_issued",
+      "purpose": "both",
+      "retrievedAt": "2026-07-15T11:24:59.411Z",
+      "contentType": "text/html",
+      "finalUrl": "https://www.artandsouldc.com/brunch",
+      "httpStatus": 200,
+      "byteLength": 110715,
+      "sha256": "554eae86fd62ca8e8b4ffaae28ac1d89a23450c5736367189475f504127a4710",
+      "artifactPath": "artifacts/art-and-soul-dc/official-art-and-soul-brunch.html",
+      "excerpt": "Current Saturday–Sunday brunch menu: 31 menu-block rows across Starters, Salads, Sandwiches, With Eggs, Without Eggs, and Sides; 29 products after excluding ADDITIONS and Each | 9.",
+      "rowIdentifiers": [
+        "CINNAMON Roll",
+        "BISCUITS & GRAVY",
+        "FRUIT",
+        "GRITS",
+        "29-products"
+      ],
+      "request": { "method": "GET" },
+      "notes": []
+    },
+    {
+      "id": "official-art-and-soul-breakfast",
+      "url": "https://www.artandsouldc.com/breakfast",
+      "authorityTier": "restaurant_issued",
+      "purpose": "both",
+      "retrievedAt": "2026-07-15T11:24:59.451Z",
+      "contentType": "text/html",
+      "finalUrl": "https://www.artandsouldc.com/breakfast",
+      "httpStatus": 200,
+      "byteLength": 173310,
+      "sha256": "01a7c49348c88e7aebf0bdeb74225b86dec75dab78fbb8e0e189999dd6fa7740",
+      "artifactPath": "artifacts/art-and-soul-dc/official-art-and-soul-breakfast.html",
+      "excerpt": "Current Breakfast Buffet with Adult $28, Kids $12, and Continental $22 prices; Hot, Baked, and Cold subsections enumerate eggs, meats, potatoes, French toast, pancakes, waffles, oatmeal, grits, breads, pastries, fruit, yogurt, cheese, overnight oats, cereal, milk, and substitutes.",
+      "rowIdentifiers": [
+        "Breakfast Buffet",
+        "HOT ITEMS",
+        "BAKED ITEMS",
+        "COLD ITEMS"
+      ],
+      "request": { "method": "GET" },
+      "notes": [
+        "The three subsection labels are components of one configurable buffet, not independently orderable products."
+      ]
+    },
+    {
+      "id": "official-art-and-soul-menu-index",
+      "url": "https://www.artandsouldc.com/menus",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-15T11:24:59.491Z",
+      "contentType": "text/html",
+      "finalUrl": "https://www.artandsouldc.com/menus",
+      "httpStatus": 200,
+      "byteLength": 159065,
+      "sha256": "a3a708034fa87b4edb821ffe1edb4a1ea50ece2ec083e072127e452f862b5b28",
+      "artifactPath": "artifacts/art-and-soul-dc/official-art-and-soul-menu-index.html",
+      "excerpt": "The owner menu index links Breakfast Buffet, Brunch, Bar, and All Day Dining and publishes current service hours for each food surface.",
+      "rowIdentifiers": [
+        "Breakfast Buffet",
+        "BRUNCH",
+        "all day dining"
+      ],
+      "request": { "method": "GET" },
+      "notes": []
+    },
+    {
+      "id": "official-art-and-soul-allergen-search",
+      "url": "https://www.artandsouldc.com/menus",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "retrievedAt": "2026-07-15T11:25:20.000Z",
+      "contentType": null,
+      "finalUrl": "https://www.artandsouldc.com/menus",
+      "httpStatus": 200,
+      "byteLength": null,
+      "sha256": null,
+      "artifactPath": null,
+      "excerpt": "Official-domain and hotel-owner searches found current positive menu descriptions but no complete allergen matrix, full ingredient guide, negative allergen claim, or item-level cross-contact disclosure. Missing terms were not treated as absence evidence.",
+      "rowIdentifiers": [
+        "art-and-soul-dc-current-menu-and-allergen-search"
+      ],
+      "request": {
+        "method": "GET",
+        "result": "official-domain-and-hotel-owner-targeted-search-review"
+      },
+      "notes": []
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: c45c80028f7f1a5be308d54790400ec5a5158f1f26b689568fb957c65bceea95.",
+    "Frozen 52-row item-check evidence SHA-256 after reconciliation: c4d9f0b55917c72575fae06d767bb43186f12cebca21b494a95e47ce3e3aff96.",
+    "Frozen baseline item fingerprint: 5628803c0afe9fd85b824416f6a692ca5e50965bc3bdcc2aae2943d3db550453.",
+    "Live target SHA-256 before repair: 26f7ae8ca78cffaff92767f05f013d1e4dd2b12fa87fdecd4b0189570f484669.",
+    "Live target SHA-256 after repair: b82f25c6ffd8079c4e63068ed4909b7aabd4d4fe087062f74c30a2d25a0f0d4b.",
+    "Live non-target restaurant projection SHA-256 remained bfb6b0ccd6828a2a528dc2d36b3a7fa7ed00b2eaab6f4565162a624dbabda2cf.",
+    "Two consecutive target-only repair runs produced the same target hash and exactly one Art and Soul verified repair note.",
+    "The repaired repository contains 113854 live menu items; the ledger remains anchored to its original 112873-item frozen baseline."
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "2-amys-washington-dc-dc-metro",
+  "name": "2 Amys",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T18:01:31.148Z",
+  "updatedAt": "2026-07-14T18:08:34.583Z",
+  "completedAt": "2026-07-14T18:08:34.583Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 130,
+      "sourceItemCount": 64,
+      "notes": [
+        "Every frozen row was reconciled against the current restaurant-linked Square category map and all 1,104 products across its six API pages.",
+        "Only seven frozen products still correspond to current menu items; 122 are historical products no longer assigned to a live storefront category, and one is an official-homepage placeholder artifact.",
+        "The corrected catalog contains 64 current food and beverage rows; it adds 59 current items missing from the frozen app, excludes 12 live merchandise rows, and places alcoholic beverages after food and dessert."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "2 Amys does not publish a complete allergen matrix; no allergen absence or general cross-contact safety claim is made.",
+        "The current Square item descriptions directly support 35 positive or may-contain rows; the other 29 correctly remain allergen-data unavailable.",
+        "Signals use only explicit menu terms such as mozzarella, anchovy, cod, cockles, egg, bread, pine nuts, almond, mustard, and the explicit may-contain-nuts statement."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen source request captured only page 1 of a six-page, 1,104-product Square catalog and treated historical category memberships as current menu membership.",
+        "Every frozen row was assigned the generic Pizza category even when it was steak, wine, beer, coffee, a side, or a website placeholder.",
+        "The correction uses the current Square bootstrap category links as the membership boundary, joins those category ids across all six product pages, and excludes the live merchandise category."
+      ]
+    }
+  },
+  "sourceAttempts": [],
+  "findings": [
+    {
+      "id": "historical-page-one-catalog",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen app showed 122 historical products that are no longer on the current Square menu and missed 59 current menu items.",
+      "evidenceIds": [
+        "linked-square-home",
+        "linked-square-products",
+        "linked-square-products-page-2",
+        "linked-square-products-page-3",
+        "linked-square-products-page-4",
+        "linked-square-products-page-5",
+        "linked-square-products-page-6"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt the menu from the current storefront category map joined against all six current Square product pages."
+    },
+    {
+      "id": "all-rows-mislabeled-pizza",
+      "severity": "high",
+      "kind": "menu_structure",
+      "summary": "All 130 frozen rows were mislabeled Pizza, including alcohol, meat cuts, coffee, sides, and a homepage placeholder.",
+      "evidenceIds": [
+        "official-home",
+        "linked-square-home"
+      ],
+      "resolved": true,
+      "resolution": "Restored eleven real food and beverage sections and removed the placeholder and merchandise rows."
+    },
+    {
+      "id": "current-allergen-coverage",
+      "severity": "high",
+      "kind": "allergen_accuracy",
+      "summary": "The stale frozen catalog omitted current items and their direct ingredient signals; one surviving renamed pepper-and-anchovy row also omitted wheat/gluten from its stated bread accompaniment.",
+      "evidenceIds": [
+        "linked-square-products",
+        "linked-square-products-page-2",
+        "linked-square-products-page-3",
+        "linked-square-products-page-4",
+        "linked-square-products-page-5",
+        "linked-square-products-page-6"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt direct signals from current item descriptions, preserving 35 supported positive/may-contain rows and leaving 29 rows unavailable."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-2-amys-current-square-menu",
+      "status": "verified",
+      "summary": "Prepared and targeted-tested a 64-item current Square snapshot using live storefront categories across all six product pages, with real sections, merchandise excluded, beverages last, and conservative allergen evidence.",
+      "files": [
+        "scripts/pipeline/2-amys-audit-catalog.mjs",
+        "scripts/pipeline/2-amys-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/2-amys-washington-dc-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/2-amys-audit-catalog.test.mjs scripts/pipeline/2-amys-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=tmp/restaurant-verification/2-amys-repair-input.json node scripts/repair-final-generated-regressions.mjs (targeted copy; verified 64 unique items, eleven real sections, 35 direct/may-contain rows, 29 unavailable rows, merchandise excluded, and beverages last)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 05d72c6f72b3ce3fe6f0d00d3e4d2a7591388fe59b0c50d0912087cd58824dc3.",
+    "Reconciliation counts: {\"dispositions\":{\"stale_extra\":122,\"exact_match\":5,\"variant_match\":2,\"artifact\":1},\"allergens\":{\"not_applicable\":123,\"verified\":5,\"mismatch\":1,\"accurately_unavailable\":1}}.",
+    "The official 2 Amys homepage establishes restaurant identity and links the Square storefront; the current menu content itself has restaurant_linked_vendor authority.",
+    "Focused six-page catalog, current-category membership, reconciliation, targeted repair-copy, unique-id, section-order, merchandise exclusion, and allergen-source checks passed."
+  ]
+}

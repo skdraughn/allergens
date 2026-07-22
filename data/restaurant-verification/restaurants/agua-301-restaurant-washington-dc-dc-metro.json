@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "agua-301-restaurant-washington-dc-dc-metro",
+  "name": "Agua 301 Restaurant",
+  "status": "codex_verified",
+  "createdAt": "2026-07-14T21:11:16.450Z",
+  "updatedAt": "2026-07-14T21:21:25.379Z",
+  "completedAt": "2026-07-14T21:21:25.379Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 195,
+      "sourceItemCount": 301,
+      "notes": [
+        "Every one of the 195 frozen rows was reconciled against the current restaurant-issued food and drink pages captured on 2026-07-14.",
+        "The current food page contains 432 raw item nodes across ten menu surfaces; 29 are headings or package instructions, leaving 403 real presentations and 298 distinct food formulations after exact name-and-description consolidation.",
+        "Three current non-alcoholic beverages were added from the restaurant-issued drink page; alcohol was intentionally excluded from the app catalog.",
+        "Ten frozen rows are headings, instructions, generic package labels, or alcohol, and three older products are absent from every current surface."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Agua 301 publishes item descriptions but no complete allergen matrix, complete recipes, or cross-contact policy.",
+        "Positive signals use only fixed published ingredients and mandatory named formats; optional add-ons, optional family-meal protein choices, and optional flour requests are excluded.",
+        "Forty-five applicable frozen rows mismatch: 21 underreported, seven overreported, and 17 collapsed current formulations with different fixed signals.",
+        "Eggplant does not produce egg, coconut does not produce tree-nut, and generic package warnings are not assigned as item allergens."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen merge flattened ten food, catering, banquet, and breakfast surfaces, promoted structural nodes as products, retained stale rows, and collapsed same-name formulations whose descriptions differ.",
+        "The correction preserves meal and section ownership, consolidates only exact normalized name-and-description repeats, and keeps distinct formulations where their fixed descriptions differ.",
+        "The source-bounded mapper removes optional-choice clauses before evaluating fixed ingredient terms and does not infer a complete allergen-free claim from absent text."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "official-home-review",
+      "kind": "official_site",
+      "url": "https://agua301.com/",
+      "attemptedAt": "2026-07-14T21:11:39.227Z",
+      "outcome": "Confirmed the Agua 301 identity and current restaurant-issued menu and ordering routes.",
+      "notes": []
+    },
+    {
+      "id": "official-food-menu-review",
+      "kind": "linked_source",
+      "url": "https://agua301.com/washington-yards-park-agua-301-food-menu",
+      "attemptedAt": "2026-07-14T21:11:39.739Z",
+      "outcome": "Captured and parsed all ten current food, catering, banquet, and breakfast surfaces.",
+      "notes": []
+    },
+    {
+      "id": "official-order-route-review",
+      "kind": "ordering_vendor",
+      "url": "https://agua301.com/washington-yards-park-agua-301-order",
+      "attemptedAt": "2026-07-14T21:11:40.184Z",
+      "outcome": "Captured the restaurant-issued ordering route and confirmed it did not disclose a more complete allergen source than the published menu descriptions.",
+      "notes": []
+    },
+    {
+      "id": "official-drink-menu-review",
+      "kind": "linked_source",
+      "url": "https://agua301.com/washington-yards-park-agua-301-drink-menu",
+      "attemptedAt": "2026-07-14T21:15:47.234Z",
+      "outcome": "Captured the current drink page, retained its three non-alcoholic products, and excluded alcohol from the app catalog.",
+      "notes": []
+    },
+    {
+      "id": "allergen-disclosure-review",
+      "kind": "targeted_search",
+      "url": "https://agua301.com/washington-yards-park-agua-301-food-menu",
+      "attemptedAt": "2026-07-14T21:15:47.234Z",
+      "outcome": "Found restaurant-issued descriptions but no complete allergen matrix, recipes, or cross-contact policy.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "flattened-multi-surface-menu",
+      "severity": "high",
+      "kind": "menu_quality",
+      "summary": "The frozen 195-row catalog mixed products with headings and instructions, omitted current formulations, retained three stale products, and lost section ownership across ten current food surfaces.",
+      "evidenceIds": [
+        "official-food-menu",
+        "official-drink-menu"
+      ],
+      "resolved": true,
+      "resolution": "Rebuilt 301 current food and non-alcoholic beverage formulations across 51 meal-and-section categories and excluded structural nodes, stale rows, and alcohol."
+    },
+    {
+      "id": "incorrect-frozen-allergens",
+      "severity": "high",
+      "kind": "allergen_semantics",
+      "summary": "Forty-five applicable frozen rows disagree with current fixed published ingredient signals, including optional choices promoted as mandatory and fixed ingredients omitted.",
+      "evidenceIds": [
+        "official-food-menu"
+      ],
+      "resolved": true,
+      "resolution": "Recomputed each current formulation from its fixed description, excluded optional-choice clauses, and left 104 current rows unavailable where positive evidence is insufficient."
+    },
+    {
+      "id": "collapsed-current-formulations",
+      "severity": "high",
+      "kind": "extraction",
+      "summary": "Seventeen frozen rows collapse current same-name formulations that carry different fixed ingredient signals on different menu surfaces.",
+      "evidenceIds": [
+        "official-food-menu"
+      ],
+      "resolved": true,
+      "resolution": "Consolidated only exact name-and-description repeats and retained separately formulated meal-and-section presentations."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "verified-agua-301-current-menu",
+      "status": "verified",
+      "summary": "Prepared and focused-tested a 301-formulation Agua 301 catalog across 51 current restaurant-issued categories with 197 positive source-bounded rows, 104 unavailable rows, and all structural, stale, and alcohol rows excluded.",
+      "files": [
+        "scripts/pipeline/agua-301-audit-catalog.mjs",
+        "scripts/pipeline/agua-301-audit-reconciliation.mjs",
+        "scripts/repair-final-generated-regressions.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/agua-301-restaurant-washington-dc-dc-metro/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/agua-301-audit-catalog.test.mjs scripts/pipeline/agua-301-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPOSITORY_PATH=/tmp/agua-301-repository.json node scripts/repair-final-generated-regressions.mjs (isolated copy; verified 301 items, 51 categories, 197 positive rows, 104 unavailable rows, non-alcoholic beverages last, and structural/alcohol rows excluded)"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: f8c0e9e6c113eb39592bda57ea472d21967828230e71522b2fe817504485f91f.",
+    "Reconciliation counts: {\"dispositions\":{\"artifact\":10,\"exact_match\":123,\"variant_match\":59,\"stale_extra\":3},\"allergens\":{\"not_applicable\":13,\"verified\":94,\"accurately_unavailable\":43,\"mismatch\":45},\"mismatchKinds\":{\"collapsed_formulations\":17,\"underreported\":21,\"overreported\":7}}.",
+    "Current corrected catalog counts: 403 food presentations plus three non-alcoholic beverages, consolidated to 301 formulations across 51 categories; 197 positive rows and 104 unavailable rows."
+  ]
+}

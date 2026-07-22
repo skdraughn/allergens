@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 1,
+  "restaurantId": "anju-dc",
+  "name": "Anju",
+  "status": "codex_verified",
+  "createdAt": "2026-07-15T05:57:17.050Z",
+  "updatedAt": "2026-07-15T06:13:59.382Z",
+  "completedAt": "2026-07-15T06:13:59.382Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 45,
+      "sourceItemCount": 49,
+      "notes": [
+        "The current restaurant-issued dinner, brunch, and happy-hour pages contain 51 retained food/nonalcoholic-beverage presentations that merge into 49 canonical products across nine categories.",
+        "All 45 frozen rows were reconciled: 30 map to current products, six are parser artifacts, and nine are stale. Nineteen current products were absent from the frozen app data.",
+        "Thirteen modifier rows and nine alcohol-only products were excluded. The Beverages category is ordered last."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "verified",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Thirty of 49 current products have positive major-allergen signals directly supported by current restaurant-issued ingredient text or, for overlapping Mandu and Eomuk details, the restaurant-linked Toast catalog. Nineteen remain unavailable.",
+        "No complete allergen matrix or cross-contact disclosure is published online. Printed gluten-free, vegetarian, and dairy-free menus mentioned by the FAQ were not accessible and were not reconstructed.",
+        "The FAQ's blanket no-peanut claim conflicts with an explicit current Toast peanut warning. The global negative claim was rejected; no missing term, gluten-free option, or vendor omission was promoted into a safety assurance.",
+        "No may-contain claim was invented. Ingredient-intelligence inference remains visibly separate from official source data."
+      ]
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": true,
+      "semanticsVerified": true,
+      "notes": [
+        "The frozen generic parser crossed paragraph and price boundaries, creating six standalone artifacts such as 1530-Day Kimchi and attaching neighboring descriptions and allergens to the wrong rows.",
+        "The reproducible Anju parser reads section headings and price-delimited product rows, attaches only adjacent descriptions, quarantines modifiers, filters alcohol-only rows, and merges duplicate Mandu/Yache Mandu meal-period presentations.",
+        "The frozen /happy-hour-1 configuration now returns HTTP 404 and omitted the current /happy-hour food menu. Source roles were corrected without using Toast takeout-only products to expand the dine-in catalog."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "id": "anju-dinner-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.anjurestaurant.com/dine-in",
+      "attemptedAt": "2026-07-15T06:02:24.000Z",
+      "outcome": "HTTP 200. Parsed 26 current dinner food presentations across five sections.",
+      "notes": []
+    },
+    {
+      "id": "anju-brunch-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.anjurestaurant.com/brunch",
+      "attemptedAt": "2026-07-15T06:02:24.000Z",
+      "outcome": "HTTP 200. Parsed 18 retained products, quarantined seven modifier rows, and excluded three alcohol-only products.",
+      "notes": []
+    },
+    {
+      "id": "anju-happy-hour-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.anjurestaurant.com/happy-hour",
+      "attemptedAt": "2026-07-15T06:02:24.000Z",
+      "outcome": "HTTP 200. Parsed seven current food presentations and excluded six alcohol-only drink rows.",
+      "notes": []
+    },
+    {
+      "id": "anju-retired-happy-hour-url-2026-07-15",
+      "kind": "archive",
+      "url": "https://www.anjurestaurant.com/happy-hour-1",
+      "attemptedAt": "2026-07-15T06:02:24.000Z",
+      "outcome": "HTTP 404. The frozen Happy Hour URL is retired; current navigation uses /happy-hour.",
+      "notes": []
+    },
+    {
+      "id": "anju-faq-2026-07-15",
+      "kind": "official_site",
+      "url": "https://www.anjurestaurant.com/faq",
+      "attemptedAt": "2026-07-15T06:02:24.000Z",
+      "outcome": "HTTP 200. Located dietary-menu availability text and the conflicting global no-peanut statement; no complete online allergen matrix or cross-contact disclosure was present.",
+      "notes": []
+    },
+    {
+      "id": "anju-order-landing-2026-07-15",
+      "kind": "linked_source",
+      "url": "https://www.anjurestaurant.com/order-online",
+      "attemptedAt": "2026-07-15T06:02:24.000Z",
+      "outcome": "HTTP 200. Confirmed that the restaurant directly links its Take Out button to the Anju Toast catalog.",
+      "notes": []
+    },
+    {
+      "id": "anju-toast-2026-07-15",
+      "kind": "ordering_vendor",
+      "url": "https://order.toasttab.com/online/anju",
+      "attemptedAt": "2026-07-15T06:00:00.000Z",
+      "outcome": "The public web-rendered catalog returned HTTP 200 and confirmed the address plus item-level Mandu shellfish, Eomuk fish, and Broccolini peanut disclosures. Direct curl was blocked with HTTP 403.",
+      "notes": [
+        "Used only for overlapping item evidence and contradiction analysis; no takeout-only product was added to the primary catalog."
+      ]
+    },
+    {
+      "id": "anju-targeted-allergen-search-2026-07-15",
+      "kind": "targeted_search",
+      "url": "https://www.anjurestaurant.com/faq",
+      "attemptedAt": "2026-07-15T06:01:00.000Z",
+      "outcome": "Targeted official-domain searches for allergen, allergy, gluten-free, dairy-free, and PDF sources found the FAQ and linked Toast catalog but no public printed special menu, full matrix, or cross-contact policy.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "anju-paragraph-boundary-corruption",
+      "severity": "critical",
+      "kind": "parser-structure-corruption",
+      "summary": "The frozen extraction created six standalone products by concatenating prices, names, descriptions, and modifiers, and shifted or truncated current content on ten matched rows.",
+      "evidenceIds": [
+        "official-anju-dinner",
+        "official-anju-brunch"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the generic output with a section-aware parser that separates products, descriptions, prices, and modifiers and asserts the exact current source shape."
+    },
+    {
+      "id": "anju-stale-and-omitted-catalog",
+      "severity": "high",
+      "kind": "menu-reconciliation-mismatch",
+      "summary": "Nine frozen products are absent from every current food-menu surface, while nineteen current products were missing from the app.",
+      "evidenceIds": [
+        "official-anju-dinner",
+        "official-anju-brunch",
+        "official-anju-happy-hour"
+      ],
+      "resolved": true,
+      "resolution": "Removed all nine stale products and added all nineteen omitted current products, producing a 49-product canonical catalog."
+    },
+    {
+      "id": "anju-allergen-outcome-mismatches",
+      "severity": "critical",
+      "kind": "allergen-extraction-mismatch",
+      "summary": "Eleven of the 30 current frozen rows had missing or overstated positive allergen signals, including Mandu's omitted shellfish/soy evidence and Palace Ddukbokgi's unsupported wheat/gluten/egg signals.",
+      "evidenceIds": [
+        "official-anju-dinner",
+        "official-anju-brunch",
+        "linked-anju-toast-order"
+      ],
+      "resolved": true,
+      "resolution": "Recomputed only directly supported current positive signals, preserved unavailable items, and left inference and cross-contact semantics separate."
+    },
+    {
+      "id": "anju-retired-happy-hour-source",
+      "severity": "high",
+      "kind": "source-url-mismatch",
+      "summary": "The configured /happy-hour-1 URL now returns 404 and the frozen record omitted the current /happy-hour food products.",
+      "evidenceIds": [
+        "official-anju-retired-happy-hour-url",
+        "official-anju-happy-hour"
+      ],
+      "resolved": true,
+      "resolution": "Replaced the retired URL with the current restaurant-navigation target and included its seven food presentations."
+    },
+    {
+      "id": "anju-conflicting-peanut-disclosures",
+      "severity": "critical",
+      "kind": "contradictory-allergen-source",
+      "summary": "Anju's FAQ says no dish uses peanuts, while its current restaurant-linked Toast catalog explicitly warns that Broccolini Twigim contains peanuts.",
+      "evidenceIds": [
+        "official-anju-faq",
+        "official-anju-order-landing",
+        "linked-anju-toast-order"
+      ],
+      "resolved": true,
+      "resolution": "Rejected the blanket negative statement as a safety assurance and retained only item-level positive evidence."
+    },
+    {
+      "id": "anju-no-public-complete-allergen-guide",
+      "severity": "medium",
+      "kind": "allergen-source-limitation",
+      "summary": "The FAQ references printed dietary menus, but no complete allergen matrix or cross-contact disclosure is publicly available online.",
+      "evidenceIds": [
+        "official-anju-faq"
+      ],
+      "resolved": true,
+      "resolution": "Marked 19 current products unavailable where direct positive evidence was insufficient and invented no negative or may-contain claims."
+    }
+  ],
+  "repairs": [
+    {
+      "id": "anju-current-menu-rebuild",
+      "status": "verified",
+      "summary": "Rebuilt Anju from its current restaurant-issued menu surfaces, removed parser artifacts and stale rows, restored omitted products, corrected source semantics and allergen signals, and preserved ambiguity rather than guessing.",
+      "files": [
+        "scripts/pipeline/anju-audit-catalog.mjs",
+        "scripts/pipeline/anju-audit-catalog.test.mjs",
+        "scripts/pipeline/anju-audit-reconciliation.mjs",
+        "scripts/pipeline/anju-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "src/data/generated/restaurants.generated.json"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/anju-dc/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node scripts/pipeline/anju-audit-catalog.mjs",
+        "node scripts/pipeline/anju-audit-reconciliation.mjs",
+        "node --test scripts/pipeline/anju-audit-catalog.test.mjs scripts/pipeline/anju-audit-reconciliation.test.mjs",
+        "RESTAURANT_REPAIR_ONLY_ID=anju-dc node scripts/repair-final-generated-regressions.mjs",
+        "node scripts/restaurant-verification-ledger.mjs validate"
+      ]
+    }
+  ],
+  "notes": [
+    "Corrected snapshot SHA-256: 4672e11802fe2dddd5f12d3c1d2da2498f8ddb704f8a8b2f21917f6fd54f219e.",
+    "Dinner artifact SHA-256: 5dd9f6a734b28b2daeff5b1ee634845d684b98a9b83556318c489a3cf0ced197.",
+    "Brunch artifact SHA-256: 09ecf150009a42942fa823ee94d50232a8662a7eb728ec1b1a6886df9c46f478.",
+    "Happy-hour artifact SHA-256: e4d987cb1078004d83c743ff46ce571563d583ed6215f1c257cf3847e7f1185a.",
+    "FAQ artifact SHA-256: 742bff4bdf7be2ddf659b3473ebb64405f690961b14539f38d0501bd26f75041.",
+    "Frozen live target SHA-256 before repair: af2a9fff1c415c2d66b2ddfc3e1986b7058c2e4af6d586ea50907d95ab60857c.",
+    "Live target SHA-256 after repair: 563ea97d529b88d576985c7ca72eb0194362debf3086349dd50c2926cf750430.",
+    "Live non-target restaurant projection SHA-256 remained 452b21588a36a00a4f180dc9018453f817f7b4ce5e238d02b46bc5715beb9197.",
+    "A second target-only repair run produced the same target hash and retained exactly one Anju repair note.",
+    "The repaired repository contains 113746 live menu items; the top-level historical itemCount field was intentionally not used as verification evidence."
+  ]
+}

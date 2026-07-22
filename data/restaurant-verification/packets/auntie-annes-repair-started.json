@@ -1,0 +1,32 @@
+{
+  "repairs": [
+    {
+      "id": "rebuild-auntie-annes-current-guide",
+      "status": "implemented",
+      "summary": "Rebuilt Auntie Anne's from the current March 2025 restaurant-issued U.S. guide: replaced the stale 37-row 2016 component abstraction with 46 current products, preserved 39 direct matrix rows and seven global-note-only fountain rows, applied the exact nine-allergen may-contain warning to every row, removed five process artifacts and eleven stale products, and did not infer gluten.",
+      "files": [
+        "scripts/pipeline/auntie-annes-audit-catalog.mjs",
+        "scripts/pipeline/auntie-annes-audit-catalog.test.mjs",
+        "scripts/pipeline/auntie-annes-audit-reconciliation.mjs",
+        "scripts/pipeline/auntie-annes-audit-reconciliation.test.mjs",
+        "scripts/repair-final-generated-regressions.mjs",
+        "scripts/restaurant-pipeline.test.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/repairs/auntie-annes/source-manifest.json",
+        "data/restaurant-verification/repairs/auntie-annes/source-reconciliation.json",
+        "data/restaurant-verification/repairs/auntie-annes/corrected-menu.json"
+      ],
+      "verificationCommands": [
+        "node --test scripts/pipeline/auntie-annes-audit-catalog.test.mjs scripts/pipeline/auntie-annes-audit-reconciliation.test.mjs",
+        "node --test --test-name-pattern=\"Auntie Anne's uses the current U.S. guide\" scripts/restaurant-pipeline.test.mjs"
+      ]
+    }
+  ],
+  "notes": [
+    "Targeted catalog and frozen-reconciliation tests passed: 6/6.",
+    "Targeted generated-data regression passed: 1/1.",
+    "The canonical repository now contains 46 Auntie Anne's products and uses only the current restaurant-issued U.S. guide as its configured source."
+  ],
+  "status": "repair_in_progress"
+}
