@@ -211,9 +211,10 @@ Every 20th Luna fast-path completion is reviewed by the single Sol reviewer thre
 
 `scripts/restaurant-verification-workers.mjs pipeline` and `pilot` implement the retired mandatory Luna -> Terra -> Sol flow. They are blocked unless explicitly invoked with `--allow-legacy-three-tier`. Existing run artifacts remain evidence and may be reused when draining the 40-row backlog.
 
-## Current continuation checkpoint
+## Batch continuation
 
-Batch 59 is complete. The exact frozen targets, commands, expected counts, and
-worker allocation for Batch 60 are in
-`docs/restaurant-verification-batch-60-handoff.md`. A new coordinator can start
-that batch from a fresh task by sending only `batch 60`.
+The reusable continuation contract is in
+`docs/restaurant-verification-batch-handoff.md`. A new coordinator starts the
+next sequential batch when the user sends only `batch N`; no batch-specific
+handoff document is required. The committed ledger and completed run
+directories determine both the next batch number and its three targets.
