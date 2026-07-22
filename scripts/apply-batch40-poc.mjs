@@ -4,7 +4,7 @@ import fs from "node:fs";
 import { annotateRestaurantWithIngredientIntelligence } from "./ingredient-intelligence.mjs";
 import { validatePocResearchFiles } from "./restaurant-verification-poc-result.mjs";
 
-const root = "/Users/skdraughn/software/allergy-app";
+const root = process.cwd().replaceAll("\\", "/");
 const requestedBatch = process.argv[2]?.startsWith("poc-batch-") ? process.argv[2] : null;
 const batchId = requestedBatch || "poc-batch-040-2026-07-21";
 const id = requestedBatch ? process.argv[3] : process.argv[2];
@@ -69,9 +69,12 @@ const allowedIds = new Set([
   "celebration-by-rupa-vira-ashburn-va",
   "celebrity-delly-falls-church-va",
   "central-michel-richard-washington-dc-dc-metro",
+  "centrolina-dc",
+  "chaatwala-herndon-va-dc-metro",
+  "chadwicks-alexandria-va-dc-metro",
 ]);
-if (!(/^poc-batch-0(?:40|41|42|43|44|45|46|47)-2026-07-21$/.test(batchId) || /^poc-batch-0(?:48|49|50|51|52|53|54|55|56|57|58|59)-2026-07-22$/.test(batchId)) || !allowedIds.has(id)) {
-  throw new Error("Usage: node scripts/apply-batch40-poc.mjs [poc-batch-059-2026-07-22] <restaurant-id>");
+if (!(/^poc-batch-0(?:40|41|42|43|44|45|46|47)-2026-07-21$/.test(batchId) || /^poc-batch-0(?:48|49|50|51|52|53|54|55|56|57|58|59|60)-2026-07-22$/.test(batchId)) || !allowedIds.has(id)) {
+  throw new Error("Usage: node scripts/apply-batch40-poc.mjs [poc-batch-060-2026-07-22] <restaurant-id>");
 }
 
 const run = `${root}/data/restaurant-verification/worker-runs/${batchId}`;
@@ -129,8 +132,11 @@ const containsAssertions = products.reduce((count, product) => count + (product.
 const mayContainAssertions = products.reduce((count, product) => count + (product.mayContainAllergens || []).length, 0);
 
 const generated = read(paths.generated);
-const targetIndex = generated.restaurants.findIndex((restaurant) => restaurant.id === id);
-assert(targetIndex >= 0, "generated target missing");
+let targetIndex = generated.restaurants.findIndex((restaurant) => restaurant.id === id);
+if (targetIndex < 0) {
+  targetIndex = generated.restaurants.length;
+  generated.restaurants.push({ id, name: job.name, locationId: job.locationId, items: [] });
+}
 const previous = generated.restaurants[targetIndex];
 const oldByKey = new Map((previous.items || []).map((item) => [item.id, item]));
 const items = products.map((product) => ({
