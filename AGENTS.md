@@ -15,3 +15,18 @@ For restaurant verification work, also follow
 restaurant records under `data/restaurant-verification/` as the source of
 truth. Raw captures and generated application projections are local build
 artifacts and must not be committed.
+
+## Opt-in distributed restaurant research
+
+Keep the ordinary `next` and `batch N` workflow unchanged. When the user asks
+to start a distributed, five-worker, front, or back restaurant batch, follow
+`docs/restaurant-verification-distributed-flow.md` instead.
+
+- "Start the distributed front batch" means run the opt-in `start-front` flow
+  with five research workers and monitor it until all five finish.
+- "Start the distributed back batch" means run the opt-in `start-back` flow
+  with five research workers and monitor it until all five finish.
+- On a secondary/back machine, do research only. Never claim or complete the
+  canonical ledger, run canonical APPLY, or modify generated/canonical files.
+- Reuse the machine's existing allocation file on later requests so each batch
+  consumes the next five explicitly allocated rows.
