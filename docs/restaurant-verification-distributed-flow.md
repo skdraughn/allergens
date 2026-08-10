@@ -33,6 +33,13 @@ This reserves the last 100 pending rows in a local allocation and launches the
 first five research jobs. Re-run the same command to process the next five.
 It does not claim or complete rows in the canonical ledger.
 
+While workers run, the coordinator prints a heartbeat every 15 seconds with
+each restaurant's latest research milestone and log size. Each worker also
+writes a durable status file under the run's `status/` directory. Final output
+distinguishes `ready_for_verification`, `needs_luna_fix`, `needs_sol_review`,
+and `failed`; a valid research file is no longer presented as though every
+downstream step were finished.
+
 The primary machine can use the same isolated five-worker research flow from
 the front of the ledger:
 
@@ -43,6 +50,17 @@ node scripts/restaurant-verification-distributed.mjs start-front \
   --count=100 \
   --workers=5
 ```
+
+Inspect or re-audit any run at any time:
+
+```bash
+node scripts/restaurant-verification-distributed.mjs status \
+  --run=<distributed-run-id>
+```
+
+The audit reports product, source, menu-surface, inspected-URL, and matrix
+evidence counts, the policy-selected next lane, and any traceability warnings.
+It is safe and read-only.
 
 Export a completed run:
 

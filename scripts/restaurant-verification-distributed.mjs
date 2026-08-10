@@ -3,7 +3,7 @@
 import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
 import { createWriteStream, existsSync } from "node:fs";
-import { copyFile, cp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
+import { copyFile, cp, mkdir, readFile, readdir, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -84,6 +84,7 @@ export async function prepareResearchRun({
     mkdir(path.join(runRoot, "jobs"), { recursive: true }),
     mkdir(path.join(runRoot, "results"), { recursive: true }),
     mkdir(path.join(runRoot, "logs"), { recursive: true }),
+    mkdir(path.join(runRoot, "status"), { recursive: true }),
   ]);
   const jobs = [];
   for (const entry of selected) {
@@ -111,7 +112,9 @@ export async function prepareResearchRun({
     await writeJson(jobPath, job);
     entry.state = "prepared";
     entry.runId = effectiveRunId;
-    jobs.push({ restaurantId: entry.restaurantId, jobPath, resultPath, status: "prepared" });
+    const statusPath = path.join(runRoot, "status", `${entry.restaurantId}.json`);
+    await writeJson(statusPath, workerStatus(entry.restaurantId, "prepared", now));
+    jobs.push({ restaurantId: entry.restaurantId, jobPath, resultPath, statusPath, status: "prepared" });
   }
   allocation.allocationSha256 = allocationDigest(allocation);
   await writeJson(path.resolve(allocationPath), allocation);
@@ -132,6 +135,7 @@ export async function prepareResearchRun({
       jobPath: path.relative(runRoot, job.jobPath),
       resultPath: path.relative(runRoot, job.resultPath),
       logPath: `logs/${job.restaurantId}.log`,
+      statusPath: `status/${job.restaurantId}.json`,
       status: "prepared",
     })),
   };
@@ -149,9 +153,14 @@ export async function runResearch({ allocationPath, workers = maximumDistributed
   manifest.status = "running";
   manifest.updatedAt = new Date().toISOString();
   await writeJson(manifestPath, manifest);
+  console.error(`[distributed] ${manifest.runId}: starting ${prepared.jobs.length} restaurant workers`);
+  const reporter = startProgressReporter(prepared.runRoot, prepared.jobs);
   const executions = await mapConcurrent(prepared.jobs, workers, async (job) => {
     const logPath = path.join(prepared.runRoot, "logs", `${job.restaurantId}.log`);
-    const prompt = researchPrompt({ jobPath: job.jobPath, resultPath: job.resultPath });
+    const startedAt = new Date().toISOString();
+    await writeJson(job.statusPath, workerStatus(job.restaurantId, "researching", startedAt, { milestone: "worker_started" }));
+    console.error(`[distributed] ${job.restaurantId}: worker started`);
+    const prompt = researchPrompt({ jobPath: job.jobPath, resultPath: job.resultPath, statusPath: job.statusPath });
     const args = [
       "-a", "never", "--search", "exec", "--model", "gpt-5.6-luna",
       "-c", "model_reasoning_effort=low", "--sandbox", "workspace-write", "--ephemeral",
@@ -160,8 +169,20 @@ export async function runResearch({ allocationPath, workers = maximumDistributed
     const execution = await spawnCodex({ args, logPath, timeoutSeconds });
     const resultExists = existsSync(job.resultPath);
     const validation = resultExists ? await validateResult(job.jobPath, job.resultPath) : null;
-    return { ...job, execution, resultExists, validation };
+    const quality = resultExists ? await assessResearchQuality(job.resultPath, validation) : null;
+    const completedAt = new Date().toISOString();
+    const status = execution.exitCode !== 0 || validation?.valid !== true ? "failed" :
+      validation.route?.lane !== "verify" ? `needs_${validation.route?.lane ?? "review"}` :
+      quality?.thoroughEnoughForNextLane !== true ? "needs_research_repair" : "ready_for_verification";
+    await writeJson(job.statusPath, workerStatus(job.restaurantId, status, startedAt, {
+      milestone: "coordinator_validated", completedAt,
+      durationSeconds: Math.round((Date.parse(completedAt) - Date.parse(startedAt)) / 1000),
+      exitCode: execution.exitCode, validation, quality,
+    }));
+    console.error(`[distributed] ${job.restaurantId}: ${status} (${validation?.currentProductCount ?? 0} products, ${validation?.sourceCount ?? 0} sources, route ${validation?.route?.lane ?? "unknown"})`);
+    return { ...job, execution, resultExists, validation, quality, startedAt, completedAt, status };
   });
+  clearInterval(reporter);
   const protectedAfter = await protectedHashes(prepared.jobs.map((job) => job.restaurantId));
   const protectedChanges = changedHashes(protectedBefore, protectedAfter);
   if (protectedChanges.length > 0) {
@@ -169,17 +190,23 @@ export async function runResearch({ allocationPath, workers = maximumDistributed
   }
   for (const execution of executions) {
     const target = manifest.jobs.find((job) => job.restaurantId === execution.restaurantId);
-    target.status = execution.execution.exitCode === 0 && execution.validation?.valid === true ? "completed" : "failed";
+    target.status = execution.status;
+    target.startedAt = execution.startedAt;
+    target.completedAt = execution.completedAt;
+    target.durationSeconds = Math.round((Date.parse(execution.completedAt) - Date.parse(execution.startedAt)) / 1000);
     target.exitCode = execution.execution.exitCode;
     target.validation = execution.validation;
+    target.quality = execution.quality;
   }
-  manifest.status = manifest.jobs.every((job) => job.status === "completed") ? "completed" : "failed";
+  manifest.summary = summarizeJobs(manifest.jobs);
+  manifest.status = manifest.jobs.some((job) => job.status === "failed") ? "failed" :
+    manifest.jobs.every((job) => job.status === "ready_for_verification") ? "completed" : "completed_with_followup";
   manifest.updatedAt = new Date().toISOString();
   await writeJson(manifestPath, manifest);
   const allocation = await readAllocation(allocationPath);
   for (const job of manifest.jobs) {
     const entry = allocation.entries.find((candidate) => candidate.restaurantId === job.restaurantId);
-    if (entry) entry.state = job.status === "completed" ? "completed" : "failed";
+    if (entry) entry.state = job.status === "failed" ? "failed" : "completed";
   }
   allocation.allocationSha256 = allocationDigest(allocation);
   await writeJson(path.resolve(allocationPath), allocation);
@@ -191,7 +218,7 @@ export async function exportRun({ allocationPath, runId, outputPath } = {}) {
   assertSafe(runId, "runId");
   const sourceRoot = path.join(defaultRunRoot, runId);
   const manifest = await readJson(path.join(sourceRoot, "manifest.json"));
-  if (manifest.status !== "completed") throw new Error("Only completed distributed runs can be exported.");
+  if (!["completed", "completed_with_followup"].includes(manifest.status)) throw new Error("Only completed distributed runs can be exported.");
   if (manifest.allocationId !== allocation.allocationId) throw new Error("Run/allocation mismatch.");
   const destination = path.resolve(outputPath ?? path.join(repositoryRoot, "tmp", `${runId}-export`));
   await rm(destination, { recursive: true, force: true });
@@ -228,7 +255,7 @@ export async function importRun({ bundlePath, write = false } = {}) {
     const bytes = await readFile(path.join(bundleRoot, file.path));
     if (sha256(bytes) !== file.sha256) throw new Error(`Bundle file hash mismatch: ${file.path}`);
   }
-  if (manifest.status !== "completed" || manifest.researchOnly !== true) throw new Error("Bundle is not a completed research-only run.");
+  if (!["completed", "completed_with_followup"].includes(manifest.status) || manifest.researchOnly !== true) throw new Error("Bundle is not a completed research-only run.");
   const ledger = parseJsonLines((await readFile(path.join(verificationRoot, "ledger.jsonl"), "utf8")));
   const ledgerById = new Map(ledger.map((row) => [row.restaurantId, row]));
   const validations = [];
@@ -254,8 +281,78 @@ export async function importRun({ bundlePath, write = false } = {}) {
   return { valid: true, write, importedPath, runId: manifest.runId, validations };
 }
 
-function researchPrompt({ jobPath, resultPath }) {
-  return `You are one of five isolated Luna-low restaurant research workers. Read docs/restaurant-verification-plan.md completely, then read ${path.relative(repositoryRoot, jobPath)} and its entire itemChecksPath. Perform only POC Phase A research for that one restaurant: verify the exact baseline count/fingerprint, identity/location, every current food and nonalcoholic menu surface, complete current product boundary, all four official allergen searches, conservative direct allergen and cross-contact evidence, and reconcile every frozen audit key exactly once. Write the canonical schemaVersion 1 POC result to ${path.relative(repositoryRoot, resultPath)}. Run node scripts/restaurant-verification-poc-result.mjs ${path.relative(repositoryRoot, jobPath)} ${path.relative(repositoryRoot, resultPath)} and keep correcting only the isolated result until its JSON says valid:true. RESEARCH ONLY: do not modify the ledger, generated projection, canonical restaurants/evidence/item-checks, apply scripts, or any file outside the named result and your process log.`;
+function researchPrompt({ jobPath, resultPath, statusPath }) {
+  const status = path.relative(repositoryRoot, statusPath);
+  return `You are one of five isolated Luna-low restaurant research workers. Read docs/restaurant-verification-plan.md completely, then read ${path.relative(repositoryRoot, jobPath)} and its entire itemChecksPath. Perform only POC Phase A research for that one restaurant: verify the exact baseline count/fingerprint, identity/location, every current food and nonalcoholic menu surface, complete current product boundary, all four official allergen searches, conservative direct allergen and cross-contact evidence, and reconcile every frozen audit key exactly once. Write a small JSON progress update to ${status} after each milestone: packet_validated, identity_verified, menu_surfaces_inventoried, matrix_search_completed, products_reconciled, and validator_passed. Each update must preserve restaurantId and startedAt and set updatedAt, status:"researching", milestone, and a concise details object with counts. Write the canonical schemaVersion 1 POC result to ${path.relative(repositoryRoot, resultPath)}. Run node scripts/restaurant-verification-poc-result.mjs ${path.relative(repositoryRoot, jobPath)} ${path.relative(repositoryRoot, resultPath)} and keep correcting only the isolated result until its JSON says valid:true. RESEARCH ONLY: do not modify the ledger, generated projection, canonical restaurants/evidence/item-checks, apply scripts, or any file outside the named result, named status file, and your process log.`;
+}
+
+export async function auditRun({ runId } = {}) {
+  assertSafe(runId, "runId");
+  const runRoot = path.join(defaultRunRoot, runId);
+  const manifest = await readJson(path.join(runRoot, "manifest.json"));
+  const jobs = [];
+  for (const job of manifest.jobs) {
+    const jobPath = path.join(runRoot, job.jobPath);
+    const resultPath = path.join(runRoot, job.resultPath);
+    const validation = existsSync(resultPath) ? await validateResult(jobPath, resultPath) : null;
+    const quality = existsSync(resultPath) ? await assessResearchQuality(resultPath, validation) : null;
+    jobs.push({ restaurantId: job.restaurantId, status: job.status, validation, quality });
+  }
+  return { runId, manifestStatus: manifest.status, summary: summarizeJobs(jobs.map((job) => ({ status: classifyValidatedJob(job.validation, job.quality) }))), jobs };
+}
+
+async function assessResearchQuality(resultPath, validation) {
+  const result = await readJson(resultPath);
+  const attempts = result.matrixSearch?.attempts ?? [];
+  const weakAttempts = attempts.filter((attempt) =>
+    !(attempt.queryOrLocation || attempt.query) ||
+    (!(attempt.urls?.length) && !(attempt.sourceEvidenceIds?.length)));
+  const warnings = [...(validation?.warnings ?? [])];
+  if (attempts.length < 4) warnings.push(`Only ${attempts.length} matrix-search attempt records were supplied.`);
+  if (weakAttempts.length) warnings.push(`${weakAttempts.length} matrix-search attempt(s) lack a query/location or inspectable URL/evidence reference.`);
+  return {
+    sourceCount: result.sources?.length ?? 0,
+    menuSurfaceCount: result.menuSurfaces?.length ?? 0,
+    matrixAttemptCount: attempts.length,
+    inspectedUrlCount: attempts.flatMap((attempt) => attempt.urls ?? []).length,
+    matrixEvidenceReferenceCount: attempts.flatMap((attempt) => attempt.sourceEvidenceIds ?? []).length,
+    warnings,
+    thoroughEnoughForNextLane: validation?.valid === true && attempts.length >= 4 && weakAttempts.length === 0,
+  };
+}
+
+function classifyValidatedJob(validation, quality) {
+  if (validation?.valid !== true) return "failed";
+  if (validation.route?.lane !== "verify") return `needs_${validation.route?.lane ?? "review"}`;
+  return quality?.thoroughEnoughForNextLane === true ? "ready_for_verification" : "needs_research_repair";
+}
+
+function workerStatus(restaurantId, status, startedAt, extra = {}) {
+  return { schemaVersion: 1, restaurantId, status, startedAt, updatedAt: new Date().toISOString(), ...extra };
+}
+
+function summarizeJobs(jobs) {
+  const counts = {};
+  for (const job of jobs) counts[job.status] = (counts[job.status] ?? 0) + 1;
+  return { total: jobs.length, counts };
+}
+
+function startProgressReporter(runRoot, jobs) {
+  const last = new Map();
+  return setInterval(async () => {
+    for (const job of jobs) {
+      try {
+        const status = await readJson(job.statusPath);
+        const logPath = path.join(runRoot, "logs", `${job.restaurantId}.log`);
+        const logBytes = existsSync(logPath) ? (await stat(logPath)).size : 0;
+        const signature = `${status.milestone}:${status.updatedAt}:${logBytes}`;
+        if (last.get(job.restaurantId) !== signature) {
+          last.set(job.restaurantId, signature);
+          console.error(`[progress] ${job.restaurantId}: ${status.milestone ?? status.status}; log ${Math.round(logBytes / 1024)} KiB`);
+        }
+      } catch { /* The coordinator's final validation remains authoritative. */ }
+    }
+  }, 15_000);
 }
 
 async function validateResult(jobPath, resultPath) {
@@ -384,7 +481,10 @@ async function main() {
   if (command === "import" || command === "verify-import") {
     console.log(JSON.stringify(await importRun({ bundlePath: options.bundle, write: command === "import" }), null, 2)); return;
   }
-  console.log("Commands: allocate, prepare, run, start-front, start-back, export, verify-import, import");
+  if (command === "audit" || command === "status") {
+    console.log(JSON.stringify(await auditRun({ runId: options.run }), null, 2)); return;
+  }
+  console.log("Commands: allocate, prepare, run, start-front, start-back, audit, status, export, verify-import, import");
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
