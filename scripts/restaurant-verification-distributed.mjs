@@ -7,6 +7,8 @@ import { copyFile, cp, mkdir, readFile, readdir, rm, stat, writeFile } from "nod
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { mergeBindingSolReview } from "./restaurant-verification-poc-closeout.mjs";
+
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(scriptDirectory, "..");
 const verificationRoot = path.join(repositoryRoot, "data/restaurant-verification");
@@ -85,6 +87,9 @@ export async function prepareResearchRun({
     mkdir(path.join(runRoot, "results"), { recursive: true }),
     mkdir(path.join(runRoot, "logs"), { recursive: true }),
     mkdir(path.join(runRoot, "status"), { recursive: true }),
+    mkdir(path.join(runRoot, "followup-logs"), { recursive: true }),
+    mkdir(path.join(runRoot, "resolved-results"), { recursive: true }),
+    mkdir(path.join(runRoot, "reviews"), { recursive: true }),
   ]);
   const jobs = [];
   for (const entry of selected) {
@@ -171,7 +176,8 @@ export async function runResearch({ allocationPath, workers = maximumDistributed
     const validation = resultExists ? await validateResult(job.jobPath, job.resultPath) : null;
     const quality = resultExists ? await assessResearchQuality(job.resultPath, validation) : null;
     const completedAt = new Date().toISOString();
-    const status = execution.exitCode !== 0 || validation?.valid !== true ? "failed" :
+    const status = execution.exitCode !== 0 || !resultExists ? "failed" :
+      validation?.valid !== true ? "needs_research_retry" :
       validation.route?.lane !== "verify" ? `needs_${validation.route?.lane ?? "review"}` :
       quality?.thoroughEnoughForNextLane !== true ? "needs_research_repair" : "ready_for_verification";
     await writeJson(job.statusPath, workerStatus(job.restaurantId, status, startedAt, {
@@ -182,13 +188,14 @@ export async function runResearch({ allocationPath, workers = maximumDistributed
     console.error(`[distributed] ${job.restaurantId}: ${status} (${validation?.currentProductCount ?? 0} products, ${validation?.sourceCount ?? 0} sources, route ${validation?.route?.lane ?? "unknown"})`);
     return { ...job, execution, resultExists, validation, quality, startedAt, completedAt, status };
   });
+  const followedUp = await runAutomaticFollowups({ runRoot: prepared.runRoot, executions, timeoutSeconds });
   clearInterval(reporter);
   const protectedAfter = await protectedHashes(prepared.jobs.map((job) => job.restaurantId));
   const protectedChanges = changedHashes(protectedBefore, protectedAfter);
   if (protectedChanges.length > 0) {
     throw new Error(`Research-only worker modified protected paths: ${protectedChanges.join(", ")}`);
   }
-  for (const execution of executions) {
+  for (const execution of followedUp) {
     const target = manifest.jobs.find((job) => job.restaurantId === execution.restaurantId);
     target.status = execution.status;
     target.startedAt = execution.startedAt;
@@ -197,16 +204,19 @@ export async function runResearch({ allocationPath, workers = maximumDistributed
     target.exitCode = execution.execution.exitCode;
     target.validation = execution.validation;
     target.quality = execution.quality;
+    target.followups = execution.followups ?? [];
+    target.finalResultPath = execution.finalResultPath ? path.relative(prepared.runRoot, execution.finalResultPath) : target.resultPath;
   }
   manifest.summary = summarizeJobs(manifest.jobs);
   manifest.status = manifest.jobs.some((job) => job.status === "failed") ? "failed" :
-    manifest.jobs.every((job) => job.status === "ready_for_verification") ? "completed" : "completed_with_followup";
+    manifest.jobs.some((job) => job.status.startsWith("blocked_")) ? "blocked" :
+    manifest.jobs.every((job) => job.status === "awaiting_serialized_apply") ? "completed" : "completed_with_followup";
   manifest.updatedAt = new Date().toISOString();
   await writeJson(manifestPath, manifest);
   const allocation = await readAllocation(allocationPath);
   for (const job of manifest.jobs) {
     const entry = allocation.entries.find((candidate) => candidate.restaurantId === job.restaurantId);
-    if (entry) entry.state = job.status === "failed" ? "failed" : "completed";
+    if (entry) entry.state = job.status === "failed" ? "failed" : job.status.startsWith("blocked_") ? "blocked" : "completed";
   }
   allocation.allocationSha256 = allocationDigest(allocation);
   await writeJson(path.resolve(allocationPath), allocation);
@@ -266,7 +276,7 @@ export async function importRun({ bundlePath, write = false } = {}) {
     if (row.status !== "pending") throw new Error(`${jobEntry.restaurantId} is no longer pending (${row.status}).`);
     if (row.baseline.itemFingerprint !== allocationEntry.baselineFingerprint) throw new Error(`${jobEntry.restaurantId} baseline is stale.`);
     const jobPath = path.join(bundleRoot, "run", jobEntry.jobPath);
-    const resultPath = path.join(bundleRoot, "run", jobEntry.resultPath);
+    const resultPath = path.join(bundleRoot, "run", jobEntry.finalResultPath ?? jobEntry.resultPath);
     const validation = await validateResult(jobPath, resultPath);
     if (!validation.valid) throw new Error(`${jobEntry.restaurantId} result is invalid: ${(validation.errors ?? []).join("; ")}`);
     validations.push({ restaurantId: jobEntry.restaurantId, validation });
@@ -293,12 +303,17 @@ export async function auditRun({ runId } = {}) {
   const jobs = [];
   for (const job of manifest.jobs) {
     const jobPath = path.join(runRoot, job.jobPath);
-    const resultPath = path.join(runRoot, job.resultPath);
+    const resultPath = path.join(runRoot, job.finalResultPath ?? job.resultPath);
     const validation = existsSync(resultPath) ? await validateResult(jobPath, resultPath) : null;
     const quality = existsSync(resultPath) ? await assessResearchQuality(resultPath, validation) : null;
     jobs.push({ restaurantId: job.restaurantId, status: job.status, validation, quality });
   }
-  return { runId, manifestStatus: manifest.status, summary: summarizeJobs(jobs.map((job) => ({ status: classifyValidatedJob(job.validation, job.quality) }))), jobs };
+  const summaryJobs = jobs.map((job) => ({
+    status: job.status === "awaiting_serialized_apply" || job.status === "failed" || job.status?.startsWith("blocked_")
+      ? job.status
+      : classifyValidatedJob(job.validation, job.quality),
+  }));
+  return { runId, manifestStatus: manifest.status, summary: summarizeJobs(summaryJobs), jobs };
 }
 
 async function assessResearchQuality(resultPath, validation) {
@@ -353,6 +368,99 @@ function startProgressReporter(runRoot, jobs) {
       } catch { /* The coordinator's final validation remains authoritative. */ }
     }
   }, 15_000);
+}
+
+async function runAutomaticFollowups({ runRoot, executions, timeoutSeconds }) {
+  let solTail = Promise.resolve();
+  const withSolLock = (task) => {
+    const pending = solTail.then(task, task);
+    solTail = pending.catch(() => {});
+    return pending;
+  };
+  return mapConcurrent(executions, maximumDistributedWorkers, async (execution) => {
+    let current = { ...execution, finalResultPath: execution.resultPath, followups: [] };
+    for (let attempt = 1; attempt <= 4; attempt++) {
+      const action = nextFollowupAction(current.status);
+      if (action === "handoff") {
+        current.status = "awaiting_serialized_apply";
+        await updateFollowupStatus(current, "coordinator_handoff", { finalResultPath: path.relative(repositoryRoot, current.finalResultPath) }, "awaiting_serialized_apply");
+        return current;
+      }
+      if (action === "luna") {
+        current = await runLunaFollowup({ runRoot, execution: current, timeoutSeconds, attempt });
+        continue;
+      }
+      if (action === "sol") {
+        current = await withSolLock(() => runSolFollowup({ runRoot, execution: current, timeoutSeconds, attempt }));
+        continue;
+      }
+      return current;
+    }
+    current.status = "blocked_followup_limit";
+    await updateFollowupStatus(current, "followup_limit_reached", { attempts: current.followups.length });
+    return current;
+  });
+}
+
+export function nextFollowupAction(status) {
+  if (status === "ready_for_verification") return "handoff";
+  if (["needs_luna_fix", "needs_research_repair", "needs_research_retry"].includes(status)) return "luna";
+  if (status === "needs_sol_review") return "sol";
+  return "stop";
+}
+
+async function runLunaFollowup({ runRoot, execution, timeoutSeconds, attempt }) {
+  const kind = execution.status;
+  const outputPath = path.join(runRoot, "resolved-results", `${execution.restaurantId}-luna-${attempt}.json`);
+  const logPath = path.join(runRoot, "followup-logs", `${execution.restaurantId}-luna-${attempt}.log`);
+  await updateFollowupStatus(execution, "luna_followup_started", { kind, attempt });
+  console.error(`[followup] ${execution.restaurantId}: Luna ${kind} started`);
+  const prompt = `You are the Luna-low follow-up worker for one isolated restaurant result. Read docs/restaurant-verification-plan.md completely, the immutable job ${path.relative(repositoryRoot, execution.jobPath)}, and the prior isolated result ${path.relative(repositoryRoot, execution.finalResultPath)}. Coordinator validation was ${JSON.stringify(execution.validation?.errors ?? [])}; quality warnings were ${JSON.stringify(execution.quality?.warnings ?? [])}; route reasons were ${JSON.stringify(execution.validation?.route?.reasons ?? [])}. Resolve only those research or mechanical catalog issues. Preserve supported direct allergen evidence and every frozen-key reconciliation. Write the complete corrected result to ${path.relative(repositoryRoot, outputPath)} and run node scripts/restaurant-verification-poc-result.mjs ${path.relative(repositoryRoot, execution.jobPath)} ${path.relative(repositoryRoot, outputPath)} until it returns valid:true. Do not edit canonical restaurant, evidence, item-check, generated-data, apply-script, or ledger files.`;
+  const result = await spawnCodex({
+    args: ["-a", "never", "--search", "exec", "--model", "gpt-5.6-luna", "-c", "model_reasoning_effort=low", "--sandbox", "workspace-write", "--ephemeral", "-C", repositoryRoot, prompt],
+    logPath, timeoutSeconds,
+  });
+  const validation = existsSync(outputPath) ? await validateResult(execution.jobPath, outputPath) : null;
+  const quality = existsSync(outputPath) ? await assessResearchQuality(outputPath, validation) : null;
+  const status = result.exitCode !== 0 || !existsSync(outputPath) ? "failed" : classifyValidatedJob(validation, quality);
+  const followup = { type: "luna", kind, attempt, exitCode: result.exitCode, outputPath: path.relative(runRoot, outputPath), logPath: path.relative(runRoot, logPath), status, validation, quality };
+  console.error(`[followup] ${execution.restaurantId}: Luna finished -> ${status}`);
+  return { ...execution, status, validation, quality, finalResultPath: existsSync(outputPath) ? outputPath : execution.finalResultPath, followups: [...execution.followups, followup] };
+}
+
+async function runSolFollowup({ runRoot, execution, timeoutSeconds, attempt }) {
+  const reviewPath = path.join(runRoot, "reviews", `${execution.restaurantId}-sol-${attempt}.json`);
+  const mergedPath = path.join(runRoot, "resolved-results", `${execution.restaurantId}-sol-${attempt}.json`);
+  const logPath = path.join(runRoot, "followup-logs", `${execution.restaurantId}-sol-${attempt}.log`);
+  await updateFollowupStatus(execution, "sol_review_started", { attempt, reasons: execution.validation?.route?.reasons ?? [] });
+  console.error(`[followup] ${execution.restaurantId}: Sol narrow review started`);
+  const prompt = `You are the single Sol-medium safety reviewer. Read docs/restaurant-verification-plan.md completely, job ${path.relative(repositoryRoot, execution.jobPath)}, and isolated result ${path.relative(repositoryRoot, execution.finalResultPath)}. Review only these coordinator-routed conflicts: ${JSON.stringify(execution.validation?.route?.reasons ?? [])}. Do not repeat general discovery. Write a binding review compatible with mergeBindingSolReview in scripts/restaurant-verification-poc-closeout.mjs to ${path.relative(repositoryRoot, reviewPath)}. It must include batchId, restaurantId, reviewType, validation:{valid:true}, and resolution:{binding:true,items:[],surfaceResolutions:[]}; resolve the exact unresolved item keys and partial surface IDs once, add only evidence-supported mappings/products, and explicitly resolve any routed identity or authority conflict. If the evidence cannot resolve a conflict, write validation.valid:false and a precise blockedReason. Do not modify any other file.`;
+  const result = await spawnCodex({
+    args: ["-a", "never", "--search", "exec", "--model", "gpt-5.6-sol", "-c", "model_reasoning_effort=medium", "--sandbox", "workspace-write", "--ephemeral", "-C", repositoryRoot, prompt],
+    logPath, timeoutSeconds,
+  });
+  let validation = null; let quality = null; let status = "failed"; let mergeError = null;
+  if (result.exitCode === 0 && existsSync(reviewPath)) {
+    try {
+      const [prior, review] = await Promise.all([readJson(execution.finalResultPath), readJson(reviewPath)]);
+      if (review.validation?.valid !== true) {
+        status = "blocked_sol_review";
+      } else {
+        const merged = mergeBindingSolReview(prior, review);
+        await writeJson(mergedPath, merged);
+        validation = await validateResult(execution.jobPath, mergedPath);
+        quality = await assessResearchQuality(mergedPath, validation);
+        status = classifyValidatedJob(validation, quality);
+      }
+    } catch (error) { mergeError = error.message; status = "failed"; }
+  }
+  const followup = { type: "sol", attempt, exitCode: result.exitCode, reviewPath: path.relative(runRoot, reviewPath), outputPath: existsSync(mergedPath) ? path.relative(runRoot, mergedPath) : null, logPath: path.relative(runRoot, logPath), status, mergeError, validation, quality };
+  console.error(`[followup] ${execution.restaurantId}: Sol finished -> ${status}`);
+  return { ...execution, status, validation: validation ?? execution.validation, quality: quality ?? execution.quality, finalResultPath: existsSync(mergedPath) ? mergedPath : execution.finalResultPath, followups: [...execution.followups, followup] };
+}
+
+async function updateFollowupStatus(execution, milestone, details, status = "followup_running") {
+  await writeJson(execution.statusPath, workerStatus(execution.restaurantId, status, execution.startedAt, { milestone, details }));
 }
 
 async function validateResult(jobPath, resultPath) {

@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import { createAllocation, maximumDistributedWorkers } from "./restaurant-verification-distributed.mjs";
+import { createAllocation, maximumDistributedWorkers, nextFollowupAction } from "./restaurant-verification-distributed.mjs";
 
 async function fixture() {
   const root = await mkdtemp(path.join(os.tmpdir(), "restaurant-distributed-"));
@@ -37,4 +37,14 @@ test("distributed allocations select explicit pending rows from either boundary"
 
 test("distributed worker ceiling reserves one six-slot coordinator position", () => {
   assert.equal(maximumDistributedWorkers, 5);
+});
+
+test("distributed followups continue every nonterminal research lane", () => {
+  assert.equal(nextFollowupAction("ready_for_verification"), "handoff");
+  assert.equal(nextFollowupAction("needs_luna_fix"), "luna");
+  assert.equal(nextFollowupAction("needs_research_repair"), "luna");
+  assert.equal(nextFollowupAction("needs_research_retry"), "luna");
+  assert.equal(nextFollowupAction("needs_sol_review"), "sol");
+  assert.equal(nextFollowupAction("blocked_sol_review"), "stop");
+  assert.equal(nextFollowupAction("failed"), "stop");
 });

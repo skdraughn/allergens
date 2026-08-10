@@ -40,6 +40,20 @@ distinguishes `ready_for_verification`, `needs_luna_fix`, `needs_sol_review`,
 and `failed`; a valid research file is no longer presented as though every
 downstream step were finished.
 
+The coordinator automatically continues every nonterminal research lane:
+
+- validation or traceability failures receive one focused Luna correction;
+- mechanical catalog routes receive a Luna catalog-fix pass;
+- safety conflicts enter the single serialized Sol-medium review lane;
+- a Sol resolution that still requires mechanical cleanup returns to Luna;
+- clean results stop at `awaiting_serialized_apply`.
+
+Follow-ups are capped at four transitions per restaurant. Exhausting that cap,
+an unresolvable Sol decision, or a worker failure becomes an explicit blocked
+or failed terminal state. On both machines these follow-ups remain isolated:
+they write only run results, reviews, status, and logs. Canonical APPLY and
+ledger closeout remain serialized on the primary machine.
+
 The primary machine can use the same isolated five-worker research flow from
 the front of the ledger:
 
