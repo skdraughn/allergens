@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import { createAllocation, maximumDistributedWorkers, nextFollowupAction } from "./restaurant-verification-distributed.mjs";
+import { createAllocation, maximumDistributedWorkers, nextFollowupAction, resolveCodexInvocation, workerSandboxForPlatform } from "./restaurant-verification-distributed.mjs";
 
 async function fixture() {
   const root = await mkdtemp(path.join(os.tmpdir(), "restaurant-distributed-"));
@@ -35,8 +35,37 @@ test("distributed allocations select explicit pending rows from either boundary"
   assert.equal(JSON.parse(await readFile(frontPath, "utf8")).allocationSha256, front.allocation.allocationSha256);
 });
 
+test("distributed allocations can skip previously researched pending rows", async () => {
+  const root = await fixture();
+  const outputPath = path.join(root, "back-next.json");
+  const result = await createAllocation({ root, direction: "back", count: 1, skip: 2, machineId: "back-machine", outputPath, now: "2026-08-10T00:00:00.000Z" });
+  assert.equal(result.allocation.selectionOffset, 2);
+  assert.deepEqual(result.allocation.entries.map((entry) => entry.restaurantId), ["a"]);
+  assert.equal(JSON.parse(await readFile(outputPath, "utf8")).allocationSha256, result.allocation.allocationSha256);
+});
+
 test("distributed worker ceiling reserves one six-slot coordinator position", () => {
   assert.equal(maximumDistributedWorkers, 5);
+});
+
+test("distributed workers launch the npm Codex entrypoint directly on Windows", () => {
+  const args = ["exec", "prompt with & shell characters"];
+  const invocation = resolveCodexInvocation(args, {
+    platform: "win32",
+    env: { PATH: "C:\\npm;C:\\other" },
+    nodeExecutable: "C:\\node.exe",
+    fileExists: (candidate) => candidate === path.join("C:\\npm", "node_modules", "@openai", "codex", "bin", "codex.js"),
+  });
+  assert.deepEqual(invocation, {
+    command: "C:\\node.exe",
+    args: [path.join("C:\\npm", "node_modules", "@openai", "codex", "bin", "codex.js"), ...args],
+  });
+});
+
+test("distributed workers bypass a broken native sandbox only on Windows", () => {
+  assert.equal(workerSandboxForPlatform("win32"), "danger-full-access");
+  assert.equal(workerSandboxForPlatform("linux"), "workspace-write");
+  assert.equal(workerSandboxForPlatform("darwin"), "workspace-write");
 });
 
 test("distributed followups continue every nonterminal research lane", () => {

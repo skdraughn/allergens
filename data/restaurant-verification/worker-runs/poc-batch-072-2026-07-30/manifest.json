@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 3,
+  "workflow": "safeplate_poc",
+  "runId": "poc-batch-072-2026-07-30",
+  "createdAt": "2026-07-30T19:50:09.102Z",
+  "updatedAt": "2026-07-30T20:13:33.157Z",
+  "status": "completed",
+  "models": {
+    "worker": {
+      "id": "gpt-5.6-luna",
+      "reasoningEffort": "low"
+    },
+    "reviewer": {
+      "id": "gpt-5.6-sol",
+      "reasoningEffort": "medium",
+      "onDemand": true
+    }
+  },
+  "concurrency": {
+    "luna": 3,
+    "terra": 0,
+    "sol": 1
+  },
+  "jobs": [
+    {
+      "restaurantId": "chloe-dc",
+      "name": "Chloe",
+      "status": "completed",
+      "agentId": "luna_chloe",
+      "jobPath": "jobs/chloe-dc.json",
+      "resultPath": "results/chloe-dc.json",
+      "applyAgentId": "coordinator",
+      "lunaAttempts": 1,
+      "completedAt": "2026-07-30T20:00:08.212Z"
+    },
+    {
+      "restaurantId": "chloez-cafe-fairfax-station-dc-metro",
+      "name": "Chloez Cafe Fairfax Station",
+      "status": "completed",
+      "agentId": "luna_chloez",
+      "jobPath": "jobs/chloez-cafe-fairfax-station-dc-metro.json",
+      "resultPath": "results/chloez-cafe-fairfax-station-dc-metro.json",
+      "applyAgentId": "coordinator",
+      "lunaAttempts": 1,
+      "solRequired": true,
+      "reviewPath": "reviews/chloez-cafe-fairfax-station-dc-metro.json",
+      "completedAt": "2026-07-30T20:13:16.831Z"
+    },
+    {
+      "restaurantId": "chopt-dc",
+      "name": "Chopt",
+      "status": "completed",
+      "agentId": "luna_chopt",
+      "jobPath": "jobs/chopt-dc.json",
+      "resultPath": "results/chopt-dc.json",
+      "applyAgentId": "coordinator",
+      "lunaAttempts": 1,
+      "completedAt": "2026-07-30T20:13:33.157Z"
+    }
+  ]
+}

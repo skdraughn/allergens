@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-125-2026-08-01",
+  "restaurantId": "famous-daves",
+  "reviewType": "narrow_official_allergen_matrix_resolution",
+  "validation": {
+    "valid": true,
+    "identityConfirmed": true,
+    "officialMatrixFound": true,
+    "officialMatrixPageCount": 5,
+    "officialMatrixLinkedFromCurrentNutritionPage": true,
+    "officialMatrixHasItemLevelPositiveCells": true,
+    "officialMatrixHasMayContainCells": true,
+    "officialMatrixHasCrossContactStatement": true,
+    "frozenItemCount": 217,
+    "submittedCurrentProductCount": 217,
+    "submittedUnavailableProductCount": 217,
+    "submittedEmptyAllergenCellCount": 217,
+    "parserIssueConfirmed": true,
+    "unsupportedNegativeClaimAbsent": true
+  },
+  "resolution": {
+    "binding": true,
+    "decision": "return_to_luna_for_focused_matrix_extraction",
+    "officialAllergenConflict": false,
+    "parserIssueConfirmed": true,
+    "terminalAllowed": false,
+    "matrix": {
+      "url": "https://www.famousdaves.com/FamousDaves/media/File-Attachments/Nutrition%20and%20Allergen%20Guide/Allergen-Guide_3-11.pdf",
+      "authorityTier": "restaurant_issued",
+      "pageCount": 5,
+      "versionPrinted": "07.06.2020",
+      "linkedFrom": "https://www.famousdaves.com/NutritionInfo/",
+      "columns": [
+        "fried",
+        "egg",
+        "fish",
+        "milk",
+        "peanut",
+        "shellfish",
+        "soy",
+        "tree_nut",
+        "wheat",
+        "gluten"
+      ],
+      "columnExtractionRequirement": "Extract cells from the PDF table geometry or a visually verified structured transcription. Plain text extraction collapses column positions and cannot safely assign unlabeled X marks.",
+      "directEvidenceExamples": [
+        "The matrix explicitly names Anchovies, Catfish, Salmon, Shrimp, and Pecans for affected rows.",
+        "The dessert rows for Chocolate Cookies and Cream Cake, Lemon Cream Cake with Triple Berry Sauce, and NY Cheesecake contain explicit may-contain cells.",
+        "Numerous other rows contain X marks under named allergen columns and therefore cannot remain wholesale unavailable after structured extraction."
+      ]
+    },
+    "crossContact": {
+      "preserve": true,
+      "statement": "Famous Dave's states that shared preparation areas, equipment, utensils, and fryers can cause allergen contact; it cannot guarantee that products are completely free of allergens and does not operate gluten-free kitchens.",
+      "sourceUrls": [
+        "https://www.famousdaves.com/NutritionInfo/",
+        "https://www.famousdaves.com/FamousDaves/media/File-Attachments/Nutrition%20and%20Allergen%20Guide/Allergen-Guide_3-11.pdf"
+      ]
+    },
+    "requiredCoordinatorAction": {
+      "action": "focused_allergen_matrix_repair",
+      "preserveCurrentCatalog": true,
+      "repeatIdentityResearch": false,
+      "repeatMenuDiscovery": false,
+      "repeatMatrixSearches": false,
+      "extractAllFivePages": true,
+      "requireGeometryAwareCellMapping": true,
+      "applyRestaurantIssuedAuthority": true,
+      "preserveExplicitMayContain": true,
+      "preserveCrossContact": true,
+      "leaveUnmatchedOrAmbiguousRowsUnavailable": true,
+      "neverTreatBlankOrLostCellsAsConfirmedAbsence": true
+    },
+    "supportingEvidence": [
+      {
+        "evidenceId": "official-nutrition",
+        "url": "https://www.famousdaves.com/NutritionInfo/",
+        "authorityTier": "restaurant_issued",
+        "finding": "The current official page links guests to allergen information, identifies manufacturer-supplied allergen data, and states that cross-contamination can occur and no item is guaranteed allergen-free."
+      },
+      {
+        "evidenceId": "official-five-page-allergen-guide",
+        "url": "https://www.famousdaves.com/FamousDaves/media/File-Attachments/Nutrition%20and%20Allergen%20Guide/Allergen-Guide_3-11.pdf",
+        "authorityTier": "restaurant_issued",
+        "finding": "The linked five-page table contains item-level allergen X marks, named fish/shellfish/tree-nut entries, explicit may-contain cells, and repeated shared-fryer warnings."
+      }
+    ],
+    "rationale": "There is no conflict between official evidence sources. The conflict is between a positive restaurant-issued matrix and the submitted projection, which marks every one of 217 products unavailable with empty allergen arrays. The PDF's linear text layer preserves row labels but collapses the horizontal position of most X marks; consequently, wholesale empty cells demonstrate an extraction/parser failure, while guessing column assignments from text order would be unsafe. The binding repair is a focused, geometry-aware transcription of all five pages. Direct contains and explicit may-contain cells must use restaurant-issued authority, the shared-preparation warning must remain restaurant-level evidence, and any genuinely unmatched or visually ambiguous row must remain unavailable rather than becoming an allergen-negative claim."
+  },
+  "remainingSolSignals": []
+}

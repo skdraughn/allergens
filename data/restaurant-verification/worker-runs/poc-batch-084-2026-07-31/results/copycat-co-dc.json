@@ -1,0 +1,1173 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-084-2026-07-31",
+  "restaurantId": "copycat-co-dc",
+  "runId": "poc-batch-084-2026-07-31",
+  "stage": "luna_phase_a",
+  "packetValidation": {
+    "restaurantId": "copycat-co-dc",
+    "name": "Copycat Co.",
+    "locationId": "h-street-dc",
+    "domain": "copycatcompany.com",
+    "baselineItemCount": 37,
+    "baselineFingerprint": "fcc34396df3c10663a140046a5cd7a0e7c1a1978ad169233036e4d7ed7e5ee2f",
+    "itemChecksRead": 37,
+    "itemChecksPath": "data/restaurant-verification/item-checks/copycat-co-dc.jsonl"
+  },
+  "identity": {
+    "status": "confirmed",
+    "operatingStatus": "open",
+    "name": "Copycat Co.",
+    "location": "1110 H Street NE, Washington, DC 20002",
+    "address": "1110 H Street NE, Washington, DC 20002",
+    "locationId": "h-street-dc",
+    "domain": "copycatcompany.com",
+    "officialHomepage": "https://www.copycatcompany.com/",
+    "sourceEvidenceIds": [
+      "official-homepage",
+      "copycat-toast-current"
+    ],
+    "notes": "The official homepage binds Copycat Co. to 1110 H St NE and links the exact-address Toast store. The live ordering surface is active and exposes current pickup hours; there is no sibling location ambiguity."
+  },
+  "sources": [
+    {
+      "evidenceId": "official-homepage",
+      "url": "https://www.copycatcompany.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "both",
+      "retrievedAt": "2026-07-31T23:59:00.000-04:00",
+      "excerpt": "Current first-party homepage identifies CopyCat Company at 1110 H St NE, Washington, DC 20002, links the exact Toast store, and displays its current 2026 summer cocktail graphic."
+    },
+    {
+      "evidenceId": "copycat-toast-current",
+      "url": "https://order.toasttab.com/online/copycat-co-1110-h-st-ne",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "both",
+      "retrievedAt": "2026-07-31T23:59:00.000-04:00",
+      "excerpt": "Fresh complete exact-store inspection found 40 visible cards: three repeated featured food cards, 36 unique food products across three groups, and one alcohol-only To Go Cocktail. Descriptions directly name selected allergens such as peanut, sesame, egg, crab, shrimp, and walnut."
+    },
+    {
+      "evidenceId": "official-document-search",
+      "url": "https://www.google.com/search?q=site%3Acopycatcompany.com+filetype%3Apdf+allergen+allergy+nutrition+ingredients+gluten",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "retrievedAt": "2026-07-31T23:59:00.000-04:00",
+      "excerpt": "Fresh official-domain document and PDF searches found no restaurant-issued allergen matrix, nutrition guide, ingredient guide, or cross-contact statement."
+    },
+    {
+      "evidenceId": "linked-vendor-search",
+      "url": "https://www.google.com/search?q=site%3Aorder.toasttab.com%2Fonline%2Fcopycat-co-1110-h-st-ne+allergen+allergy+gluten+nutrition+ingredients",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "retrievedAt": "2026-07-31T23:59:00.000-04:00",
+      "excerpt": "Search and direct inspection of the restaurant-linked Toast store found menu descriptions with selective ingredients but no complete allergen matrix or cross-contact policy."
+    },
+    {
+      "evidenceId": "targeted-allergen-search",
+      "url": "https://www.google.com/search?q=%22Copycat+Co%22+%221110+H+St+NE%22+allergen+allergy+cross-contact+gluten-free+nutrition",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "retrievedAt": "2026-07-31T23:59:00.000-04:00",
+      "excerpt": "Fresh exact-brand and exact-address searches returned the official homepage, exact Toast menu, and directory/review pages, but no authoritative allergen matrix or cross-contact disclosure."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "copycat-toast-food-current",
+      "title": "Copycat Co. H Street Toast — Food",
+      "url": "https://order.toasttab.com/online/copycat-co-1110-h-st-ne",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "1110 H Street NE, Washington, DC 20002",
+      "servicePeriod": "current pickup food menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "surfaceType": "linked_vendor_menu",
+      "sourceEvidenceIds": [
+        "official-homepage",
+        "copycat-toast-current"
+      ],
+      "currentProductKeys": [
+        "chili-wontons",
+        "dan-dan-noodles",
+        "beef-noodles",
+        "little-noodles",
+        "lamb-noodles",
+        "sober-soup",
+        "lamb-soup",
+        "sweet-water-noodle",
+        "potsticker-chicken-and-mushroom",
+        "potsticker-triple-delight",
+        "skewer-chicken",
+        "skewer-beef",
+        "skewer-lamb",
+        "skewer-porkcheek",
+        "bao-pork",
+        "orange-chicken",
+        "general-tso-chicken",
+        "crab-fried-rice",
+        "double-cooked-pork",
+        "gong-bao-chicken",
+        "walnut-shrimp",
+        "spinach",
+        "chimichurri",
+        "veggie-fried-rice",
+        "double-fried-ribs",
+        "og-lazi",
+        "sandp-eggplant",
+        "peashoots",
+        "mapo-tofu",
+        "pork-fried-rice",
+        "lazi-chicken",
+        "cumin-chicken",
+        "sandp-shrimp",
+        "green-chili-chicken",
+        "impossible-mapo",
+        "white-rice"
+      ],
+      "notes": "All three food groups were inventoried; three repeated Featured Items cards were consolidated. No separately published nonalcoholic product was found."
+    },
+    {
+      "surfaceId": "copycat-toast-alcohol-excluded",
+      "title": "Copycat Co. To Go Cocktail",
+      "url": "https://order.toasttab.com/online/copycat-co-1110-h-st-ne",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "1110 H Street NE, Washington, DC 20002",
+      "servicePeriod": "current alcohol-only ordering group; excluded",
+      "current": false,
+      "scopeStatus": "complete",
+      "surfaceType": "excluded_alcohol_menu",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "copycat-official-cocktail-graphic-excluded",
+      "title": "Copycat Co. 2026 Summer Classic Cocktail Menu",
+      "url": "https://www.copycatcompany.com/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "1110 H Street NE, Washington, DC 20002",
+      "servicePeriod": "current alcohol-only graphic; excluded",
+      "current": false,
+      "scopeStatus": "complete",
+      "surfaceType": "excluded_alcohol_menu",
+      "sourceEvidenceIds": [
+        "official-homepage"
+      ],
+      "currentProductKeys": []
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "chili-wontons",
+      "name": "Chili Wontons",
+      "category": "Noodles & Soup",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "dan-dan-noodles",
+      "name": "Dan Dan Noodles",
+      "category": "Noodles & Soup",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [
+        "peanut",
+        "sesame"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "copycat-toast-current"
+      ]
+    },
+    {
+      "currentProductKey": "beef-noodles",
+      "name": "Beef Noodles",
+      "category": "Noodles & Soup",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [
+        "sesame"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "copycat-toast-current"
+      ]
+    },
+    {
+      "currentProductKey": "little-noodles",
+      "name": "Little Noodles",
+      "category": "Noodles & Soup",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [
+        "peanut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "copycat-toast-current"
+      ]
+    },
+    {
+      "currentProductKey": "lamb-noodles",
+      "name": "Lamb Noodles",
+      "category": "Noodles & Soup",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "sober-soup",
+      "name": "Sober Soup",
+      "category": "Noodles & Soup",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "lamb-soup",
+      "name": "Lamb Soup",
+      "category": "Noodles & Soup",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "sweet-water-noodle",
+      "name": "Sweet Water Noodle",
+      "category": "Noodles & Soup",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "potsticker-chicken-and-mushroom",
+      "name": "Potsticker Chicken & Mushroom",
+      "category": "Dumpling & Skewers",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "potsticker-triple-delight",
+      "name": "Potsticker Triple Delight",
+      "category": "Dumpling & Skewers",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "skewer-chicken",
+      "name": "Skewer Chicken",
+      "category": "Dumpling & Skewers",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "skewer-beef",
+      "name": "Skewer Beef",
+      "category": "Dumpling & Skewers",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "skewer-lamb",
+      "name": "Skewer Lamb",
+      "category": "Dumpling & Skewers",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "skewer-porkcheek",
+      "name": "Skewer Porkcheek",
+      "category": "Dumpling & Skewers",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "bao-pork",
+      "name": "Bao Pork",
+      "category": "Dumpling & Skewers",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "orange-chicken",
+      "name": "Orange Chicken",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "general-tso-chicken",
+      "name": "General Tso Chicken",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "crab-fried-rice",
+      "name": "Crab Fried Rice",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [
+        "shellfish",
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "copycat-toast-current"
+      ]
+    },
+    {
+      "currentProductKey": "double-cooked-pork",
+      "name": "Double Cooked Pork",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "gong-bao-chicken",
+      "name": "Gong Bao Chicken",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [
+        "peanut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "copycat-toast-current"
+      ]
+    },
+    {
+      "currentProductKey": "walnut-shrimp",
+      "name": "Walnut Shrimp",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [
+        "shellfish",
+        "tree-nut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "copycat-toast-current"
+      ]
+    },
+    {
+      "currentProductKey": "spinach",
+      "name": "Spinach",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "chimichurri",
+      "name": "Chimichurri",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "veggie-fried-rice",
+      "name": "Veggie Fried Rice",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "copycat-toast-current"
+      ]
+    },
+    {
+      "currentProductKey": "double-fried-ribs",
+      "name": "Double Fried Ribs",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "og-lazi",
+      "name": "OG LAZI",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [
+        "peanut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "copycat-toast-current"
+      ]
+    },
+    {
+      "currentProductKey": "sandp-eggplant",
+      "name": "S&P Eggplant",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "peashoots",
+      "name": "Peashoots",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "mapo-tofu",
+      "name": "Mapo Tofu",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "pork-fried-rice",
+      "name": "Pork Fried Rice",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "copycat-toast-current"
+      ]
+    },
+    {
+      "currentProductKey": "lazi-chicken",
+      "name": "LAZI Chicken",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "cumin-chicken",
+      "name": "Cumin Chicken",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "sandp-shrimp",
+      "name": "S&P Shrimp",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [
+        "shellfish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "copycat-toast-current"
+      ]
+    },
+    {
+      "currentProductKey": "green-chili-chicken",
+      "name": "Green Chili Chicken",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "impossible-mapo",
+      "name": "Impossible Mapo",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "white-rice",
+      "name": "White Rice",
+      "category": "Dishes & Rice",
+      "sourceEvidenceIds": [
+        "copycat-toast-current"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "query": "Inspect the current copycatcompany.com homepage, navigation, address, ordering link, and current menu graphic for allergen or cross-contact resources.",
+        "outcome": "The official site provides exact identity, ordering, and an alcohol-oriented current menu graphic, but no allergen matrix, ingredient guide, or cross-contact statement.",
+        "sourceEvidenceIds": [
+          "official-homepage"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "query": "Search copycatcompany.com PDFs and indexed documents for allergen, allergy, nutrition, ingredient, gluten-free, and cross-contact materials.",
+        "outcome": "No restaurant-issued allergen document or complete matrix was found.",
+        "sourceEvidenceIds": [
+          "official-document-search"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "query": "Inspect every live exact-address Toast menu group and search the linked vendor for allergen disclosures.",
+        "outcome": "The complete food catalog has selective ingredient descriptions but no product-by-allergen matrix or cross-contact policy; the To Go Cocktail group was excluded.",
+        "sourceEvidenceIds": [
+          "copycat-toast-current",
+          "linked-vendor-search"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "Copycat Co 1110 H St NE allergen allergy cross-contact gluten-free nutrition ingredients PDF.",
+        "outcome": "No additional authoritative matrix or cross-contact disclosure was found for the exact H Street restaurant.",
+        "sourceEvidenceIds": [
+          "targeted-allergen-search"
+        ]
+      }
+    ],
+    "notes": "Official allergen status is accurately unavailable. Only allergens directly named in exact-store menu descriptions are retained; wrapper, noodle, creamy-sauce, tofu, and brand-composition inferences are not promoted to direct claims."
+  },
+  "restaurantLevelAllergenEvidence": [],
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:bao-pork",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "bao-pork"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "2:beef-noodles",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "beef-noodles"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "3:chili-wontons",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chili-wontons"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "4:chimichurri",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chimichurri"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "5:crab-fried-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "crab-fried-rice"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "6:cumin-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "cumin-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "7:dan-dan-noodles",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "dan-dan-noodles"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "8:double-cooked-pork",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "double-cooked-pork"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "9:double-fried-ribs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "double-fried-ribs"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "10:dumpling-and-skewers",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ],
+        "notes": "This frozen row is a Toast section heading, not an orderable product."
+      },
+      {
+        "auditItemKey": "11:general-tso-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "general-tso-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "12:gong-bao-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "gong-bao-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "13:green-chili-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "green-chili-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "14:impossible-mapo",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "impossible-mapo"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "15:lamb-noodles",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lamb-noodles"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "16:lamb-soup",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lamb-soup"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "17:lazi-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lazi-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "18:little-noodles",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "little-noodles"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "19:mapo-tofu",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mapo-tofu"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "20:noodles-and-soup",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ],
+        "notes": "This frozen row is a Toast section heading, not an orderable product."
+      },
+      {
+        "auditItemKey": "21:og-lazi",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "og-lazi"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "22:orange-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "orange-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "23:peashoots",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "peashoots"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "24:pork-fried-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pork-fried-rice"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "25:potsticker-chicken-and-mushroom",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "potsticker-chicken-and-mushroom"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "26:potsticker-triple-delight",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "potsticker-triple-delight"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "27:sandp-eggplant",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sandp-eggplant"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "28:sandp-shrimp",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sandp-shrimp"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "29:skewer-beef",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "skewer-beef"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "30:skewer-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "skewer-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "31:skewer-lamb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "skewer-lamb"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "32:skewer-porkcheek",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "skewer-porkcheek"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "33:sober-soup",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sober-soup"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "34:spinach",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "spinach"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "35:veggie-fried-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "veggie-fried-rice"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "36:walnut-shrimp",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "walnut-shrimp"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      },
+      {
+        "auditItemKey": "37:white-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "white-rice"
+        ],
+        "sourceEvidenceIds": [
+          "copycat-toast-current"
+        ]
+      }
+    ],
+    "notes": "All 37 frozen rows are reconciled exactly once: 35 exact current products and two section-heading artifacts. Sweet Water Noodle is the sole new current product."
+  },
+  "findings": [
+    {
+      "findingId": "h-street-identity-confirmed",
+      "severity": "high",
+      "type": "identity",
+      "summary": "Copycat Co. is currently operating at the exact requested H Street address, 1110 H Street NE, with a live first-party-linked Toast menu.",
+      "evidenceIds": [
+        "official-homepage",
+        "copycat-toast-current"
+      ]
+    },
+    {
+      "findingId": "catalog-consolidated",
+      "severity": "high",
+      "type": "catalog",
+      "summary": "The complete food catalog contains 36 unique products after consolidating three repeated Featured Items cards and excluding the alcohol-only To Go Cocktail.",
+      "evidenceIds": [
+        "copycat-toast-current"
+      ]
+    },
+    {
+      "findingId": "section-heading-artifacts",
+      "severity": "medium",
+      "type": "extraction",
+      "summary": "Dumpling & Skewers and Noodles & Soup are menu section headings rather than products.",
+      "evidenceIds": [
+        "copycat-toast-current"
+      ]
+    },
+    {
+      "findingId": "new-sweet-water-noodle",
+      "severity": "medium",
+      "type": "catalog",
+      "summary": "Sweet Water Noodle is current on the exact Toast menu but absent from the 37-row frozen packet.",
+      "evidenceIds": [
+        "copycat-toast-current"
+      ]
+    },
+    {
+      "findingId": "allergen-matrix-unavailable",
+      "severity": "high",
+      "type": "allergen_source",
+      "summary": "All four searches found no complete exact-location allergen matrix or cross-contact statement; only selective direct positives from current Toast descriptions are retained.",
+      "evidenceIds": [
+        "copycat-toast-current",
+        "official-document-search",
+        "linked-vendor-search",
+        "targeted-allergen-search"
+      ]
+    }
+  ],
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": false,
+    "newItems": true,
+    "nameOrCategoryCleanup": true,
+    "restaurantSpecificExtraction": true,
+    "parserIssue": true
+  },
+  "routingSignals": [
+    "Exact H Street identity confirmed open",
+    "Complete 36-product food union from the official-linked Toast store",
+    "Alcohol-only surfaces excluded",
+    "Two frozen section headings removed",
+    "Official allergen matrix accurately unavailable after four searches"
+  ],
+  "recommendedLane": "luna_fix",
+  "proposedChanges": [
+    "Publish the 36-product exact H Street food catalog and add Sweet Water Noodle.",
+    "Remove the two section-heading artifacts and consolidate repeated Featured Items cards.",
+    "Exclude the alcohol-only To Go Cocktail and current cocktail graphic from food/nonalcoholic products.",
+    "Retain only direct allergens explicitly named by current exact-store descriptions; keep all other allergen status unavailable."
+  ],
+  "blockedReason": null
+}

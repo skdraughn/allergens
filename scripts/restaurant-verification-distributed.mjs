@@ -20,6 +20,7 @@ export const maximumDistributedWorkers = 5;
 export async function createAllocation({
   direction,
   count,
+  skip = 0,
   machineId,
   outputPath,
   now = new Date().toISOString(),
@@ -27,6 +28,7 @@ export async function createAllocation({
 } = {}) {
   if (!["front", "back"].includes(direction)) throw new Error("direction must be front or back.");
   assertPositiveInteger(count, "count");
+  assertNonNegativeInteger(skip, "skip");
   assertSafe(machineId, "machineId");
   const ledgerPath = path.join(root, "ledger.jsonl");
   const manifestPath = path.join(root, "manifest.json");
@@ -34,20 +36,21 @@ export async function createAllocation({
   const rows = parseJsonLines(ledgerBytes.toString("utf8"));
   const pending = rows.filter((row) => row.status === "pending");
   const ordered = direction === "back" ? [...pending].reverse() : pending;
-  if (ordered.length < count) throw new Error(`Only ${ordered.length} pending rows are available.`);
+  if (ordered.length < Number(skip) + Number(count)) throw new Error(`Only ${ordered.length} pending rows are available after applying skip ${skip}.`);
   const allocation = {
     schemaVersion: 1,
     kind: "restaurant_verification_distributed_allocation",
     allocationId: `${machineId}-${direction}-${now.replace(/[^0-9]/g, "").slice(0, 14)}`,
     machineId,
     direction,
+    selectionOffset: Number(skip),
     createdAt: now,
     base: {
       ledgerSha256: sha256(ledgerBytes),
       verificationManifestSha256: sha256(manifestBytes),
       restaurantCount: rows.length,
     },
-    entries: ordered.slice(0, count).map((row, index) => ({
+    entries: ordered.slice(Number(skip), Number(skip) + Number(count)).map((row, index) => ({
       ordinal: index + 1,
       restaurantId: row.restaurantId,
       name: row.name,
@@ -160,7 +163,9 @@ export async function runResearch({ allocationPath, workers = maximumDistributed
   await writeJson(manifestPath, manifest);
   console.error(`[distributed] ${manifest.runId}: starting ${prepared.jobs.length} restaurant workers`);
   const reporter = startProgressReporter(prepared.runRoot, prepared.jobs);
-  const executions = await mapConcurrent(prepared.jobs, workers, async (job) => {
+  let executions;
+  try {
+    executions = await mapConcurrent(prepared.jobs, workers, async (job) => {
     const logPath = path.join(prepared.runRoot, "logs", `${job.restaurantId}.log`);
     const startedAt = new Date().toISOString();
     await writeJson(job.statusPath, workerStatus(job.restaurantId, "researching", startedAt, { milestone: "worker_started" }));
@@ -168,7 +173,7 @@ export async function runResearch({ allocationPath, workers = maximumDistributed
     const prompt = researchPrompt({ jobPath: job.jobPath, resultPath: job.resultPath, statusPath: job.statusPath });
     const args = [
       "-a", "never", "--search", "exec", "--model", "gpt-5.6-luna",
-      "-c", "model_reasoning_effort=low", "--sandbox", "workspace-write", "--ephemeral",
+      "-c", "model_reasoning_effort=low", "--sandbox", workerSandboxForPlatform(), "--ephemeral",
       "-C", repositoryRoot, prompt,
     ];
     const execution = await spawnCodex({ args, logPath, timeoutSeconds });
@@ -176,7 +181,7 @@ export async function runResearch({ allocationPath, workers = maximumDistributed
     const validation = resultExists ? await validateResult(job.jobPath, job.resultPath) : null;
     const quality = resultExists ? await assessResearchQuality(job.resultPath, validation) : null;
     const completedAt = new Date().toISOString();
-    const status = execution.exitCode !== 0 || !resultExists ? "failed" :
+    const status = execution.exitCode !== 0 ? "failed" : !resultExists ? "needs_research_retry" :
       validation?.valid !== true ? "needs_research_retry" :
       validation.route?.lane !== "verify" ? `needs_${validation.route?.lane ?? "review"}` :
       quality?.thoroughEnoughForNextLane !== true ? "needs_research_repair" : "ready_for_verification";
@@ -187,9 +192,17 @@ export async function runResearch({ allocationPath, workers = maximumDistributed
     }));
     console.error(`[distributed] ${job.restaurantId}: ${status} (${validation?.currentProductCount ?? 0} products, ${validation?.sourceCount ?? 0} sources, route ${validation?.route?.lane ?? "unknown"})`);
     return { ...job, execution, resultExists, validation, quality, startedAt, completedAt, status };
-  });
-  const followedUp = await runAutomaticFollowups({ runRoot: prepared.runRoot, executions, timeoutSeconds });
-  clearInterval(reporter);
+    });
+  } catch (error) {
+    clearInterval(reporter);
+    throw error;
+  }
+  let followedUp;
+  try {
+    followedUp = await runAutomaticFollowups({ runRoot: prepared.runRoot, executions, timeoutSeconds });
+  } finally {
+    clearInterval(reporter);
+  }
   const protectedAfter = await protectedHashes(prepared.jobs.map((job) => job.restaurantId));
   const protectedChanges = changedHashes(protectedBefore, protectedAfter);
   if (protectedChanges.length > 0) {
@@ -223,12 +236,77 @@ export async function runResearch({ allocationPath, workers = maximumDistributed
   return { runRoot: prepared.runRoot, manifest };
 }
 
+export async function retryFailedJob({ allocationPath, runId, restaurantId, timeoutSeconds = 3600 } = {}) {
+  assertSafe(runId, "runId");
+  assertSafe(restaurantId, "restaurantId");
+  assertPositiveInteger(timeoutSeconds, "timeoutSeconds");
+  const runRoot = path.join(defaultRunRoot, runId);
+  const manifestPath = path.join(runRoot, "manifest.json");
+  const manifest = await readJson(manifestPath);
+  const target = manifest.jobs.find((job) => job.restaurantId === restaurantId);
+  if (!target) throw new Error(`Restaurant is not part of ${runId}: ${restaurantId}`);
+  if (target.status !== "failed") throw new Error(`Restaurant is not failed (${target.status}): ${restaurantId}`);
+  const jobPath = path.join(runRoot, target.jobPath);
+  const resultPath = path.join(runRoot, target.resultPath);
+  const statusPath = path.join(runRoot, target.statusPath);
+  const logPath = path.join(runRoot, "followup-logs", `${restaurantId}-research-retry.log`);
+  const protectedBefore = await protectedHashes([restaurantId]);
+  const startedAt = new Date().toISOString();
+  await writeJson(statusPath, workerStatus(restaurantId, "researching", startedAt, { milestone: "research_retry_started" }));
+  const execution = await spawnCodex({
+    args: ["-a", "never", "--search", "exec", "--model", "gpt-5.6-luna", "-c", "model_reasoning_effort=low", "--sandbox", workerSandboxForPlatform(), "--ephemeral", "-C", repositoryRoot, researchPrompt({ jobPath, resultPath, statusPath })],
+    logPath,
+    timeoutSeconds,
+  });
+  const resultExists = existsSync(resultPath);
+  const validation = resultExists ? await validateResult(jobPath, resultPath) : null;
+  const quality = resultExists ? await assessResearchQuality(resultPath, validation) : null;
+  const completedAt = new Date().toISOString();
+  const status = execution.exitCode !== 0 ? "failed" : !resultExists || validation?.valid !== true ? "needs_research_retry" :
+    validation.route?.lane !== "verify" ? `needs_${validation.route?.lane ?? "review"}` :
+    quality?.thoroughEnoughForNextLane !== true ? "needs_research_repair" : "ready_for_verification";
+  const retried = await runAutomaticFollowups({
+    runRoot,
+    timeoutSeconds,
+    executions: [{
+      restaurantId, jobPath, resultPath, statusPath, execution, resultExists, validation, quality,
+      startedAt, completedAt, status, finalResultPath: resultPath,
+      followups: [...(target.followups ?? []), { type: "research_retry", exitCode: execution.exitCode, logPath: path.relative(runRoot, logPath), status, validation, quality }],
+    }],
+  });
+  const final = retried[0];
+  const protectedAfter = await protectedHashes([restaurantId]);
+  const protectedChanges = changedHashes(protectedBefore, protectedAfter);
+  if (protectedChanges.length > 0) throw new Error(`Research-only retry modified protected paths: ${protectedChanges.join(", ")}`);
+  target.status = final.status;
+  target.startedAt = final.startedAt;
+  target.completedAt = final.completedAt;
+  target.durationSeconds = Math.round((Date.parse(final.completedAt) - Date.parse(final.startedAt)) / 1000);
+  target.exitCode = final.execution.exitCode;
+  target.validation = final.validation;
+  target.quality = final.quality;
+  target.followups = final.followups ?? [];
+  target.finalResultPath = path.relative(runRoot, final.finalResultPath);
+  manifest.summary = summarizeJobs(manifest.jobs);
+  manifest.status = manifest.jobs.some((job) => job.status === "failed") ? "failed" :
+    manifest.jobs.some((job) => job.status.startsWith("blocked_")) ? "blocked" :
+    manifest.jobs.every((job) => job.status === "awaiting_serialized_apply") ? "completed" : "completed_with_followup";
+  manifest.updatedAt = new Date().toISOString();
+  await writeJson(manifestPath, manifest);
+  const allocation = await readAllocation(allocationPath);
+  const entry = allocation.entries.find((candidate) => candidate.restaurantId === restaurantId);
+  if (entry) entry.state = final.status === "failed" ? "failed" : final.status.startsWith("blocked_") ? "blocked" : "completed";
+  allocation.allocationSha256 = allocationDigest(allocation);
+  await writeJson(path.resolve(allocationPath), allocation);
+  return { runRoot, manifest, restaurantId, status: final.status };
+}
+
 export async function exportRun({ allocationPath, runId, outputPath } = {}) {
   const allocation = await readAllocation(allocationPath);
   assertSafe(runId, "runId");
   const sourceRoot = path.join(defaultRunRoot, runId);
   const manifest = await readJson(path.join(sourceRoot, "manifest.json"));
-  if (!["completed", "completed_with_followup"].includes(manifest.status)) throw new Error("Only completed distributed runs can be exported.");
+  if (!["completed", "completed_with_followup", "blocked"].includes(manifest.status)) throw new Error("Only terminal distributed runs with research results can be exported.");
   if (manifest.allocationId !== allocation.allocationId) throw new Error("Run/allocation mismatch.");
   const destination = path.resolve(outputPath ?? path.join(repositoryRoot, "tmp", `${runId}-export`));
   await rm(destination, { recursive: true, force: true });
@@ -265,7 +343,7 @@ export async function importRun({ bundlePath, write = false } = {}) {
     const bytes = await readFile(path.join(bundleRoot, file.path));
     if (sha256(bytes) !== file.sha256) throw new Error(`Bundle file hash mismatch: ${file.path}`);
   }
-  if (!["completed", "completed_with_followup"].includes(manifest.status) || manifest.researchOnly !== true) throw new Error("Bundle is not a completed research-only run.");
+  if (!["completed", "completed_with_followup", "blocked"].includes(manifest.status) || manifest.researchOnly !== true) throw new Error("Bundle is not a terminal research-only run.");
   const ledger = parseJsonLines((await readFile(path.join(verificationRoot, "ledger.jsonl"), "utf8")));
   const ledgerById = new Map(ledger.map((row) => [row.restaurantId, row]));
   const validations = [];
@@ -417,7 +495,7 @@ async function runLunaFollowup({ runRoot, execution, timeoutSeconds, attempt }) 
   console.error(`[followup] ${execution.restaurantId}: Luna ${kind} started`);
   const prompt = `You are the Luna-low follow-up worker for one isolated restaurant result. Read docs/restaurant-verification-plan.md completely, the immutable job ${path.relative(repositoryRoot, execution.jobPath)}, and the prior isolated result ${path.relative(repositoryRoot, execution.finalResultPath)}. Coordinator validation was ${JSON.stringify(execution.validation?.errors ?? [])}; quality warnings were ${JSON.stringify(execution.quality?.warnings ?? [])}; route reasons were ${JSON.stringify(execution.validation?.route?.reasons ?? [])}. Resolve only those research or mechanical catalog issues. Preserve supported direct allergen evidence and every frozen-key reconciliation. Write the complete corrected result to ${path.relative(repositoryRoot, outputPath)} and run node scripts/restaurant-verification-poc-result.mjs ${path.relative(repositoryRoot, execution.jobPath)} ${path.relative(repositoryRoot, outputPath)} until it returns valid:true. Do not edit canonical restaurant, evidence, item-check, generated-data, apply-script, or ledger files.`;
   const result = await spawnCodex({
-    args: ["-a", "never", "--search", "exec", "--model", "gpt-5.6-luna", "-c", "model_reasoning_effort=low", "--sandbox", "workspace-write", "--ephemeral", "-C", repositoryRoot, prompt],
+    args: ["-a", "never", "--search", "exec", "--model", "gpt-5.6-luna", "-c", "model_reasoning_effort=low", "--sandbox", workerSandboxForPlatform(), "--ephemeral", "-C", repositoryRoot, prompt],
     logPath, timeoutSeconds,
   });
   const validation = existsSync(outputPath) ? await validateResult(execution.jobPath, outputPath) : null;
@@ -436,7 +514,7 @@ async function runSolFollowup({ runRoot, execution, timeoutSeconds, attempt }) {
   console.error(`[followup] ${execution.restaurantId}: Sol narrow review started`);
   const prompt = `You are the single Sol-medium safety reviewer. Read docs/restaurant-verification-plan.md completely, job ${path.relative(repositoryRoot, execution.jobPath)}, and isolated result ${path.relative(repositoryRoot, execution.finalResultPath)}. Review only these coordinator-routed conflicts: ${JSON.stringify(execution.validation?.route?.reasons ?? [])}. Do not repeat general discovery. Write a binding review compatible with mergeBindingSolReview in scripts/restaurant-verification-poc-closeout.mjs to ${path.relative(repositoryRoot, reviewPath)}. It must include batchId, restaurantId, reviewType, validation:{valid:true}, and resolution:{binding:true,items:[],surfaceResolutions:[]}; resolve the exact unresolved item keys and partial surface IDs once, add only evidence-supported mappings/products, and explicitly resolve any routed identity or authority conflict. If the evidence cannot resolve a conflict, write validation.valid:false and a precise blockedReason. Do not modify any other file.`;
   const result = await spawnCodex({
-    args: ["-a", "never", "--search", "exec", "--model", "gpt-5.6-sol", "-c", "model_reasoning_effort=medium", "--sandbox", "workspace-write", "--ephemeral", "-C", repositoryRoot, prompt],
+    args: ["-a", "never", "--search", "exec", "--model", "gpt-5.6-sol", "-c", "model_reasoning_effort=medium", "--sandbox", workerSandboxForPlatform(), "--ephemeral", "-C", repositoryRoot, prompt],
     logPath, timeoutSeconds,
   });
   let validation = null; let quality = null; let status = "failed"; let mergeError = null;
@@ -469,10 +547,16 @@ async function validateResult(jobPath, resultPath) {
     let stdout = ""; let stderr = "";
     child.stdout.on("data", (chunk) => { stdout += chunk; });
     child.stderr.on("data", (chunk) => { stderr += chunk; });
-    child.once("error", reject);
-    child.once("close", () => {
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
       try { resolve(JSON.parse(stdout)); } catch { reject(new Error(stderr || `Validator returned invalid JSON for ${resultPath}.`)); }
-    });
+    };
+    child.once("error", (error) => { if (!settled) { settled = true; reject(error); } });
+    child.stdout.once("end", finish);
+    child.once("close", finish);
+    child.once("exit", () => { setTimeout(finish, 250); });
   });
 }
 
@@ -508,13 +592,42 @@ async function spawnCodex({ args, logPath, timeoutSeconds }) {
   await mkdir(path.dirname(logPath), { recursive: true });
   return new Promise((resolve) => {
     const log = createWriteStream(logPath, { flags: "a" });
-    const child = spawn("codex", args, { cwd: repositoryRoot, env: process.env, stdio: ["ignore", "pipe", "pipe"] });
+    const invocation = resolveCodexInvocation(args);
+    const child = spawn(invocation.command, invocation.args, { cwd: repositoryRoot, env: process.env, stdio: ["ignore", "pipe", "pipe"] });
     child.stdout.pipe(log); child.stderr.pipe(log);
     let timedOut = false;
     const timer = setTimeout(() => { timedOut = true; child.kill("SIGTERM"); }, timeoutSeconds * 1000);
-    child.once("error", (error) => { clearTimeout(timer); log.end(); resolve({ exitCode: -1, error: error.message }); });
-    child.once("close", (code) => { clearTimeout(timer); log.end(); resolve({ exitCode: code ?? -1, error: timedOut ? "timeout" : null }); });
+    let settled = false;
+    const finish = (exitCode, error = null) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      log.end();
+      resolve({ exitCode: exitCode ?? -1, error: timedOut ? "timeout" : error });
+    };
+    child.once("error", (error) => finish(-1, error.message));
+    child.once("exit", (code) => finish(code));
+    child.once("close", (code) => finish(code));
   });
+}
+
+export function resolveCodexInvocation(args, {
+  platform = process.platform,
+  env = process.env,
+  nodeExecutable = process.execPath,
+  fileExists = existsSync,
+} = {}) {
+  if (platform === "win32") {
+    for (const directory of (env.PATH ?? "").split(path.delimiter).filter(Boolean)) {
+      const cliPath = path.join(directory.replace(/^"|"$/g, ""), "node_modules", "@openai", "codex", "bin", "codex.js");
+      if (fileExists(cliPath)) return { command: nodeExecutable, args: [cliPath, ...args] };
+    }
+  }
+  return { command: "codex", args };
+}
+
+export function workerSandboxForPlatform(platform = process.platform) {
+  return platform === "win32" ? "danger-full-access" : "workspace-write";
 }
 
 async function mapConcurrent(values, concurrency, mapper) {
@@ -551,6 +664,7 @@ async function writeJson(file, value) { await mkdir(path.dirname(file), { recurs
 function parseJsonLines(text) { return text.trim().split(/\r?\n/).filter(Boolean).map(JSON.parse); }
 function sha256(value) { return createHash("sha256").update(value).digest("hex"); }
 function assertPositiveInteger(value, label) { if (!Number.isInteger(Number(value)) || Number(value) < 1) throw new Error(`${label} must be a positive integer.`); }
+function assertNonNegativeInteger(value, label) { if (!Number.isInteger(Number(value)) || Number(value) < 0) throw new Error(`${label} must be a non-negative integer.`); }
 function assertWorkerCount(value) { assertPositiveInteger(value, "workers"); if (Number(value) > maximumDistributedWorkers) throw new Error(`workers cannot exceed ${maximumDistributedWorkers}.`); }
 function assertSafe(value, label) { if (!/^[A-Za-z0-9._-]+$/.test(value ?? "")) throw new Error(`${label} contains unsafe characters.`); }
 
@@ -569,13 +683,16 @@ async function main() {
   const { command, options } = parseArgs(process.argv.slice(2));
   const workers = Number(options.workers ?? maximumDistributedWorkers);
   if (command === "allocate") {
-    console.log(JSON.stringify(await createAllocation({ direction: options.direction, count: Number(options.count ?? 100), machineId: options.machine, outputPath: options.output }), null, 2)); return;
+    console.log(JSON.stringify(await createAllocation({ direction: options.direction, count: Number(options.count ?? 100), skip: Number(options.skip ?? 0), machineId: options.machine, outputPath: options.output }), null, 2)); return;
   }
   if (command === "prepare") {
     console.log(JSON.stringify(await prepareResearchRun({ allocationPath: options.allocation, workers, runId: options.run }), null, 2)); return;
   }
   if (command === "run") {
     console.log(JSON.stringify(await runResearch({ allocationPath: options.allocation, workers, runId: options.run, timeoutSeconds: Number(options["timeout-seconds"] ?? 3600) }), null, 2)); return;
+  }
+  if (command === "retry-failed") {
+    console.log(JSON.stringify(await retryFailedJob({ allocationPath: options.allocation, runId: options.run, restaurantId: options.restaurant, timeoutSeconds: Number(options["timeout-seconds"] ?? 3600) }), null, 2)); return;
   }
   if (command === "start-back" || command === "start-front") {
     const direction = command === "start-back" ? "back" : "front";
@@ -592,7 +709,7 @@ async function main() {
   if (command === "audit" || command === "status") {
     console.log(JSON.stringify(await auditRun({ runId: options.run }), null, 2)); return;
   }
-  console.log("Commands: allocate, prepare, run, start-front, start-back, audit, status, export, verify-import, import");
+  console.log("Commands: allocate, prepare, run, retry-failed, start-front, start-back, audit, status, export, verify-import, import");
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

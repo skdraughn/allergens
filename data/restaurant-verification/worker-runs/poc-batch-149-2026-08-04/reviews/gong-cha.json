@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-149-2026-08-04",
+  "restaurantId": "gong-cha",
+  "reviewType": "narrow_missing_location_and_store_varying_availability_resolution",
+  "validation": {
+    "valid": true
+  },
+  "resolution": {
+    "binding": true,
+    "decision": "require_specific_store_location",
+    "outcome": "blocked_unverifiable",
+    "identity": {
+      "name": "Gong cha USA",
+      "locationId": null,
+      "address": null,
+      "status": "brand_confirmed_location_unbound",
+      "sourceEvidenceIds": [
+        "official-home",
+        "official-products",
+        "official-order-app"
+      ]
+    },
+    "catalogBinding": {
+      "nationalCatalogProductCount": 57,
+      "frozenRowCount": 205,
+      "locationBoundCurrentProductCount": 0,
+      "locationBoundReconciledRowCount": 0,
+      "nationalCatalogUsableForBrandDiscovery": true,
+      "nationalCatalogUsableAsCompleteStoreMenu": false,
+      "staleDispositionsBinding": false,
+      "normalizedDispositionsBinding": false,
+      "rationale": "The official U.S. product page explicitly states that product availability may depend on each location, and the official ordering application requires store selection before exposing an orderable menu. With no locationId, address, or phone in the packet, the 57-product national catalog cannot prove the complete current boundary of any store. Consequently, absence from that national presentation cannot bind 78 frozen rows as stale, and name normalization cannot establish that the corresponding products are currently orderable at an unidentified store."
+    },
+    "allergenResolution": {
+      "chainWideWarningApplicable": true,
+      "chainWideWarningAllergens": [
+        "milk",
+        "peanut",
+        "tree-nut",
+        "soy",
+        "gluten"
+      ],
+      "itemLevelStoreClaimsPermitted": false,
+      "legacyNutritionDocumentExhaustiveForCurrentCatalog": false,
+      "rationale": "The official product page supports the chain-level statement that bubble tea products may contain or contact the listed allergens. It does not convert a location-dependent national product gallery into store-specific item availability or an exhaustive current item-by-allergen matrix."
+    },
+    "requiredRemediation": {
+      "action": "supply_and_verify_one_specific_gong_cha_store",
+      "requiredFields": [
+        "locationId",
+        "address",
+        "store-specific official ordering menu"
+      ],
+      "then": "Rebuild the current product boundary from that store menu and reconcile all 205 frozen rows against it before terminal verification."
+    },
+    "verificationAuthorized": false,
+    "repairAuthorized": false,
+    "blockedReason": "The packet identifies a national brand but no store, while official product availability varies by location; no complete, location-bound current catalog can be established."
+  },
+  "remainingSolSignals": []
+}

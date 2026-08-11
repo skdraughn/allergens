@@ -1,6 +1,6 @@
 # Restaurant Verification Ledger
 
-Generated: 2026-07-22T19:51:35.323Z
+Generated: 2026-08-04T16:02:45.285Z
 
 Baseline: 1495 restaurants, 112873 items
 
@@ -8,18 +8,18 @@ Baseline SHA-256: `a408affaabf448ec271b9f5171bfde3332ce92f888fc539bc07f9e9250446
 
 Model: `gpt-5.6-sol` (medium)
 
-Progress: 274/1495 (18.33%)
+Progress: 574/1495 (38.39%)
 
-Next restaurant: **Chai Pani DC** (`chai-pani-dc`)
+Next restaurant: **Halal Munchies - Ashburn** (`replacement-halal-munchies-ashburn-ashburn-va`)
 
 ## Status
 
 | Status | Count |
 | --- | ---: |
-| pending | 1221 |
+| pending | 921 |
 | in_progress | 0 |
 | discrepancy_found | 0 |
 | repair_in_progress | 0 |
 | recheck_required | 0 |
-| codex_verified | 274 |
-| blocked_unverifiable | 0 |
+| codex_verified | 567 |
+| blocked_unverifiable | 7 |

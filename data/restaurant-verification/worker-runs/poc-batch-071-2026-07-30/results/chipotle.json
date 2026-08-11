@@ -1,0 +1,1222 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-071-2026-07-30",
+  "restaurantId": "chipotle",
+  "runId": "poc-batch-071-2026-07-30-chipotle",
+  "stage": "poc_research",
+  "packetValidation": {
+    "restaurantId": "chipotle",
+    "name": "Chipotle",
+    "locationId": null,
+    "domain": "chipotle.com",
+    "baselineItemCount": 26,
+    "baselineFingerprint": "a0201486d9bc4076019ac882dd9091ee9dff84831f3a812804ca06edb751693b",
+    "itemChecksRead": 26,
+    "itemChecksPath": "data/restaurant-verification/item-checks/chipotle.jsonl"
+  },
+  "identity": {
+    "status": "confirmed",
+    "name": "Chipotle",
+    "location": "United States chain scope; no locationId in packet",
+    "locationId": null,
+    "domain": "chipotle.com",
+    "officialHomepage": "https://www.chipotle.com/",
+    "sourceEvidenceIds": [
+      "official-home",
+      "official-allergen-page",
+      "official-allergen-api"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "official-home",
+      "url": "https://www.chipotle.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "retrievedAt": "2026-07-30T19:21:00.000Z",
+      "httpStatus": 200,
+      "excerpt": "Official United States Chipotle homepage identifies the chain and currently promotes the nationwide return of Chipotle Honey Chicken for summer 2026."
+    },
+    {
+      "evidenceId": "official-allergen-page",
+      "url": "https://www.chipotle.com/allergens",
+      "authorityTier": "restaurant_issued",
+      "purpose": "both",
+      "retrievedAt": "2026-07-30T19:21:00.000Z",
+      "httpStatus": 200,
+      "excerpt": "Official U.S. Allergens & Special Diet page publishes the live allergen component, states wheat and gluten are combined because all gluten-containing Chipotle items contain wheat, identifies vinegar-derived sulfites below 10 ppm, warns that foods can contact one another, gives a specific trace-gluten warning for corn tortillas, chips, and corn salsa, and says limited-time or test items may include allergens not identified on the page."
+    },
+    {
+      "evidenceId": "official-allergen-api",
+      "url": "https://services.chipotle.com/menu-metadata/v1/menu-metadata/allergendiets",
+      "authorityTier": "restaurant_issued",
+      "purpose": "both",
+      "retrievedAt": "2026-07-30T19:21:00.000Z",
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "excerpt": "Live restaurant-controlled U.S. web feed returned 26 named allergen-component rows. Positive codes were dair for milk, glut for the combined wheat/gluten category, soy, and sulp for the restaurant's disclosed vinegar-derived sulfites. Empty arrays were not treated as proof of allergen absence."
+    },
+    {
+      "evidenceId": "official-ingredients-api",
+      "url": "https://services.chipotle.com/menu-metadata/v1/menu-metadata/ingredients",
+      "authorityTier": "restaurant_issued",
+      "purpose": "ingredients",
+      "retrievedAt": "2026-07-30T19:21:00.000Z",
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "excerpt": "Live restaurant-controlled U.S. ingredient feed provides ingredient membership for the regular menu components and corroborates milk in cheese and queso, soy in Sofritas, wheat in flour tortillas, and vinegar in the sulfite-coded products. Internal item IDs are presentation identifiers and are not globally one-to-one with the allergen feed."
+    },
+    {
+      "evidenceId": "official-nutrition-calculator",
+      "url": "https://www.chipotle.com/nutrition-calculator",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-30T19:21:00.000Z",
+      "httpStatus": 200,
+      "excerpt": "Official U.S. nutrition calculator shell loads the restaurant-controlled allergen and ingredient APIs used for the configurable menu."
+    },
+    {
+      "evidenceId": "official-honey-chicken",
+      "url": "https://www.chipotle.com/honey-chicken",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-30T19:21:00.000Z",
+      "httpStatus": 200,
+      "excerpt": "Current official limited-time page says Chipotle Honey Chicken is available as a protein in burritos, bowls, salads, tacos, quesadillas, and a High Protein Cup, with availability varying by restaurant."
+    },
+    {
+      "evidenceId": "official-honey-chicken-news",
+      "url": "https://newsroom.chipotle.com/2026-04-21-CHIPOTLE-KICKS-OFF-THE-SUMMER-SEASON-WITH-THE-RETURN-OF-HIGHLY-POPULAR-CHIPOTLE-HONEY-CHICKEN",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-30T19:21:00.000Z",
+      "httpStatus": 200,
+      "excerpt": "Official April 21, 2026 release states Chipotle Honey Chicken returned to restaurants across the United States beginning April 28 and can also be ordered in the High Protein Cup."
+    },
+    {
+      "evidenceId": "official-high-protein-menu",
+      "url": "https://www.chipotle.com/high-protein-meals",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-30T19:21:00.000Z",
+      "httpStatus": 200,
+      "excerpt": "Official High Protein Menu presents six curated builds and Chicken or Steak High Protein Cups. These are size or composed presentations of the same enumerated ingredient products, not additional allergen-component identities."
+    },
+    {
+      "evidenceId": "official-ordering",
+      "url": "https://www.chipotle.com/order/build/burrito-bowl?restaurant=2196",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-30T19:21:00.000Z",
+      "httpStatus": 200,
+      "excerpt": "Restaurant-controlled location ordering surface currently promotes Chipotle Honey Chicken and the High Protein Menu. It does not expose a separate linked-vendor allergen matrix."
+    },
+    {
+      "evidenceId": "official-uk-pdf-excluded",
+      "url": "https://www.chipotle.com/content/dam/chipotle/menu/nutrition/2026/january/Allergen%20UK160126.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "other",
+      "retrievedAt": "2026-07-30T19:21:00.000Z",
+      "httpStatus": 200,
+      "contentType": "application/pdf",
+      "excerpt": "Current official UK allergen PDF was found during document search but excluded from direct U.S. claims because its ingredient, preparation, and legal-disclosure scope is United Kingdom-specific."
+    },
+    {
+      "evidenceId": "targeted-web-search",
+      "url": "https://www.google.com/search?q=site%3Achipotle.com+allergen+allergy+nutrition+ingredients+PDF+menu+Chipotle",
+      "authorityTier": "third_party",
+      "purpose": "other",
+      "retrievedAt": "2026-07-30T19:21:00.000Z",
+      "excerpt": "Targeted domain searches surfaced the official U.S. allergen page, nutrition calculator, ingredient pages, current Honey Chicken and High Protein pages, restaurant-issued news releases, and out-of-scope international PDFs; no higher-authority conflicting current U.S. matrix was found."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-us-allergen-component-feed",
+      "title": "Chipotle U.S. allergen component feed",
+      "url": "https://services.chipotle.com/menu-metadata/v1/menu-metadata/allergendiets",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "United States chain web channel",
+      "servicePeriod": "regular all-day configurable menu components",
+      "current": true,
+      "scopeStatus": "complete",
+      "surfaceType": "official_chain_allergen_api",
+      "sourceEvidenceIds": [
+        "official-allergen-api",
+        "official-allergen-page"
+      ],
+      "currentProductKeys": [
+        "barbacoa",
+        "black-beans",
+        "brown-rice",
+        "carnitas",
+        "chicken",
+        "chipotle-honey-vinaigrette",
+        "crispy-corn-tortilla",
+        "fajita-vegetables",
+        "flour-tortilla-burrito",
+        "flour-tortilla-taco",
+        "fresh-tomato-salsa",
+        "guacamole",
+        "monterey-jack-cheese",
+        "pinto-beans",
+        "queso-blanco",
+        "red-chimichurri-sauce",
+        "roasted-chili-corn-salsa",
+        "romaine-lettuce",
+        "sofritas",
+        "sour-cream",
+        "steak",
+        "supergreens-lettuce-blend",
+        "tomatillo-green-chili-salsa",
+        "tomatillo-red-chili-salsa",
+        "tortilla-chips",
+        "white-rice"
+      ]
+    },
+    {
+      "surfaceId": "official-current-honey-chicken-lto",
+      "title": "Chipotle Honey Chicken limited-time protein",
+      "url": "https://www.chipotle.com/honey-chicken",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "United States participating restaurants; availability varies",
+      "servicePeriod": "current limited-time all-day menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "surfaceType": "official_limited_time_menu",
+      "sourceEvidenceIds": [
+        "official-honey-chicken",
+        "official-honey-chicken-news"
+      ],
+      "currentProductKeys": [
+        "chipotle-honey-chicken"
+      ]
+    },
+    {
+      "surfaceId": "official-nutrition-calculator-shell",
+      "title": "Chipotle Nutrition Calculator",
+      "url": "https://www.chipotle.com/nutrition-calculator",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "United States chain web channel",
+      "servicePeriod": "regular configurable menu",
+      "current": false,
+      "scopeStatus": "supporting",
+      "surfaceType": "official_calculator_shell",
+      "sourceEvidenceIds": [
+        "official-nutrition-calculator"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "official-high-protein-presentations",
+      "title": "Chipotle High Protein Menu",
+      "url": "https://www.chipotle.com/high-protein-meals",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "United States participating restaurants; availability varies",
+      "servicePeriod": "all-day curated builds and protein cups",
+      "current": false,
+      "scopeStatus": "supporting",
+      "surfaceType": "official_presentation_menu",
+      "sourceEvidenceIds": [
+        "official-high-protein-menu"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "official-location-ordering-example",
+      "title": "Chipotle restaurant-controlled online ordering",
+      "url": "https://www.chipotle.com/order/build/burrito-bowl?restaurant=2196",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "Example U.S. restaurant; packet has no locationId",
+      "servicePeriod": "location-specific online ordering",
+      "current": false,
+      "scopeStatus": "supporting",
+      "surfaceType": "official_ordering_shell",
+      "sourceEvidenceIds": [
+        "official-ordering"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "official-home-support",
+      "title": "Chipotle U.S. homepage",
+      "url": "https://www.chipotle.com/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "United States national chain",
+      "servicePeriod": "current promotions and ordering links",
+      "current": false,
+      "scopeStatus": "supporting",
+      "surfaceType": "official_homepage",
+      "sourceEvidenceIds": [
+        "official-home"
+      ],
+      "currentProductKeys": []
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "barbacoa",
+      "name": "Barbacoa",
+      "category": "Proteins",
+      "presentationIds": [
+        "CMG-4"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "black-beans",
+      "name": "Black Beans",
+      "category": "Rice & Beans",
+      "presentationIds": [
+        "CMG-5051"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "brown-rice",
+      "name": "Brown Rice",
+      "category": "Rice & Beans",
+      "presentationIds": [
+        "CMG-5002"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "carnitas",
+      "name": "Carnitas",
+      "category": "Proteins",
+      "presentationIds": [
+        "CMG-3"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "chicken",
+      "name": "Chicken",
+      "category": "Proteins",
+      "presentationIds": [
+        "CMG-1",
+        "high-protein-cup-chicken",
+        "high-protein-composed-meals"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api",
+        "official-high-protein-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": "Adobo Chicken, Chicken High Protein Cup, and chicken portions in the curated High Protein builds are size or composed presentations of this same protein."
+    },
+    {
+      "currentProductKey": "chipotle-honey-chicken",
+      "name": "Chipotle Honey Chicken",
+      "category": "Proteins",
+      "presentationIds": [
+        "protein",
+        "high-protein-cup",
+        "burrito",
+        "bowl",
+        "salad",
+        "tacos",
+        "quesadilla"
+      ],
+      "sourceEvidenceIds": [
+        "official-honey-chicken",
+        "official-honey-chicken-news",
+        "official-home",
+        "official-ordering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": "Current U.S. limited-time product omitted from the live U.S. allergen feed. The official page warns that limited-time products may include allergens not identified there, so no negative allergen claim is made."
+    },
+    {
+      "currentProductKey": "chipotle-honey-vinaigrette",
+      "name": "Chipotle Honey Vinaigrette",
+      "category": "Sides & Tortillas",
+      "presentationIds": [
+        "CMG-5353"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [
+        "sulfites"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "official-allergen-api",
+        "official-allergen-page"
+      ]
+    },
+    {
+      "currentProductKey": "crispy-corn-tortilla",
+      "name": "Crispy Corn Tortilla",
+      "category": "Sides & Tortillas",
+      "presentationIds": [
+        "CMG-1002:crispy-taco-shell"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [
+        "gluten"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "official-allergen-page"
+      ],
+      "notes": "The official U.S. page specifically warns that corn tortillas may have trace gluten from field co-mingling."
+    },
+    {
+      "currentProductKey": "fajita-vegetables",
+      "name": "Fajita Vegetables",
+      "category": "Toppings",
+      "presentationIds": [
+        "CMG-5101"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "flour-tortilla-burrito",
+      "name": "Flour Tortilla (Burrito)",
+      "category": "Sides & Tortillas",
+      "presentationIds": [
+        "CMG-4025"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [
+        "gluten",
+        "sulfites",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "official-allergen-api",
+        "official-allergen-page"
+      ]
+    },
+    {
+      "currentProductKey": "flour-tortilla-taco",
+      "name": "Flour Tortilla (Taco)",
+      "category": "Sides & Tortillas",
+      "presentationIds": [
+        "CMG-5501"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [
+        "gluten",
+        "sulfites",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "official-allergen-api",
+        "official-allergen-page"
+      ]
+    },
+    {
+      "currentProductKey": "fresh-tomato-salsa",
+      "name": "Fresh Tomato Salsa",
+      "category": "Toppings",
+      "presentationIds": [
+        "CMG-5201"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "guacamole",
+      "name": "Guacamole",
+      "category": "Toppings",
+      "presentationIds": [
+        "CMG-1001:allergen",
+        "CMG-5301:ingredients"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api",
+        "official-ingredients-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "monterey-jack-cheese",
+      "name": "Monterey Jack Cheese",
+      "category": "Toppings",
+      "presentationIds": [
+        "CMG-5252"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "official-allergen-api",
+        "official-ingredients-api"
+      ]
+    },
+    {
+      "currentProductKey": "pinto-beans",
+      "name": "Pinto Beans",
+      "category": "Rice & Beans",
+      "presentationIds": [
+        "CMG-5052"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "queso-blanco",
+      "name": "Queso Blanco",
+      "category": "Toppings",
+      "presentationIds": [
+        "CMG-1029:allergen",
+        "CMG-3011:ingredients"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api",
+        "official-ingredients-api"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "official-allergen-api",
+        "official-ingredients-api"
+      ]
+    },
+    {
+      "currentProductKey": "red-chimichurri-sauce",
+      "name": "Red Chimichurri Sauce",
+      "category": "Toppings",
+      "presentationIds": [
+        "CMG-5410"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [
+        "sulfites"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "official-allergen-api",
+        "official-allergen-page"
+      ]
+    },
+    {
+      "currentProductKey": "roasted-chili-corn-salsa",
+      "name": "Roasted Chili-Corn Salsa",
+      "category": "Toppings",
+      "presentationIds": [
+        "CMG-5202"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [
+        "gluten"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "official-allergen-page"
+      ],
+      "notes": "The official U.S. page specifically warns that corn salsa may have trace gluten from field co-mingling."
+    },
+    {
+      "currentProductKey": "romaine-lettuce",
+      "name": "Romaine Lettuce",
+      "category": "Toppings",
+      "presentationIds": [
+        "CMG-5351:romaine"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "sofritas",
+      "name": "Sofritas",
+      "category": "Proteins",
+      "presentationIds": [
+        "CMG-5"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [
+        "soy",
+        "sulfites"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "official-allergen-api",
+        "official-allergen-page"
+      ]
+    },
+    {
+      "currentProductKey": "sour-cream",
+      "name": "Sour Cream",
+      "category": "Toppings",
+      "presentationIds": [
+        "CMG-5251"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "official-allergen-api",
+        "official-ingredients-api"
+      ]
+    },
+    {
+      "currentProductKey": "steak",
+      "name": "Steak",
+      "category": "Proteins",
+      "presentationIds": [
+        "CMG-2",
+        "high-protein-cup-steak"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api",
+        "official-high-protein-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": "The Steak High Protein Cup is a portion presentation of the same Steak component."
+    },
+    {
+      "currentProductKey": "supergreens-lettuce-blend",
+      "name": "Supergreens Lettuce Blend",
+      "category": "Toppings",
+      "presentationIds": [
+        "CMG-5351:supergreens"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": "Kept distinct from Romaine Lettuce because the live official feed publishes both names despite reusing CMG-5351."
+    },
+    {
+      "currentProductKey": "tomatillo-green-chili-salsa",
+      "name": "Tomatillo Green-Chili Salsa",
+      "category": "Toppings",
+      "presentationIds": [
+        "CMG-5203"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "tomatillo-red-chili-salsa",
+      "name": "Tomatillo Red-Chili Salsa",
+      "category": "Toppings",
+      "presentationIds": [
+        "CMG-5204"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "tortilla-chips",
+      "name": "Tortilla Chips",
+      "category": "Sides & Tortillas",
+      "presentationIds": [
+        "CMG-1002:chips"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [
+        "gluten"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "official-allergen-page"
+      ],
+      "notes": "The official U.S. page specifically warns that chips may have trace gluten from field co-mingling."
+    },
+    {
+      "currentProductKey": "white-rice",
+      "name": "White Rice",
+      "category": "Rice & Beans",
+      "presentationIds": [
+        "CMG-5001"
+      ],
+      "sourceEvidenceIds": [
+        "official-allergen-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    }
+  ],
+  "restaurantLevelAllergenEvidence": [
+    {
+      "evidenceType": "general_cross_contact",
+      "sourceEvidenceIds": [
+        "official-allergen-page"
+      ],
+      "summary": "Individual foods may contact one another during preparation. Chipotle does not use egg, mustard, peanut, tree nut, sesame, shellfish, or fish as ingredients in its regular food but cannot guarantee their complete absence. This general statement is retained at restaurant level and is not smeared onto every item."
+    },
+    {
+      "evidenceType": "corn_trace_gluten",
+      "sourceEvidenceIds": [
+        "official-allergen-page"
+      ],
+      "summary": "Corn tortillas, chips, and corn salsa may have trace gluten from possible co-mingling with gluten-containing grains in the field. This narrowly supports item-level may-contain gluten on the three named product types."
+    },
+    {
+      "evidenceType": "limited_time_coverage_warning",
+      "sourceEvidenceIds": [
+        "official-allergen-page",
+        "official-honey-chicken"
+      ],
+      "summary": "Limited-time or test products may contain allergens not identified on the regular allergen page. Chipotle Honey Chicken therefore remains allergen-unavailable rather than inheriting an empty allergen array."
+    }
+  ],
+  "matrixSearch": {
+    "status": "found",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "query": "Inspect chipotle.com homepage, Allergens & Special Diet, Nutrition Calculator, ingredient pages, current limited-time pages, and embedded service configuration.",
+        "outcome": "found",
+        "sourceEvidenceIds": [
+          "official-home",
+          "official-allergen-page",
+          "official-allergen-api",
+          "official-ingredients-api",
+          "official-nutrition-calculator",
+          "official-honey-chicken"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "query": "Inspect chipotle.com content/dam nutrition and allergen PDF surfaces, newsroom documents, ingredients, and current downloadable material.",
+        "outcome": "found_scope_limited_material",
+        "sourceEvidenceIds": [
+          "official-honey-chicken-news",
+          "official-uk-pdf-excluded"
+        ],
+        "notes": "No current standalone U.S. PDF replaced the live U.S. page/API. Current UK PDF was explicitly excluded from U.S. claims."
+      },
+      {
+        "class": "linked_vendor",
+        "query": "Inspect Chipotle-linked online ordering from the official site and a location-selected ordering route.",
+        "outcome": "no_independent_linked_vendor_matrix",
+        "sourceEvidenceIds": [
+          "official-ordering"
+        ],
+        "notes": "Ordering remains on restaurant-controlled chipotle.com; no separate linked-vendor allergen authority was exposed."
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "site:chipotle.com allergen allergy nutrition ingredients PDF menu Chipotle",
+        "outcome": "found_official_sources_no_current_us_conflict",
+        "sourceEvidenceIds": [
+          "targeted-web-search",
+          "official-allergen-page",
+          "official-honey-chicken",
+          "official-high-protein-menu",
+          "official-uk-pdf-excluded"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "summary": {
+      "frozenItemCount": 26,
+      "reconciledItemCount": 26,
+      "exactMatchCount": 26,
+      "normalizedMatchCount": 0,
+      "equivalentPresentationCount": 0,
+      "staleCount": 0,
+      "artifactCount": 0,
+      "locationMismatchCount": 0,
+      "unresolvedCount": 0
+    },
+    "items": [
+      {
+        "auditItemKey": "1:barbacoa",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "barbacoa"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api"
+        ]
+      },
+      {
+        "auditItemKey": "2:black-beans",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "black-beans"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api"
+        ]
+      },
+      {
+        "auditItemKey": "3:brown-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "brown-rice"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api"
+        ]
+      },
+      {
+        "auditItemKey": "4:carnitas",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "carnitas"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api"
+        ]
+      },
+      {
+        "auditItemKey": "5:chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api"
+        ]
+      },
+      {
+        "auditItemKey": "6:chipotle-honey-vinaigrette",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chipotle-honey-vinaigrette"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api"
+        ]
+      },
+      {
+        "auditItemKey": "7:crispy-corn-tortilla",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "crispy-corn-tortilla"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api",
+          "official-allergen-page"
+        ]
+      },
+      {
+        "auditItemKey": "8:fajita-vegetables",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "fajita-vegetables"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api"
+        ]
+      },
+      {
+        "auditItemKey": "9:flour-tortilla-burrito",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "flour-tortilla-burrito"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api",
+          "official-allergen-page"
+        ]
+      },
+      {
+        "auditItemKey": "10:flour-tortilla-taco",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "flour-tortilla-taco"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api",
+          "official-allergen-page"
+        ]
+      },
+      {
+        "auditItemKey": "11:fresh-tomato-salsa",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "fresh-tomato-salsa"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api"
+        ]
+      },
+      {
+        "auditItemKey": "12:guacamole",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "guacamole"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api",
+          "official-ingredients-api"
+        ]
+      },
+      {
+        "auditItemKey": "13:monterey-jack-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "monterey-jack-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api",
+          "official-ingredients-api"
+        ]
+      },
+      {
+        "auditItemKey": "14:pinto-beans",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pinto-beans"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api"
+        ]
+      },
+      {
+        "auditItemKey": "15:queso-blanco",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "queso-blanco"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api",
+          "official-ingredients-api"
+        ]
+      },
+      {
+        "auditItemKey": "16:red-chimichurri-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "red-chimichurri-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api"
+        ]
+      },
+      {
+        "auditItemKey": "17:roasted-chili-corn-salsa",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roasted-chili-corn-salsa"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api",
+          "official-allergen-page"
+        ]
+      },
+      {
+        "auditItemKey": "18:romaine-lettuce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "romaine-lettuce"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api"
+        ]
+      },
+      {
+        "auditItemKey": "19:sofritas",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sofritas"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api"
+        ]
+      },
+      {
+        "auditItemKey": "20:sour-cream",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sour-cream"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api",
+          "official-ingredients-api"
+        ]
+      },
+      {
+        "auditItemKey": "21:steak",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "steak"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api"
+        ]
+      },
+      {
+        "auditItemKey": "22:supergreens-lettuce-blend",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "supergreens-lettuce-blend"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api"
+        ]
+      },
+      {
+        "auditItemKey": "23:tomatillo-green-chili-salsa",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tomatillo-green-chili-salsa"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api"
+        ]
+      },
+      {
+        "auditItemKey": "24:tomatillo-red-chili-salsa",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tomatillo-red-chili-salsa"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api"
+        ]
+      },
+      {
+        "auditItemKey": "25:tortilla-chips",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tortilla-chips"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api",
+          "official-allergen-page"
+        ]
+      },
+      {
+        "auditItemKey": "26:white-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "white-rice"
+        ],
+        "sourceEvidenceIds": [
+          "official-allergen-api"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": false,
+    "newItems": true,
+    "nameOrCategoryCleanup": true,
+    "restaurantSpecificExtraction": true,
+    "parserIssue": false
+  },
+  "routingSignals": {
+    "lightweightRepairSignals": [
+      "catalogDrift",
+      "newItems",
+      "nameOrCategoryCleanup",
+      "restaurantSpecificExtraction"
+    ],
+    "safetyEscalationSignals": [],
+    "officialAllergenStatus": "found",
+    "blockedReason": null
+  },
+  "recommendedLane": "luna_fix",
+  "findings": [
+    {
+      "findingId": "current-lto-missing-from-allergen-feed",
+      "severity": "medium",
+      "type": "official_allergen_coverage_gap",
+      "summary": "Chipotle Honey Chicken is a current U.S. limited-time product but is absent from the live 26-row U.S. allergen API. The official page explicitly warns that limited-time items may include unlisted allergens, so this product is published with official allergen evidence unavailable.",
+      "affectedCurrentProductKeys": [
+        "chipotle-honey-chicken"
+      ],
+      "evidenceIds": [
+        "official-home",
+        "official-honey-chicken",
+        "official-honey-chicken-news",
+        "official-allergen-page",
+        "official-allergen-api"
+      ]
+    },
+    {
+      "findingId": "specific-corn-trace-gluten",
+      "severity": "medium",
+      "type": "cross_contact_evidence",
+      "summary": "The official U.S. page specifically identifies possible trace gluten for corn tortillas, chips, and corn salsa. This supports narrow may-contain gluten claims rather than a universal shared-kitchen smear.",
+      "affectedCurrentProductKeys": [
+        "crispy-corn-tortilla",
+        "roasted-chili-corn-salsa",
+        "tortilla-chips"
+      ],
+      "evidenceIds": [
+        "official-allergen-page"
+      ]
+    },
+    {
+      "findingId": "official-api-presentation-identifiers",
+      "severity": "low",
+      "type": "source_semantics",
+      "summary": "CMG-1002 is reused for Crispy Corn Tortilla and Tortilla Chips; CMG-5351 is reused for Romaine Lettuce and Supergreens; Guacamole and Queso have different identifiers between the allergen and ingredient feeds. The official names and presentations remain distinct, and IDs are retained only as source presentation references.",
+      "affectedCurrentProductKeys": [
+        "crispy-corn-tortilla",
+        "tortilla-chips",
+        "romaine-lettuce",
+        "supergreens-lettuce-blend",
+        "guacamole",
+        "queso-blanco"
+      ],
+      "evidenceIds": [
+        "official-allergen-api",
+        "official-ingredients-api"
+      ]
+    }
+  ],
+  "proposedChanges": [
+    "Retain all 26 frozen components as exact current matches and add the current Chipotle Honey Chicken limited-time protein, producing a 27-product ingredient boundary.",
+    "Treat High Protein Cups and curated High Protein meals as portion or composed presentations of already enumerated products, retaining presentation references without duplicating allergen-component identities.",
+    "Preserve direct milk, soy, combined wheat/gluten, and vinegar-derived sulfite positives from the live official feed; products with empty API arrays remain unavailable instead of becoming supported negative claims.",
+    "Add narrowly scoped may-contain gluten to Crispy Corn Tortilla, Roasted Chili-Corn Salsa, and Tortilla Chips from the restaurant's explicit corn co-mingling warning.",
+    "Keep the general preparation-contact statement and the cannot-guarantee-absence language at restaurant level without converting them into universal item-level may-contain arrays.",
+    "Keep Chipotle Honey Chicken allergen evidence unavailable because it is current but absent from the regular allergen feed and the official page warns that limited-time items may include allergens not listed there.",
+    "Normalize Sofritas into the Proteins category and retain official API identifiers as presentation references rather than globally unique product identities."
+  ],
+  "blockedReason": null
+}

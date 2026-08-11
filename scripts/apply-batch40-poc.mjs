@@ -2,7 +2,7 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
 import { annotateRestaurantWithIngredientIntelligence } from "./ingredient-intelligence.mjs";
-import { validatePocResearchFiles } from "./restaurant-verification-poc-result.mjs";
+import { normalizeReconciliation, validatePocResearchFiles } from "./restaurant-verification-poc-result.mjs";
 
 const root = process.cwd().replaceAll("\\", "/");
 const requestedBatch = process.argv[2]?.startsWith("poc-batch-") ? process.argv[2] : null;
@@ -72,9 +72,131 @@ const allowedIds = new Set([
   "centrolina-dc",
   "chaatwala-herndon-va-dc-metro",
   "chadwicks-alexandria-va-dc-metro",
+  "chai-pani-dc",
+  "replacement-chai-wyy-herndon-va",
+  "chaia-tacos-dc",
+  "chang-chang-dc",
+  "chao-ban-tysons-va",
+  "chaplins-dc",
+  "char-bar-dc",
+  "chard-mclean-va-dc-metro",
+  "charley-chesapeake-chophouse-gaithersburg-md",
+  "chain-charleys-philly-steaks",
+  "osm-charm-thai-1671377421",
+  "chart-house-alexandria-va-dc-metro",
+  "osm-chasin-tails-770780729",
+  "chasin-tails-seafood-that-celebrates-falls-church-va-dc-metro",
+  "chain-checkers",
+  "chef-geoffs-dc",
+  "replacement-chef-tony-s-fresh-seafood-rockville-md",
+  "chef-tonys-rockville-dc-metro",
+  "chennai-hoppers-indian-restaurant-gaithersburg-md-dc-metro",
+  "chercher-ethiopian-dc",
+  "chercher-ethiopian-restaurant-and-mart-washington-dc-dc-metro",
+  "replacement-chez-billy-sud-washington-dc",
+  "replacement-chicatana-washington-dc",
+  "chick-fil-a",
+  "chicken-and-whiskey-14th-dc",
+  "chido-s-tex-mex-grill-laurel-md-dc-metro",
+  "chiko-dc",
+  "chilis",
+  "chima-steakhouse-tysons-tysons-va-dc-metro",
+  "china-chilcano-dc",
+  "chain-china-express",
+  "chipotle",
+  "replacement-chit-chaat-cafe-vienna-va",
+  "chloe-dc",
+  "chloez-cafe-fairfax-station-dc-metro",
+  "chopt-dc",
+  "churchkey-washington-dc-dc-metro",
+  "ciao-osteria-centreville-va-dc-metro",
+  "cielo-rojo-restaurant-takoma-park-md-dc-metro",
+  "cinemark-centreville-centreville-va-dc-metro",
+  "osm-circa-2788369922",
+  "replacement-circa-at-clarendon-arlington-va",
+  "circa-at-foggy-bottom-washington-dc-dc-metro",
+  "replacement-circa-at-navy-yard-washington-dc",
+  "replacement-circa-at-the-boro-tysons-va",
+  "circa-foggy-bottom-dc",
+  "citizens-and-culture-silver-spring-md-dc-metro",
+  "replacement-city-kitchen-alexandria-va",
+  "clare-and-don-s-beach-shack-washington-dc-dc-metro",
+  "clarity-vienna-va-dc-metro",
+  "claudios-table-dc",
+  "replacement-clove-halal-sterling-va",
+  "osm-clyde-s-at-tower-oaks-lodge-92812505",
+  "clydes-gallery-place-dc",
+  "clydes-georgetown-dc",
+  "coastal-flats-gaithersburg-md-dc-metro",
+  "replacement-cocineros-hyattsville-md",
+  "replacement-code-red-washington-dc",
+  "colada-shop-dc",
+  "cold-stone-creamery",
+  "columbia-firehouse-alexandria-dc-metro",
+  "comet-ping-pong-dc",
+  "commons-fooderie-reston-dc-metro",
+  "osm-commonwealth-indian-10120025923",
+  "compass-coffee-dc",
+  "compliments-only-dc",
+  "cooper-s-hawk-winery-and-restaurant-rockville-md-dc-metro",
+  "coopers-hawk-reston-va",
+  "copper-canyon-grill-washington-dc-dc-metro",
+  "copperwood-tavern-arlington-va-dc-metro",
+  "copycat-co-dc",
+  "cordelia-fishbar-dc",
+  "replacement-cordelia-fishbar-washington-dc",
+  "corned-beef-king-rockville-dc-metro",
+  "corner-bakery-cafe",
+  "osm-corso-italian-374740005",
+  "replacement-cottage-house-ethiopian-cuisine-washington-dc",
+  "replacement-courtside-thai-cuisine-fairfax-va",
+  "cranes-dc",
+  "crisp-and-juicy-kensington-md-dc-metro",
+  "crumbl",
+  "replacement-crust-pizzeria-napoletana-herndon-va",
+  "osm-cuates-12207964801",
+  "cubanos-bethesda-md",
+  "replacement-cucina-morini-washington-dc",
+  "osm-curry-palace-indian-452446243",
+  "replacement-cynthia-bar-and-bistro-washington-dc",
+  "dacha-beer-garden-shaw-washington-dc-dc-metro",
+  "daikaya-dc",
+  "daily-provisions-dupont-dc",
+  "dairy-queen",
+  "dakshin-indique-washington-dc-dc-metro",
+  "replacement-dal-grano-mclean-va",
+  "dal-shabu-hot-pot-annandale-va-dc-metro",
+  "osm-darband-kabob-13140207699",
+  "daru-dc",
+  "darvish-kitchen-washington-dc-dc-metro",
+  "dauphines-dc",
+  "daves-hot-chicken-dc",
+  "davios-reston-va",
+  "al-toque-dc",
+  "replacement-dc-bites-washington-dc",
+  "dc-prime-steaks-ashburn-va-dc-metro",
+  "dcity-smokehouse-dc",
+  "dear-sushi-love-makoto-dc",
+  "del-mar-dc",
+  "replacement-delhi-spice-bethesda-md",
+  "replacement-deli-italiano-herndon-herndon-va",
+  "dennys",
+  "dig",
+  "dig-bethesda",
+  "dirty-habit-washington-dc-dc-metro",
+  "replacement-district-rico-washington-dc",
+  "district-taco-dc",
+  "district-winery-dc",
+  "divan-restaurant-mclean-va-dc-metro",
+  "dlena-dc",
+  "osm-dmv-pizza-5811141809",
+  "replacement-dog-daze-social-club-washington-dc",
+  "dog-haus-biergarten-bethesda-bethesda-md-dc-metro",
 ]);
-if (!(/^poc-batch-0(?:40|41|42|43|44|45|46|47)-2026-07-21$/.test(batchId) || /^poc-batch-0(?:48|49|50|51|52|53|54|55|56|57|58|59|60)-2026-07-22$/.test(batchId)) || !allowedIds.has(id)) {
-  throw new Error("Usage: node scripts/apply-batch40-poc.mjs [poc-batch-060-2026-07-22] <restaurant-id>");
+const requestedRun = /^poc-batch-(\d{3})-2026-08-(?:01|04)$/.exec(batchId);
+const requestedRunNumber = Number(requestedRun?.[1]);
+if (!requestedRun || requestedRunNumber < 40 || requestedRunNumber > 160 || !/^[a-z0-9-]+$/.test(id)) {
+  throw new Error("Usage: node scripts/apply-batch40-poc.mjs [poc-batch-NNN-2026-08-DD] <restaurant-id>");
 }
 
 const run = `${root}/data/restaurant-verification/worker-runs/${batchId}`;
@@ -97,6 +219,17 @@ const sha = (value) => crypto.createHash("sha256").update(value).digest("hex");
 const assert = (value, message) => { if (!value) throw new Error(message); };
 const unique = (values) => [...new Set((values || []).filter(Boolean))];
 const canonicalPurposes = new Set(["identity", "menu", "allergen", "ingredients", "cross_contact", "both", "other"]);
+const generatedAllergenSourceType = (sourceType) => {
+  const mapping = {
+    restaurant_allergen_document: "official-allergen-menu",
+    restaurant_ingredients: "official-ingredients",
+    restaurant_linked_vendor: "official-product-allergen-section",
+    unavailable: "unavailable",
+  };
+  const mapped = mapping[sourceType];
+  assert(mapped, `unsupported generated allergen source type: ${sourceType}`);
+  return mapped;
+};
 
 const job = read(paths.job);
 const result = read(paths.result);
@@ -110,8 +243,22 @@ assert(preflight.valid, preflight.errors.join(" | "));
 const products = result.currentProducts;
 const productKeys = new Set(products.map((product) => product.currentProductKey));
 assert(productKeys.size === products.length && !productKeys.has(undefined), "product keys must be explicit and unique");
-const currentSurfaces = result.menuSurfaces.filter((surface) => surface.current);
-assert(currentSurfaces.length > 0 && currentSurfaces.every((surface) => surface.scopeStatus === "complete"), "current surfaces must be complete");
+const currentSurfaces = result.menuSurfaces
+  .filter((surface) => surface.current)
+  .map((surface) => ({
+    ...surface,
+    currentProductKeys: (surface.currentProductKeys || []).length
+      ? surface.currentProductKeys
+      : products
+        .filter((product) => (product.sourceEvidenceIds || []).some((evidenceId) => (surface.sourceEvidenceIds || []).includes(evidenceId)))
+        .map((product) => product.currentProductKey),
+  }))
+  .filter((surface) => surface.currentProductKeys.length > 0);
+if (products.length === 0) {
+  assert(currentSurfaces.length === 0, "zero-product catalog must not publish a current surface");
+} else {
+  assert(currentSurfaces.length > 0 && currentSurfaces.every((surface) => surface.scopeStatus === "complete"), "current surfaces must be complete");
+}
 const publishedKeys = new Set();
 for (const surface of currentSurfaces) {
   assert(Array.isArray(surface.currentProductKeys) && surface.currentProductKeys.length > 0, `empty currentProductKeys: ${surface.surfaceId}`);
@@ -148,7 +295,7 @@ const items = products.map((product) => ({
   allergens: [...(product.containsAllergens || [])],
   mayContain: [...(product.mayContainAllergens || [])],
   mayContainAllergens: [...(product.mayContainAllergens || [])],
-  allergenSourceType: product.allergenSourceType,
+  allergenSourceType: generatedAllergenSourceType(product.allergenSourceType),
   allergenAuthorityTier: product.allergenAuthorityTier ?? null,
   allergenSourceEvidenceIds: [...(product.allergenSourceEvidenceIds || [])],
   sourceEvidenceIds: [...(product.sourceEvidenceIds || [])],
@@ -209,7 +356,8 @@ const evidence = {
 assert(evidence.sources.every((source) => source.id && source.url && source.excerpt), "evidence closure failed");
 write(paths.evidence, evidence);
 
-const reconciliationCounts = Object.fromEntries(Object.entries(Object.groupBy(result.reconciliation.items, (item) => item.disposition)).map(([key, rows]) => [key, rows.length]));
+const reconciliationItems = normalizeReconciliation(result.reconciliation);
+const reconciliationCounts = Object.fromEntries(Object.entries(Object.groupBy(reconciliationItems, (item) => item.disposition)).map(([key, rows]) => [key, rows.length]));
 const dossierProducts = products.map((product) => ({
   currentProductKey: product.currentProductKey,
   name: product.name,
@@ -236,7 +384,7 @@ write(paths.dossier, {
     status: "verified",
     reviewedBaselineItemCount: checks.length,
     currentProductCount: products.length,
-    reconciledCurrentProductCount: result.reconciliation.items.filter((item) => (item.matchedCurrentProductKeys || []).length).length,
+    reconciledCurrentProductCount: reconciliationItems.filter((item) => (item.matchedCurrentProductKeys || []).length).length,
     surfaces: result.menuSurfaces.map((surface) => ({ ...surface, verified: surface.current && surface.scopeStatus === "complete", evidenceIds: surface.sourceEvidenceIds || [] })),
     products: dossierProducts,
     notes: ["Only current complete surfaces publish products.", "Ingredient Intelligence was recomputed after direct claim finalization."],

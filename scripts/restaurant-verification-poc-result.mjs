@@ -100,7 +100,10 @@ export function validatePocResearchResult({ job, result, itemChecks }) {
   const productKeys = products.map((product) => product.currentProductKey).filter(Boolean);
   const definedProductKeys = new Set(productKeys);
   const duplicateProductKeys = duplicates(productKeys);
-  if (products.length === 0 && job.baselineItemCount > 0) errors.push("No current products were defined.");
+  const blockedUnverifiable = result.outcome === "blocked_unverifiable";
+  if (products.length === 0 && job.baselineItemCount > 0 && !blockedUnverifiable) {
+    errors.push("No current products were defined.");
+  }
   if (products.some((product) => !product.currentProductKey || !product.name)) {
     errors.push("Every current product must define currentProductKey and name.");
   }

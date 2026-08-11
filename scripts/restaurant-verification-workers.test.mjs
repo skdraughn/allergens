@@ -3,6 +3,7 @@ import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
 import {
   buildCoordinatorDecisionFromArtifacts,
@@ -230,8 +231,9 @@ test("Luna retries retain immutable per-attempt logs and result receipts", async
   assert.equal(attempts[1].result.written, true);
   assert.equal(attempts[1].validation.valid, true);
   assert.match(attempts[1].prompt.text, /remove that dangling reference/i);
-  assert.match(await readFile(path.resolve(new URL("..", import.meta.url).pathname, attempts[0].log.path), "utf8"), /first failure/);
-  assert.match(await readFile(path.resolve(new URL("..", import.meta.url).pathname, attempts[1].log.path), "utf8"), /second success/);
+  const repositoryRoot = fileURLToPath(new URL("..", import.meta.url));
+  assert.match(await readFile(path.resolve(repositoryRoot, attempts[0].log.path), "utf8"), /first failure/);
+  assert.match(await readFile(path.resolve(repositoryRoot, attempts[1].log.path), "utf8"), /second success/);
 });
 
 test("stale Luna provenance and incomplete baseline reconciliation require a Luna retry", () => {

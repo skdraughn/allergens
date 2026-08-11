@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 3,
+  "workflow": "safeplate_poc",
+  "runId": "poc-batch-066-2026-07-24",
+  "createdAt": "2026-07-24T16:15:17.585Z",
+  "updatedAt": "2026-07-24T16:22:48.940Z",
+  "status": "completed",
+  "models": {
+    "worker": {
+      "id": "gpt-5.6-luna",
+      "reasoningEffort": "low"
+    },
+    "reviewer": {
+      "id": "gpt-5.6-sol",
+      "reasoningEffort": "medium",
+      "onDemand": true
+    }
+  },
+  "concurrency": {
+    "luna": 3,
+    "terra": 0,
+    "sol": 0
+  },
+  "jobs": [
+    {
+      "restaurantId": "chef-geoffs-dc",
+      "name": "Chef Geoff's",
+      "status": "completed",
+      "agentId": "luna_chef_geoffs",
+      "jobPath": "jobs/chef-geoffs-dc.json",
+      "resultPath": "results/chef-geoffs-dc.json",
+      "applyAgentId": "coordinator",
+      "lunaAttempts": 2,
+      "completedAt": "2026-07-24T16:22:46.651Z"
+    },
+    {
+      "restaurantId": "replacement-chef-tony-s-fresh-seafood-rockville-md",
+      "name": "Chef Tony's Fresh Seafood",
+      "status": "completed",
+      "agentId": "luna_chef_tonys_fresh",
+      "jobPath": "jobs/replacement-chef-tony-s-fresh-seafood-rockville-md.json",
+      "resultPath": "results/replacement-chef-tony-s-fresh-seafood-rockville-md.json",
+      "applyAgentId": "coordinator",
+      "lunaAttempts": 2,
+      "completedAt": "2026-07-24T16:22:47.795Z"
+    },
+    {
+      "restaurantId": "chef-tonys-rockville-dc-metro",
+      "name": "Chef Tony's Rockville",
+      "status": "completed",
+      "agentId": "luna_chef_tonys_rockville",
+      "jobPath": "jobs/chef-tonys-rockville-dc-metro.json",
+      "resultPath": "results/chef-tonys-rockville-dc-metro.json",
+      "applyAgentId": "coordinator",
+      "lunaAttempts": 3,
+      "completedAt": "2026-07-24T16:22:48.940Z"
+    }
+  ]
+}

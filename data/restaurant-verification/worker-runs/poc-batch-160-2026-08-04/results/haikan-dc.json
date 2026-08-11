@@ -1,0 +1,467 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-160-2026-08-04",
+  "restaurantId": "haikan-dc",
+  "name": "Haikan",
+  "packetValidation": {
+    "baselineItemCount": 28,
+    "baselineFingerprint": "e88e91ed46ba8acc9084272138bb41caa7c1b831b78770296e951651d575e660"
+  },
+  "identity": {
+    "name": "Haikan",
+    "address": "805 V St NW, Washington, DC 20001",
+    "phone": "(202) 299-1000",
+    "confirmed": true,
+    "sourceEvidenceIds": [
+      "closed-toast",
+      "closure-report",
+      "historical-ordering"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "closed-toast",
+      "url": "https://www.toasttab.com/local/haikan/r-dd81a865-4550-4c2a-862b-2d4f78febb02",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "both",
+      "retrievedAt": "2026-08-04"
+    },
+    {
+      "evidenceId": "historical-ordering",
+      "url": "https://order.online/store/Haikan-78991",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "retrievedAt": "2026-08-04"
+    },
+    {
+      "evidenceId": "closure-report",
+      "url": "https://dc.eater.com/venue/25228/haikan",
+      "authorityTier": "third_party",
+      "purpose": "both",
+      "retrievedAt": "2026-08-04"
+    },
+    {
+      "evidenceId": "official-site-search",
+      "url": "https://www.google.com/search?q=site%3Ahaikandc.com+Haikan+menu",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "retrievedAt": "2026-08-04"
+    },
+    {
+      "evidenceId": "official-document-search",
+      "url": "https://www.google.com/search?q=site%3Ahaikandc.com+allergen+allergy+nutrition+ingredients+PDF",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "retrievedAt": "2026-08-04"
+    },
+    {
+      "evidenceId": "targeted-search",
+      "url": "https://www.google.com/search?q=Haikan+DC+allergen+allergy+nutrition+ingredients+menu",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "retrievedAt": "2026-08-04"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "closed-restaurant-surface",
+      "url": "https://www.toasttab.com/local/haikan/r-dd81a865-4550-4c2a-862b-2d4f78febb02",
+      "current": true,
+      "scopeStatus": "complete",
+      "fullyEnumerated": true,
+      "servicePeriods": [],
+      "sourceEvidenceIds": [
+        "closed-toast",
+        "closure-report"
+      ],
+      "currentProductKeys": [
+        "spicy-shoyu",
+        "shoyu",
+        "veggie"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "spicy-shoyu",
+      "name": "Spicy Shoyu",
+      "sourceEvidenceIds": [
+        "historical-ordering"
+      ],
+      "containsAllergens": [
+        "sesame"
+      ],
+      "mayContainAllergens": [
+        "egg"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "historical-ordering"
+      ]
+    },
+    {
+      "currentProductKey": "shoyu",
+      "name": "Shoyu",
+      "sourceEvidenceIds": [
+        "historical-ordering"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "historical-ordering"
+      ]
+    },
+    {
+      "currentProductKey": "veggie",
+      "name": "Veggie",
+      "sourceEvidenceIds": [
+        "historical-ordering"
+      ],
+      "containsAllergens": [
+        "peanut"
+      ],
+      "mayContainAllergens": [
+        "egg"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "historical-ordering"
+      ]
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "outcome": "site_unavailable_no_matrix",
+        "sourceEvidenceIds": [
+          "official-site-search"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "outcome": "not_found",
+        "sourceEvidenceIds": [
+          "official-document-search"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "outcome": "item_warnings_only_no_matrix",
+        "sourceEvidenceIds": [
+          "historical-ordering",
+          "closed-toast"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "outcome": "closure_confirmed_no_matrix",
+        "sourceEvidenceIds": [
+          "targeted-search",
+          "closure-report"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "claim": "Historical merchant ordering descriptions state that egg cross-contact is unavoidable for Haikan noodles, including the vegan noodle cooking process.",
+      "sourceEvidenceIds": [
+        "historical-ordering"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:amazu-veggies",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "2:butter",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "3:chashu",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "4:corn",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "5:crab-rangoons",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "6:crispy-pig-ears",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "7:extra-soup",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "8:fried-calamari",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "9:hiyashi-chuka",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "10:ice-cream-cookie-sandwich",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "11:mapo-tofu-aburamen",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "12:menma",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "13:miso",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "14:mochi-ice-cream",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "15:nitamago",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "16:onsen-egg",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "17:pork-belly",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "18:purin",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "19:shio",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "20:shoyu",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "shoyu"
+        ],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "21:shrimp-burger",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "22:smashed-cucumber-salad",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "23:spice-bomb",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "24:spicy-shoyu",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "spicy-shoyu"
+        ],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "25:veggie",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "veggie"
+        ],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "26:veggie-spice-bomb",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "27:wakame",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      },
+      {
+        "auditItemKey": "28:wood-ear-mushrooms",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "closed-toast",
+          "closure-report"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": true,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": true,
+    "parserIssue": false
+  },
+  "summary": "Haikan’s closed Toast storefront and current third-party closure reporting confirm that the 805 V Street NW restaurant is permanently closed. Its dormant merchant ordering page still publishes three ramen products; those reconcile exactly and the other 25 frozen rows are stale. All four required allergen searches found no item-by-allergen matrix; the merchant ordering menu preserves a restaurant-specific warning that egg cross-contact is unavoidable for its noodles.",
+  "recommendedLane": "luna_fix"
+}

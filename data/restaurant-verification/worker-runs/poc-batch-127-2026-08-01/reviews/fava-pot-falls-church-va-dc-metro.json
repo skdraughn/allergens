@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-127-2026-08-01",
+  "restaurantId": "fava-pot-falls-church-va-dc-metro",
+  "reviewType": "narrow_current_menu_scope_resolution",
+  "validation": {
+    "valid": true,
+    "identityConfirmed": true,
+    "restaurantActive": true,
+    "oldOfficialPdfConfirmed": true,
+    "oldOfficialPdfDate": "November 2021",
+    "oldOfficialPdfFrozenItemCount": 51,
+    "currentVendorSurfacesConfirmed": true,
+    "currentVendorSurfacesFullyEnumerable": false,
+    "currentVendorShowsCatalogDrift": true,
+    "currentVendorShowsRetainedItems": true,
+    "currentVendorShowsNewItems": true,
+    "currentVendorShowsNormalizedNames": true,
+    "formalAllergenMatrixFound": false,
+    "unsupportedCurrentCatalogClaimDetected": true,
+    "canonicalItemChecksUntouched": true
+  },
+  "resolution": {
+    "binding": true,
+    "decision": "quarantine_old_catalog_pending_complete_current_inventory",
+    "terminalAllowed": false,
+    "menuScopeResolvedAs": "current_scope_not_fully_enumerable_from_available_public_surfaces",
+    "currentCatalogAuthorization": "not_authorized",
+    "oldCatalog": {
+      "url": "https://media-cdn.getbento.com/accounts/6c264482c32925b4cc01f3336f71fce0/media/Tfup04NQTbuX6B6gl2t2_Falls%20Church_%20Menu-Nov%202021.pdf",
+      "authorityTier": "restaurant_issued",
+      "date": "November 2021",
+      "frozenRowCount": 51,
+      "finding": "The frozen rows are a coherent historical Falls Church menu, but the PDF is nearly five years old and cannot establish the August 2026 current catalog."
+    },
+    "liveVendorScope": {
+      "surfaces": [
+        {
+          "url": "https://www.doordash.com/store/fava-pot-falls-church-210389/",
+          "authorityTier": "restaurant_linked_vendor",
+          "finding": "Active merchant-priced full-menu surface, but the crawl exposes categories and only featured items rather than every product."
+        },
+        {
+          "url": "https://www.ubereats.com/store/fava-pot-falls-church/55QBMCjAVkmdyTX40MA7QA",
+          "authorityTier": "restaurant_linked_vendor",
+          "finding": "Active Falls Church ordering surface with current featured items and categories, but not a complete crawlable inventory."
+        }
+      ],
+      "retainedExamples": [
+        "Koshary Bowl",
+        "Mixed Grill Platter",
+        "Chicken Kabab Platter",
+        "Kofta Platter",
+        "Hawawshi",
+        "Chef's Appetizer Platter",
+        "Hummus",
+        "Fava Beans",
+        "Macaroni Béchamel",
+        "Tzatziki",
+        "Stuffed Grape Leaves"
+      ],
+      "driftExamples": [
+        "Chicken Kabob Platter is currently styled Chicken Kabab Platter.",
+        "Egyptian Ta'amya Platter is currently presented as Falafel Platter."
+      ],
+      "newExamples": [
+        "Lamb Chops with Stuffed Grape Leaves",
+        "Mediterranean Salad",
+        "Premium Chef's Breakfast",
+        "Pistachio Baklava",
+        "Egyptian Cookies",
+        "Om Ali Pudding",
+        "Kunafa with Nutella"
+      ],
+      "finding": "The live surfaces prove the restaurant is active and the catalog has both continuity and material drift, but they do not expose a complete enumerated inventory suitable for an explicit currentProductKeys projection."
+    },
+    "allergenResolution": {
+      "status": "accurately_unavailable",
+      "finding": "No formal restaurant-issued allergen matrix was found. Vendor descriptions may support individual ingredient positives after a complete current inventory is captured, but blank historical rows cannot be treated as allergen-negative."
+    },
+    "requiredCoordinatorAction": {
+      "action": "focused_current_inventory_capture_or_quarantine",
+      "preserveIdentity": true,
+      "preserveHistoricalPdfAsNoncurrentEvidence": true,
+      "doNotApplyOld51AsCompleteCurrentCatalog": true,
+      "doNotMarkUnseenOldRowsStaleWithoutCompleteInventory": true,
+      "doNotInferAllergenNegatives": true,
+      "preferredCaptureOrder": [
+        "restaurant-controlled current menu export or PDF",
+        "merchant API/full DoorDash inventory",
+        "merchant API/full Uber Eats inventory",
+        "direct restaurant confirmation"
+      ],
+      "ifCompleteCaptureUnavailable": "Keep the restaurant/catalog quarantined with menuScopeUnresolved rather than publishing a partial or historical projection."
+    },
+    "supportingEvidence": [
+      {
+        "evidenceId": "old-official-menu",
+        "url": "https://media-cdn.getbento.com/accounts/6c264482c32925b4cc01f3336f71fce0/media/Tfup04NQTbuX6B6gl2t2_Falls%20Church_%20Menu-Nov%202021.pdf",
+        "authorityTier": "restaurant_issued",
+        "finding": "Historical official Falls Church menu underlying the frozen 51 rows."
+      },
+      {
+        "evidenceId": "current-doordash",
+        "url": "https://www.doordash.com/store/fava-pot-falls-church-210389/",
+        "authorityTier": "restaurant_linked_vendor",
+        "finding": "Current merchant surface confirms active Falls Church operation, current categories, retained products, and newer inventory, but only featured products are exposed in the crawl."
+      },
+      {
+        "evidenceId": "current-ubereats",
+        "url": "https://www.ubereats.com/store/fava-pot-falls-church/55QBMCjAVkmdyTX40MA7QA",
+        "authorityTier": "restaurant_linked_vendor",
+        "finding": "Current merchant surface independently confirms retained items, normalized names, and newer products, but not full inventory."
+      }
+    ],
+    "rationale": "The historical official PDF is authoritative for what Fava Pot offered in November 2021, while the two current merchant surfaces are authoritative for the active Falls Church store and the products they expose. Those live surfaces demonstrate both continuity and drift but are only partially enumerable in the available crawl. Therefore neither wholesale acceptance of all 51 historical rows nor wholesale stale-item removal is evidence-supported. The binding resolution is to prohibit a complete current projection from this packet and quarantine it until a complete live inventory is captured."
+  },
+  "remainingSolSignals": []
+}

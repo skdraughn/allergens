@@ -592,7 +592,7 @@ export async function recordRestaurantVerification({
   if (row.status === "pending") {
     throw new Error(`${restaurantId} must be claimed before evidence can be recorded.`);
   }
-  if (terminalStatuses.includes(row.status) && input.status !== "recheck_required") {
+  if (terminalStatuses.includes(row.status) && row.completedAt && input.status !== "recheck_required") {
     throw new Error(`${restaurantId} is terminal and must transition to recheck_required before mutation.`);
   }
   if (terminalStatuses.includes(row.status) && input.status === "recheck_required") {
@@ -627,7 +627,7 @@ export async function recordRestaurantVerification({
 
   if (input.sourceAttempts) {
     dossier.sourceAttempts = mergeById(
-      dossier.sourceAttempts,
+      input.replaceSourceAttempts ? [] : dossier.sourceAttempts,
       input.sourceAttempts.map(normalizeSourceAttempt),
     );
   }
@@ -1029,7 +1029,8 @@ function validateTerminalState({ row, dossier, evidence, itemChecks, status }) {
   }
 
   if (status === "blocked_unverifiable") {
-    const attemptKinds = new Set(dossier.sourceAttempts.map((attempt) => attempt.kind));
+    const blockedAttempts = dossier.sourceAttempts.filter((attempt) => attempt.kind);
+    const attemptKinds = new Set(blockedAttempts.map((attempt) => attempt.kind));
     const missingAttemptKinds = blockedAttemptKinds.filter((kind) => !attemptKinds.has(kind));
 
     if (missingAttemptKinds.length > 0) {
@@ -1038,7 +1039,7 @@ function validateTerminalState({ row, dossier, evidence, itemChecks, status }) {
       );
     }
 
-    if (!dossier.sourceAttempts.every((attempt) => attempt.attemptedAt && attempt.outcome)) {
+    if (!blockedAttempts.every((attempt) => attempt.attemptedAt && attempt.outcome)) {
       throw new Error("Every blocked source attempt requires attemptedAt and outcome.");
     }
 
@@ -1117,7 +1118,7 @@ function validateV2TerminalState({ row, dossier, evidence, itemChecks, status })
     if (dossier.currentCatalog?.status !== "unverifiable") {
       throw new Error("Blocked status requires an explicitly unverifiable current catalog.");
     }
-    validateBlockedAttemptsV2(dossier.sourceAttempts, evidenceById);
+    validateBlockedAttemptsV2(dossier.sourceAttempts.filter((attempt) => attempt.kind), evidenceById);
     for (const item of itemChecks) {
       const excludedArtifact = item.disposition === "artifact" && item.allergenVerdict === "not_applicable";
       if (!excludedArtifact && item.allergenVerdict !== "accurately_unavailable") {
