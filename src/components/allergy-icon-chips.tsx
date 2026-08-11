@@ -12,6 +12,8 @@ type AllergyIconChipsProps = {
   labelPrefix?: string;
   maxVisible?: number;
   overlap?: boolean;
+  overlapOffset?: number;
+  preserveOrder?: boolean;
   size?: number;
   style?: StyleProp<ViewStyle>;
 };
@@ -25,13 +27,21 @@ export function AllergyIconChips({
   labelPrefix,
   maxVisible = compact ? 5 : 7,
   overlap = false,
+  overlapOffset = -7,
+  preserveOrder = false,
   size,
   style,
 }: AllergyIconChipsProps) {
   const normalizedIds = normalizeAllergyIds(allergyIds);
   const normalizedHighlightedIds =
     highlightedIds === "all" ? "all" : normalizeAllergyIds(highlightedIds);
-  const selectedOptions = allergyOptions.filter((option) => normalizedIds.includes(option.id));
+  const selectedOptions = preserveOrder
+    ? normalizedIds.flatMap((id) => {
+        const option = allergyOptions.find((nextOption) => nextOption.id === id);
+
+        return option ? [option] : [];
+      })
+    : allergyOptions.filter((option) => normalizedIds.includes(option.id));
   const visibleOptions = selectedOptions.slice(0, maxVisible);
   const overflowCount = selectedOptions.length - visibleOptions.length;
 
@@ -60,8 +70,8 @@ export function AllergyIconChips({
                 height: chipSize,
                 width: chipSize,
               },
-              overlap && index > 0 ? styles.overlapChip : null,
-              overlap ? { zIndex: index + 1 } : null,
+              overlap && index > 0 ? { marginLeft: overlapOffset } : null,
+              overlap ? { zIndex: highlighted ? 100 + index : index + 1 } : null,
               crossContact ? styles.crossContactChip : null,
               highlighted ? styles.selectedChip : null,
             ]}
@@ -84,7 +94,7 @@ export function AllergyIconChips({
               zIndex: visibleOptions.length + 1,
               width: chipSize,
             },
-            overlap && visibleOptions.length > 0 ? styles.overlapChip : null,
+            overlap && visibleOptions.length > 0 ? { marginLeft: overlapOffset } : null,
           ]}
         >
           <Text style={styles.overflowText}>+{overflowCount}</Text>
@@ -117,9 +127,6 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 9,
     fontWeight: "900",
-  },
-  overlapChip: {
-    marginLeft: -7,
   },
   overlapRow: {
     gap: 0,

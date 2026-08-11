@@ -1,0 +1,205 @@
+{
+  "schemaVersion": 1,
+  "verificationContractVersion": 2,
+  "restaurantId": "green-almond-pantry-dc",
+  "name": "Green Almond Pantry",
+  "status": "blocked_unverifiable",
+  "createdAt": "2026-08-07T17:44:45.960Z",
+  "updatedAt": "2026-08-07T17:52:33.152Z",
+  "completedAt": "2026-08-07T17:52:33.152Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "unverifiable",
+      "reviewedItemCount": 0,
+      "sourceItemCount": null,
+      "notes": [
+        "Binding Sol review found no complete readable current public menu boundary."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "accurately_unavailable",
+      "highestAuthorityTier": null,
+      "notes": [
+        "All four searches completed without an official item matrix."
+      ]
+    },
+    "extraction": {
+      "verdict": "not_applicable",
+      "parserReviewed": false,
+      "semanticsVerified": true,
+      "notes": []
+    }
+  },
+  "currentCatalog": {
+    "status": "unverifiable",
+    "reviewedBaselineItemCount": 0,
+    "currentProductCount": 0,
+    "reconciledCurrentProductCount": 0,
+    "inventoryFingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "surfaces": [],
+    "products": [],
+    "notes": [
+      "The zero-row baseline does not establish a zero-product catalog; current official and linked menu surfaces are unreadable or incomplete."
+    ]
+  },
+  "adjudication": {
+    "type": "coordinator",
+    "runId": "poc-batch-153-2026-08-07",
+    "decidedAt": "2026-08-07T17:52:32.826Z",
+    "recommendation": "blocked_unverifiable",
+    "model": {
+      "id": "codex-poc-coordinator",
+      "reasoningEffort": "high"
+    },
+    "rationale": "Binding Sol review requires blocked status until a complete current food and nonalcoholic menu is enumerated.",
+    "artifactHashes": []
+  },
+  "workerHandoff": {
+    "runId": "poc-batch-153-2026-08-07",
+    "restaurantId": "green-almond-pantry-dc",
+    "preparedAt": "2026-08-07T17:52:32.826Z",
+    "routeDestination": "sol_medium",
+    "solRequired": true,
+    "artifacts": [
+      {
+        "kind": "poc_job",
+        "path": "worker-runs/poc-batch-153-2026-08-07/jobs/green-almond-pantry-dc.json",
+        "sha256": "405b1e87dbe3e4f792b0d0dfd5a0318c50424c8d42ac7e99eceb9a32e3dd44a6"
+      },
+      {
+        "kind": "poc_research",
+        "path": "worker-runs/poc-batch-153-2026-08-07/results/green-almond-pantry-dc.json",
+        "sha256": "e6f02d51db2ff206d5501dc15acfb55a66df13e61cdb68d4ec5799f2bf89e977"
+      },
+      {
+        "kind": "sol_review",
+        "path": "worker-runs/poc-batch-153-2026-08-07/reviews/green-almond-menu-scope.json",
+        "sha256": "678c44c3a6bf71914be2f3601f33ebc1324248ac018669669eed2221e8c48866"
+      },
+      {
+        "kind": "sol_validation",
+        "path": "worker-runs/poc-batch-153-2026-08-07/review-validations/green-almond-pantry-dc.json",
+        "sha256": "90669f3d367e6e51271b84ecde77d00937b94673108ed89068dc208ce39188fa"
+      }
+    ],
+    "notes": [
+      "Binding Sol menu-scope review persisted."
+    ]
+  },
+  "sourceAttempts": [
+    {
+      "id": "attempt-official-site",
+      "kind": "official_site",
+      "url": "https://www.greenalmondpantry.com/menu",
+      "attemptedAt": "2026-08-07T17:52:32.826Z",
+      "outcome": "Official menu exposes no readable itemized catalog.",
+      "status": "blocked",
+      "query": null,
+      "request": null,
+      "evidenceIds": [
+        "ev-menu"
+      ],
+      "scopeImpact": "The current product boundary remains unknown.",
+      "notes": []
+    },
+    {
+      "id": "attempt-linked-source",
+      "kind": "linked_source",
+      "url": "https://greenalmondpantry.square.site/",
+      "attemptedAt": "2026-08-07T17:52:32.826Z",
+      "outcome": "Restaurant-linked Square surface exposes no readable menu.",
+      "status": "blocked",
+      "query": null,
+      "request": null,
+      "evidenceIds": [
+        "ev-square"
+      ],
+      "scopeImpact": "Linked evidence cannot establish catalog completeness.",
+      "notes": []
+    },
+    {
+      "id": "attempt-ordering-vendor",
+      "kind": "ordering_vendor",
+      "url": "https://www.doordash.com/store/green-almond-pantry-29666979/",
+      "attemptedAt": "2026-08-07T17:52:32.826Z",
+      "outcome": "Linked DoorDash page reports inactive status; cached names are stale.",
+      "status": "blocked",
+      "query": null,
+      "request": null,
+      "evidenceIds": [
+        "ev-doordash"
+      ],
+      "scopeImpact": "The inactive surface cannot prove current membership.",
+      "notes": []
+    },
+    {
+      "id": "attempt-targeted-search",
+      "kind": "targeted_search",
+      "url": null,
+      "attemptedAt": "2026-08-07T17:52:32.826Z",
+      "outcome": "No complete current catalog or official allergen matrix found.",
+      "status": "not_found",
+      "query": "site:greenalmondpantry.com allergen allergy nutrition ingredients PDF menu",
+      "request": null,
+      "evidenceIds": [
+        "ev-home",
+        "ev-hours"
+      ],
+      "scopeImpact": "Search did not resolve menu scope.",
+      "notes": []
+    },
+    {
+      "id": "attempt-archive",
+      "kind": "archive",
+      "url": null,
+      "attemptedAt": "2026-08-07T17:52:32.826Z",
+      "outcome": "No archive suitable to prove current membership was used.",
+      "status": "not_found",
+      "query": "Green Almond Pantry archived menu",
+      "request": null,
+      "evidenceIds": [
+        "ev-georgetown"
+      ],
+      "scopeImpact": "Historical material cannot establish the current catalog.",
+      "notes": []
+    },
+    {
+      "id": "attempt-third-party",
+      "kind": "third_party",
+      "url": "https://www.restaurantji.com/dc/washington/green-almond-pantry-/",
+      "attemptedAt": "2026-08-07T17:52:32.826Z",
+      "outcome": "Third-party listing cannot establish a complete current catalog.",
+      "status": "contradictory",
+      "query": null,
+      "request": null,
+      "evidenceIds": [
+        "ev-restaurantji"
+      ],
+      "scopeImpact": "Third-party context remains supporting only.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "unverifiable-current-menu-boundary",
+      "severity": "high",
+      "kind": "menu_scope",
+      "summary": "Complete current Green Almond Pantry menu cannot be verified.",
+      "evidenceIds": [
+        "ev-menu",
+        "ev-square",
+        "ev-doordash"
+      ],
+      "resolved": true,
+      "resolution": "Binding Sol review requires blocked_unverifiable until a complete current public menu is captured."
+    }
+  ],
+  "repairs": [],
+  "notes": [
+    "Coordinator blocked closeout for unresolved current menu scope."
+  ]
+}

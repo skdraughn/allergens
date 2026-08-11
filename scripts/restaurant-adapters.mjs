@@ -1,4 +1,10 @@
 import { restaurantSources } from "./restaurant-sources.mjs";
+import {
+  casualDiningMinItemCount,
+  sharedParserTypes,
+} from "./restaurant-adapters/shared-parser-types.mjs";
+import { modularAdapterOverridesById } from "./restaurant-adapters/index.mjs";
+import { classifyRestaurantSource } from "./restaurant-source-classification.mjs";
 
 export const coverageStatuses = {
   blocked: "blocked",
@@ -8,16 +14,25 @@ export const coverageStatuses = {
 
 export const snapshotVersion = 1;
 
-const sharedParserTypes = {
-  htmlMatrix: "html-allergen-matrix",
-  htmlIngredients: "html-ingredients",
-  officialApi: "official-api",
-  pdfIngredients: "pdf-ingredients",
-  pdfMatrix: "pdf-matrix",
-  productPage: "product-page",
-};
+function menuIntelligenceFallbackAdapterDefaults(source) {
+  if (source.allowUnavailableAllergenFallback !== true) {
+    return {};
+  }
 
-const casualDiningMinItemCount = 25;
+  return {
+    allowGenericDomMenu: true,
+    minOfficialItemCount: 1,
+    parserTypes: [
+      sharedParserTypes.genericHtmlMenu,
+      sharedParserTypes.htmlIngredients,
+      sharedParserTypes.productPage,
+    ],
+    regionalScope:
+      source.type === "local"
+        ? "local-menu-with-intelligence-fallback"
+        : "chain-menu-with-intelligence-fallback",
+  };
+}
 
 const adapterOverrides = {
   applebees: {
@@ -70,6 +85,42 @@ const adapterOverrides = {
     minOfficialItemCount: casualDiningMinItemCount,
     parserTypes: [sharedParserTypes.pdfMatrix],
   },
+  "baskin-robbins": {
+    parserTypes: [sharedParserTypes.productPage],
+  },
+  benihana: {
+    minOfficialItemCount: casualDiningMinItemCount,
+    parserTypes: [sharedParserTypes.productPage],
+  },
+  "blaze-pizza": {
+    parserTypes: [sharedParserTypes.productPage],
+  },
+  "corner-bakery-cafe": {
+    minOfficialItemCount: 20,
+    parserTypes: [sharedParserTypes.productPage],
+  },
+  "chicken-salad-chick": {
+    parserTypes: [sharedParserTypes.productPage],
+  },
+  "einstein-bros": {
+    minOfficialItemCount: 20,
+    parserTypes: [sharedParserTypes.productPage],
+  },
+  "krispy-kreme": {
+    parserTypes: [sharedParserTypes.productPage],
+  },
+  "mod-pizza": {
+    parserTypes: [sharedParserTypes.productPage],
+  },
+  "moes-southwest-grill": {
+    parserTypes: [sharedParserTypes.productPage],
+  },
+  "noodles-company": {
+    parserTypes: [sharedParserTypes.productPage],
+  },
+  "smoothie-king": {
+    parserTypes: [sharedParserTypes.productPage],
+  },
   "cheesecake-factory": {
     minOfficialItemCount: casualDiningMinItemCount,
     parserTypes: [sharedParserTypes.htmlMatrix, sharedParserTypes.productPage],
@@ -113,6 +164,10 @@ const adapterOverrides = {
   "first-watch": {
     minOfficialItemCount: casualDiningMinItemCount,
     parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.htmlMatrix],
+  },
+  "flemings-prime-steakhouse-tysons-va": {
+    minOfficialItemCount: casualDiningMinItemCount,
+    parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.productPage],
   },
   "firehouse-subs": {
     parserTypes: [sharedParserTypes.pdfMatrix, sharedParserTypes.pdfIngredients],
@@ -219,7 +274,7 @@ const adapterOverrides = {
     parserTypes: [sharedParserTypes.pdfMatrix],
   },
   "tropical-smoothie-cafe": {
-    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.htmlMatrix],
+    parserTypes: [sharedParserTypes.officialApi, sharedParserTypes.htmlMatrix, sharedParserTypes.pdfMatrix],
   },
   "texas-roadhouse": {
     minOfficialItemCount: casualDiningMinItemCount,
@@ -260,19 +315,67 @@ const adapterOverrides = {
   },
 };
 
-export const brandAdapters = restaurantSources.map((source) => ({
-  id: source.id,
-  allowGenericDomMenu: false,
-  coverageRequiredPercent: 100,
-  regionalScope: "us-national-plus-official-regional",
-  snapshotVersion,
-  ...adapterOverrides[source.id],
-}));
+export const brandAdapters = restaurantSources.map((source) => {
+  const sourceClassification = classifyRestaurantSource(source);
+  const parserTypes = [
+    ...(sourceClassification.parserTypes ?? []),
+    ...(menuIntelligenceFallbackAdapterDefaults(source).parserTypes ?? []),
+    ...(adapterOverrides[source.id]?.parserTypes ?? []),
+    ...(modularAdapterOverridesById[source.id]?.parserTypes ?? []),
+  ];
+
+  return {
+    id: source.id,
+    allowGenericDomMenu: false,
+    coverageRequiredPercent: 100,
+    regionalScope: "us-national-plus-official-regional",
+    snapshotVersion,
+    ...sourceClassification,
+    ...menuIntelligenceFallbackAdapterDefaults(source),
+    ...adapterOverrides[source.id],
+    ...modularAdapterOverridesById[source.id],
+    parserTypes: [...new Set(parserTypes)],
+  };
+});
 
 export const brandAdapterById = new Map(brandAdapters.map((adapter) => [adapter.id, adapter]));
+const dynamicBrandAdapterById = new Map();
+
+export function createBrandAdapterForSource(source) {
+  const sourceClassification = classifyRestaurantSource(source);
+  const parserTypes = [
+    ...(sourceClassification.parserTypes ?? []),
+    ...(menuIntelligenceFallbackAdapterDefaults(source).parserTypes ?? []),
+    ...(adapterOverrides[source.id]?.parserTypes ?? []),
+    ...(modularAdapterOverridesById[source.id]?.parserTypes ?? []),
+  ];
+
+  return {
+    id: source.id,
+    allowGenericDomMenu: false,
+    coverageRequiredPercent: 100,
+    regionalScope: "us-national-plus-official-regional",
+    snapshotVersion,
+    ...sourceClassification,
+    ...menuIntelligenceFallbackAdapterDefaults(source),
+    ...adapterOverrides[source.id],
+    ...modularAdapterOverridesById[source.id],
+    parserTypes: [...new Set(parserTypes)],
+  };
+}
+
+export function registerBrandAdapterSource(source) {
+  if (!source?.id || brandAdapterById.has(source.id)) {
+    return brandAdapterById.get(source?.id);
+  }
+
+  const adapter = createBrandAdapterForSource(source);
+  dynamicBrandAdapterById.set(source.id, adapter);
+  return adapter;
+}
 
 export function getBrandAdapter(restaurantId) {
-  const adapter = brandAdapterById.get(restaurantId);
+  const adapter = brandAdapterById.get(restaurantId) ?? dynamicBrandAdapterById.get(restaurantId);
 
   if (!adapter) {
     throw new Error(`Missing BrandAdapter for ${restaurantId}`);

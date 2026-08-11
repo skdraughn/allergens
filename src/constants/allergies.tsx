@@ -1,4 +1,4 @@
-import { type LucideIcon } from "lucide-react-native";
+import { CircleHelp, type LucideIcon } from "lucide-react-native";
 import { type ComponentType } from "react";
 import { Image, type ImageSourcePropType } from "react-native";
 import Svg, { Circle, Text as SvgText } from "react-native-svg";
@@ -171,6 +171,14 @@ export const allergyOptions: AllergyOption[] = [
     Icon: makeFsaIcon(fsaIcons.sulfites),
     accent: "#7867B8",
     surface: "#F2EFFF",
+  },
+  {
+    id: "other",
+    label: "Other",
+    detail: "Any other allergies",
+    Icon: CircleHelp,
+    accent: "#74777C",
+    surface: "#F3F4F6",
   },
 ];
 

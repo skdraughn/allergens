@@ -22,6 +22,7 @@ export async function createAllocation({
   count,
   machineId,
   outputPath,
+  excludeExisting = false,
   now = new Date().toISOString(),
   root = verificationRoot,
 } = {}) {
@@ -32,7 +33,18 @@ export async function createAllocation({
   const manifestPath = path.join(root, "manifest.json");
   const [ledgerBytes, manifestBytes] = await Promise.all([readFile(ledgerPath), readFile(manifestPath)]);
   const rows = parseJsonLines(ledgerBytes.toString("utf8"));
-  const pending = rows.filter((row) => row.status === "pending");
+  let pending = rows.filter((row) => row.status === "pending");
+  if (excludeExisting) {
+    const allocationFiles = existsSync(defaultAllocationRoot)
+      ? (await readdir(defaultAllocationRoot)).filter((name) => name.endsWith(".json"))
+      : [];
+    const existingIds = new Set();
+    for (const allocationFile of allocationFiles) {
+      const existing = await readJson(path.join(defaultAllocationRoot, allocationFile));
+      for (const entry of existing.entries ?? []) existingIds.add(entry.restaurantId);
+    }
+    pending = pending.filter((row) => !existingIds.has(row.restaurantId));
+  }
   const ordered = direction === "back" ? [...pending].reverse() : pending;
   if (ordered.length < count) throw new Error(`Only ${ordered.length} pending rows are available.`);
   const allocation = {
@@ -396,6 +408,11 @@ async function runAutomaticFollowups({ runRoot, executions, timeoutSeconds }) {
       }
       return current;
     }
+    if (nextFollowupAction(current.status) === "handoff") {
+      current.status = "awaiting_serialized_apply";
+      await updateFollowupStatus(current, "coordinator_handoff", { finalResultPath: path.relative(repositoryRoot, current.finalResultPath) }, "awaiting_serialized_apply");
+      return current;
+    }
     current.status = "blocked_followup_limit";
     await updateFollowupStatus(current, "followup_limit_reached", { attempts: current.followups.length });
     return current;
@@ -569,7 +586,7 @@ async function main() {
   const { command, options } = parseArgs(process.argv.slice(2));
   const workers = Number(options.workers ?? maximumDistributedWorkers);
   if (command === "allocate") {
-    console.log(JSON.stringify(await createAllocation({ direction: options.direction, count: Number(options.count ?? 100), machineId: options.machine, outputPath: options.output }), null, 2)); return;
+    console.log(JSON.stringify(await createAllocation({ direction: options.direction, count: Number(options.count ?? 100), machineId: options.machine, outputPath: options.output, excludeExisting: options["exclude-existing"] === true || options["exclude-existing"] === "true" }), null, 2)); return;
   }
   if (command === "prepare") {
     console.log(JSON.stringify(await prepareResearchRun({ allocationPath: options.allocation, workers, runId: options.run }), null, 2)); return;

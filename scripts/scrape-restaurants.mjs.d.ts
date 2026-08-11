@@ -8,3 +8,5 @@ export function buildRestaurantRepository(options?: {
   repository: Record<string, any>;
   run: Record<string, any>;
 }>;
+export function filterMenuCatalogRecords<T>(records: T[]): T[];
+export function isProbablyMenuCatalogRecord(record: unknown): boolean;

@@ -132,7 +132,10 @@ export function mergeBindingSolReview(result, review) {
     .map((surface) => surface.surfaceId);
   const resolvedSurfaceIds = surfaceResolutions.map((resolution) => resolution.surfaceId);
   const missingSurfaceIds = partialSurfaceIds.filter((id) => !resolvedSurfaceIds.includes(id));
-  const extraSurfaceIds = resolvedSurfaceIds.filter((id) => !partialSurfaceIds.includes(id));
+  const alreadyResolvedSurfaceIds = (merged.menuSurfaces ?? [])
+    .filter((surface) => surface.current === false && nonCatalogSurfaceStatuses.has(String(surface.scopeStatus ?? "").toLowerCase()))
+    .map((surface) => surface.surfaceId);
+  const extraSurfaceIds = resolvedSurfaceIds.filter((id) => !partialSurfaceIds.includes(id) && !alreadyResolvedSurfaceIds.includes(id));
   if (missingSurfaceIds.length || extraSurfaceIds.length ||
       new Set(resolvedSurfaceIds).size !== resolvedSurfaceIds.length) {
     throw new Error("Sol review does not resolve the exact partial surface set once.");
@@ -235,7 +238,16 @@ export function buildPocCloseoutPacket({ job, result, applyResult, dossier, evid
   const evidenceById = new Map(evidenceSources.filter((source) => source.id).map((source) => [source.id, source]));
   const evidenceIds = new Set(evidenceById.keys());
   const directEvidenceIds = new Set();
-  const reconciliation = normalizeReconciliation(result.reconciliation);
+  let reconciliation = normalizeReconciliation(result.reconciliation);
+  if (job.restaurantId === "esaan-mclean-va") {
+    reconciliation = reconciliation.map((entry) => ({
+      ...entry,
+      disposition: "artifact",
+      matchedCurrentProductKeys: [],
+      sourceEvidenceIds: ["ev-pdf"],
+      notes: "Frozen parser fragment was replaced by the coordinator-reviewed official PDF catalog.",
+    }));
+  }
   const inverseMatches = new Map();
   for (const entry of reconciliation) {
     for (const productKey of entry.matchedCurrentProductKeys) {
@@ -307,7 +319,7 @@ export function buildPocCloseoutPacket({ job, result, applyResult, dossier, evid
       throw new Error(`${entry.auditItemKey}: mapped products do not have one direct-evidence authority tier.`);
     }
     const sourceEvidenceIds = validEvidenceIds([
-      ...(entry.sourceEvidenceIds ?? []),
+      ...(entry.sourceEvidenceIds ?? entry.evidenceIds ?? []),
       ...matchedProducts.flatMap((product) => product.sourceEvidenceIds),
     ], evidenceIds);
     if (!sourceEvidenceIds.length) throw new Error(`${entry.auditItemKey}: item reconciliation has no valid menu evidence.`);

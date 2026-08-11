@@ -7,6 +7,7 @@ export const searchRestaurants = defineFunction({
   memoryMB: 512,
   runtime: 22,
   environment: {
+    DISABLE_RESTAURANT_REFRESH_JOBS: "true",
     RESTAURANT_DATA_PREFIX: "restaurant-data",
   },
 });

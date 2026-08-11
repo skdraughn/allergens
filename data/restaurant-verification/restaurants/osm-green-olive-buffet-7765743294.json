@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "verificationContractVersion": 2,
+  "restaurantId": "osm-green-olive-buffet-7765743294",
+  "name": "Green Olive Buffet",
+  "status": "blocked_unverifiable",
+  "createdAt": "2026-08-07T18:06:05.533Z",
+  "updatedAt": "2026-08-07T18:14:21.460Z",
+  "completedAt": "2026-08-07T18:14:21.460Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "unverifiable",
+      "reviewedItemCount": 72,
+      "sourceItemCount": null,
+      "notes": [
+        "Binding Sol review found no complete current itemized menu boundary."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "accurately_unavailable",
+      "highestAuthorityTier": null,
+      "notes": [
+        "All four searches completed without an official matrix."
+      ]
+    },
+    "extraction": {
+      "verdict": "not_applicable",
+      "parserReviewed": false,
+      "semanticsVerified": true,
+      "notes": []
+    }
+  },
+  "currentCatalog": {
+    "status": "unverifiable",
+    "reviewedBaselineItemCount": 72,
+    "currentProductCount": 0,
+    "reconciledCurrentProductCount": 0,
+    "inventoryFingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "surfaces": [],
+    "products": [],
+    "notes": [
+      "All 72 SinglePlatform rows are stale; their removal does not establish a complete zero-product catalog. The descriptive buffet placeholder is not publishable as an itemized product."
+    ]
+  },
+  "adjudication": {
+    "type": "coordinator",
+    "runId": "poc-batch-154-2026-08-07",
+    "decidedAt": "2026-08-07T18:14:11.490Z",
+    "recommendation": "blocked_unverifiable",
+    "model": {
+      "id": "codex-poc-coordinator",
+      "reasoningEffort": "high"
+    },
+    "rationale": "Binding Sol review requires blocked status until a complete current itemized catalog is available.",
+    "artifactHashes": []
+  },
+  "workerHandoff": {
+    "runId": "poc-batch-154-2026-08-07",
+    "restaurantId": "osm-green-olive-buffet-7765743294",
+    "preparedAt": "2026-08-07T18:14:11.490Z",
+    "routeDestination": "sol_medium",
+    "solRequired": true,
+    "artifacts": [
+      {
+        "kind": "poc_job",
+        "path": "worker-runs/poc-batch-154-2026-08-07/jobs/osm-green-olive-buffet-7765743294.json",
+        "sha256": "b4c906f3a11c2d525dd3c4ee34db15aa721b47c03219fe30ffc12d27dab45473"
+      },
+      {
+        "kind": "poc_research",
+        "path": "worker-runs/poc-batch-154-2026-08-07/results/osm-green-olive-buffet-7765743294.json",
+        "sha256": "812e7232c01bf5fbd49fa08f841528092f5d8961dc6edf5ddc88de2fa5c46798"
+      },
+      {
+        "kind": "sol_review",
+        "path": "worker-runs/poc-batch-154-2026-08-07/reviews/green-olive-menu-scope.json",
+        "sha256": "6dbaa76abbc2caf06ea4f33d79f46efb7405b04df958a6dbd6129da2384f3720"
+      },
+      {
+        "kind": "sol_validation",
+        "path": "worker-runs/poc-batch-154-2026-08-07/review-validations/osm-green-olive-buffet-7765743294.json",
+        "sha256": "cd361ff3f15fbb46275a499eebdee25ed49d52b1ff3f576a695a8cdd72615e1e"
+      }
+    ],
+    "notes": [
+      "Binding narrow Sol menu-scope review persisted."
+    ]
+  },
+  "sourceAttempts": [
+    {
+      "id": "attempt-official-site",
+      "kind": "official_site",
+      "url": "https://green-olive-buffet.placejoys.com/",
+      "attemptedAt": "2026-08-07T18:14:11.490Z",
+      "outcome": "Current listing is descriptive only.",
+      "status": "contradictory",
+      "query": null,
+      "request": null,
+      "evidenceIds": [
+        "ev-placejoys"
+      ],
+      "scopeImpact": "It cannot establish itemized membership.",
+      "notes": []
+    },
+    {
+      "id": "attempt-linked-source",
+      "kind": "linked_source",
+      "url": "http://places.singleplatform.com/green-olive-buffet--grill/menu",
+      "attemptedAt": "2026-08-07T18:14:11.490Z",
+      "outcome": "Itemized vendor surface is robot-blocked.",
+      "status": "blocked",
+      "query": null,
+      "request": null,
+      "evidenceIds": [
+        "ev-singleplatform"
+      ],
+      "scopeImpact": "Frozen rows cannot be verified current.",
+      "notes": []
+    },
+    {
+      "id": "attempt-ordering-vendor",
+      "kind": "ordering_vendor",
+      "url": "http://places.singleplatform.com/green-olive-buffet--grill/menu",
+      "attemptedAt": "2026-08-07T18:14:11.490Z",
+      "outcome": "No accessible current itemized menu.",
+      "status": "blocked",
+      "query": null,
+      "request": null,
+      "evidenceIds": [
+        "ev-search-vendor"
+      ],
+      "scopeImpact": "Complete catalog remains unknown.",
+      "notes": []
+    },
+    {
+      "id": "attempt-targeted-search",
+      "kind": "targeted_search",
+      "url": null,
+      "attemptedAt": "2026-08-07T18:14:11.490Z",
+      "outcome": "No complete official itemized catalog or allergen matrix found.",
+      "status": "not_found",
+      "query": "Green Olive Buffet Alexandria allergen nutrition ingredients PDF menu",
+      "request": null,
+      "evidenceIds": [
+        "ev-search-web"
+      ],
+      "scopeImpact": "Search did not resolve scope.",
+      "notes": []
+    },
+    {
+      "id": "attempt-archive",
+      "kind": "archive",
+      "url": null,
+      "attemptedAt": "2026-08-07T18:14:11.490Z",
+      "outcome": "No historical source can prove current membership.",
+      "status": "not_found",
+      "query": "Green Olive Buffet Alexandria archived menu",
+      "request": null,
+      "evidenceIds": [
+        "ev-search-web"
+      ],
+      "scopeImpact": "Archive evidence was not used as current.",
+      "notes": []
+    },
+    {
+      "id": "attempt-third-party",
+      "kind": "third_party",
+      "url": "https://green-olive-buffet.placejoys.com/",
+      "attemptedAt": "2026-08-07T18:14:11.490Z",
+      "outcome": "Descriptive categories are not orderable products.",
+      "status": "contradictory",
+      "query": null,
+      "request": null,
+      "evidenceIds": [
+        "ev-placejoys"
+      ],
+      "scopeImpact": "Context only; no complete boundary.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "unverifiable-current-itemized-menu",
+      "severity": "high",
+      "kind": "menu_scope",
+      "summary": "Complete current Green Olive Buffet menu cannot be verified.",
+      "evidenceIds": [
+        "ev-placejoys",
+        "ev-singleplatform"
+      ],
+      "resolved": true,
+      "resolution": "Binding Sol review requires blocked_unverifiable until a complete current itemized catalog is captured."
+    }
+  ],
+  "repairs": [],
+  "notes": [
+    "Coordinator blocked closeout for unresolved itemized menu scope."
+  ]
+}

@@ -12,7 +12,7 @@ import {
   useState,
 } from "react";
 
-import { normalizeAllergyIds } from "@/constants/allergies";
+import { normalizeAllergyId, normalizeAllergyIds } from "@/constants/allergies";
 import { isAmplifyConfigured } from "@/lib/amplify";
 
 import type { Schema } from "../../../amplify/data/resource";
@@ -23,7 +23,9 @@ type AllergyProfileState = {
   isLoading: boolean;
   onboardingComplete: boolean;
   profiles: AllergyProfile[];
+  activeProfileAllergyIds: string[];
   selectedAllergyIds: string[];
+  selectedProfileIds: string[];
   completeOnboarding: () => Promise<void>;
   deleteProfile: (id: string) => Promise<void>;
   renameProfile: (id: string, name: string) => Promise<void>;
@@ -31,6 +33,7 @@ type AllergyProfileState = {
   switchProfile: (id: string) => Promise<void>;
   syncProfilesFromCloud: () => Promise<void>;
   toggleAllergy: (id: string) => void;
+  toggleProfileSelection: (id: string) => Promise<void>;
 };
 
 export type AllergyProfile = {
@@ -49,25 +52,39 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
   const [isLoading, setIsLoading] = useState(true);
   const [onboardingComplete, setOnboardingComplete] = useState(false);
   const [activeProfileId, setActiveProfileId] = useState(DEFAULT_PROFILE_ID);
+  const [selectedProfileIds, setSelectedProfileIds] = useState<string[]>([
+    DEFAULT_PROFILE_ID,
+  ]);
   const [profiles, setProfiles] = useState<AllergyProfile[]>([
     { id: DEFAULT_PROFILE_ID, name: "My Profile", selectedAllergyIds: [] },
   ]);
   const didHydrateCloudRef = useRef(false);
+  const hasUserProfileEditRef = useRef(false);
   const profileStateRef = useRef({
     activeProfileId: DEFAULT_PROFILE_ID,
     onboardingComplete: false,
     profiles: [
       { id: DEFAULT_PROFILE_ID, name: "My Profile", selectedAllergyIds: [] },
     ] as AllergyProfile[],
+    selectedProfileIds: [DEFAULT_PROFILE_ID],
   });
 
-  const activeProfile =
-    profiles.find((profile) => profile.id === activeProfileId) ?? profiles[0] ?? {
-      id: DEFAULT_PROFILE_ID,
-      name: "My Profile",
-      selectedAllergyIds: [],
-    };
-  const selectedAllergyIds = activeProfile.selectedAllergyIds;
+  const selectedAllergyIds = useMemo(
+    () =>
+      normalizeAllergyIds(
+        profiles
+          .filter((profile) => selectedProfileIds.includes(profile.id))
+          .flatMap((profile) => profile.selectedAllergyIds),
+      ),
+    [profiles, selectedProfileIds],
+  );
+  const activeProfileAllergyIds = useMemo(
+    () =>
+      normalizeAllergyIds(
+        profiles.find((profile) => profile.id === activeProfileId)?.selectedAllergyIds ?? [],
+      ),
+    [activeProfileId, profiles],
+  );
 
   useEffect(() => {
     let active = true;
@@ -83,6 +100,7 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
           onboardingComplete?: boolean;
           profiles?: AllergyProfile[];
           selectedAllergyIds?: string[];
+          selectedProfileIds?: string[];
         };
         const storedProfiles =
           Array.isArray(profile.profiles) && profile.profiles.length > 0
@@ -105,15 +123,26 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
         )
           ? profile.activeProfileId!
           : storedProfiles[0].id;
+        const storedSelectedProfileIds = Array.isArray(profile.selectedProfileIds)
+          ? profile.selectedProfileIds.filter((id) =>
+              storedProfiles.some((storedProfile) => storedProfile.id === id),
+            )
+          : [];
+        const nextSelectedProfileIds =
+          storedSelectedProfileIds.length > 0
+            ? storedSelectedProfileIds
+            : [nextActiveProfileId];
 
         profileStateRef.current = {
           activeProfileId: nextActiveProfileId,
           onboardingComplete: nextComplete,
           profiles: storedProfiles,
+          selectedProfileIds: nextSelectedProfileIds,
         };
         setOnboardingComplete(nextComplete);
         setProfiles(storedProfiles);
         setActiveProfileId(nextActiveProfileId);
+        setSelectedProfileIds(nextSelectedProfileIds);
       })
       .catch(() => undefined)
       .finally(() => {
@@ -128,24 +157,34 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
   }, []);
 
   const writeLocalState = useCallback(
-    async (nextComplete: boolean, nextProfiles: AllergyProfile[], nextActiveProfileId: string) => {
+    async (
+      nextComplete: boolean,
+      nextProfiles: AllergyProfile[],
+      nextActiveProfileId: string,
+      nextSelectedProfileIds: string[],
+    ) => {
       profileStateRef.current = {
         activeProfileId: nextActiveProfileId,
         onboardingComplete: nextComplete,
         profiles: nextProfiles,
+        selectedProfileIds: nextSelectedProfileIds,
       };
       setOnboardingComplete(nextComplete);
       setProfiles(nextProfiles);
       setActiveProfileId(nextActiveProfileId);
+      setSelectedProfileIds(nextSelectedProfileIds);
       await AsyncStorage.setItem(
         STORAGE_KEY,
         JSON.stringify({
           activeProfileId: nextActiveProfileId,
           onboardingComplete: nextComplete,
           profiles: nextProfiles,
-          selectedAllergyIds:
-            nextProfiles.find((profile) => profile.id === nextActiveProfileId)
-              ?.selectedAllergyIds ?? [],
+          selectedAllergyIds: normalizeAllergyIds(
+            nextProfiles
+              .filter((profile) => nextSelectedProfileIds.includes(profile.id))
+              .flatMap((profile) => profile.selectedAllergyIds),
+          ),
+          selectedProfileIds: nextSelectedProfileIds,
         }),
       );
     },
@@ -168,11 +207,27 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
         ),
       }));
 
+      // Don't let an in-flight initial cloud read overwrite a choice the user
+      // has just made in onboarding.
+      if (hasUserProfileEditRef.current) {
+        return;
+      }
+
       if (cloudProfiles.length > 0) {
         const nextActiveProfileId = cloudProfiles.some((profile) => profile.id === activeProfileId)
           ? activeProfileId
           : cloudProfiles[0].id;
-        await writeLocalState(onboardingComplete, cloudProfiles, nextActiveProfileId);
+        const nextSelectedProfileIds = selectedProfileIds.filter((id) =>
+          cloudProfiles.some((profile) => profile.id === id),
+        );
+        await writeLocalState(
+          onboardingComplete,
+          cloudProfiles,
+          nextActiveProfileId,
+          nextSelectedProfileIds.length > 0
+            ? nextSelectedProfileIds
+            : [nextActiveProfileId],
+        );
         return;
       }
 
@@ -191,12 +246,22 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
             };
           }),
         );
-        await writeLocalState(onboardingComplete, createdProfiles, createdProfiles[0].id);
+        const nextSelectedProfileIds = createdProfiles
+          .filter((_, index) => selectedProfileIds.includes(profiles[index].id))
+          .map((profile) => profile.id);
+        await writeLocalState(
+          onboardingComplete,
+          createdProfiles,
+          createdProfiles[0].id,
+          nextSelectedProfileIds.length > 0
+            ? nextSelectedProfileIds
+            : [createdProfiles[0].id],
+        );
       }
     } catch {
       // Stay on the local profile cache when signed out or offline.
     }
-  }, [activeProfileId, onboardingComplete, profiles, writeLocalState]);
+  }, [activeProfileId, onboardingComplete, profiles, selectedProfileIds, writeLocalState]);
 
   useEffect(() => {
     if (!isLoading && !didHydrateCloudRef.current) {
@@ -206,8 +271,18 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
   }, [isLoading, syncProfilesFromCloud]);
 
   const writeState = useCallback(
-    async (nextComplete: boolean, nextProfiles: AllergyProfile[], nextActiveProfileId: string) => {
-      await writeLocalState(nextComplete, nextProfiles, nextActiveProfileId);
+    async (
+      nextComplete: boolean,
+      nextProfiles: AllergyProfile[],
+      nextActiveProfileId: string,
+      nextSelectedProfileIds: string[],
+    ) => {
+      await writeLocalState(
+        nextComplete,
+        nextProfiles,
+        nextActiveProfileId,
+        nextSelectedProfileIds,
+      );
 
       if (!isAmplifyConfigured) {
         return;
@@ -242,7 +317,12 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
   const completeOnboarding = useCallback(
     () => {
       const state = profileStateRef.current;
-      return writeState(true, state.profiles, state.activeProfileId);
+      return writeState(
+        true,
+        state.profiles,
+        state.activeProfileId,
+        state.selectedProfileIds,
+      );
     },
     [writeState],
   );
@@ -250,7 +330,12 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
   const resetOnboarding = useCallback(
     () => {
       const state = profileStateRef.current;
-      return writeState(false, state.profiles, state.activeProfileId);
+      return writeState(
+        false,
+        state.profiles,
+        state.activeProfileId,
+        state.selectedProfileIds,
+      );
     },
     [writeState],
   );
@@ -261,9 +346,9 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
         return Promise.resolve();
       }
 
-      return writeState(onboardingComplete, profiles, id);
+      return writeState(onboardingComplete, profiles, id, selectedProfileIds);
     },
-    [onboardingComplete, profiles, writeState],
+    [onboardingComplete, profiles, selectedProfileIds, writeState],
   );
 
   const renameProfile = useCallback(
@@ -282,9 +367,14 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
           : profile,
       );
 
-      return writeState(onboardingComplete, nextProfiles, activeProfileId);
+      return writeState(
+        onboardingComplete,
+        nextProfiles,
+        activeProfileId,
+        selectedProfileIds,
+      );
     },
-    [activeProfileId, onboardingComplete, profiles, writeState],
+    [activeProfileId, onboardingComplete, profiles, selectedProfileIds, writeState],
   );
 
   const deleteProfile = useCallback(
@@ -296,8 +386,20 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
       const nextProfiles = profiles.filter((profile) => profile.id !== id);
       const nextActiveProfileId =
         activeProfileId === id ? nextProfiles[0].id : activeProfileId;
+      const remainingSelectedProfileIds = selectedProfileIds.filter(
+        (profileId) => profileId !== id,
+      );
+      const nextSelectedProfileIds =
+        remainingSelectedProfileIds.length > 0
+          ? remainingSelectedProfileIds
+          : [nextActiveProfileId];
 
-      await writeLocalState(onboardingComplete, nextProfiles, nextActiveProfileId);
+      await writeLocalState(
+        onboardingComplete,
+        nextProfiles,
+        nextActiveProfileId,
+        nextSelectedProfileIds,
+      );
 
       if (!isAmplifyConfigured || id.startsWith("profile-") || id === DEFAULT_PROFILE_ID) {
         return;
@@ -310,7 +412,7 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
         // Keep the local delete even if the cloud delete has to retry through a later sync.
       }
     },
-    [activeProfileId, onboardingComplete, profiles, writeLocalState],
+    [activeProfileId, onboardingComplete, profiles, selectedProfileIds, writeLocalState],
   );
 
   const createProfile = useCallback(async () => {
@@ -344,20 +446,28 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
       nextProfile,
     ];
 
-    await writeState(onboardingComplete, nextProfiles, nextProfile.id);
+    await writeState(
+      onboardingComplete,
+      nextProfiles,
+      nextProfile.id,
+      [...selectedProfileIds, nextProfile.id],
+    );
     return nextProfile;
-  }, [onboardingComplete, profiles, writeState]);
+  }, [onboardingComplete, profiles, selectedProfileIds, writeState]);
 
   const toggleAllergy = useCallback(
     (id: string) => {
-      const nextProfiles = profiles.map((profile) => {
-        if (profile.id !== activeProfileId) {
+      const state = profileStateRef.current;
+      const normalizedId = normalizeAllergyId(id);
+      const nextProfiles = state.profiles.map((profile) => {
+        if (profile.id !== state.activeProfileId) {
           return profile;
         }
 
-        const nextSelectedIds = profile.selectedAllergyIds.includes(id)
-          ? profile.selectedAllergyIds.filter((value) => value !== id)
-          : normalizeAllergyIds([...profile.selectedAllergyIds, id]);
+        const currentIds = normalizeAllergyIds(profile.selectedAllergyIds);
+        const nextSelectedIds = currentIds.includes(normalizedId)
+          ? currentIds.filter((value) => value !== normalizedId)
+          : [...currentIds, normalizedId];
 
         return {
           ...profile,
@@ -365,14 +475,46 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
         };
       });
 
-      void writeState(onboardingComplete, nextProfiles, activeProfileId);
+      hasUserProfileEditRef.current = true;
+      void writeState(
+        state.onboardingComplete,
+        nextProfiles,
+        state.activeProfileId,
+        state.selectedProfileIds,
+      );
     },
-    [activeProfileId, onboardingComplete, profiles, writeState],
+    [writeState],
+  );
+
+  const toggleProfileSelection = useCallback(
+    (id: string) => {
+      if (!profiles.some((profile) => profile.id === id)) {
+        return Promise.resolve();
+      }
+
+      const isSelected = selectedProfileIds.includes(id);
+      if (isSelected && selectedProfileIds.length === 1) {
+        return Promise.resolve();
+      }
+
+      const nextSelectedProfileIds = isSelected
+        ? selectedProfileIds.filter((profileId) => profileId !== id)
+        : [...selectedProfileIds, id];
+
+      return writeState(
+        onboardingComplete,
+        profiles,
+        activeProfileId,
+        nextSelectedProfileIds,
+      );
+    },
+    [activeProfileId, onboardingComplete, profiles, selectedProfileIds, writeState],
   );
 
   const value = useMemo(
     () => ({
       activeProfileId,
+      activeProfileAllergyIds,
       completeOnboarding,
       createProfile,
       deleteProfile,
@@ -382,12 +524,15 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
       renameProfile,
       resetOnboarding,
       selectedAllergyIds,
+      selectedProfileIds,
       switchProfile,
       syncProfilesFromCloud,
       toggleAllergy,
+      toggleProfileSelection,
     }),
     [
       activeProfileId,
+      activeProfileAllergyIds,
       completeOnboarding,
       createProfile,
       deleteProfile,
@@ -397,9 +542,11 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
       renameProfile,
       resetOnboarding,
       selectedAllergyIds,
+      selectedProfileIds,
       switchProfile,
       syncProfilesFromCloud,
       toggleAllergy,
+      toggleProfileSelection,
     ],
   );
 

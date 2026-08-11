@@ -4,16 +4,27 @@ export type RestaurantBrand = {
   domain: string;
   logoAspectRatio?: number;
   logoMonogram?: string;
+  logoSource?: "fallback-favicon" | "provided";
   logoSvgUrl?: string;
   logoUrl: string;
+  name?: string | null;
 };
 
 type RestaurantBrandAsset = Omit<RestaurantBrand, "logoUrl"> & {
   logoUrl?: string;
 };
 
+type RestaurantBrandOverride = Partial<
+  Pick<
+    RestaurantBrand,
+    "color" | "domain" | "logoAspectRatio" | "logoMonogram" | "logoSvgUrl" | "logoUrl"
+  >
+> & {
+  name?: string | null;
+};
+
 const favicon = (domain: string) =>
-  `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+  `https://www.google.com/s2/favicons?domain=${domain}&sz=256`;
 
 const brandAssets: Record<string, RestaurantBrandAsset> = {
   mcdonalds: {
@@ -367,19 +378,73 @@ const brandAssets: Record<string, RestaurantBrandAsset> = {
     description: "Chicken, steaks, ribs, seafood, salads, sandwiches, sides, and desserts.",
     domain: "cheddars.com",
   },
+  "founding-farmers-dc": {
+    color: "#8B2332",
+    description: "Scratch-made American breakfast, brunch, lunch, dinner, desserts, and cocktails.",
+    domain: "wearefoundingfarmers.com",
+    logoAspectRatio: 3.13,
+    logoSvgUrl: "https://www.wearefoundingfarmers.com/wp-content/uploads/2020/02/logo_ff.svg",
+  },
 };
 
-export function getRestaurantBrand(id: string): RestaurantBrand {
+export function getRestaurantBrand(
+  id: string,
+  override: RestaurantBrandOverride = {},
+): RestaurantBrand {
   const asset =
     brandAssets[id] ??
     ({
-      color: "#007AFF",
+      color: override.color ?? colorFromId(id),
       description: "Restaurant menu items, allergen sources, and community notes.",
-      domain: "example.com",
+      domain: override.domain ?? "example.com",
     } satisfies RestaurantBrandAsset);
+  const fallbackDomain = override.domain ?? asset.domain;
+  const logoUrl = isFaviconFallback(override.logoUrl)
+    ? asset.logoUrl ?? favicon(fallbackDomain)
+    : override.logoUrl ?? asset.logoUrl ?? favicon(fallbackDomain);
 
   return {
     ...asset,
-    logoUrl: asset.logoUrl ?? favicon(asset.domain),
+    ...compactBrandOverride(override),
+    logoUrl,
+    logoSource: isFaviconFallback(logoUrl) ? "fallback-favicon" : "provided",
   };
+}
+
+export function getRestaurantBrandBackground(brand: Pick<RestaurantBrand, "color">) {
+  return colorWithAlpha(brand.color, 0.07);
+}
+
+function compactBrandOverride(override: RestaurantBrandOverride) {
+  return Object.fromEntries(
+    Object.entries(override).filter((entry) => entry[1] !== null && entry[1] !== undefined),
+  );
+}
+
+function colorFromId(id: string) {
+  let hash = 0;
+
+  for (let index = 0; index < id.length; index += 1) {
+    hash = (hash * 31 + id.charCodeAt(index)) % 360;
+  }
+
+  return `hsl(${hash}, 68%, 42%)`;
+}
+
+function isFaviconFallback(url?: string) {
+  return !url || /(^https?:)?\/\/www\.google\.com\/s2\/favicons\b/.test(url);
+}
+
+function colorWithAlpha(color: string, alpha: number) {
+  const hex = color.trim();
+
+  if (/^#[0-9a-f]{6}$/i.test(hex)) {
+    const red = Number.parseInt(hex.slice(1, 3), 16);
+    const green = Number.parseInt(hex.slice(3, 5), 16);
+    const blue = Number.parseInt(hex.slice(5, 7), 16);
+
+    return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+  }
+
+  return "rgba(118, 118, 128, 0.07)";
 }

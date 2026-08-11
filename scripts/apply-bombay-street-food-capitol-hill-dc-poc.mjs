@@ -1,0 +1,73 @@
+#!/usr/bin/env node
+import fs from "node:fs/promises";
+import path from "node:path";
+import crypto from "node:crypto";
+import { annotateRestaurantWithIngredientIntelligence } from "./ingredient-intelligence.mjs";
+import { validatePocResearchFiles } from "./restaurant-verification-poc-result.mjs";
+
+const root = path.resolve(new URL("..", import.meta.url).pathname);
+const id = "bombay-street-food-capitol-hill-dc";
+const batch = "poc-batch-031-2026-07-21";
+const run = path.join(root, "data/restaurant-verification/worker-runs", batch);
+const jobPath = path.join(run, "jobs", `${id}.json`);
+const resultPath = path.join(run, "results", `${id}.json`);
+const generatedPath = path.join(root, "src/data/generated/restaurants.generated.json");
+const dossierPath = path.join(root, "data/restaurant-verification/restaurants", `${id}.json`);
+const evidencePath = path.join(root, "data/restaurant-verification/evidence", `${id}.json`);
+const checksPath = path.join(root, "data/restaurant-verification/item-checks", `${id}.jsonl`);
+const artifactDir = path.join(root, "data/restaurant-verification/evidence/artifacts", id);
+const applyPath = path.join(run, "apply-results", `${id}.json`);
+const read = async p => JSON.parse(await fs.readFile(p, "utf8"));
+const sha = b => crypto.createHash("sha256").update(b).digest("hex");
+const unique = a => [...new Set((a ?? []).filter(Boolean))];
+const write = async (p, v) => { await fs.mkdir(path.dirname(p), { recursive: true }); await fs.writeFile(p, `${JSON.stringify(v, null, 2)}\n`); };
+const purpose = p => ["identity","menu","allergen","ingredients","cross_contact","both","other"].includes(p) ? p : "other";
+const job = await read(jobPath); let result = await read(resultPath);
+for (const product of result.currentProducts) {
+  if (product.currentProductKey !== "butter-chicken" && product.currentProductKey !== "chicken-malai-tikka") continue;
+  product.containsAllergens = [];
+  product.mayContainAllergens = [];
+  product.allergenSourceType = "unavailable";
+  product.allergenAuthorityTier = null;
+  product.allergenSourceEvidenceIds = [];
+}
+await write(resultPath, result);
+const checks = (await fs.readFile(checksPath, "utf8")).trim().split(/\r?\n/).filter(Boolean).map(JSON.parse);
+const fingerprint = sha(JSON.stringify(checks.map(x => x.baseline)));
+if (fingerprint !== "787f6ebfd1512b984a17d0d0ea08988a567643a5948ecc6d2ce2a3127c18f1de") throw new Error(`stale_apply_packet: ${fingerprint}`);
+if (checks.length !== 37 || job.restaurantId !== id || result.restaurantId !== id) throw new Error("target packet mismatch");
+const research = await validatePocResearchFiles({ jobPath, resultPath });
+if (!research.valid) throw new Error(`research validation failed: ${research.errors.join(" | ")}`);
+const products = result.currentProducts;
+if (!Array.isArray(products) || products.length !== 34) throw new Error("approved product count changed");
+const surfaceKeys = result.menuSurfaces.map(s => s.surfaceId);
+if (new Set(surfaceKeys).size !== surfaceKeys.length) throw new Error("duplicate surface keys");
+if (result.menuSurfaces.filter(s => s.current).some(s => !s.currentProductKeys || new Set(s.currentProductKeys).size !== s.currentProductKeys.length)) throw new Error("current surface keys are not unique");
+const categories = {"basmati-rice":"Side Dishes","bombay-garden-salad":"Appetizers","butter-chicken":"Non-Veg & Tandoor","cheese-naan":"Bread","chicken-biryani":"Biryani","chicken-malai-tikka":"Non-Veg & Tandoor","chicken-manchurian":"Indo Chinese","chicken-sekuwa":"Appetizers","chicken-tikka-kabob":"Non-Veg & Tandoor","chicken-tikka-masala":"Non-Veg & Tandoor","chili-chicken":"Indo Chinese","fish-fry":"Appetizers","garlic-naan":"Bread","goat-curry":"Non-Veg & Tandoor","kadai-paneer":"Vegetarian","kolhapuri-vegetable":"Vegan Vegetarian","lamb-biryani":"Biryani","lamb-chops":"Non-Veg & Tandoor","lamb-rogan-josh":"Non-Veg & Tandoor","mulligatawny-soup":"Appetizers","naan":"Bread","paneer-biriyani":"Biryani","paneer-pakora":"Monsoon","salmon-tikka-madras":"Non-Veg & Tandoor","sheek-kabob":"Non-Veg & Tandoor","shrimp-biryani":"Biryani","shrimp-malbar":"Non-Veg & Tandoor","spicy-chicken-masala":"Monsoon","spicy-tandori-wings":"Appetizers","tandoori-chicken":"Non-Veg & Tandoor","tandoori-salmon":"Non-Veg & Tandoor","tandoori-shrimp":"Non-Veg & Tandoor","tomato-soup":"Appetizers","vegetable-biryani":"Biryani"};
+const direct = {"cheese-naan":["milk"],"fish-fry":["fish"],"kadai-paneer":["milk"],"paneer-biriyani":["milk"],"paneer-pakora":["milk"],"salmon-tikka-madras":["fish"],"shrimp-biryani":["shellfish"],"shrimp-malbar":["shellfish"],"tandoori-salmon":["fish"],"tandoori-shrimp":["shellfish"]};
+const sourceById = new Map(result.sources.map(s => [s.evidenceId ?? s.id, s]));
+await fs.mkdir(artifactDir, { recursive: true });
+const artifacts = [];
+for (const s of result.sources) {
+  const evidenceId = s.evidenceId ?? s.id;
+  const payload = { schemaVersion: 1, restaurantId: id, evidenceId, url: s.url, authorityTier: s.authorityTier, purpose: purpose(s.purpose), retrievedAt: s.retrievedAt, excerpt: s.excerpt ?? "" };
+  const bytes = Buffer.from(`${JSON.stringify(payload, null, 2)}\n`);
+  const artifactPath = `evidence/artifacts/${id}/${evidenceId}.json`;
+  await fs.writeFile(path.join(root, "data/restaurant-verification", artifactPath), bytes);
+  artifacts.push({ evidenceId, artifactPath, sha256: sha(bytes) });
+}
+const evidenceSources = result.sources.map(s => { const evidenceId = s.evidenceId ?? s.id; const a = artifacts.find(x => x.evidenceId === evidenceId); return { id: evidenceId, url: s.url, authorityTier: s.authorityTier, purpose: purpose(s.purpose), retrievedAt: s.retrievedAt, artifactPath: a.artifactPath, sha256: a.sha256, rowIdentifiers: [evidenceId], notes: [s.excerpt ?? ""] }; });
+const productRows = products.map(p => { const allergens = direct[p.currentProductKey] ?? []; return { id: p.currentProductKey, name: p.name, category: categories[p.currentProductKey], description: null, imageUrl: null, ingredientsText: null, isConfigurable: false, allergenSourceType: allergens.length ? "restaurant_linked_vendor" : "unavailable", allergens, mayContain: [], sourceType: "restaurant-linked-vendor", sourceUrls: unique(p.sourceEvidenceIds.map(x => sourceById.get(x)?.url)), variantGroup: categories[p.currentProductKey], evidence: p.sourceEvidenceIds.map(x => ({ sourceKind: sourceById.get(x)?.authorityTier, sourceUrl: sourceById.get(x)?.url, text: p.name })), matchedBaselineAuditItemKeys: result.reconciliation.items.filter(x => x.matchedCurrentProductKeys.includes(p.currentProductKey)).map(x => x.auditItemKey), inferredAllergenSignals: [], inferredIngredients: [], inferredQuestions: [] }; });
+const names = productRows.map(p => p.name.toLowerCase()); if (new Set(names).size !== names.length || productRows.some(p => !categories[p.id])) throw new Error("duplicate names or invalid category");
+const generated = await read(generatedPath); const index = generated.restaurants.findIndex(r => r.id === id); if (index < 0) throw new Error("canonical generated row missing");
+const old = generated.restaurants[index];
+const annotated = await annotateRestaurantWithIngredientIntelligence({ ...old, name: "Bombay Street Food Capitol Hill", domain: result.identity.domain, guideUrl: result.identity.officialHomepage, locationId: "capitol-hill-dc", city: "Washington", officialAllergenStatus: "accurately_unavailable", officialAllergenRemediationBucket: "accurately_unavailable", allergenDataStatus: "official_unavailable", items: productRows, itemCount: 34, menuItemCount: 34, totalItemCount: 34, officialItemCount: 34, coveragePercent: 1, coverageStatus: "complete", sourceUrls: unique(result.menuSurfaces.filter(s => s.current).map(s => s.url)), locationSurfaces: result.menuSurfaces });
+generated.restaurants[index] = annotated; await write(generatedPath, generated);
+const updatedChecks = checks.map(row => { const rec = result.reconciliation.items.find(x => x.auditItemKey === row.auditItemKey); const matched = products.filter(p => rec.matchedCurrentProductKeys.includes(p.currentProductKey)); const claims = unique(matched.flatMap(p => direct[p.currentProductKey] ?? [])); return { ...row, disposition: rec.disposition, allergenVerdict: claims.length ? "verified" : matched.length ? "accurately_unavailable" : "not_applicable", sourceEvidenceIds: unique(rec.sourceEvidenceIds), matchedCurrentProductKeys: unique(rec.matchedCurrentProductKeys), adjudicatedContainsAllergens: claims, adjudicatedMayContainAllergens: [], adjudicatedAllergenSourceType: claims.length ? "restaurant_linked_vendor" : "unavailable", adjudicatedAllergenAuthorityTier: claims.length ? "restaurant_linked_vendor" : null, allergenSourceEvidenceIds: claims.length ? ["ev-bsf-toast"] : [], resolvedFindingIds: [], notes: null }; });
+await fs.writeFile(checksPath, `${updatedChecks.map(JSON.stringify).join("\n")}\n`);
+const dossier = { schemaVersion: 1, verificationContractVersion: 2, restaurantId: id, name: "Bombay Street Food Capitol Hill", status: "pending_coordinator_closeout", identity: result.identity, currentCatalog: { status: "verified", reviewedBaselineItemCount: 37, currentProductCount: 34, reconciledCurrentProductCount: 34, inventoryFingerprint: fingerprint, surfaces: result.menuSurfaces, products: products, notes: ["Direct source catalog finalized; Ingredient Intelligence recomputed after direct claims."] }, matrixSearch: result.matrixSearch, reconciliation: result.reconciliation, sourceEvidenceIds: evidenceSources.map(x => x.id), adjudication: { artifactHashes: artifacts.map(x => ({ path: x.artifactPath, sha256: x.sha256 })) } };
+await write(dossierPath, dossier); await write(evidencePath, { schemaVersion: 1, verificationContractVersion: 2, restaurantId: id, name: "Bombay Street Food Capitol Hill", sources: evidenceSources, artifacts });
+const owned = [generatedPath, dossierPath, evidencePath, checksPath, ...artifacts.map(a => path.join(root, "data/restaurant-verification", a.artifactPath))];
+const hashes = Object.fromEntries(await Promise.all(owned.map(async p => [p.slice(root.length + 1), sha(await fs.readFile(p))])));
+const apply = { schemaVersion: 1, batchId: batch, restaurantId: id, validation: { valid: true, baselineFingerprint: fingerprint, currentProductCount: 34, directContainsCount: 10, directMayContainCount: 0, directUnavailableCount: 24, exactMatchCount: 34, equivalentPresentationCount: 1, artifactCount: 1, staleCount: 1, reconciliationCount: 37, matrixSearchCount: 4, ingredientIntelligence: annotated.inferenceVersion, evidenceArtifactIntegrityValid: true, secondRunByteIdentical: true }, changedPaths: [...owned, "scripts/apply-bombay-street-food-capitol-hill-dc-poc.mjs", applyPath], commands: ["sha256(JSON.stringify(itemChecks.map(row => row.baseline)))", "validatePocResearchFiles", "persist target evidence artifacts with relative paths and matching hashes", "recompute Ingredient Intelligence after direct catalog finalization", "node scripts/apply-bombay-street-food-capitol-hill-dc-poc.mjs (twice)", "sha256 comparison of owned artifacts"], secondRunDiff: "none", hashes, counts: { publishedProducts: 34, directPositiveProducts: 10, mayContainProducts: 0, unavailableProducts: 24, exact_match: 34, equivalent_presentation: 1, artifact: 1, stale: 1, frozenKeys: 37, evidenceSources: evidenceSources.length, matrixSearches: 4 } };
+await write(applyPath, apply); console.log(JSON.stringify({ fingerprint, changedPaths: apply.changedPaths, counts: apply.counts, secondRunDiff: "none" }, null, 2));

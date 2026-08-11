@@ -1,6 +1,7 @@
 import type { LucideIcon } from "lucide-react-native";
 import { Pressable, StyleSheet, Text } from "react-native";
 
+import { SereneLoader } from "@/components/serene-loader";
 import { colors, radius } from "@/constants/theme";
 
 type PrimaryButtonProps = {
@@ -8,18 +9,23 @@ type PrimaryButtonProps = {
   onPress: () => void;
   Icon?: LucideIcon;
   disabled?: boolean;
+  loading?: boolean;
 };
 
-export function PrimaryButton({ label, onPress, Icon, disabled }: PrimaryButtonProps) {
+export function PrimaryButton({ label, onPress, Icon, disabled, loading }: PrimaryButtonProps) {
   return (
     <Pressable
       accessibilityRole="button"
-      disabled={disabled}
+      disabled={disabled || loading}
       onPress={onPress}
-      style={[styles.button, disabled && styles.disabled]}
+      style={[styles.button, (disabled || loading) && styles.disabled]}
     >
       <Text style={styles.label}>{label}</Text>
-      {Icon ? <Icon color={colors.white} size={20} strokeWidth={2.6} /> : null}
+      {loading ? (
+        <SereneLoader color={colors.white} size="small" />
+      ) : Icon ? (
+        <Icon color={colors.white} size={20} strokeWidth={2.6} />
+      ) : null}
     </Pressable>
   );
 }

@@ -1,27 +1,43 @@
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
 import { Check, X } from "lucide-react-native";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  ActivityIndicator,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   Pressable,
+  type ScrollView as ScrollViewType,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { ModalScreen } from "@/components/modal-screen";
 import { PrimaryButton } from "@/components/primary-button";
+import { SereneLoader } from "@/components/serene-loader";
+import { SelectableChip } from "@/components/selectable-chip";
 import { useSnackbar } from "@/components/snackbar-provider";
 import { SecondaryButton } from "@/components/secondary-button";
 import { allergyOptions } from "@/constants/allergies";
 import { colors, radius, spacing } from "@/constants/theme";
 import type { MenuItem, Restaurant } from "@/data/restaurants";
+import {
+  createGooglePlacesSessionToken,
+  fetchRestaurantPlaceDetails,
+  fetchRestaurantPlaceSuggestions,
+  isGooglePlacesConfigured,
+  type GooglePlaceSuggestion,
+} from "@/features/community/google-places-service";
 import { useCommunitySubmission } from "@/features/community/use-restaurant-community";
+import {
+  getRestaurantSearchLocation,
+  type RestaurantSearchLocation,
+} from "@/features/restaurants/restaurant-search-service";
 
-export type ContributionMode = "comment" | "menu-item" | "report" | "restaurant-request";
+export type ContributionMode = "report" | "restaurant-request";
 
 type CommunityContributionModalProps = {
   initialRestaurantName?: string;
@@ -43,7 +59,11 @@ type FormState = {
   comment: string;
   country: string;
   description: string;
+  googleMapsUri: string;
+  googlePlaceId: string;
+  lat: number | null;
   locationHint: string;
+  lng: number | null;
   mayContain: string[];
   name: string;
   notes: string;
@@ -73,7 +93,11 @@ const defaultForm: FormState = {
   comment: "",
   country: "",
   description: "",
+  googleMapsUri: "",
+  googlePlaceId: "",
+  lat: null,
   locationHint: "",
+  lng: null,
   mayContain: [],
   name: "",
   notes: "",
@@ -108,6 +132,7 @@ export function CommunityContributionModal({
   restaurant,
 }: CommunityContributionModalProps) {
   const { showSnackbar } = useSnackbar();
+  const insets = useSafeAreaInsets();
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
   const submissions = useCommunitySubmission(restaurant?.id);
   const [form, setForm] = useState<FormState>(() => ({
@@ -116,11 +141,17 @@ export function CommunityContributionModal({
     name: initialRestaurantName ?? "",
   }));
   const [requestMenuItems, setRequestMenuItems] = useState<RequestMenuDraft[]>([]);
+  const [placeLocation, setPlaceLocation] = useState<RestaurantSearchLocation | null>(null);
+  const [placeLookupError, setPlaceLookupError] = useState<string | null>(null);
+  const [placeLookupLoading, setPlaceLookupLoading] = useState(false);
+  const [placeSearchText, setPlaceSearchText] = useState(initialRestaurantName ?? "");
+  const [placeSessionToken, setPlaceSessionToken] = useState(createGooglePlacesSessionToken);
+  const [placeSuggestions, setPlaceSuggestions] = useState<GooglePlaceSuggestion[]>([]);
+  const notesSectionYRef = useRef(0);
+  const scrollViewRef = useRef<ScrollViewType>(null);
   const [submitted, setSubmitted] = useState(false);
   const content = mode ? modalContent(mode, restaurant?.name, item?.name) : null;
   const isSubmitting =
-    submissions.submitComment.isPending ||
-    submissions.submitMenuItem.isPending ||
     submissions.submitReport.isPending ||
     submissions.submitRestaurantRequest.isPending;
 
@@ -135,8 +166,80 @@ export function CommunityContributionModal({
       category: item?.category ?? "",
       name: initialRestaurantName ?? "",
     });
+    setPlaceLookupError(null);
+    setPlaceLookupLoading(false);
+    setPlaceSearchText(initialRestaurantName ?? "");
+    setPlaceSessionToken(createGooglePlacesSessionToken());
+    setPlaceSuggestions([]);
     setRequestMenuItems([]);
   }, [initialRestaurantName, item?.category, mode]);
+
+  useEffect(() => {
+    if (mode !== "restaurant-request" || !isGooglePlacesConfigured()) {
+      return;
+    }
+
+    let active = true;
+
+    getRestaurantSearchLocation().then((location) => {
+      if (active) {
+        setPlaceLocation(location);
+      }
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [mode]);
+
+  useEffect(() => {
+    if (mode !== "restaurant-request" || !isGooglePlacesConfigured()) {
+      setPlaceSuggestions([]);
+      return;
+    }
+
+    const query = placeSearchText.trim();
+
+    if (query.length < 3 || form.googlePlaceId) {
+      setPlaceSuggestions([]);
+      setPlaceLookupError(null);
+      return;
+    }
+
+    let active = true;
+    const timer = setTimeout(() => {
+      setPlaceLookupLoading(true);
+      fetchRestaurantPlaceSuggestions({
+        input: query,
+        location: placeLocation,
+        sessionToken: placeSessionToken,
+      })
+        .then((suggestions) => {
+          if (active) {
+            setPlaceSuggestions(suggestions);
+            setPlaceLookupError(null);
+          }
+        })
+        .catch((error) => {
+          if (active) {
+            setPlaceSuggestions([]);
+            setPlaceLookupError(
+              error instanceof Error ? error.message : "Restaurant lookup is unavailable right now.",
+            );
+          }
+        })
+        .finally(() => {
+          if (active) {
+            setPlaceLookupLoading(false);
+          }
+        });
+    }, 400);
+
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
+  }, [form.googlePlaceId, mode, placeLocation, placeSearchText, placeSessionToken]);
 
   const canSubmit = useMemo(() => {
     if (!mode) {
@@ -147,28 +250,71 @@ export function CommunityContributionModal({
       return Boolean(form.name.trim());
     }
 
-    if (mode === "menu-item") {
-      return Boolean(restaurant?.id && form.name.trim() && form.category.trim());
-    }
-
     if (mode === "report") {
       return Boolean(restaurant?.id && form.comment.trim());
     }
 
-    return Boolean(restaurant?.id && form.body.trim());
+    return false;
   }, [form, mode, restaurant?.id]);
 
   const update = (field: keyof FormState, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
   };
 
-  const toggleAllergen = (field: "allergens" | "mayContain", id: string) => {
+  const updateRestaurantName = (value: string) => {
+    setPlaceSearchText(value);
     setForm((current) => ({
       ...current,
-      [field]: current[field].includes(id)
-        ? current[field].filter((value) => value !== id)
-        : [...current[field], id],
+      googleMapsUri: "",
+      googlePlaceId: "",
+      lat: null,
+      lng: null,
+      name: value,
     }));
+  };
+
+  const selectPlaceSuggestion = async (suggestion: GooglePlaceSuggestion) => {
+    setPlaceLookupError(null);
+    setPlaceLookupLoading(true);
+
+    try {
+      const details = await fetchRestaurantPlaceDetails({
+        placeId: suggestion.id,
+        sessionToken: placeSessionToken,
+      });
+      const nextName = details.name || suggestion.mainText;
+
+      setPlaceSearchText(nextName);
+      setPlaceSuggestions([]);
+      setForm((current) => ({
+        ...current,
+        addressLine1: details.addressLine1,
+        city: details.city,
+        country: details.country,
+        googleMapsUri: details.googleMapsUri ?? "",
+        googlePlaceId: details.id,
+        lat: details.lat ?? null,
+        lng: details.lng ?? null,
+        locationHint: [details.city, details.region].filter(Boolean).join(", "),
+        name: nextName,
+        postalCode: details.postalCode,
+        region: details.region,
+        website: details.website ?? current.website,
+      }));
+      setPlaceSessionToken(createGooglePlacesSessionToken());
+      setTimeout(() => {
+        scrollViewRef.current?.scrollTo({
+          animated: true,
+          y: Math.max(0, notesSectionYRef.current - 12),
+        });
+      }, 120);
+    } catch (error) {
+      setPlaceLookupError(
+        error instanceof Error ? error.message : "Restaurant details are unavailable right now.",
+      );
+    } finally {
+      setPlaceLookupLoading(false);
+    }
   };
 
   const addRequestMenuItem = () => {
@@ -231,22 +377,16 @@ export function CommunityContributionModal({
           city: form.city,
           country: form.country,
           displayAddress: formatDisplayAddress(form),
+          googleMapsUri: form.googleMapsUri,
+          googlePlaceId: form.googlePlaceId,
+          lat: form.lat ?? undefined,
+          lng: form.lng ?? undefined,
           locationHint: form.locationHint,
           name: form.name,
           notes: formatRestaurantRequestNotes(form.notes, requestMenuItems),
           postalCode: form.postalCode,
           region: form.region,
           website: form.website,
-        });
-      } else if (mode === "menu-item" && restaurant) {
-        await submissions.submitMenuItem.mutateAsync({
-          allergens: form.allergens,
-          category: form.category,
-          description: form.description,
-          mayContain: form.mayContain,
-          name: form.name,
-          restaurantId: restaurant.id,
-          sourceUrl: form.sourceUrl,
         });
       } else if (mode === "report" && restaurant) {
         await submissions.submitReport.mutateAsync({
@@ -255,13 +395,6 @@ export function CommunityContributionModal({
           reason: form.reason,
           restaurantId: restaurant.id,
           sourceUrl: form.sourceUrl,
-        });
-      } else if (mode === "comment" && restaurant) {
-        await submissions.submitComment.mutateAsync({
-          allergyContext: form.allergyContext,
-          body: form.body,
-          menuItemId: item?.id ?? null,
-          restaurantId: restaurant.id,
         });
       }
 
@@ -298,21 +431,35 @@ export function CommunityContributionModal({
               </View>
               <Text style={styles.doneTitle}>Queued for review</Text>
               <Text style={styles.doneCopy}>
-                Thanks. We’ll review it before it appears for other users.
+                Thanks. We&rsquo;ll review your request soon!
               </Text>
               <SecondaryButton label="Close" onPress={onClose} />
             </View>
           ) : (
-            <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : undefined}
+              style={styles.formShell}
+            >
+              <ScrollView
+                contentContainerStyle={[
+                  styles.content,
+                  mode === "restaurant-request" && styles.restaurantRequestContent,
+                ]}
+                keyboardShouldPersistTaps="handled"
+                ref={scrollViewRef}
+              >
               {content.helper ? <Text style={styles.helper}>{content.helper}</Text> : null}
 
               {mode === "restaurant-request" ? (
                 <>
-                  <Field
-                    label="Restaurant name"
-                    onChangeText={(value) => update("name", value)}
-                    placeholder="Restaurant or chain"
-                    value={form.name}
+                  <RestaurantPlaceLookup
+                    error={placeLookupError}
+                    loading={placeLookupLoading}
+                    onChangeText={updateRestaurantName}
+                    onSelect={selectPlaceSuggestion}
+                    selectedPlaceId={form.googlePlaceId}
+                    suggestions={placeSuggestions}
+                    value={placeSearchText}
                   />
                   <Field
                     autoCapitalize="none"
@@ -377,61 +524,27 @@ export function CommunityContributionModal({
                       />
                     </View>
                   </View>
-                  <Field
-                    label="Notes"
-                    multiline
-                    onChangeText={(value) => update("notes", value)}
-                    placeholder="Why should we add it?"
-                    value={form.notes}
-                  />
-                  <RestaurantRequestMenuSection
-                    items={requestMenuItems}
-                    onAdd={addRequestMenuItem}
-                    onRemove={removeRequestMenuItem}
-                    onToggleAllergen={toggleRequestMenuAllergen}
-                    onUpdate={updateRequestMenuItem}
-                  />
-                </>
-              ) : null}
-
-              {mode === "menu-item" ? (
-                <>
-                  <Field
-                    label="Menu item name"
-                    onChangeText={(value) => update("name", value)}
-                    placeholder="Item name"
-                    value={form.name}
-                  />
-                  <Field
-                    label="Category"
-                    onChangeText={(value) => update("category", value)}
-                    placeholder="Entrees, sides, drinks..."
-                    value={form.category}
-                  />
-                  <Field
-                    label="Description"
-                    multiline
-                    onChangeText={(value) => update("description", value)}
-                    placeholder="What is this item?"
-                    value={form.description}
-                  />
-                  <AllergenPicker
-                    label="Contains"
-                    onToggle={(id) => toggleAllergen("allergens", id)}
-                    selectedIds={form.allergens}
-                  />
-                  <AllergenPicker
-                    label="Cross-contact"
-                    onToggle={(id) => toggleAllergen("mayContain", id)}
-                    selectedIds={form.mayContain}
-                  />
-                  <Field
-                    autoCapitalize="none"
-                    label="Source URL"
-                    onChangeText={(value) => update("sourceUrl", value)}
-                    placeholder="https://..."
-                    value={form.sourceUrl}
-                  />
+                  <View
+                    onLayout={(event) => {
+                      notesSectionYRef.current = event.nativeEvent.layout.y;
+                    }}
+                    style={styles.notesSection}
+                  >
+                    <Field
+                      label="Notes"
+                      multiline
+                      onChangeText={(value) => update("notes", value)}
+                      placeholder="Why should we add it?"
+                      value={form.notes}
+                    />
+                    <RestaurantRequestMenuSection
+                      items={requestMenuItems}
+                      onAdd={addRequestMenuItem}
+                      onRemove={removeRequestMenuItem}
+                      onToggleAllergen={toggleRequestMenuAllergen}
+                      onUpdate={updateRequestMenuItem}
+                    />
+                  </View>
                 </>
               ) : null}
 
@@ -447,43 +560,107 @@ export function CommunityContributionModal({
                   />
                   <Field
                     autoCapitalize="none"
-                    label="Source URL"
+                    label="Source URL (optional)"
                     onChangeText={(value) => update("sourceUrl", value)}
-                    placeholder="https://..."
+                    placeholder="Optional link to the correct source"
                     value={form.sourceUrl}
                   />
                 </>
               ) : null}
 
-              {mode === "comment" ? (
-                <>
-                  <Field
-                    label="Comment"
-                    multiline
-                    onChangeText={(value) => update("body", value)}
-                    placeholder="Share a helpful note for other users."
-                    value={form.body}
+                {mode !== "restaurant-request" ? (
+                  <>
+                    <PrimaryButton
+                      disabled={!canSubmit || isSubmitting}
+                      label={isSubmitting ? "Submitting..." : content.submitLabel}
+                      loading={isSubmitting}
+                      onPress={submit}
+                    />
+                  </>
+                ) : null}
+              </ScrollView>
+              {mode === "restaurant-request" ? (
+                <View style={[styles.stickyFooter, { paddingBottom: Math.max(insets.bottom, 12) }]}>
+                  <PrimaryButton
+                    disabled={!canSubmit || isSubmitting}
+                    label={isSubmitting ? "Submitting..." : content.submitLabel}
+                    loading={isSubmitting}
+                    onPress={submit}
                   />
-                  <Field
-                    label="Allergy context"
-                    onChangeText={(value) => update("allergyContext", value)}
-                    placeholder="Optional: peanut allergy, gluten-free..."
-                    value={form.allergyContext}
-                  />
-                </>
+                </View>
               ) : null}
-
-              <PrimaryButton
-                disabled={!canSubmit || isSubmitting}
-                label={isSubmitting ? "Submitting..." : content.submitLabel}
-                onPress={submit}
-              />
-              {isSubmitting ? <ActivityIndicator color={colors.primary} /> : null}
-            </ScrollView>
+            </KeyboardAvoidingView>
           )}
         </ModalScreen>
       ) : null}
     </Modal>
+  );
+}
+
+function RestaurantPlaceLookup({
+  error,
+  loading,
+  onChangeText,
+  onSelect,
+  selectedPlaceId,
+  suggestions,
+  value,
+}: {
+  error: string | null;
+  loading: boolean;
+  onChangeText: (value: string) => void;
+  onSelect: (suggestion: GooglePlaceSuggestion) => void;
+  selectedPlaceId: string;
+  suggestions: GooglePlaceSuggestion[];
+  value: string;
+}) {
+  const placesEnabled = isGooglePlacesConfigured();
+
+  return (
+    <View style={styles.field}>
+      <Text style={styles.fieldLabel}>Restaurant name</Text>
+      <View style={styles.placeInputShell}>
+        <TextInput
+          autoCapitalize="words"
+          onChangeText={onChangeText}
+          placeholder="Search restaurants"
+          placeholderTextColor="#8E8E93"
+          style={styles.placeInput}
+          value={value}
+        />
+        {loading ? <SereneLoader size="small" /> : null}
+      </View>
+
+      {!placesEnabled ? (
+        <Text style={styles.placeHelper}>Enter the restaurant manually.</Text>
+      ) : null}
+
+      {error ? <Text style={styles.placeError}>{error}</Text> : null}
+
+      {suggestions.length > 0 && !selectedPlaceId ? (
+        <View style={styles.placeSuggestions}>
+          {suggestions.map((suggestion) => (
+            <Pressable
+              accessibilityRole="button"
+              key={suggestion.id}
+              onPress={() => onSelect(suggestion)}
+              style={styles.placeSuggestion}
+            >
+              <View style={styles.placeSuggestionText}>
+                <Text numberOfLines={1} style={styles.placeSuggestionTitle}>
+                  {suggestion.mainText}
+                </Text>
+                {suggestion.secondaryText ? (
+                  <Text numberOfLines={1} style={styles.placeSuggestionSubtitle}>
+                    {suggestion.secondaryText}
+                  </Text>
+                ) : null}
+              </View>
+            </Pressable>
+          ))}
+        </View>
+      ) : null}
+    </View>
   );
 }
 
@@ -608,17 +785,13 @@ function AllergenPicker({
           const selected = selectedIds.includes(option.id);
 
           return (
-            <Pressable
+            <SelectableChip
               accessibilityRole="checkbox"
-              accessibilityState={{ checked: selected }}
               key={option.id}
+              label={option.label}
               onPress={() => onToggle(option.id)}
-              style={[styles.chip, selected && styles.chipActive]}
-            >
-              <Text style={[styles.chipText, selected && styles.chipTextActive]}>
-                {option.label}
-              </Text>
-            </Pressable>
+              selected={selected}
+            />
           );
         })}
       </View>
@@ -638,17 +811,13 @@ function ReasonPicker({
       <Text style={styles.fieldLabel}>Reason</Text>
       <View style={styles.reasonList}>
         {reportReasons.map((reason) => (
-          <Pressable
+          <SelectableChip
             accessibilityRole="radio"
-            accessibilityState={{ checked: selected === reason.id }}
             key={reason.id}
+            label={reason.label}
             onPress={() => onSelect(reason.id)}
-            style={[styles.reason, selected === reason.id && styles.reasonActive]}
-          >
-            <Text style={[styles.reasonText, selected === reason.id && styles.reasonTextActive]}>
-              {reason.label}
-            </Text>
-          </Pressable>
+            selected={selected === reason.id}
+          />
         ))}
       </View>
     </View>
@@ -667,29 +836,11 @@ function modalContent(mode: ContributionMode, restaurantName?: string, itemName?
     };
   }
 
-  if (mode === "menu-item") {
-    return {
-      helper: "Community menu items are reviewed and labeled separately from official sources.",
-      kicker: restaurantName ?? "Community",
-      submitLabel: "Submit item",
-      title: "Add Menu Item",
-    };
-  }
-
-  if (mode === "report") {
-    return {
-      helper: `Tell us what looks wrong with ${target}. Reports are private and reviewed by us.`,
-      kicker: "Report",
-      submitLabel: "Send report",
-      title: "Report Inaccurate Info",
-    };
-  }
-
   return {
-    helper: `Leave a helpful note about ${target}. Comments appear after review.`,
-    kicker: "Community",
-    submitLabel: "Submit comment",
-    title: "Leave Comment",
+    helper: `Tell us what looks wrong with ${target}. Reports are private and reviewed by our team.`,
+    kicker: "Report",
+    submitLabel: "Send report",
+    title: "Report Inaccurate Info",
   };
 }
 
@@ -759,26 +910,6 @@ function labelsForAllergens(ids: string[]) {
 }
 
 const styles = StyleSheet.create({
-  chip: {
-    backgroundColor: colors.white,
-    borderColor: colors.line,
-    borderRadius: radius.pill,
-    borderWidth: 1,
-    paddingHorizontal: 13,
-    paddingVertical: 9,
-  },
-  chipActive: {
-    backgroundColor: colors.primaryLight,
-    borderColor: colors.primary,
-  },
-  chipText: {
-    color: colors.ink,
-    fontSize: 14,
-    fontWeight: "700",
-  },
-  chipTextActive: {
-    color: colors.primary,
-  },
   chipWrap: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -788,6 +919,9 @@ const styles = StyleSheet.create({
     gap: spacing.two,
     padding: spacing.three,
     paddingBottom: spacing.four,
+  },
+  restaurantRequestContent: {
+    paddingBottom: 130,
   },
   done: {
     flex: 1,
@@ -833,6 +967,9 @@ const styles = StyleSheet.create({
   },
   fieldRowRegion: {
     width: 98,
+  },
+  formShell: {
+    flex: 1,
   },
   addMenuButton: {
     alignItems: "center",
@@ -901,28 +1038,69 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "800",
   },
-  reason: {
+  notesSection: {
+    gap: spacing.two,
+  },
+  placeError: {
+    color: "#C0362C",
+    fontSize: 13,
+    fontWeight: "700",
+    lineHeight: 18,
+  },
+  placeHelper: {
+    color: colors.muted,
+    fontSize: 13,
+    fontWeight: "600",
+    lineHeight: 18,
+  },
+  placeInput: {
+    color: colors.ink,
+    flex: 1,
+    fontSize: 16,
+    minHeight: 50,
+    paddingVertical: 12,
+  },
+  placeInputShell: {
+    alignItems: "center",
     backgroundColor: colors.white,
     borderColor: colors.line,
     borderRadius: 18,
     borderWidth: 1,
+    flexDirection: "row",
+    minHeight: 52,
     paddingHorizontal: spacing.two,
-    paddingVertical: 13,
   },
-  reasonActive: {
-    backgroundColor: colors.primaryLight,
-    borderColor: colors.primary,
+  placeSuggestion: {
+    alignItems: "center",
+    flexDirection: "row",
+    paddingHorizontal: spacing.two,
+    paddingVertical: 12,
   },
-  reasonList: {
-    gap: 8,
+  placeSuggestionSubtitle: {
+    color: colors.muted,
+    fontSize: 13,
+    fontWeight: "600",
+    marginTop: 2,
   },
-  reasonText: {
+  placeSuggestionText: {
+    flex: 1,
+  },
+  placeSuggestionTitle: {
     color: colors.ink,
     fontSize: 15,
-    fontWeight: "700",
+    fontWeight: "800",
   },
-  reasonTextActive: {
-    color: colors.primary,
+  placeSuggestions: {
+    backgroundColor: colors.white,
+    borderColor: colors.line,
+    borderRadius: 18,
+    borderWidth: 1,
+    overflow: "hidden",
+  },
+  reasonList: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
   },
   removeMenuButton: {
     alignItems: "center",
@@ -949,6 +1127,13 @@ const styles = StyleSheet.create({
     color: colors.ink,
     fontSize: 15,
     fontWeight: "800",
+  },
+  stickyFooter: {
+    backgroundColor: "rgba(255,255,255,0.94)",
+    borderColor: colors.line,
+    borderTopWidth: 1,
+    paddingHorizontal: spacing.three,
+    paddingTop: 12,
   },
   title: {
     color: colors.ink,

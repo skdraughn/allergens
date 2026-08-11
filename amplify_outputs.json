@@ -174,6 +174,20 @@
               "isRequired": false,
               "attributes": []
             },
+            "googleMapsUri": {
+              "name": "googleMapsUri",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "googlePlaceId": {
+              "name": "googlePlaceId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
             "lat": {
               "name": "lat",
               "isArray": false,
@@ -260,6 +274,16 @@
             {
               "type": "model",
               "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "restaurantRequestsByCreatedBy",
+                "queryField": "restaurantRequestsByCreatedBy",
+                "fields": [
+                  "createdBy"
+                ]
+              }
             },
             {
               "type": "auth",
@@ -418,6 +442,26 @@
               "properties": {}
             },
             {
+              "type": "key",
+              "properties": {
+                "name": "communityMenuItemsByRestaurantId",
+                "queryField": "communityMenuItemsByRestaurantId",
+                "fields": [
+                  "restaurantId"
+                ]
+              }
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "communityMenuItemsByCreatedBy",
+                "queryField": "communityMenuItemsByCreatedBy",
+                "fields": [
+                  "createdBy"
+                ]
+              }
+            },
+            {
               "type": "auth",
               "properties": {
                 "rules": [
@@ -544,6 +588,26 @@
               "properties": {}
             },
             {
+              "type": "key",
+              "properties": {
+                "name": "menuItemReportsByRestaurantId",
+                "queryField": "menuItemReportsByRestaurantId",
+                "fields": [
+                  "restaurantId"
+                ]
+              }
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "menuItemReportsByCreatedBy",
+                "queryField": "menuItemReportsByCreatedBy",
+                "fields": [
+                  "createdBy"
+                ]
+              }
+            },
+            {
               "type": "auth",
               "properties": {
                 "rules": [
@@ -663,6 +727,26 @@
               "properties": {}
             },
             {
+              "type": "key",
+              "properties": {
+                "name": "communityCommentsByRestaurantId",
+                "queryField": "communityCommentsByRestaurantId",
+                "fields": [
+                  "restaurantId"
+                ]
+              }
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "communityCommentsByCreatedBy",
+                "queryField": "communityCommentsByCreatedBy",
+                "fields": [
+                  "createdBy"
+                ]
+              }
+            },
+            {
               "type": "auth",
               "properties": {
                 "rules": [
@@ -702,6 +786,256 @@
           "primaryKeyInfo": {
             "isCustomPrimaryKey": false,
             "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "CommunityAllergyReview": {
+          "name": "CommunityAllergyReview",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "restaurantId": {
+              "name": "restaurantId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "menuItemId": {
+              "name": "menuItemId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "menuItemName": {
+              "name": "menuItemName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "rating": {
+              "name": "rating",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "body": {
+              "name": "body",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "allergyContext": {
+              "name": "allergyContext",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "status": {
+              "name": "status",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdBy": {
+              "name": "createdBy",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "CommunityAllergyReviews",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "communityAllergyReviewsByRestaurantId",
+                "queryField": "communityAllergyReviewsByRestaurantId",
+                "fields": [
+                  "restaurantId"
+                ]
+              }
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "communityAllergyReviewsByCreatedBy",
+                "queryField": "communityAllergyReviewsByCreatedBy",
+                "fields": [
+                  "createdBy"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "provider": "userPools",
+                    "ownerField": "owner",
+                    "allow": "owner",
+                    "operations": [
+                      "create",
+                      "read"
+                    ],
+                    "identityClaim": "cognito:username"
+                  },
+                  {
+                    "allow": "private",
+                    "operations": [
+                      "read"
+                    ]
+                  },
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [
+                      "read",
+                      "update",
+                      "delete"
+                    ],
+                    "groups": [
+                      "Admins"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "RestaurantAllergyRatingSummary": {
+          "name": "RestaurantAllergyRatingSummary",
+          "fields": {
+            "restaurantId": {
+              "name": "restaurantId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "averageRating": {
+              "name": "averageRating",
+              "isArray": false,
+              "type": "Float",
+              "isRequired": false,
+              "attributes": []
+            },
+            "reviewCount": {
+              "name": "reviewCount",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "ratingTotal": {
+              "name": "ratingTotal",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "RestaurantAllergyRatingSummaries",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "fields": [
+                  "restaurantId"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "allow": "private",
+                    "operations": [
+                      "read"
+                    ]
+                  },
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [
+                      "read",
+                      "create",
+                      "update",
+                      "delete"
+                    ],
+                    "groups": [
+                      "Admins"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": true,
+            "primaryKeyFieldName": "restaurantId",
             "sortKeyFieldNames": []
           }
         }

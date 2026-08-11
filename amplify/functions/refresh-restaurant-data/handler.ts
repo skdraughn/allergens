@@ -7,12 +7,24 @@ import {
 } from "@aws-sdk/lib-dynamodb";
 import type { EventBridgeHandler } from "aws-lambda";
 
-import bundledRestaurantRepository from "../../../src/data/generated/restaurants.generated.json";
-import { combinePreviousKnownGoodRepositories } from "../../../scripts/coverage-gate.mjs";
 import { buildRestaurantSearchIndexRows } from "../../../scripts/restaurant-search-index.mjs";
-import { buildRestaurantRepository } from "../../../scripts/scrape-restaurants.mjs";
+import { buildRestaurantRepository } from "../../../scripts/pipeline/build-repository.mjs";
 
 type JsonRecord = Record<string, unknown>;
+type RestaurantSnapshot = {
+  id: string;
+  items?: unknown[];
+  locationId?: string;
+  type?: string;
+};
+type RestaurantRepositorySnapshot = {
+  generatedAt: string;
+  inferenceVersion?: string;
+  itemCount?: number;
+  restaurantCount?: number;
+  restaurants: RestaurantSnapshot[];
+  snapshotVersion: number;
+};
 type SearchIndexWriteRequest = NonNullable<
   NonNullable<BatchWriteCommandInput["RequestItems"]>[string]
 >[number];
@@ -26,38 +38,59 @@ const dynamo = DynamoDBDocumentClient.from(new DynamoDBClient({}), {
 const prefix = process.env.RESTAURANT_DATA_PREFIX ?? "restaurant-data";
 
 export const handler: EventBridgeHandler<"Scheduled Event", null, void> = async () => {
+  if (process.env.DISABLE_RESTAURANT_FULL_REFRESH !== "false") {
+    console.log(
+      JSON.stringify({
+        disabled: true,
+        processed: 0,
+        reason: "automatic-full-refresh-disabled",
+      }),
+    );
+    return;
+  }
+
   const bucket = getRestaurantDataBucketName();
-  const previousRepository = combinePreviousKnownGoodRepositories(
-    bundledRestaurantRepository,
-    await readJsonFromS3(`${prefix}/latest.json`, bucket),
-  );
+  const previousRepository = await readJsonFromS3(`${prefix}/latest.json`, bucket);
   const { repository, run } = await buildRestaurantRepository({
     args: {
       source: "scheduled-lambda",
-      seedFallback: "bundled-generated",
+      seedFallback: previousRepository ? "s3-latest" : "none",
     },
-    previousRepository,
+    previousRepository: previousRepository ?? undefined,
   });
-  const timestamp = repository.generatedAt.replace(/[:.]/g, "-");
+  const typedRepository = repository as RestaurantRepositorySnapshot;
+  const publishedRepository: RestaurantRepositorySnapshot = {
+    ...typedRepository,
+    itemCount: (typedRepository.restaurants ?? []).reduce(
+      (sum, restaurant) => sum + (restaurant.items?.length ?? 0),
+      0,
+    ),
+    restaurantCount: (typedRepository.restaurants ?? []).length,
+    restaurants: typedRepository.restaurants ?? [],
+  };
+  const timestamp = publishedRepository.generatedAt.replace(/[:.]/g, "-");
   const previousIndexRows = buildRestaurantSearchIndexRows(previousRepository);
-  const currentIndexRows = buildRestaurantSearchIndexRows(repository);
+  const currentIndexRows = buildRestaurantSearchIndexRows(publishedRepository);
   const manifest = {
-    generatedAt: repository.generatedAt,
+    generatedAt: publishedRepository.generatedAt,
     coverageGate: run.coverageGate,
     failedCount: run.failedCount,
-    itemCount: repository.itemCount,
+    itemCount: publishedRepository.itemCount,
+    inferenceVersion: publishedRepository.inferenceVersion,
     okCount: run.okCount,
-    restaurantCount: repository.restaurantCount,
+    restaurantCount: publishedRepository.restaurantCount,
     restaurantSearchIndexCount: currentIndexRows.length,
-    snapshotVersion: repository.snapshotVersion,
+    refreshScope: "full-repository",
+    scopedRestaurantCount: publishedRepository.restaurantCount,
+    snapshotVersion: publishedRepository.snapshotVersion,
     sourceCount: run.sourceCount,
   };
 
   await Promise.all([
-    putJson(`${prefix}/runs/${timestamp}.json`, repository, bucket),
+    putJson(`${prefix}/runs/${timestamp}.json`, publishedRepository, bucket),
     putJson(`${prefix}/manifests/${timestamp}.json`, manifest, bucket),
-    putJson(`${prefix}/latest.json`, repository, bucket),
-    ...repository.restaurants.map((restaurant: { id: string }) =>
+    putJson(`${prefix}/latest.json`, publishedRepository, bucket),
+    ...(publishedRepository.restaurants ?? []).map((restaurant: { id: string }) =>
       putJson(`${prefix}/restaurants/${restaurant.id}/latest.json`, restaurant, bucket),
     ),
     syncRestaurantSearchIndex(previousIndexRows, currentIndexRows),
@@ -98,8 +131,8 @@ async function syncRestaurantSearchIndex(
     throw new Error("Missing RESTAURANT_SEARCH_INDEX_TABLE_NAME.");
   }
 
-  const previousByKey = new Map(previousRows.map((row) => [`${row.pk}:${row.sk}`, row]));
-  const currentByKey = new Map(currentRows.map((row) => [`${row.pk}:${row.sk}`, row]));
+  const previousByKey = new Map(previousRows.map((row) => [searchIndexRowKey(row), row]));
+  const currentByKey = new Map(currentRows.map((row) => [searchIndexRowKey(row), row]));
   const writes: SearchIndexWriteRequest[] = [];
 
   for (const [key, row] of previousByKey) {
@@ -115,7 +148,11 @@ async function syncRestaurantSearchIndex(
     }
   }
 
-  for (const row of currentRows) {
+  for (const [key, row] of currentByKey) {
+    if (stableJson(previousByKey.get(key)) === stableJson(row)) {
+      continue;
+    }
+
     writes.push({
       PutRequest: {
         Item: row,
@@ -126,6 +163,25 @@ async function syncRestaurantSearchIndex(
   for (let index = 0; index < writes.length; index += 25) {
     await batchWriteAll(tableName, writes.slice(index, index + 25));
   }
+}
+
+function searchIndexRowKey(row: Record<string, unknown>) {
+  return `${String(row.pk)}:${String(row.sk)}`;
+}
+
+function stableJson(value: unknown): string {
+  if (Array.isArray(value)) {
+    return `[${value.map((item) => stableJson(item)).join(",")}]`;
+  }
+
+  if (value && typeof value === "object") {
+    return `{${Object.entries(value as Record<string, unknown>)
+      .sort(([left], [right]) => left.localeCompare(right))
+      .map(([key, nextValue]) => `${JSON.stringify(key)}:${stableJson(nextValue)}`)
+      .join(",")}}`;
+  }
+
+  return JSON.stringify(value);
 }
 
 async function batchWriteAll(tableName: string, requests: SearchIndexWriteRequest[]) {

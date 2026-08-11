@@ -2,8 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
   fetchRestaurantCommunity,
-  submitCommunityComment,
-  submitCommunityMenuItem,
+  submitCommunityAllergyReview,
   submitMenuItemReport,
   submitRestaurantRequest,
 } from "@/features/community/community-service";
@@ -30,12 +29,8 @@ export function useCommunitySubmission(restaurantId?: string | null) {
   };
 
   return {
-    submitComment: useMutation({
-      mutationFn: submitCommunityComment,
-      onSuccess: invalidateRestaurant,
-    }),
-    submitMenuItem: useMutation({
-      mutationFn: submitCommunityMenuItem,
+    submitReview: useMutation({
+      mutationFn: submitCommunityAllergyReview,
       onSuccess: invalidateRestaurant,
     }),
     submitReport: useMutation({

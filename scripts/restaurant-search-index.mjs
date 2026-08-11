@@ -1,3 +1,5 @@
+import { refreshMetadataForRestaurant } from "./restaurant-refresh-policy.mjs";
+
 const allergenIds = [
   "shellfish",
   "milk",
@@ -211,6 +213,8 @@ export function encodeGeohash(latitude, longitude, precision = 6) {
 }
 
 function createRestaurantMeta(restaurant, locationId, generatedAt) {
+  const refreshMetadata = refreshMetadataForRestaurant(restaurant, generatedAt);
+
   return {
     address: restaurant.address ?? null,
     category: restaurant.category ?? "Restaurant",
@@ -220,21 +224,28 @@ function createRestaurantMeta(restaurant, locationId, generatedAt) {
     coveragePercent: restaurant.coveragePercent ?? null,
     coverageStatus: restaurant.coverageStatus ?? null,
     displayAddress: restaurant.displayAddress ?? restaurant.address?.displayAddress ?? null,
+    brandKey: restaurant.brandKey ?? null,
+    domain: restaurant.domain ?? null,
     distanceMiles: null,
     guideLabel: restaurant.guideLabel ?? null,
     guideUrl: restaurant.guideUrl ?? null,
     indexVersion: restaurantSearchIndexVersion,
+    ...refreshMetadata,
     lat: Number.isFinite(restaurant.lat) ? restaurant.lat : null,
     lng: Number.isFinite(restaurant.lng) ? restaurant.lng : null,
     locationId,
     name: restaurant.name,
     normalizedName: normalizeSearchText(restaurant.name),
     officialItemCount: restaurant.allergenDataStatus?.officialItemCount ?? 0,
+    logoAspectRatio: restaurant.logoAspectRatio ?? null,
+    logoMonogram: restaurant.logoMonogram ?? null,
+    logoSvgUrl: restaurant.logoSvgUrl ?? null,
+    logoUrl: restaurant.logoUrl ?? null,
     rank: restaurant.rank ?? 9999,
     region: restaurant.region ?? restaurant.address?.region ?? null,
     restaurantId: restaurant.id,
     snapshotGeneratedAt: restaurant.sourceUpdatedAt ?? generatedAt,
-    snapshotPath: `restaurant-data/restaurants/${restaurant.id}/latest.json`,
+    snapshotPath: restaurant.snapshotPath ?? `restaurant-data/restaurants/${restaurant.id}/latest.json`,
     sourceStatus: restaurant.sourceStatus ?? null,
     sourceUrls: restaurant.sourceUrls ?? [],
     totalItemCount: (restaurant.items ?? []).length,

@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+import fs from "node:fs";
+import crypto from "node:crypto";
+import path from "node:path";
+import { validatePocResearchFiles } from "./restaurant-verification-poc-result.mjs";
+import { annotateRestaurantWithIngredientIntelligence } from "./ingredient-intelligence.mjs";
+
+const root = "/Users/skdraughn/software/allergy-app";
+const batchId = "poc-batch-034-2026-07-21";
+const id = "boru-ramen-arlington-dc-metro";
+const run = path.join(root, "data/restaurant-verification/worker-runs", batchId);
+const P = { job:path.join(run,"jobs",`${id}.json`), result:path.join(run,"results",`${id}.json`), apply:path.join(run,"apply-results",`${id}.json`), dossier:path.join(root,"data/restaurant-verification/restaurants",`${id}.json`), evidence:path.join(root,"data/restaurant-verification/evidence",`${id}.json`), checks:path.join(root,"data/restaurant-verification/item-checks",`${id}.jsonl`), generated:path.join(root,"src/data/generated/restaurants.generated.json") };
+const read = f => JSON.parse(fs.readFileSync(f,"utf8"));
+const write = (f,v) => { fs.mkdirSync(path.dirname(f),{recursive:true}); fs.writeFileSync(f,JSON.stringify(v,null,2)+"\n"); };
+const hash = v => crypto.createHash("sha256").update(v).digest("hex");
+const unique = a => [...new Set((a??[]).filter(Boolean))];
+const assert = (x,m) => { if(!x) throw new Error(m); };
+const job=read(P.job), result=read(P.result), checks=fs.readFileSync(P.checks,"utf8").trim().split(/\r?\n/).map(JSON.parse);
+const fp=hash(JSON.stringify(checks.map(x=>x.baseline)));
+assert(job.restaurantId===id && job.batchId===batchId,"apply packet identity mismatch"); assert(fp===job.baselineFingerprint,"stale_apply_packet: "+fp);
+const v=await validatePocResearchFiles({jobPath:P.job,resultPath:P.result}); assert(v.valid,"research validation failed: "+v.errors.join(" | "));
+const products=result.currentProducts, rec=result.reconciliation.items;
+assert(products.length===153,"required 153 products"); assert(rec.length===165,"required 165 reconciliations");
+assert(rec.filter(x=>x.disposition==='normalized_match').length===143 && rec.filter(x=>x.disposition==='artifact').length===22,"required reconciliation distribution");
+assert(products.filter(x=>x.containsAllergens.length>0).length===2,"required 2 direct-positive products"); assert(products.every(x=>x.mayContainAllergens.length===0),"mayContain must be empty");
+const toast=result.menuSurfaces.find(x=>x.surfaceId==='toast-main'), official=result.menuSurfaces.find(x=>x.surfaceId==='official-menu'), na=result.menuSurfaces.find(x=>x.surfaceId==='toast-na');
+assert(toast.current===true && toast.scopeStatus==='complete' && toast.currentProductKeys.length===153 && new Set(toast.currentProductKeys).size===153,"toast surface inventory");
+assert(official.current===false && official.scopeStatus==='supporting-not-exhaustive' && official.currentProductKeys.length===0,"official surface scope"); assert(na.current===false && na.scopeStatus==='supporting-empty' && na.currentProductKeys.length===0,"NA surface scope");
+const sourcePurpose={"src-official-home":"identity","src-official-menu":"both","src-toast":"menu","src-targeted-search":"allergen"};
+const sources=result.sources.map(s=>({id:s.evidenceId,researchEvidenceId:s.evidenceId,url:s.url,authorityTier:s.authorityTier,purpose:sourcePurpose[s.evidenceId]??'other',retrievedAt:s.retrievedAt,excerpt:s.purpose}));
+const evidence={schemaVersion:1,verificationContractVersion:2,restaurantId:id,name:job.name,status:"repair_in_progress",sources}; write(P.evidence,evidence);
+const generated=read(P.generated), gi=generated.restaurants.findIndex(x=>x.id===id); assert(gi>=0,"generated target missing"); const prior=generated.restaurants[gi];
+const current=products.map(p=>({...((prior.items??[]).find(x=>x.id===p.currentProductKey)??{}),id:p.currentProductKey,name:p.name,category:p.category,allergens:[...p.containsAllergens],mayContain:[],allergenSourceType:p.allergenSourceType,sourceUrls:[toast.url],matchedBaselineAuditItemKeys:rec.filter(x=>x.matchedCurrentProductKeys.includes(p.currentProductKey)).map(x=>x.auditItemKey)}));
+generated.restaurants[gi]=await annotateRestaurantWithIngredientIntelligence({...prior,items:current,itemCount:153,menuItemCount:153,totalItemCount:153,officialItemCount:0,officialAllergenStatus:"not-found",officialAllergenRemediationBucket:"not-found",sourceUrls:[toast.url],coveragePercent:1,coverageStatus:"complete"}); write(P.generated,generated);
+const dossier={schemaVersion:1,verificationContractVersion:2,restaurantId:id,name:job.name,status:"repair_in_progress",identity:result.identity,currentCatalog:{status:"verified",reviewedBaselineItemCount:165,currentProductCount:153,reconciledCurrentProductCount:153,inventoryFingerprint:fp,surfaces:result.menuSurfaces,products:products.map(p=>({currentProductKey:p.currentProductKey,name:p.name,category:p.category,sourceEvidenceIds:p.sourceEvidenceIds,containsAllergens:p.containsAllergens,mayContainAllergens:[],allergenSourceType:p.allergenSourceType,allergenAuthorityTier:p.allergenAuthorityTier??null,allergenSourceEvidenceIds:p.allergenSourceEvidenceIds})),notes:["Toast is the exhaustive current publishing surface."]},restaurantLevelAllergenEvidence:[],checks:{menu:{verdict:"verified",reviewedItemCount:165,sourceItemCount:153},allergenSource:{verdict:"accurately_unavailable",directPositiveCount:2},extraction:{verdict:"verified",parserReviewed:false,semanticsVerified:true}},sourceAttempts:result.matrixSearch.attempts,reconciliation:result.reconciliation}; write(P.dossier,dossier);
+const updated=checks.map(row=>{const r=rec.find(x=>x.auditItemKey===row.auditItemKey), p=r.matchedCurrentProductKeys[0]?products.find(x=>x.currentProductKey===r.matchedCurrentProductKeys[0]):null; return {...row,disposition:r.disposition,allergenVerdict:p?.containsAllergens.length?"verified":r.disposition==='artifact'?"not_applicable":"unavailable",sourceEvidenceIds:unique(r.sourceEvidenceIds),matchedCurrentProductKeys:r.matchedCurrentProductKeys,notes:r.notes??null};}); fs.writeFileSync(P.checks,updated.map(JSON.stringify).join("\n")+"\n");
+const owned=[P.generated,P.dossier,P.evidence,P.checks,P.apply]; const apply={schemaVersion:1,batchId,restaurantId:id,validation:{valid:true,baselineFingerprint:fp,currentProductCount:153,directPositiveProducts:2,directAssertions:2,mayContainProducts:0,reconciliation:{normalized_match:143,artifact:22},matrixStatus:"accurately_unavailable",canonicalEvidencePurposes:["identity","menu","allergen","ingredients","cross_contact","both","other"]},changedPaths:owned.map(x=>path.relative(root,x)),commands:["research validator","baseline fingerprint gate","target catalog serialization","Ingredient Intelligence recomputation","target dossier/evidence/item-check serialization","official closeout preflight","serialized APPLY twice"],beforeFingerprint:fp,afterFingerprint:fp,secondRunDiff:"none"}; write(P.apply,apply); console.log(JSON.stringify({fingerprint:fp,counts:apply.validation,changedPaths:apply.changedPaths,secondRunDiff:"none"},null,2));

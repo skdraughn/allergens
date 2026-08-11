@@ -4,6 +4,7 @@ import { downloadData } from "aws-amplify/storage";
 import { createContext, useContext, useMemo, type ReactNode } from "react";
 
 import {
+  restaurantDataGeneratedAt,
   restaurantDataCacheVersion,
   restaurants as bundledRestaurants,
   type Restaurant,
@@ -13,7 +14,6 @@ import { isAmplifyConfigured } from "@/lib/amplify";
 const legacyCacheKey = "restaurant-data/latest";
 const cacheKey = `restaurant-data/latest/${restaurantDataCacheVersion}`;
 const cacheKeyPrefix = "restaurant-data/latest/";
-const remoteSnapshotPath = "restaurant-data/latest.json";
 const supportedSnapshotVersion = 1;
 const restaurantDataQueryKey = ["restaurant-data", restaurantDataCacheVersion] as const;
 
@@ -71,10 +71,14 @@ export function useRestaurantData() {
 
 export function useRestaurantDetail(restaurantId: string | undefined, snapshotPath?: string) {
   const context = useRestaurantData();
-  const fallbackRestaurant = restaurantId ? context.getRestaurantById(restaurantId) : undefined;
   const normalizedPath = snapshotPath?.trim() || null;
+  const fallbackRestaurant =
+    restaurantId && (!isAmplifyConfigured || !normalizedPath)
+      ? context.getRestaurantById(restaurantId)
+      : undefined;
+  const remoteDetailEnabled = Boolean(restaurantId && normalizedPath && isAmplifyConfigured);
   const query = useQuery<Restaurant | undefined>({
-    enabled: Boolean(restaurantId && normalizedPath && isAmplifyConfigured),
+    enabled: remoteDetailEnabled,
     gcTime: 1000 * 60 * 60 * 24,
     initialData: fallbackRestaurant,
     queryFn: async () => {
@@ -86,16 +90,22 @@ export function useRestaurantDetail(restaurantId: string | undefined, snapshotPa
       const text = await result.body.text();
       const parsed = parseRestaurantDetail(text);
 
-      return parsed ?? fallbackRestaurant;
+      return parsed ? mergeBundledRestaurantMetadata(parsed, fallbackRestaurant) : fallbackRestaurant;
     },
     queryKey: ["restaurant-detail", restaurantId, normalizedPath, restaurantDataCacheVersion],
     retry: 1,
     staleTime: 1000 * 60 * 60 * 6,
   });
+  const restaurant = query.data ?? fallbackRestaurant;
 
   return {
+    isLoading: !restaurant && remoteDetailEnabled && query.isPending,
     isRefreshing: query.isFetching,
-    restaurant: query.data ?? fallbackRestaurant,
+    notFound:
+      Boolean(restaurantId) &&
+      !restaurant &&
+      (!remoteDetailEnabled || query.isError || query.isSuccess),
+    restaurant,
   };
 }
 
@@ -105,17 +115,6 @@ async function fetchRestaurantRepository(): Promise<RestaurantRepository> {
 
   if (!isAmplifyConfigured) {
     return cached ?? bundledRepository();
-  }
-
-  try {
-    const remote = await downloadRemoteRepository();
-
-    if (remote) {
-      await AsyncStorage.setItem(cacheKey, JSON.stringify(remote));
-      return remote;
-    }
-  } catch (error) {
-    console.warn("Unable to refresh restaurant data", error);
   }
 
   return cached ?? bundledRepository();
@@ -142,19 +141,13 @@ async function readCachedRepository() {
   return parseRestaurantRepository(value, "cache");
 }
 
-async function downloadRemoteRepository() {
-  const result = await downloadData({ path: remoteSnapshotPath }).result;
-  const text = await result.body.text();
-
-  return parseRestaurantRepository(text, "remote");
-}
-
 function parseRestaurantRepository(
   value: string,
   source: RestaurantDataContextValue["source"],
 ) {
   try {
     const parsed = JSON.parse(value) as {
+      generatedAt?: string;
       restaurants?: Restaurant[];
       snapshotVersion?: number;
     };
@@ -162,24 +155,54 @@ function parseRestaurantRepository(
     if (
       parsed.snapshotVersion !== supportedSnapshotVersion ||
       !Array.isArray(parsed.restaurants) ||
-      !parsed.restaurants.every(isValidRestaurant)
+      !parsed.restaurants.every(isValidRestaurant) ||
+      isOlderThanBundledRepository(parsed.generatedAt)
     ) {
       return null;
     }
 
-    return {
-      restaurants: parsed.restaurants.filter(
+    const bundledById = new Map(
+      bundledRestaurants.map((restaurant) => [restaurant.id, restaurant]),
+    );
+    const restaurants = parsed.restaurants.filter(
         (restaurant) =>
           !restaurant.coverageStatus ||
           restaurant.coverageStatus === "complete" ||
           restaurant.coverageStatus === "kept-previous",
-      ),
+      ).map((restaurant) => mergeBundledRestaurantMetadata(restaurant, bundledById.get(restaurant.id)));
+    const remoteIds = new Set(restaurants.map((restaurant) => restaurant.id));
+    const bundledLocalRestaurants = bundledRestaurants.filter(
+      (restaurant) =>
+        restaurant.type === "local" &&
+        !remoteIds.has(restaurant.id) &&
+        (!restaurant.coverageStatus ||
+          restaurant.coverageStatus === "complete" ||
+          restaurant.coverageStatus === "kept-previous"),
+    );
+
+    return {
+      restaurants: [...restaurants, ...bundledLocalRestaurants],
       snapshotVersion: parsed.snapshotVersion,
       source,
     };
   } catch {
     return null;
   }
+}
+
+function isOlderThanBundledRepository(generatedAt?: string) {
+  if (!generatedAt) {
+    return false;
+  }
+
+  const remoteGeneratedAtMs = Date.parse(generatedAt);
+  const bundledGeneratedAtMs = Date.parse(restaurantDataGeneratedAt);
+
+  return (
+    Number.isFinite(remoteGeneratedAtMs) &&
+    Number.isFinite(bundledGeneratedAtMs) &&
+    remoteGeneratedAtMs < bundledGeneratedAtMs
+  );
 }
 
 function parseRestaurantDetail(value: string) {
@@ -203,6 +226,20 @@ function parseRestaurantDetail(value: string) {
   } catch {
     return null;
   }
+}
+
+function mergeBundledRestaurantMetadata(
+  restaurant: Restaurant,
+  bundledRestaurant?: Restaurant,
+) {
+  if (!bundledRestaurant?.allergyAccommodationPolicy || restaurant.allergyAccommodationPolicy) {
+    return restaurant;
+  }
+
+  return {
+    ...restaurant,
+    allergyAccommodationPolicy: bundledRestaurant.allergyAccommodationPolicy,
+  };
 }
 
 function bundledRepository(): RestaurantRepository {

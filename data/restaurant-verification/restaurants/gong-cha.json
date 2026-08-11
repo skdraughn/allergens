@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 1,
+  "verificationContractVersion": 2,
+  "restaurantId": "gong-cha",
+  "name": "Gong cha",
+  "status": "blocked_unverifiable",
+  "createdAt": "2026-08-07T16:56:31.990Z",
+  "updatedAt": "2026-08-07T17:04:32.533Z",
+  "completedAt": "2026-08-07T17:04:32.533Z",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium"
+  },
+  "checks": {
+    "menu": {
+      "verdict": "unverifiable",
+      "reviewedItemCount": 205,
+      "sourceItemCount": null,
+      "notes": [
+        "Binding Sol review requires a concrete store-specific ordering catalog."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "accurately_unavailable",
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "All four searches completed; broad official cross-contact warning preserved without unsupported negatives."
+      ]
+    },
+    "extraction": {
+      "verdict": "not_applicable",
+      "parserReviewed": false,
+      "semanticsVerified": true,
+      "notes": []
+    }
+  },
+  "currentCatalog": {
+    "status": "unverifiable",
+    "reviewedBaselineItemCount": 205,
+    "currentProductCount": 0,
+    "reconciledCurrentProductCount": 0,
+    "inventoryFingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "surfaces": [],
+    "products": [],
+    "notes": [
+      "National showcase is partial and location-specific ordering requires a concrete store selection."
+    ]
+  },
+  "adjudication": {
+    "type": "coordinator",
+    "runId": "poc-batch-149-2026-08-07",
+    "decidedAt": "2026-08-07T17:04:32.176Z",
+    "recommendation": "blocked_unverifiable",
+    "model": {
+      "id": "codex-poc-coordinator",
+      "reasoningEffort": "high"
+    },
+    "rationale": "Binding Sol review found no complete current menu boundary for the location-null chain record.",
+    "artifactHashes": []
+  },
+  "workerHandoff": {
+    "runId": "poc-batch-149-2026-08-07",
+    "restaurantId": "gong-cha",
+    "preparedAt": "2026-08-07T17:04:32.176Z",
+    "routeDestination": "sol_medium",
+    "solRequired": true,
+    "artifacts": [
+      {
+        "kind": "poc_job",
+        "path": "worker-runs/poc-batch-149-2026-08-07/jobs/gong-cha.json",
+        "sha256": "f82a6e1ac7766d19628613ef21c1de64b0831b098f922ced6740c1f579af295d"
+      },
+      {
+        "kind": "poc_research",
+        "path": "worker-runs/poc-batch-149-2026-08-07/results/gong-cha.json",
+        "sha256": "c93529061f19dd9412d36b8bee03f6952d0634feadb8ddb6409bb5b558523859"
+      },
+      {
+        "kind": "sol_review",
+        "path": "worker-runs/poc-batch-149-2026-08-07/reviews/gong-cha-menu-scope.json",
+        "sha256": "5ac202600f9d1389d35627b39edf002237f2df500bbc3d8f5280812b83064b9d"
+      },
+      {
+        "kind": "sol_validation",
+        "path": "worker-runs/poc-batch-149-2026-08-07/review-validations/gong-cha.json",
+        "sha256": "78fdce9539d9461245ce2143ffb073cd7ec819e4593cb0da5a510d2485b51bf9"
+      }
+    ],
+    "notes": [
+      "Binding narrow Sol menu-scope review persisted."
+    ]
+  },
+  "sourceAttempts": [
+    {
+      "id": "attempt-official-site",
+      "kind": "official_site",
+      "url": "https://www.gong-cha.com/usa/us-en/our-products",
+      "attemptedAt": "2026-08-07T17:04:32.176Z",
+      "outcome": "Official page is a partial showcase, not a complete USA catalog.",
+      "status": "contradictory",
+      "query": null,
+      "request": null,
+      "evidenceIds": [
+        "ev-products"
+      ],
+      "scopeImpact": "National current membership remains unknown.",
+      "notes": []
+    },
+    {
+      "id": "attempt-linked-source",
+      "kind": "linked_source",
+      "url": "https://www.gong-cha.com/usa/us-en/store-finder",
+      "attemptedAt": "2026-08-07T17:04:32.176Z",
+      "outcome": "Ordering requires selection of a concrete store.",
+      "status": "blocked",
+      "query": null,
+      "request": null,
+      "evidenceIds": [
+        "ev-store"
+      ],
+      "scopeImpact": "No location-specific menu is available for locationId null.",
+      "notes": []
+    },
+    {
+      "id": "attempt-ordering-vendor",
+      "kind": "ordering_vendor",
+      "url": "https://www.gong-cha.com/usa/us-en/store-finder",
+      "attemptedAt": "2026-08-07T17:04:32.176Z",
+      "outcome": "Store-specific ordering remains locked until a store is selected.",
+      "status": "blocked",
+      "query": null,
+      "request": null,
+      "evidenceIds": [
+        "ev-store"
+      ],
+      "scopeImpact": "Complete orderable product boundary cannot be captured.",
+      "notes": []
+    },
+    {
+      "id": "attempt-targeted-search",
+      "kind": "targeted_search",
+      "url": null,
+      "attemptedAt": "2026-08-07T17:04:32.176Z",
+      "outcome": "No complete national item catalog or matrix found.",
+      "status": "not_found",
+      "query": "site:gong-cha-usa.com allergen nutrition ingredients complete menu",
+      "request": null,
+      "evidenceIds": [
+        "ev-search-web"
+      ],
+      "scopeImpact": "Search did not resolve menu completeness.",
+      "notes": []
+    },
+    {
+      "id": "attempt-archive",
+      "kind": "archive",
+      "url": null,
+      "attemptedAt": "2026-08-07T17:04:32.176Z",
+      "outcome": "No archive suitable to prove current national availability found.",
+      "status": "not_found",
+      "query": "Gong cha USA archived complete national menu",
+      "request": null,
+      "evidenceIds": [
+        "ev-search-web"
+      ],
+      "scopeImpact": "Historical material cannot establish current membership.",
+      "notes": []
+    },
+    {
+      "id": "attempt-third-party",
+      "kind": "third_party",
+      "url": "https://www.nutritionix.com/gong-cha/menu/premium",
+      "attemptedAt": "2026-08-07T17:04:32.176Z",
+      "outcome": "Nutritionix exposes 205 rows but has no established official linkage, effective date, or location scope.",
+      "status": "contradictory",
+      "query": null,
+      "request": null,
+      "evidenceIds": [
+        "ev-nutritionix"
+      ],
+      "scopeImpact": "Third-party rows cannot establish current national or store availability.",
+      "notes": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "unverifiable-location-specific-menu",
+      "severity": "high",
+      "kind": "menu_scope",
+      "summary": "A concrete store is required to verify Gong cha's complete current menu.",
+      "evidenceIds": [
+        "ev-products",
+        "ev-store",
+        "ev-nutritionix"
+      ],
+      "resolved": true,
+      "resolution": "Binding Sol review requires blocked_unverifiable until a store-specific official ordering catalog is captured."
+    }
+  ],
+  "repairs": [],
+  "notes": [
+    "Coordinator blocked closeout: concrete store selection is required."
+  ]
+}

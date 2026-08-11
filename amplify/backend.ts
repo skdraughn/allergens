@@ -1,26 +1,32 @@
 import { defineBackend } from "@aws-amplify/backend";
 import { RemovalPolicy } from "aws-cdk-lib";
 import { AttributeType, BillingMode, Table } from "aws-cdk-lib/aws-dynamodb";
-import { PolicyStatement } from "aws-cdk-lib/aws-iam";
-import { ServicePrincipal } from "aws-cdk-lib/aws-iam";
-import { FunctionUrlAuthType, HttpMethod } from "aws-cdk-lib/aws-lambda";
+import { PolicyStatement, ServicePrincipal } from "aws-cdk-lib/aws-iam";
+import { FunctionUrlAuthType, HttpMethod, StartingPosition } from "aws-cdk-lib/aws-lambda";
+import { DynamoEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
 
 import { auth } from "./auth/resource.ts";
 import { data } from "./data/resource.ts";
 import { autoConfirmSignUp } from "./functions/auto-confirm-sign-up/resource.ts";
 import { refreshRestaurantData } from "./functions/refresh-restaurant-data/resource.ts";
+import { processRestaurantRefreshJobs } from "./functions/process-restaurant-refresh-jobs/resource.ts";
+import { notifyCommunitySubmission } from "./functions/notify-community-submission/resource.ts";
 import { searchRestaurants } from "./functions/search-restaurants/resource.ts";
 import { socialAuthNative } from "./functions/social-auth-native/resource.ts";
 import { storage } from "./storage/resource.ts";
+import { updateAllergyRatingSummary } from "./functions/update-allergy-rating-summary/resource.ts";
 
 const backend = defineBackend({
   auth,
   autoConfirmSignUp,
   data,
+  notifyCommunitySubmission,
+  processRestaurantRefreshJobs,
   refreshRestaurantData,
   searchRestaurants,
   socialAuthNative,
   storage,
+  updateAllergyRatingSummary,
 });
 
 const restaurantSearchStack = backend.createStack("restaurant-search");
@@ -37,6 +43,24 @@ const restaurantSearchIndexTable = new Table(
     sortKey: { name: "sk", type: AttributeType.STRING },
   },
 );
+const restaurantRefreshJobsTable = new Table(
+  restaurantSearchStack,
+  "RestaurantRefreshJobs",
+  {
+    billingMode: BillingMode.PAY_PER_REQUEST,
+    partitionKey: { name: "jobId", type: AttributeType.STRING },
+    pointInTimeRecoverySpecification: {
+      pointInTimeRecoveryEnabled: true,
+    },
+    removalPolicy: RemovalPolicy.RETAIN,
+  },
+);
+
+restaurantRefreshJobsTable.addGlobalSecondaryIndex({
+  indexName: "StatusNextRunAtIndex",
+  partitionKey: { name: "status", type: AttributeType.STRING },
+  sortKey: { name: "nextRunAt", type: AttributeType.STRING },
+});
 
 backend.refreshRestaurantData.addEnvironment(
   "RESTAURANT_SEARCH_INDEX_TABLE_NAME",
@@ -46,8 +70,63 @@ backend.searchRestaurants.addEnvironment(
   "RESTAURANT_SEARCH_INDEX_TABLE_NAME",
   restaurantSearchIndexTable.tableName,
 );
+backend.searchRestaurants.addEnvironment(
+  "RESTAURANT_REFRESH_JOBS_TABLE_NAME",
+  restaurantRefreshJobsTable.tableName,
+);
+backend.processRestaurantRefreshJobs.addEnvironment(
+  "RESTAURANT_SEARCH_INDEX_TABLE_NAME",
+  restaurantSearchIndexTable.tableName,
+);
+backend.processRestaurantRefreshJobs.addEnvironment(
+  "RESTAURANT_REFRESH_JOBS_TABLE_NAME",
+  restaurantRefreshJobsTable.tableName,
+);
 restaurantSearchIndexTable.grantReadWriteData(backend.refreshRestaurantData.resources.lambda);
-restaurantSearchIndexTable.grantReadData(backend.searchRestaurants.resources.lambda);
+restaurantSearchIndexTable.grantReadWriteData(backend.searchRestaurants.resources.lambda);
+restaurantSearchIndexTable.grantReadWriteData(
+  backend.processRestaurantRefreshJobs.resources.lambda,
+);
+restaurantRefreshJobsTable.grantReadWriteData(backend.searchRestaurants.resources.lambda);
+restaurantRefreshJobsTable.grantReadWriteData(
+  backend.processRestaurantRefreshJobs.resources.lambda,
+);
+
+const communitySubmissionTables = [
+  backend.data.resources.tables.MenuItemReport,
+  backend.data.resources.tables.RestaurantRequest,
+];
+
+for (const table of communitySubmissionTables) {
+  table.grantStreamRead(backend.notifyCommunitySubmission.resources.lambda);
+  backend.notifyCommunitySubmission.resources.lambda.addEventSource(
+    new DynamoEventSource(table, {
+      batchSize: 10,
+      bisectBatchOnError: true,
+      retryAttempts: 2,
+      startingPosition: StartingPosition.LATEST,
+    }),
+  );
+}
+
+backend.updateAllergyRatingSummary.addEnvironment(
+  "RESTAURANT_ALLERGY_RATING_SUMMARY_TABLE_NAME",
+  backend.data.resources.tables.RestaurantAllergyRatingSummary.tableName,
+);
+backend.data.resources.tables.RestaurantAllergyRatingSummary.grantReadWriteData(
+  backend.updateAllergyRatingSummary.resources.lambda,
+);
+backend.data.resources.tables.CommunityAllergyReview.grantStreamRead(
+  backend.updateAllergyRatingSummary.resources.lambda,
+);
+backend.updateAllergyRatingSummary.resources.lambda.addEventSource(
+  new DynamoEventSource(backend.data.resources.tables.CommunityAllergyReview, {
+    batchSize: 10,
+    bisectBatchOnError: true,
+    retryAttempts: 2,
+    startingPosition: StartingPosition.LATEST,
+  }),
+);
 
 const { cfnUserPool, cfnUserPoolClient } = backend.auth.resources.cfnResources;
 

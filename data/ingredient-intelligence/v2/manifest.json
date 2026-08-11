@@ -1,0 +1,6861 @@
+{
+  "version": "ingredient-intelligence-v2",
+  "generatedAt": "2026-07-06T02:46:18.640Z",
+  "reviewStatus": "approved-v2-codex-reviewed-expanded",
+  "sources": [
+    {
+      "id": "wikidata",
+      "name": "Wikidata",
+      "license": "CC0-1.0",
+      "url": "https://www.wikidata.org/wiki/Wikidata:Database_download",
+      "use": "Common dish and composite ingredient profiles with QID/PID provenance."
+    },
+    {
+      "id": "open-food-facts",
+      "name": "Open Food Facts",
+      "license": "ODbL-1.0",
+      "url": "https://world.openfoodfacts.org/data",
+      "attribution": "Contains information derived from Open Food Facts, made available under the Open Database License.",
+      "use": "Ingredient aliases and ingredient-to-allergen vocabulary candidates."
+    },
+    {
+      "id": "codex-reviewed",
+      "name": "Codex-reviewed menu evidence batches",
+      "license": "project-internal-reviewed-rules",
+      "use": "Offline review layer for high-risk menu title and dish-shape inference gaps."
+    },
+    {
+      "id": "manual-approved",
+      "name": "Manual approved seed rules",
+      "license": "project-internal-reviewed-rules",
+      "use": "Human-approved ingredient and allergen mappings maintained in the runtime manifest."
+    }
+  ],
+  "ingredientAliases": [
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        }
+      ],
+      "id": "almond",
+      "label": "almond",
+      "aliases": [
+        "almond",
+        "almonds",
+        "almond butter",
+        "almond milk",
+        "marzipan"
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Manual risky-tail review found tartare with Worcestershire; traditional Worcestershire contains anchovy, so infer fish caution at review level."
+        }
+      ],
+      "id": "anchovy",
+      "label": "anchovy",
+      "aliases": [
+        "anchovy",
+        "anchovies",
+        "anchovy paste",
+        "worcestershire",
+        "worcestershire sauce",
+        "worcestershire emulsion"
+      ]
+    },
+    {
+      "id": "baked_good",
+      "label": "baked good",
+      "aliases": [
+        "cake",
+        "cupcake",
+        "cupcakes",
+        "cakecup",
+        "cakecups",
+        "brownie",
+        "cookie",
+        "sweet pastry",
+        "dessert pastry",
+        "muffin",
+        "scone",
+        "croissant",
+        "danish",
+        "gougeres",
+        "shortbread",
+        "buttercookie",
+        "buttercookies",
+        "bread pudding",
+        "breadpudding",
+        "waffle",
+        "waffles",
+        "donut",
+        "donuts",
+        "doughnut",
+        "doughnuts",
+        "cookiewich",
+        "cookie wich",
+        "cookie sandwich",
+        "cookie ice cream sandwich",
+        "pain au chocolat",
+        "eclair",
+        "éclair",
+        "eclairs",
+        "éclairs",
+        "profiterole",
+        "profiteroles",
+        "choux pastry",
+        "choux dough",
+        "kunafa",
+        "knafeh",
+        "kanafeh",
+        "kunefe",
+        "künefe",
+        "chocolate kunafa",
+        "dubai chocolate kunafa",
+        "cruller",
+        "crullers",
+        "maple cruller"
+      ],
+      "excludeAliases": [
+        "flourless cake",
+        "pastry cream"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Common baked dessert names usually imply wheat/gluten, milk, and egg unless excluded."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Gougeres are cheese puffs made from choux-style pastry and should receive baked-good caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Waffles and donuts/doughnuts are commonly wheat-based baked goods and should receive baked-good caution unless gluten-free wording suppresses it."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found Cookie'wich normalizes to cookiewich; cookie sandwich desserts should infer baked-good allergens unless contradicted."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found kunafa desserts; standard pastry/shredded dough desserts should infer baked-good wheat/gluten/milk/egg caution unless contradicted."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found cruller rows; crullers are doughnut-style baked/fried pastries and should infer baked-good allergens unless contradicted."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Precision pass moved gluten-free baked-good suppression from alias exclusion to context rules so wrapper legends like “gluten-free cupcakes are in green wrappers” do not suppress normal cupcake inference."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Precision pass narrowed plain pastry out of the baked-good ingredient alias because savory pastry descriptions, such as samosas, should infer wheat-wrapper caution without automatically adding dessert-style milk and egg assumptions."
+        }
+      ]
+    },
+    {
+      "id": "branzino",
+      "label": "branzino",
+      "aliases": [
+        "branzino",
+        "branzini"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Branzino menu terms should infer fish."
+        }
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Bread variants should infer wheat/gluten."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found PB&J/toast wording that should infer bread wheat/gluten."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Manual risky-miss review promoted tea sandwich/triples surtidos wording as bread-based sandwich cues."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found challah rolls and Indian parotta/kathi/tikka roll terms that should infer bread/wheat-gluten caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio risky-uninferred review found cracker menu copy; ordinary crackers should infer wheat/gluten caution unless contradicted."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found sandwich descriptions ending “on rye”; rye bread should infer wheat/gluten caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found fried Pinsa rows; pinsa is a wheat-based Roman-style dough and should infer wheat/gluten caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-07",
+          "note": "Risky-uninferred queue found toasted-roll sandwich descriptions and chicken tendies/tenders wording that should infer breading or bread wheat/gluten caution unless contradicted."
+        }
+      ],
+      "id": "bread",
+      "label": "bread",
+      "aliases": [
+        "bread",
+        "toast",
+        "crostini",
+        "crostinis",
+        "bagel",
+        "ciabatta",
+        "focaccia",
+        "brioche",
+        "sourdough",
+        "lavash",
+        "naan",
+        "pita",
+        "biscuit",
+        "english muffin",
+        "baguette",
+        "french baguette",
+        "breadstick",
+        "breadsticks",
+        "frybread",
+        "fry bread",
+        "roti",
+        "paratha",
+        "chapati",
+        "sub roll",
+        "hoagie roll",
+        "dinner roll",
+        "bread roll",
+        "toasted roll",
+        "kaiser roll",
+        "potato roll",
+        "bao",
+        "bao bun",
+        "bao buns",
+        "steamed bun",
+        "steamed buns",
+        "sausage roll",
+        "cinnamon roll",
+        "lobster roll",
+        "chicken tendie",
+        "chicken tendies",
+        "sub of choice",
+        "white toast",
+        "wheat toast",
+        "tea sandwich",
+        "tea sandwiches",
+        "triple sandwich",
+        "triple sandwiches",
+        "triples surtidos",
+        "challah",
+        "challah roll",
+        "challah twist roll",
+        "parotta",
+        "paratha roll",
+        "kathi roll",
+        "kati roll",
+        "tikka roll",
+        "cracker",
+        "crackers",
+        "savory cracker",
+        "crispy cracker",
+        "rye",
+        "rye bread",
+        "on rye",
+        "pinsa",
+        "fried pinsa"
+      ],
+      "excludeAliases": [
+        "gluten-free bread",
+        "gluten free bread"
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Manual Afghania review found brioche-bun burgers. Brioche is commonly enriched with egg and dairy, so add review-level milk/egg caution without broadening ordinary buns."
+        }
+      ],
+      "id": "brioche",
+      "label": "brioche",
+      "aliases": [
+        "brioche",
+        "brioche bun"
+      ],
+      "excludeAliases": [
+        "gluten-free brioche",
+        "gluten free brioche"
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Common fried appetizer terms are usually breaded or floured."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found fattoush/crispy tortilla/barbari chip descriptions; these crunchy bread/chip salad components should infer wheat/gluten caution unless contradicted."
+        }
+      ],
+      "id": "bread_crumbs",
+      "label": "bread crumbs",
+      "aliases": [
+        "bread crumbs",
+        "breadcrumbs",
+        "panko",
+        "crouton",
+        "croutons",
+        "crispy onions",
+        "fried onions",
+        "onion rings",
+        "fried pickles",
+        "fried green tomatoes",
+        "fried okra",
+        "pita chips",
+        "crispy pita",
+        "crispy tortilla",
+        "tortilla crisps",
+        "barbari chips"
+      ],
+      "excludeAliases": [
+        "non-dairy yogurt",
+        "non dairy yogurt",
+        "dairy-free yogurt",
+        "dairy free yogurt",
+        "vegan yogurt",
+        "plant-based yogurt",
+        "plant based yogurt",
+        "non-dairy garlic yogurt",
+        "non dairy garlic yogurt"
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found crispy chicken bites and popcorn chicken rows; common restaurant forms are breaded and should infer wheat/gluten caution unless contradicted."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found exact breaded/fried chicken preparations that should infer wheat/gluten caution unless contradicted."
+        }
+      ],
+      "id": "breaded_chicken",
+      "label": "breaded chicken",
+      "aliases": [
+        "breaded chicken",
+        "chicken cutlet",
+        "fried chicken cutlet",
+        "crispy chicken",
+        "chicken bites",
+        "chicken bite",
+        "crispy chicken bites",
+        "crispy chicken bite",
+        "popcorn chicken",
+        "chicken tender",
+        "chicken tenders",
+        "honey stung chicken",
+        "pollo frito strips",
+        "crispy sazon chicken",
+        "crispy sazón chicken",
+        "crispy outer layer of chicken",
+        "fried spicy chicken ball",
+        "fried spicy chicken balls"
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        }
+      ],
+      "id": "burger_bun",
+      "label": "burger bun",
+      "aliases": [
+        "burger bun",
+        "hamburger bun",
+        "bun",
+        "brioche bun",
+        "potato bun",
+        "sesame bun"
+      ],
+      "excludeAliases": [
+        "gluten-free bun",
+        "gluten free bun",
+        "no bun",
+        "without bun",
+        "w/o bun",
+        "wo bun"
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Ghee is clarified butter and should infer milk when named explicitly."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Organic Butcher review found seafood and meat descriptions using 'buttery' for texture; phrases like buttery flesh/tenderness should not imply dairy."
+        }
+      ],
+      "id": "butter",
+      "label": "butter",
+      "aliases": [
+        "butter",
+        "buttery",
+        "buttered",
+        "buttered corn",
+        "buttered broccoli",
+        "drawn butter",
+        "ghee",
+        "ghee roast"
+      ],
+      "excludeAliases": [
+        "buttery flesh",
+        "buttery tenderness",
+        "buttery deliciousness",
+        "buttery taste",
+        "instead of butter"
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        }
+      ],
+      "id": "cashew",
+      "label": "cashew",
+      "aliases": [
+        "cashew",
+        "cashews",
+        "cashew cream"
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Common named cheeses should infer milk."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Paneer is fresh cheese and should infer milk."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found Swiss and stracciatella cheese terms missing milk inference."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found chèvre/goat cheese descriptions that should infer milk."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred Peruvian review found huancaína sauce, a cheese-based sauce, should infer milk."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found Asher Blue cheese menu copy that should infer milk even when the word cheese is omitted."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Spacebar review moved vegan-cheese suppression from alias-level exclusion to context suppression so real dairy-or-vegan-choice items still warn for milk."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-07",
+          "note": "Risky-uninferred queue found gorgonzola and roquefort menu terms missing milk inference."
+        }
+      ],
+      "id": "cheese",
+      "label": "cheese",
+      "aliases": [
+        "cheese",
+        "cheddar",
+        "mozzarella",
+        "mozzarrella",
+        "mozz",
+        "fresh mozz",
+        "hot mozz",
+        "provolone",
+        "ricotta",
+        "muenster",
+        "swiss",
+        "swiss cheese",
+        "blue cheese",
+        "goat cheese",
+        "feta",
+        "queso",
+        "fontina",
+        "fromage",
+        "formaggio",
+        "burrata",
+        "stracciatella",
+        "mascarpone",
+        "gouda",
+        "smoked gouda",
+        "gruyere",
+        "gruyère",
+        "brie",
+        "parmigiano",
+        "cotija",
+        "manchego",
+        "halloumi",
+        "queso fresco",
+        "oaxaca cheese",
+        "jack cheese",
+        "monterey jack",
+        "pepper jack",
+        "paneer",
+        "chevre",
+        "chèvre",
+        "farm chèvre",
+        "farm chevre",
+        "huancaina",
+        "huancaína",
+        "huancaina sauce",
+        "huancaína sauce",
+        "asher blue",
+        "asher blue cheese",
+        "sweet grass asher blue",
+        "gorgonzola",
+        "roquefort"
+      ],
+      "excludeAliases": []
+    },
+    {
+      "id": "chickpea_flour_batter",
+      "label": "chickpea flour batter",
+      "aliases": [
+        "pakoda",
+        "pakora",
+        "vegetable pakoda",
+        "vegetable pakora",
+        "bhaji"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "South Asian fritter batter is often gram/chickpea flour; tracked without major allergen mapping by default."
+        }
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        }
+      ],
+      "id": "clam",
+      "label": "clam",
+      "aliases": [
+        "clam",
+        "clams",
+        "clam juice"
+      ]
+    },
+    {
+      "id": "cod",
+      "label": "cod",
+      "aliases": [
+        "cod",
+        "black cod"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Cod menu terms should infer fish."
+        }
+      ]
+    },
+    {
+      "id": "corn_tortilla",
+      "label": "corn tortilla",
+      "aliases": [
+        "corn tortilla",
+        "tortilla chips",
+        "corn tortilla chips",
+        "tortilla strips"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Tracked as an ingredient mention only; no major allergen mapping is assigned by default."
+        }
+      ]
+    },
+    {
+      "id": "cornbread",
+      "label": "cornbread",
+      "aliases": [
+        "cornbread",
+        "corn bread"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Manual American/BBQ audit found cornbread commonly needs wheat/milk/egg caution unless source says gluten-free."
+        }
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred sushi review found kanikama/imitation-crab California-roll wording that should infer shellfish caution."
+        }
+      ],
+      "id": "crab",
+      "label": "crab",
+      "aliases": [
+        "crab",
+        "crabmeat",
+        "crab cake",
+        "crab cakes",
+        "kanikama",
+        "kani kama",
+        "imitation crab",
+        "surimi crab",
+        "krab",
+        "crab stick",
+        "crab sticks"
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Dairy dessert sauce/custard terms should infer milk."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Flan/coconut flan and crème anglaise are custard-style dairy dessert cues from the risky-uninferred review."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Pleroma review found texture words like creamy mashed yams, creamy soup, and creamy coleslaw can describe non-dairy preparation; require stronger cream/dairy terms instead of standalone creamy."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Society Seafood House review confirmed seafood bisque should keep milk caution from the bisque preparation, without restoring broad standalone creamy matching."
+        }
+      ],
+      "id": "cream",
+      "label": "cream",
+      "aliases": [
+        "cream",
+        "heavy cream",
+        "creamed",
+        "creamed spinach",
+        "creamed corn",
+        "cream sauce",
+        "bisque",
+        "seafood bisque",
+        "lobster bisque",
+        "crab bisque",
+        "creme fraiche",
+        "crème fraîche",
+        "crème fraiche",
+        "creme fraîche",
+        "whipped cream",
+        "gelato",
+        "ice cream",
+        "dulce de leche",
+        "custard",
+        "pudding",
+        "banana pudding",
+        "creme brulee",
+        "crème brulee",
+        "creme anglaise",
+        "crème anglaise",
+        "flan",
+        "flan de coco"
+      ],
+      "excludeAliases": [
+        "non-dairy yogurt",
+        "non dairy yogurt",
+        "dairy-free yogurt",
+        "dairy free yogurt",
+        "vegan yogurt",
+        "plant-based yogurt",
+        "plant based yogurt",
+        "non-dairy garlic yogurt",
+        "non dairy garlic yogurt"
+      ]
+    },
+    {
+      "id": "cream_cheese",
+      "label": "cream cheese",
+      "aliases": [
+        "cream cheese"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Cream cheese should infer milk."
+        }
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        }
+      ],
+      "id": "edamame",
+      "label": "edamame",
+      "aliases": [
+        "edamame"
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Flan and custard-style dessert terms should infer egg as well as dairy when named explicitly."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found batter wording that commonly implies egg as a caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found meringue/lemon curd dessert terms that should infer egg."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found Italian uova/uovo menu rows that should infer egg."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Organic Butcher review found 'egg to plate' traceability copy in salmon product text; that phrase should not imply egg as an ingredient."
+        }
+      ],
+      "id": "egg",
+      "label": "egg",
+      "aliases": [
+        "egg",
+        "eggs",
+        "egg yolk",
+        "egg yolks",
+        "egg white",
+        "egg whites",
+        "albumen",
+        "huevo",
+        "huevos",
+        "oeuf",
+        "uovo",
+        "uova",
+        "custard",
+        "pudding",
+        "banana pudding",
+        "flan",
+        "flan de coco",
+        "creme anglaise",
+        "crème anglaise",
+        "pancake batter",
+        "waffle batter",
+        "batter fried",
+        "meringue",
+        "lemon curd",
+        "pastry cream"
+      ],
+      "excludeAliases": [
+        "egg to plate"
+      ]
+    },
+    {
+      "id": "empanada_wrapper",
+      "label": "empanada pastry",
+      "aliases": [
+        "empanada",
+        "empanadas",
+        "turnover",
+        "turnovers",
+        "pastelito",
+        "tequeño",
+        "tequeno",
+        "tequeños",
+        "tequenos"
+      ],
+      "excludeAliases": [
+        "corn empanada",
+        "corn flour empanada",
+        "masa empanada"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Manual Latin menu audit found empanada/tequeno pastry terms missing wheat/gluten."
+        }
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "More fish and seafood menu terms should infer fish."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Bonito/dashi terms should infer fish."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Audit found sardine/nethili dishes missing fish inference."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred audit found common direct fish names including rockfish, mahi, haddock, grouper, and monkfish."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found shark/cazón menu terms that should infer fish."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found aji fry/aji furai horse mackerel and whiting fillet rows that should infer fish."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred sushi review found eel/unagi/anago and toro/negi-toro roll terms that should infer fish without adding wheat for plain sushi rolls."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred sushi review found shima-aji/striped jack menu rows that should infer fish."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found Indonesian bandeng/milkfish menu rows that should infer fish."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found porgy seafood rows that should infer fish."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found pompano and spot seafood rows that should infer fish."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found basa filet and red drum crudo rows that should infer fish."
+        }
+      ],
+      "id": "fish",
+      "label": "fish",
+      "aliases": [
+        "fish",
+        "fish stock",
+        "fish broth",
+        "catfish",
+        "black bass",
+        "ling",
+        "pescado",
+        "ahi",
+        "ahi tuna",
+        "tuna",
+        "yellowfin",
+        "hamachi",
+        "branzino",
+        "cod",
+        "halibut",
+        "haddock",
+        "filet of haddock",
+        "rockfish",
+        "mahi",
+        "mahi mahi",
+        "mahi-mahi",
+        "grouper",
+        "monkfish",
+        "trout",
+        "rainbow trout",
+        "arctic char",
+        "sea bass",
+        "shark",
+        "cazon",
+        "cazón",
+        "ceviche",
+        "bonito",
+        "bonito flakes",
+        "dashi",
+        "bonito soup base",
+        "sardine",
+        "sardines",
+        "nethili",
+        "netili",
+        "anchovy fish",
+        "mackerel",
+        "horse mackerel",
+        "aji fry",
+        "aji furai",
+        "whiting",
+        "whiting fillet",
+        "eel",
+        "freshwater eel",
+        "unagi",
+        "anago",
+        "toro",
+        "otoro",
+        "o-toro",
+        "chutoro",
+        "chu-toro",
+        "negi toro",
+        "negi-toro",
+        "shima aji",
+        "shima-aji",
+        "striped jack",
+        "striped jackfish",
+        "milkfish",
+        "bandeng",
+        "porgy",
+        "pompano",
+        "golden pompano",
+        "spot",
+        "spot fish",
+        "basa",
+        "basa filet",
+        "basa fillet",
+        "red drum",
+        "red drum crudo"
+      ],
+      "excludeAliases": []
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Fish sauce/ceviche marinade terms should infer fish."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Manual risky-uninferred review found bonito/dashi/fish-ball terms in Japanese and Thai rows; infer fish caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found bagna cauda sauce; standard preparation is anchovy-based and should infer fish caution."
+        }
+      ],
+      "id": "fish_sauce",
+      "label": "fish sauce",
+      "aliases": [
+        "fish sauce",
+        "nam pla",
+        "nuoc cham",
+        "nước chấm",
+        "nam jim",
+        "leche de tigre",
+        "fish balls",
+        "fish ball",
+        "bonito",
+        "katsuobushi",
+        "dashi",
+        "soy dashi",
+        "bonito flakes",
+        "anchovy",
+        "anchovies",
+        "bagna cauda",
+        "bagna cauda sauce"
+      ],
+      "excludeAliases": []
+    },
+    {
+      "id": "flounder",
+      "label": "flounder",
+      "aliases": [
+        "flounder",
+        "sole"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Flounder/sole menu terms should infer fish."
+        }
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Common dumpling/roll wrappers usually use wheat flour."
+        }
+      ],
+      "id": "flour_tortilla",
+      "label": "flour tortilla",
+      "aliases": [
+        "flour tortilla",
+        "tortilla wrap",
+        "soft tortilla",
+        "wheat tortilla",
+        "wonton wrapper",
+        "dumpling wrapper",
+        "spring roll wrapper",
+        "egg roll wrapper"
+      ],
+      "excludeAliases": []
+    },
+    {
+      "id": "graham_cracker_crust",
+      "label": "graham cracker crust",
+      "aliases": [
+        "graham cracker crust",
+        "graham crust",
+        "cracker crust"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Graham/cracker crust should infer wheat and gluten."
+        }
+      ]
+    },
+    {
+      "id": "halibut",
+      "label": "halibut",
+      "aliases": [
+        "halibut"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Halibut menu terms should infer fish."
+        }
+      ]
+    },
+    {
+      "id": "korean_pancake",
+      "label": "Korean pancake batter",
+      "aliases": [
+        "pajeon",
+        "haemul pajeon",
+        "kimchi jeon",
+        "seafood pancake",
+        "korean pancake"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Manual Korean audit found pajeon/jeon rows need wheat/gluten caution and seafood where explicit."
+        }
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        }
+      ],
+      "id": "lobster",
+      "label": "lobster",
+      "aliases": [
+        "lobster"
+      ]
+    },
+    {
+      "id": "mahi_mahi",
+      "label": "mahi mahi",
+      "aliases": [
+        "mahi mahi",
+        "mahi-mahi"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Mahi mahi menu terms should infer fish."
+        }
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Dijonnaise is commonly mayonnaise plus mustard."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Observed misspelling of dijonnaise in restaurant menus."
+        }
+      ],
+      "id": "mayonnaise",
+      "label": "mayonnaise",
+      "aliases": [
+        "mayonnaise",
+        "mayo",
+        "dijonnaise",
+        "dijonaisse"
+      ],
+      "excludeAliases": []
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found Nutella dessert rows; common Nutella-style spread contains dairy ingredients, so infer milk caution unless contradicted."
+        }
+      ],
+      "id": "milk",
+      "label": "milk",
+      "aliases": [
+        "milk",
+        "dairy",
+        "creamer",
+        "creamers",
+        "whey",
+        "casein",
+        "lactose",
+        "skim milk",
+        "dry milk",
+        "leche",
+        "lait",
+        "latte",
+        "nutella",
+        "nutella®",
+        "chocolate hazelnut spread"
+      ],
+      "excludeAliases": [
+        "dairy-free",
+        "dairy free",
+        "non-dairy",
+        "non dairy",
+        "non-dairy yogurt",
+        "non dairy yogurt",
+        "non-dairy garlic yogurt",
+        "non dairy garlic yogurt"
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        }
+      ],
+      "id": "miso",
+      "label": "miso",
+      "aliases": [
+        "miso"
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        }
+      ],
+      "id": "mussel",
+      "label": "mussel",
+      "aliases": [
+        "mussel",
+        "mussels"
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Dijonnaise is commonly mayonnaise plus mustard."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Observed misspelling of dijonnaise in restaurant menus."
+        }
+      ],
+      "id": "mustard",
+      "label": "mustard",
+      "aliases": [
+        "mustard",
+        "mustard seed",
+        "dijon",
+        "whole grain mustard",
+        "dijonnaise",
+        "dijonaisse"
+      ],
+      "excludeAliases": []
+    },
+    {
+      "id": "octopus",
+      "label": "octopus",
+      "aliases": [
+        "octopus",
+        "pulpo"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Octopus/pulpo are common mollusk shellfish menu terms."
+        }
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found compact Shrimp’n’Oysters menu text where punctuation normalization collapsed the words; infer shellfish caution."
+        }
+      ],
+      "id": "oyster",
+      "label": "oyster",
+      "aliases": [
+        "oyster",
+        "oysters",
+        "oyster sauce",
+        "shrimpnoysters",
+        "shrimp n oysters",
+        "shrimp and oysters"
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Hard Italian cheeses in menu descriptions should infer milk."
+        }
+      ],
+      "id": "parmesan",
+      "label": "Parmesan",
+      "aliases": [
+        "parmesan",
+        "parmigiano",
+        "parmigiano reggiano",
+        "parm",
+        "pecorino romano",
+        "grana padano",
+        "grana",
+        "romano",
+        "pecorino",
+        "asiago"
+      ],
+      "excludeAliases": []
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Wheat noodle terms should infer wheat/gluten."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Manual risky-miss review added singular generic noodle while preserving rice/glass/sweet-potato noodle exclusions."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Manual risky-uninferred review found orzo menu rows; orzo is a wheat pasta term and should infer wheat/gluten."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Manual review of the final risky-uninferred item found Radiatorre/Radiatore Amatriciana; radiatore is a pasta shape and Amatriciana is conventionally a pasta dish, so infer wheat/gluten caution unless contradicted."
+        }
+      ],
+      "id": "pasta",
+      "label": "pasta",
+      "aliases": [
+        "pasta",
+        "spaghetti",
+        "linguine",
+        "fettuccine",
+        "macaroni",
+        "rigatoni",
+        "bucatini",
+        "penne",
+        "ziti",
+        "gnocchi",
+        "orzo",
+        "cavatelli",
+        "orecchiette",
+        "tagliatelle",
+        "noodle",
+        "noodles",
+        "ravioli",
+        "tortellini",
+        "ramen",
+        "ramen noodles",
+        "ramyun",
+        "ramyun noodles",
+        "ramyun noodle chips",
+        "udon",
+        "lo mein",
+        "chow mein",
+        "radiatore",
+        "radiatori",
+        "radiatorre",
+        "amatriciana"
+      ],
+      "excludeAliases": [
+        "rice noodles",
+        "rice noodle",
+        "glass noodles",
+        "glass noodle",
+        "sweet potato noodles",
+        "sweet potato noodle",
+        "zucchini noodles"
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found PB&J wording that should infer peanut."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Manual risky-uninferred review found peanut sauce/crushed-peanut wording in Thai/Burmese/Indian rows; direct peanut terms should infer peanut."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Manual risky-tail review found Kung Pao sauce wording; standard Kung Pao preparations commonly include peanuts, so infer peanut caution from exact phrase matches."
+        }
+      ],
+      "id": "peanut",
+      "label": "peanut",
+      "aliases": [
+        "peanut",
+        "peanuts",
+        "peanut butter",
+        "ground peanut",
+        "pb",
+        "pb&j",
+        "pb and j",
+        "peanut butter and jelly",
+        "peanut sauce",
+        "spicy peanut sauce",
+        "peanut dip",
+        "spicy peanut dip",
+        "crushed peanuts",
+        "crushed peanut",
+        "ground peanuts",
+        "roasted peanuts",
+        "kung pao",
+        "kung pao sauce"
+      ]
+    },
+    {
+      "id": "pie_crust",
+      "label": "pie crust",
+      "aliases": [
+        "pie crust",
+        "tart shell",
+        "pastry crust",
+        "shortcrust"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Pie/tart pastry crust should infer wheat and gluten."
+        }
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        }
+      ],
+      "id": "pine_nut",
+      "label": "pine nut",
+      "aliases": [
+        "pine nut",
+        "pine nuts",
+        "pignoli"
+      ]
+    },
+    {
+      "id": "pizza_dough",
+      "label": "pizza dough",
+      "aliases": [
+        "pizza dough",
+        "pizza crust",
+        "flatbread",
+        "flatbread pizza",
+        "thin crust",
+        "crispy thin crust"
+      ],
+      "excludeAliases": [
+        "gluten-free pizza",
+        "gluten free pizza",
+        "cauliflower crust"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Manual pizza audit found many pizzas with only toppings detected; pizza shape should caution wheat/gluten unless excluded."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found pizza crust add-on rows; crust terms should infer wheat/gluten unless contradicted."
+        }
+      ]
+    },
+    {
+      "id": "ponzu",
+      "label": "ponzu",
+      "aliases": [
+        "ponzu"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Ponzu commonly contains soy sauce and can imply soy/wheat/gluten caution."
+        }
+      ]
+    },
+    {
+      "id": "rice_noodle",
+      "label": "rice noodle",
+      "aliases": [
+        "rice noodle",
+        "rice noodles",
+        "thin rice noodle",
+        "thin rice noodles",
+        "wide rice noodles",
+        "wide rice noodle",
+        "glass noodle",
+        "glass noodles",
+        "sweet potato noodle",
+        "sweet potato noodles",
+        "rice vermicelli"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Tracked as an ingredient mention only; no wheat/gluten mapping is assigned by default."
+        }
+      ]
+    },
+    {
+      "id": "roe",
+      "label": "fish roe",
+      "aliases": [
+        "roe",
+        "fish roe",
+        "salmon roe",
+        "trout roe",
+        "ikura",
+        "masago",
+        "tobiko",
+        "flying fish egg",
+        "flying fish eggs",
+        "caviar"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Manual sushi/Greek audit found roe/caviar terms that should infer fish."
+        }
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        }
+      ],
+      "id": "salmon",
+      "label": "salmon",
+      "aliases": [
+        "salmon"
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        }
+      ],
+      "id": "scallop",
+      "label": "scallop",
+      "aliases": [
+        "scallop",
+        "scallops"
+      ]
+    },
+    {
+      "id": "sea_bass",
+      "label": "sea bass",
+      "aliases": [
+        "sea bass",
+        "seabass",
+        "striped bass",
+        "stripe bass"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Sea bass menu terms should infer fish."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Portfolio review found “Stripe Bass” used for striped bass/suzuki nigiri; infer fish for this common spelling variant."
+        }
+      ]
+    },
+    {
+      "id": "seafood_mix",
+      "label": "seafood",
+      "aliases": [
+        "seafood",
+        "seafood soup",
+        "seafood salad",
+        "seafood pot",
+        "seafood pots",
+        "mixed seafood",
+        "assorted seafood"
+      ],
+      "excludeAliases": [
+        "seafood option",
+        "seafood options",
+        "seafood enthusiast",
+        "seafood enthusiasts"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Generic seafood menu items should caution for fish and shellfish when official data is unavailable."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Pleroma review found plain fish descriptions using phrases like seafood option/enthusiasts; do not infer shellfish from that generic audience wording."
+        }
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Furikake/gomashio often include sesame."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Manual risky-uninferred review found sesame sauce/gomae/tahini-sauce wording that should infer sesame."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found chili crisp side/sauce descriptions; many chili crisp preparations use sesame oil/seeds, so infer sesame caution."
+        }
+      ],
+      "id": "sesame",
+      "label": "sesame",
+      "aliases": [
+        "sesame",
+        "sesame seed",
+        "sesame seeds",
+        "sesame oil",
+        "tahini",
+        "tahina",
+        "hummus",
+        "furikake",
+        "gomashio",
+        "sesame sauce",
+        "sesame dressing",
+        "sesame vinaigrette",
+        "gomae",
+        "gomae sauce",
+        "tahini sauce",
+        "tahini maple frosting",
+        "chili crisp",
+        "chile crisp",
+        "chili crunch",
+        "chile crunch"
+      ],
+      "excludeAliases": []
+    },
+    {
+      "id": "shellfish_mix",
+      "label": "shellfish",
+      "aliases": [
+        "shellfish",
+        "contains shellfish",
+        "crustacean",
+        "crustaceans",
+        "mariscos",
+        "frutti di mare"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Explicit shellfish terms should infer shellfish."
+        }
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Concatenated shrimp menu names from real scrape data should still infer shellfish."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found OCR/spacing variant CAL AMARI; route it to calamari/shellfish caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found Fried Calmira likely OCR/typo for fried calamari; infer shellfish caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-07",
+          "note": "Rice Paper review found Vietnamese tôm rang muối / tôm rang me item names whose source text confirms fried/salted or tamarind shrimp. Infer shellfish from these narrow Vietnamese shrimp dish aliases."
+        }
+      ],
+      "id": "shrimp",
+      "label": "shrimp",
+      "aliases": [
+        "shrimp",
+        "prawn",
+        "prawns",
+        "camarón",
+        "camaron",
+        "camarones",
+        "gambas",
+        "langostino",
+        "shotgunshrimp",
+        "shotgun shrimp",
+        "cal amari",
+        "cal-amari",
+        "calmira",
+        "fried calmira",
+        "tom ran muoi",
+        "tom rang me",
+        "tôm rang muối",
+        "tôm rang me"
+      ],
+      "excludeAliases": []
+    },
+    {
+      "id": "snapper",
+      "label": "snapper",
+      "aliases": [
+        "snapper",
+        "red snapper"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Snapper menu terms should infer fish."
+        }
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Soy sauce phrase variants are frequent in Asian menu descriptions."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Common Chinese sauces may contain soy; use as caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found Asian stir-fry sauce wording where soy/wheat caution is appropriate unless gluten-free wording appears."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Manual risky-uninferred review found black-soy/sweet-soy/soy-dashi phrasing in Asian noodle, tofu, and stir-fry rows."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Precision pass moved bare “soy” from soy-sauce mapping to soybean mapping so plain soy/soybean text does not incorrectly imply wheat/gluten from soy sauce."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Risky-uninferred review found yuba/tofu-skin menu terms; yuba is soy-derived and should infer soy."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Manual risky-tail review found Kung Pao sauce wording; standard Kung Pao sauces are soy-based often enough to warrant review-level soy caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Manual risky-tail review found Thai/Chinese light brown gravy sauce wording; these sauces are commonly soy-based, so infer soy caution from exact phrase matches."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Manual review found exact Szechuan hot & numbing sauce wording; Szechuan restaurant brown/hot sauces are commonly soy-based, so infer soy/wheat-gluten caution from exact phrase matches."
+        }
+      ],
+      "id": "soy_sauce",
+      "label": "soy sauce",
+      "aliases": [
+        "soy sauce",
+        "tamari",
+        "shoyu",
+        "soy glaze",
+        "soy ginger",
+        "soy-ginger",
+        "soy garlic",
+        "soy-garlic",
+        "sweet soy",
+        "soy based",
+        "soy-based",
+        "soy vinaigrette",
+        "garlic soy",
+        "chili soy",
+        "soy gravy",
+        "black bean sauce",
+        "tobanjiang",
+        "tobanjang",
+        "toban jang",
+        "szechuan sauce",
+        "szechuan seasoning",
+        "hoisin",
+        "brown sauce",
+        "spicy brown sauce",
+        "szechuan garlic sauce",
+        "chili garlic sauce",
+        "black soy sauce",
+        "sweet black soy sauce",
+        "light soy sauce",
+        "dark soy sauce",
+        "garlic soy sauce",
+        "soy dashi",
+        "soy broth",
+        "soy dashi broth",
+        "yuba",
+        "crispy yuba",
+        "tofu skin",
+        "bean curd skin",
+        "kung pao",
+        "kung pao sauce",
+        "brown gravy sauce",
+        "light brown gravy sauce",
+        "szechuan hot & numbing sauce",
+        "szechuan hot and numbing sauce"
+      ],
+      "excludeAliases": []
+    },
+    {
+      "id": "squid",
+      "label": "squid",
+      "aliases": [
+        "squid",
+        "calamari",
+        "calamares",
+        "fried calamari",
+        "calamares fritos",
+        "crispy calamari",
+        "rabas",
+        "rabas calamares",
+        "rabas calamares fritos",
+        "pointjudithcalamari",
+        "point judith calamari",
+        "calamarisweet",
+        "grilled calamari",
+        "stri fried quid",
+        "stri-fried quid",
+        "quid w sour cabbage",
+        "quid",
+        "muc nuong muoi tieu",
+        "mực nướng muối tiêu"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Calamari and squid are common mollusk shellfish menu terms."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Portfolio review found an OCR/typo row “Stri-Fried Quid” in a seafood section; treat quid as a squid typo in menu context for shellfish caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-07",
+          "note": "Rice Paper review found Vietnamese mực nướng muối tiêu item names whose source text confirms grilled squid. Infer shellfish from this narrow Vietnamese squid dish alias."
+        }
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        }
+      ],
+      "id": "sulfite_preservative",
+      "label": "sulfite preservative",
+      "aliases": [
+        "sulfite",
+        "sulfites",
+        "sulphite",
+        "sulphites",
+        "wine",
+        "white wine",
+        "red wine",
+        "dried apricot",
+        "dried fruit"
+      ]
+    },
+    {
+      "id": "swordfish",
+      "label": "swordfish",
+      "aliases": [
+        "swordfish"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Swordfish menu terms should infer fish."
+        }
+      ]
+    },
+    {
+      "id": "tilapia",
+      "label": "tilapia",
+      "aliases": [
+        "tilapia"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Tilapia menu terms should infer fish."
+        }
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        }
+      ],
+      "id": "tofu",
+      "label": "tofu",
+      "aliases": [
+        "tofu"
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found Nutella dessert rows; hazelnut spread should infer tree-nut caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Risky-uninferred portfolio queue found baklava/baklawa rows; common baklava fillings are tree-nut based, so infer tree-nut caution."
+        }
+      ],
+      "id": "tree_nut",
+      "label": "tree nut",
+      "aliases": [
+        "tree nut",
+        "tree nuts",
+        "walnut",
+        "walnuts",
+        "pecan",
+        "pecans",
+        "hazelnut",
+        "hazelnuts",
+        "pistachio",
+        "pistachios",
+        "macadamia",
+        "nutella",
+        "nutella®",
+        "hazelnut spread",
+        "chocolate hazelnut spread",
+        "baklava",
+        "baklawa"
+      ]
+    },
+    {
+      "id": "trout",
+      "label": "trout",
+      "aliases": [
+        "trout"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Trout menu terms should infer fish."
+        }
+      ]
+    },
+    {
+      "id": "tuna",
+      "label": "tuna",
+      "aliases": [
+        "tuna",
+        "ahi",
+        "ahi tuna",
+        "yellowfin",
+        "yellowfin tuna",
+        "albacore",
+        "bigeye",
+        "bluefin",
+        "spicy tuna"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Ahi/yellowfin/tuna terms should infer fish."
+        }
+      ]
+    },
+    {
+      "id": "udon_ramen_noodle",
+      "label": "wheat noodle",
+      "aliases": [
+        "udon",
+        "ramen",
+        "ramen noodle",
+        "ramen noodles",
+        "wheat noodle",
+        "wheat noodles",
+        "egg noodles",
+        "egg noodle",
+        "pan fried noodle",
+        "pan fried noodles",
+        "crispy noodle",
+        "crispy noodles",
+        "fried noodle",
+        "fried noodles"
+      ],
+      "excludeAliases": [
+        "rice noodle",
+        "rice noodles",
+        "sweet potato noodle",
+        "sweet potato noodles",
+        "glass noodle",
+        "glass noodles"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Manual Asian menu audit found udon/ramen/egg-noodle terms need wheat/gluten caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found Chinese pan-fried/crispy noodle item names that should infer wheat/gluten unless rice/glass/sweet-potato noodle wording is present."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Portfolio review kept crispy noodle aliases as wheat/gluten cues for Indo-Chinese and pan-Asian dishes unless rice/glass/sweet-potato noodle wording is present."
+        }
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Puri snacks commonly use wheat/semolina flour; useful wheat/gluten caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review promoted bulgur/bulgar wheat and couscous as wheat/gluten-bearing grain terms."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found fried Oreo and batter wording that should infer wheat/gluten."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio risky-uninferred review promoted barley and farro as gluten-bearing grain terms."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Manual risky-uninferred review found Indian fried appetizer names/descriptions where batter or 65/pakora/tikki style should infer wheat/gluten caution unless contradicted."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-07",
+          "note": "Risky-uninferred queue found pakode spelling in fried Indian appetizer rows; treat it like pakora/pakoda for wheat/gluten caution when source text says batter or fried preparation."
+        }
+      ],
+      "id": "wheat_flour",
+      "label": "wheat flour",
+      "aliases": [
+        "wheat flour",
+        "flour",
+        "wheat",
+        "harina",
+        "farina",
+        "ble",
+        "semolina",
+        "durum",
+        "breading",
+        "battered",
+        "puri",
+        "poori",
+        "pani puri",
+        "pani-puri",
+        "sev puri",
+        "bulgur",
+        "bulgar",
+        "bulgur wheat",
+        "bulgar wheat",
+        "couscous",
+        "pearl couscous",
+        "israeli couscous",
+        "barley",
+        "pearled barley",
+        "malted barley",
+        "barley malt",
+        "farro",
+        "emmer",
+        "spelt",
+        "pancake batter",
+        "waffle batter",
+        "oreo",
+        "oreos",
+        "fried oreo",
+        "fried oreos",
+        "batter fried",
+        "flour batter",
+        "chickpea batter",
+        "gram flour batter",
+        "batter-fried",
+        "deep fried appetizer",
+        "deep-fried appetizer",
+        "pakora",
+        "pakoda",
+        "pakode",
+        "pakora batter",
+        "pakoda batter",
+        "pakode batter",
+        "aloo tikki",
+        "aloo tiki",
+        "babycorn 65",
+        "chicken 65",
+        "gobi 65",
+        "paneer 65"
+      ],
+      "excludeAliases": []
+    },
+    {
+      "id": "wheat_wrapper",
+      "label": "wheat wrapper",
+      "aliases": [
+        "wheat wrapper",
+        "wonton",
+        "wontons",
+        "wonton wrapper",
+        "dumpling",
+        "dumplings",
+        "dumpling wrapper",
+        "dumpling wrappers",
+        "gyoza",
+        "spring roll wrapper",
+        "spring roll wrappers",
+        "egg roll",
+        "egg rolls",
+        "egg roll wrapper",
+        "egg roll wrappers",
+        "gyoza wrapper",
+        "gyoza wrappers",
+        "potsticker",
+        "potstickers",
+        "potsticker wrapper",
+        "potsticker wrappers",
+        "mandu",
+        "mandoo",
+        "pierogi",
+        "pierogies",
+        "momo",
+        "momos",
+        "curry puff",
+        "curry puffs",
+        "pastry",
+        "pastries",
+        "pastry dough",
+        "pastry sheet",
+        "pastry sheets",
+        "flaky pastry",
+        "crisp pastry",
+        "crispy pastry",
+        "puff pastry",
+        "pastry shell",
+        "delicate pastry",
+        "golden pastry",
+        "phyllo",
+        "filo",
+        "kataifi",
+        "baklava",
+        "baklawa",
+        "meat pie",
+        "lebanese style lamb meat pie",
+        "sfeeha",
+        "sopapilla",
+        "sopapillas",
+        "shumai",
+        "shumai6",
+        "fried shumai",
+        "siu mai",
+        "shaomai",
+        "shao mai",
+        "siomai",
+        "eggroll",
+        "eggrolls",
+        "crispy eggroll",
+        "crispy eggrolls",
+        "kachori"
+      ],
+      "excludeAliases": [
+        "rice paper",
+        "rice paper roll",
+        "rice paper rolls",
+        "gluten-free dumpling",
+        "gluten free dumpling",
+        "gluten-free wonton",
+        "gluten free wonton",
+        "gluten-free egg roll",
+        "gluten free egg roll",
+        "pastry cream"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Dumpling, wonton, gyoza, and roll wrappers are clearer as wheat-wrapper evidence than flour tortilla."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Curry puffs/puff pastry are wheat-wrapper or pastry-shell signals."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Manual risky-miss review promoted common dumpling/wonton/gyoza/potsticker/mandu/pierogi/momo/egg-roll names to wrapper cues, with rice-paper and gluten-free exclusions handled by context."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Portfolio review found shumai rows; standard shumai/siu mai dumplings use wrappers, so infer wheat/gluten caution unless contradicted."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Portfolio review found compact eggroll/eggrolls and Gujarati kachori rows; infer wrapper/pastry wheat-gluten caution unless contradicted."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Pleroma review found African shrimp roll descriptions with delicate/golden pastry; keep wheat-wrapper caution without relying on broad fried-to-golden wording."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Risky-uninferred portfolio queue found plain pastry/pastries, baklava/baklawa, sopapillas, and pastry-sheet rows. Route them to wheat-wrapper/pastry-dough caution without adding broad dessert milk/egg assumptions."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Risky-uninferred portfolio queue found meat pie and sfeeha/Lebanese lamb meat pie rows; these are pastry/dough-backed savory items and should infer wheat/gluten caution."
+        }
+      ]
+    },
+    {
+      "id": "whitefish",
+      "label": "whitefish",
+      "aliases": [
+        "whitefish",
+        "white fish",
+        "sable",
+        "smoked sable",
+        "kipper salmon",
+        "lox",
+        "nova lox",
+        "whitening",
+        "whitening fillet",
+        "chunked whitening fillet"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Manual 100-row audit found deli fish terms that should infer fish."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found OCR/typo wording “whitening fillet” in a fish dish; map it to whitefish/fish caution."
+        }
+      ]
+    },
+    {
+      "id": "yellowtail",
+      "label": "yellowtail",
+      "aliases": [
+        "yellowtail",
+        "hamachi"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Hamachi/yellowtail should infer fish."
+        }
+      ]
+    },
+    {
+      "provenance": [
+        {
+          "source": "manual-approved",
+          "note": "Approved v1 seed rule carried forward into v2."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Cultured dairy terms should infer milk."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found labne spelling variants missing milk inference."
+        }
+      ],
+      "id": "yogurt",
+      "label": "yogurt",
+      "aliases": [
+        "yogurt",
+        "yoghurt",
+        "tzatziki",
+        "labneh",
+        "labne",
+        "labna",
+        "crema",
+        "sour cream",
+        "raita"
+      ],
+      "excludeAliases": [
+        "non-dairy yogurt",
+        "non dairy yogurt",
+        "dairy-free yogurt",
+        "dairy free yogurt",
+        "vegan yogurt",
+        "plant-based yogurt",
+        "plant based yogurt",
+        "non-dairy garlic yogurt",
+        "non dairy garlic yogurt"
+      ]
+    },
+    {
+      "id": "crispy_garlic_or_shallot",
+      "label": "crispy garlic or shallot",
+      "aliases": [
+        "crispy garlic",
+        "fried garlic",
+        "crispy shallot",
+        "crispy shallots",
+        "fried shallot",
+        "fried shallots"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Track crispy garnish terms without allergen mapping; they should not create wheat/gluten by themselves."
+        }
+      ]
+    },
+    {
+      "id": "croaker",
+      "label": "croaker",
+      "aliases": [
+        "croaker",
+        "fried croaker"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Croaker is a fish; fried croaker should at minimum infer fish, with batter handled by explicit fried-fish shape rules."
+        }
+      ]
+    },
+    {
+      "id": "buttermilk",
+      "label": "buttermilk",
+      "aliases": [
+        "buttermilk",
+        "buttermilk dressing",
+        "buttermilk ranch"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Buttermilk terms should infer milk unless explicitly dairy-free or vegan."
+        }
+      ],
+      "excludeAliases": [
+        "vegan buttermilk",
+        "dairy-free buttermilk",
+        "dairy free buttermilk"
+      ]
+    },
+    {
+      "id": "gravy",
+      "label": "gravy",
+      "aliases": [
+        "country gravy",
+        "sawmill gravy",
+        "sausage gravy",
+        "cream gravy",
+        "southern gravy"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Country/sawmill/cream gravy commonly contains milk and often wheat roux; keep as cautionary Ingredient Intelligence, not official data."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Manual review found Southern gravy menu wording; standard southern gravy often uses dairy and a wheat roux, so infer review-level milk/wheat/gluten caution."
+        }
+      ],
+      "excludeAliases": [
+        "vegan gravy",
+        "gluten-free gravy",
+        "gluten free gravy"
+      ]
+    },
+    {
+      "id": "surimi",
+      "label": "surimi",
+      "aliases": [
+        "surimi",
+        "imitation crab meat",
+        "kani",
+        "kanikama"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Surimi/imitation crab is commonly fish-based and often used in California rolls; keep as caution evidence."
+        }
+      ]
+    },
+    {
+      "id": "soybean",
+      "label": "soybean",
+      "aliases": [
+        "soybean",
+        "soybeans",
+        "soy bean",
+        "soy beans",
+        "soya bean",
+        "soya beans",
+        "steamed soy bean",
+        "steamed soy beans",
+        "soy",
+        "soya"
+      ],
+      "excludeAliases": [],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found “soy bean” wording; direct soybean/soya-bean terms should infer soy only, not soy-sauce wheat/gluten."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Bare “soy” now maps to soybean/soy-protein style soy-only inference; soy-sauce phrases remain separate for wheat/gluten caution."
+        }
+      ]
+    },
+    {
+      "id": "plant_based_chicken",
+      "label": "plant-based chicken",
+      "aliases": [
+        "chick'n",
+        "chikn",
+        "veggie chicken",
+        "veggie-chicken",
+        "vegetarian chicken",
+        "vegan chicken",
+        "plant based chicken",
+        "plant-based chicken",
+        "mock chicken",
+        "meatless chicken"
+      ],
+      "excludeAliases": [
+        "real chicken",
+        "actual chicken"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found plant-based/veggie chicken rows; common products often use soy or wheat protein, so infer review-only soy/wheat/gluten caution unless contradicted."
+        }
+      ]
+    }
+  ],
+  "allergenMappings": {
+    "almond": [
+      {
+        "id": "tree-nut",
+        "c": "high",
+        "e": [
+          "ingredient:almond"
+        ]
+      }
+    ],
+    "anchovy": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:anchovy"
+        ]
+      }
+    ],
+    "bread": [
+      {
+        "id": "wheat",
+        "c": "high",
+        "e": [
+          "ingredient:bread"
+        ]
+      },
+      {
+        "id": "gluten",
+        "c": "medium",
+        "e": [
+          "ingredient:bread"
+        ]
+      }
+    ],
+    "brioche": [
+      {
+        "id": "wheat",
+        "c": "high",
+        "e": [
+          "ingredient:brioche"
+        ]
+      },
+      {
+        "id": "gluten",
+        "c": "medium",
+        "e": [
+          "ingredient:brioche"
+        ]
+      },
+      {
+        "id": "egg",
+        "c": "medium",
+        "e": [
+          "ingredient:brioche"
+        ]
+      },
+      {
+        "id": "milk",
+        "c": "medium",
+        "e": [
+          "ingredient:brioche"
+        ]
+      }
+    ],
+    "bread_crumbs": [
+      {
+        "id": "wheat",
+        "c": "high",
+        "e": [
+          "ingredient:bread_crumbs"
+        ]
+      },
+      {
+        "id": "gluten",
+        "c": "medium",
+        "e": [
+          "ingredient:bread_crumbs"
+        ]
+      }
+    ],
+    "breaded_chicken": [
+      {
+        "id": "wheat",
+        "c": "high",
+        "e": [
+          "ingredient:breaded_chicken"
+        ]
+      },
+      {
+        "id": "gluten",
+        "c": "medium",
+        "e": [
+          "ingredient:breaded_chicken"
+        ]
+      },
+      {
+        "id": "egg",
+        "c": "medium",
+        "e": [
+          "ingredient:breaded_chicken"
+        ]
+      }
+    ],
+    "burger_bun": [
+      {
+        "id": "wheat",
+        "c": "high",
+        "e": [
+          "ingredient:burger_bun"
+        ]
+      },
+      {
+        "id": "gluten",
+        "c": "medium",
+        "e": [
+          "ingredient:burger_bun"
+        ]
+      },
+      {
+        "id": "sesame",
+        "c": "low",
+        "e": [
+          "ingredient:burger_bun"
+        ]
+      }
+    ],
+    "butter": [
+      {
+        "id": "milk",
+        "c": "high",
+        "e": [
+          "ingredient:butter"
+        ]
+      }
+    ],
+    "cashew": [
+      {
+        "id": "tree-nut",
+        "c": "high",
+        "e": [
+          "ingredient:cashew"
+        ]
+      }
+    ],
+    "cheese": [
+      {
+        "id": "milk",
+        "c": "high",
+        "e": [
+          "ingredient:cheese"
+        ]
+      }
+    ],
+    "clam": [
+      {
+        "id": "shellfish",
+        "c": "high",
+        "e": [
+          "ingredient:clam"
+        ]
+      }
+    ],
+    "crab": [
+      {
+        "id": "shellfish",
+        "c": "high",
+        "e": [
+          "ingredient:crab"
+        ]
+      }
+    ],
+    "cream": [
+      {
+        "id": "milk",
+        "c": "high",
+        "e": [
+          "ingredient:cream"
+        ]
+      }
+    ],
+    "egg": [
+      {
+        "id": "egg",
+        "c": "high",
+        "e": [
+          "ingredient:egg"
+        ]
+      }
+    ],
+    "edamame": [
+      {
+        "id": "soy",
+        "c": "high",
+        "e": [
+          "ingredient:edamame"
+        ]
+      }
+    ],
+    "fish": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:fish"
+        ]
+      }
+    ],
+    "fish_sauce": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:fish_sauce"
+        ]
+      }
+    ],
+    "flour_tortilla": [
+      {
+        "id": "wheat",
+        "c": "high",
+        "e": [
+          "ingredient:flour_tortilla"
+        ]
+      },
+      {
+        "id": "gluten",
+        "c": "medium",
+        "e": [
+          "ingredient:flour_tortilla"
+        ]
+      }
+    ],
+    "lobster": [
+      {
+        "id": "shellfish",
+        "c": "high",
+        "e": [
+          "ingredient:lobster"
+        ]
+      }
+    ],
+    "mayonnaise": [
+      {
+        "id": "egg",
+        "c": "high",
+        "e": [
+          "ingredient:mayonnaise"
+        ]
+      }
+    ],
+    "milk": [
+      {
+        "id": "milk",
+        "c": "high",
+        "e": [
+          "ingredient:milk"
+        ]
+      }
+    ],
+    "miso": [
+      {
+        "id": "soy",
+        "c": "high",
+        "e": [
+          "ingredient:miso"
+        ]
+      }
+    ],
+    "mussel": [
+      {
+        "id": "shellfish",
+        "c": "high",
+        "e": [
+          "ingredient:mussel"
+        ]
+      }
+    ],
+    "mustard": [
+      {
+        "id": "mustard",
+        "c": "high",
+        "e": [
+          "ingredient:mustard"
+        ]
+      }
+    ],
+    "oyster": [
+      {
+        "id": "shellfish",
+        "c": "high",
+        "e": [
+          "ingredient:oyster"
+        ]
+      }
+    ],
+    "parmesan": [
+      {
+        "id": "milk",
+        "c": "high",
+        "e": [
+          "ingredient:parmesan"
+        ]
+      }
+    ],
+    "pasta": [
+      {
+        "id": "wheat",
+        "c": "medium",
+        "e": [
+          "ingredient:pasta"
+        ]
+      },
+      {
+        "id": "gluten",
+        "c": "medium",
+        "e": [
+          "ingredient:pasta"
+        ]
+      }
+    ],
+    "peanut": [
+      {
+        "id": "peanut",
+        "c": "high",
+        "e": [
+          "ingredient:peanut"
+        ]
+      }
+    ],
+    "pine_nut": [
+      {
+        "id": "tree-nut",
+        "c": "high",
+        "e": [
+          "ingredient:pine_nut"
+        ]
+      }
+    ],
+    "salmon": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:salmon"
+        ]
+      }
+    ],
+    "scallop": [
+      {
+        "id": "shellfish",
+        "c": "high",
+        "e": [
+          "ingredient:scallop"
+        ]
+      }
+    ],
+    "sesame": [
+      {
+        "id": "sesame",
+        "c": "high",
+        "e": [
+          "ingredient:sesame"
+        ]
+      }
+    ],
+    "shrimp": [
+      {
+        "id": "shellfish",
+        "c": "high",
+        "e": [
+          "ingredient:shrimp"
+        ]
+      }
+    ],
+    "soy_sauce": [
+      {
+        "id": "soy",
+        "c": "high",
+        "e": [
+          "ingredient:soy_sauce"
+        ]
+      },
+      {
+        "id": "wheat",
+        "c": "medium",
+        "e": [
+          "ingredient:soy_sauce"
+        ]
+      },
+      {
+        "id": "gluten",
+        "c": "medium",
+        "e": [
+          "ingredient:soy_sauce"
+        ]
+      }
+    ],
+    "sulfite_preservative": [
+      {
+        "id": "sulfites",
+        "c": "medium",
+        "e": [
+          "ingredient:sulfite_preservative"
+        ]
+      }
+    ],
+    "tofu": [
+      {
+        "id": "soy",
+        "c": "high",
+        "e": [
+          "ingredient:tofu"
+        ]
+      }
+    ],
+    "tree_nut": [
+      {
+        "id": "tree-nut",
+        "c": "high",
+        "e": [
+          "ingredient:tree_nut"
+        ]
+      }
+    ],
+    "wheat_flour": [
+      {
+        "id": "wheat",
+        "c": "high",
+        "e": [
+          "ingredient:wheat_flour"
+        ]
+      },
+      {
+        "id": "gluten",
+        "c": "medium",
+        "e": [
+          "ingredient:wheat_flour"
+        ]
+      }
+    ],
+    "yogurt": [
+      {
+        "id": "milk",
+        "c": "high",
+        "e": [
+          "ingredient:yogurt"
+        ]
+      }
+    ],
+    "tuna": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:tuna"
+        ]
+      }
+    ],
+    "yellowtail": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:yellowtail"
+        ]
+      }
+    ],
+    "branzino": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:branzino"
+        ]
+      }
+    ],
+    "cod": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:cod"
+        ]
+      }
+    ],
+    "halibut": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:halibut"
+        ]
+      }
+    ],
+    "sea_bass": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:sea_bass"
+        ]
+      }
+    ],
+    "trout": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:trout"
+        ]
+      }
+    ],
+    "tilapia": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:tilapia"
+        ]
+      }
+    ],
+    "mahi_mahi": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:mahi_mahi"
+        ]
+      }
+    ],
+    "swordfish": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:swordfish"
+        ]
+      }
+    ],
+    "snapper": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:snapper"
+        ]
+      }
+    ],
+    "flounder": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:flounder"
+        ]
+      }
+    ],
+    "squid": [
+      {
+        "id": "shellfish",
+        "c": "high",
+        "e": [
+          "ingredient:squid"
+        ]
+      }
+    ],
+    "octopus": [
+      {
+        "id": "shellfish",
+        "c": "high",
+        "e": [
+          "ingredient:octopus"
+        ]
+      }
+    ],
+    "cream_cheese": [
+      {
+        "id": "milk",
+        "c": "high",
+        "e": [
+          "ingredient:cream_cheese"
+        ]
+      }
+    ],
+    "graham_cracker_crust": [
+      {
+        "id": "wheat",
+        "c": "high",
+        "e": [
+          "ingredient:graham_cracker_crust"
+        ]
+      },
+      {
+        "id": "gluten",
+        "c": "medium",
+        "e": [
+          "ingredient:graham_cracker_crust"
+        ]
+      }
+    ],
+    "pie_crust": [
+      {
+        "id": "wheat",
+        "c": "high",
+        "e": [
+          "ingredient:pie_crust"
+        ]
+      },
+      {
+        "id": "gluten",
+        "c": "medium",
+        "e": [
+          "ingredient:pie_crust"
+        ]
+      }
+    ],
+    "baked_good": [
+      {
+        "id": "wheat",
+        "c": "medium",
+        "e": [
+          "ingredient:baked_good"
+        ]
+      },
+      {
+        "id": "gluten",
+        "c": "medium",
+        "e": [
+          "ingredient:baked_good"
+        ]
+      },
+      {
+        "id": "egg",
+        "c": "medium",
+        "e": [
+          "ingredient:baked_good"
+        ]
+      },
+      {
+        "id": "milk",
+        "c": "medium",
+        "e": [
+          "ingredient:baked_good"
+        ]
+      }
+    ],
+    "ponzu": [
+      {
+        "id": "soy",
+        "c": "medium",
+        "e": [
+          "ingredient:ponzu"
+        ]
+      },
+      {
+        "id": "wheat",
+        "c": "low",
+        "e": [
+          "ingredient:ponzu"
+        ]
+      },
+      {
+        "id": "gluten",
+        "c": "low",
+        "e": [
+          "ingredient:ponzu"
+        ]
+      }
+    ],
+    "corn_tortilla": [],
+    "rice_noodle": [],
+    "wheat_wrapper": [
+      {
+        "id": "wheat",
+        "c": "high",
+        "e": [
+          "ingredient:wheat_wrapper"
+        ]
+      },
+      {
+        "id": "gluten",
+        "c": "medium",
+        "e": [
+          "ingredient:wheat_wrapper"
+        ]
+      }
+    ],
+    "seafood_mix": [
+      {
+        "id": "fish",
+        "c": "medium",
+        "e": [
+          "ingredient:seafood_mix"
+        ]
+      },
+      {
+        "id": "shellfish",
+        "c": "medium",
+        "e": [
+          "ingredient:seafood_mix"
+        ]
+      }
+    ],
+    "shellfish_mix": [
+      {
+        "id": "shellfish",
+        "c": "high",
+        "e": [
+          "ingredient:shellfish_mix"
+        ]
+      }
+    ],
+    "chickpea_flour_batter": [],
+    "whitefish": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:whitefish"
+        ]
+      }
+    ],
+    "roe": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:roe"
+        ]
+      }
+    ],
+    "pizza_dough": [
+      {
+        "id": "gluten",
+        "c": "medium",
+        "e": [
+          "ingredient:pizza_dough"
+        ]
+      },
+      {
+        "id": "wheat",
+        "c": "high",
+        "e": [
+          "ingredient:pizza_dough"
+        ]
+      }
+    ],
+    "empanada_wrapper": [
+      {
+        "id": "gluten",
+        "c": "medium",
+        "e": [
+          "ingredient:empanada_wrapper"
+        ]
+      },
+      {
+        "id": "wheat",
+        "c": "medium",
+        "e": [
+          "ingredient:empanada_wrapper"
+        ]
+      }
+    ],
+    "korean_pancake": [
+      {
+        "id": "gluten",
+        "c": "medium",
+        "e": [
+          "ingredient:korean_pancake"
+        ]
+      },
+      {
+        "id": "wheat",
+        "c": "medium",
+        "e": [
+          "ingredient:korean_pancake"
+        ]
+      }
+    ],
+    "udon_ramen_noodle": [
+      {
+        "id": "egg",
+        "c": "low",
+        "e": [
+          "ingredient:egg_noodle"
+        ]
+      },
+      {
+        "id": "gluten",
+        "c": "medium",
+        "e": [
+          "ingredient:udon_ramen_noodle"
+        ]
+      },
+      {
+        "id": "wheat",
+        "c": "high",
+        "e": [
+          "ingredient:udon_ramen_noodle"
+        ]
+      }
+    ],
+    "cornbread": [
+      {
+        "id": "egg",
+        "c": "low",
+        "e": [
+          "ingredient:cornbread"
+        ]
+      },
+      {
+        "id": "gluten",
+        "c": "low",
+        "e": [
+          "ingredient:cornbread"
+        ]
+      },
+      {
+        "id": "milk",
+        "c": "low",
+        "e": [
+          "ingredient:cornbread"
+        ]
+      },
+      {
+        "id": "wheat",
+        "c": "medium",
+        "e": [
+          "ingredient:cornbread"
+        ]
+      }
+    ],
+    "croaker": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:croaker"
+        ]
+      }
+    ],
+    "buttermilk": [
+      {
+        "id": "milk",
+        "c": "high",
+        "e": [
+          "ingredient:buttermilk"
+        ]
+      }
+    ],
+    "gravy": [
+      {
+        "id": "milk",
+        "c": "medium",
+        "e": [
+          "ingredient:gravy"
+        ]
+      },
+      {
+        "id": "wheat",
+        "c": "low",
+        "e": [
+          "ingredient:gravy"
+        ]
+      },
+      {
+        "id": "gluten",
+        "c": "low",
+        "e": [
+          "ingredient:gravy"
+        ]
+      }
+    ],
+    "surimi": [
+      {
+        "id": "fish",
+        "c": "high",
+        "e": [
+          "ingredient:surimi"
+        ]
+      },
+      {
+        "id": "shellfish",
+        "c": "medium",
+        "e": [
+          "ingredient:surimi"
+        ]
+      }
+    ],
+    "soybean": [
+      {
+        "id": "soy",
+        "c": "high",
+        "e": [
+          "ingredient:soybean"
+        ]
+      }
+    ],
+    "plant_based_chicken": [
+      {
+        "id": "soy",
+        "c": "medium",
+        "e": [
+          "ingredient:plant_based_chicken"
+        ]
+      },
+      {
+        "id": "wheat",
+        "c": "medium",
+        "e": [
+          "ingredient:plant_based_chicken"
+        ]
+      },
+      {
+        "id": "gluten",
+        "c": "medium",
+        "e": [
+          "ingredient:plant_based_chicken"
+        ]
+      }
+    ]
+  },
+  "composites": [
+    {
+      "id": "flourless_cake",
+      "label": "flourless cake",
+      "aliases": [
+        "flourless cake",
+        "chocolate flourless cake"
+      ],
+      "ingredients": [
+        "egg",
+        "milk"
+      ],
+      "confidence": "medium",
+      "excludeAliases": [
+        "vegan flourless cake",
+        "dairy-free flourless cake",
+        "dairy free flourless cake"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Flourless cakes should not imply wheat/gluten, but commonly still use eggs and dairy unless vegan/dairy-free wording is present."
+        }
+      ]
+    },
+    {
+      "id": "aioli",
+      "label": "aioli",
+      "aliases": [
+        "aioli",
+        "garlic aioli"
+      ],
+      "ingredients": [
+        "egg"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q283231",
+          "pid": "description"
+        }
+      ]
+    },
+    {
+      "id": "shepherds_pie",
+      "label": "shepherd's pie",
+      "aliases": [
+        "shepherd's pie",
+        "shepherds pie",
+        "shepherd’s pie",
+        "lamb shepherds pie",
+        "lamb shepherd's pie",
+        "lamb shepherd’s pie"
+      ],
+      "ingredients": [
+        "butter"
+      ],
+      "confidence": "medium",
+      "excludeAliases": [
+        "substituting for",
+        "adding it to beef in burgers",
+        "try substituting for or adding it",
+        "old recipes"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Risky-uninferred portfolio queue found shepherd's pie rows. The dish is normally topped with mashed potatoes prepared with butter/dairy, so infer milk caution without assuming a pastry crust."
+        }
+      ]
+    },
+    {
+      "id": "alfredo",
+      "label": "Alfredo sauce",
+      "aliases": [
+        "alfredo",
+        "alfredo sauce"
+      ],
+      "ingredients": [
+        "parmesan",
+        "butter",
+        "cream"
+      ],
+      "confidence": "high",
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q23930012",
+          "pid": "description"
+        }
+      ]
+    },
+    {
+      "id": "caesar_dressing",
+      "label": "Caesar dressing",
+      "aliases": [
+        "caesar dressing"
+      ],
+      "ingredients": [
+        "parmesan",
+        "egg",
+        "anchovy"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q275508",
+          "pid": "P186"
+        }
+      ]
+    },
+    {
+      "id": "dijonnaise",
+      "label": "dijonnaise",
+      "aliases": [
+        "dijonnaise",
+        "dijonaisse"
+      ],
+      "ingredients": [
+        "mayonnaise",
+        "mustard"
+      ],
+      "confidence": "high",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Dijonnaise is a mayonnaise/mustard sauce."
+        }
+      ]
+    },
+    {
+      "id": "furikake",
+      "label": "furikake",
+      "aliases": [
+        "furikake"
+      ],
+      "ingredients": [
+        "sesame",
+        "fish"
+      ],
+      "confidence": "low",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Furikake frequently includes sesame and sometimes dried fish; keep confidence low."
+        }
+      ]
+    },
+    {
+      "id": "hollandaise",
+      "label": "hollandaise",
+      "aliases": [
+        "hollandaise",
+        "hollandaise sauce"
+      ],
+      "ingredients": [
+        "egg",
+        "butter"
+      ],
+      "confidence": "high",
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q143737",
+          "pid": "description"
+        }
+      ]
+    },
+    {
+      "id": "bearnaise",
+      "label": "béarnaise sauce",
+      "aliases": [
+        "bearnaise",
+        "béarnaise",
+        "bearnaise sauce",
+        "béarnaise sauce"
+      ],
+      "ingredients": [
+        "egg",
+        "butter"
+      ],
+      "confidence": "high",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Béarnaise is a hollandaise-family sauce commonly made with egg yolk and butter."
+        }
+      ]
+    },
+    {
+      "id": "nuoc_cham",
+      "label": "nuoc cham",
+      "aliases": [
+        "nuoc cham",
+        "nước chấm"
+      ],
+      "ingredients": [
+        "fish_sauce"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Nuoc cham commonly uses fish sauce."
+        }
+      ]
+    },
+    {
+      "id": "peanut_sauce",
+      "label": "peanut sauce",
+      "aliases": [
+        "peanut sauce",
+        "satay sauce"
+      ],
+      "ingredients": [
+        "peanut",
+        "soy_sauce"
+      ],
+      "confidence": "high",
+      "provenance": [
+        {
+          "source": "open-food-facts",
+          "field": "ingredients_text"
+        }
+      ]
+    },
+    {
+      "id": "pesto",
+      "label": "pesto",
+      "aliases": [
+        "pesto",
+        "pesto sauce",
+        "basil pesto"
+      ],
+      "ingredients": [
+        "parmesan",
+        "pine_nut"
+      ],
+      "confidence": "high",
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q9896",
+          "pid": "description"
+        }
+      ]
+    },
+    {
+      "id": "ranch",
+      "label": "ranch dressing",
+      "aliases": [
+        "ranch",
+        "ranch dressing",
+        "poblano ranch"
+      ],
+      "ingredients": [
+        "mayonnaise",
+        "milk"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Ranch-style dressings commonly include dairy and egg-based mayonnaise."
+        }
+      ]
+    },
+    {
+      "id": "remoulade",
+      "label": "remoulade",
+      "aliases": [
+        "remoulade",
+        "remoulade sauce",
+        "louie sauce",
+        "louis sauce"
+      ],
+      "ingredients": [
+        "mayonnaise",
+        "mustard"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q746786",
+          "pid": "description"
+        }
+      ]
+    },
+    {
+      "id": "romesco",
+      "label": "romesco sauce",
+      "aliases": [
+        "romesco",
+        "romesco sauce"
+      ],
+      "ingredients": [
+        "almond",
+        "bread_crumbs"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Romesco commonly includes almonds or hazelnuts and may include bread."
+        }
+      ]
+    },
+    {
+      "id": "tahini_sauce",
+      "label": "tahini sauce",
+      "aliases": [
+        "tahini sauce",
+        "tahini dressing"
+      ],
+      "ingredients": [
+        "sesame"
+      ],
+      "confidence": "high",
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q263421",
+          "pid": "description"
+        }
+      ]
+    },
+    {
+      "id": "tempura",
+      "label": "tempura",
+      "aliases": [
+        "tempura",
+        "tempura batter"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "egg"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q193564",
+          "pid": "P186"
+        }
+      ]
+    },
+    {
+      "id": "tonnato",
+      "label": "tonnato sauce",
+      "aliases": [
+        "tonnato",
+        "tonnato sauce"
+      ],
+      "ingredients": [
+        "tuna",
+        "mayonnaise"
+      ],
+      "confidence": "high",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Tonnato sauce is tuna-forward and usually egg-based via mayonnaise."
+        }
+      ]
+    },
+    {
+      "id": "burger_sauce",
+      "label": "burger sauce",
+      "aliases": [
+        "extra burger sauce",
+        "extra house burger sauce",
+        "special burger sauce",
+        "house burger sauce"
+      ],
+      "ingredients": [
+        "mayonnaise"
+      ],
+      "confidence": "low",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Risky-uninferred review found burger sauce rows; common burger sauces are mayo-based, so infer egg at low confidence without treating it as a burger bun."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Precision follow-up kept plain Burger Sauce sauce-list rows uninferred; only extra/house/special burger sauce rows infer mayo-based egg caution."
+        }
+      ]
+    }
+  ],
+  "dishProfiles": [
+    {
+      "id": "caesar_salad",
+      "label": "Caesar salad",
+      "aliases": [
+        "caesar salad",
+        "caesar",
+        "chicken caesar"
+      ],
+      "ingredients": [
+        "parmesan",
+        "egg",
+        "anchovy",
+        "bread_crumbs"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q275508",
+          "pid": "P186"
+        }
+      ]
+    },
+    {
+      "id": "ceviche",
+      "label": "ceviche",
+      "aliases": [
+        "ceviche"
+      ],
+      "ingredients": [
+        "fish",
+        "shrimp",
+        "fish_sauce"
+      ],
+      "confidence": "low",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Ceviche frequently contains fish or mixed seafood; keep confidence low for generic ceviche."
+        }
+      ]
+    },
+    {
+      "id": "cheeseburger",
+      "label": "cheeseburger",
+      "aliases": [
+        "cheeseburger",
+        "cheeseburgers",
+        "cheese burger",
+        "cheese burgers"
+      ],
+      "ingredients": [
+        "burger_bun",
+        "cheese"
+      ],
+      "confidence": "medium",
+      "excludeAliases": [
+        "burger bowl",
+        "burger blend",
+        "butcher's blend",
+        "ground bison",
+        "ground lamb",
+        "makes a mean burger",
+        "in burgers",
+        "without bun",
+        "with no bun",
+        "no bun",
+        "w/o bun",
+        "wo bun",
+        "gluten-free bun",
+        "gluten free bun",
+        "gluten-friendly burger",
+        "gluten free burger",
+        "vegan cheese",
+        "dairy-free cheese",
+        "dairy free cheese"
+      ],
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q667478",
+          "pid": "P186"
+        }
+      ]
+    },
+    {
+      "id": "cheesecake",
+      "label": "cheesecake",
+      "aliases": [
+        "cheesecake",
+        "cheese cake",
+        "ny cheesecake",
+        "new york cheesecake"
+      ],
+      "ingredients": [
+        "cream_cheese",
+        "egg",
+        "graham_cracker_crust"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q177",
+          "pid": "P186"
+        }
+      ]
+    },
+    {
+      "id": "chicken_parmesan",
+      "label": "chicken parmesan",
+      "aliases": [
+        "chicken parmesan",
+        "chicken parm",
+        "chicken parmigiana"
+      ],
+      "ingredients": [
+        "breaded_chicken",
+        "parmesan",
+        "cheese",
+        "egg",
+        "wheat_flour"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q5096312",
+          "pid": "P186"
+        }
+      ]
+    },
+    {
+      "id": "chicken_tenders_nuggets",
+      "label": "chicken tenders or nuggets",
+      "aliases": [
+        "chicken tenders",
+        "kids chicken tenders",
+        "chicken nuggets",
+        "chicken fingers"
+      ],
+      "ingredients": [
+        "breaded_chicken"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Chicken tenders/nuggets/fingers are commonly breaded."
+        }
+      ]
+    },
+    {
+      "id": "chilli_paneer",
+      "label": "chilli paneer",
+      "aliases": [
+        "chilli paneer",
+        "chili paneer"
+      ],
+      "ingredients": [
+        "cheese",
+        "soy_sauce"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Chilli paneer directly contains paneer/milk and often Indo-Chinese soy-based sauce."
+        }
+      ]
+    },
+    {
+      "id": "churros",
+      "label": "churros",
+      "aliases": [
+        "churro",
+        "churros"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "milk"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Churros commonly use wheat flour and are often served with dairy sauces such as dulce de leche."
+        }
+      ]
+    },
+    {
+      "id": "clam_chowder",
+      "label": "clam chowder",
+      "aliases": [
+        "clam chowder",
+        "new england chowder"
+      ],
+      "ingredients": [
+        "clam",
+        "cream",
+        "butter",
+        "wheat_flour"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q1058091",
+          "pid": "P186"
+        }
+      ]
+    },
+    {
+      "id": "crab_cake",
+      "label": "crab cake",
+      "aliases": [
+        "crab cake",
+        "crabcake",
+        "crab cakes",
+        "crabcakes"
+      ],
+      "ingredients": [
+        "crab",
+        "bread_crumbs",
+        "egg"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Manual deli/seafood audit found crabcake variants missing shellfish and binder risks."
+        }
+      ]
+    },
+    {
+      "id": "crispy_beef",
+      "label": "crispy beef",
+      "aliases": [
+        "crispy beef"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "soy_sauce"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Crispy beef is commonly battered/floured and served with soy-based sauce."
+        }
+      ]
+    },
+    {
+      "id": "drunken_noodles",
+      "label": "drunken noodles",
+      "aliases": [
+        "drunken noodle",
+        "drunken noodles",
+        "pad kee mao"
+      ],
+      "ingredients": [
+        "rice_noodle",
+        "soy_sauce",
+        "fish_sauce"
+      ],
+      "confidence": "low",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Drunken noodles are rice-noodle based, but sauces commonly include soy/fish sauce; no wheat mapping from rice noodles."
+        }
+      ]
+    },
+    {
+      "id": "french_toast",
+      "label": "French toast",
+      "aliases": [
+        "french toast"
+      ],
+      "ingredients": [
+        "bread",
+        "egg",
+        "milk"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q102693",
+          "pid": "P186"
+        }
+      ]
+    },
+    {
+      "id": "fried_catfish",
+      "label": "fried catfish",
+      "aliases": [
+        "fried catfish",
+        "fried catfish dinner"
+      ],
+      "ingredients": [
+        "fish",
+        "wheat_flour",
+        "egg"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Fried catfish is fish and commonly breaded/battered."
+        }
+      ]
+    },
+    {
+      "id": "fried_green_tomatoes",
+      "label": "fried green tomatoes",
+      "aliases": [
+        "fried green tomatoes",
+        "fried green tomato"
+      ],
+      "ingredients": [
+        "bread_crumbs"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Fried green tomatoes are commonly breaded or battered."
+        }
+      ]
+    },
+    {
+      "id": "fried_mushrooms",
+      "label": "fried mushrooms",
+      "aliases": [
+        "fried mushrooms",
+        "fried mushroom",
+        "chick'n fried mushrooms",
+        "chickn fried mushrooms",
+        "crispy mushroom",
+        "crispy mushrooms",
+        "honey crispy mushroom",
+        "honey crispy mushrooms"
+      ],
+      "ingredients": [
+        "bread_crumbs"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Fried mushrooms are commonly breaded or battered."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Audit found crispy mushroom dishes that are typically battered/floured."
+        }
+      ]
+    },
+    {
+      "id": "fried_pickles",
+      "label": "fried pickles",
+      "aliases": [
+        "fried pickles",
+        "fried pickle"
+      ],
+      "ingredients": [
+        "bread_crumbs"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Fried pickles are commonly breaded or battered."
+        }
+      ]
+    },
+    {
+      "id": "fried_rice",
+      "label": "fried rice",
+      "aliases": [
+        "fried rice",
+        "chicken fried rice",
+        "beef fried rice",
+        "vegetable fried rice",
+        "veggie fried rice",
+        "pineapple fried rice",
+        "basil fried rice",
+        "garlic fried rice",
+        "spicy basil fried rice",
+        "kimchi fried rice"
+      ],
+      "ingredients": [
+        "egg",
+        "soy_sauce"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Restaurant fried rice commonly contains egg and soy sauce; wheat/gluten follows soy sauce at lower confidence."
+        }
+      ]
+    },
+    {
+      "id": "gobi_manchurian",
+      "label": "gobi manchurian",
+      "aliases": [
+        "gobi manchurian",
+        "baby corn manchurian",
+        "crispy baby corn manchurian",
+        "cauliflower manchurian",
+        "crispy cauliflower manchurian",
+        "crispy cauli manchurian",
+        "crispy cauli marvel",
+        "veg manchuria",
+        "veg manchurian",
+        "vegetable manchuria",
+        "vegetable manchurian",
+        "crispy vegetable balls",
+        "manchurian sauce"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "soy_sauce"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Gobi Manchurian commonly uses a flour/cornstarch batter and soy-based sauce; wheat risk is useful caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found baby corn and cauliflower Manchurian rows; these share the flour/starch batter plus soy-sauce caution profile."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Portfolio review found vegetable/veg Manchurian rows; these share flour/starch batter plus soy-sauce caution with gobi Manchurian."
+        }
+      ]
+    },
+    {
+      "id": "gyoza_potsticker_dumpling",
+      "label": "gyoza or potstickers",
+      "aliases": [
+        "gyoza",
+        "pork gyoza",
+        "vegetable gyoza",
+        "potsticker",
+        "potstickers",
+        "fried dumplings",
+        "vegetable dumplings"
+      ],
+      "ingredients": [
+        "wheat_wrapper",
+        "soy_sauce"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Gyoza/potstickers/dumplings usually use wheat wrappers and soy-based dipping sauce."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Manual review found generic item names inside a Gyozas category; category-level gyoza wording should infer wheat-wrapper/soy caution for those rows unless contradicted."
+        }
+      ],
+      "categoryAliases": [
+        "gyozas"
+      ],
+      "allowCategoryOnly": true
+    },
+    {
+      "id": "hamburger",
+      "label": "hamburger",
+      "aliases": [
+        "hamburger",
+        "hamburgers",
+        "burger",
+        "burgers",
+        "beef bistro burger",
+        "kids beef bistro burger",
+        "mexican style burger"
+      ],
+      "ingredients": [
+        "burger_bun"
+      ],
+      "confidence": "medium",
+      "excludeAliases": [
+        "burger sauce",
+        "burger bowl",
+        "burger blend",
+        "butcher's blend",
+        "ground bison",
+        "ground lamb",
+        "makes a mean burger",
+        "in burgers",
+        "without bun",
+        "with no bun",
+        "no bun",
+        "w/o bun",
+        "wo bun",
+        "gluten-free bun",
+        "gluten free bun",
+        "gluten-friendly burger",
+        "gluten free burger"
+      ],
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q6663",
+          "pid": "P186"
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Risky-uninferred portfolio queue found named served-burger rows with prefixes like Kids Beef Bistro Burger and Mexican Style Burger; these imply a bun unless contradicted, while butcher/product-copy burger blend phrases stay excluded."
+        }
+      ]
+    },
+    {
+      "id": "katsu",
+      "label": "katsu",
+      "aliases": [
+        "katsu",
+        "chicken katsu",
+        "pork katsu",
+        "shrimp katsu"
+      ],
+      "ingredients": [
+        "bread_crumbs",
+        "egg"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Manual sushi/ramen audit found katsu rows missing breading risks."
+        }
+      ]
+    },
+    {
+      "id": "lad_na",
+      "label": "lad na",
+      "aliases": [
+        "lad na",
+        "rad na"
+      ],
+      "ingredients": [
+        "rice_noodle",
+        "soy_sauce"
+      ],
+      "confidence": "low",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Lad na uses rice noodles but often soy-based gravy; no wheat mapping from rice noodles."
+        }
+      ]
+    },
+    {
+      "id": "mac_and_cheese",
+      "label": "mac and cheese",
+      "aliases": [
+        "mac and cheese",
+        "mac & cheese",
+        "macaroni and cheese",
+        "macncheese",
+        "mac n cheese",
+        "mac ‘n cheese",
+        "mac’n’cheese",
+        "mac‘n’cheese",
+        "old bay macncheese",
+        "old bay mac‘n’cheese"
+      ],
+      "ingredients": [
+        "pasta",
+        "cheese",
+        "milk",
+        "butter"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q188329",
+          "pid": "P186"
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found punctuation-normalized macncheese rows; route them to the existing mac and cheese profile."
+        }
+      ]
+    },
+    {
+      "id": "pad_thai",
+      "label": "pad thai",
+      "aliases": [
+        "pad thai",
+        "phat thai"
+      ],
+      "ingredients": [
+        "peanut",
+        "egg",
+        "fish_sauce",
+        "shrimp"
+      ],
+      "confidence": "low",
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q191033",
+          "pid": "P186"
+        }
+      ]
+    },
+    {
+      "id": "pancakes",
+      "label": "pancakes",
+      "aliases": [
+        "pancake",
+        "pancakes",
+        "hotcakes",
+        "griddle cakes"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "egg",
+        "milk",
+        "butter"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q44541",
+          "pid": "P186"
+        }
+      ]
+    },
+    {
+      "id": "pani_puri",
+      "label": "pani puri",
+      "aliases": [
+        "pani puri",
+        "pani-puri",
+        "golgappa",
+        "sev puri"
+      ],
+      "ingredients": [
+        "wheat_flour"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Pani puri/sev puri shells commonly use wheat/semolina flour; useful wheat/gluten caution."
+        }
+      ]
+    },
+    {
+      "id": "pescado_frito",
+      "label": "pescado frito",
+      "aliases": [
+        "pescado frito"
+      ],
+      "ingredients": [
+        "fish"
+      ],
+      "confidence": "high",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Pescado frito is fried fish; fish signal is direct."
+        }
+      ]
+    },
+    {
+      "id": "pizza",
+      "label": "pizza",
+      "aliases": [
+        "pizza",
+        "cheese pizza",
+        "pepperoni pizza",
+        "margherita pizza",
+        "flatbread pizza"
+      ],
+      "ingredients": [
+        "pizza_dough",
+        "cheese"
+      ],
+      "confidence": "medium",
+      "excludeAliases": [
+        "gluten-free pizza",
+        "gluten free pizza",
+        "cauliflower crust pizza"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Manual audit found pizza rows often only inferred milk from cheese and missed crust wheat/gluten."
+        }
+      ]
+    },
+    {
+      "id": "seafood_soup_salad",
+      "label": "seafood soup or salad",
+      "aliases": [
+        "seafood soup",
+        "seafood salad",
+        "seafood pot",
+        "seafood pots"
+      ],
+      "ingredients": [
+        "seafood_mix"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Seafood soups/salads/pots should caution fish and shellfish."
+        }
+      ]
+    },
+    {
+      "id": "seafood_tower",
+      "label": "seafood tower",
+      "aliases": [
+        "raw bar",
+        "seafood tower",
+        "shellfish tower",
+        "raw bar tower",
+        "seafood platter",
+        "shellfish platter",
+        "seafood plateau",
+        "shellfish plateau",
+        "grand plateau",
+        "plateau de fruits de mer"
+      ],
+      "ingredients": [
+        "shrimp",
+        "lobster",
+        "crab",
+        "oyster",
+        "clam",
+        "fish"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Seafood/raw bar towers commonly include multiple shellfish and sometimes fish."
+        }
+      ]
+    },
+    {
+      "id": "shrimp_scampi",
+      "label": "shrimp scampi",
+      "aliases": [
+        "shrimp scampi",
+        "prawn scampi"
+      ],
+      "ingredients": [
+        "shrimp",
+        "butter",
+        "pasta"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q7499644",
+          "pid": "description"
+        }
+      ]
+    },
+    {
+      "id": "spring_rolls",
+      "label": "spring rolls",
+      "aliases": [
+        "spring roll",
+        "spring rolls",
+        "vegetable spring roll",
+        "vegetable spring rolls",
+        "fried spring roll",
+        "fried spring rolls",
+        "egg rolls",
+        "egg roll",
+        "fried roll filled with vegetables",
+        "crispy fried roll filled with vegetables",
+        "vegetable fried roll",
+        "fried vegetable roll"
+      ],
+      "ingredients": [
+        "wheat_wrapper"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Fried spring rolls/egg rolls commonly use wheat wrappers."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found descriptive fried vegetable roll rows that should route to the spring-roll wheat-wrapper profile."
+        }
+      ]
+    },
+    {
+      "id": "tempura_shrimp",
+      "label": "tempura shrimp",
+      "aliases": [
+        "tempura shrimp",
+        "shrimp tempura",
+        "tempura prawns"
+      ],
+      "ingredients": [
+        "shrimp",
+        "wheat_flour",
+        "egg"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "wikidata",
+          "qid": "Q193564",
+          "pid": "P186"
+        }
+      ]
+    },
+    {
+      "id": "wings_with_ranch",
+      "label": "wings with ranch",
+      "aliases": [
+        "buffalo wings",
+        "hot wings",
+        "wings with ranch",
+        "wings with blue cheese",
+        "wings with bleu cheese",
+        "ranch wings",
+        "blue cheese wings",
+        "bleu cheese wings",
+        "crispy wings",
+        "fried wings"
+      ],
+      "ingredients": [
+        "mayonnaise",
+        "milk"
+      ],
+      "confidence": "low",
+      "excludeAliases": [
+        "fresh uncooked",
+        "uncooked",
+        "available plain",
+        "home marinade",
+        "plain wings"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Wings often come with ranch/blue cheese in observed menu descriptions; keep low confidence and direct sauce text can raise confidence."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Organic Butcher review found fresh uncooked retail wings; do not infer ranch/blue-cheese sauce allergens when the product is explicitly plain or uncooked."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-07",
+          "note": "El Pollo Rico review found rotisserie chicken descriptions that mention breasts and wings as plain cuts; bare wings/chicken wings are too broad for ranch/blue-cheese inference without sauce, buffalo, crispy, or fried context."
+        }
+      ]
+    },
+    {
+      "id": "dosa",
+      "label": "dosa",
+      "aliases": [
+        "dosa",
+        "masala dosa",
+        "plain dosa",
+        "mysore dosa"
+      ],
+      "ingredients": [],
+      "confidence": "low",
+      "excludeAliases": [],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Dosa is commonly a rice-lentil crepe; add a reviewed profile so it is not accidentally treated as wheat-based by generic crepe wording."
+        }
+      ]
+    },
+    {
+      "id": "orange_chicken",
+      "label": "orange chicken",
+      "aliases": [
+        "orange chicken"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "egg",
+        "soy_sauce"
+      ],
+      "confidence": "low",
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Orange chicken is commonly battered/fried and sauced with soy-containing sauce; infer low-confidence wheat/egg/soy caution unless gluten-free."
+        }
+      ]
+    },
+    {
+      "id": "chicken_karaage",
+      "label": "chicken karaage",
+      "aliases": [
+        "chicken karaage",
+        "karaage chicken",
+        "karaage",
+        "chicken kara age",
+        "kara age",
+        "kara-age",
+        "chicken kara-age"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "soy_sauce"
+      ],
+      "confidence": "low",
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Chicken karaage is commonly marinated with soy sauce and dredged in starch/flour; infer low-confidence soy and wheat/gluten caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found spaced Kara Age spelling; route to the existing karaage profile."
+        }
+      ]
+    },
+    {
+      "id": "california_roll",
+      "label": "California roll",
+      "aliases": [
+        "california roll",
+        "spicy california roll"
+      ],
+      "ingredients": [
+        "surimi"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "California rolls commonly include crab or imitation crab/surimi; infer fish and shellfish caution but not wheat/gluten from roll wording."
+        }
+      ]
+    },
+    {
+      "id": "gnudi",
+      "label": "gnudi",
+      "aliases": [
+        "gnudi",
+        "spinach gnudi",
+        "ricotta gnudi"
+      ],
+      "ingredients": [
+        "cheese",
+        "egg",
+        "wheat_flour"
+      ],
+      "confidence": "medium",
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Gnudi are commonly ricotta dumplings bound with egg and flour; infer milk, egg, and wheat/gluten caution unless a source says otherwise."
+        }
+      ]
+    },
+    {
+      "id": "bitterballen",
+      "label": "bitterballen",
+      "aliases": [
+        "bitterballen",
+        "dutch bitterballen",
+        "dutch deep fried beef cocktail balls"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "bread",
+        "milk"
+      ],
+      "confidence": "medium",
+      "excludeAliases": [
+        "gluten-free bitterballen",
+        "gluten free bitterballen",
+        "dairy-free bitterballen",
+        "dairy free bitterballen"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found bitterballen; standard preparations commonly use roux/flour plus breadcrumbs and may include dairy, so infer review-level wheat/gluten/milk caution unless contradicted."
+        }
+      ]
+    },
+    {
+      "id": "korean_fried_chicken",
+      "label": "Korean fried chicken",
+      "aliases": [
+        "korean fried chicken",
+        "korean-style fried chicken",
+        "double fried chicken",
+        "double-fried chicken",
+        "double fried with your choice of sauce"
+      ],
+      "categoryAliases": [
+        "korean fried chicken"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "soy_sauce"
+      ],
+      "confidence": "medium",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "allowCategoryOnly": true,
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "unbreaded",
+        "grilled"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found Bonchon-style Korean fried chicken section rows with generic names like Boneless. Standard Korean fried chicken is commonly battered/starch-coated and soy-sauced, so infer review-level wheat/gluten/soy caution from title/description/category unless contradicted."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Manual review of Bonchon generic Strips rows found “Double fried with your choice of sauce”; route this exact Korean-fried-chicken style wording to wheat/gluten/soy caution without broadening all double-fried meats."
+        }
+      ]
+    },
+    {
+      "id": "croquettes",
+      "label": "croquettes",
+      "aliases": [
+        "croquette",
+        "croquettes",
+        "croquetas",
+        "croquetas de pollo",
+        "chicken croquettes",
+        "fried croquettes",
+        "risotto balls",
+        "fried risotto balls",
+        "arancini"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "egg",
+        "milk"
+      ],
+      "confidence": "medium",
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "vegan"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found croquetas/croquettes and fried risotto balls; common restaurant preparations are breaded/bound and often include egg/dairy, so infer review-level wheat/gluten/egg/milk caution unless contradicted."
+        }
+      ]
+    },
+    {
+      "id": "gulab_jamun",
+      "label": "gulab jamun",
+      "aliases": [
+        "gulab jamun",
+        "gulab jamoon",
+        "gulab jamun balls"
+      ],
+      "ingredients": [
+        "milk",
+        "wheat_flour"
+      ],
+      "confidence": "medium",
+      "excludeAliases": [
+        "vegan",
+        "dairy-free",
+        "dairy free",
+        "gluten-free",
+        "gluten free"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found gulab jamun/jamoon rows without descriptions; standard gulab jamun is milk-solid dough often including flour, so infer review-level milk and wheat/gluten caution unless contradicted."
+        }
+      ]
+    },
+    {
+      "id": "jalebi",
+      "label": "jalebi",
+      "aliases": [
+        "jalebi",
+        "jelabi",
+        "jilebi",
+        "zulbia"
+      ],
+      "ingredients": [
+        "wheat_flour"
+      ],
+      "confidence": "medium",
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found Jelabi; jalebi-style fried batter desserts commonly use flour, so infer wheat/gluten caution unless contradicted."
+        }
+      ]
+    },
+    {
+      "id": "general_tsos_chicken",
+      "label": "General Tso's chicken",
+      "aliases": [
+        "general tso chicken",
+        "general tso's chicken",
+        "general tsos chicken",
+        "general tso’s chicken"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "soy_sauce"
+      ],
+      "confidence": "medium",
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "grilled"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found General Tso's rows without explicit batter/soy text; standard preparations are battered/fried and soy-sauced, so infer review-level wheat/gluten/soy caution unless contradicted."
+        }
+      ]
+    },
+    {
+      "id": "fattoush",
+      "label": "fattoush",
+      "aliases": [
+        "fattoush",
+        "fattoush salad"
+      ],
+      "ingredients": [
+        "bread_crumbs"
+      ],
+      "confidence": "medium",
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "without pita",
+        "no pita",
+        "no chips"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found fattoush rows without descriptions; fattoush commonly includes toasted/fried pita, so infer wheat/gluten caution unless contradicted."
+        }
+      ]
+    },
+    {
+      "id": "sambusa_sambousek_kibbeh",
+      "label": "sambusa, sambousek, or kibbeh",
+      "aliases": [
+        "sambusa",
+        "sambusas",
+        "sambousek",
+        "sombousek",
+        "sambousek pastry",
+        "samosa",
+        "sambosa",
+        "fried kebbah",
+        "fried kibbeh",
+        "kibbeh",
+        "kibbe",
+        "kibeh",
+        "fried kibeh"
+      ],
+      "ingredients": [
+        "wheat_wrapper",
+        "wheat_flour"
+      ],
+      "confidence": "medium",
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found sambusa/sombousek/fried kebbah rows; these are commonly wrapped or bulgur/flour-based fried appetizers, so infer wheat/gluten caution unless contradicted."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found alternate “kibeh” spelling; route it through the existing sambusa/sombousek/kibbeh wrapper/fried-dough profile."
+        }
+      ]
+    },
+    {
+      "id": "hushpuppies",
+      "label": "hushpuppies",
+      "aliases": [
+        "hushpuppy",
+        "hushpuppies",
+        "hush-puppy",
+        "hush-puppies",
+        "hush puppies",
+        "hush puppy"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "egg",
+        "milk"
+      ],
+      "confidence": "medium",
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "dairy-free",
+        "dairy free",
+        "egg-free",
+        "egg free",
+        "vegan"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found hushpuppies rows without descriptions; standard restaurant hushpuppy batter commonly includes wheat flour, egg, and dairy, so infer review-level caution unless contradicted."
+        }
+      ]
+    },
+    {
+      "id": "chinese_crispy_shredded_meat",
+      "label": "Chinese crispy shredded meat",
+      "aliases": [
+        "crispy shredded beef",
+        "crispy shredded chicken",
+        "crispy honey chili beef",
+        "crispy black pepper beef"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "soy_sauce"
+      ],
+      "confidence": "medium",
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "soy-free",
+        "soy free",
+        "grilled"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found Chinese crispy shredded beef/chicken rows without descriptions; common preparations are battered or starch-coated and sauce-based, so infer review-level wheat/gluten/soy caution unless contradicted."
+        }
+      ]
+    },
+    {
+      "id": "exact_fish_appetizer_rows",
+      "label": "exact fish appetizer row",
+      "aliases": [
+        "crispy volcano",
+        "crispy catches",
+        "crispy-fried (sweet and sour sauce)",
+        "crispy fried sweet and sour sauce"
+      ],
+      "ingredients": [
+        "fish"
+      ],
+      "confidence": "medium",
+      "excludeAliases": [
+        "vegetarian",
+        "vegan"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found exact fish-category item names without descriptions; infer fish caution for these narrow rows."
+        }
+      ]
+    },
+    {
+      "id": "meatloaf",
+      "label": "meatloaf",
+      "aliases": [
+        "meatloaf",
+        "meat loaf"
+      ],
+      "ingredients": [
+        "bread_crumbs",
+        "egg",
+        "milk"
+      ],
+      "confidence": "medium",
+      "excludeAliases": [
+        "gluten-free meatloaf",
+        "gluten free meatloaf",
+        "egg-free meatloaf",
+        "egg free meatloaf",
+        "dairy-free meatloaf",
+        "dairy free meatloaf"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found meatloaf rows; common restaurant meatloaf usually uses breadcrumb binder and often egg/dairy, so infer review-only caution unless contradicted."
+        }
+      ]
+    },
+    {
+      "id": "tiramisu",
+      "label": "tiramisu",
+      "aliases": [
+        "tiramisu"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "egg",
+        "milk"
+      ],
+      "confidence": "medium",
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "dairy-free",
+        "dairy free",
+        "egg-free",
+        "egg free",
+        "vegan"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Portfolio review found tiramisu rows with non-descriptive garnish text; classic tiramisu commonly includes ladyfingers/wheat, egg, and mascarpone/dairy, so infer review-level caution unless contradicted."
+        }
+      ]
+    }
+  ],
+  "dishShapeRules": [
+    {
+      "id": "dessert_crust_or_baked_good",
+      "label": "baked dessert or crusted dessert",
+      "aliases": [
+        "cheesecake",
+        "cake",
+        "brownie",
+        "cookie",
+        "sweet pastry",
+        "dessert pastry",
+        "pie",
+        "tart",
+        "muffin",
+        "scone",
+        "croissant",
+        "danish"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "egg",
+        "milk"
+      ],
+      "confidence": "low",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "flourless",
+        "gluten-free",
+        "gluten free",
+        "dairy-free",
+        "dairy free",
+        "pastry cream",
+        "shepherd's pie",
+        "meat pie"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Common baked dessert shapes often contain wheat/gluten, egg, and milk, but should stay lower confidence."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Organic Butcher review found savory usage examples like shepherd's pie in ground-meat product copy; do not treat those as dessert/crust/baked-good evidence."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Precision pass: vegan baked goods should still infer wheat/gluten from crust/baked-good shape while context suppression removes animal-derived milk/egg assumptions."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-07",
+          "note": "Portfolio review found donut-category items whose names omit donut/doughnut; allow category-only donut shape to infer baked-good caution, while gluten-free/free-from wording still suppresses it."
+        }
+      ],
+      "categoryAliases": [
+        "donut",
+        "donuts",
+        "doughnut",
+        "doughnuts"
+      ],
+      "allowCategoryOnly": true
+    },
+    {
+      "id": "floured_or_wrapper_like",
+      "label": "floured, wrapper, or crispy onion item",
+      "aliases": [
+        "lightly floured",
+        "floured and fried",
+        "crispy onions",
+        "crispy onion",
+        "fried onions",
+        "fried onion",
+        "wonton",
+        "dumpling",
+        "sambosa",
+        "samosa",
+        "banana roll",
+        "banana rolls",
+        "fried wonton",
+        "fried wontons",
+        "crispy wonton",
+        "crispy wontons",
+        "wonton skin",
+        "wonton skins",
+        "crispy wonton skin",
+        "crispy wonton skins",
+        "egg roll",
+        "egg rolls",
+        "eggroll",
+        "eggrolls",
+        "crispy egg roll",
+        "crispy egg rolls",
+        "crispy eggroll",
+        "crispy eggrolls",
+        "savory crispy eggrolls"
+      ],
+      "ingredients": [
+        "wheat_wrapper"
+      ],
+      "confidence": "medium",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "rice paper"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Explicit floured/wrapper/crispy onion terms are stronger wheat/gluten indicators than generic fried/crispy."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred Thai dessert review found banana rolls commonly use a wrapper/batter; infer wheat-wrapper caution unless contradicted."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Manual risky-uninferred review found wonton-skin descriptors that should infer wheat-wrapper caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Risky-uninferred review found eggroll/egg roll rows; standard restaurant egg rolls use wheat wrappers unless contradicted."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Manual review found generic item names in Gyozas categories; category-only gyoza wording should infer wrapper wheat/gluten caution even when the item title is just a filling."
+        }
+      ],
+      "categoryAliases": [
+        "gyoza",
+        "gyozas"
+      ],
+      "allowCategoryOnly": true
+    },
+    {
+      "id": "fried_or_battered",
+      "label": "fried or battered item",
+      "aliases": [
+        "battered",
+        "breaded",
+        "beer battered",
+        "breaded and fried",
+        "breaded fried",
+        "light batter",
+        "in a light batter",
+        "deep fried in a light batter",
+        "crumb fried",
+        "crumb-fried",
+        "fried calamari",
+        "crispy calamari",
+        "fried chicken",
+        "crispy chicken",
+        "deep fried chicken",
+        "boneless chicken marinated and fried",
+        "chicharron de pollo",
+        "chicharrón de pollo",
+        "fried dumpling",
+        "fried dumplings",
+        "fish and chips",
+        "tempura",
+        "shrimp tempura",
+        "prawn tempura",
+        "vegetable tempura",
+        "tempura roll",
+        "fried banana",
+        "fried bananas",
+        "creole spicy fried",
+        "spicy fried chicken",
+        "chicken creole spicy fried",
+        "aji fry",
+        "aji furai",
+        "deep fried horse mackerel",
+        "deep fried appetizer",
+        "deep-fried appetizer",
+        "spicy deep fried appetizer",
+        "spicy deep-fried appetizer",
+        "batter-fried",
+        "batter fried",
+        "pakora",
+        "pakoda",
+        "vegetable pakoda",
+        "vegetable pakora",
+        "aloo tikki",
+        "aloo tiki",
+        "babycorn 65",
+        "chicken 65",
+        "gobi 65",
+        "paneer 65",
+        "spiced batter",
+        "with spiced batter",
+        "dusted and fried",
+        "crispy coated",
+        "crispy coated chicken",
+        "coated boneless chicken",
+        "spiced batter topped",
+        "fried filet",
+        "fried chicken filet",
+        "fried chicken fillet",
+        "fried fillet",
+        "lightly batter",
+        "lightly battered",
+        "lightly batter glazed",
+        "crispy coated boneless chicken",
+        "coated boneless chicken pieces",
+        "creaded and fried",
+        "fried roll filled with vegetables",
+        "crispy fried roll filled with vegetables",
+        "lightly deep fried",
+        "lightly deep-fried",
+        "deep fried snack",
+        "deep-fried snack",
+        "deep fried snack stuffed",
+        "deep-fried snack stuffed",
+        "crispy buffalo chicken",
+        "crispy pineapple chicken",
+        "crispy white-meat chicken",
+        "crispy white meat chicken",
+        "gold rush chicken",
+        "crispy chili baby corn",
+        "crispy chilli baby corn",
+        "deep fried srved",
+        "deep fried served",
+        "deep-fried served",
+        "served fried, grilled, or blackened",
+        "served fried, grilled",
+        "served fried or grilled",
+        "crispy golden chicken",
+        "fried spicy beef ribeye roll",
+        "marinated and deep fried",
+        "lightly fried for a crispy texture",
+        "crispy taquitos",
+        "crispy taquito",
+        "deep-fried. served",
+        "fried tortilla bowl",
+        "fried sweetbreads",
+        "fried sweetbread",
+        "masala and deep fried",
+        "marinated in a medley of masala and deep fried",
+        "fried blackened or grilled",
+        "served fried, blackened, or grilled",
+        "fresh hand cut turkey chops served fried",
+        "fresh hand-cut turkey chops served fried"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "egg"
+      ],
+      "confidence": "low",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "gluten-free batter",
+        "gluten free batter",
+        "rice flour batter",
+        "cornmeal crusted"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Battered/breaded fried items commonly use wheat flour and sometimes egg."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found explicit deep-fried chicken/chicharron and fried dumpling rows that should receive cautious wheat/gluten/egg inference."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review promoted tempura and fried banana terms as low-confidence battered/fried wheat/egg caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found Pearl Dive chicken item phrased as Creole spicy fried; add narrow fried-chicken wording without broadening generic fried matching."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found fried horse mackerel dishes that commonly include breading/flour; keep as low-confidence fried/battered caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Manual risky-uninferred review found explicit 'deep fried in a light batter' menu descriptions; infer cautious wheat/gluten/egg from batter wording without broadening generic crispy/fried matching."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Manual risky-uninferred review promoted explicit Indian fried appetizer and batter-fried terms as low-confidence wheat/egg caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found explicit spiced batter, dusted-and-fried, and crispy-coated chicken descriptions that should infer cautious wheat/gluten/egg."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found fried filet/fillet menu rows where breading/batter caution is appropriate without broadening all fried foods."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found lightly-batter, crispy-coated, and fried-roll wording that should infer cautious wheat/gluten/egg without broadening all crispy/fried items."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Risky-uninferred review found crumb-fried and breaded/typo-breaded fried rows; route only those explicit breading cues to wheat/gluten/egg caution while leaving generic fried/crispy foods alone."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Risky-uninferred review found explicit lightly/deep-fried snack wording; infer low-confidence batter/wheat/egg caution without broadening all fried foods."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Risky-uninferred review found specific crispy chicken names/descriptions that commonly imply breading/coating; keep low-confidence wheat/gluten/egg caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Portfolio review found exact Indo-Chinese crispy chili baby corn wording; this dish form is typically battered/fried, so infer wheat/gluten/egg caution narrowly."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Manual review of the remaining risky-uninferred tail found exact fried/battered service phrases and crispy taquito/tortilla-bowl wording that should infer low-confidence wheat/gluten/egg caution without broadening generic crispy/fried matching."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Manual risky-tail review found fried sweetbreads; restaurant fried sweetbread preparations are commonly breaded/floured, so infer low-confidence wheat/gluten/egg caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Manual review of the remaining risky tail found exact deep-fried masala chicken and fried/blackened/grilled poultry choice wording where cautious breading/coating inference is appropriate without broadening all fried meats."
+        }
+      ]
+    },
+    {
+      "id": "latin_pastry_or_flour_wrap",
+      "label": "Latin pastry or flour wrap",
+      "aliases": [
+        "empanada",
+        "tequeno",
+        "tequeño",
+        "torta",
+        "burrito",
+        "chimichanga",
+        "quesadilla",
+        "flauta",
+        "flautas",
+        "taquito",
+        "taquitos",
+        "fried tacos",
+        "fried taco"
+      ],
+      "ingredients": [
+        "flour_tortilla"
+      ],
+      "confidence": "medium",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "corn tortilla",
+        "corn masa",
+        "lettuce wrap",
+        "gluten-free",
+        "gluten free"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Manual Taco Bamba/Parkway/Arepas audit found flour wrap/pastry cues need wheat/gluten caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Pleroma review found African fufu/catering rows using wrap as a unit/count term, not tortilla; rely on explicit tortilla/burrito/quesadilla/chimichanga/pastry wording instead of standalone wrap."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Manual risky-tail review found flautas, taquitos, and fried tacos; these are tortilla/wrapper-shaped items and should infer wheat/gluten cautiously unless gluten-free/corn-only wording suppresses it."
+        }
+      ]
+    },
+    {
+      "id": "crispy_fried_wings",
+      "label": "crispy or fried wings",
+      "aliases": [
+        "crispy wings",
+        "crispy wing",
+        "crispy fried wings",
+        "crispy fried wing",
+        "fried wings",
+        "fried wing",
+        "fried mild bbq",
+        "fried chicken wings",
+        "fried chicken wing",
+        "fried golden brown chicken wings",
+        "golden-fried chicken wings",
+        "golden fried succulent whole chicken wings",
+        "crispy golden wings",
+        "crispy golden chicken wings",
+        "crispy fried classic bone in wings",
+        "crispy fried classic bone-in wings",
+        "crispy jumbo wings",
+        "crispy jumbo chicken wings",
+        "crispy bone-in wings",
+        "crispy bone in wings",
+        "crispy and juicy bone-in classic wings",
+        "crispy and juicy bone in classic wings",
+        "crispy and juicy bone-in wings",
+        "crispy and juicy bone in wings",
+        "classic bone-in wings",
+        "classic bone in wings",
+        "classic wings sauced and tossed",
+        "bone-in classic wings sauced",
+        "lightly smoked, fried",
+        "lightly smoked fried",
+        "brined, fried",
+        "brined fried",
+        "freshly fried to order",
+        "flash fried",
+        "flash-fried",
+        "beer-brined and fried",
+        "brined, baked, then fried",
+        "smoked then fried crispy",
+        "flash fried smoked wings",
+        "wings fried",
+        "wings smoked then fried",
+        "wings deep fried",
+        "deep fried or grilled",
+        "fried and tossed",
+        "fried bone in wings",
+        "fried bone-in wings",
+        "double-fried",
+        "double fried",
+        "fried bucket wings",
+        "cooked in our clay oven then deep fried",
+        "marinated and fried",
+        "chicken wings made to the shape of lollipop, marinated and fried",
+        "crispy, spiced chicken wings",
+        "crispy chili-glazed chicken wings",
+        "crispy halal wings",
+        "crispy berbere wings",
+        "crispy and coated in a fiery blend",
+        "fried until golden brown and tossed",
+        "wings grilled or fried",
+        "grilled or fried wings"
+      ],
+      "ingredients": [
+        "wheat_flour"
+      ],
+      "confidence": "low",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "fresh uncooked",
+        "uncooked",
+        "plain wings",
+        "naked wings",
+        "grilled wings",
+        "grilled chicken wings",
+        "roasted wings",
+        "baked wings",
+        "gluten-free",
+        "gluten free",
+        "rice flour",
+        "cornmeal"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-07",
+          "note": "Manual review of the remaining risky-uninferred queue found crispy/fried/coated wing descriptions. Add low-confidence wheat/gluten caution for explicit crispy/fried wing wording, while suppressing plain, uncooked, grilled, smoked-only, baked, or gluten-free wing text."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-08",
+          "note": "Final risky queue review added exact phrasing for fried wings, golden-fried wings, and crispy coated masala wings while keeping plain fried turkey/pork and smoked wing rows out of runtime inference without additional breading/coating evidence."
+        }
+      ]
+    },
+    {
+      "id": "pizza_like",
+      "label": "pizza or flatbread item",
+      "aliases": [
+        "pizza",
+        "flatbread",
+        "pizza pie",
+        "the garden pie",
+        "garden pie"
+      ],
+      "ingredients": [
+        "pizza_dough"
+      ],
+      "confidence": "medium",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "cauliflower crust"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Pizza/flatbread names imply crust unless excluded."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Portfolio review found pizza menus using “pie” without the word pizza; in pizza sections these imply crust wheat/gluten unless gluten-free or cauliflower-crust wording is present."
+        }
+      ]
+    },
+    {
+      "id": "chivito_sandwich",
+      "label": "chivito sandwich",
+      "aliases": [
+        "chivito"
+      ],
+      "ingredients": [
+        "bread"
+      ],
+      "confidence": "medium",
+      "excludeAliases": [
+        "chivito al plato"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "El Patio review found plain Chivito rows that are sandwich-style and should infer bread wheat/gluten, while Chivito al Plato is plated and excluded."
+        }
+      ]
+    },
+    {
+      "id": "raw_bar_or_seafood_platter",
+      "label": "raw bar or seafood platter",
+      "aliases": [
+        "seafood tower",
+        "shellfish tower",
+        "raw bar tower",
+        "seafood platter",
+        "shellfish platter",
+        "raw bar platter",
+        "seafood plateau",
+        "shellfish plateau",
+        "grand plateau",
+        "petit plateau",
+        "petite plateau",
+        "coupe de la mer"
+      ],
+      "categoryAliases": [
+        "raw bar",
+        "seafood"
+      ],
+      "ingredients": [
+        "shrimp",
+        "lobster",
+        "crab",
+        "oyster",
+        "clam",
+        "fish"
+      ],
+      "confidence": "medium",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Seafood platter/tower shapes should infer shellfish and likely fish."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found explicit Raw Bar menu rows that should infer seafood caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-07",
+          "note": "Risky-uninferred review found Grand Plateau on steakhouse/seafood menus; plateau seafood terms commonly indicate raw bar shellfish/fish platters."
+        }
+      ]
+    },
+    {
+      "id": "oyster_half_shell_section",
+      "label": "oyster half-shell section",
+      "aliases": [],
+      "categoryAliases": [
+        "oyster on the half-shell",
+        "oysters on the half-shell"
+      ],
+      "allowCategoryOnly": true,
+      "ingredients": [
+        "oyster"
+      ],
+      "confidence": "medium",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "coal roasted oysters"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-07",
+          "note": "Portfolio risky-miss review found oyster variety names where the item text omits oyster but the section is exactly oyster-on-the-half-shell. Infer shellfish from that narrow section, but avoid broad oyster-preparation sections such as coal-roasted oyster topping lists."
+        }
+      ]
+    },
+    {
+      "id": "sandwich_like",
+      "label": "sandwich-like item",
+      "aliases": [
+        "sandwich",
+        "club",
+        "blt",
+        "po boy",
+        "poboy",
+        "hoagie",
+        "sub",
+        "sub of choice",
+        "panini",
+        "bocata",
+        "panuozzo",
+        "tuna melt",
+        "patty melt",
+        "turkey melt",
+        "chicken melt",
+        "cheese melt",
+        "wagyu melt",
+        "mushroom melt",
+        "italian melt",
+        "avocado melt",
+        "pot roast melt",
+        "salad melt",
+        "pastrami melt",
+        "shaved pastrami melt",
+        "grilled cheese melt",
+        "grilled cheese",
+        "hot ham & swiss",
+        "hot ham and swiss",
+        "ham & swiss",
+        "ham and swiss",
+        "beef on weck",
+        "reuben",
+        "rueben"
+      ],
+      "ingredients": [
+        "bread"
+      ],
+      "confidence": "medium",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "gluten-free sandwich",
+        "gluten free sandwich",
+        "served on gluten-free bun",
+        "served on gluten free bun",
+        "on a gluten-free bun",
+        "on a gluten free bun",
+        "lettuce wrap",
+        "lettuce wrapped",
+        "no bread",
+        "without bread",
+        "no bun",
+        "without bun",
+        "w/o bun",
+        "wo bun",
+        "club soda",
+        "casamara club",
+        "milk sub"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Default sandwich-like menu items commonly imply bread unless the item says otherwise."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio audit found Spanish/Italian sandwich terms and lunch-box sub phrasing that should infer bread-based wheat/gluten caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio audit found menu descriptions like 'Create your own sandwich' and 'BBQ Sandwich with Coleslaw' where the item title alone did not expose sandwich/bread shape."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Regression audit found 'club soda' in mocktail descriptions could falsely match the 'club' sandwich alias; suppress that beverage phrase."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Jimmy's Old Town Tavern review found common tavern/deli sandwich names without the literal word sandwich; these should still infer bread/wheat/gluten unless no-bun or gluten-free wording is present."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Sunflower Vegetarian review found dessert ingredient text using 'Milk Sub' for substitute; do not treat that abbreviation as a submarine sandwich."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "The Organic Butcher review found plain texture copy like 'melt quickly back into the meat' falsely matched standalone 'melt'; keep only explicit sandwich-style melt names."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Risky-uninferred portfolio queue found named restaurant melt sandwiches such as wagyu, mushroom, Italian, avocado, pot roast, salad, and pastrami melts; these imply bread unless contradicted."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Organic Butcher review found Casamara Club beverages; do not treat that brand's 'club' wording as a club sandwich."
+        }
+      ]
+    },
+    {
+      "id": "sushi_or_tuna_like",
+      "label": "fish-forward sushi or tuna item",
+      "aliases": [
+        "ahi tuna",
+        "spicy tuna",
+        "tuna roll",
+        "yellowtail roll",
+        "hamachi roll",
+        "salmon roll",
+        "sashimi",
+        "nigiri",
+        "toro roll",
+        "toro and scallion roll",
+        "negi toro roll",
+        "negi-toro roll",
+        "eel roll",
+        "eel avocado roll",
+        "eel cucumber roll",
+        "unagi roll",
+        "anago roll",
+        "sushi lunch",
+        "sushi dinner",
+        "sushi regular",
+        "sushi deluxe",
+        "sushi combo",
+        "sushi boat"
+      ],
+      "categoryAliases": [
+        "sushi"
+      ],
+      "ingredients": [
+        "fish"
+      ],
+      "confidence": "low",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "vegetable roll",
+        "avocado roll",
+        "cucumber roll",
+        "veggie roll"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-01",
+          "note": "Fish-forward sushi terms should infer fish without adding soy/sesame unless separately mentioned."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred sushi review promoted fish-forward roll and sushi-combo titles while preserving avocado/cucumber/vegetable exclusions."
+        }
+      ]
+    },
+    {
+      "id": "country_or_chicken_fried",
+      "label": "country-fried or chicken-fried item",
+      "aliases": [
+        "country fried",
+        "country-fried",
+        "chicken fried",
+        "chicken-fried",
+        "country fried steak",
+        "chicken fried steak",
+        "country fried chicken",
+        "chicken fried chicken"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "egg"
+      ],
+      "confidence": "medium",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "unbreaded"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Country-fried/chicken-fried preparations are normally breaded or battered and should infer wheat/gluten and egg cautiously."
+        }
+      ]
+    },
+    {
+      "id": "fried_fish_or_seafood_battered",
+      "label": "fried fish or seafood item",
+      "aliases": [
+        "fried fish",
+        "crispy fish",
+        "fried black bass",
+        "fried ling",
+        "fried croaker",
+        "fried catfish",
+        "fried cod",
+        "fried flounder",
+        "fried oyster",
+        "fried oysters",
+        "fried shrimp",
+        "crispy shrimp",
+        "fried calamari",
+        "crispy calamari",
+        "calamares fritos",
+        "calamares fritas",
+        "rabas fritas",
+        "rabas fritos"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "egg"
+      ],
+      "confidence": "low",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "cornmeal crusted",
+        "rice flour batter"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Explicit fried fish/seafood dishes often use flour/batter; shellfish/fish identity comes from direct ingredient aliases."
+        }
+      ]
+    },
+    {
+      "id": "fried_dough_or_fritter",
+      "label": "fried dough, fritter, or hush puppy",
+      "aliases": [
+        "beignet",
+        "beignets",
+        "hush puppy",
+        "hush puppies",
+        "fritter",
+        "fritters",
+        "fried dough",
+        "dough puff",
+        "dough puffs",
+        "aloo chop",
+        "aloo chops",
+        "jalapeño poppers",
+        "jalapeno poppers",
+        "poppers",
+        "pop start poppers",
+        "zucchini patties",
+        "zucchini patty"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "egg",
+        "milk"
+      ],
+      "confidence": "medium",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "vegan",
+        "rice flour"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Beignets, hush puppies, and fritters are commonly wheat-based fried dough/batter items and often include egg or milk."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Manual risky-tail review found aloo chop and zucchini patties; these fried patty/fritter-style items commonly use flour or egg binders, so infer cautious review-level signals."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Risky-uninferred portfolio queue found crispy jalapeno-style poppers with creamy filling; infer cautious fried/batter and dairy signals unless contradicted."
+        }
+      ]
+    },
+    {
+      "id": "batter_fried_explicit",
+      "label": "explicit batter-fried item",
+      "aliases": [
+        "batter fried",
+        "batter-fried",
+        "batter dipped",
+        "batter-dipped",
+        "crispy fried sliced",
+        "crispy fried chicken",
+        "fried chicken chunks",
+        "spicy chicken chunks",
+        "deep fried marinated chicken",
+        "spiced batter",
+        "with spiced batter",
+        "crispy coated",
+        "coated boneless chicken",
+        "lightly batter",
+        "lightly battered",
+        "lightly batter glazed",
+        "crispy coated boneless chicken",
+        "coated boneless chicken pieces"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "egg"
+      ],
+      "confidence": "low",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "rice flour batter",
+        "cornstarch batter"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Explicit batter-fried or crispy-fried chicken wording commonly indicates flour/batter and sometimes egg; keep low-confidence caution."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found explicit batter/coating descriptions; keep this as a narrow low-confidence batter rule instead of broad fried matching."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found lightly-batter and crispy-coated wording as explicit coating/batter evidence."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Risky-uninferred portfolio queue found spicy/fried chicken chunks described as fried to golden perfection; infer low-confidence batter wheat/egg caution."
+        }
+      ]
+    },
+    {
+      "id": "fried_vegetable_battered",
+      "label": "fried vegetable likely battered or breaded",
+      "aliases": [
+        "fried zucchini",
+        "crispy zucchini",
+        "fried cauliflower",
+        "crispy fried cauliflower",
+        "fried eggplant",
+        "crispy eggplant",
+        "fried artichokes",
+        "crispy artichokes",
+        "crispy baby artichokes",
+        "whole fried roman artichokes",
+        "carciofi fritti",
+        "cornmeal fried house pickles",
+        "cornmeal fried pickles"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "egg"
+      ],
+      "confidence": "low",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "vegan",
+        "rice flour",
+        "chickpea flour",
+        "cornmeal crusted"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-04",
+          "note": "Restaurant fried vegetable appetizers are commonly battered or breaded; infer only low-confidence wheat/egg caution and allow gluten-free/vegan suppressions."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Risky-uninferred review found narrow fried vegetable appetizer variants that commonly use batter/breading; keep low-confidence wheat/egg caution."
+        }
+      ]
+    },
+    {
+      "id": "schnitzel_breaded",
+      "label": "schnitzel or cutlet breading",
+      "aliases": [
+        "schnitzel",
+        "chicken schnitzel",
+        "veal schnitzel",
+        "pork schnitzel",
+        "breaded cutlet",
+        "chicken cutlet"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "egg"
+      ],
+      "confidence": "medium",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "unbreaded",
+        "grilled chicken cutlet"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Schnitzel and breaded cutlet dishes are normally breaded with flour/breadcrumb and egg; keep as review-only Ingredient Intelligence."
+        }
+      ]
+    },
+    {
+      "id": "flour_batter_breakfast_or_dessert",
+      "label": "flour batter breakfast or dessert item",
+      "aliases": [
+        "pancake",
+        "pancakes",
+        "waffle",
+        "waffles",
+        "crepe",
+        "crepes",
+        "crêpe",
+        "crêpes"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "egg",
+        "milk"
+      ],
+      "confidence": "medium",
+      "matchFields": [
+        "name"
+      ],
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "vegan",
+        "dosa",
+        "rice crepe",
+        "lentil crepe"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Pancakes, waffles, and French-style crepes commonly use wheat flour, egg, and milk; exclude dosa/rice-lentil crepe contexts."
+        }
+      ]
+    },
+    {
+      "id": "pbj_like",
+      "label": "peanut butter and jelly item",
+      "aliases": [
+        "pb&j",
+        "pb and j",
+        "peanut butter and jelly",
+        "pan fried pb & j",
+        "pan-fried pb&j"
+      ],
+      "ingredients": [
+        "peanut",
+        "bread"
+      ],
+      "confidence": "medium",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "peanut-free",
+        "peanut free",
+        "gluten-free",
+        "gluten free"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found PB&J items missing peanut and bread wheat/gluten caution."
+        }
+      ]
+    },
+    {
+      "id": "asian_stir_fry_sauce",
+      "label": "Asian stir-fry or savory sauce item",
+      "aliases": [
+        "brown sauce",
+        "spicy brown sauce",
+        "szechuan garlic sauce",
+        "chili garlic sauce"
+      ],
+      "ingredients": [
+        "soy_sauce"
+      ],
+      "confidence": "low",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "tamari",
+        "coconut aminos",
+        "soy-free",
+        "soy free"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found Chinese/Thai stir-fry sauce rows where soy/wheat caution is common but should remain low confidence."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Narrowed after regression test: generic stir-fry wording alone is too broad, so this rule now requires explicit sauce wording."
+        }
+      ]
+    },
+    {
+      "id": "chaat_or_indian_fried_snack",
+      "label": "chaat or Indian fried snack",
+      "aliases": [
+        "chaat",
+        "chat",
+        "palak chat",
+        "palak chaat",
+        "samosa chat",
+        "samosa chaat",
+        "bhajia",
+        "pakora",
+        "pakoras"
+      ],
+      "ingredients": [
+        "wheat_flour"
+      ],
+      "confidence": "low",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found chaat/bhajia/pakora-style fried snack rows needing cautious flour/batter inference."
+        }
+      ]
+    },
+    {
+      "id": "dosa_like",
+      "label": "dosa or South Indian crepe",
+      "aliases": [
+        "dosa",
+        "masala dosa",
+        "rava dosa",
+        "mysore dosa"
+      ],
+      "ingredients": [
+        "wheat_flour"
+      ],
+      "confidence": "low",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "rice lentil",
+        "rice and lentil",
+        "gluten-free",
+        "gluten free"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found dosa items; rava/restaurant batter can include wheat/semolina, but rice-lentil wording suppresses the rule."
+        }
+      ]
+    },
+    {
+      "id": "fried_cookie_or_oreo",
+      "label": "fried cookie or Oreo dessert",
+      "aliases": [
+        "fried oreo",
+        "fried oreos",
+        "oreo",
+        "oreos"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "egg",
+        "milk"
+      ],
+      "confidence": "medium",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "vegan"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found fried Oreo desserts missing wheat/gluten, egg, and milk caution."
+        }
+      ]
+    },
+    {
+      "id": "fried_pork_or_potato_battered",
+      "label": "fried pork or fried potato item",
+      "aliases": [
+        "fried pork chop",
+        "fried pork chops",
+        "fried potato",
+        "fried potatoes",
+        "crispy loaded baked potato"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "egg"
+      ],
+      "confidence": "low",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "marked gluten-free",
+        "marked gluten free"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Risky-uninferred review found fried pork/potato rows where breading/batter caution is useful but lower confidence."
+        }
+      ]
+    },
+    {
+      "id": "korean_fried_chicken_shape",
+      "label": "Korean fried chicken section item",
+      "aliases": [
+        "korean fried chicken",
+        "korean-style fried chicken",
+        "double fried chicken",
+        "double-fried chicken",
+        "double fried with your choice of sauce"
+      ],
+      "categoryAliases": [
+        "korean fried chicken"
+      ],
+      "ingredients": [
+        "wheat_flour",
+        "soy_sauce"
+      ],
+      "confidence": "medium",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "allowCategoryOnly": true,
+      "excludeAliases": [
+        "gluten-free",
+        "gluten free",
+        "unbreaded",
+        "grilled"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Portfolio review found Bonchon-style Korean fried chicken section rows with generic names like Boneless. Standard Korean fried chicken is commonly battered/starch-coated and soy-sauced, so infer review-level wheat/gluten/soy caution from title/description/category unless contradicted."
+        },
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Manual review of Bonchon generic Strips rows found “Double fried with your choice of sauce”; route this exact Korean-fried-chicken style wording to wheat/gluten/soy caution without broadening all double-fried meats."
+        }
+      ]
+    },
+    {
+      "id": "exact_fish_category",
+      "label": "exact fish category item",
+      "aliases": [],
+      "categoryAliases": [
+        "whole fish",
+        "fish appetizer"
+      ],
+      "ingredients": [
+        "fish"
+      ],
+      "confidence": "medium",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "allowCategoryOnly": true,
+      "excludeAliases": [
+        "vegetarian",
+        "vegan"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-05",
+          "note": "Exact categories like Whole Fish and Fish Appetizer are sufficiently specific to infer fish caution even when the item name is preparation-only."
+        }
+      ]
+    },
+    {
+      "id": "crispy_noodle_like",
+      "label": "crispy or fried noodle topping",
+      "aliases": [
+        "crispy noodles",
+        "crispy noodle",
+        "fried noodles",
+        "fried noodle"
+      ],
+      "ingredients": [
+        "udon_ramen_noodle"
+      ],
+      "confidence": "medium",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "crispy rice noodles",
+        "crispy rice noodle",
+        "fried rice noodles",
+        "fried rice noodle",
+        "glass noodles",
+        "glass noodle",
+        "sweet potato noodles",
+        "sweet potato noodle"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Portfolio review found crispy noodle descriptions suppressed by nearby “rice, noodles” text; explicit crispy/fried noodle wording should infer wheat/gluten unless the noodle itself is rice/glass/sweet-potato."
+        }
+      ]
+    },
+    {
+      "id": "explicit_eggroll_core",
+      "label": "explicit eggroll filling or core",
+      "aliases": [
+        "eggroll",
+        "eggrolls",
+        "crispy eggroll",
+        "crispy eggrolls",
+        "savory eggroll",
+        "savory eggrolls"
+      ],
+      "ingredients": [
+        "wheat_wrapper"
+      ],
+      "confidence": "medium",
+      "matchFields": [
+        "name",
+        "description"
+      ],
+      "excludeAliases": [
+        "gluten-free eggroll",
+        "gluten free eggroll",
+        "gluten-free egg roll",
+        "gluten free egg roll"
+      ],
+      "provenance": [
+        {
+          "source": "codex-reviewed",
+          "reviewedAt": "2026-07-06",
+          "note": "Portfolio review found eggroll cores wrapped inside rice paper; explicit eggroll/eggrolls wording should still infer wheat-wrapper caution even when rice-paper wording appears elsewhere in the item."
+        }
+      ]
+    }
+  ]
+}

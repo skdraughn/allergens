@@ -17,6 +17,8 @@ const schema = a.schema({
       country: a.string(),
       name: a.string().required(),
       displayAddress: a.string(),
+      googleMapsUri: a.string(),
+      googlePlaceId: a.string(),
       lat: a.float(),
       lng: a.float(),
       website: a.string(),
@@ -27,6 +29,9 @@ const schema = a.schema({
       status: a.string(),
       createdBy: a.string(),
     })
+    .secondaryIndexes((index) => [
+      index("createdBy").queryField("restaurantRequestsByCreatedBy"),
+    ])
     .authorization((allow) => [
       allow.publicApiKey().to(["create"]),
       allow.owner().to(["create", "read"]),
@@ -46,6 +51,10 @@ const schema = a.schema({
       reviewNotes: a.string(),
       createdBy: a.string(),
     })
+    .secondaryIndexes((index) => [
+      index("createdBy").queryField("communityMenuItemsByCreatedBy"),
+      index("restaurantId").queryField("communityMenuItemsByRestaurantId"),
+    ])
     .authorization((allow) => [
       allow.owner().to(["create", "read"]),
       allow.authenticated().to(["read"]),
@@ -61,6 +70,10 @@ const schema = a.schema({
       status: a.string(),
       createdBy: a.string(),
     })
+    .secondaryIndexes((index) => [
+      index("createdBy").queryField("menuItemReportsByCreatedBy"),
+      index("restaurantId").queryField("menuItemReportsByRestaurantId"),
+    ])
     .authorization((allow) => [
       allow.owner().to(["create", "read"]),
       allow.authenticated().to(["read"]),
@@ -75,10 +88,46 @@ const schema = a.schema({
       status: a.string(),
       createdBy: a.string(),
     })
+    .secondaryIndexes((index) => [
+      index("createdBy").queryField("communityCommentsByCreatedBy"),
+      index("restaurantId").queryField("communityCommentsByRestaurantId"),
+    ])
     .authorization((allow) => [
       allow.owner().to(["create", "read"]),
       allow.authenticated().to(["read"]),
       allow.group("Admins").to(["read", "update", "delete"]),
+    ]),
+  CommunityAllergyReview: a
+    .model({
+      restaurantId: a.string().required(),
+      menuItemId: a.string(),
+      menuItemName: a.string(),
+      rating: a.integer().required(),
+      body: a.string().required(),
+      allergyContext: a.string(),
+      status: a.string(),
+      createdBy: a.string(),
+    })
+    .secondaryIndexes((index) => [
+      index("createdBy").queryField("communityAllergyReviewsByCreatedBy"),
+      index("restaurantId").queryField("communityAllergyReviewsByRestaurantId"),
+    ])
+    .authorization((allow) => [
+      allow.owner().to(["create", "read"]),
+      allow.authenticated().to(["read"]),
+      allow.group("Admins").to(["read", "update", "delete"]),
+    ]),
+  RestaurantAllergyRatingSummary: a
+    .model({
+      restaurantId: a.string().required(),
+      averageRating: a.float(),
+      reviewCount: a.integer().required(),
+      ratingTotal: a.integer().required(),
+    })
+    .identifier(["restaurantId"])
+    .authorization((allow) => [
+      allow.authenticated().to(["read"]),
+      allow.group("Admins").to(["read", "create", "update", "delete"]),
     ]),
 });
 

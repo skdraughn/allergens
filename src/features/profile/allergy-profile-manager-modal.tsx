@@ -33,12 +33,15 @@ export function AllergyProfileManagerModal({
     profiles,
     renameProfile,
     selectedAllergyIds,
+    selectedProfileIds,
     switchProfile,
     toggleAllergy,
+    toggleProfileSelection,
   } = useAllergyProfile();
   const activeProfile = profiles.find((profile) => profile.id === activeProfileId) ?? profiles[0];
   const nameInputRef = useRef<TextInput>(null);
   const [draftName, setDraftName] = useState(activeProfile?.name ?? "");
+  const [draftProfileId, setDraftProfileId] = useState(activeProfile?.id ?? null);
   const [suggestedProfileId, setSuggestedProfileId] = useState<string | null>(null);
 
   const showingSuggestedName = Boolean(
@@ -47,6 +50,7 @@ export function AllergyProfileManagerModal({
 
   useEffect(() => {
     setDraftName(showingSuggestedName ? "" : activeProfile?.name ?? "");
+    setDraftProfileId(activeProfile?.id ?? null);
   }, [activeProfile?.id, activeProfile?.name, showingSuggestedName]);
 
   useEffect(() => {
@@ -57,7 +61,10 @@ export function AllergyProfileManagerModal({
 
   const trimmedDraftName = draftName.trim();
   const hasNameChange = Boolean(
-    activeProfile && trimmedDraftName && trimmedDraftName !== activeProfile.name,
+    activeProfile &&
+      draftProfileId === activeProfile.id &&
+      trimmedDraftName &&
+      trimmedDraftName !== activeProfile.name,
   );
 
   const saveName = () => {
@@ -79,6 +86,7 @@ export function AllergyProfileManagerModal({
     const createdProfile = await createProfile();
     setSuggestedProfileId(createdProfile.id);
     setDraftName("");
+    setDraftProfileId(createdProfile.id);
   };
 
   const handleSwitchProfile = (id: string) => {
@@ -115,12 +123,17 @@ export function AllergyProfileManagerModal({
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
           >
-            <Text style={styles.title}>Allergy Profile</Text>
-            <Text style={styles.subtitle}>Switch profiles or update the foods you avoid.</Text>
+            <Text style={styles.title}>Allergy Profiles</Text>
+            <Text style={styles.subtitle}>Manage and switch between your allergy profiles.</Text>
 
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <Text style={styles.sectionTitle}>Profiles</Text>
+                <View style={styles.sectionHeaderCopy}>
+                  <Text style={styles.sectionTitle}>Check menus for</Text>
+                  <Text style={styles.sectionCount}>
+                    {selectedProfileIds.length} selected
+                  </Text>
+                </View>
                 <Pressable
                   accessibilityRole="button"
                   onPress={() => void handleCreateProfile()}
@@ -134,6 +147,7 @@ export function AllergyProfileManagerModal({
               <View style={styles.profileList}>
                 {profiles.map((profile, index) => {
                   const active = profile.id === activeProfileId;
+                  const selected = selectedProfileIds.includes(profile.id);
                   const canDelete = profiles.length > 1;
 
                   return (
@@ -145,14 +159,24 @@ export function AllergyProfileManagerModal({
                       ]}
                     >
                       <Pressable
-                        accessibilityRole="button"
-                        accessibilityState={{ selected: active }}
-                        onPress={() => handleSwitchProfile(profile.id)}
+                        accessibilityRole="checkbox"
+                        accessibilityState={{ checked: selected }}
+                        onPress={() => void toggleProfileSelection(profile.id)}
                         style={({ pressed }) => [
                           styles.profileSelect,
                           pressed ? styles.pressed : null,
                         ]}
                       >
+                        <View
+                          style={[
+                            styles.selectionBadge,
+                            selected ? styles.selectionBadgeSelected : null,
+                          ]}
+                        >
+                          {selected ? (
+                            <Check color={colors.white} size={15} strokeWidth={3.2} />
+                          ) : null}
+                        </View>
                         <View style={styles.profileText}>
                           <Text style={styles.profileName}>{profile.name}</Text>
                           <AllergyIconChips
@@ -163,11 +187,23 @@ export function AllergyProfileManagerModal({
                             style={styles.profileIconChips}
                           />
                         </View>
-                        {active ? (
-                          <View style={styles.checkBadge}>
-                            <Check color={colors.primary} size={18} strokeWidth={3} />
-                          </View>
-                        ) : null}
+                      </Pressable>
+                      <Pressable
+                        accessibilityLabel={`Edit ${profile.name}`}
+                        accessibilityRole="button"
+                        accessibilityState={{ selected: active }}
+                        onPress={() => handleSwitchProfile(profile.id)}
+                        style={({ pressed }) => [
+                          styles.editButton,
+                          active ? styles.editButtonActive : null,
+                          pressed ? styles.pressed : null,
+                        ]}
+                      >
+                        <Edit3
+                          color={active ? colors.primary : colors.muted}
+                          size={17}
+                          strokeWidth={2.5}
+                        />
                       </Pressable>
                       {canDelete ? (
                         <Pressable
@@ -189,7 +225,10 @@ export function AllergyProfileManagerModal({
             </View>
 
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Profile Name</Text>
+              <Text style={styles.sectionTitle}>Editing {activeProfile?.name}</Text>
+              <Text style={styles.sectionCopy}>
+                Changes here apply only to this profile.
+              </Text>
               <View style={styles.nameEditor}>
                 <Edit3 color={colors.muted} size={17} strokeWidth={2.3} />
                 <TextInput
@@ -219,9 +258,10 @@ export function AllergyProfileManagerModal({
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>Foods Avoided</Text>
               <Text style={styles.sectionCopy}>
-                These selections update the active profile used to check restaurant menus.
+                Choose the foods {activeProfile?.name ?? "this profile"} needs flagged.
               </Text>
               <AllergyProfilePicker
+                animateModules={false}
                 embedded
                 onToggleAllergy={toggleAllergy}
                 selectedAllergyIds={selectedAllergyIds}
@@ -248,6 +288,38 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontSize: 13,
     fontWeight: "800",
+  },
+  editButton: {
+    alignItems: "center",
+    borderRadius: 16,
+    height: 36,
+    justifyContent: "center",
+    width: 36,
+  },
+  editButtonActive: {
+    backgroundColor: colors.primaryLight,
+  },
+  selectionBadge: {
+    alignItems: "center",
+    borderColor: "rgba(60,60,67,0.25)",
+    borderRadius: 13,
+    borderWidth: 1.5,
+    height: 26,
+    justifyContent: "center",
+    width: 26,
+  },
+  selectionBadgeSelected: {
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
+  },
+  sectionCount: {
+    color: colors.primary,
+    fontSize: 12,
+    fontWeight: "800",
+    lineHeight: 16,
+  },
+  sectionHeaderCopy: {
+    gap: 2,
   },
   checkBadge: {
     alignItems: "center",

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import { SereneLoader } from "@/components/serene-loader";
 import { colors, spacing } from "@/constants/theme";
 
 type AuthActionButtonProps = {
@@ -36,7 +37,7 @@ export function AuthActionButton({
       <View style={styles.leading}>{leading}</View>
       {loading ? (
         <View style={styles.trailing}>
-          <ActivityIndicator color={primarySoft ? colors.primary : colors.ink} />
+          <SereneLoader color={primarySoft ? colors.primary : colors.ink} size="small" />
         </View>
       ) : null}
       <Text style={[styles.label, primarySoft && styles.labelPrimary]}>{label}</Text>

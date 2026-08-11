@@ -97,10 +97,14 @@ export function validatePocResearchResult({ job, result, itemChecks }) {
   }
 
   const products = normalizeCurrentProducts(result.currentProducts);
+  const explicitlyEmptyPreOpeningCatalog = products.length === 0 &&
+    result.emptyCatalogReason === "not_yet_published";
   const productKeys = products.map((product) => product.currentProductKey).filter(Boolean);
   const definedProductKeys = new Set(productKeys);
   const duplicateProductKeys = duplicates(productKeys);
-  if (products.length === 0 && job.baselineItemCount > 0) errors.push("No current products were defined.");
+  if (products.length === 0 && job.baselineItemCount > 0 && !explicitlyEmptyPreOpeningCatalog) {
+    errors.push("No current products were defined.");
+  }
   if (products.some((product) => !product.currentProductKey || !product.name)) {
     errors.push("Every current product must define currentProductKey and name.");
   }
@@ -206,6 +210,9 @@ export function validatePocResearchResult({ job, result, itemChecks }) {
     unmatchedDispositions.has(entry.disposition) && entry.matchedCurrentProductKeys.length > 0);
   if (mappedNonmatches.length) {
     errors.push(`${mappedNonmatches.length} stale/artifact rows incorrectly reference current products.`);
+  }
+  if (explicitlyEmptyPreOpeningCatalog && reconciliation.some((entry) => !unmatchedDispositions.has(entry.disposition))) {
+    errors.push("A not-yet-published empty catalog may only reconcile frozen rows as stale, artifact, or location mismatch.");
   }
   const contradictoryNonmatches = reconciliation.filter((entry) => {
     if (!unmatchedDispositions.has(entry.disposition)) return false;

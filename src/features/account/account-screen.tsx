@@ -3,11 +3,13 @@ import {
   Bell,
   ChevronRight,
   ClipboardList,
+  Clock3,
   FileText,
+  HeartPulse,
   KeyRound,
   LifeBuoy,
   LogOut,
-  ShieldCheck,
+  MessageSquareWarning,
   Trash2,
   UserRound,
   X,
@@ -15,9 +17,9 @@ import {
 import type { ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 import {
-  ActivityIndicator,
-  KeyboardAvoidingView,
+  Image,
   Linking,
+  Modal,
   Platform,
   Pressable,
   ScrollView,
@@ -26,13 +28,21 @@ import {
   TextInput,
   View,
 } from "react-native";
+import Animated, {
+  Easing as ReanimatedEasing,
+  Extrapolation,
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 import { getCurrentUser, signIn, signOut, signUp, type AuthUser } from "aws-amplify/auth";
 
 import { AllergyIconChips } from "@/components/allergy-icon-chips";
 import { AuthActionButton, AuthActionIconBadge } from "@/components/auth-action-button";
 import { AuthProviderLogo } from "@/components/auth-provider-logo";
 import { ModalScreen } from "@/components/modal-screen";
-import { SetupHeroMark } from "@/components/setup-hero-mark";
+import { SereneLoader } from "@/components/serene-loader";
 import { useSnackbar } from "@/components/snackbar-provider";
 import { colors, spacing } from "@/constants/theme";
 import {
@@ -42,13 +52,26 @@ import {
   signInWithGoogleNative,
   signOutFromNativeSocialProviders,
 } from "@/features/account/native-social-auth";
+import {
+  fetchMyAllergyReviews,
+  fetchMyMenuItemReports,
+  fetchMyRestaurantRequests,
+  type CommunityStatus,
+  type MenuItemReportSummary,
+  type MyAllergyReviewSummary,
+  type RestaurantRequestSummary,
+} from "@/features/community/community-service";
 import { AllergyProfileManagerModal } from "@/features/profile/allergy-profile-manager-modal";
 import { useAllergyProfile } from "@/features/profile/allergy-profile-context";
+import { useRestaurantData } from "@/features/restaurants/restaurant-data-context";
 import { isAmplifyConfigured } from "@/lib/amplify";
+import type { Restaurant } from "@/data/restaurants";
 
 type AuthMode = "options" | "password";
 type PasswordIntent = "sign-in" | "create";
 type LoadingProvider = "apple" | "google" | "password" | "sign-out" | null;
+
+const safePlateIcon = require("../../../assets/icon.png");
 
 type CreateAccountContentProps = {
   authMode: AuthMode;
@@ -62,8 +85,10 @@ type CreateAccountContentProps = {
   onChangePassword: (value: string) => void;
   onGoogle: () => void;
   onPassword: () => void;
+  onPasswordInputFocus?: () => void;
   onPasswordSubmit: () => void;
   onTogglePasswordIntent: () => void;
+  isPasswordFieldFocused?: boolean;
 };
 
 export function AccountScreen() {
@@ -71,10 +96,10 @@ export function AccountScreen() {
   const { showSnackbar } = useSnackbar();
   const { returnTo } = useLocalSearchParams<{ returnTo?: string }>();
   const {
-    activeProfileId,
     onboardingComplete,
     profiles,
     selectedAllergyIds,
+    selectedProfileIds,
     syncProfilesFromCloud,
   } = useAllergyProfile();
   const [authMode, setAuthMode] = useState<AuthMode>("options");
@@ -83,6 +108,7 @@ export function AccountScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loadingProvider, setLoadingProvider] = useState<LoadingProvider>(null);
+  const [isPasswordFieldFocused, setIsPasswordFieldFocused] = useState(false);
   const closeAccount = () => {
     if (returnTo === "home") {
       router.replace("/home");
@@ -230,47 +256,50 @@ export function AccountScreen() {
 
   return (
     <ModalScreen actionIcon={X} actionLabel="Close account" onActionPress={closeAccount}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        style={styles.keyboardAvoiding}
+      <ScrollView
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
       >
-        <ScrollView
-          contentContainerStyle={styles.content}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-        >
-          {currentUser ? (
-            <SignedInAccount
-              accountLabel={accountLabel}
-              activeProfileId={activeProfileId}
-              profiles={profiles}
-              selectedAllergyIds={selectedAllergyIds}
-              isSigningOut={loadingProvider === "sign-out"}
-              onSignOut={handleSignOut}
-            />
-          ) : currentUser === undefined ? (
-            <AccountLoadingContent />
-          ) : (
-            <CreateAccountContent
-              authMode={authMode}
-              username={username}
-              loadingProvider={loadingProvider}
-              onApple={() => handleSocial("apple")}
-              onBackToOptions={() => setAuthMode("options")}
-              onChangeUsername={setUsername}
-              onChangePassword={setPassword}
-              onGoogle={() => handleSocial("google")}
-              onPassword={() => setAuthMode("password")}
-              onPasswordSubmit={handlePasswordAuth}
-              onTogglePasswordIntent={() =>
-                setPasswordIntent((current) => (current === "sign-in" ? "create" : "sign-in"))
-              }
-              password={password}
-              passwordIntent={passwordIntent}
-            />
-          )}
-        </ScrollView>
-      </KeyboardAvoidingView>
+        {currentUser ? (
+          <SignedInAccount
+            accountLabel={accountLabel}
+            profiles={profiles}
+            selectedAllergyIds={selectedAllergyIds}
+            selectedProfileIds={selectedProfileIds}
+            isSigningOut={loadingProvider === "sign-out"}
+            onSignOut={handleSignOut}
+          />
+        ) : currentUser === undefined ? (
+          <AccountLoadingContent />
+        ) : (
+          <CreateAccountContent
+            authMode={authMode}
+            isPasswordFieldFocused={isPasswordFieldFocused}
+            username={username}
+            loadingProvider={loadingProvider}
+            onApple={() => handleSocial("apple")}
+            onBackToOptions={() => {
+              setAuthMode("options");
+              setIsPasswordFieldFocused(false);
+            }}
+            onChangeUsername={setUsername}
+            onChangePassword={setPassword}
+            onGoogle={() => handleSocial("google")}
+            onPassword={() => {
+              setAuthMode("password");
+              setIsPasswordFieldFocused(false);
+            }}
+            onPasswordInputFocus={() => setIsPasswordFieldFocused(true)}
+            onPasswordSubmit={handlePasswordAuth}
+            onTogglePasswordIntent={() =>
+              setPasswordIntent((current) => (current === "sign-in" ? "create" : "sign-in"))
+            }
+            password={password}
+            passwordIntent={passwordIntent}
+          />
+        )}
+      </ScrollView>
     </ModalScreen>
   );
 }
@@ -278,7 +307,7 @@ export function AccountScreen() {
 function AccountLoadingContent() {
   return (
     <View style={styles.loadingAccount}>
-      <ActivityIndicator color={colors.primary} />
+      <SereneLoader />
       <Text style={styles.loadingAccountText}>Loading account...</Text>
     </View>
   );
@@ -294,16 +323,24 @@ export function CreateAccountContent({
   onChangePassword,
   onGoogle,
   onPassword,
+  onPasswordInputFocus,
   onPasswordSubmit,
   onTogglePasswordIntent,
   password,
   passwordIntent,
+  isPasswordFieldFocused = false,
 }: CreateAccountContentProps) {
+  const isSigningIn = passwordIntent === "sign-in";
+
   return (
     <>
-      <AccountMark />
-      <Text style={styles.title}>Create Account</Text>
-      <Text style={styles.subtitle}>Save your allergy profile and manage community submissions.</Text>
+      <AccountMark isCollapsed={authMode === "password" && isPasswordFieldFocused} />
+      <Text style={styles.title}>{isSigningIn ? "Sign In" : "Create Account"}</Text>
+      <Text style={styles.subtitle}>
+        {isSigningIn
+          ? "Access your saved allergy profiles and restaurant activity."
+          : "Save your allergy profile and manage restaurant requests."}
+      </Text>
 
       {authMode === "options" ? (
         <AuthOptions
@@ -322,6 +359,7 @@ export function CreateAccountContent({
           onBack={onBackToOptions}
           onChangeUsername={onChangeUsername}
           onChangePassword={onChangePassword}
+          onInputFocus={onPasswordInputFocus}
           onSubmit={onPasswordSubmit}
           onToggleIntent={onTogglePasswordIntent}
           password={password}
@@ -411,6 +449,7 @@ function PasswordPanel({
   onBack,
   onChangeUsername,
   onChangePassword,
+  onInputFocus,
   onSubmit,
   onToggleIntent,
   password,
@@ -421,6 +460,7 @@ function PasswordPanel({
   onBack: () => void;
   onChangeUsername: (value: string) => void;
   onChangePassword: (value: string) => void;
+  onInputFocus?: () => void;
   onSubmit: () => void;
   onToggleIntent: () => void;
   password: string;
@@ -431,12 +471,14 @@ function PasswordPanel({
     <View style={styles.passwordFlow}>
       <Field
         autoCapitalize="none"
+        onFocus={onInputFocus}
         onChangeText={onChangeUsername}
         placeholder="Username"
         value={username}
       />
       <Field
         autoCapitalize="none"
+        onFocus={onInputFocus}
         onChangeText={onChangePassword}
         placeholder="Password"
         secureTextEntry
@@ -456,7 +498,7 @@ function PasswordPanel({
       <View style={styles.inlineLinks}>
         <Pressable accessibilityRole="button" onPress={onToggleIntent} style={styles.linkButton}>
           <Text style={styles.linkText}>
-            {isCreate ? "Already have an account?" : "Need an account?"}
+            {isCreate ? "Already have an account? Sign in" : "Need an account? Create one"}
           </Text>
         </Pressable>
         <Pressable accessibilityRole="button" onPress={onBack} style={styles.linkButton}>
@@ -481,6 +523,7 @@ function Field({
   autoCapitalize?: "none" | "sentences" | "words" | "characters";
   keyboardType?: "default" | "number-pad";
   onChangeText: (value: string) => void;
+  onFocus?: () => void;
   placeholder: string;
   secureTextEntry?: boolean;
   value: string;
@@ -493,18 +536,18 @@ function Field({
 }
 
 function SignedInAccount({
-  activeProfileId,
   accountLabel,
   isSigningOut,
   onSignOut,
   profiles,
   selectedAllergyIds,
+  selectedProfileIds,
 }: {
-  activeProfileId: string;
   accountLabel: string;
   isSigningOut: boolean;
   onSignOut: () => void;
   selectedAllergyIds: string[];
+  selectedProfileIds: string[];
   profiles: ReturnType<typeof useAllergyProfile>["profiles"];
 }) {
   const openUrl = (url: string) => {
@@ -515,7 +558,13 @@ function SignedInAccount({
     void Linking.openURL("mailto:truflag@dnatechgroup.com?subject=Allergy%20App%20Support");
   };
   const [profileManagerOpen, setProfileManagerOpen] = useState(false);
-  const activeProfile = profiles.find((profile) => profile.id === activeProfileId) ?? profiles[0];
+  const [requestsOpen, setRequestsOpen] = useState(false);
+  const [reportsOpen, setReportsOpen] = useState(false);
+  const [reviewsOpen, setReviewsOpen] = useState(false);
+  const selectedProfiles = profiles.filter((profile) =>
+    selectedProfileIds.includes(profile.id),
+  );
+  const selectedProfileNames = selectedProfiles.map((profile) => profile.name).join(" + ");
 
   return (
     <View style={styles.signedInContent}>
@@ -527,6 +576,9 @@ function SignedInAccount({
         onClose={() => setProfileManagerOpen(false)}
         visible={profileManagerOpen}
       />
+      <MyRequestsModal onClose={() => setRequestsOpen(false)} visible={requestsOpen} />
+      <MyReportsModal onClose={() => setReportsOpen(false)} visible={reportsOpen} />
+      <MyReviewsModal onClose={() => setReviewsOpen(false)} visible={reviewsOpen} />
 
       <View style={styles.settingsGroup}>
         <SettingsRow
@@ -536,8 +588,8 @@ function SignedInAccount({
           subcontent={
             <View style={styles.profileSummary}>
               <Text style={[styles.settingsSublabel, styles.profileSummaryText]}>
-                {activeProfile?.name ?? "My Profile"} · {profiles.length} profile
-                {profiles.length === 1 ? "" : "s"}
+                {selectedProfileNames || "My Profile"} · {selectedProfiles.length} profile
+                {selectedProfiles.length === 1 ? "" : "s"}
               </Text>
               <AllergyIconChips
                 allergyIds={selectedAllergyIds}
@@ -549,6 +601,24 @@ function SignedInAccount({
               />
             </View>
           }
+        />
+        <SettingsRow
+          Icon={ClipboardList}
+          label="My Requests"
+          onPress={() => setRequestsOpen(true)}
+          sublabel="Restaurants you've requested"
+        />
+        <SettingsRow
+          Icon={MessageSquareWarning}
+          label="My Reports"
+          onPress={() => setReportsOpen(true)}
+          sublabel="Menu item issues you've sent"
+        />
+        <SettingsRow
+          Icon={HeartPulse}
+          label="My Reviews"
+          onPress={() => setReviewsOpen(true)}
+          sublabel="Allergy reviews you've left"
         />
         <SettingsRow
           Icon={Bell}
@@ -599,6 +669,336 @@ function SignedInAccount({
   );
 }
 
+function MyRequestsModal({
+  onClose,
+  visible,
+}: {
+  onClose: () => void;
+  visible: boolean;
+}) {
+  const [requests, setRequests] = useState<RestaurantRequestSummary[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!visible) {
+      return;
+    }
+
+    let active = true;
+
+    setLoading(true);
+    fetchMyRestaurantRequests()
+      .then((nextRequests) => {
+        if (active) {
+          setRequests(nextRequests);
+        }
+      })
+      .finally(() => {
+        if (active) {
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [visible]);
+
+  return (
+    <Modal animationType="slide" onRequestClose={onClose} presentationStyle="pageSheet" visible={visible}>
+      <ModalScreen actionIcon={X} actionLabel="Close requests" onActionPress={onClose}>
+        <ScrollView contentContainerStyle={styles.requestsModalContent} showsVerticalScrollIndicator={false}>
+          <Text style={styles.title}>My Requests</Text>
+          <Text style={styles.subtitle}>Restaurants you’ve asked us to review.</Text>
+
+          <View style={styles.requestsGroup}>
+            {loading ? (
+              <View style={styles.requestsEmpty}>
+                <SereneLoader size="small" />
+                <Text style={styles.requestsEmptyText}>Loading requests...</Text>
+              </View>
+            ) : requests.length ? (
+              <View style={styles.requestsList}>
+                {requests.map((request) => (
+                  <View key={request.id} style={styles.requestRow}>
+                    <View style={styles.requestTextWrap}>
+                      <Text numberOfLines={1} style={styles.requestName}>
+                        {request.name}
+                      </Text>
+                      <Text numberOfLines={1} style={styles.requestMeta}>
+                        {request.locationHint ||
+                          firstLine(request.displayAddress) ||
+                          request.website ||
+                          "No location added"}
+                      </Text>
+                    </View>
+                    <RequestStatusBadge status={request.status} />
+                  </View>
+                ))}
+              </View>
+            ) : (
+              <View style={styles.requestsEmpty}>
+                <Clock3 color={colors.muted} size={18} strokeWidth={2.35} />
+                <Text style={styles.requestsEmptyText}>No restaurant requests yet.</Text>
+              </View>
+            )}
+          </View>
+        </ScrollView>
+      </ModalScreen>
+    </Modal>
+  );
+}
+
+function MyReportsModal({
+  onClose,
+  visible,
+}: {
+  onClose: () => void;
+  visible: boolean;
+}) {
+  const [reports, setReports] = useState<MenuItemReportSummary[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { restaurants } = useRestaurantData();
+  const restaurantById = useMemo(() => createRestaurantLookup(restaurants), [restaurants]);
+
+  useEffect(() => {
+    if (!visible) {
+      return;
+    }
+
+    let active = true;
+
+    setLoading(true);
+    fetchMyMenuItemReports()
+      .then((nextReports) => {
+        if (active) {
+          setReports(nextReports);
+        }
+      })
+      .finally(() => {
+        if (active) {
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [visible]);
+
+  return (
+    <Modal animationType="slide" onRequestClose={onClose} presentationStyle="pageSheet" visible={visible}>
+      <ModalScreen actionIcon={X} actionLabel="Close reports" onActionPress={onClose}>
+        <ScrollView contentContainerStyle={styles.requestsModalContent} showsVerticalScrollIndicator={false}>
+          <Text style={styles.title}>My Reports</Text>
+          <Text style={styles.subtitle}>Menu item issues you’ve sent to our team.</Text>
+
+          <View style={styles.requestsGroup}>
+            {loading ? (
+              <View style={styles.requestsEmpty}>
+                <SereneLoader size="small" />
+                <Text style={styles.requestsEmptyText}>Loading reports...</Text>
+              </View>
+            ) : reports.length ? (
+              <View style={styles.requestsList}>
+                {reports.map((report) => {
+                  const restaurant = restaurantById.get(report.restaurantId);
+                  const itemName = getReportMenuItemName(report, restaurant);
+
+                  return (
+                    <View key={report.id} style={styles.requestRow}>
+                      <View style={styles.requestTextWrap}>
+                        <Text numberOfLines={1} style={styles.requestName}>
+                          {itemName}
+                        </Text>
+                        <Text numberOfLines={1} style={styles.requestMeta}>
+                          {[formatReportReason(report.reason), getRestaurantDisplayName(report.restaurantId, restaurant)]
+                            .filter(Boolean)
+                            .join(" · ")}
+                        </Text>
+                      {report.comment ? (
+                        <Text numberOfLines={2} style={styles.requestDetail}>
+                          {report.comment}
+                        </Text>
+                      ) : null}
+                      </View>
+                      <RequestStatusBadge status={report.status} />
+                    </View>
+                  );
+                })}
+              </View>
+            ) : (
+              <View style={styles.requestsEmpty}>
+                <MessageSquareWarning color={colors.muted} size={18} strokeWidth={2.35} />
+                <Text style={styles.requestsEmptyText}>No reports yet.</Text>
+              </View>
+            )}
+          </View>
+        </ScrollView>
+      </ModalScreen>
+    </Modal>
+  );
+}
+
+function MyReviewsModal({
+  onClose,
+  visible,
+}: {
+  onClose: () => void;
+  visible: boolean;
+}) {
+  const [reviews, setReviews] = useState<MyAllergyReviewSummary[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { restaurants } = useRestaurantData();
+  const restaurantById = useMemo(() => createRestaurantLookup(restaurants), [restaurants]);
+
+  useEffect(() => {
+    if (!visible) {
+      return;
+    }
+
+    let active = true;
+
+    setLoading(true);
+    fetchMyAllergyReviews()
+      .then((nextReviews) => {
+        if (active) {
+          setReviews(nextReviews);
+        }
+      })
+      .finally(() => {
+        if (active) {
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [visible]);
+
+  return (
+    <Modal animationType="slide" onRequestClose={onClose} presentationStyle="pageSheet" visible={visible}>
+      <ModalScreen actionIcon={X} actionLabel="Close reviews" onActionPress={onClose}>
+        <ScrollView contentContainerStyle={styles.requestsModalContent} showsVerticalScrollIndicator={false}>
+          <Text style={styles.title}>My Reviews</Text>
+          <Text style={styles.subtitle}>Allergy ratings and notes you’ve left.</Text>
+
+          <View style={styles.requestsGroup}>
+            {loading ? (
+              <View style={styles.requestsEmpty}>
+                <SereneLoader size="small" />
+                <Text style={styles.requestsEmptyText}>Loading reviews...</Text>
+              </View>
+            ) : reviews.length ? (
+              <View style={styles.requestsList}>
+                {reviews.map((review) => (
+                  <View key={review.id} style={styles.requestRow}>
+                    <View style={styles.requestTextWrap}>
+                      <View style={styles.reviewRowHeader}>
+                        <Text style={styles.reviewRatingText}>{review.rating}/5</Text>
+                        <HeartPulse color={colors.coral} size={15} strokeWidth={2.45} />
+                      </View>
+                      <Text numberOfLines={1} style={styles.requestName}>
+                        {review.menuItemName || "Restaurant allergy review"}
+                      </Text>
+                      <Text numberOfLines={1} style={styles.requestMeta}>
+                        {getRestaurantDisplayName(review.restaurantId, restaurantById.get(review.restaurantId))}
+                      </Text>
+                      {review.body ? (
+                        <Text numberOfLines={2} style={styles.requestDetail}>
+                          {review.body}
+                        </Text>
+                      ) : null}
+                    </View>
+                    <RequestStatusBadge status={review.communityStatus} />
+                  </View>
+                ))}
+              </View>
+            ) : (
+              <View style={styles.requestsEmpty}>
+                <HeartPulse color={colors.muted} size={18} strokeWidth={2.35} />
+                <Text style={styles.requestsEmptyText}>No allergy reviews yet.</Text>
+              </View>
+            )}
+          </View>
+        </ScrollView>
+      </ModalScreen>
+    </Modal>
+  );
+}
+
+function RequestStatusBadge({ status }: { status: CommunityStatus }) {
+  const isApproved = status === "approved";
+  const isRejected = status === "rejected";
+  const label = isApproved ? "Approved" : isRejected ? "Rejected" : "Pending";
+
+  return (
+    <View
+      style={[
+        styles.requestStatusBadge,
+        isApproved ? styles.requestStatusApproved : null,
+        isRejected ? styles.requestStatusRejected : null,
+      ]}
+    >
+      <Text
+        style={[
+          styles.requestStatusText,
+          isApproved ? styles.requestStatusTextApproved : null,
+          isRejected ? styles.requestStatusTextRejected : null,
+        ]}
+      >
+        {label}
+      </Text>
+    </View>
+  );
+}
+
+function firstLine(value?: string | null) {
+  return value?.split("\n").find(Boolean) ?? null;
+}
+
+function createRestaurantLookup(restaurants: Restaurant[]) {
+  return new Map(restaurants.map((restaurant) => [restaurant.id, restaurant]));
+}
+
+function getRestaurantDisplayName(restaurantId: string, restaurant?: Restaurant) {
+  return restaurant?.name ?? humanizeSlug(restaurantId) ?? restaurantId;
+}
+
+function getReportMenuItemName(report: MenuItemReportSummary, restaurant?: Restaurant) {
+  if (!report.menuItemId) {
+    return "Restaurant-level report";
+  }
+
+  const menuItem = restaurant?.items.find((item) => item.id === report.menuItemId);
+  return menuItem?.name ?? humanizeSlug(report.menuItemId) ?? report.menuItemId;
+}
+
+function humanizeSlug(value?: string | null) {
+  if (!value) {
+    return "";
+  }
+
+  return value
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/\b\w/g, (match) => match.toUpperCase());
+}
+
+function formatReportReason(reason?: string | null) {
+  if (!reason) {
+    return "Report";
+  }
+
+  return reason
+    .split("-")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
 function SettingsRow({
   Icon,
   label,
@@ -637,14 +1037,44 @@ function SettingsRow({
   );
 }
 
-function AccountMark() {
+function AccountMark({ isCollapsed = false }: { isCollapsed?: boolean }) {
+  const collapseProgress = useSharedValue(isCollapsed ? 1 : 0);
+
+  useEffect(() => {
+    collapseProgress.value = withTiming(isCollapsed ? 1 : 0, {
+      duration: 420,
+      easing: ReanimatedEasing.out(ReanimatedEasing.cubic),
+    });
+  }, [collapseProgress, isCollapsed]);
+
+  const wrapperStyle = useAnimatedStyle(() => ({
+    height: interpolate(collapseProgress.value, [0, 1], [142, 0], Extrapolation.CLAMP),
+    marginBottom: interpolate(collapseProgress.value, [0, 1], [spacing.three, 0], Extrapolation.CLAMP),
+    marginTop: interpolate(collapseProgress.value, [0, 1], [14, 0], Extrapolation.CLAMP),
+  }));
+  const markStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(collapseProgress.value, [0, 1], [1, 0], Extrapolation.CLAMP),
+    transform: [
+      {
+        translateY: interpolate(collapseProgress.value, [0, 1], [0, -34], Extrapolation.CLAMP),
+      },
+      { scale: interpolate(collapseProgress.value, [0, 1], [1, 0.94], Extrapolation.CLAMP) },
+    ],
+  }));
+
   return (
-    <View style={styles.heroWrap}>
-      <SetupHeroMark Icon={UserRound} />
-      <View style={styles.badge}>
-        <ShieldCheck color={colors.primary} size={18} strokeWidth={2.5} />
-      </View>
-    </View>
+    <Animated.View style={[styles.heroWrap, wrapperStyle]}>
+      <Animated.View style={markStyle}>
+        <View style={styles.safePlateLogoFrame}>
+          <Image
+            accessibilityIgnoresInvertColors
+            resizeMode="cover"
+            source={safePlateIcon}
+            style={styles.safePlateLogo}
+          />
+        </View>
+      </Animated.View>
+    </Animated.View>
   );
 }
 
@@ -654,23 +1084,10 @@ const styles = StyleSheet.create({
     marginTop: spacing.four,
     width: "100%",
   },
-  badge: {
-    alignItems: "center",
-    backgroundColor: colors.white,
-    borderColor: colors.line,
-    borderRadius: 18,
-    borderWidth: 1,
-    bottom: 0,
-    height: 36,
-    justifyContent: "center",
-    position: "absolute",
-    right: 98,
-    width: 36,
-  },
   content: {
     alignItems: "flex-start",
     flexGrow: 1,
-    paddingBottom: spacing.four,
+    paddingBottom: spacing.four * 2,
     paddingHorizontal: spacing.three,
     paddingTop: spacing.two,
   },
@@ -685,11 +1102,20 @@ const styles = StyleSheet.create({
   heroWrap: {
     alignItems: "center",
     alignSelf: "center",
-    height: 142,
     justifyContent: "center",
-    marginBottom: spacing.three,
-    marginTop: 14,
     width: "100%",
+  },
+  safePlateLogo: {
+    height: "100%",
+    width: "100%",
+  },
+  safePlateLogoFrame: {
+    borderCurve: "continuous",
+    borderRadius: 30,
+    boxShadow: "0 18px 38px rgba(0, 92, 214, 0.16)",
+    height: 112,
+    overflow: "hidden",
+    width: 112,
   },
   inlineLinks: {
     alignItems: "center",
@@ -706,9 +1132,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     minHeight: 52,
     paddingHorizontal: spacing.two,
-  },
-  keyboardAvoiding: {
-    flex: 1,
   },
   linkButton: {
     alignSelf: "flex-start",
@@ -818,6 +1241,101 @@ const styles = StyleSheet.create({
   },
   profileSummaryText: {
     marginTop: 0,
+  },
+  requestMeta: {
+    color: colors.muted,
+    fontSize: 12,
+    fontWeight: "600",
+    marginTop: 2,
+  },
+  requestDetail: {
+    color: colors.ink,
+    fontSize: 13,
+    fontWeight: "600",
+    lineHeight: 18,
+    marginTop: 6,
+  },
+  requestName: {
+    color: colors.ink,
+    fontSize: 15,
+    fontWeight: "800",
+  },
+  requestRow: {
+    alignItems: "center",
+    borderBottomColor: colors.line,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    flexDirection: "row",
+    gap: 12,
+    minHeight: 64,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+  },
+  requestStatusApproved: {
+    backgroundColor: "#EAF8EF",
+  },
+  requestStatusBadge: {
+    backgroundColor: "#FFF6E5",
+    borderRadius: 14,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+  },
+  requestStatusRejected: {
+    backgroundColor: "#FFF0F0",
+  },
+  requestStatusText: {
+    color: "#A66A00",
+    fontSize: 12,
+    fontWeight: "900",
+  },
+  requestStatusTextApproved: {
+    color: "#167A3D",
+  },
+  requestStatusTextRejected: {
+    color: colors.coral,
+  },
+  requestTextWrap: {
+    flex: 1,
+  },
+  requestsEmpty: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 9,
+    minHeight: 64,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+  },
+  requestsEmptyText: {
+    color: colors.muted,
+    fontSize: 13,
+    fontWeight: "700",
+  },
+  requestsGroup: {
+    backgroundColor: colors.white,
+    borderColor: colors.line,
+    borderRadius: 20,
+    borderWidth: 1,
+    marginTop: spacing.two,
+    overflow: "hidden",
+    width: "100%",
+  },
+  requestsList: {
+    width: "100%",
+  },
+  requestsModalContent: {
+    padding: spacing.three,
+    paddingBottom: spacing.four,
+  },
+  reviewRatingText: {
+    color: colors.coral,
+    fontSize: 13,
+    fontWeight: "900",
+  },
+  reviewRowHeader: {
+    alignItems: "center",
+    alignSelf: "flex-start",
+    flexDirection: "row",
+    gap: 4,
+    marginBottom: 4,
   },
   title: {
     color: colors.ink,

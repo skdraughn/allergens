@@ -17,6 +17,12 @@ function getMatchingAllergens(allergenIds: string[], selectedAllergyIds: Set<str
   return allergenIds.filter((allergen) => selectedAllergyIds.has(allergen));
 }
 
+function getMatchingInferredAllergens(item: MenuItem, selectedAllergyIds: Set<string>) {
+  return (item.inferredAllergenSignals ?? [])
+    .map((signal) => signal.id)
+    .filter((allergen) => selectedAllergyIds.has(allergen));
+}
+
 export function getMenuItemSafety(item: MenuItem, selectedAllergyIds: string[]) {
   const selectedAllergenSet = expandSelectedAllergyIds(selectedAllergyIds);
   const officialAllergenDataUnavailable =
@@ -24,16 +30,19 @@ export function getMenuItemSafety(item: MenuItem, selectedAllergyIds: string[]) 
     (!item.allergenSourceType && item.allergens.length === 0 && (item.mayContain ?? []).length === 0);
   const directMatches = getMatchingAllergens(item.allergens, selectedAllergenSet);
   const cautionMatches = getMatchingAllergens(item.mayContain ?? [], selectedAllergenSet);
+  const inferredMatches = officialAllergenDataUnavailable
+    ? getMatchingInferredAllergens(item, selectedAllergenSet)
+    : [];
 
   let status: SafetyStatus = "ok";
 
   if (selectedAllergyIds.length === 0) {
     status = "unknown";
-  } else if (officialAllergenDataUnavailable) {
-    status = "caution";
   } else if (directMatches.length > 0) {
     status = "avoid";
   } else if (cautionMatches.length > 0) {
+    status = "caution";
+  } else if (officialAllergenDataUnavailable || inferredMatches.length > 0) {
     status = "caution";
   }
 
@@ -42,7 +51,9 @@ export function getMenuItemSafety(item: MenuItem, selectedAllergyIds: string[]) 
     crossContactMatchLabels: getAllergyLabels(cautionMatches),
     directMatches,
     directMatchLabels: getAllergyLabels(directMatches),
-    matchedLabels: getAllergyLabels([...directMatches, ...cautionMatches]),
+    inferredMatchLabels: getAllergyLabels(inferredMatches),
+    inferredMatches,
+    matchedLabels: getAllergyLabels([...directMatches, ...cautionMatches, ...inferredMatches]),
     officialAllergenDataUnavailable,
     status,
   };
@@ -60,6 +71,9 @@ export function getRestaurantSafety(restaurant: Restaurant, selectedAllergyIds: 
       restaurant.items.flatMap((item) => [
         ...getMatchingAllergens(item.allergens, selectedAllergenSet),
         ...getMatchingAllergens(item.mayContain ?? [], selectedAllergenSet),
+        ...(item.allergenSourceType === "unavailable"
+          ? getMatchingInferredAllergens(item, selectedAllergenSet)
+          : []),
       ]),
     ),
   );

@@ -1,4 +1,4 @@
-import * as Location from "expo-location";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { normalizeAllergyIds } from "@/constants/allergies";
 import type { Restaurant } from "@/data/restaurants";
@@ -13,6 +13,7 @@ type AmplifyCustomOutputs = {
 };
 
 export type RestaurantSearchResult = {
+  brandKey?: string | null;
   category?: string | null;
   city?: string | null;
   compatibilitySummary?: RestaurantCompatibilitySummary | null;
@@ -20,22 +21,38 @@ export type RestaurantSearchResult = {
   coveragePercent?: number | null;
   coverageStatus?: string | null;
   displayAddress?: string | null;
+  domain?: string | null;
   distanceMiles?: number | null;
   guideLabel?: string | null;
   guideUrl?: string | null;
   lat?: number | null;
+  lastOpenedAt?: string | null;
+  lastRefreshedAt?: string | null;
+  logoAspectRatio?: number | null;
+  logoMonogram?: string | null;
+  logoSvgUrl?: string | null;
+  logoUrl?: string | null;
   lng?: number | null;
   locationId?: string | null;
+  nextEligibleRefreshAt?: string | null;
   name: string;
   officialItemCount?: number | null;
+  openedCount?: number | null;
   rank?: number | null;
   region?: string | null;
   restaurantId: string;
+  refreshStatus?: string | null;
+  refreshTier?: string | null;
   snapshotPath?: string | null;
   sourceStatus?: unknown;
   sourceUrls?: string[] | null;
   totalItemCount?: number | null;
   type?: "chain" | "local" | string | null;
+};
+
+export type RestaurantSearchPage = {
+  nextToken?: string | null;
+  results: RestaurantSearchResult[];
 };
 
 export type RestaurantSearchSummary = {
@@ -51,9 +68,10 @@ export type RestaurantSearchLocation = {
 };
 
 type SearchRestaurantsInput = {
-  fallbackRestaurants: Restaurant[];
+  fallbackRestaurants?: Restaurant[];
   limit?: number;
   location?: RestaurantSearchLocation | null;
+  nextToken?: string | null;
   query: string;
 };
 
@@ -70,35 +88,41 @@ type RestaurantCompatibilitySummary = {
 
 const searchEndpoint = ((amplifyOutputs as AmplifyCustomOutputs).custom?.restaurantSearchEndpoint ?? "")
   .trim();
+const visitDebouncePrefix = "restaurant-visit-recorded/";
+const visitDebounceMs = 24 * 60 * 60 * 1000;
 
 export async function getRestaurantSearchLocation(): Promise<RestaurantSearchLocation | null> {
-  try {
-    const permission = await Location.getForegroundPermissionsAsync();
-
-    if (permission.status !== "granted") {
-      return null;
-    }
-
-    const position = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Balanced,
-    });
-
-    return {
-      lat: position.coords.latitude,
-      lng: position.coords.longitude,
-    };
-  } catch {
-    return null;
-  }
+  // Temporarily disabled for dev-client builds that do not include ExpoLocation.
+  return null;
 }
 
 export async function searchRestaurants({
   fallbackRestaurants,
   limit = 30,
   location,
+  nextToken,
   query,
 }: SearchRestaurantsInput): Promise<RestaurantSearchResult[]> {
+  const page = await searchRestaurantPage({
+    fallbackRestaurants,
+    limit,
+    location,
+    nextToken,
+    query,
+  });
+
+  return page.results;
+}
+
+export async function searchRestaurantPage({
+  fallbackRestaurants,
+  limit = 30,
+  location,
+  nextToken,
+  query,
+}: SearchRestaurantsInput): Promise<RestaurantSearchPage> {
   const normalizedQuery = normalizeSearchText(query);
+  const fallback = fallbackRestaurants ?? [];
 
   if (searchEndpoint) {
     try {
@@ -107,6 +131,7 @@ export async function searchRestaurants({
           lat: location?.lat,
           limit,
           lng: location?.lng,
+          nextToken,
           operation: normalizedQuery ? "searchRestaurants" : "listNearbyRestaurants",
           query: normalizedQuery,
         }),
@@ -117,21 +142,83 @@ export async function searchRestaurants({
       });
 
       if (response.ok) {
-        const payload = (await response.json()) as { results?: unknown };
+        const payload = (await response.json()) as { nextToken?: unknown; results?: unknown };
         const results = Array.isArray(payload.results)
           ? payload.results.map(mapSearchResult).filter(isSearchResult)
           : [];
+        const reconciledResults = reconcileSearchResults(results, fallback);
 
-        if (results.length > 0 || normalizedQuery) {
-          return results.slice(0, limit);
-        }
+        return {
+          nextToken: asString(payload.nextToken),
+          results: mergeMatchingFallbackResults(
+            reconciledResults,
+            fallback,
+            normalizedQuery,
+            limit,
+          ),
+        };
       }
     } catch (error) {
       console.warn("Restaurant search API unavailable", error);
     }
   }
 
-  return fallbackRestaurantSearch(fallbackRestaurants, normalizedQuery, limit);
+  return {
+    nextToken: null,
+    results: fallbackRestaurantSearch(fallback, normalizedQuery, limit),
+  };
+}
+
+export async function recordRestaurantVisit({
+  location,
+  locationId = "national",
+  restaurantId,
+}: {
+  location?: RestaurantSearchLocation | null;
+  locationId?: string | null;
+  restaurantId: string;
+}) {
+  if (!searchEndpoint || !restaurantId) {
+    return;
+  }
+
+  const normalizedLocationId = locationId?.trim() || "national";
+  const debounceKey = `${visitDebouncePrefix}${restaurantId}/${normalizedLocationId}`;
+
+  try {
+    const lastRecordedAt = await AsyncStorage.getItem(debounceKey);
+    const lastRecordedMs = Number(lastRecordedAt);
+
+    if (Number.isFinite(lastRecordedMs) && Date.now() - lastRecordedMs < visitDebounceMs) {
+      return;
+    }
+
+    await AsyncStorage.setItem(debounceKey, String(Date.now()));
+  } catch {
+    // Visit recording is best-effort and should never block menu loading.
+  }
+
+  try {
+    const response = await fetch(searchEndpoint, {
+      body: JSON.stringify({
+        lat: location?.lat,
+        lng: location?.lng,
+        locationId: normalizedLocationId,
+        operation: "recordRestaurantVisit",
+        restaurantId,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+
+    if (!response.ok) {
+      throw new Error(`Visit recorder failed with ${response.status}`);
+    }
+  } catch (error) {
+    console.warn("Restaurant visit recording unavailable", error);
+  }
 }
 
 export function getSearchResultSummary(
@@ -199,25 +286,110 @@ export function getSearchResultSummary(
 
 export function searchResultFromRestaurant(restaurant: Restaurant): RestaurantSearchResult {
   return {
+    city: restaurant.city ?? restaurant.address?.city,
+    brandKey: restaurant.brandKey,
     category: restaurant.category,
     compatibilitySummary: compatibilitySummaryFromRestaurant(restaurant),
+    country: restaurant.country ?? restaurant.address?.country,
     coveragePercent: restaurant.coveragePercent,
     coverageStatus: restaurant.coverageStatus,
+    displayAddress: restaurant.displayAddress ?? restaurant.address?.displayAddress,
+    domain: restaurant.domain,
     guideLabel: restaurant.guideLabel,
     guideUrl: restaurant.guideUrl,
-    locationId: "national",
+    lat: restaurant.lat,
+    logoAspectRatio: restaurant.logoAspectRatio,
+    logoMonogram: restaurant.logoMonogram,
+    logoSvgUrl: restaurant.logoSvgUrl,
+    logoUrl: restaurant.logoUrl,
+    lng: restaurant.lng,
+    locationId: restaurant.locationId ?? "national",
     name: restaurant.name,
     officialItemCount:
       restaurant.allergenDataStatus?.officialItemCount ??
       restaurant.items.filter((item) => item.allergenSourceType !== "unavailable").length,
     rank: restaurant.rank,
     restaurantId: restaurant.id,
-    snapshotPath: `restaurant-data/restaurants/${restaurant.id}/latest.json`,
+    snapshotPath: restaurant.snapshotPath,
     sourceStatus: restaurant.sourceStatus,
     sourceUrls: restaurant.sourceUrls,
-    totalItemCount: restaurant.items.length,
-    type: "chain",
+    totalItemCount: restaurant.totalItemCount ?? restaurant.items.length,
+    type: restaurant.type ?? "chain",
   };
+}
+
+function reconcileSearchResults(
+  results: RestaurantSearchResult[],
+  fallbackRestaurants: Restaurant[],
+) {
+  if (fallbackRestaurants.length === 0) {
+    return results;
+  }
+
+  const fallbackById = new Map(
+    fallbackRestaurants.map((restaurant) => [restaurant.id, restaurant]),
+  );
+
+  return results.map((result) => {
+    const fallbackRestaurant = fallbackById.get(result.restaurantId);
+
+    if (!fallbackRestaurant) {
+      return result;
+    }
+
+    const remoteItemCount = Math.max(
+      0,
+      result.totalItemCount ?? 0,
+      result.officialItemCount ?? 0,
+      result.compatibilitySummary?.totalItemCount ?? 0,
+      result.compatibilitySummary?.officialItemCount ?? 0,
+    );
+    const fallbackOfficialItemCount =
+      fallbackRestaurant.allergenDataStatus?.officialItemCount ??
+      fallbackRestaurant.items.filter((item) => item.allergenSourceType !== "unavailable").length;
+    const fallbackItemCount = fallbackRestaurant.totalItemCount ?? fallbackRestaurant.items.length;
+
+    if (
+      remoteItemCount >= fallbackItemCount ||
+      remoteItemCount >= fallbackOfficialItemCount
+    ) {
+      return result;
+    }
+
+    const fallbackResult = searchResultFromRestaurant(fallbackRestaurant);
+
+    return {
+      ...result,
+      ...fallbackResult,
+      distanceMiles: result.distanceMiles,
+      lastOpenedAt: result.lastOpenedAt,
+      nextEligibleRefreshAt: result.nextEligibleRefreshAt,
+      openedCount: result.openedCount,
+      refreshStatus: result.refreshStatus,
+      refreshTier: result.refreshTier,
+      snapshotPath: null,
+    };
+  });
+}
+
+function mergeMatchingFallbackResults(
+  results: RestaurantSearchResult[],
+  fallbackRestaurants: Restaurant[],
+  normalizedQuery: string,
+  limit: number,
+) {
+  if (!normalizedQuery || fallbackRestaurants.length === 0) {
+    return results;
+  }
+
+  const resultIds = new Set(results.map((result) => result.restaurantId));
+  const fallbackMatches = fallbackRestaurantSearch(
+    fallbackRestaurants.filter((restaurant) => !resultIds.has(restaurant.id)),
+    normalizedQuery,
+    Math.max(0, limit - results.length),
+  );
+
+  return [...results, ...fallbackMatches];
 }
 
 export function fallbackRestaurantSearch(
@@ -312,7 +484,7 @@ function compatibilitySummaryFromRestaurant(restaurant: Restaurant): RestaurantC
     officialItemCount:
       restaurant.allergenDataStatus?.officialItemCount ??
       restaurant.items.filter((item) => item.allergenSourceType !== "unavailable").length,
-    totalItemCount: restaurant.items.length,
+    totalItemCount: restaurant.totalItemCount ?? restaurant.items.length,
     unavailableCount: unavailableItemIndexes.length,
     unavailableItemIndexes,
   };
@@ -350,6 +522,7 @@ function mapSearchResult(value: unknown): RestaurantSearchResult | null {
   }
 
   return {
+    brandKey: asString(record.brandKey),
     category: asString(record.category),
     city: asString(record.city),
     compatibilitySummary: isRecord(record.compatibilitySummary)
@@ -359,17 +532,28 @@ function mapSearchResult(value: unknown): RestaurantSearchResult | null {
     coveragePercent: asNumber(record.coveragePercent),
     coverageStatus: asString(record.coverageStatus),
     displayAddress: asString(record.displayAddress),
+    domain: asString(record.domain),
     distanceMiles: asNumber(record.distanceMiles),
     guideLabel: asString(record.guideLabel),
     guideUrl: asString(record.guideUrl),
     lat: asNumber(record.lat),
+    lastOpenedAt: asString(record.lastOpenedAt),
+    lastRefreshedAt: asString(record.lastRefreshedAt),
+    logoAspectRatio: asNumber(record.logoAspectRatio),
+    logoMonogram: asString(record.logoMonogram),
+    logoSvgUrl: asString(record.logoSvgUrl),
+    logoUrl: asString(record.logoUrl),
     lng: asNumber(record.lng),
     locationId: asString(record.locationId),
+    nextEligibleRefreshAt: asString(record.nextEligibleRefreshAt),
     name,
     officialItemCount: asNumber(record.officialItemCount),
+    openedCount: asNumber(record.openedCount),
     rank: asNumber(record.rank),
     region: asString(record.region),
     restaurantId,
+    refreshStatus: asString(record.refreshStatus),
+    refreshTier: asString(record.refreshTier),
     snapshotPath: asString(record.snapshotPath),
     sourceStatus: record.sourceStatus,
     sourceUrls: Array.isArray(record.sourceUrls)

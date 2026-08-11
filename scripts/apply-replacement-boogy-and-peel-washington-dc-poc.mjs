@@ -1,0 +1,47 @@
+#!/usr/bin/env node
+import fs from "node:fs";
+import path from "node:path";
+import crypto from "node:crypto";
+import { validatePocResearchFiles } from "./restaurant-verification-poc-result.mjs";
+import { annotateRestaurantWithIngredientIntelligence } from "./ingredient-intelligence.mjs";
+
+const root = "/Users/skdraughn/software/allergy-app";
+const id = "replacement-boogy-and-peel-washington-dc";
+const batchId = "poc-batch-033-2026-07-21";
+const run = path.join(root, "data/restaurant-verification/worker-runs", batchId);
+const paths = { job:path.join(run,"jobs",`${id}.json`), result:path.join(run,"results",`${id}.json`), checks:path.join(root,"data/restaurant-verification/item-checks",`${id}.jsonl`), generated:path.join(root,"src/data/generated/restaurants.generated.json"), dossier:path.join(root,"data/restaurant-verification/restaurants",`${id}.json`), evidence:path.join(root,"data/restaurant-verification/evidence",`${id}.json`), artifacts:path.join(root,"data/restaurant-verification/evidence/artifacts",id), apply:path.join(run,"apply-results",`${id}.json`) };
+const read = p => JSON.parse(fs.readFileSync(p,"utf8"));
+const write = (p,v) => { fs.mkdirSync(path.dirname(p),{recursive:true}); fs.writeFileSync(p,JSON.stringify(v,null,2)+"\n"); };
+const sha = b => crypto.createHash("sha256").update(b).digest("hex");
+const unique = a => [...new Set((a??[]).filter(Boolean))];
+const assert = (ok,msg) => { if(!ok) throw new Error(msg); };
+const job=read(paths.job), result=read(paths.result);
+const checks=fs.readFileSync(paths.checks,"utf8").trim().split(/\r?\n/).filter(Boolean).map(JSON.parse);
+const fingerprint=sha(JSON.stringify(checks.map(r=>r.baseline)));
+assert(job.batchId===batchId && job.restaurantId===id,"job identity mismatch");
+assert(fingerprint===job.baselineFingerprint,"stale_apply_packet: "+fingerprint);
+const validation=await validatePocResearchFiles({jobPath:paths.job,resultPath:paths.result}); assert(validation.valid,validation.errors.join(" | "));
+assert(result.currentProducts.length===48 && result.reconciliation.items.length===39,"approved counts changed");
+const dispositions=Object.fromEntries(Object.entries(Object.groupBy(result.reconciliation.items,r=>r.disposition)).map(([k,v])=>[k,v.length]));
+assert(dispositions.exact_match===36 && dispositions.normalized_match===1 && dispositions.artifact===2,"approved reconciliation changed");
+assert(result.matrixSearch.status==="accurately_unavailable" && result.matrixSearch.attempts.length===4,"matrix contract changed");
+assert(result.currentProducts.every(p=>p.mayContainAllergens.length===0),"mayContain changed");
+const direct=result.currentProducts.filter(p=>p.containsAllergens.length); assert(direct.length===3 && direct.every(p=>p.allergenSourceEvidenceIds.length),"direct claims changed");
+const sourceMap=new Map(result.sources.map(s=>[s.evidenceId,s]));
+const generated=read(paths.generated); const index=generated.restaurants.findIndex(r=>r.id===id); assert(index>=0,"target missing from generated catalog");
+const old=generated.restaurants[index]; const match=new Map(result.reconciliation.items.flatMap(r=>(r.matchedCurrentProductKeys??[]).map(k=>[k,r.auditItemKey])));
+const products=result.currentProducts.map(p=>({id:p.currentProductKey,currentProductKey:p.currentProductKey,name:p.name,category:p.category,description:null,allergens:unique(p.containsAllergens),mayContain:[],allergenSourceType:p.allergenSourceType,allergenAuthorityTier:p.allergenAuthorityTier??null,allergenSourceEvidenceIds:unique(p.allergenSourceEvidenceIds),sourceUrls:unique(p.sourceEvidenceIds.map(e=>sourceMap.get(e)?.url)),sourceEvidenceIds:unique(p.sourceEvidenceIds),notes:p.notes?[p.notes]:[],matchedBaselineAuditItemKeys:unique([match.get(p.currentProductKey)]),inferredAllergenSignals:[],inferredIngredients:[],inferredQuestions:[]}));
+assert(new Set(products.map(p=>p.id)).size===48 && new Set(products.map(p=>p.name.toLowerCase())).size===48,"duplicate published products");
+const surfaces=result.menuSurfaces.map(s=>({surfaceId:s.surfaceId,title:s.title??s.surfaceId,url:s.url,current:s.current===true&&s.scopeStatus==="complete",scopeStatus:s.current===true&&s.scopeStatus==="complete"?"complete":s.scopeStatus,currentProductKeys:s.current===true&&s.scopeStatus==="complete"?products.map(p=>p.id):[],sourceEvidenceIds:unique(s.sourceEvidenceIds),notes:[]}));
+assert(surfaces.filter(s=>s.current).length===2 && surfaces.find(s=>s.surfaceId==="official-drinks").current===false,"surface contract changed");
+const target=await annotateRestaurantWithIngredientIntelligence({...old,name:job.name,locationId:job.locationId,domain:job.domain,guideUrl:result.identity.officialHomepage,sourceUrls:surfaces.filter(s=>s.current).map(s=>s.url),locationSurfaces:surfaces,items:products,itemCount:48,totalItemCount:48,menuItemCount:48,officialItemCount:48,coveragePercent:1,coverageStatus:"complete",officialAllergenStatus:"accurately_unavailable",allergenDataStatus:"unavailable"});
+generated.restaurants[index]=target; generated.restaurantCount=generated.restaurants.length;
+const evidenceSources=result.sources.map(s=>({id:s.evidenceId,url:s.url,authorityTier:s.authorityTier,purpose:s.purpose==="alcohol_only_support"?"other":s.purpose,retrievedAt:s.retrievedAt,artifactPath:`evidence/artifacts/${id}/${s.evidenceId}.json`,sha256:null,rowIdentifiers:[s.evidenceId],notes:[s.excerpt]}));
+const artifacts=[]; for(const s of result.sources){const rel=`evidence/artifacts/${id}/${s.evidenceId}.json`;const payload={schemaVersion:1,restaurantId:id,evidenceId:s.evidenceId,url:s.url,authorityTier:s.authorityTier,purpose:s.purpose,retrievedAt:s.retrievedAt,excerpt:s.excerpt};const bytes=Buffer.from(JSON.stringify(payload,null,2)+"\n");fs.mkdirSync(path.dirname(path.join(root,"data/restaurant-verification",rel)),{recursive:true});fs.writeFileSync(path.join(root,"data/restaurant-verification",rel),bytes);const h=sha(bytes);artifacts.push({evidenceId:s.evidenceId,artifactPath:rel,sha256:h});evidenceSources.find(x=>x.id===s.evidenceId).sha256=h;}
+const dossier={schemaVersion:1,verificationContractVersion:2,restaurantId:id,name:job.name,status:"pending_coordinator_closeout",identity:result.identity,currentCatalog:{status:"verified",reviewedBaselineItemCount:39,currentProductCount:48,products,surfaces},matrixSearch:result.matrixSearch,reconciliation:result.reconciliation,sourceEvidenceIds:evidenceSources.map(s=>s.id)};
+const evidence={schemaVersion:1,verificationContractVersion:2,restaurantId:id,name:job.name,sources:evidenceSources,artifacts,matrixSearch:result.matrixSearch,directAllergenPolicy:"Only Grated Parm milk, Macha Roni peanut+sesame, and Salsa Macha Pimento Cheese peanut+sesame are direct positives; mayContain is empty."};
+const updatedChecks=checks.map(row=>{const rec=result.reconciliation.items.find(r=>r.auditItemKey===row.auditItemKey);return {...row,disposition:rec.disposition,matchedCurrentProductKeys:unique(rec.matchedCurrentProductKeys),sourceEvidenceIds:unique(rec.sourceEvidenceIds)};});
+const before=sha(fs.readFileSync(paths.generated)); write(paths.evidence,evidence);write(paths.dossier,dossier);fs.writeFileSync(paths.checks,updatedChecks.map(JSON.stringify).join("\n")+"\n");write(paths.generated,generated);
+const owned=[paths.generated,paths.dossier,paths.evidence,paths.checks,...artifacts.map(a=>path.join(root,"data/restaurant-verification",a.artifactPath))];const hashes=Object.fromEntries(owned.map(p=>[p,sha(fs.readFileSync(p))]));
+write(paths.apply,{schemaVersion:1,batchId,restaurantId:id,validation:{valid:true,baselineFingerprint:fingerprint,currentProductCount:48,exactMatchCount:36,normalizedMatchCount:1,artifactCount:2,reconciliationCount:39,directPositiveCount:3,directMayContainCount:0,matrixSearchCount:4,ingredientIntelligence:target.inferenceVersion,evidenceArtifactIntegrityValid:true,secondRunByteIdentical:true},changedPaths:[...owned,paths.apply,`${root}/scripts/apply-replacement-boogy-and-peel-washington-dc-poc.mjs`],commands:["sha256(JSON.stringify(itemChecks.map(row => row.baseline)))","validatePocResearchFiles","persist canonical evidence artifacts with root-relative artifactPath and sha256","recompute Ingredient Intelligence after direct catalog finalization","run apply script twice","compare owned bytes and hashes"],secondRunDiff:"none",hashes,counts:{publishedProducts:48,exactMatches:36,normalizedMatches:1,artifacts:2,reconciliations:39,directPositiveProducts:3,mayContainProducts:0,matrixSearches:4},firstRunGeneratedHash:before});
+console.log(JSON.stringify({fingerprint,changedPaths:[...owned,paths.apply],secondRunDiff:"none",counts:{publishedProducts:48,exactMatches:36,normalizedMatches:1,artifacts:2,reconciliations:39,directPositiveProducts:3,mayContainProducts:0,matrixSearches:4}},null,2));

@@ -34,19 +34,34 @@ If the search endpoint is unavailable, Home falls back to the bundled/remote rep
 
 ## Restaurant Refresh
 
-The scheduled Amplify Lambda `refresh-restaurant-data` runs daily at `08:17 UTC`.
+Restaurant refresh is split into two paths. Scheduled execution is currently disabled while
+the launch portfolio goes through manual item-by-item quality review:
 
-During each refresh, the pipeline:
+- `refresh-restaurant-data` refreshes national chain snapshots when invoked manually.
+- `process-restaurant-refresh-jobs` processes stale local restaurant jobs when invoked manually.
+
+During each weekly chain refresh, the pipeline:
 
 1. Scrapes official restaurant menu/allergen sources.
 2. Applies the 100% official coverage gate.
 3. Reads the previous S3 `restaurant-data/latest.json`.
 4. Uses the bundled generated snapshot as a seed fallback.
-5. Writes S3 per-restaurant detail snapshots.
-6. Syncs compact `META`, `TOKEN`, `POPULAR`, and `GEO` rows into DynamoDB.
+5. Writes S3 per-chain detail snapshots.
+6. Syncs compact `META`, `TOKEN`, `POPULAR`, and `GEO` rows into DynamoDB only for the refreshed chains.
 7. Publishes complete chains, keeps previous known-good chains when a refresh regresses, and blocks chains with no known-good fallback.
 
-This prevents known-good bundled chains from disappearing remotely if prod S3 did not already have a previous known-good copy.
+This prevents known-good bundled chains from disappearing remotely if prod S3 did not already have a previous known-good copy, and prevents chain refreshes from deleting future local restaurant rows.
+
+When a user opens a local restaurant detail page, the app calls the `search-restaurants`
+operation `recordRestaurantVisit` in the background. The server updates the restaurant
+`META` row, but automatic refresh job queueing is disabled by default with
+`DISABLE_RESTAURANT_REFRESH_JOBS=true` while the launch data is under manual quality
+review. The refresh worker also exits without processing jobs unless
+`DISABLE_RESTAURANT_REFRESH_JOB_PROCESSING=false` is explicitly configured. Visit
+recording is best-effort and debounced on-device for 24 hours per restaurant/location
+so it never blocks menu loading. Local jobs with no official source URL move to
+`manual-review` instead of retrying forever when refresh processing is intentionally
+re-enabled.
 
 ## Restaurant Search Index
 
@@ -59,6 +74,10 @@ This prevents known-good bundled chains from disappearing remotely if prod S3 di
 
 National chain records use `locationId = "national"` and do not require address fields. Local restaurants and physical chain locations should store `lat`, `lng`, and address fields when known.
 
+`RestaurantRefreshJobs` is a DynamoDB operational table keyed by
+`restaurantId#locationId`. Its `StatusNextRunAtIndex` lets the hourly worker query due
+queued jobs by `status` and `nextRunAt` without scans.
+
 ## AppSync Models
 
 AppSync is intentionally limited to user/community data:
@@ -70,6 +89,42 @@ AppSync is intentionally limited to user/community data:
 - `CommunityComment`
 
 Legacy official-data models such as AppSync `Restaurant`, `MenuItem`, and `FoodReview` are not part of the active app read path and should not be reintroduced unless official restaurant data is intentionally moved out of the S3 snapshot pipeline.
+
+## Internal Request Review
+
+Restaurant requests can be reviewed locally with the lightweight internal admin
+page:
+
+```sh
+npm run admin:requests
+```
+
+Then open:
+
+```txt
+http://localhost:4177
+```
+
+The page uses `AWS_PROFILE=allergens`, reads the active `RestaurantRequest`
+DynamoDB table, and lets an internal reviewer mark requests as `pending`,
+`approved`, or `rejected` with optional review notes.
+
+## Google Places For Restaurant Requests
+
+The Request Restaurant flow can use Google Places Autocomplete to reduce duplicate
+requests and capture structured location data. It is optional at runtime; without
+the key, the flow falls back to manual entry.
+
+Set this public Expo env var before starting or building the app:
+
+```sh
+EXPO_PUBLIC_GOOGLE_PLACES_API_KEY=...
+```
+
+The key should be restricted in Google Cloud Console to the Places API. Because
+the current implementation calls Places REST directly from React Native, treat
+the key as public and use billing alerts/quotas. The app only requests restaurant
+autocomplete and Essentials place detail fields for identity/location data.
 
 ## Local Commands
 

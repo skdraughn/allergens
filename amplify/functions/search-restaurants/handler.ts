@@ -1,11 +1,18 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient, GetCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import {
+  DynamoDBDocumentClient,
+  GetCommand,
+  PutCommand,
+  QueryCommand,
+  UpdateCommand,
+} from "@aws-sdk/lib-dynamodb";
 
 import {
   encodeGeohash,
   nationalLocationId,
   normalizeSearchText,
 } from "../../../scripts/restaurant-search-index.mjs";
+import { evaluateRestaurantRefresh } from "../../../scripts/restaurant-refresh-policy.mjs";
 
 type LambdaEvent = {
   body?: string | Record<string, unknown> | null;
@@ -18,7 +25,11 @@ type LambdaEvent = {
   };
 };
 
-type SearchOperation = "getRestaurantSnapshotPath" | "listNearbyRestaurants" | "searchRestaurants";
+type SearchOperation =
+  | "getRestaurantSnapshotPath"
+  | "listNearbyRestaurants"
+  | "recordRestaurantVisit"
+  | "searchRestaurants";
 
 const dynamo = DynamoDBDocumentClient.from(new DynamoDBClient({}), {
   marshallOptions: {
@@ -49,6 +60,10 @@ export const handler = async (event: LambdaEvent) => {
       return response(200, await listNearbyRestaurants(body));
     }
 
+    if (operation === "recordRestaurantVisit") {
+      return response(200, await recordRestaurantVisit(body));
+    }
+
     return response(200, await searchRestaurants(body));
   } catch (error) {
     console.error(error);
@@ -69,9 +84,7 @@ async function searchRestaurants(body: Record<string, unknown>) {
       return listNearbyRestaurants(body);
     }
 
-    return {
-      results: await queryRows("POPULAR#GLOBAL", limit),
-    };
+    return queryPage("POPULAR#GLOBAL", limit, pageTokenFromBody(body));
   }
 
   const tokens = tokensForQuery(query);
@@ -106,9 +119,7 @@ async function listNearbyRestaurants(body: Record<string, unknown>) {
   const limit = limitFromBody(body);
 
   if (lat === null || lng === null) {
-    return {
-      results: await queryRows("POPULAR#GLOBAL", limit),
-    };
+    return queryPage("POPULAR#GLOBAL", limit, pageTokenFromBody(body));
   }
 
   const geohashes = nearbyGeohashes(lat, lng);
@@ -140,9 +151,7 @@ async function listNearbyRestaurants(body: Record<string, unknown>) {
     return { results: results.slice(0, limit) };
   }
 
-  return {
-    results: await queryRows("POPULAR#GLOBAL", limit),
-  };
+  return queryPage("POPULAR#GLOBAL", limit, pageTokenFromBody(body));
 }
 
 async function getRestaurantSnapshotPath(body: Record<string, unknown>) {
@@ -179,10 +188,180 @@ async function getRestaurantSnapshotPath(body: Record<string, unknown>) {
   };
 }
 
+async function recordRestaurantVisit(body: Record<string, unknown>) {
+  const restaurantId = stringFromBody(body.restaurantId);
+  const locationId = stringFromBody(body.locationId) ?? nationalLocationId;
+
+  if (!restaurantId) {
+    throw new Error("restaurantId is required.");
+  }
+
+  const tableName = getTableName();
+  const now = new Date().toISOString();
+  const key = {
+    pk: `META#${restaurantId}#${locationId}`,
+    sk: "METADATA",
+  };
+  const metaResult = await dynamo.send(
+    new GetCommand({
+      Key: key,
+      TableName: tableName,
+    }),
+  );
+
+  if (!metaResult.Item) {
+    return {
+      locationId,
+      queued: false,
+      reason: "missing-meta",
+      restaurantId,
+      snapshotPath: `${process.env.RESTAURANT_DATA_PREFIX ?? "restaurant-data"}/restaurants/${restaurantId}/latest.json`,
+      stale: false,
+    };
+  }
+
+  const evaluation = evaluateRestaurantRefresh(metaResult.Item, now);
+
+  await dynamo.send(
+    new UpdateCommand({
+      ExpressionAttributeNames: {
+        "#lastOpenedAt": "lastOpenedAt",
+        "#openedCount": "openedCount",
+      },
+      ExpressionAttributeValues: {
+        ":increment": 1,
+        ":now": now,
+        ":zero": 0,
+      },
+      Key: key,
+      TableName: tableName,
+      UpdateExpression:
+        "SET #lastOpenedAt = :now, #openedCount = if_not_exists(#openedCount, :zero) + :increment",
+    }),
+  );
+
+  const refreshJobsDisabled = process.env.DISABLE_RESTAURANT_REFRESH_JOBS !== "false";
+
+  if (evaluation.shouldQueue && !refreshJobsDisabled) {
+    await upsertRefreshJob({
+      locationId,
+      meta: metaResult.Item,
+      now,
+      reason: evaluation.reason,
+      restaurantId,
+    });
+  }
+
+  return {
+    locationId,
+    queued: evaluation.shouldQueue && !refreshJobsDisabled,
+    reason: refreshJobsDisabled && evaluation.shouldQueue ? "automatic-refresh-disabled" : evaluation.reason,
+    restaurantId,
+    snapshotPath: evaluation.snapshotPath ?? metaResult.Item.snapshotPath,
+    stale: evaluation.stale,
+  };
+}
+
+async function upsertRefreshJob({
+  locationId,
+  meta,
+  now,
+  reason,
+  restaurantId,
+}: {
+  locationId: string;
+  meta: Record<string, unknown>;
+  now: string;
+  reason: string;
+  restaurantId: string;
+}) {
+  const tableName = getRefreshJobsTableName();
+  const jobId = `${restaurantId}#${locationId}`;
+  const sourceUrls = Array.isArray(meta.sourceUrls)
+    ? meta.sourceUrls.filter((url): url is string => typeof url === "string" && url.trim().length > 0)
+    : [];
+  const status = reason === "needs-source" ? "manual-review" : "queued";
+  const nextRunAt = status === "queued" ? now : "9999-12-31T23:59:59.999Z";
+
+  try {
+    await dynamo.send(
+      new PutCommand({
+        ConditionExpression:
+          "attribute_not_exists(jobId) OR #status IN (:succeeded, :failed, :skipped)",
+        ExpressionAttributeNames: {
+          "#status": "status",
+        },
+        ExpressionAttributeValues: {
+          ":failed": "failed",
+          ":skipped": "skipped",
+          ":succeeded": "succeeded",
+        },
+        Item: {
+          attemptCount: Number(meta.attemptCount ?? 0),
+          createdAt: now,
+          guideUrl: meta.guideUrl ?? null,
+          jobId,
+          lastRefreshedAt: meta.lastRefreshedAt ?? null,
+          locationId,
+          nextRunAt,
+          priority: reason === "needs-source" ? 20 : 50,
+          reason,
+          restaurantId,
+          restaurantName: meta.name ?? null,
+          snapshotPath:
+            meta.snapshotPath ??
+            `${process.env.RESTAURANT_DATA_PREFIX ?? "restaurant-data"}/restaurants/${restaurantId}/latest.json`,
+          sourceUrls,
+          status,
+          type: meta.type ?? "local",
+          updatedAt: now,
+        },
+        TableName: tableName,
+      }),
+    );
+    await dynamo.send(
+      new UpdateCommand({
+        ExpressionAttributeNames: {
+          "#refreshStatus": "refreshStatus",
+        },
+        ExpressionAttributeValues: {
+          ":nextEligibleRefreshAt": nextRunAt,
+          ":now": now,
+          ":status": status,
+        },
+        Key: {
+          pk: `META#${restaurantId}#${locationId}`,
+          sk: "METADATA",
+        },
+        TableName: getTableName(),
+        UpdateExpression:
+          "SET #refreshStatus = :status, refreshQueuedAt = :now, nextEligibleRefreshAt = :nextEligibleRefreshAt",
+      }),
+    );
+  } catch (error) {
+    if (
+      error &&
+      typeof error === "object" &&
+      "name" in error &&
+      error.name === "ConditionalCheckFailedException"
+    ) {
+      return;
+    }
+
+    throw error;
+  }
+}
+
 async function queryRows(pk: string, limit: number) {
+  const page = await queryPage(pk, limit);
+  return page.results;
+}
+
+async function queryPage(pk: string, limit: number, nextToken?: string | null) {
   const tableName = getTableName();
   const result = await dynamo.send(
     new QueryCommand({
+      ExclusiveStartKey: decodePageToken(nextToken),
       ExpressionAttributeValues: {
         ":pk": pk,
       },
@@ -192,7 +371,10 @@ async function queryRows(pk: string, limit: number) {
     }),
   );
 
-  return result.Items ?? [];
+  return {
+    nextToken: encodePageToken(result.LastEvaluatedKey),
+    results: result.Items ?? [],
+  };
 }
 
 function nearbyGeohashes(lat: number, lng: number) {
@@ -275,6 +457,7 @@ function response(statusCode: number, payload: Record<string, unknown>) {
 function operationFromBody(body: Record<string, unknown>): SearchOperation {
   return body.operation === "getRestaurantSnapshotPath" ||
     body.operation === "listNearbyRestaurants" ||
+    body.operation === "recordRestaurantVisit" ||
     body.operation === "searchRestaurants"
     ? body.operation
     : "searchRestaurants";
@@ -290,9 +473,44 @@ function getTableName() {
   return tableName;
 }
 
+function getRefreshJobsTableName() {
+  const tableName = process.env.RESTAURANT_REFRESH_JOBS_TABLE_NAME;
+
+  if (!tableName) {
+    throw new Error("RESTAURANT_REFRESH_JOBS_TABLE_NAME is not configured.");
+  }
+
+  return tableName;
+}
+
 function limitFromBody(body: Record<string, unknown>) {
   const value = numberFromBody(body.limit);
-  return Math.min(Math.max(value ?? 24, 1), 50);
+  return Math.min(Math.max(value ?? 24, 1), 100);
+}
+
+function pageTokenFromBody(body: Record<string, unknown>) {
+  return stringFromBody(body.nextToken);
+}
+
+function encodePageToken(key: Record<string, unknown> | undefined) {
+  if (!key) {
+    return null;
+  }
+
+  return Buffer.from(JSON.stringify(key), "utf8").toString("base64url");
+}
+
+function decodePageToken(token?: string | null) {
+  if (!token) {
+    return undefined;
+  }
+
+  try {
+    const parsed = JSON.parse(Buffer.from(token, "base64url").toString("utf8"));
+    return parsed && typeof parsed === "object" ? parsed : undefined;
+  } catch {
+    return undefined;
+  }
 }
 
 function numberFromBody(value: unknown) {

@@ -1,108 +1,189 @@
 import {
+  ChevronRight,
   ExternalLink,
+  ShieldCheck,
   X,
 } from "lucide-react-native";
+import { useEffect, useState } from "react";
 import { Linking, Modal, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
+import { CollapsibleModalScreen } from "@/components/collapsible-modal-screen";
 import { ModalScreen } from "@/components/modal-screen";
 import { allergyOptions } from "@/constants/allergies";
 import { colors, radius, spacing } from "@/constants/theme";
 import type { MenuItem } from "@/data/restaurants";
-import { getMenuItemSafety } from "@/lib/safety";
+import type {
+  AllergyReviewSummary,
+  CommunityAllergyReview,
+  CommunitySnapshot,
+} from "@/features/community/community-service";
 
 type MenuItemDetailsModalProps = {
+  community?: CommunitySnapshot | null;
   item: MenuItem | null;
   onComment?: (item: MenuItem) => void;
   onClose: () => void;
   onReport?: (item: MenuItem) => void;
+  onViewReviews?: (item: MenuItem) => void;
   selectedAllergyIds: string[];
 };
 
+type SourceCue = {
+  kind: "inferred" | "linked" | "official" | "unavailable";
+  label: string;
+};
+
+const emptyReviewSummary: AllergyReviewSummary = {
+  averageRating: null,
+  count: 0,
+};
+
 export function MenuItemDetailsModal({
+  community,
   item,
   onComment,
   onClose,
   onReport,
+  onViewReviews,
   selectedAllergyIds,
 }: MenuItemDetailsModalProps) {
-  const safety = item ? getMenuItemSafety(item, selectedAllergyIds) : null;
-  const isAvoid = safety?.status === "avoid";
-  const isCaution = safety?.status === "caution";
-  const tone = isAvoid ? "#FF3B30" : isCaution ? "#FF9F0A" : "#34C759";
-  const statusLabel =
-    safety?.status === "unknown"
-      ? "Set allergies"
-      : isAvoid
-        ? "Avoid"
-        : isCaution
-          ? "Review"
-          : "Ok";
+  const [ingredientsVisible, setIngredientsVisible] = useState(false);
   const firstSource = item?.sourceUrls?.[0];
   const sourceHost = firstSource ? getSourceHost(firstSource) : null;
-  const allergenSourceLabel = item ? getAllergenSourceLabel(item) : null;
+  const allergenSourceCue = item ? getAllergenSourceCue(item) : null;
+  const displayDescription = item ? getDisplayDescription(item) : "";
+  const hasIngredients = Boolean(item?.ingredientsText?.trim());
+  const itemCommunity = item ? getItemCommunity(item, community?.reviews ?? []) : null;
+
+  useEffect(() => {
+    if (!item) {
+      setIngredientsVisible(false);
+    }
+  }, [item]);
 
   return (
-    <Modal
-      animationType="slide"
-      onRequestClose={onClose}
-      presentationStyle="pageSheet"
-      visible={Boolean(item)}
-    >
-      {item ? (
-        <ModalScreen
-          actionIcon={X}
-          actionLabel="Close menu item details"
-          headerContent={
-            <>
-              <Text style={styles.kicker}>{item.category}</Text>
-              <Text style={styles.title}>{item.name}</Text>
-            </>
-          }
-          onActionPress={onClose}
-        >
-          <ScrollView contentContainerStyle={styles.content}>
-            <View style={styles.heroRow}>
-              <View style={styles.statusBlock}>
-                <Text style={[styles.status, { color: tone }]}>{statusLabel}</Text>
-                {safety && safety.directMatchLabels.length > 0 ? (
-                  <Text style={styles.match}>Contains {safety.directMatchLabels.join(", ")}</Text>
-                ) : null}
-                {safety && safety.crossContactMatchLabels.length > 0 ? (
-                  <Text style={styles.match}>
-                    Cross-contact {safety.crossContactMatchLabels.join(", ")}
+    <>
+      <Modal
+        animationType="slide"
+        onRequestClose={onClose}
+        presentationStyle="pageSheet"
+        visible={Boolean(item)}
+      >
+        {item ? (
+          <CollapsibleModalScreen
+            actionIcon={X}
+            actionLabel="Close menu item details"
+            contentContainerStyle={styles.content}
+            footer={
+              <View style={styles.feedbackFooter}>
+                <Text style={styles.feedbackBody}>Something wrong or worth sharing?</Text>
+                <View style={styles.feedbackActions}>
+                  <Pressable
+                    accessibilityRole="button"
+                    onPress={() => onReport?.(item)}
+                    style={styles.feedbackButton}
+                  >
+                    <Text style={styles.feedbackButtonText}>Report</Text>
+                  </Pressable>
+                  <Pressable
+                    accessibilityRole="button"
+                    onPress={() => onComment?.(item)}
+                    style={styles.feedbackButtonPrimary}
+                  >
+                    <Text style={styles.feedbackButtonPrimaryText}>Review</Text>
+                  </Pressable>
+                </View>
+              </View>
+            }
+            onActionPress={onClose}
+            title={item.name}
+          >
+            <Text maxFontSizeMultiplier={1.08} style={styles.title}>
+              {item.name}
+            </Text>
+
+            {displayDescription ? (
+              <Text style={styles.descriptionText}>
+                {displayDescription}
+                {hasIngredients ? (
+                  <Text
+                    accessibilityRole="button"
+                    onPress={() => setIngredientsVisible(true)}
+                    style={styles.inlineTextLink}
+                  >
+                    {" "}
+                    View Ingredients
                   </Text>
                 ) : null}
-                {safety &&
-                safety.directMatchLabels.length === 0 &&
-                safety.crossContactMatchLabels.length === 0 &&
-                safety.officialAllergenDataUnavailable ? (
-                  <Text style={styles.match}>Official allergen information is unavailable.</Text>
-                ) : null}
-                {safety &&
-                safety.directMatchLabels.length === 0 &&
-                safety.crossContactMatchLabels.length === 0 &&
-                !safety.officialAllergenDataUnavailable ? (
-                  <Text style={styles.match}>No matches in your allergy profile</Text>
+              </Text>
+            ) : hasIngredients ? (
+              <Pressable
+                accessibilityRole="button"
+                onPress={() => setIngredientsVisible(true)}
+                style={styles.ingredientsLink}
+              >
+                <Text style={styles.ingredientsLinkText}>View Ingredients</Text>
+              </Pressable>
+            ) : null}
+
+            <View style={styles.section}>
+              <View style={styles.sectionHeaderRow}>
+                <Text style={styles.sectionTitle}>Allergen Details</Text>
+                {allergenSourceCue ? (
+                  <Pressable
+                    accessibilityRole={firstSource ? "link" : undefined}
+                    disabled={!firstSource}
+                    onPress={firstSource ? () => Linking.openURL(firstSource) : undefined}
+                    style={[
+                      styles.sourceCue,
+                      allergenSourceCue.kind === "official" && styles.sourceCueOfficial,
+                      (allergenSourceCue.kind === "inferred" ||
+                        allergenSourceCue.kind === "linked") &&
+                        styles.sourceCueInferred,
+                      allergenSourceCue.kind === "unavailable" && styles.sourceCueUnavailable,
+                    ]}
+                  >
+                    {allergenSourceCue.kind === "official" ? (
+                      <ShieldCheck color={colors.primary} size={13} strokeWidth={2.45} />
+                    ) : null}
+                    <Text
+                      style={[
+                        styles.sourceCueText,
+                        allergenSourceCue.kind === "official" && styles.sourceCueTextOfficial,
+                        (allergenSourceCue.kind === "inferred" ||
+                          allergenSourceCue.kind === "linked") &&
+                          styles.sourceCueTextInferred,
+                        allergenSourceCue.kind === "unavailable" && styles.sourceCueTextUnavailable,
+                      ]}
+                    >
+                      {allergenSourceCue.label}
+                    </Text>
+                    {firstSource ? (
+                      <ExternalLink
+                        color={
+                          allergenSourceCue.kind === "official" ? colors.primary : "#265CB9"
+                        }
+                        size={12}
+                        strokeWidth={2.5}
+                      />
+                    ) : null}
+                  </Pressable>
                 ) : null}
               </View>
-            </View>
-
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Description</Text>
-              <Text style={styles.body}>{item.description}</Text>
-            </View>
-
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Listed Allergens</Text>
               <AllergenChips item={item} selectedAllergyIds={selectedAllergyIds} />
             </View>
 
-            {item.ingredientsText ? (
-              <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Ingredients</Text>
-                <Text style={styles.body}>{item.ingredientsText}</Text>
+            <View style={styles.section}>
+              <View style={styles.sectionHeaderRow}>
+                <Text style={styles.sectionTitle}>Community</Text>
               </View>
-            ) : null}
+              <CommunityReviewPreview
+                onAddReview={() => onComment?.(item)}
+                onViewMore={() => onViewReviews?.(item)}
+                reviews={itemCommunity?.reviews ?? []}
+                summary={itemCommunity?.summary ?? emptyReviewSummary}
+              />
+            </View>
 
             {item.notes ? (
               <View style={styles.section}>
@@ -110,50 +191,141 @@ export function MenuItemDetailsModal({
                 <Text style={styles.body}>{item.notes}</Text>
               </View>
             ) : null}
+          </CollapsibleModalScreen>
+        ) : null}
+      </Modal>
 
-            <View style={styles.sourceCard}>
-              <Text style={styles.sourceEyebrow}>Allergen Information Source</Text>
-              <Text style={styles.sourceBody}>{allergenSourceLabel}</Text>
+      <Modal
+        animationType="slide"
+        onRequestClose={() => setIngredientsVisible(false)}
+        presentationStyle="pageSheet"
+        visible={ingredientsVisible && hasIngredients}
+      >
+        {item ? (
+          <ModalScreen
+            actionIcon={X}
+            actionLabel="Close ingredients"
+            headerContent={
+              <View>
+                <Text maxFontSizeMultiplier={1.08} style={styles.ingredientsModalTitle}>
+                  Ingredients
+                </Text>
+                <Text numberOfLines={1} style={styles.ingredientsModalSubtitle}>
+                  {item.name}
+                </Text>
+              </View>
+            }
+            onActionPress={() => setIngredientsVisible(false)}
+          >
+            <ScrollView
+              contentContainerStyle={styles.ingredientsModalContent}
+              showsVerticalScrollIndicator={false}
+            >
+              <Text selectable style={styles.ingredientsModalBody}>
+                {item.ingredientsText}
+              </Text>
               {firstSource ? (
                 <Pressable
-                  accessibilityRole="button"
+                  accessibilityRole="link"
                   onPress={() => Linking.openURL(firstSource)}
-                  style={styles.sourceLink}
+                  style={styles.ingredientsSourceLink}
                 >
-                  <ExternalLink color={colors.primary} size={18} strokeWidth={2.35} />
-                  <Text style={styles.sourceLinkText}>
-                    Open{sourceHost ? ` ${sourceHost}` : " official source"}
+                  <ExternalLink color={colors.primary} size={16} strokeWidth={2.35} />
+                  <Text style={styles.ingredientsSourceLinkText}>
+                    Source{sourceHost ? `: ${sourceHost}` : ""}
                   </Text>
                 </Pressable>
               ) : null}
-            </View>
+            </ScrollView>
+          </ModalScreen>
+        ) : null}
+      </Modal>
+    </>
+  );
+}
 
-            <View style={styles.feedbackCard}>
-              <Text style={styles.feedbackTitle}>Something wrong?</Text>
-              <Text style={styles.feedbackBody}>
-                Reports are reviewed privately. Comments appear after approval.
-              </Text>
-              <View style={styles.feedbackActions}>
-                <Pressable
-                  accessibilityRole="button"
-                  onPress={() => onReport?.(item)}
-                  style={styles.feedbackButton}
-                >
-                  <Text style={styles.feedbackButtonText}>Report</Text>
-                </Pressable>
-                <Pressable
-                  accessibilityRole="button"
-                  onPress={() => onComment?.(item)}
-                  style={styles.feedbackButton}
-                >
-                  <Text style={styles.feedbackButtonText}>Comment</Text>
-                </Pressable>
-              </View>
-            </View>
-          </ScrollView>
-        </ModalScreen>
-      ) : null}
-    </Modal>
+function CommunityReviewPreview({
+  onAddReview,
+  onViewMore,
+  reviews,
+  summary,
+}: {
+  onAddReview: () => void;
+  onViewMore: () => void;
+  reviews: CommunityAllergyReview[];
+  summary: AllergyReviewSummary;
+}) {
+  const topReviews = reviews.slice(0, 2);
+
+  if (summary.count === 0) {
+    return (
+      <View style={styles.communityEmpty}>
+        <Text style={styles.communityEmptyTitle}>No allergy reviews yet</Text>
+        <Text style={styles.communityEmptyBody}>
+          Be the first to share how this item worked for your allergy needs.
+        </Text>
+        <Pressable accessibilityRole="button" onPress={onAddReview} style={styles.communityLink}>
+          <Text style={styles.communityLinkText}>Add a review</Text>
+          <ChevronRight color={colors.primary} size={14} strokeWidth={2.4} />
+        </Pressable>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.communityPreview}>
+      <View style={styles.communitySummaryRow}>
+        <CommunityRatingDisplay rating={summary.averageRating ?? 0} />
+        <Text style={styles.communitySummaryText}>
+          {formatReviewSummary(summary)}
+        </Text>
+      </View>
+      {topReviews.map((review) => (
+        <View key={review.id} style={styles.communityReview}>
+          <View style={styles.communityReviewHeader}>
+            <CommunityRatingDisplay rating={review.rating} size={13} />
+            {review.communityStatus === "pending" ? (
+              <Text style={styles.pendingBadge}>Pending</Text>
+            ) : null}
+          </View>
+          <Text numberOfLines={2} style={styles.communityReviewBody}>
+            {review.body}
+          </Text>
+          {review.allergyContext ? (
+            <Text numberOfLines={1} style={styles.communityReviewMeta}>
+              {review.allergyContext}
+            </Text>
+          ) : null}
+        </View>
+      ))}
+      <Pressable accessibilityRole="link" onPress={onViewMore} style={styles.communityLink}>
+        <Text style={styles.communityLinkText}>View all reviews</Text>
+        <ChevronRight color={colors.primary} size={14} strokeWidth={2.4} />
+      </Pressable>
+    </View>
+  );
+}
+
+function CommunityRatingDisplay({
+  rating,
+  size = 15,
+}: {
+  rating: number;
+  size?: number;
+}) {
+  const roundedRating = Math.round(rating);
+
+  return (
+    <View style={styles.communityRating}>
+      {[1, 2, 3, 4, 5].map((value) => (
+        <ShieldCheck
+          color={value <= roundedRating ? colors.primary : "#C7C7CC"}
+          key={value}
+          size={size}
+          strokeWidth={2.45}
+        />
+      ))}
+    </View>
   );
 }
 
@@ -175,13 +347,27 @@ function AllergenChips({
       label: getAllergenLabel(id),
       tone: "mayContain" as const,
   }));
+  const inferredChips = (item.inferredAllergenSignals ?? []).map((signal) => ({
+      id: signal.id,
+      label: getAllergenLabel(signal.id),
+      tone: "inferred" as const,
+  }));
 
   if (item.allergenSourceType === "unavailable") {
     return (
-      <View style={styles.allergenWrap}>
-        <View style={styles.reviewChip}>
-          <Text style={styles.reviewChipText}>Official allergen info unavailable</Text>
+      <View style={styles.allergenGroups}>
+        <View style={styles.allergenWrap}>
+          <View style={styles.reviewChip}>
+            <Text style={styles.reviewChipText}>Official allergen info unavailable</Text>
+          </View>
         </View>
+        {inferredChips.length > 0 ? (
+          <AllergenChipGroup
+            chips={inferredChips}
+            label="Ingredient Intelligence"
+            selectedAllergyIds={selectedAllergyIds}
+          />
+        ) : null}
       </View>
     );
   }
@@ -224,17 +410,32 @@ function AllergenChipGroup({
   selectedAllergyIds,
 }: {
   broad?: boolean;
-  chips: Array<{ id: string; label: string; tone: "direct" | "mayContain" }>;
+  chips: { id: string; label: string; tone: "direct" | "inferred" | "mayContain" }[];
   label: string;
   selectedAllergyIds: string[];
 }) {
+  const selectedAllergySet = getSelectedAllergenSet(selectedAllergyIds);
+  const sortedChips = [...chips].sort((left, right) => {
+    const leftSelected = selectedAllergySet.has(left.id);
+    const rightSelected = selectedAllergySet.has(right.id);
+
+    if (leftSelected !== rightSelected) {
+      return leftSelected ? -1 : 1;
+    }
+
+    return left.label.localeCompare(right.label);
+  });
+
   return (
     <View style={styles.allergenGroup}>
       <Text style={styles.allergenGroupTitle}>{label}</Text>
       <View style={styles.allergenWrap}>
-        {chips.map((chip) => {
-          const selected = selectedAllergyIds.includes(chip.id);
+        {sortedChips.map((chip) => {
+          const option = allergyOptions.find((nextOption) => nextOption.id === chip.id);
+          const Icon = option?.Icon;
+          const selected = selectedAllergySet.has(chip.id);
           const mayContain = chip.tone === "mayContain";
+          const inferred = chip.tone === "inferred";
 
           return (
             <View
@@ -242,13 +443,22 @@ function AllergenChipGroup({
               style={[
                 styles.allergenChip,
                 mayContain && styles.mayContainChip,
+                inferred && styles.inferredChip,
                 selected && styles.matchedChip,
               ]}
             >
+              {Icon ? (
+                <Icon
+                  color={selected ? "#B42318" : option.accent}
+                  size={15}
+                  strokeWidth={2.35}
+                />
+              ) : null}
               <Text
                 style={[
                   styles.allergenChipText,
                   mayContain && styles.mayContainText,
+                  inferred && styles.inferredChipText,
                   selected && styles.matchedChipText,
                 ]}
               >
@@ -269,12 +479,38 @@ function AllergenChipGroup({
   );
 }
 
+function getSelectedAllergenSet(selectedAllergyIds: string[]) {
+  const selected = new Set(selectedAllergyIds);
+
+  if (selected.has("gluten")) {
+    selected.add("wheat");
+  }
+
+  return selected;
+}
+
 function hasBroadCrossContact(item: MenuItem) {
   return (item.mayContain ?? []).length >= 8;
 }
 
 function getAllergenLabel(id: string) {
   return allergyOptions.find((option) => option.id === id)?.label ?? id;
+}
+
+function getDisplayDescription(item: MenuItem) {
+  const description = item.description?.trim();
+
+  if (!description || isSourceArtifactDescription(description)) {
+    return "";
+  }
+
+  return description;
+}
+
+function isSourceArtifactDescription(description: string) {
+  return /^official .+(nutrition calculator|allergen|ingredient).*(api|data|source)\.?$/i.test(
+    description,
+  );
 }
 
 function getSourceHost(url: string) {
@@ -285,25 +521,123 @@ function getSourceHost(url: string) {
   }
 }
 
-function getAllergenSourceLabel(item: MenuItem) {
+function getAllergenSourceCue(item: MenuItem): SourceCue {
   switch (item.allergenSourceType) {
     case "official-allergen-menu":
-      return "Allergens are from the restaurant's official allergen guide.";
+      return {
+        kind: "official",
+        label: "Official source",
+      };
     case "official-ingredients":
-      return "Allergens are from the restaurant's official ingredient information.";
+      return {
+        kind: "official",
+        label: "Official source",
+      };
     case "official-product-allergen-section":
-      return "Allergens are from the restaurant's official product allergen section.";
+      return {
+        kind: "official",
+        label: "Official source",
+      };
+    case "official-global-cross-contact-note":
+      return {
+        kind: "official",
+        label: "Official source",
+      };
+    case "restaurant-linked-menu-ingredients":
+    case "restaurant-linked-product-allergen-section":
+      return {
+        kind: "linked",
+        label: "Restaurant-linked menu",
+      };
     case "unavailable":
-      return "Official allergen information was not available for this item.";
+      return item.inferredAllergenSignals?.length
+        ? {
+            kind: "inferred",
+            label: "Ingredient Intelligence",
+          }
+        : {
+            kind: "unavailable",
+            label: "No official source",
+          };
     default:
-      return "Allergens are from the restaurant source listed below.";
+      return {
+        kind: "official",
+        label: "Source",
+      };
   }
+}
+
+function getItemCommunity(item: MenuItem, reviews: CommunityAllergyReview[]) {
+  const itemNameKey = normalizeReviewMenuItemName(item.name);
+  const matchedReviews = reviews
+    .filter((review) => {
+      if (review.menuItemId && review.menuItemId === item.id) {
+        return true;
+      }
+
+      return review.menuItemName
+        ? normalizeReviewMenuItemName(review.menuItemName) === itemNameKey
+        : false;
+    })
+    .sort(sortCommunityReviewsForPreview);
+
+  return {
+    reviews: matchedReviews,
+    summary: summarizeCommunityReviews(matchedReviews),
+  };
+}
+
+function summarizeCommunityReviews(reviews: CommunityAllergyReview[]): AllergyReviewSummary {
+  const approvedReviews = reviews.filter((review) => review.communityStatus === "approved");
+
+  if (approvedReviews.length === 0) {
+    return emptyReviewSummary;
+  }
+
+  const total = approvedReviews.reduce((sum, review) => sum + review.rating, 0);
+
+  return {
+    averageRating: Math.round((total / approvedReviews.length) * 10) / 10,
+    count: approvedReviews.length,
+  };
+}
+
+function sortCommunityReviewsForPreview(
+  left: CommunityAllergyReview,
+  right: CommunityAllergyReview,
+) {
+  if (left.communityStatus !== right.communityStatus) {
+    return left.communityStatus === "approved" ? -1 : 1;
+  }
+
+  if (left.rating !== right.rating) {
+    return right.rating - left.rating;
+  }
+
+  return (right.createdAt ?? "").localeCompare(left.createdAt ?? "");
+}
+
+function normalizeReviewMenuItemName(value: string) {
+  return value.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function formatReviewSummary(summary: AllergyReviewSummary) {
+  if (summary.count === 0 || summary.averageRating === null) {
+    return "No allergy reviews yet";
+  }
+
+  return `${summary.averageRating.toFixed(1)} from ${summary.count} review${
+    summary.count === 1 ? "" : "s"
+  }`;
 }
 
 const styles = StyleSheet.create({
   allergenChip: {
+    alignItems: "center",
     backgroundColor: "#F2F2F7",
     borderRadius: radius.pill,
+    flexDirection: "row",
+    gap: 5,
     paddingHorizontal: 10,
     paddingVertical: 6,
   },
@@ -331,74 +665,197 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   body: {
-    color: colors.ink,
-    fontSize: 17,
-    lineHeight: 25,
+    color: "#3C3C43",
+    fontSize: 16,
+    fontWeight: "500",
+    lineHeight: 24,
   },
   content: {
+    gap: 18,
     paddingBottom: spacing.four,
     paddingHorizontal: spacing.three,
-    paddingTop: spacing.three,
+    paddingTop: 6,
+  },
+  descriptionText: {
+    color: "#3C3C43",
+    fontSize: 15,
+    fontWeight: "400",
+    lineHeight: 22,
   },
   feedbackActions: {
     flexDirection: "row",
     gap: 10,
-    marginTop: spacing.two,
+    marginTop: 10,
   },
   feedbackBody: {
     color: colors.muted,
-    fontSize: 14,
-    lineHeight: 20,
-    marginTop: 4,
+    fontSize: 13,
+    fontWeight: "600",
+    lineHeight: 18,
+    textAlign: "center",
   },
   feedbackButton: {
     alignItems: "center",
-    backgroundColor: colors.primaryLight,
+    backgroundColor: "#F2F2F7",
     borderRadius: radius.pill,
     flex: 1,
     justifyContent: "center",
-    minHeight: 46,
+    minHeight: 44,
+  },
+  feedbackButtonPrimary: {
+    alignItems: "center",
+    backgroundColor: colors.primary,
+    borderRadius: radius.pill,
+    flex: 1,
+    justifyContent: "center",
+    minHeight: 44,
+  },
+  feedbackButtonPrimaryText: {
+    color: colors.white,
+    fontSize: 15,
+    fontWeight: "800",
   },
   feedbackButtonText: {
+    color: colors.ink,
+    fontSize: 15,
+    fontWeight: "800",
+  },
+  feedbackFooter: {
+    backgroundColor: "rgba(250,250,252,0.96)",
+    borderTopColor: "rgba(60,60,67,0.12)",
+    borderTopWidth: 1,
+    paddingBottom: spacing.two,
+    paddingHorizontal: spacing.three,
+    paddingTop: 10,
+  },
+  inferredChip: {
+    backgroundColor: "#EEF4FF",
+    borderColor: "rgba(38,92,185,0.24)",
+    borderWidth: 1,
+  },
+  inferredChipText: {
+    color: "#265CB9",
+  },
+  ingredientsLink: {
+    alignSelf: "flex-start",
+    paddingVertical: 2,
+  },
+  ingredientsLinkText: {
     color: colors.primary,
     fontSize: 15,
     fontWeight: "800",
   },
-  feedbackCard: {
-    backgroundColor: colors.white,
-    borderColor: colors.line,
-    borderRadius: 22,
-    borderWidth: 1,
-    marginBottom: spacing.two,
-    padding: spacing.two,
+  ingredientsModalBody: {
+    color: "#3C3C43",
+    fontSize: 16,
+    fontWeight: "500",
+    lineHeight: 24,
   },
-  feedbackTitle: {
-    color: colors.ink,
-    fontSize: 17,
-    fontWeight: "800",
+  ingredientsModalContent: {
+    gap: spacing.two,
+    paddingBottom: spacing.four,
+    paddingHorizontal: spacing.three,
+    paddingTop: spacing.two,
   },
-  heroRow: {
-    alignItems: "center",
-    backgroundColor: colors.white,
-    borderColor: colors.line,
-    borderRadius: 24,
-    borderWidth: 1,
-    flexDirection: "row",
-    marginBottom: spacing.two,
-    padding: spacing.two,
-  },
-  kicker: {
-    color: colors.primary,
+  ingredientsModalSubtitle: {
+    color: colors.muted,
     fontSize: 13,
-    fontWeight: "800",
-    marginBottom: 5,
+    fontWeight: "700",
+    lineHeight: 18,
     marginTop: 2,
   },
-  match: {
+  ingredientsModalTitle: {
+    color: colors.ink,
+    fontSize: 18,
+    fontWeight: "900",
+    lineHeight: 22,
+  },
+  ingredientsSourceLink: {
+    alignItems: "center",
+    alignSelf: "flex-start",
+    flexDirection: "row",
+    gap: 6,
+    paddingVertical: 4,
+  },
+  ingredientsSourceLinkText: {
+    color: colors.primary,
+    fontSize: 14,
+    fontWeight: "800",
+  },
+  inlineTextLink: {
+    color: colors.primary,
+    fontWeight: "800",
+  },
+  communityEmpty: {
+    gap: 6,
+    paddingTop: 2,
+  },
+  communityEmptyBody: {
     color: colors.muted,
     fontSize: 14,
+    fontWeight: "500",
     lineHeight: 20,
-    marginTop: 3,
+  },
+  communityEmptyTitle: {
+    color: colors.ink,
+    fontSize: 15,
+    fontWeight: "800",
+    lineHeight: 20,
+  },
+  communityLink: {
+    alignItems: "center",
+    alignSelf: "flex-start",
+    flexDirection: "row",
+    gap: 2,
+    paddingVertical: 4,
+  },
+  communityLinkText: {
+    color: colors.primary,
+    fontSize: 14,
+    fontWeight: "800",
+  },
+  communityPreview: {
+    gap: 10,
+  },
+  communityRating: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 2,
+  },
+  communityReview: {
+    borderTopColor: "rgba(60,60,67,0.1)",
+    borderTopWidth: 1,
+    gap: 5,
+    paddingTop: 10,
+  },
+  communityReviewBody: {
+    color: "#3C3C43",
+    fontSize: 14,
+    fontWeight: "600",
+    lineHeight: 20,
+  },
+  communityReviewHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 8,
+  },
+  communityReviewMeta: {
+    color: colors.muted,
+    fontSize: 12,
+    fontWeight: "700",
+    lineHeight: 16,
+  },
+  communitySummaryRow: {
+    alignItems: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+  },
+  communitySummaryText: {
+    color: colors.ink,
+    fontSize: 14,
+    fontWeight: "800",
+    lineHeight: 19,
   },
   matchedChip: {
     backgroundColor: "#FFE9E7",
@@ -439,69 +896,66 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   section: {
-    backgroundColor: colors.white,
-    borderColor: colors.line,
-    borderRadius: 24,
-    borderWidth: 1,
-    marginBottom: spacing.two,
-    padding: spacing.two,
+    gap: 9,
+    paddingTop: 3,
+  },
+  sectionHeaderRow: {
+    alignItems: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
   },
   sectionTitle: {
     color: colors.muted,
     fontSize: 13,
     fontWeight: "800",
-    marginBottom: 8,
     textTransform: "uppercase",
   },
-  sourceBody: {
-    color: colors.ink,
-    fontSize: 15,
-    fontWeight: "600",
-    lineHeight: 21,
-    marginTop: 5,
-  },
-  sourceCard: {
-    backgroundColor: colors.white,
-    borderColor: colors.line,
-    borderRadius: 24,
-    borderWidth: 1,
-    marginBottom: spacing.two,
-    padding: spacing.two,
-  },
-  sourceEyebrow: {
-    color: colors.muted,
-    fontSize: 13,
-    fontWeight: "800",
-    textTransform: "uppercase",
-  },
-  sourceLink: {
+  sourceCue: {
     alignItems: "center",
-    alignSelf: "flex-start",
-    backgroundColor: colors.primaryLight,
     borderRadius: radius.pill,
     flexDirection: "row",
-    gap: 7,
-    marginTop: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
   },
-  sourceLinkText: {
+  sourceCueInferred: {
+    backgroundColor: "#EEF4FF",
+  },
+  sourceCueOfficial: {
+    backgroundColor: colors.primaryLight,
+  },
+  sourceCueText: {
+    fontSize: 11,
+    fontWeight: "800",
+  },
+  sourceCueTextInferred: {
+    color: "#265CB9",
+  },
+  sourceCueTextOfficial: {
     color: colors.primary,
-    fontSize: 14,
-    fontWeight: "800",
   },
-  status: {
-    fontSize: 18,
-    fontWeight: "800",
+  sourceCueTextUnavailable: {
+    color: colors.muted,
   },
-  statusBlock: {
-    flex: 1,
+  sourceCueUnavailable: {
+    backgroundColor: "#F2F2F7",
+  },
+  pendingBadge: {
+    backgroundColor: "#FFF6E5",
+    borderRadius: radius.pill,
+    color: "#B25E00",
+    fontSize: 11,
+    fontWeight: "800",
+    overflow: "hidden",
+    paddingHorizontal: 7,
+    paddingVertical: 3,
   },
   title: {
     color: colors.ink,
     flexShrink: 1,
-    fontSize: 28,
+    fontSize: 23,
     fontWeight: "800",
-    lineHeight: 34,
+    lineHeight: 28,
   },
 });

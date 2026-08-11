@@ -1306,7 +1306,8 @@ export function validateAdjudicationForStatus(adjudication, status) {
   const solAdjudication = adjudication.model?.id === verificationModel.id &&
     adjudication.model?.reasoningEffort === verificationModel.reasoningEffort;
   const pocCoordinatorAdjudication = adjudication.type === "coordinator" &&
-    String(adjudication.runId ?? "").startsWith("poc-") &&
+    (String(adjudication.runId ?? "").startsWith("poc-") ||
+      String(adjudication.runId ?? "").startsWith("distributed-machine-")) &&
     adjudication.model?.id === pocCoordinatorModel.id &&
     adjudication.model?.reasoningEffort === pocCoordinatorModel.reasoningEffort;
   if (!solAdjudication && !pocCoordinatorAdjudication) {
