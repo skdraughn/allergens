@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-149-2026-08-04",
+  "restaurantId": "gong-cha",
+  "reviewFile": "reviews/gong-cha.json",
+  "resultFile": "results/gong-cha.json",
+  "valid": true,
+  "checks": {
+    "packetIdentityMatches": true,
+    "packetLocationMissing": true,
+    "packetAddressMissing": true,
+    "packetPhoneMissing": true,
+    "baselineItemCount": 205,
+    "reconciledItemCount": 205,
+    "missingAuditItemCount": 0,
+    "duplicateAuditItemCount": 0,
+    "mechanicalUnresolvedItemCount": 0,
+    "nationalCatalogProductCount": 57,
+    "officialAvailabilityVariesByLocation": true,
+    "officialOrderingRequiresStoreSelection": true,
+    "completeStoreMenuEstablished": false,
+    "staleDispositionsRejectedAsBinding": true,
+    "normalizedDispositionsRejectedAsBinding": true,
+    "chainAllergenWarningPreserved": true,
+    "storeSpecificItemClaimsRejected": true,
+    "blockedUnverifiableConfirmed": true,
+    "verificationAuthorized": false,
+    "repairAuthorized": false
+  },
+  "validator": {
+    "command": "node scripts/restaurant-verification-poc-result.mjs data/restaurant-verification/worker-runs/poc-batch-149-2026-08-04/jobs/gong-cha.json data/restaurant-verification/worker-runs/poc-batch-149-2026-08-04/results/gong-cha.json",
+    "exitCode": 0,
+    "errors": [],
+    "warnings": [],
+    "mechanicalRoute": "sol_review",
+    "mechanicalReason": "menuScopeUnresolved"
+  },
+  "bindingDecision": "Block gong-cha as unverifiable until one specific store and its official store menu are supplied; retain only the chain-level allergen warning and do not publish the national product gallery or frozen reconciliation as a complete store catalog."
+}

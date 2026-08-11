@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-130-2026-08-01",
+  "restaurantId": "replacement-firefly-washington-dc",
+  "reviewType": "narrow_complete_current_official_menu_scope_resolution",
+  "validation": {
+    "valid": true,
+    "identityConfirmed": true,
+    "restaurantActive": true,
+    "officialMenuSurfaceCurrent": true,
+    "officialMenuSurfaceRestaurantIssued": true,
+    "officialMenuSurfaceFullyReadable": true,
+    "submittedFrozenRowCount": 17,
+    "submittedMappedProductCount": 13,
+    "submittedSurfaceMarkedPartial": true,
+    "fragmentParserIssueConfirmed": true,
+    "completeOfficialCatalogExceedsSubmittedProducts": true,
+    "currentMenuFamiliesConfirmed": [
+      "breakfast",
+      "weekend brunch",
+      "starters",
+      "mains",
+      "salads and soup",
+      "kids",
+      "dinner",
+      "happy hour",
+      "dessert",
+      "beverages"
+    ],
+    "formalAllergenMatrixFound": false,
+    "canonicalItemChecksUntouched": true
+  },
+  "resolution": {
+    "binding": true,
+    "decision": "return_to_luna_for_complete_official_menu_enumeration",
+    "terminalAllowed": false,
+    "menuScopeResolvedAs": "all_named_products_on_current_official_firefly_page_across_all_food_menu_families",
+    "identity": {
+      "name": "Firefly",
+      "address": "1310 New Hampshire Avenue NW, Washington, DC 20036",
+      "phone": "(202) 861-1310",
+      "confirmed": true
+    },
+    "officialSurface": {
+      "url": "https://www.hotelmadera.com/dine/firefly",
+      "authorityTier": "restaurant_issued",
+      "current": true,
+      "scopeStatus": "complete_source_available",
+      "menuFamilies": [
+        "weekday breakfast",
+        "weekend brunch",
+        "starters",
+        "morning and brunch mains",
+        "salads and soup",
+        "kids menu",
+        "lunch and dinner",
+        "happy hour",
+        "desserts",
+        "coffee and nonalcoholic beverages"
+      ],
+      "finding": "The official Hotel Madera page exposes named product headings and descriptions across multiple current menus. It is sufficiently structured to enumerate the complete current food catalog; the submitted 13-product projection covers only products recoverable from the 17 malformed frozen fragments."
+    },
+    "fragmentAdjudication": {
+      "frozenRows": 17,
+      "mappedFragments": 15,
+      "mappedUniqueProducts": 13,
+      "unmatchedHistoricalFragments": 2,
+      "finding": "The fragment-to-product normalization is useful repair evidence, but it is not a current catalog inventory. Product descriptions must not remain standalone products, and the complete surface must include every named current item rather than only products touched by frozen fragments."
+    },
+    "allergenResolution": {
+      "status": "accurately_unavailable",
+      "formalMatrixFound": false,
+      "requiredSemantics": "Use restaurant-issued ingredient descriptions only for explicit positive ingredients. Leave undeclared allergens unavailable; do not infer negatives. Preserve any official allergy advisory at restaurant level."
+    },
+    "requiredCoordinatorAction": {
+      "action": "focused_complete_official_menu_enumeration",
+      "repeatIdentityResearch": false,
+      "repeatMatrixSearches": false,
+      "sourceUrl": "https://www.hotelmadera.com/dine/firefly",
+      "enumerateAllNamedFoodProducts": true,
+      "includeAllCurrentFoodMenuFamilies": true,
+      "excludeDescriptionFragments": true,
+      "mergeSameNamedProductsAcrossSectionsWhenRecipeIdentityIsSupported": true,
+      "keepDistinctKidsOrVariantProductsWhenCompositionDiffers": true,
+      "preserveFragmentMappings": true,
+      "preserveUnmatchedHistoricalRowsAsStaleUnlessCurrentNamedProductFound": true,
+      "applyRestaurantIssuedIngredientPositivesOnly": true,
+      "leaveUndeclaredAllergensUnavailable": true,
+      "requireExplicitCompleteCurrentProductKeys": true
+    },
+    "supportingEvidence": [
+      {
+        "evidenceId": "official-firefly-page",
+        "url": "https://www.hotelmadera.com/dine/firefly",
+        "authorityTier": "restaurant_issued",
+        "finding": "Current official page provides the restaurant identity plus multiple named breakfast, brunch, starter, main, salad, kids, dinner, beverage, and related menu sections."
+      },
+      {
+        "evidenceId": "linked-opentable",
+        "url": "https://www.opentable.com/r/firefly-dc",
+        "authorityTier": "restaurant_linked_vendor",
+        "finding": "Independently confirms the same address, phone, operating meal periods, and links the Hotel Madera Firefly website; its menu tabs corroborate that the catalog spans breakfast, brunch, dinner, happy hour, kids, dessert, beverages, and cocktails."
+      }
+    ],
+    "rationale": "The available restaurant-issued page resolves the menu-scope question: Firefly's current catalog is the union of every named food product across its current official menu families, not the 13 products recoverable from a malformed 17-row packet. Because the source itself is structured and current, quarantine is unnecessary; the binding next step is a focused complete enumeration from that page. The existing fragment mappings should be retained as reconciliation evidence, while the two unmatched historical fragments remain stale unless a named current product is directly found."
+  },
+  "remainingSolSignals": []
+}

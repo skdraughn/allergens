@@ -29,7 +29,9 @@ export function mergeBindingSolReview(result, review) {
   const reviewItems = review.resolution.items ?? [];
   const reviewedKeys = reviewItems.map((entry) => entry.auditItemKey);
   const missingReviewKeys = unresolvedKeys.filter((key) => !reviewedKeys.includes(key));
-  const extraReviewKeys = reviewedKeys.filter((key) => !unresolvedKeys.includes(key));
+  const reconciliationKeys = new Set(reconciliation.map((entry) => entry.auditItemKey));
+  const extraReviewKeys = reviewedKeys.filter((key) =>
+    !unresolvedKeys.includes(key) && !(unresolvedKeys.length === 0 && reconciliationKeys.has(key)));
   if (missingReviewKeys.length || extraReviewKeys.length || new Set(reviewedKeys).size !== reviewedKeys.length) {
     throw new Error("Sol review does not resolve the exact unresolved key set once.");
   }
@@ -330,7 +332,9 @@ export function buildPocCloseoutPacket({ job, result, applyResult, dossier, evid
     return {
       auditItemKey: entry.auditItemKey,
       disposition: ledgerDisposition(entry.disposition),
-      allergenVerdict: excluded ? "not_applicable" : hasDirectAllergens ? "verified" : "accurately_unavailable",
+      allergenVerdict: result.outcome === "blocked_unverifiable"
+        ? (entry.disposition === "artifact" ? "not_applicable" : "accurately_unavailable")
+        : excluded ? "not_applicable" : hasDirectAllergens ? "verified" : "accurately_unavailable",
       sourceEvidenceIds,
       matchedCurrentProductKeys: entry.matchedCurrentProductKeys,
       adjudicatedContainsAllergens: containsAllergens,
@@ -368,7 +372,7 @@ export function buildPocCloseoutPacket({ job, result, applyResult, dossier, evid
       notes: unique([surface.scope, surface.servicePeriod, surface.status]),
     };
   });
-  if (!surfaces.length && (products.length > 0 || itemChecks.length > 0)) {
+  if (!surfaces.length && (products.length > 0 || itemChecks.length > 0) && result.outcome !== "blocked_unverifiable") {
     throw new Error("Closeout requires at least one verified current menu surface for a nonempty catalog or baseline.");
   }
 
@@ -395,6 +399,17 @@ export function buildPocCloseoutPacket({ job, result, applyResult, dossier, evid
       purpose: directEvidenceIds.has(evidenceId) ? "both" : source.purpose,
     };
   });
+  const blockedUnverifiable = result.outcome === "blocked_unverifiable";
+  const blockedSourceAttempts = ["official_site", "linked_source", "ordering_vendor", "targeted_search", "archive", "third_party"]
+    .map((kind) => ({
+      id: `${job.batchId}-${job.restaurantId}-${kind}`,
+      kind,
+      attemptedAt: now,
+      outcome: "exhausted_without_verifiable_target_scope",
+      status: "not_found",
+      query: `${job.name} ${kind} identity and current menu scope`,
+      scopeImpact: "No source resolved the corrupted record to one verifiable restaurant location.",
+    }));
   return {
     restaurantId: job.restaurantId,
     name: job.name,
@@ -403,7 +418,7 @@ export function buildPocCloseoutPacket({ job, result, applyResult, dossier, evid
     ...(dossier.restaurantLevelAllergenEvidence
       ? { restaurantLevelAllergenEvidence: dossier.restaurantLevelAllergenEvidence }
       : {}),
-    status: "repair_in_progress",
+    status: blockedUnverifiable ? "blocked_unverifiable" : "repair_in_progress",
     checks: {
       menu: {
         verdict: "verified",
@@ -424,7 +439,7 @@ export function buildPocCloseoutPacket({ job, result, applyResult, dossier, evid
       },
     },
     currentCatalog: {
-      status: "verified",
+      status: blockedUnverifiable ? "unverifiable" : "verified",
       reviewedBaselineItemCount: itemChecks.length,
       currentProductCount: products.length,
       reconciledCurrentProductCount: products.length,
@@ -436,13 +451,16 @@ export function buildPocCloseoutPacket({ job, result, applyResult, dossier, evid
       type: "coordinator",
       runId: job.batchId,
       decidedAt: now,
-      recommendation: "codex_verified",
-      model: { id: "codex-poc-coordinator", reasoningEffort: "high" },
+      recommendation: blockedUnverifiable ? "blocked_unverifiable" : "codex_verified",
+      model: blockedUnverifiable
+        ? { id: "gpt-5.6-sol", reasoningEffort: "medium" }
+        : { id: "codex-poc-coordinator", reasoningEffort: "high" },
       rationale: "Research structure, current product mappings, direct allergen authority, target repair, Ingredient Intelligence timing, focused validation, and idempotency passed the POC terminal gates.",
       artifactHashes: dossier.adjudication?.artifactHashes ?? [],
     },
     evidence: evidenceUpdates,
     replaceEvidence: true,
+    ...(blockedUnverifiable ? { sourceAttempts: blockedSourceAttempts, replaceSourceAttempts: true } : {}),
     findings: [],
     replaceFindings: true,
     ...(workerHandoff ? { workerHandoff } : {}),

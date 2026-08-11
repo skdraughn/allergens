@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-155-2026-08-04",
+  "restaurantId": "gregorio-s-trattoria-potomac-md-dc-metro",
+  "reviewType": "narrow_cabin_john_vs_park_potomac_identity_catalog_resolution",
+  "validation": {
+    "valid": true
+  },
+  "resolution": {
+    "binding": true,
+    "decision": "bind_record_to_cabin_john_storefront",
+    "outcome": "repair_authorized",
+    "identity": {
+      "name": "Gregorio's Trattoria – Potomac",
+      "locationId": "potomac-md",
+      "storefrontLabel": "Cabin John",
+      "address": "7745 Tuckerman Lane, Potomac, MD 20854",
+      "phone": "301-296-6168",
+      "status": "confirmed",
+      "sourceEvidenceIds": [
+        "official-home",
+        "official-menus",
+        "linked-heartland-cabin-john",
+        "linked-doordash-cabin-john"
+      ],
+      "rationale": "The official locations page labels 7745 Tuckerman Lane as Gregorio’s Trattoria – Potomac and identifies it in navigation as Cabin John. The second storefront is separately and explicitly labeled Gregorio’s Trattoria – Park Potomac at 12505 Park Potomac Avenue. The packet’s generic Potomac name and locationId therefore bind to the Cabin John storefront, not to a merged two-store identity."
+    },
+    "catalogBinding": {
+      "frozenRowCount": 102,
+      "cabinJohnCurrentProductCount": 102,
+      "parkPotomacCurrentProductCount": 102,
+      "catalogProductSetsIdentical": true,
+      "frozenRowsReconciledAtCabinJohn": 102,
+      "parkPotomacEvidenceRequiredForCatalog": false,
+      "mergedCatalogCausesProductDrift": false,
+      "bindingSurfaceId": "cabin-john-heartland",
+      "nonbindingCorroborativeSurfaceId": "park-potomac-heartland",
+      "rationale": "The two fully enumerated Heartland surfaces currently expose the same 102 product keys, and every frozen row matches the Cabin John surface exactly. The accidental merge therefore does not add, remove, or rename products, but the Cabin John Heartland and DoorDash sources alone must bind the location-specific catalog. Park Potomac sources may be retained only as nonbinding corroboration of shared chain offerings."
+    },
+    "allergenResolution": {
+      "officialCurrentMatrixAvailable": false,
+      "status": "accurately_unavailable",
+      "crossStoreNegativeInferencePermitted": false,
+      "rationale": "All four required search classes found no exhaustive allergen matrix. Identical menus do not establish identical recipes or cross-contact practices, so Park Potomac evidence cannot create Cabin John allergen claims or negative inferences."
+    },
+    "requiredRepair": {
+      "identity": {
+        "confirmed": true,
+        "address": "7745 Tuckerman Lane, Potomac, MD 20854",
+        "phone": "301-296-6168",
+        "sourceEvidenceIds": [
+          "official-home",
+          "official-menus",
+          "linked-heartland-cabin-john",
+          "linked-doordash-cabin-john"
+        ]
+      },
+      "menuSurfaces": {
+        "binding": [
+          "cabin-john-heartland"
+        ],
+        "removeFromBinding": [
+          "park-potomac-heartland"
+        ]
+      },
+      "currentProducts": "Retain the same 102 products, but bind product menu evidence and all 102 reconciliation rows to Cabin John sources only.",
+      "changes": {
+        "identityAmbiguous": false,
+        "menuScopeUnresolved": false
+      }
+    },
+    "verificationAuthorized": false,
+    "repairAuthorized": true,
+    "blockedReason": "The research result is mechanically valid but still encodes a merged identity and two binding storefront surfaces; apply the authorized Cabin John scoping repair before terminal verification."
+  },
+  "remainingSolSignals": []
+}

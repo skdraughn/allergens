@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 3,
+  "workflow": "safeplate_poc",
+  "runId": "poc-batch-068-2026-07-30",
+  "createdAt": "2026-07-30T16:07:57.549Z",
+  "updatedAt": "2026-07-30T16:23:18.977Z",
+  "status": "completed",
+  "models": {
+    "worker": {
+      "id": "gpt-5.6-luna",
+      "reasoningEffort": "low"
+    },
+    "reviewer": {
+      "id": "gpt-5.6-sol",
+      "reasoningEffort": "medium",
+      "onDemand": true
+    }
+  },
+  "concurrency": {
+    "luna": 3,
+    "terra": 0,
+    "sol": 1
+  },
+  "jobs": [
+    {
+      "restaurantId": "replacement-chez-billy-sud-washington-dc",
+      "name": "Chez Billy Sud",
+      "status": "completed",
+      "agentId": "luna_chez_billy_sud",
+      "jobPath": "jobs/replacement-chez-billy-sud-washington-dc.json",
+      "resultPath": "results/replacement-chez-billy-sud-washington-dc.json",
+      "applyAgentId": "coordinator",
+      "lunaAttempts": 1,
+      "completedAt": "2026-07-30T16:21:36.883Z"
+    },
+    {
+      "restaurantId": "replacement-chicatana-washington-dc",
+      "name": "Chicatana",
+      "status": "completed",
+      "agentId": "luna_chicatana",
+      "jobPath": "jobs/replacement-chicatana-washington-dc.json",
+      "resultPath": "results/replacement-chicatana-washington-dc.json",
+      "applyAgentId": "coordinator",
+      "lunaAttempts": 1,
+      "completedAt": "2026-07-30T16:22:55.503Z"
+    },
+    {
+      "restaurantId": "chick-fil-a",
+      "name": "Chick-fil-A",
+      "status": "completed",
+      "agentId": "luna_chick_fil_a",
+      "jobPath": "jobs/chick-fil-a.json",
+      "resultPath": "results/chick-fil-a.json",
+      "applyAgentId": "coordinator",
+      "lunaAttempts": 1,
+      "solRequired": true,
+      "reviewPath": "reviews/chick-fil-a.json",
+      "completedAt": "2026-07-30T16:23:18.977Z"
+    }
+  ]
+}

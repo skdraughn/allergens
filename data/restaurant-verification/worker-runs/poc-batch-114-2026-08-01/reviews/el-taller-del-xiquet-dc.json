@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-114-2026-08-01",
+  "restaurantId": "el-taller-del-xiquet-dc",
+  "reviewType": "narrow_menu_scope_resolution",
+  "validation": {
+    "valid": true,
+    "identityConfirmed": true,
+    "activeSeasonalPdfRetrieved": true,
+    "activeSeasonalPdfFullyEnumerated": true,
+    "submittedSurfaceWasPartial": true,
+    "submittedCurrentProductCount": 6,
+    "resolvedCurrentProductCount": 21,
+    "omittedCurrentProductCount": 19,
+    "submittedNoncurrentProductCount": 4,
+    "unsupportedNegativeClaimAbsent": true
+  },
+  "resolution": {
+    "binding": true,
+    "decision": "return_to_luna_for_focused_scope_retry",
+    "menuScopeUnresolved": false,
+    "terminalAllowed": false,
+    "activeSurface": {
+      "surfaceId": "official-spring-2026-menu",
+      "url": "https://www.eltallerdelxiquet.com/s/EL-TALLER-SPRING-MENU-060326-mse3.pdf",
+      "authorityTier": "restaurant_issued",
+      "service": "current_seasonal",
+      "fullyEnumerated": true,
+      "scopeStatus": "complete",
+      "currentProductKeys": [
+        "coca-caramelized-onions",
+        "coca-signature-tomacat",
+        "coca-apples-and-caramelized-onions",
+        "coca-eel-and-tomacat-puree",
+        "plat-de-pernil-iberic",
+        "torrada-de-llagosta",
+        "fonoll-i-poma",
+        "lloborado-gravlax",
+        "cru",
+        "polp",
+        "ossetra-de-baku-caviar",
+        "paella-del-bosc",
+        "alacant-paella",
+        "paella-de-lalbufera",
+        "paella-de-wagyu",
+        "servei-de-formatge",
+        "pastis-de-carlota-i-formatge",
+        "xocolate",
+        "acqua-panna-still-water",
+        "san-pellegrino-sparkling-water",
+        "bresa-de-taronger"
+      ]
+    },
+    "submittedKeyDisposition": {
+      "signature-octopus": "normalize_to_polp",
+      "signature-sea-bass-gravlax": "normalize_to_lloborado-gravlax",
+      "signature-scallops": "not_on_active_seasonal_pdf",
+      "signature-prawns": "not_on_active_seasonal_pdf",
+      "paella-iberica": "not_on_active_seasonal_pdf",
+      "fideua-de-gandia": "not_on_active_seasonal_pdf"
+    },
+    "rationale": "Direct retrieval and text extraction of the restaurant-issued Spring 2026 PDF resolves the prior crawl limitation. The PDF has two pages and is fully enumerable: 18 food products and three nonalcoholic beverages. Only Octopus/Polp and Sea Bass Gravlax/Lloborado Gravlax correspond to submitted products. Scallops, Prawns, Paella Iberica, and Fideua de Gandia do not appear on the active seasonal PDF, while 19 active products were omitted. The Luna result must receive a focused menu-scope retry; no repeat identity or allergen-matrix search is needed. Item-level allergen fields must remain conservative and may use only direct restaurant-issued positives. Recipe descriptions must not be converted into allergen-absence claims."
+  },
+  "remainingSolSignals": []
+}

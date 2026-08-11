@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-120-2026-08-01",
+  "restaurantId": "osm-emmy-squared-pizza-2145977609",
+  "reviewType": "narrow_identity_location_scope_resolution",
+  "validation": {
+    "valid": true,
+    "packetFingerprintMatches": true,
+    "packetDomainOwnedByPizzeriaParadiso": true,
+    "frozenRowsBelongToPizzeriaParadiso": true,
+    "emmySquaredDomainDistinct": true,
+    "navyYardConfirmed": true,
+    "shawConfirmed": true,
+    "exactEmmyLocationResolvableFromPacket": false,
+    "exactPizzeriaParadisoLocationResolvableFromPacket": false,
+    "allFrozenRowsBusinessMismatch": true,
+    "siblingEmmyJobsPresent": true,
+    "unsupportedNegativeClaimAbsent": true
+  },
+  "resolution": {
+    "binding": true,
+    "decision": "retire_corrupted_osm_record_do_not_reassign",
+    "identityConfirmed": false,
+    "canonicalBusinessForPacketEvidence": "Pizzeria Paradiso",
+    "submittedRestaurantIdentity": "Emmy Squared Pizza",
+    "packetDomain": "eatyourpizza.com",
+    "correctEmmyDomain": "emmysquaredpizza.com",
+    "frozenItemDisposition": {
+      "count": 62,
+      "disposition": "location_mismatch",
+      "publishUnderSubmittedRestaurant": false
+    },
+    "candidateScope": {
+      "pizzeriaParadisoLocations": [
+        {
+          "name": "Dupont Circle",
+          "address": "2003 P Street NW, Washington, DC"
+        },
+        {
+          "name": "Georgetown",
+          "address": "3282 M Street NW, Washington, DC"
+        },
+        {
+          "name": "Spring Valley",
+          "address": "4850 Massachusetts Avenue NW, Washington, DC"
+        },
+        {
+          "name": "Hyattsville",
+          "address": "4800 Rhode Island Avenue, Hyattsville, MD"
+        }
+      ],
+      "emmySquaredLocations": [
+        {
+          "name": "Navy Yard",
+          "address": "1300 4th Street SE, Suite 100, Washington, DC 20003",
+          "phone": "(202) 290-2810",
+          "coveredByRestaurantId": "emmy-squared-navy-yard-dc"
+        },
+        {
+          "name": "Shaw",
+          "address": "1924 8th Street NW, Suite 140, Washington, DC 20001",
+          "phone": "(202) 921-3669",
+          "coveredByRestaurantId": "emmy-squared-shaw-dc"
+        }
+      ],
+      "rationale": "The dc-metro packet contains no address or location-specific evidence capable of selecting one Pizzeria Paradiso location, and it contains no Emmy Squared evidence capable of selecting Navy Yard or Shaw."
+    },
+    "requiredCoordinatorAction": {
+      "action": "retire_or_quarantine_record",
+      "restaurantId": "osm-emmy-squared-pizza-2145977609",
+      "preserveFrozenRowsOnlyAsRejectedPacketEvidence": true,
+      "doNotMergeIntoEmmySquaredNavyYard": true,
+      "doNotMergeIntoEmmySquaredShaw": true,
+      "doNotPublishCurrentProducts": true,
+      "lunaRetryRequired": false,
+      "matrixSearchRetryRequired": false
+    },
+    "supportingEvidence": [
+      {
+        "evidenceId": "pizzeria-paradiso-contact",
+        "url": "https://www.eatyourpizza.com/contact",
+        "authorityTier": "restaurant_issued",
+        "finding": "The domain identifies Pizzeria Paradiso and lists its Dupont Circle, Georgetown, Hyattsville, and Spring Valley locations."
+      },
+      {
+        "evidenceId": "emmy-squared-find-us",
+        "url": "https://www.emmysquaredpizza.com/find-us/",
+        "authorityTier": "restaurant_issued",
+        "finding": "Emmy Squared lists distinct Navy Yard and Shaw Washington locations on a different official domain."
+      },
+      {
+        "evidenceId": "emmy-navy-yard",
+        "url": "https://www.emmysquaredpizza.com/location/navy-yard-washington/",
+        "authorityTier": "restaurant_issued",
+        "finding": "Navy Yard is at 1300 4th Street SE, Suite 100."
+      },
+      {
+        "evidenceId": "emmy-shaw",
+        "url": "https://www.emmysquaredpizza.com/location/shaw-washington-dc/",
+        "authorityTier": "restaurant_issued",
+        "finding": "Shaw is at 1924 8th Street NW, Suite 140."
+      }
+    ],
+    "rationale": "Every frozen item and both packet menu URLs are Pizzeria Paradiso content, including Paradiso-specific names. Emmy Squared operates under emmysquaredpizza.com with separately identifiable Navy Yard and Shaw locations already represented by sibling Batch 120 jobs. Reassigning this packet to either Emmy location would create a false menu and allergen association; relabeling it as Pizzeria Paradiso would still leave location scope unresolved because the packet has only a dc-metro location. The safe binding resolution is to retire or quarantine the corrupted OSM record and publish nothing from it."
+  },
+  "remainingSolSignals": []
+}
