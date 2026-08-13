@@ -72,7 +72,6 @@ module.exports = ({ config }) => {
       : "@react-native-google-signin/google-signin",
   );
   plugins.push("expo-apple-authentication");
-  plugins.push("./plugins/with-ios-modular-headers");
 
   return {
     ...expo,
