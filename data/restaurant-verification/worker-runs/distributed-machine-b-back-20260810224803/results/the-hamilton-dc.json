@@ -1,0 +1,368 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260810224803",
+  "restaurantId": "the-hamilton-dc",
+  "name": "The Hamilton",
+  "locationId": "downtown-dc",
+  "domain": "thehamiltondc.com",
+  "packetValidation": {
+    "baselineItemCount": 137,
+    "baselineFingerprint": "806733fe1f06917496ad9c84231cc870b6ec066f90bbb037be07d8315bafc7f4",
+    "itemChecksRead": 137,
+    "allRowsBelongToRestaurant": true
+  },
+  "identity": {
+    "name": "The Hamilton",
+    "location": "600 14th Street N.W., Washington, DC 20005",
+    "confirmed": true,
+    "sourceEvidenceIds": [
+      "src-official-home",
+      "src-official-location"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "src-official-home",
+      "url": "https://www.thehamiltondc.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current food, beverage, service-period, and allergen/cross-contact disclosure",
+      "retrievedAt": "2026-08-10T22:55:00.000Z"
+    },
+    {
+      "evidenceId": "src-official-location",
+      "url": "https://www.thehamiltondc.com/location/the-hamilton/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity and location",
+      "retrievedAt": "2026-08-10T22:55:00.000Z"
+    },
+    {
+      "evidenceId": "src-official-beverages",
+      "url": "https://www.thehamiltondc.com/menu/beverages/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current beverage and nonalcoholic surface",
+      "retrievedAt": "2026-08-10T22:55:00.000Z"
+    },
+    {
+      "evidenceId": "src-targeted-search",
+      "url": "https://www.google.com/search?q=site%3Athehamiltondc.com+allergen+nutrition+ingredients",
+      "authorityTier": "third_party",
+      "purpose": "targeted web search",
+      "retrievedAt": "2026-08-10T22:55:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-menu",
+      "url": "https://www.thehamiltondc.com/menu/",
+      "authority": "restaurant_issued",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "downtown-dc",
+      "servicePeriod": "all-day, brunch, happy-hour, late-night, sushi, dessert, kids, beverages",
+      "current": true,
+      "scopeStatus": "complete",
+      "currentProductKeys": [
+        "hamilton-current-catalog"
+      ],
+      "sourceEvidenceIds": [
+        "src-official-home"
+      ]
+    },
+    {
+      "surfaceId": "official-location",
+      "url": "https://www.thehamiltondc.com/location/the-hamilton/",
+      "authority": "restaurant_issued",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "downtown-dc",
+      "servicePeriod": "location",
+      "current": true,
+      "scopeStatus": "support",
+      "currentProductKeys": [],
+      "sourceEvidenceIds": [
+        "src-official-location"
+      ]
+    },
+    {
+      "surfaceId": "official-beverages",
+      "url": "https://www.thehamiltondc.com/menu/beverages/",
+      "authority": "restaurant_issued",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "downtown-dc",
+      "servicePeriod": "beverages",
+      "current": true,
+      "scopeStatus": "complete",
+      "currentProductKeys": [
+        "hamilton-current-catalog"
+      ],
+      "sourceEvidenceIds": [
+        "src-official-beverages"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "hamilton-current-catalog",
+      "name": "The Hamilton current food and nonalcoholic menu items",
+      "category": "menu-item-catalog",
+      "sourceEvidenceIds": [
+        "src-official-home",
+        "src-official-beverages"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "crossContactStatements": [
+        {
+          "statement": "Care is taken to avoid cross-contact, however the kitchen is not completely gluten-free; guests should inform the server about food allergies or dietary needs.",
+          "sourceEvidenceIds": [
+            "src-official-home"
+          ],
+          "authorityTier": "restaurant_issued"
+        }
+      ]
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "locationInspected": "official homepage and menu navigation",
+        "outcome": "no allergen matrix found",
+        "sourceEvidenceIds": [
+          "src-official-home"
+        ],
+        "query": "Official homepage/menu navigation inspected for allergen, allergy, nutrition, ingredients, and PDF links.",
+        "inspectedUrl": "https://www.thehamiltondc.com/menu/"
+      },
+      {
+        "class": "official_documents",
+        "locationInspected": "official menu download/document links and FAQ",
+        "outcome": "no allergen or ingredient matrix found",
+        "sourceEvidenceIds": [
+          "src-official-home"
+        ],
+        "query": "Official site document and FAQ links inspected for allergen, allergy, nutrition, ingredients, PDF, image, sitemap, and CDN materials.",
+        "inspectedUrl": "https://www.thehamiltondc.com/menu/"
+      },
+      {
+        "class": "linked_vendor",
+        "locationInspected": "restaurant-linked ordering/menu surfaces",
+        "outcome": "no official allergen matrix found",
+        "sourceEvidenceIds": [
+          "src-official-home"
+        ],
+        "query": "Restaurant-linked ordering/menu surfaces inspected for an official allergen matrix.",
+        "inspectedUrl": "https://www.thehamiltondc.com/menu/"
+      },
+      {
+        "class": "targeted_web_search",
+        "locationInspected": "targeted searches for allergen, allergy, nutrition, ingredients, PDF, and menu",
+        "outcome": "no authoritative matrix found",
+        "sourceEvidenceIds": [
+          "src-targeted-search"
+        ],
+        "query": "site:thehamiltondc.com (allergen OR allergy OR nutrition OR ingredients OR PDF OR menu)",
+        "inspectedUrl": "https://www.google.com/search?q=site%3Athehamiltondc.com+%28allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF+OR+menu%29"
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "evidenceId": "cross-contact-official",
+      "statement": "Care is taken to avoid cross-contact, however the kitchen is not completely gluten-free.",
+      "authorityTier": "restaurant_issued",
+      "sourceEvidenceIds": [
+        "src-official-home"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "dispositions": [
+      {
+        "disposition": "equivalent_presentation",
+        "auditItemKeys": [
+          "1:asher-blue",
+          "2:cabra-la-mancha",
+          "3:grafton-clothbound-cheddar",
+          "4:salmon-bento",
+          "5:shrimp-tempura-bento",
+          "6:tuna-bento",
+          "7:breakfast-sandwich",
+          "8:falafel-shawarma",
+          "9:fried-chicken",
+          "10:hamilton-burger",
+          "11:roasted-turkey",
+          "12:the-balboa",
+          "13:18-month-prosciutto-di-parma",
+          "14:bresaolabeef-prosciutto",
+          "15:soppressata-italian-style-pork-salami",
+          "16:blueberry-cobbler",
+          "17:chocolate-bread-pudding",
+          "18:coconut-mousse",
+          "19:haagen-dazs-ice-cream",
+          "20:haagen-dazs-ice-cream-and-sorbet",
+          "21:haagen-dazs-sorbet",
+          "22:lemon-cheesecake",
+          "23:milkshake",
+          "24:raspberry-chocolate-mousse",
+          "25:bell-and-evans-half-chicken",
+          "26:bluegrass-spiced-salmon",
+          "27:brioche-french-toast",
+          "28:chicken-and-biscuit",
+          "29:chicken-tender-platter",
+          "30:crisfield-stew",
+          "31:eggs-benedict",
+          "32:faroe-island-salmon",
+          "33:georges-bank-scallops",
+          "34:jumbo-lump-crab-cake",
+          "35:peanut-butter-pancakes",
+          "36:ragu-americana-and-rigatoni",
+          "37:shrimp-and-grits",
+          "38:steak-and-eggs",
+          "39:steak-frites",
+          "40:zucchini-and-basil-frittata",
+          "41:chesapeake-rockfish",
+          "42:lemon-herb-jumbo-shrimp",
+          "43:sesame-crusted-bigeye-tuna",
+          "44:six-spiced-whole-branzino",
+          "45:whole-rainbow-trout",
+          "46:blackberry-and-avocado-salad",
+          "47:crispy-shrimp-salad",
+          "48:grilled-chicken-cobb-salad",
+          "49:grilled-steak-salad",
+          "50:mixed-greens",
+          "51:the-hamilton-caesar",
+          "52:wedge-salad",
+          "53:chicken-tenders",
+          "54:classic-cheeseburger",
+          "55:hamburger",
+          "56:mac-and-cheese",
+          "57:mini-cheese-pizza",
+          "58:snickers",
+          "59:amberjack",
+          "60:eel",
+          "61:fatty-tuna",
+          "62:hokkaido-scallop",
+          "63:red-crab",
+          "64:salmon",
+          "65:sea-bream",
+          "66:shrimp",
+          "67:tuna",
+          "68:yellowtail",
+          "69:asparagus-ravioli",
+          "70:braised-lamb-tagliatelle",
+          "71:fruitti-di-mare",
+          "72:spicy-crab-spaghettini",
+          "73:fresh-catch",
+          "74:hamilton-platter",
+          "75:jays-pick-12-platter",
+          "76:taste-of-the-ocean-platter",
+          "77:california",
+          "78:caterpillar-roll",
+          "79:cherry-blossom-roll",
+          "80:crunchy-tuna",
+          "81:fire-cracker",
+          "82:fire-dragon",
+          "83:green-house-roll",
+          "84:king-toro",
+          "85:ocean-fire-roll",
+          "86:paradise-roll",
+          "87:pink-hornet",
+          "88:rainbow",
+          "89:salmon-avocado",
+          "90:shrimp-tempura",
+          "91:spicy-crab",
+          "92:spicy-tuna",
+          "93:spicy-yellowtail-roll",
+          "94:tiger-fur-roll",
+          "95:tsunami",
+          "96:wicked-tuna-roll",
+          "97:bacon",
+          "98:breakfast-sausage",
+          "99:cheese-grits",
+          "100:chicken-sausage",
+          "101:chili-garlic-broccolini",
+          "102:crab-fried-rice",
+          "103:crispy-home-fries",
+          "104:crunchy-tuna-roll",
+          "105:fresh-fruit",
+          "106:fried-brussels-sprouts",
+          "107:grilled-asparagus",
+          "108:junior-marvin-tribute-to-bob-marley",
+          "109:macaroni-and-cheese",
+          "110:mushroom-fricassee",
+          "111:nikka-yoichi",
+          "112:pink-hornet-roll",
+          "113:short-rib-rigatoni",
+          "114:spicy-tuna-roll",
+          "115:truffle-rosemary-fries",
+          "116:two-eggs-any-style",
+          "117:whipped-potatoes",
+          "118:angus-cheeseburger-sliders",
+          "119:banana-bread",
+          "120:classic-meatballs-and-pomodoro",
+          "121:cream-of-crab-soup",
+          "122:day-boat-new-england-calamari",
+          "123:district-wings",
+          "124:edamame",
+          "125:edamame-and-leek-dumplings",
+          "126:grilled-octopus",
+          "127:hoisin-glazed-pork-belly",
+          "128:house-made-bread-and-butter",
+          "129:miso-soup",
+          "130:mussels-fra-diavolo",
+          "131:sweet-potato-hummus",
+          "132:tuna-poke",
+          "133:bone-in-cowboy-ribeye",
+          "134:double-cut-lamb-chops",
+          "135:duroc-pork-chop",
+          "136:filet-mignon",
+          "137:new-york-strip"
+        ],
+        "matchedCurrentProductKeys": [
+          "hamilton-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-home"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "outcome": "research_complete",
+  "recommendedLane": "verify",
+  "findings": [
+    {
+      "type": "catalog_cleanup_complete",
+      "statement": "Current official food and nonalcoholic menu presentations are represented by one consolidated catalog product; duplicate service-period presentations remain collapsed with frozen-key reconciliation preserved.",
+      "sourceEvidenceIds": [
+        "src-official-home",
+        "src-official-beverages"
+      ]
+    }
+  ],
+  "validation": {
+    "valid": true
+  }
+}

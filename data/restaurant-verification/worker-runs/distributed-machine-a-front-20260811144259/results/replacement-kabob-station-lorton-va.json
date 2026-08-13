@@ -1,0 +1,536 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-a-front-20260811144259",
+  "restaurantId": "replacement-kabob-station-lorton-va",
+  "packetValidation": {
+    "baselineItemCount": 30,
+    "baselineFingerprint": "2757eb174afd51b48786cb9b46647901a740b58325b8a12cd4a9cb4cdcd9e03d",
+    "itemChecksRead": 30,
+    "restaurantIdMatched": true
+  },
+  "identity": {
+    "status": "confirmed",
+    "name": "Kabob Station",
+    "location": "8971 Ox Road, Lorton, VA 22079",
+    "locationId": "lorton-va",
+    "domain": "kabobstation.us",
+    "officialHomepage": "https://kabobstation.us/",
+    "sourceEvidenceIds": [
+      "s-home",
+      "s-food"
+    ]
+  },
+  "sources": [
+    {
+      "id": "s-home",
+      "url": "https://kabobstation.us/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage, identity and location",
+      "retrievedAt": "2026-08-11T14:50:00.000Z"
+    },
+    {
+      "id": "s-food",
+      "url": "https://kabobstation.us/lorton-kabob-station-food-menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current official food and catering menu",
+      "retrievedAt": "2026-08-11T14:50:00.000Z"
+    },
+    {
+      "id": "s-drinks",
+      "url": "https://kabobstation.us/lorton-kabob-station-drink-menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current official nonalcoholic drinks menu",
+      "retrievedAt": "2026-08-11T14:50:00.000Z"
+    },
+    {
+      "id": "s-order",
+      "url": "https://tmt.spotapps.co/ordering-menu/?spot_id=272382",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "restaurant-linked ordering surface",
+      "retrievedAt": "2026-08-11T14:50:00.000Z"
+    },
+    {
+      "id": "s-clover",
+      "url": "https://www.clover.com/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "official homepage order link inspected",
+      "retrievedAt": "2026-08-11T14:50:00.000Z"
+    },
+    {
+      "id": "s-search",
+      "url": "https://www.google.com/search?q=site%3Akabobstation.us+allergen+OR+allergy+OR+nutrition+OR+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted allergen web search",
+      "retrievedAt": "2026-08-11T14:50:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-food",
+      "url": "https://kabobstation.us/lorton-kabob-station-food-menu",
+      "authority": "restaurant_issued",
+      "locationScope": "Lorton VA",
+      "servicePeriod": "all day; party options included",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "s-food"
+      ]
+    },
+    {
+      "surfaceId": "official-drinks",
+      "url": "https://kabobstation.us/lorton-kabob-station-drink-menu",
+      "authority": "restaurant_issued",
+      "locationScope": "Lorton VA",
+      "servicePeriod": "all day",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "s-drinks"
+      ]
+    },
+    {
+      "surfaceId": "linked-ordering",
+      "url": "https://tmt.spotapps.co/ordering-menu/?spot_id=272382",
+      "authority": "restaurant_linked_vendor",
+      "locationScope": "Lorton VA",
+      "servicePeriod": "ordering",
+      "current": true,
+      "scopeStatus": "available-but-rendering-unverified",
+      "sourceEvidenceIds": [
+        "s-order"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "kabob-station-lorton-current-menu-catalog",
+      "name": "Kabob Station Lorton current food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "s-food",
+        "s-drinks",
+        "s-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable"
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "Official homepage navigation, food menu, drinks menu, about and party pages",
+        "urlsInspected": [
+          "https://kabobstation.us/",
+          "https://kabobstation.us/lorton-kabob-station-food-menu",
+          "https://kabobstation.us/lorton-kabob-station-drink-menu",
+          "https://kabobstation.us/lorton-kabob-station-about",
+          "https://kabobstation.us/lorton-kabob-station-party"
+        ],
+        "outcome": "Current menu surfaces found; no complete allergen or nutrition matrix or cross-contact policy published",
+        "sourceEvidenceIds": [
+          "s-home",
+          "s-food",
+          "s-drinks"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "Official navigation, PDFs, image menus, FAQ, ingredients, nutrition, sitemap and downloadable-document surfaces",
+        "urlsInspected": [
+          "https://kabobstation.us/",
+          "https://kabobstation.us/lorton-kabob-station-food-menu",
+          "https://kabobstation.us/lorton-kabob-station-drink-menu"
+        ],
+        "outcome": "No official allergen, ingredient or nutrition document located",
+        "sourceEvidenceIds": [
+          "s-home",
+          "s-food"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Restaurant-linked SpotApps ordering URL and official Clover order link",
+        "urlsInspected": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=272382",
+          "https://www.clover.com/"
+        ],
+        "outcome": "Linked ordering surfaces identified; no complete allergen matrix or cross-contact statement located",
+        "sourceEvidenceIds": [
+          "s-order",
+          "s-clover"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "queryOrLocation": "site:kabobstation.us allergen OR allergy OR nutrition OR ingredients PDF menu; Kabob Station Lorton VA official menu allergen ingredients",
+        "urlsInspected": [
+          "https://www.google.com/search?q=site%3Akabobstation.us+allergen+OR+allergy+OR+nutrition+OR+ingredients+PDF+menu"
+        ],
+        "outcome": "No authoritative complete allergen matrix found; unrelated third-party results excluded",
+        "sourceEvidenceIds": [
+          "s-search"
+        ]
+      }
+    ],
+    "notes": [
+      "Official allergen status is unavailable, not a claim of allergen absence.",
+      "No direct cross-contact policy was found."
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "type": "cross_contact",
+      "status": "unavailable",
+      "statement": "No official cross-contact policy located during the four required searches.",
+      "sourceEvidenceIds": [
+        "s-food",
+        "s-search"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "type": "current_product_boundary",
+      "status": "complete",
+      "statement": "Current boundary includes all orderable food/catering entries on the official food page and all ten nonalcoholic drink entries on the official drinks page; repeated Paacha presentation retained as one catalog product, alcohol-only items absent. Duplicate presentations, catalog drift, new items, naming/category cleanup, and restaurant-specific extraction have been resolved in this isolated catalog result.",
+      "sourceEvidenceIds": [
+        "s-food",
+        "s-drinks",
+        "s-order"
+      ]
+    },
+    {
+      "type": "direct_allergen",
+      "status": "partial",
+      "statement": "Supported frozen direct positives are preserved: Felafel Sandwich, Kabob Sandwich, and Kabob Sandwich Combo contain wheat and gluten; Ground Beef and Shrimp contains shellfish; Salmon Kabob contains fish; Shrimp Kabob contains shellfish. No new allergen absences are asserted, and other current products remain official-allergen unavailable.",
+      "sourceEvidenceIds": [
+        "s-food",
+        "s-order"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:1-skewer-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "2:beef-kabob",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "3:bone-in-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "4:book-your-next-party-with-us",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "s-home"
+        ]
+      },
+      {
+        "auditItemKey": "5:chicken-and-grill-veggie",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "6:chicken-breast-kabob",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "7:chopan-kabob",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "8:combo-gr-beef-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "9:combo-lamb-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "10:combo-lamb-ground-beef",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "11:felafel-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "12:french-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "13:greek-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "14:ground-beef-and-shrimp",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "15:hummus",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "16:kabob-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "17:kabob-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "18:kabob-sandwich-combo",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "19:lamb-kabob",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "20:potatoes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "21:quality-service-hospitality",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "s-home"
+        ]
+      },
+      {
+        "auditItemKey": "22:rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "23:salmon-kabob",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "24:shami-kabob",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "25:shrimp-kabob",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "26:skewer-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "27:skewer-lamb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "28:skewer-shami",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      },
+      {
+        "auditItemKey": "29:the-juiciest-kabob-i-ever-had-kabob-station-thank-you-for-coming-to-lorton",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "s-home"
+        ]
+      },
+      {
+        "auditItemKey": "30:veggie-rice-combo",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kabob-station-lorton-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-food"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify"
+}

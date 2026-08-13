@@ -1,0 +1,1398 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-123-2026-08-06",
+  "restaurantId": "replacement-exiles-bar-washington-dc",
+  "runId": "poc-batch-123-2026-08-06-replacement-exiles-bar-washington-dc-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "replacement-exiles-bar-washington-dc",
+    "name": "Exiles Bar",
+    "locationId": "washington-dc",
+    "domain": "exilesbar.com",
+    "baselineItemCount": 31,
+    "baselineFingerprint": "9e1b35552b1be5358955d513e8980fde2bea8e9119128048a9ac05c4942d8259",
+    "itemChecksRead": 31,
+    "itemChecksPath": "data/restaurant-verification/item-checks/replacement-exiles-bar-washington-dc.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Exiles Bar",
+    "location": "1610 U St NW, Washington, DC 20009",
+    "locationId": "washington-dc",
+    "domain": "exilesbar.com",
+    "officialHomepage": "https://www.exilesbar.com/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-menu-main",
+      "ev-menu-upstairs",
+      "ev-toast"
+    ],
+    "notes": "Official site identifies one DC location; no other Exiles location merged."
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-home",
+      "url": "https://www.exilesbar.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Exiles Bar official homepage",
+      "retrievedAt": "2026-08-06T00:00:00.000Z",
+      "excerpt": "Official Exiles Bar site lists 1610 U ST NW Washington DC 20009."
+    },
+    {
+      "evidenceId": "ev-menu-main",
+      "url": "https://www.exilesbar.com/food-cocktails-to-go",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Food & Cocktails",
+      "retrievedAt": "2026-08-06T00:00:00.000Z",
+      "excerpt": "Current official food menu and hours."
+    },
+    {
+      "evidenceId": "ev-menu-upstairs",
+      "url": "https://www.exilesbar.com/food-cocktails-to-go-upstairs",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Food & Cocktails Upstairs",
+      "retrievedAt": "2026-08-06T00:00:00.000Z",
+      "excerpt": "Upstairs service menu with overlapping and additional items."
+    },
+    {
+      "evidenceId": "ev-toast",
+      "url": "https://order.toasttab.com/online/exilesbar",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "title": "Exiles Bar Toast ordering",
+      "retrievedAt": "2026-08-06T00:00:00.000Z",
+      "excerpt": "Linked ordering vendor inspected; DC address shown."
+    },
+    {
+      "evidenceId": "ev-search-site",
+      "url": "https://www.exilesbar.com/food-cocktails-to-go",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_site allergen search",
+      "retrievedAt": "2026-08-06T00:00:00.000Z",
+      "excerpt": "Inspected homepage, food, upstairs, brunch and cocktails navigation; no allergen matrix."
+    },
+    {
+      "evidenceId": "ev-search-docs",
+      "url": "https://www.exilesbar.com/sitemap.xml",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_documents allergen search",
+      "retrievedAt": "2026-08-06T00:00:00.000Z",
+      "excerpt": "Inspected sitemap and linked downloadable/document surfaces; no nutrition, ingredient or allergen PDF/image."
+    },
+    {
+      "evidenceId": "ev-search-vendor",
+      "url": "https://order.toasttab.com/online/exilesbar",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "title": "linked_vendor allergen search",
+      "retrievedAt": "2026-08-06T00:00:00.000Z",
+      "excerpt": "Inspected Toast categories, item details and modifiers; no official allergen matrix or cross-contact statement."
+    },
+    {
+      "evidenceId": "ev-search-web",
+      "url": "https://www.google.com/search?q=site%3Aexilesbar.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "targeted_web_search allergen search",
+      "retrievedAt": "2026-08-06T00:00:00.000Z",
+      "excerpt": "Targeted domain search found menu pages only; no official allergen matrix."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-main",
+      "title": "Official Food & Cocktails menu",
+      "url": "https://www.exilesbar.com/food-cocktails-to-go",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "washington-dc",
+      "servicePeriod": "all-day",
+      "retrievalOutcome": "current HTML food/cocktails menu",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "official-upstairs",
+      "title": "Official upstairs menu",
+      "url": "https://www.exilesbar.com/food-cocktails-to-go-upstairs",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "washington-dc",
+      "servicePeriod": "upstairs service",
+      "retrievalOutcome": "current HTML menu with overlapping/additional items",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-menu-upstairs"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "official-brunch",
+      "title": "Official brunch menu",
+      "url": "https://www.exilesbar.com/brunch",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "washington-dc",
+      "servicePeriod": "brunch",
+      "surfaceType": "html_menu",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [],
+      "currentProductKeys": [],
+      "outcome": "Current brunch page; no POC products retained."
+    },
+    {
+      "surfaceId": "linked-toast",
+      "title": "Toast ordering menu",
+      "url": "https://order.toasttab.com/online/exilesbar",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "washington-dc",
+      "servicePeriod": "ordering",
+      "surfaceType": "linked_ordering_vendor",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-toast",
+        "ev-menu-main"
+      ],
+      "currentProductKeys": [
+        "bbq-chicken-flatbread-1225-homemade-smoked",
+        "brussels-sprouts",
+        "chicken-and-black-bean-nachos",
+        "chicken-poppers",
+        "chicken-sandwich",
+        "chili-tater-tots",
+        "cobb-salad",
+        "cod-po-boy-sandwich",
+        "curry-fries",
+        "diablo-burger",
+        "exiles-burger",
+        "exiles-chicken-wings",
+        "fiesta-flatbread",
+        "fish-and-chips",
+        "fish-and-chips-18-new-england-cod-over-a-plate-of-fries",
+        "fried-cheese-curds",
+        "fried-cheese-curds-with-homemade-marinara-sauce",
+        "irish-chicken-curry",
+        "mac-and-cheese",
+        "mac-and-cheese-850-add-bacon-2-chicken-5",
+        "margarita-flatbread",
+        "new-irish-spice-bag",
+        "pastrami-sandwich",
+        "pesto-flatbread-1225-basil",
+        "side-of-curry-sauce",
+        "side-of-fries",
+        "spicy-buffalo-chicken-sandwich",
+        "spinach-and-goat-cheese-salad",
+        "spinach-and-goat-cheese-salad-1025-add-bacon-2-or-chicken-5",
+        "steak-frites",
+        "veggie-burger"
+      ],
+      "outcome": "Current Toast ordering menu for Exiles Bar Washington DC."
+    }
+  ],
+  "currentProducts": [
+    {
+      "name": "BBQ CHICKEN FLATBREAD",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "bbq-chicken-flatbread-1225-homemade-smoked",
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "BRUSSELS SPROUTS",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "brussels-sprouts",
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "CHICKEN & BLACK BEAN NACHOS",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "chicken-and-black-bean-nachos",
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "CHICKEN POPPERS",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "unavailable",
+      "currentProductKey": "chicken-poppers",
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "name": "CHICKEN SANDWICH",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "chicken-sandwich",
+      "containsAllergens": [
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "CHILI TATER TOTS",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "unavailable",
+      "currentProductKey": "chili-tater-tots",
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "name": "COBB SALAD",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "unavailable",
+      "currentProductKey": "cobb-salad",
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "name": "COD PO’ BOY SANDWICH",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "cod-po-boy-sandwich",
+      "containsAllergens": [
+        "wheat",
+        "gluten",
+        "fish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "CURRY FRIES",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "unavailable",
+      "currentProductKey": "curry-fries",
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "name": "DIABLO BURGER",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "diablo-burger",
+      "containsAllergens": [
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "EXILES BURGER",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "exiles-burger",
+      "containsAllergens": [
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "EXILES CHICKEN WINGS",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "unavailable",
+      "currentProductKey": "exiles-chicken-wings",
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "name": "FIESTA FLATBREAD",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "fiesta-flatbread",
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "FISH AND CHIPS",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "fish-and-chips",
+      "containsAllergens": [
+        "fish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "FISH AND CHIPS",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "fish-and-chips-18-new-england-cod-over-a-plate-of-fries",
+      "containsAllergens": [
+        "fish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "FRIED CHEESE CURDS",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "fried-cheese-curds",
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "FRIED CHEESE CURDS",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "fried-cheese-curds-with-homemade-marinara-sauce",
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "IRISH CHICKEN CURRY",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "unavailable",
+      "currentProductKey": "irish-chicken-curry",
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "name": "MAC AND CHEESE",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "mac-and-cheese",
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "MAC AND CHEESE",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "mac-and-cheese-850-add-bacon-2-chicken-5",
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "MARGARITA FLATBREAD",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "margarita-flatbread",
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "NEW** IRISH SPICE BAG",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "unavailable",
+      "currentProductKey": "new-irish-spice-bag",
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "name": "PASTRAMI SANDWICH",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "pastrami-sandwich",
+      "containsAllergens": [
+        "wheat",
+        "gluten",
+        "fish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "PESTO FLATBREAD",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "pesto-flatbread-1225-basil",
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "SIDE OF CURRY SAUCE",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "unavailable",
+      "currentProductKey": "side-of-curry-sauce",
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "name": "SIDE OF FRIES",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "unavailable",
+      "currentProductKey": "side-of-fries",
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "name": "SPICY BUFFALO CHICKEN SANDWICH",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "spicy-buffalo-chicken-sandwich",
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "SPINACH AND GOAT CHEESE SALAD",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "spinach-and-goat-cheese-salad",
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "SPINACH AND GOAT CHEESE SALAD",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "spinach-and-goat-cheese-salad-1025-add-bacon-2-or-chicken-5",
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "STEAK FRITES",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "steak-frites",
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    },
+    {
+      "name": "VEGGIE BURGER",
+      "category": "food",
+      "servicePeriods": [
+        "all-day"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "sourceUrls": [
+        "https://www.exilesbar.com/food-cocktails-to-go"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "currentProductKey": "veggie-burger",
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu-main"
+      ],
+      "allergenAuthorityTier": "restaurant_issued"
+    }
+  ],
+  "allergenStatus": {
+    "officialMatrix": "accurately_unavailable",
+    "notes": "No matrix found after all four required searches; direct baseline positives retained, unavailable rows are not negative claims."
+  },
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:bbq-chicken-flatbread-1225-homemade-smoked",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "bbq-chicken-flatbread-1225-homemade-smoked"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "2:brussels-sprouts",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "brussels-sprouts"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "3:chicken-and-black-bean-nachos",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "chicken-and-black-bean-nachos"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "4:chicken-poppers",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "chicken-poppers"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "5:chicken-sandwich",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "chicken-sandwich"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "6:chili-tater-tots",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "chili-tater-tots"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "7:cobb-salad",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "cobb-salad"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "8:cod-po-boy-sandwich",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "cod-po-boy-sandwich"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "9:curry-fries",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "curry-fries"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "10:diablo-burger",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "diablo-burger"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "11:exiles-burger",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "exiles-burger"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "12:exiles-chicken-wings",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "exiles-chicken-wings"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "13:fiesta-flatbread",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "fiesta-flatbread"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "14:fish-and-chips",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "fish-and-chips"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "15:fish-and-chips-18-new-england-cod-over-a-plate-of-fries",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "fish-and-chips-18-new-england-cod-over-a-plate-of-fries"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "16:fried-cheese-curds",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "fried-cheese-curds"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "17:fried-cheese-curds-with-homemade-marinara-sauce",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "fried-cheese-curds-with-homemade-marinara-sauce"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "18:irish-chicken-curry",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "irish-chicken-curry"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "19:mac-and-cheese",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "mac-and-cheese"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "20:mac-and-cheese-850-add-bacon-2-chicken-5",
+        "disposition": "equivalent_presentation",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "mac-and-cheese-850-add-bacon-2-chicken-5"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "21:margarita-flatbread",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "margarita-flatbread"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "22:new-irish-spice-bag",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "new-irish-spice-bag"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "23:pastrami-sandwich",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "pastrami-sandwich"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "24:pesto-flatbread-1225-basil",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "pesto-flatbread-1225-basil"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "25:side-of-curry-sauce",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "side-of-curry-sauce"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "26:side-of-fries",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "side-of-fries"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "27:spicy-buffalo-chicken-sandwich",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "spicy-buffalo-chicken-sandwich"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "28:spinach-and-goat-cheese-salad",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "spinach-and-goat-cheese-salad"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "29:spinach-and-goat-cheese-salad-1025-add-bacon-2-or-chicken-5",
+        "disposition": "equivalent_presentation",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "spinach-and-goat-cheese-salad-1025-add-bacon-2-or-chicken-5"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "30:steak-frites",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "steak-frites"
+        ],
+        "mappingAmbiguous": false
+      },
+      {
+        "auditItemKey": "31:veggie-burger",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-menu-main"
+        ],
+        "notes": "Current official menu presentation; normalized price/description fragment.",
+        "matchedCurrentProductKeys": [
+          "veggie-burger"
+        ],
+        "mappingAmbiguous": false
+      }
+    ]
+  },
+  "routingSignals": {
+    "lunaFixSignals": [
+      "equivalent presentation consolidation",
+      "heading/price fragment cleanup",
+      "duplicate upstairs/main menu presentations"
+    ],
+    "solReviewSignals": []
+  },
+  "blockedReason": null,
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": true,
+    "catalogDrift": true,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": true,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": true
+  },
+  "matrixSearch": {
+    "requiredOrder": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "searches": [
+      {
+        "class": "official_site",
+        "inspectedLocation": "official homepage and food/cocktails pages",
+        "urls": [
+          "https://www.exilesbar.com/food-cocktails-to-go"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-site"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "inspectedLocation": "official sitemap and document/download links",
+        "urls": [
+          "https://www.exilesbar.com/sitemap.xml"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-docs"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "inspectedLocation": "Toast ordering menu",
+        "urls": [
+          "https://order.toasttab.com/online/exilesbar"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "inspectedLocation": "Google site/domain allergen query",
+        "query": "site:exilesbar.com allergen OR allergy OR nutrition OR ingredients OR PDF",
+        "urls": [
+          "https://www.google.com/search?q=site%3Aexilesbar.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-web"
+        ]
+      }
+    ],
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "inspectedLocation": "official homepage and food/cocktails pages",
+        "urls": [
+          "https://www.exilesbar.com/food-cocktails-to-go"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-site"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "inspectedLocation": "official sitemap and document/download links",
+        "urls": [
+          "https://www.exilesbar.com/sitemap.xml"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-docs"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "inspectedLocation": "Toast ordering menu",
+        "urls": [
+          "https://order.toasttab.com/online/exilesbar"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "inspectedLocation": "Google site/domain allergen query",
+        "query": "site:exilesbar.com allergen OR allergy OR nutrition OR ingredients OR PDF",
+        "urls": [
+          "https://www.google.com/search?q=site%3Aexilesbar.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-web"
+        ]
+      }
+    ],
+    "status": "accurately_unavailable"
+  },
+  "officialAllergenStatus": "accurately_unavailable"
+}

@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-010-2026-07-16",
+  "restaurantId": "replacement-bandoola-bowl-washington-dc",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "4357a979c52fb064f63537ec8f2c3dff69196cb8707dc3399cfa74b0a88295a8",
+    "currentProductCount": 26,
+    "evidenceSourceCount": 8,
+    "evidencePreflightValid": true,
+    "assertions": [
+      "baseline fingerprint matches job",
+      "26 distinct current products published",
+      "official-dc-menu is the only current complete surface",
+      "all supporting surfaces are current=false",
+      "category-qualified duplicate products preserved",
+      "direct containsAllergens and mayContainAllergens copied exactly",
+      "salad-only peanut/contact statement preserved",
+      "all eight result sources retained with canonical purposes",
+      "all referenced evidence IDs resolve",
+      "Ingredient Intelligence applied after direct catalog",
+      "matrix verdict is accurately_unavailable",
+      "no Sol or Terra used",
+      "second run is byte-identical"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/replacement-bandoola-bowl-washington-dc.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/replacement-bandoola-bowl-washington-dc.json",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-replacement-bandoola-bowl-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-010-2026-07-16/apply-results/replacement-bandoola-bowl-washington-dc.json"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "target canonical catalog repair",
+    "recompute Ingredient Intelligence after direct catalog finalization",
+    "serialized APPLY twice with byte/hash comparison"
+  ],
+  "secondRunDiff": "none",
+  "scope": {
+    "currentCompleteSurface": "official-dc-menu",
+    "supportingCurrentFalse": [
+      "official-home",
+      "official-location",
+      "official-order",
+      "linked-doordash",
+      "third-party-allmenus-location-mismatch"
+    ]
+  },
+  "evidence": {
+    "researchSources": [
+      "official-home",
+      "official-location",
+      "official-about",
+      "official-menu",
+      "official-order",
+      "linked-doordash",
+      "third-party-allmenus",
+      "targeted-search"
+    ],
+    "purposes": {
+      "official-home": "identity",
+      "official-location": "identity",
+      "official-about": "ingredients",
+      "official-menu": "menu",
+      "official-order": "menu",
+      "linked-doordash": "menu",
+      "third-party-allmenus": "menu",
+      "targeted-search": "other"
+    },
+    "directVsInferred": "direct arrays are copied exactly; Ingredient Intelligence is inferred separately"
+  }
+}

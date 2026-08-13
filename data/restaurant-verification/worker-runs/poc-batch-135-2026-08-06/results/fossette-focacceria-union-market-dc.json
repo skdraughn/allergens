@@ -1,0 +1,641 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-135-2026-08-06",
+  "restaurantId": "fossette-focacceria-union-market-dc",
+  "runId": "poc-batch-135-2026-08-06-fossette-focacceria-union-market-dc-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "fossette-focacceria-union-market-dc",
+    "name": "Fossette Focacceria Union Market",
+    "locationId": "union-market-dc",
+    "domain": "fossettefocacceria.com",
+    "baselineItemCount": 10,
+    "baselineFingerprint": "b49b04f5670c728fbc2a1b4c91a93e15c08e96943de8bff210a7adbbc8b63499",
+    "itemChecksRead": 10,
+    "itemChecksPath": "data/restaurant-verification/item-checks/fossette-focacceria-union-market-dc.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Fossette Focacceria Union Market",
+    "location": "1309 5th St NE, Washington, DC 20002 (Union Market)",
+    "locationId": "union-market-dc",
+    "domain": "fossettefocacceria.com",
+    "officialHomepage": "https://fossettefocacceria.com/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-toast"
+    ],
+    "notes": "Official-linked Toast location explicitly names Union Market and 1309 5th St NE; Shaw location not merged."
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-home",
+      "url": "https://fossettefocacceria.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Fossette Focacceria official homepage",
+      "retrievedAt": "2026-08-06T00:00:00.000Z",
+      "excerpt": "Official brand homepage; Union Market location navigation inspected."
+    },
+    {
+      "evidenceId": "ev-toast",
+      "url": "https://order.toasttab.com/online/fossette-focacceria-union-market-1309-5th-st-ne-washington-dc-20002",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "both",
+      "title": "Official-linked Toast Union Market ordering menu",
+      "retrievedAt": "2026-08-06T00:00:00.000Z",
+      "excerpt": "Current menu for Fossette Focacceria - Union Market, 1309 5th St NE, Washington DC 20002; frozen sandwich cards present."
+    },
+    {
+      "evidenceId": "ev-search-site",
+      "url": "https://fossettefocacceria.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_site allergen search",
+      "retrievedAt": "2026-08-06T00:00:00.000Z",
+      "excerpt": "Inspected homepage and menu/location navigation; no allergen matrix."
+    },
+    {
+      "evidenceId": "ev-search-docs",
+      "url": "https://fossettefocacceria.com/sitemap.xml",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_documents allergen search",
+      "retrievedAt": "2026-08-06T00:00:00.000Z",
+      "excerpt": "Inspected sitemap/download/document paths and searched allergen, allergy, nutrition, ingredients, PDF; no official matrix found."
+    },
+    {
+      "evidenceId": "ev-search-vendor",
+      "url": "https://order.toasttab.com/online/fossette-focacceria-union-market-1309-5th-st-ne-washington-dc-20002",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "title": "linked_vendor allergen search",
+      "retrievedAt": "2026-08-06T00:00:00.000Z",
+      "excerpt": "Inspected Toast menu and item pages; no standalone allergen matrix or cross-contact statement."
+    },
+    {
+      "evidenceId": "ev-search-web",
+      "url": "https://www.google.com/search?q=site%3Afossettefocacceria.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "targeted_web_search allergen search",
+      "retrievedAt": "2026-08-06T00:00:00.000Z",
+      "excerpt": "Targeted domain query found menu/ordering references but no official allergen matrix."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "title": "Official homepage/location navigation",
+      "url": "https://fossettefocacceria.com/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "Union Market DC",
+      "servicePeriod": "all",
+      "surfaceType": "html_navigation",
+      "current": false,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-home"
+      ],
+      "currentProductKeys": [],
+      "outcome": "Brand/location surface; menu links route to Toast."
+    },
+    {
+      "surfaceId": "union-toast",
+      "title": "Union Market Toast ordering menu",
+      "url": "https://order.toasttab.com/online/fossette-focacceria-union-market-1309-5th-st-ne-washington-dc-20002",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "1309 5th St NE, Washington, DC 20002",
+      "servicePeriod": "lunch",
+      "surfaceType": "linked_ordering_vendor",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "currentProductKeys": [
+        "capra",
+        "caprese",
+        "chicken-parm",
+        "circolo",
+        "cubano",
+        "italiano",
+        "monaco",
+        "mortazza",
+        "portofino",
+        "tartufo"
+      ],
+      "outcome": "Current food menu; nonalcoholic beverages/orderable add-ons inspected, alcohol excluded."
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "capra",
+      "name": "Capra",
+      "category": "Sandwiches",
+      "servicePeriod": "lunch",
+      "presentationIds": [
+        "toast-capra"
+      ],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "gluten",
+        "milk",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "Allergen positives preserved from frozen official Toast catalog; no negatives inferred."
+      ]
+    },
+    {
+      "currentProductKey": "caprese",
+      "name": "Caprese",
+      "category": "Sandwiches",
+      "servicePeriod": "lunch",
+      "presentationIds": [
+        "toast-caprese"
+      ],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "egg",
+        "gluten",
+        "milk",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "Allergen positives preserved from frozen official Toast catalog; no negatives inferred."
+      ]
+    },
+    {
+      "currentProductKey": "chicken-parm",
+      "name": "Chicken Parm",
+      "category": "Sandwiches",
+      "servicePeriod": "lunch",
+      "presentationIds": [
+        "toast-chicken-parm"
+      ],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "gluten",
+        "milk",
+        "sesame",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "Allergen positives preserved from frozen official Toast catalog; no negatives inferred."
+      ]
+    },
+    {
+      "currentProductKey": "circolo",
+      "name": "Circolo",
+      "category": "Sandwiches",
+      "servicePeriod": "lunch",
+      "presentationIds": [
+        "toast-circolo"
+      ],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "egg",
+        "gluten",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "Allergen positives preserved from frozen official Toast catalog; no negatives inferred."
+      ]
+    },
+    {
+      "currentProductKey": "cubano",
+      "name": "Cubano",
+      "category": "Sandwiches",
+      "servicePeriod": "lunch",
+      "presentationIds": [
+        "toast-cubano"
+      ],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "egg",
+        "gluten",
+        "milk",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "Allergen positives preserved from frozen official Toast catalog; no negatives inferred."
+      ]
+    },
+    {
+      "currentProductKey": "italiano",
+      "name": "Italiano",
+      "category": "Sandwiches",
+      "servicePeriod": "lunch",
+      "presentationIds": [
+        "toast-italiano"
+      ],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "gluten",
+        "milk",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "Allergen positives preserved from frozen official Toast catalog; no negatives inferred."
+      ]
+    },
+    {
+      "currentProductKey": "monaco",
+      "name": "Monaco",
+      "category": "Sandwiches",
+      "servicePeriod": "lunch",
+      "presentationIds": [
+        "toast-monaco"
+      ],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "gluten",
+        "milk",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "Allergen positives preserved from frozen official Toast catalog; no negatives inferred."
+      ]
+    },
+    {
+      "currentProductKey": "mortazza",
+      "name": "Mortazza",
+      "category": "Sandwiches",
+      "servicePeriod": "lunch",
+      "presentationIds": [
+        "toast-mortazza"
+      ],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "gluten",
+        "milk",
+        "tree-nut",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "Allergen positives preserved from frozen official Toast catalog; no negatives inferred."
+      ]
+    },
+    {
+      "currentProductKey": "portofino",
+      "name": "Portofino",
+      "category": "Sandwiches",
+      "servicePeriod": "lunch",
+      "presentationIds": [
+        "toast-portofino"
+      ],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "egg",
+        "gluten",
+        "milk",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "Allergen positives preserved from frozen official Toast catalog; no negatives inferred."
+      ]
+    },
+    {
+      "currentProductKey": "tartufo",
+      "name": "Tartufo",
+      "category": "Sandwiches",
+      "servicePeriod": "lunch",
+      "presentationIds": [
+        "toast-tartufo"
+      ],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "gluten",
+        "milk",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": [
+        "Allergen positives preserved from frozen official Toast catalog; no negatives inferred."
+      ]
+    }
+  ],
+  "matrixSearchAudit": [
+    {
+      "searchClass": "official_site",
+      "inspectedLocationOrQuery": "Official homepage and menu/location navigation",
+      "urls": [
+        "https://fossettefocacceria.com/"
+      ],
+      "outcome": "not_found",
+      "evidenceIds": [
+        "ev-search-site"
+      ]
+    },
+    {
+      "searchClass": "official_documents",
+      "inspectedLocationOrQuery": "Official domain sitemap and document paths; queries allergen allergy nutrition ingredients PDF",
+      "urls": [
+        "https://fossettefocacceria.com/sitemap.xml"
+      ],
+      "outcome": "not_found",
+      "evidenceIds": [
+        "ev-search-docs"
+      ]
+    },
+    {
+      "searchClass": "linked_vendor",
+      "inspectedLocationOrQuery": "Toast Union Market menu and item pages",
+      "urls": [
+        "https://order.toasttab.com/online/fossette-focacceria-union-market-1309-5th-st-ne-washington-dc-20002"
+      ],
+      "outcome": "not_found",
+      "evidenceIds": [
+        "ev-search-vendor"
+      ]
+    },
+    {
+      "searchClass": "targeted_web_search",
+      "inspectedLocationOrQuery": "site:fossettefocacceria.com allergen allergy nutrition ingredients PDF menu",
+      "urls": [
+        "https://www.google.com/search?q=site%3Afossettefocacceria.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+      ],
+      "outcome": "not_found",
+      "evidenceIds": [
+        "ev-search-web"
+      ]
+    }
+  ],
+  "officialAllergenStatus": "accurately_unavailable",
+  "reconciliation": {
+    "expectedCount": 10,
+    "items": [
+      {
+        "auditItemKey": "1:capra",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "capra"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Union Market Toast presentation; exact frozen product."
+      },
+      {
+        "auditItemKey": "2:caprese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "caprese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Union Market Toast presentation; exact frozen product."
+      },
+      {
+        "auditItemKey": "3:chicken-parm",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken-parm"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Union Market Toast presentation; exact frozen product."
+      },
+      {
+        "auditItemKey": "4:circolo",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "circolo"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Union Market Toast presentation; exact frozen product."
+      },
+      {
+        "auditItemKey": "5:cubano",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "cubano"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Union Market Toast presentation; exact frozen product."
+      },
+      {
+        "auditItemKey": "6:italiano",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "italiano"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Union Market Toast presentation; exact frozen product."
+      },
+      {
+        "auditItemKey": "7:monaco",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "monaco"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Union Market Toast presentation; exact frozen product."
+      },
+      {
+        "auditItemKey": "8:mortazza",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mortazza"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Union Market Toast presentation; exact frozen product."
+      },
+      {
+        "auditItemKey": "9:portofino",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "portofino"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Union Market Toast presentation; exact frozen product."
+      },
+      {
+        "auditItemKey": "10:tartufo",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tartufo"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Union Market Toast presentation; exact frozen product."
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "proposedChanges": [
+    "Preserve the ten current Union Market Toast sandwich products and direct allergen positives from frozen catalog.",
+    "Mark official allergen matrix unavailable after all four searches; do not infer negatives."
+  ],
+  "routingSignals": {
+    "lightweightRepairSignals": [],
+    "safetyEscalationSignals": []
+  },
+  "blockedReason": null,
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "locationOrQuery": "Official homepage and menu/location navigation",
+        "urls": [
+          "https://fossettefocacceria.com/"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-site"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "locationOrQuery": "Official domain sitemap and document paths; allergen allergy nutrition ingredients PDF",
+        "urls": [
+          "https://fossettefocacceria.com/sitemap.xml"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-docs"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "locationOrQuery": "Toast Union Market menu and item pages",
+        "urls": [
+          "https://order.toasttab.com/online/fossette-focacceria-union-market-1309-5th-st-ne-washington-dc-20002"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "locationOrQuery": "site:fossettefocacceria.com allergen allergy nutrition ingredients PDF menu",
+        "urls": [
+          "https://www.google.com/search?q=site%3Afossettefocacceria.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-web"
+        ]
+      }
+    ]
+  }
+}

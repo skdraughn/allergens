@@ -1,0 +1,1700 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-batch-04-2026-07-16",
+  "restaurant": {
+    "restaurantId": "bbq-chicken",
+    "name": "bb.q Chicken",
+    "domain": "bbqchicken.com",
+    "locationId": null,
+    "baselineItemCount": 44,
+    "baselineItemFingerprint": "b693b970c68bcce9f89bf7f9f8e4fa478b4ab27eda48541e651d9cffc57610d6",
+    "officialItemCount": 44,
+    "officialAllergenStatus": "extracted",
+    "sourceFamily": "pdf-allergen-matrix",
+    "parserProfile": "pdf-allergen-matrix",
+    "guideUrl": "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf",
+    "sourceUrls": [
+      "https://bbqchicken.com/menu/",
+      "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf",
+      "https://bbqchicken.com/wp-content/uploads/2024/02/bbq_chicken_nutrition_info.pdf"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found.",
+    "Terra missed 50 scout product presentation(s).",
+    "Terra returned 50 unknown scout product presentation(s).",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "validationWarnings": [
+    "Terra missed 50 scout product presentation(s).",
+    "Terra returned 50 unknown scout product presentation(s).",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "pdf_or_image",
+      "scope_incomplete",
+      "count_drift",
+      "current_only",
+      "baseline_only",
+      "duplicate_presentations",
+      "authority_ambiguity",
+      "non_exact_reconciliation",
+      "cross_contact",
+      "validation_warnings",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 44,
+      "reconciledItemCount": 44,
+      "uniqueReconciledItemCount": 44,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 4,
+      "activeMenuSurfaceCount": 4,
+      "accessibleMenuSurfaceCount": 4,
+      "serviceCount": 0,
+      "pdfImageSurfaceCount": 2,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 0,
+      "incompleteSurfaceCount": 2,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 37,
+      "currentOnlyCount": 17,
+      "baselineOnlyCount": 24,
+      "countDrift": true,
+      "duplicatePresentationCount": 52,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 18,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 27,
+      "allergenMismatchItemCount": 0,
+      "crossContactCount": 1,
+      "parserRepairFindingCount": 0,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 38,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "medium",
+      "overall": 0.79,
+      "menu": 0.9,
+      "allergenSource": 0.67,
+      "extraction": 0.72,
+      "rationale": "The national menu, restaurant-issued allergen PDF, nutrition PDF, and linked Auburn ordering catalog are accessible and independently re-opened. They establish material catalog drift and an issued historical allergen matrix, but do not establish a complete current allergen/cross-contact disclosure for the location-specific catalog."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "U.S. bb.q Chicken national menu plus the linked Auburn North, Alabama ordering location; the national page expressly says flavors vary by restaurant.",
+      "confidence": 0.97,
+      "sourceEvidenceIds": [
+        "V1",
+        "V3"
+      ],
+      "notes": "The official domain and the linked ordering page identify bb.q Chicken; V3 identifies 1212 Gatewood Dr, Auburn, AL."
+    },
+    "sources": [
+      {
+        "evidenceId": "V1",
+        "url": "https://bbqchicken.com/menu/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Menu | bb.q Chicken",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "The official menu enumerates featured flavors, Korean Fried Chicken, K Food, and Sides; it says flavors vary by restaurant and gives a global food-allergy notice.",
+        "stableRowId": "official-menu",
+        "contentHash": null,
+        "artifactSuggested": "html"
+      },
+      {
+        "evidenceId": "V2",
+        "url": "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "allergen",
+        "title": "bb.q Chicken Allergy List",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Six-page issued PDF labels columns as menu item, allergen, and potential cross-contaminants, covering chicken, K-Food, sides, and western food.",
+        "stableRowId": "pages-1-6",
+        "contentHash": null,
+        "artifactSuggested": "pdf"
+      },
+      {
+        "evidenceId": "V3",
+        "url": "https://order.bbqchicken.com/store/31934091",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "bb.q Chicken Auburn North ordering menu",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "DoorDash Commerce ordering catalog for 1212 Gatewood Dr, Auburn, AL, listing Whole Chicken, Boneless, Wings, Rice Bowl, Ddeok-Bokki, Side, and Beverage products.",
+        "stableRowId": "store-31934091",
+        "contentHash": null,
+        "artifactSuggested": "html"
+      },
+      {
+        "evidenceId": "V4",
+        "url": "https://bbqchicken.com/wp-content/uploads/2024/02/bbq_chicken_nutrition_info.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "ingredients",
+        "title": "bb.q Chicken Nutrition Information",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "One-page 2024 nutrition report lists chicken flavors and serving variants, but is not an allergen or cross-contact disclosure.",
+        "stableRowId": "page-1",
+        "contentHash": null,
+        "artifactSuggested": "pdf"
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://bbqchicken.com/menu/",
+        "notes": "Official national menu re-opened."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf",
+        "notes": "Restaurant-issued allergen PDF re-opened."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://order.bbqchicken.com/store/31934091",
+        "notes": "Linked, location-specific DoorDash Commerce catalog re-opened."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": "https://bbqchicken.com/wp-content/uploads/2024/02/bbq_chicken_nutrition_info.pdf",
+        "notes": "Official nutrition PDF re-opened from the menu link."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No stronger official archive was needed to establish the present catalog discrepancy."
+      },
+      {
+        "kind": "third_party",
+        "status": "not_found",
+        "url": null,
+        "notes": "No third-party allergen evidence was used."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "pdf_or_image",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "V2",
+          "V4"
+        ],
+        "notes": "Both issued supporting documents are PDFs; V2 is a visually structured allergen/cross-contact matrix."
+      },
+      {
+        "gateId": "scope_incomplete",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "V1",
+          "V2",
+          "V3"
+        ],
+        "notes": "The national page varies by restaurant; V3 is one location; V2 is not demonstrated current for all V3 products."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "V1",
+          "V3"
+        ],
+        "notes": "The frozen 44-key set differs materially from both current surfaces."
+      },
+      {
+        "gateId": "current_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "V1",
+          "V3"
+        ],
+        "notes": "Current catalog includes Feel Crunch, Half & Half Whole Chicken, Chicken Mayo Rice Bowl, side sauce, shrimp tempura, and beverages."
+      },
+      {
+        "gateId": "baseline_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "V1",
+          "V3"
+        ],
+        "notes": "Numerous frozen Western Food, ramen, and legacy flavor entries are absent from both current menu surfaces."
+      },
+      {
+        "gateId": "duplicate_presentations",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "V1",
+          "V3"
+        ],
+        "notes": "Chicken flavor identities have whole, wing, and/or boneless presentations; V3 lists them separately."
+      },
+      {
+        "gateId": "authority_ambiguity",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "V2",
+          "V3"
+        ],
+        "notes": "V2 is restaurant-issued but older and not shown to cover the full current location catalog; V3 remains restaurant_linked_vendor."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "V1",
+          "V3"
+        ],
+        "notes": "Gang-Jeong/Gangjeong, Rose’ Ddeok-Bokki/Rose Ddeok-Bokki, and Cheesling require normalization."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "V1",
+          "V2"
+        ],
+        "notes": "V1 provides a global may-contain-style notice; V2 separately labels potential cross-contaminants. Neither permits a current complete product-level may-contain array."
+      },
+      {
+        "gateId": "validation_warnings",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "V1",
+          "V2",
+          "V3"
+        ],
+        "notes": "The scout catalog omitted Feel Crunch from S1's product list while also recording it as a current product, and its product-level allergen rows overstate what incomplete/current scope can establish."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "V2",
+          "V3"
+        ],
+        "notes": "Independent review confirms unresolved current allergen coverage and extraction interpretation."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "V1",
+          "V2",
+          "V3",
+          "V4"
+        ],
+        "notes": "The underlying PDF, multiple surfaces, catalog drift, and authority limitations are independently supported."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "S1",
+        "verdict": "mismatch",
+        "sourceEvidenceIds": [
+          "V1"
+        ],
+        "notes": "Accessible national surface, but Luna's S1 enumeration is incomplete: Feel Crunch is visibly listed as a featured flavor. The remaining listed national food catalog and chicken presentation labels were verified."
+      },
+      {
+        "surfaceId": "S2",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "V3"
+        ],
+        "notes": "Accessible, fully enumerated Auburn North location catalog; its restaurant-linked-vendor authority is retained."
+      },
+      {
+        "surfaceId": "S3",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "V2"
+        ],
+        "notes": "Accessible six-page issued allergen PDF; it is an allergen/cross-contact matrix, not a complete current menu catalog."
+      },
+      {
+        "surfaceId": "S4",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "V4"
+        ],
+        "notes": "Accessible issued nutrition PDF; it supports historical product/presentation identity only and is not an allergen matrix."
+      }
+    ],
+    "currentProductCheckGroups": [
+      {
+        "currentProductKeys": [
+          "golden-original",
+          "secret-sauce",
+          "hot-spicy"
+        ],
+        "presentationIds": [
+          "golden-original:whole",
+          "golden-original:wings",
+          "golden-original:boneless",
+          "secret-sauce:whole",
+          "secret-sauce:wings",
+          "secret-sauce:boneless",
+          "hot-spicy:whole",
+          "hot-spicy:wings",
+          "hot-spicy:boneless"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "V1",
+          "V2",
+          "V3",
+          "V4"
+        ],
+        "notes": "All nine presentations independently observed. V2 has historical named rows but cannot safely supply complete current arrays."
+      },
+      {
+        "currentProductKeys": [
+          "honey-garlic",
+          "soy-garlic",
+          "galbi",
+          "spicy-galbi",
+          "cheesling",
+          "gangnam-style",
+          "gangjeong"
+        ],
+        "presentationIds": [
+          "honey-garlic:wings",
+          "honey-garlic:boneless",
+          "soy-garlic:wings",
+          "soy-garlic:boneless",
+          "galbi:wings",
+          "galbi:boneless",
+          "spicy-galbi:wings",
+          "spicy-galbi:boneless",
+          "cheesling:wings",
+          "cheesling:boneless",
+          "gangnam-style:wings",
+          "gangnam-style:boneless",
+          "gangjeong:wings",
+          "gangjeong:boneless"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "V1",
+          "V2",
+          "V3",
+          "V4"
+        ],
+        "notes": "All fourteen presentations independently observed; current complete arrays remain unavailable."
+      },
+      {
+        "currentProductKeys": [
+          "spicy-original",
+          "wings-of-fire"
+        ],
+        "presentationIds": [
+          "spicy-original:wings",
+          "wings-of-fire:wings"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "V1",
+          "V2",
+          "V3",
+          "V4"
+        ],
+        "notes": "Both wing-only presentations independently observed; current complete arrays remain unavailable."
+      },
+      {
+        "currentProductKeys": [
+          "ddeok-bokki",
+          "rose-ddeok-bokki",
+          "kimchi-fried-rice"
+        ],
+        "presentationIds": [
+          "ddeok-bokki:standard",
+          "rose-ddeok-bokki:standard",
+          "kimchi-fried-rice:standard"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "egg",
+          "fish",
+          "sesame"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "V3"
+        ],
+        "sourceEvidenceIds": [
+          "V1",
+          "V2",
+          "V3"
+        ],
+        "notes": "V3 explicitly names egg/fish/sesame in the Ddeok-Bokki descriptions; those are narrow positives only, with no complete array or cross-contact conclusion."
+      },
+      {
+        "currentProductKeys": [
+          "chicken-fried-rice"
+        ],
+        "presentationIds": [
+          "chicken-fried-rice:standard"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "egg",
+          "sesame"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "V3"
+        ],
+        "sourceEvidenceIds": [
+          "V3"
+        ],
+        "notes": "V3 explicitly says sunny-side-up egg and sesame seeds; this is linked-vendor evidence, not restaurant-issued."
+      },
+      {
+        "currentProductKeys": [
+          "bulgogi-rice-bowl",
+          "buldak-rice-bowl",
+          "french-fries",
+          "sweet-potato-fries",
+          "cheese-sticks",
+          "onion-rings",
+          "fried-dumplings",
+          "cheesling-fries",
+          "coleslaw",
+          "steamed-rice",
+          "pickled-radish",
+          "side-sauce",
+          "shrimp-tempura"
+        ],
+        "presentationIds": [
+          "bulgogi-rice-bowl:standard",
+          "buldak-rice-bowl:standard",
+          "french-fries:standard",
+          "sweet-potato-fries:standard",
+          "cheese-sticks:standard",
+          "onion-rings:standard",
+          "fried-dumplings:standard",
+          "cheesling-fries:standard",
+          "coleslaw:standard",
+          "steamed-rice:standard",
+          "pickled-radish:standard",
+          "side-sauce:secret-sauce-or-hot-spicy",
+          "shrimp-tempura:standard"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "V1",
+          "V2",
+          "V3"
+        ],
+        "notes": "All listed once on current surfaces; no complete current allergen disclosure. Ingredient names alone do not justify complete arrays."
+      },
+      {
+        "currentProductKeys": [
+          "coke",
+          "coke-diet",
+          "coke-zero",
+          "sprite",
+          "sprite-zero",
+          "red-bull",
+          "aquafina-water"
+        ],
+        "presentationIds": [
+          "coke:can",
+          "coke-diet:can",
+          "coke-zero:can",
+          "sprite:can",
+          "sprite-zero:can",
+          "red-bull:can",
+          "aquafina-water:bottle"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "not_applicable",
+        "allergenSourceType": "not_applicable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "V3"
+        ],
+        "notes": "Sealed branded beverage presentations are current catalog additions, outside the restaurant-prepared allergen matrix."
+      },
+      {
+        "currentProductKeys": [
+          "feel-crunch"
+        ],
+        "presentationIds": [
+          "feel-crunch:unspecified"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "V1"
+        ],
+        "notes": "Officially listed featured flavor; Luna included the product but failed to include it in S1's enumerated product keys."
+      }
+    ],
+    "additionalMenuSurfaces": [],
+    "additionalCurrentProducts": [],
+    "reconciliationSummary": {
+      "reconciledItemCount": 44,
+      "counts": {
+        "exact_match/accurately_unavailable": 20,
+        "missing_from_source/accurately_unavailable": 24
+      }
+    },
+    "findings": [
+      {
+        "findingId": "T1",
+        "severity": "high",
+        "kind": "menu",
+        "summary": "Luna's national-menu enumeration is incomplete: Feel Crunch is visibly present on the official menu but absent from S1.currentProductKeys. The product was separately captured, so this is a surface-extraction discrepancy rather than an additional missed product.",
+        "sourceEvidenceIds": [
+          "V1"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "T2",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "The restaurant-issued PDF contains historical direct-allergen and potential-cross-contaminant columns, while the current national and Auburn catalogs differ. It cannot establish complete current arrays, negatives, or product-level cross-contact conclusions for the catalog.",
+        "sourceEvidenceIds": [
+          "V1",
+          "V2",
+          "V3"
+        ],
+        "affectedAuditItemKeys": [
+          "1:buldak-rice-bowl",
+          "4:bulgogi-rice-bowl",
+          "10:cheesling",
+          "11:cheesling-fries",
+          "14:chicken-fried-rice",
+          "15:coleslaw",
+          "17:ddeok-bokki",
+          "18:galbi",
+          "19:gangjeong",
+          "20:gangnam-style",
+          "21:golden-original",
+          "24:honey-garlic",
+          "26:hot-spicy",
+          "27:kimchi-fried-rice",
+          "35:rose-ddeok-bokki",
+          "37:secret-sauce",
+          "39:soy-garlic",
+          "40:spicy-galbi",
+          "42:spicy-original-wing",
+          "43:wings-of-fire"
+        ]
+      },
+      {
+        "findingId": "T3",
+        "severity": "high",
+        "kind": "menu",
+        "summary": "The frozen 44-item baseline is materially stale against current public surfaces: 24 baseline products are absent, while current catalog products and separate presentations are not represented by the frozen set.",
+        "sourceEvidenceIds": [
+          "V1",
+          "V3"
+        ],
+        "affectedAuditItemKeys": [
+          "2:bulgogi-cheese-nachos",
+          "3:bulgogi-poutine",
+          "5:caesar-salad",
+          "6:carbonara-ddeok-bokki",
+          "7:caribbean-spice",
+          "8:caribbean-spice-rice-bowl",
+          "9:cheese-buldak",
+          "12:chicken-alfredo-pasta",
+          "13:chicken-cheese-ball",
+          "16:corn-salad",
+          "22:golden-original-sandwich",
+          "23:grilled-chicken-salad",
+          "25:hot-mala",
+          "28:kimchi-ramen",
+          "29:kimchicken-pasta",
+          "30:kimchicken-quesadilla",
+          "31:kimchicken-rice-bowl",
+          "32:mala-ddeok-bokki",
+          "33:mustard-chicken-salad",
+          "34:ramen",
+          "36:rose-pasta",
+          "38:so-ddeok-so-ddeok",
+          "41:spicy-original-sandwich",
+          "44:yuzu-cobb-salad"
+        ]
+      }
+    ],
+    "summary": "Independent verification confirms a material catalog discrepancy and unresolved current allergen/cross-contact coverage. All four scout surfaces and all 37 scout products were checked once; no additional surface or product was found, but S1's enumeration omitted Feel Crunch. The frozen baseline was reconciled exactly once: 20 current matches and 24 missing entries. Linked-vendor evidence remains linked-vendor and supports only narrow named positives.",
+    "coordinatorNotes": [
+      "Read-only Terra result only; no ledger, dossier, source capture, repair, or terminal state was changed.",
+      "The managed attempt-result destination was not written by this verifier."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "1:buldak-rice-bowl",
+      "baseline": {
+        "itemId": "buldak-rice-bowl",
+        "name": "Buldak Rice Bowl",
+        "category": "K-Food",
+        "variantGroup": "K-Food",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "soy",
+          "sesame",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "2:bulgogi-cheese-nachos",
+      "baseline": {
+        "itemId": "bulgogi-cheese-nachos",
+        "name": "Bulgogi Cheese Nachos",
+        "category": "Western Food",
+        "variantGroup": "Western Food",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "3:bulgogi-poutine",
+      "baseline": {
+        "itemId": "bulgogi-poutine",
+        "name": "Bulgogi Poutine",
+        "category": "Western Food",
+        "variantGroup": "Western Food",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg",
+          "wheat",
+          "soy",
+          "sesame",
+          "fish",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "4:bulgogi-rice-bowl",
+      "baseline": {
+        "itemId": "bulgogi-rice-bowl",
+        "name": "Bulgogi Rice Bowl",
+        "category": "K-Food",
+        "variantGroup": "K-Food",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "soy",
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "5:caesar-salad",
+      "baseline": {
+        "itemId": "caesar-salad",
+        "name": "Caesar Salad",
+        "category": "Western Food",
+        "variantGroup": "Western Food",
+        "isConfigurable": false,
+        "allergens": [
+          "peanut",
+          "milk",
+          "egg",
+          "wheat",
+          "soy",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "6:carbonara-ddeok-bokki",
+      "baseline": {
+        "itemId": "carbonara-ddeok-bokki",
+        "name": "Carbonara Ddeok-Bokki",
+        "category": "K-Food",
+        "variantGroup": "K-Food",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg",
+          "wheat",
+          "sesame",
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "7:caribbean-spice",
+      "baseline": {
+        "itemId": "caribbean-spice",
+        "name": "Caribbean Spice",
+        "category": "Chicken",
+        "variantGroup": "Chicken",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "8:caribbean-spice-rice-bowl",
+      "baseline": {
+        "itemId": "caribbean-spice-rice-bowl",
+        "name": "Caribbean Spice Rice Bowl",
+        "category": "K-Food",
+        "variantGroup": "K-Food",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "wheat",
+          "soy",
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "9:cheese-buldak",
+      "baseline": {
+        "itemId": "cheese-buldak",
+        "name": "Cheese Buldak",
+        "category": "K-Food",
+        "variantGroup": "K-Food",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "soy",
+          "sesame",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "10:cheesling",
+      "baseline": {
+        "itemId": "cheesling",
+        "name": "Cheesling",
+        "category": "Chicken",
+        "variantGroup": "Chicken",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "11:cheesling-fries",
+      "baseline": {
+        "itemId": "cheesling-fries",
+        "name": "Cheesling Fries",
+        "category": "Side",
+        "variantGroup": "Side",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "12:chicken-alfredo-pasta",
+      "baseline": {
+        "itemId": "chicken-alfredo-pasta",
+        "name": "Chicken Alfredo Pasta",
+        "category": "Western Food",
+        "variantGroup": "Western Food",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "soy",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "13:chicken-cheese-ball",
+      "baseline": {
+        "itemId": "chicken-cheese-ball",
+        "name": "Chicken Cheese Ball",
+        "category": "Side",
+        "variantGroup": "Side",
+        "isConfigurable": false,
+        "allergens": [
+          "peanut",
+          "milk",
+          "egg",
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "14:chicken-fried-rice",
+      "baseline": {
+        "itemId": "chicken-fried-rice",
+        "name": "Chicken Fried Rice",
+        "category": "K-Food",
+        "variantGroup": "K-Food",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "wheat",
+          "soy",
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "15:coleslaw",
+      "baseline": {
+        "itemId": "coleslaw",
+        "name": "Coleslaw",
+        "category": "Side",
+        "variantGroup": "Side",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "16:corn-salad",
+      "baseline": {
+        "itemId": "corn-salad",
+        "name": "Corn Salad",
+        "category": "Side",
+        "variantGroup": "Side",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "17:ddeok-bokki",
+      "baseline": {
+        "itemId": "ddeok-bokki",
+        "name": "Ddeok-Bokki",
+        "category": "K-Food",
+        "variantGroup": "K-Food",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg",
+          "wheat",
+          "soy",
+          "sesame",
+          "fish",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "18:galbi",
+      "baseline": {
+        "itemId": "galbi",
+        "name": "Galbi",
+        "category": "Chicken",
+        "variantGroup": "Chicken",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "soy",
+          "sesame",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "19:gangjeong",
+      "baseline": {
+        "itemId": "gangjeong",
+        "name": "Gangjeong",
+        "category": "Chicken",
+        "variantGroup": "Chicken",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "20:gangnam-style",
+      "baseline": {
+        "itemId": "gangnam-style",
+        "name": "Gangnam Style",
+        "category": "Chicken",
+        "variantGroup": "Chicken",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "soy",
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "21:golden-original",
+      "baseline": {
+        "itemId": "golden-original",
+        "name": "Golden Original",
+        "category": "Chicken",
+        "variantGroup": "Chicken",
+        "isConfigurable": false,
+        "allergens": [
+          "peanut",
+          "milk",
+          "egg",
+          "wheat",
+          "soy",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "22:golden-original-sandwich",
+      "baseline": {
+        "itemId": "golden-original-sandwich",
+        "name": "Golden Original Sandwich",
+        "category": "Western Food",
+        "variantGroup": "Western Food",
+        "isConfigurable": false,
+        "allergens": [
+          "peanut",
+          "milk",
+          "egg",
+          "wheat",
+          "soy",
+          "shellfish",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "23:grilled-chicken-salad",
+      "baseline": {
+        "itemId": "grilled-chicken-salad",
+        "name": "Grilled Chicken Salad",
+        "category": "Western Food",
+        "variantGroup": "Western Food",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "soy",
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "24:honey-garlic",
+      "baseline": {
+        "itemId": "honey-garlic",
+        "name": "Honey Garlic",
+        "category": "Chicken",
+        "variantGroup": "Chicken",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "25:hot-mala",
+      "baseline": {
+        "itemId": "hot-mala",
+        "name": "Hot Mala",
+        "category": "Chicken",
+        "variantGroup": "Chicken",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "soy",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "26:hot-spicy",
+      "baseline": {
+        "itemId": "hot-spicy",
+        "name": "Hot Spicy",
+        "category": "Chicken",
+        "variantGroup": "Chicken",
+        "isConfigurable": false,
+        "allergens": [
+          "peanut",
+          "milk",
+          "egg",
+          "wheat",
+          "soy",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "27:kimchi-fried-rice",
+      "baseline": {
+        "itemId": "kimchi-fried-rice",
+        "name": "Kimchi Fried Rice",
+        "category": "K-Food",
+        "variantGroup": "K-Food",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg",
+          "wheat",
+          "soy",
+          "sesame",
+          "fish",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "28:kimchi-ramen",
+      "baseline": {
+        "itemId": "kimchi-ramen",
+        "name": "Kimchi Ramen",
+        "category": "K-Food",
+        "variantGroup": "K-Food",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "wheat",
+          "soy",
+          "sesame",
+          "fish",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "29:kimchicken-pasta",
+      "baseline": {
+        "itemId": "kimchicken-pasta",
+        "name": "Kimchicken Pasta",
+        "category": "Western Food",
+        "variantGroup": "Western Food",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "soy",
+          "sesame",
+          "shellfish",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "30:kimchicken-quesadilla",
+      "baseline": {
+        "itemId": "kimchicken-quesadilla",
+        "name": "Kimchicken Quesadilla",
+        "category": "Western Food",
+        "variantGroup": "Western Food",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "soy",
+          "sesame",
+          "fish",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "31:kimchicken-rice-bowl",
+      "baseline": {
+        "itemId": "kimchicken-rice-bowl",
+        "name": "Kimchicken Rice Bowl",
+        "category": "K-Food",
+        "variantGroup": "K-Food",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "soy",
+          "sesame",
+          "fish",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "32:mala-ddeok-bokki",
+      "baseline": {
+        "itemId": "mala-ddeok-bokki",
+        "name": "Mala Ddeok-Bokki",
+        "category": "K-Food",
+        "variantGroup": "K-Food",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg",
+          "wheat",
+          "soy",
+          "sesame",
+          "fish",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "33:mustard-chicken-salad",
+      "baseline": {
+        "itemId": "mustard-chicken-salad",
+        "name": "Mustard Chicken Salad",
+        "category": "Western Food",
+        "variantGroup": "Western Food",
+        "isConfigurable": false,
+        "allergens": [
+          "peanut",
+          "milk",
+          "egg",
+          "wheat",
+          "soy",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "34:ramen",
+      "baseline": {
+        "itemId": "ramen",
+        "name": "Ramen",
+        "category": "K-Food",
+        "variantGroup": "K-Food",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "35:rose-ddeok-bokki",
+      "baseline": {
+        "itemId": "rose-ddeok-bokki",
+        "name": "Rose Ddeok-Bokki",
+        "category": "K-Food",
+        "variantGroup": "K-Food",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg",
+          "wheat",
+          "soy",
+          "sesame",
+          "fish",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "36:rose-pasta",
+      "baseline": {
+        "itemId": "rose-pasta",
+        "name": "Rose Pasta",
+        "category": "Western Food",
+        "variantGroup": "Western Food",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg",
+          "wheat",
+          "soy",
+          "shellfish",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "37:secret-sauce",
+      "baseline": {
+        "itemId": "secret-sauce",
+        "name": "Secret Sauce",
+        "category": "Chicken",
+        "variantGroup": "Chicken",
+        "isConfigurable": false,
+        "allergens": [
+          "peanut",
+          "milk",
+          "egg",
+          "wheat",
+          "soy",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "38:so-ddeok-so-ddeok",
+      "baseline": {
+        "itemId": "so-ddeok-so-ddeok",
+        "name": "So Ddeok",
+        "category": "Side",
+        "variantGroup": "Side",
+        "isConfigurable": false,
+        "allergens": [
+          "peanut",
+          "milk",
+          "egg",
+          "wheat",
+          "soy",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "39:soy-garlic",
+      "baseline": {
+        "itemId": "soy-garlic",
+        "name": "Soy Garlic",
+        "category": "Chicken",
+        "variantGroup": "Chicken",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "40:spicy-galbi",
+      "baseline": {
+        "itemId": "spicy-galbi",
+        "name": "Spicy Galbi",
+        "category": "Chicken",
+        "variantGroup": "Chicken",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "soy",
+          "sesame",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "41:spicy-original-sandwich",
+      "baseline": {
+        "itemId": "spicy-original-sandwich",
+        "name": "Spicy Original Sandwich",
+        "category": "Western Food",
+        "variantGroup": "Western Food",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "soy",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "42:spicy-original-wing",
+      "baseline": {
+        "itemId": "spicy-original-wing",
+        "name": "Spicy Original Wing",
+        "category": "Chicken",
+        "variantGroup": "Chicken",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "43:wings-of-fire",
+      "baseline": {
+        "itemId": "wings-of-fire",
+        "name": "Wings Of Fire",
+        "category": "Chicken",
+        "variantGroup": "Chicken",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "44:yuzu-cobb-salad",
+      "baseline": {
+        "itemId": "yuzu-cobb-salad",
+        "name": "Yuzu Cobb Salad",
+        "category": "Western Food",
+        "variantGroup": "Western Food",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://bbqchicken.com/wp-content/uploads/2024/08/bbq-Allergy-List.pdf"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-04-2026-07-16/jobs/bbq-chicken.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-04-2026-07-16/results/bbq-chicken.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/bbq-chicken.jsonl"
+  }
+}

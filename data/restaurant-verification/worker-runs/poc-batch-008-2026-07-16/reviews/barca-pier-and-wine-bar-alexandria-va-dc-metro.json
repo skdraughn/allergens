@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-008-2026-07-16",
+  "restaurantId": "barca-pier-and-wine-bar-alexandria-va-dc-metro",
+  "reviewType": "binding_identity_menu_scope_and_source_authority_resolution",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "role": "sol_reviewer"
+  },
+  "reviewedKeys": [],
+  "resolution": {
+    "binding": true,
+    "outcome": "same_business_identity_and_exact_location_38_product_catalog_resolved",
+    "identityResolution": {
+      "sameBusiness": true,
+      "canonicalAddress": "2 Pioneer Mill Way, Alexandria, VA 22314",
+      "controllingEvidenceIds": [
+        "official-faq"
+      ],
+      "rationale": "The restaurant-issued BARCA source and restaurant-linked OpenTable listing identify the same BARCA Pier & Wine Bar venue. For the conflicting street number, the restaurant-issued official source controls over the linked vendor, so 2 Pioneer Mill Way is canonical."
+    },
+    "catalogDefinition": {
+      "scope": "The exact-location BARCA Pier & Wine Bar catalog at 2 Pioneer Mill Way, Alexandria, VA 22314, limited to 38 current food and nonalcoholic products.",
+      "locationId": "alexandria-va",
+      "completeAuthoritySurfaceIds": [
+        "official-all-day-food",
+        "official-pier-beverage",
+        "official-wine-bar-beverage",
+        "linked-opentable"
+      ],
+      "supportingSurfaceIds": [
+        "official-brunch",
+        "official-happy-hour",
+        "linked-toast"
+      ],
+      "historicalNoncurrentSurfaceIds": [],
+      "enumerationRule": "union_of_distinct_current_exact_location_food_and_nonalcoholic_products_on_complete_restaurant_issued_surfaces_with_linked_vendor_corroboration_and_alcohol_excluded",
+      "existingProductCount": 38,
+      "additionalProductCount": 0,
+      "removedProductCount": 0,
+      "excludedProductCount": 0,
+      "resolvedCatalogProductCount": 38,
+      "productAdditionsRequired": [],
+      "productRemovalsRequired": [],
+      "productExclusionsRequired": [],
+      "alcoholicProductsIncluded": [],
+      "directPositiveBoundary": "Preserve only direct current positive evidence. Dietary markers and menu descriptions are not a complete allergen profile and do not establish that unlisted allergens are absent.",
+      "rationale": "The complete current all-day and nonalcoholic beverage surfaces establish 38 products, with linked OpenTable used as corroboration rather than controlling restaurant-issued authority. The three partial surfaces identify no additional distinct food or nonalcoholic products beyond that catalog."
+    },
+    "crossContactResolution": {
+      "scope": "detail_unavailable",
+      "statement": "No complete cross-contact profile is established by the local result.",
+      "sourceEvidenceIds": [
+        "official-faq",
+        "opentable-menu",
+        "toast-menu"
+      ],
+      "appliesToCurrentCatalog": true,
+      "itemSpecificMayContainProductKeys": [],
+      "negativeClaimsEstablished": [],
+      "completeCrossContactProfileEstablished": false
+    },
+    "items": [],
+    "surfaceResolutions": [
+      {
+        "surfaceId": "official-brunch",
+        "disposition": "supporting",
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ],
+        "additionalProductsRequired": [],
+        "rationale": "The partial brunch surface identifies Soft Scramble and Torrijas, both already included in the 38-product current catalog, and establishes no additional distinct products."
+      },
+      {
+        "surfaceId": "official-happy-hour",
+        "disposition": "supporting",
+        "sourceEvidenceIds": [
+          "official-home"
+        ],
+        "additionalProductsRequired": [],
+        "rationale": "The partial happy-hour surface establishes no exact additional distinct food or nonalcoholic products; alcohol is excluded."
+      },
+      {
+        "surfaceId": "linked-toast",
+        "disposition": "supporting",
+        "sourceEvidenceIds": [
+          "toast-menu",
+          "official-home"
+        ],
+        "additionalProductsRequired": [],
+        "rationale": "The partial restaurant-linked Toast surface corroborates Marinated Cucumbers, which is already included in the 38-product current catalog, and establishes no additional distinct products."
+      }
+    ],
+    "safetySourceAuthorityConflictRemains": false
+  },
+  "remainingSolSignals": [
+    {
+      "signal": "current_complete_official_allergen_matrix",
+      "status": "accurately_unavailable",
+      "sourceEvidenceIds": [
+        "official-home",
+        "official-faq",
+        "opentable-menu",
+        "toast-menu",
+        "targeted-search"
+      ],
+      "rationale": "Official-site, official-document, linked-vendor, and targeted-web searches were completed without finding a current complete official allergen matrix."
+    },
+    {
+      "signal": "cross_contact_detail",
+      "status": "unavailable",
+      "sourceEvidenceIds": [
+        "official-faq",
+        "opentable-menu",
+        "toast-menu"
+      ],
+      "rationale": "No complete cross-contact policy or item-specific generic mayContain evidence is established."
+    }
+  ],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "frozenBaselineItemCount": 26,
+    "researchReconciledItemCount": 26,
+    "exactMatchCount": 19,
+    "normalizedMatchCount": 3,
+    "staleOrOutOfScopeCount": 4,
+    "unresolvedResearchKeyCount": 0,
+    "reviewedKeyCount": 0,
+    "resolutionItemCount": 0,
+    "allFrozenRowsReconciled": true,
+    "allAffectedKeysReviewedExactlyOnce": true,
+    "researchCurrentProductCount": 38,
+    "additionalProductCount": 0,
+    "removedProductCount": 0,
+    "excludedProductCount": 0,
+    "resolvedCatalogProductCount": 38,
+    "alcoholicProductCountIncluded": 0,
+    "surfaceResolutionCount": 3,
+    "partialSurfaceIds": [
+      "official-brunch",
+      "official-happy-hour",
+      "linked-toast"
+    ],
+    "resolvedSurfaceIds": [
+      "official-brunch",
+      "official-happy-hour",
+      "linked-toast"
+    ],
+    "allPartialSurfacesResolvedExactlyOnce": true,
+    "identityConflictResolved": true,
+    "storeIdentityClaimed": false,
+    "restaurantIssuedAddressControls": true,
+    "exactLocationCatalogPreserved": true,
+    "itemSpecificMayContainClaimsIntroduced": false,
+    "unsupportedAllergenNegativesIntroduced": false,
+    "completeAllergenProfileClaimed": false,
+    "safetySourceAuthorityConflictResolved": true,
+    "matrixSearchCount": 4,
+    "matrixStatusRemainsAccuratelyUnavailable": true,
+    "codexVerifiedClaimed": false
+  },
+  "coordinatorRecommendation": "Accept 2 Pioneer Mill Way as the restaurant-issued canonical address for the same BARCA venue, bind the 38-product catalog, and close all three partial surfaces with zero additions while retaining accurately_unavailable matrix status."
+}

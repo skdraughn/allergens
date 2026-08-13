@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-019-2026-07-17",
+  "restaurantId": "big-buns-shirlington",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "f60f267add01ce9cb34918d56289b13c4c75af30636c279ff4236d989ce150e9",
+    "assertions": [
+      "fingerprint gate passed",
+      "in-memory closeout packet validation passed",
+      "46 products and 56 frozen keys reconciled",
+      "direct catalog finalized before Ingredient Intelligence",
+      "canonical evidence purposes emitted",
+      "no ledger, manifest, shared parser, test, or other restaurant writes",
+      "second run is byte-identical"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/big-buns-shirlington.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/big-buns-shirlington.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/big-buns-shirlington.jsonl",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-big-buns-shirlington-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-019-2026-07-17/apply-results/big-buns-shirlington.json"
+  ],
+  "hashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "c84f6283cbee077bd03a62898e85611d2eaced371a8ebf250e5053e42efeab3a",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/big-buns-shirlington.json": "0acbfbc8cf9168ee4844167e59eb4725625196995b1bc01fa071e1fc70a8a928",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/big-buns-shirlington.json": "517701888c1e97e380607fd4dfe2d0842516157605a0f02b674b3dcfa0a4d55f",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/big-buns-shirlington.jsonl": "ebc25310887e83ef649620f825b56f20bd328a1bb89672f6de90dfbe29b4d1a1"
+  },
+  "counts": {
+    "publishedProducts": 46,
+    "normalized_match": 46,
+    "artifact": 10,
+    "unresolved": 0,
+    "directGluten": 4,
+    "directWheat": 0,
+    "directOtherAllergens": 0,
+    "mayContainProducts": 0,
+    "matrixStatus": "accurately_unavailable",
+    "evidenceSources": 7
+  },
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "validatePocResearchResult",
+    "node scripts/apply-big-buns-shirlington-poc.mjs (twice)",
+    "sha256 comparison of owned artifacts"
+  ],
+  "secondRunDiff": "none"
+}

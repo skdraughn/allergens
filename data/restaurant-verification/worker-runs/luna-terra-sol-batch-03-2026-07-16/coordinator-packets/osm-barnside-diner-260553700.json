@@ -1,0 +1,2555 @@
+{
+  "schemaVersion": 1,
+  "runId": "luna-terra-sol-batch-03-2026-07-16",
+  "restaurantId": "osm-barnside-diner-260553700",
+  "preparedAt": "2026-07-16T16:56:27.759Z",
+  "provenance": {
+    "models": {
+      "scout": {
+        "id": "gpt-5.6-luna",
+        "reasoningEffort": "low"
+      },
+      "verifier": {
+        "id": "gpt-5.6-terra",
+        "reasoningEffort": "low"
+      },
+      "reviewer": {
+        "id": "gpt-5.6-sol",
+        "reasoningEffort": "medium"
+      }
+    },
+    "artifacts": [
+      {
+        "kind": "job",
+        "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/jobs/osm-barnside-diner-260553700.json",
+        "sha256": "624256c0fca48133365eb7c27556f0053a7f4329bb7ede4651f47bb5b76a2f40"
+      },
+      {
+        "kind": "scout_result",
+        "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/scout-results/osm-barnside-diner-260553700.json",
+        "sha256": "407179cccba9a9e6c2980245accccb4b7674ec72b6d4f19096108b6ec1c15f92"
+      },
+      {
+        "kind": "scout_route",
+        "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/scout-routes/osm-barnside-diner-260553700.json",
+        "sha256": "6a5594bc8f87daef0c8dc8630936a14665466a2152b39687fef86b4515fee77a"
+      },
+      {
+        "kind": "terra_packet",
+        "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/verifier-packets/osm-barnside-diner-260553700.json",
+        "sha256": "7940a034e6f55ddfe797299b0a4d3655884ef1a3a8f07ef3274e51c25e96b0d8"
+      },
+      {
+        "kind": "terra_result",
+        "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/results/osm-barnside-diner-260553700.json",
+        "sha256": "2df78e2cdfd1a11aa9182ba4c970cffb1dbf4e788acbd43f15b2e40ed141ed5c"
+      },
+      {
+        "kind": "terra_route",
+        "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/routes/osm-barnside-diner-260553700.json",
+        "sha256": "3ea589c523f65f58220bc84855f0e83f94ddf92273ffcb2416416729187e2cf3"
+      },
+      {
+        "kind": "sol_packet",
+        "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/review-packets/osm-barnside-diner-260553700.json",
+        "sha256": "259df2a90d45f3ea1e6ed8bd29c439ce90a6280a55e0bb6f4bc2f1eae50341a3"
+      },
+      {
+        "kind": "sol_review",
+        "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/reviews/osm-barnside-diner-260553700.json",
+        "sha256": "9979ce160fcb5009cf0fc47a9b72dd687a3562e107ff4859eb1a26faf54202be"
+      },
+      {
+        "kind": "sol_validation",
+        "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/review-validations/osm-barnside-diner-260553700.json",
+        "sha256": "cc94fbd377b2a15660278d8d2c9864247003a625d694d5e2657a425068625b13"
+      }
+    ],
+    "artifactIndexHash": "f27cefd8db4a13bca2e8cf3dc2e56893da2a1cfc7cfd84dd743af817f1da646e"
+  },
+  "validation": {
+    "scout": {
+      "valid": true,
+      "errors": [],
+      "warnings": [
+        "Result contains no evidence sources.",
+        "Low confidence must be explicitly marked low_confidence.",
+        "Scout found no current menu surfaces."
+      ]
+    },
+    "terra": {
+      "valid": true,
+      "errors": [],
+      "warnings": [
+        "Low confidence must be explicitly marked low_confidence.",
+        "Terra identity verdict is mismatch.",
+        "Terra confirmed or left unresolved a deterministic risk gate.",
+        "Terra discovered additional menu surfaces.",
+        "Terra reported findings requiring adjudication.",
+        "Terra reported baseline allergen mismatches."
+      ]
+    },
+    "sol": {
+      "schemaVersion": 2,
+      "runId": "luna-terra-sol-batch-03-2026-07-16",
+      "restaurantId": "osm-barnside-diner-260553700",
+      "validatedAt": "2026-07-16T16:55:50.049Z",
+      "valid": true,
+      "errors": [],
+      "warnings": [],
+      "state": "completed"
+    }
+  },
+  "routing": {
+    "scoutDestination": "terra_low",
+    "terraDestination": "sol_medium",
+    "effectiveOutcome": "discrepancy_found",
+    "solRequired": true,
+    "solRecommendation": "discrepancy_found"
+  },
+  "lineageInventory": {
+    "luna": {
+      "evidenceIds": [],
+      "surfaceIds": [],
+      "productKeys": [],
+      "findingIds": [
+        "F-001",
+        "F-002"
+      ]
+    },
+    "terra": {
+      "evidenceIds": [
+        "E-home",
+        "E-menu",
+        "E-directory"
+      ],
+      "surfaceIds": [
+        "official-menu"
+      ],
+      "productKeys": [],
+      "findingIds": [
+        "F-001",
+        "F-002",
+        "F-003"
+      ]
+    },
+    "sol": {
+      "evidenceIds": [
+        "https://orderbarnsidediner.com/menu",
+        "https://orderbarnsidediner.com/"
+      ],
+      "surfaceIds": [],
+      "productKeys": [],
+      "findingIds": [
+        "Affected baseline items: 0. Reconciliation: 134 baseline items reconciled, 134 unique, 0 duplicate keys, and all 134 were normalized_match/mismatch rather than exact matches.",
+        "The restaurant-issued menu is accessible and fully enumerates 137 current products across 16 sections, confirming that Luna's inaccessible_source and scope_incomplete results were erroneous.",
+        "Count drift is confirmed: the current menu has 137 products versus 134 frozen baseline products and the packet's officialItemCount of 82.",
+        "The official menu contains Iced Tea, Milk, and Juice beyond the 134 reconciled frozen products.",
+        "The baseline_only gate is rejected because all 134 frozen products reconcile after normalization; the non_exact_reconciliation gate remains valid because normalization was required.",
+        "The menu does not publish an allergen matrix, complete ingredient lists, may-contain declarations, or cross-contact policy. It therefore cannot support negative allergen findings, complete allergen arrays, or cross-contact conclusions.",
+        "Restaurant-issued descriptions and unavoidable named identities may still support narrow positive ingredient evidence, such as explicitly named cheese, egg, peanut butter, or pecans, without implying a complete allergen assessment.",
+        "Luna's omission of the accessible official menu, menu surface, and current catalog confirms the validation_warnings and scout_flagged_risk gates.",
+        "Terra's high-severity identity mismatch is not established solely by comparing the Alexandria postal address with the broad locationId arlington-falls-church; the packet does not show that this internal location key must exactly equal the postal municipality.",
+        "The inaccessible_source and scope_incomplete deterministic gates are rejected for menu discovery because both restaurant-issued pages are accessible and the current product menu is complete.",
+        "Any blanket interpretation of Terra F-003 that erases all official-ingredients positives is rejected. Explicit restaurant-issued ingredient statements remain valid as narrow positives even though they cannot establish complete arrays or negatives.",
+        "Culinary assumptions not stated by the restaurant must not be promoted to official ingredient evidence merely because an item conventionally contains an allergen."
+      ]
+    }
+  },
+  "coordinator": {
+    "requiresCoordinatorGold": true,
+    "terminalDecisionAllowed": false,
+    "reason": "A Sol-routed or expanded result requires structured coordinator gold/lineage adjudication."
+  },
+  "ledgerCandidate": {
+    "evidence": [
+      {
+        "id": "E-home",
+        "url": "https://orderbarnsidediner.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "sha256": null,
+        "excerpt": "Official page identifies Barnside Diner at 6306 Little River Turnpike, Alexandria, VA 22312 and links to Menu and SimpleMenu.",
+        "rowIdentifiers": [],
+        "notes": [
+          "Barnside Diner | Order Online"
+        ]
+      },
+      {
+        "id": "E-menu",
+        "url": "https://orderbarnsidediner.com/menu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "sha256": null,
+        "excerpt": "Official 16-section HTML menu enumerates 137 products including all 134 frozen items plus Iced Tea, Milk, and Juice; no allergen declaration or cross-contact language.",
+        "rowIdentifiers": [],
+        "notes": [
+          "Barnside Diner | Our Menu"
+        ]
+      },
+      {
+        "id": "E-directory",
+        "url": "https://www.restaurantji.com/va/alexandria/barnside-diner-/",
+        "authorityTier": "third_party",
+        "purpose": "identity",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "sha256": null,
+        "excerpt": "Independent listing identifies 6306 Little River Turnpike, Alexandria, VA 22312.",
+        "rowIdentifiers": [],
+        "notes": [
+          "Barnside Diner, Alexandria"
+        ]
+      }
+    ],
+    "itemChecks": [
+      {
+        "auditItemKey": "1:african-omelette",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "2:appetizer-sampler",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "3:blt-sandwich",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "4:bacon-and-cheese-omelette",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "5:bacon-cheeseburger",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "6:bacon-or-sausage",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "7:bacon-or-sausage-egg-and-cheese",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "8:bacon-philly-steak-and-cheese",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "9:bagel",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "10:bagel-with-cream-cheese",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "11:banan-pecans-pancakes",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "12:banana-pecans-french-toast",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "13:banana-pecans-waffle",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "14:barnside-bacon-egg-cheese",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "15:barnside-jumbo-burger",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "16:beef-gyro",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "17:biscuits-and-gravy",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "18:blueberry-french-toast",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "19:blueberry-pancakes",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "20:blueberry-waffle",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "21:breakfast-sampler",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "22:caesar-salad",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "23:cappucino",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "24:cheese-burger",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "25:cheese-fries",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "26:cheeseburger",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "27:cheeseburger-omelette",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "28:chef-salad",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "29:chicken-and-waffle",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "30:chicken-breast",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "31:chicken-fajitas",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "32:chicken-fajitas-omelette",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "33:chicken-quesadilla",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "34:chicken-tenders",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "35:chicken-tenders-with-fries",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "36:chipped-beef-omelette",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "37:chocolate-chip-pancakes",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "38:chocolate-chip-waffle",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "39:chocolate-milk",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "40:classic-hamburger",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "41:coffee-regular-or-decaf",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "42:coleslaw",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "43:corned-beef-hash",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "44:country-fried-steak-waffle",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "45:cup-of-fruit",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "46:double-bacon-cheeseburger",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "47:double-blueberry-pancakes",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "48:double-cheeseburger",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "49:egg-and-cheese-sandwich",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "50:egg-benedict",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "51:florentine-omelette",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "52:french-fries",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "53:french-toast",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "54:fried-okra",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "55:garden-omelette",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "56:greek-chicken-salad",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "57:greek-omelette",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "58:grilled-bacon-cheese-and-tomato-sandwich",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "59:grilled-cheese-sandwich",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "60:grilled-chicken-sandwich",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "61:grilled-farmers-sandwich",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "62:grilled-ham-and-cheese-sandwich",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "63:grits",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "64:ham-and-cheese",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "65:ham-and-cheese-omelette",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "66:ham-or-scrapple",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "67:ham-or-turkey-club-sandwich",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "68:ham-egg-and-cheese",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "69:hash-browns",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "70:hot-chocolate",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "71:hot-dog-sandwich",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "72:hot-tea",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "73:house-salad",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "74:humpty-dumpty-omelette",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "75:junior-burger",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "76:junior-cheeseburger",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "77:kids-pancake-combo",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "78:kids-waffle",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "79:milk-shake",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "80:mozzarella-sticks-6",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "81:mushroom-swiss-burger",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "82:oatmeal",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "83:oatmeal-and-fruit",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "84:onion-rings",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "85:pancake-stack-3",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "86:patty-melt",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "87:pecans-waffle",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "88:philly-steak-and-cheese",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "89:philly-steak-and-cheese-omelette",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "90:plain-waffle",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "91:red-skins-omelette",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "92:sos-chipped-beef-with-hash-browns",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "93:sausage-biscuits-and-gravy",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "94:scrapple-egg-and-cheese",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "95:sliders-platter",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "96:smoked-hot-sausage",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "97:soft-drinks-pepsi",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "98:spanish-omelette",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "99:steak-6oz",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "100:steak-fajitas-omelette",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "101:strawberry-banana-french-toast",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "102:strawberry-banana-pancakes",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "103:strawberry-banana-waffle",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "104:strawberry-french-toast",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "105:strawberry-pancakes",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "106:strawberry-waffle",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "107:stuffed-french-toast",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "108:the-big-3-breakfast",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "109:the-elvis-waffle",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "110:toast",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "111:tuna-salad",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "112:tuna-salad-sandwich",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "113:turkey-and-cheese",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "114:turkey-bacon-or-sausage",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "115:two-eggs-and-bacon",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "116:two-eggs-and-chicken-fajitas",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "117:two-eggs-and-chicken-tenders",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "118:two-eggs-and-corned-beef-hash",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "119:two-eggs-and-country-fried-steak",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "120:two-eggs-and-ham",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "121:two-eggs-and-sausage",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "122:two-eggs-and-scrambled-ham-and-cheese",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "123:two-eggs-and-scrapple",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "124:two-eggs-and-smoked-hot-sausage",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "125:two-eggs-and-steak-fajitas",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "126:two-eggs-and-strip-steak",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "127:two-eggs-and-turkey-sausage",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "128:ultimate-special",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "129:vegetable-hash-and-eggs",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "130:vegetable-omelette",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "131:veggie-egg-and-cheese",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "132:waffle-sundae",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "133:western-omelette",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      },
+      {
+        "auditItemKey": "134:wings",
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "matchedCurrentProductKeys": [],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "E-menu"
+        ],
+        "resolvedFindingIds": []
+      }
+    ],
+    "currentCatalog": {
+      "status": "not_reviewed",
+      "reviewedBaselineItemCount": 134,
+      "currentProductCount": 0,
+      "reconciledCurrentProductCount": 0,
+      "surfaces": [],
+      "products": [],
+      "notes": [
+        "Candidate catalog only; coordinator must change status after reviewing complete current scope."
+      ]
+    },
+    "workerHandoff": {
+      "runId": "luna-terra-sol-batch-03-2026-07-16",
+      "restaurantId": "osm-barnside-diner-260553700",
+      "preparedAt": "2026-07-16T16:56:27.759Z",
+      "routeDestination": "sol_medium",
+      "solRequired": true,
+      "artifacts": [
+        {
+          "kind": "job",
+          "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/jobs/osm-barnside-diner-260553700.json",
+          "sha256": "624256c0fca48133365eb7c27556f0053a7f4329bb7ede4651f47bb5b76a2f40"
+        },
+        {
+          "kind": "scout_result",
+          "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/scout-results/osm-barnside-diner-260553700.json",
+          "sha256": "407179cccba9a9e6c2980245accccb4b7674ec72b6d4f19096108b6ec1c15f92"
+        },
+        {
+          "kind": "scout_route",
+          "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/scout-routes/osm-barnside-diner-260553700.json",
+          "sha256": "6a5594bc8f87daef0c8dc8630936a14665466a2152b39687fef86b4515fee77a"
+        },
+        {
+          "kind": "terra_packet",
+          "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/verifier-packets/osm-barnside-diner-260553700.json",
+          "sha256": "7940a034e6f55ddfe797299b0a4d3655884ef1a3a8f07ef3274e51c25e96b0d8"
+        },
+        {
+          "kind": "terra_result",
+          "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/results/osm-barnside-diner-260553700.json",
+          "sha256": "2df78e2cdfd1a11aa9182ba4c970cffb1dbf4e788acbd43f15b2e40ed141ed5c"
+        },
+        {
+          "kind": "terra_route",
+          "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/routes/osm-barnside-diner-260553700.json",
+          "sha256": "3ea589c523f65f58220bc84855f0e83f94ddf92273ffcb2416416729187e2cf3"
+        },
+        {
+          "kind": "sol_packet",
+          "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/review-packets/osm-barnside-diner-260553700.json",
+          "sha256": "259df2a90d45f3ea1e6ed8bd29c439ce90a6280a55e0bb6f4bc2f1eae50341a3"
+        },
+        {
+          "kind": "sol_review",
+          "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/reviews/osm-barnside-diner-260553700.json",
+          "sha256": "9979ce160fcb5009cf0fc47a9b72dd687a3562e107ff4859eb1a26faf54202be"
+        },
+        {
+          "kind": "sol_validation",
+          "path": "worker-runs/luna-terra-sol-batch-03-2026-07-16/review-validations/osm-barnside-diner-260553700.json",
+          "sha256": "cc94fbd377b2a15660278d8d2c9864247003a625d694d5e2657a425068625b13"
+        }
+      ],
+      "notes": [
+        "Prepared deterministically; terminalDecisionAllowed remains false until coordinator adjudication."
+      ]
+    }
+  }
+}

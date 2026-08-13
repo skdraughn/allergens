@@ -1,0 +1,400 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260810184936",
+  "restaurantId": "umaya-izakaya-washington-dc-dc-metro",
+  "name": "Umaya Izakaya",
+  "locationId": "washington-dc",
+  "domain": "umayadc.com",
+  "packetValidation": {
+    "baselineItemCount": 176,
+    "baselineFingerprint": "acadae50065a2a8c2cc7eba479cfcbcd9feb4abac912f3c6bbc158f5d13a07c0",
+    "itemCheckCount": 176,
+    "fingerprintVerified": true,
+    "itemChecksPath": "data/restaurant-verification/item-checks/umaya-izakaya-washington-dc-dc-metro.jsonl"
+  },
+  "identity": {
+    "name": "Umaya Izakaya",
+    "locationId": "washington-dc",
+    "address": "733 10th St NW, Washington, DC 20001",
+    "domain": "umayadc.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "src-home"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "src-home",
+      "url": "https://www.umayadc.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and identity",
+      "retrievedAt": "2026-08-10T19:00:00.000Z"
+    },
+    {
+      "evidenceId": "src-menus",
+      "url": "https://www.umayadc.com/menus/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official menu navigation",
+      "retrievedAt": "2026-08-10T19:00:00.000Z"
+    },
+    {
+      "evidenceId": "src-food",
+      "url": "https://www.umayadc.com/menu/food-menu/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current food menu",
+      "retrievedAt": "2026-08-10T19:00:00.000Z"
+    },
+    {
+      "evidenceId": "src-drink",
+      "url": "https://www.umayadc.com/menu/drink-menu/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current drink and nonalcoholic surface",
+      "retrievedAt": "2026-08-10T19:00:00.000Z"
+    },
+    {
+      "evidenceId": "src-targeted",
+      "url": "https://www.google.com/search?q=site%3Aumayadc.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted allergen/document search",
+      "retrievedAt": "2026-08-10T19:00:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "food",
+      "url": "https://www.umayadc.com/menu/food-menu/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "733 10th St NW, Washington, DC 20001",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected current food catalog",
+      "sourceEvidenceIds": [
+        "src-food"
+      ]
+    },
+    {
+      "surfaceId": "drink",
+      "url": "https://www.umayadc.com/menu/drink-menu/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "733 10th St NW, Washington, DC 20001",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; alcohol-only excluded",
+      "sourceEvidenceIds": [
+        "src-drink"
+      ]
+    },
+    {
+      "surfaceId": "menus",
+      "url": "https://www.umayadc.com/menus/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "733 10th St NW, Washington, DC 20001",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "src-menus"
+      ]
+    },
+    {
+      "surfaceId": "targeted",
+      "url": "https://www.google.com/search?q=site%3Aumayadc.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "locationScope": "official domain",
+      "servicePeriod": "current",
+      "current": false,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "no official allergen document",
+      "sourceEvidenceIds": [
+        "src-targeted"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "umaya-current-catalog",
+      "name": "Umaya current food and nonalcoholic catalog",
+      "category": "Japanese Izakaya",
+      "variantGroup": "Washington DC current menu",
+      "sourceEvidenceIds": [
+        "src-food",
+        "src-drink"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": [],
+      "productCount": 176,
+      "boundary": "Current food and nonalcoholic products; alcohol-only products excluded."
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "outcome": "No authoritative official allergen matrix located",
+        "location": "https://www.umayadc.com/ and https://www.umayadc.com/menus/; inspected official navigation and menu links",
+        "query": "Official-site navigation inspection for Umaya Izakaya allergen, allergy, nutrition, ingredients, and menu disclosures",
+        "sourceEvidenceIds": [
+          "src-home",
+          "src-menus",
+          "src-food",
+          "src-drink"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "outcome": "No authoritative official allergen matrix located",
+        "location": "https://www.umayadc.com/menus/, https://www.umayadc.com/menu/food-menu/, and https://www.umayadc.com/menu/drink-menu/; inspected linked documents and downloadable menu surfaces",
+        "query": "Official-document inspection on umayadc.com for allergen, allergy, nutrition, ingredients, PDF, image, and downloadable menu material",
+        "sourceEvidenceIds": [
+          "src-home",
+          "src-menus",
+          "src-food",
+          "src-drink"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "outcome": "No authoritative official allergen matrix located",
+        "location": "https://www.umayadc.com/menus/ and linked ordering/menu-provider links from the official site; no linked vendor allergen matrix located",
+        "query": "Linked-vendor inspection from Umaya official menu navigation for current menu and allergen disclosures",
+        "sourceEvidenceIds": [
+          "src-home",
+          "src-menus",
+          "src-food",
+          "src-drink"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "outcome": "No authoritative official allergen matrix located",
+        "location": "https://www.google.com/search?q=site%3Aumayadc.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+        "query": "site:umayadc.com allergen allergy nutrition ingredients PDF menu",
+        "sourceEvidenceIds": [
+          "src-targeted"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:agedashi-tofu",
+          "2:altos-del-plata-terrazas",
+          "3:asian-cauliflower",
+          "4:asparagus",
+          "5:asparagus-cucumber-roll-v",
+          "6:autumn-roll",
+          "7:avocado",
+          "8:avocado-roll-v",
+          "9:baby-octopus",
+          "10:beef-gyudon",
+          "11:beef-short-ribs",
+          "12:beef-tongue",
+          "13:beef-yakisoba",
+          "14:botan-ebi",
+          "15:brussels-sprouts",
+          "16:california-roll",
+          "17:char-grilled-chicken-teriyaki",
+          "18:char-grilled-filet-mignon-steak-in-japanese-black-pepper-sauce",
+          "19:char-grilled-salmon-teriyaki",
+          "20:charcoal-grilled-chicken-ramen",
+          "21:chesapeake-roll",
+          "22:chicken-and-scallion-yakitori",
+          "23:chicken-gizzard",
+          "24:chicken-gyoza",
+          "25:chicken-hearts",
+          "26:chicken-livers",
+          "27:chicken-skins",
+          "28:chicken-wings",
+          "29:chicken-yakisoba",
+          "30:chirashi",
+          "31:colome-estate",
+          "32:corn",
+          "33:crab-cream-korokke-japanese-crab-cream-croquettes-1-pc",
+          "34:cucumber-avocado-roll-v",
+          "35:curry-croquette-1-pc",
+          "36:curry-ramen",
+          "37:diver-scallops",
+          "38:dragon-roll",
+          "39:duck-and-scallion",
+          "40:duckhorn",
+          "41:duckhorn-vineyards",
+          "42:dynamite-roll",
+          "43:ebi",
+          "44:edamame",
+          "45:eel-avocado-roll",
+          "46:escolar",
+          "47:filet-mignon",
+          "48:fresh-salmon-avocado-salad",
+          "49:garden-roll-v",
+          "50:garlic-yuzu-kosho-lamb-chops",
+          "51:genmaicha-tea",
+          "52:grilled-prawns",
+          "53:hamachi",
+          "54:hamachi-kama",
+          "55:hamachi-tataki",
+          "56:hess",
+          "57:hirame",
+          "58:hokki-gai",
+          "59:hotate",
+          "60:houjicha-tea",
+          "61:ika",
+          "62:ikura",
+          "63:ito-en-japanese-iced-tea",
+          "64:japanese-a5-wagyu-beef",
+          "65:japanese-curry-beef-yakisoba",
+          "66:japanese-curry-chicken-yakisoba",
+          "67:japanese-curry-seafood-yakisoba",
+          "68:japanese-fried-rice",
+          "69:japanese-potato-salad",
+          "70:kaki-fry-5-pcs",
+          "71:kani",
+          "72:kanpachi",
+          "73:kanpyo-maki",
+          "74:kappa-cucumber-roll-v",
+          "75:kara-age-japanese-fried-chicken",
+          "76:katsu-curry",
+          "77:katsu-don",
+          "78:kimchi",
+          "79:king-oyster-mushrooms",
+          "80:korokke-japanese-potato-veggie-croquette-1-pc",
+          "81:kurobuta-pork-belly",
+          "82:kurobuta-sausage",
+          "83:la-playa",
+          "84:lamb-lollipop",
+          "85:lanzhou-beef-ramen-new",
+          "86:line",
+          "87:lobster-roll",
+          "88:madai",
+          "89:maguro",
+          "90:mango-mille-crepe-cake",
+          "91:miso-eggplant-v",
+          "92:miso-glazed-chilean-sea-bass",
+          "93:miso-glazed-sea-bass",
+          "94:miso-ramen",
+          "95:miso-soup-v",
+          "96:negitoro-roll",
+          "97:octopus-kara-age",
+          "98:omakase",
+          "99:omakase-premium",
+          "100:oshinko-roll",
+          "101:poke-salad",
+          "102:pork-belly-buns-2-pcs",
+          "103:pork-gyoza",
+          "104:prawn",
+          "105:rainbow-roll",
+          "106:ramune-sodas",
+          "107:saba",
+          "108:salmon",
+          "109:salmon-avocado-roll",
+          "110:salmon-cream-cheese-roll",
+          "111:salmon-cucumber-roll",
+          "112:salmon-roll",
+          "113:salmon-skin-roll",
+          "114:salmon-tataki",
+          "115:sanma-grilled-saury-fish",
+          "116:sashimi-moriawase",
+          "117:seafood-yakisoba",
+          "118:seared-salmon-belly",
+          "119:seaweed-salad-v",
+          "120:sencha-tea",
+          "121:shiitake-mushroom-roll-v",
+          "122:shiitake-mushrooms",
+          "123:shimaaji",
+          "124:shime-saba",
+          "125:shishito-peppers",
+          "126:shoyu-ramen",
+          "127:shrimp-shumai",
+          "128:shrimp-tempura-roll",
+          "129:silverado-vineyards",
+          "130:soft-shell-crab-roll",
+          "131:spicy-chicken-don",
+          "132:spicy-chicken-ramen",
+          "133:spicy-miso-ramen",
+          "134:spicy-salmon-roll",
+          "135:spicy-scallop-roll",
+          "136:spicy-sesame-tantan-ramen-v-new",
+          "137:spicy-tuna-roll",
+          "138:spicy-tuna-tartare",
+          "139:spicy-yellowtail-roll",
+          "140:surimi-ika-squid",
+          "141:sushi-and-sashimi-combo",
+          "142:sushi-moriawase",
+          "143:tako",
+          "144:takoyaki-5-pcs",
+          "145:tamago",
+          "146:tekka-tuna-don",
+          "147:tentoji-don",
+          "148:the-alaskan",
+          "149:tobiko",
+          "150:tofu-avocado-salad-v",
+          "151:tomato-veggie-ramen-v",
+          "152:tonkotsu-ramen",
+          "153:toro",
+          "154:tsukune-chicken-meatball",
+          "155:tuna-avocado-roll",
+          "156:tuna-avocado-salad",
+          "157:tuna-cucumber-roll",
+          "158:tuna-roll",
+          "159:tuna-tataki",
+          "160:ube-purple-yam-cheesecake",
+          "161:umaya-house-salad",
+          "162:umaya-teriyaki-wings-6-pcs",
+          "163:ume-shiso-roll-v",
+          "164:unagi",
+          "165:unagi-don",
+          "166:uni",
+          "167:vlt",
+          "168:veggie-gyoza",
+          "169:veggie-ramen-v",
+          "170:veggie-yakisoba",
+          "171:volcano-roll",
+          "172:wagyu-tataki",
+          "173:wild-mushroom-salad-v",
+          "174:yellowtail-roll",
+          "175:yuzu-cheesecake",
+          "176:yuzu-citrus-lobster-salad"
+        ],
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "umaya-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-food",
+          "src-drink"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "riskSignals": [],
+  "recommendedLane": "verify",
+  "outcome": "researched"
+}

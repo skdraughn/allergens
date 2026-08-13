@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-016-2026-07-16",
+  "restaurantId": "osm-berries-bowls-1323149413",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "93c5253e99cf2f1cda6a252bf66be4ff1fa711060d33200e7693299ca316b87d",
+    "currentProductCount": 46,
+    "directSourceTypeCounts": {
+      "restaurant_ingredients": 11,
+      "unavailable": 34
+    },
+    "reconciliation": {
+      "normalized_match": 46,
+      "artifact": 6,
+      "unresolved": 0
+    },
+    "assertions": [
+      "stale fingerprint gate passed",
+      "validatePocResearchResult passed before canonical mutation",
+      "46 accepted current products published",
+      "current scope is official menu plus complete Bethesda Toast",
+      "direct allergen fields preserved; mayContain and wheat/gluten remain zero",
+      "Ingredient Intelligence applied after direct catalog finalization",
+      "canonical evidence IDs resolve",
+      "second run is byte-identical"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-berries-bowls-1323149413.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-berries-bowls-1323149413.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/osm-berries-bowls-1323149413.jsonl",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-016-2026-07-16/apply-results/osm-berries-bowls-1323149413.json"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "validatePocResearchResult",
+    "node scripts/apply-berries-bowls-poc.mjs (twice)",
+    "sha256 comparison of owned canonical artifacts",
+    "node scripts/restaurant-verification-poc-result.mjs"
+  ],
+  "secondRunDiff": "none",
+  "counts": {
+    "publishedProducts": 46,
+    "directRestaurantIngredients": 11,
+    "directUnavailable": 34,
+    "mayContainProducts": 0,
+    "wheatOrGlutenProducts": 0,
+    "evidenceSources": 6,
+    "currentCompleteSurfaces": 2,
+    "normalized_match": 46,
+    "artifact": 6,
+    "unresolved": 0
+  },
+  "artifactHashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "4cac6156984458a0604f9a072d070d5fcc788fe5baeb86100578d76d43b2b09c",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-berries-bowls-1323149413.json": "4eaace1827edc4e8d04f0942115262d1689076850071d6d69eea8973e23c0ae3",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-berries-bowls-1323149413.json": "04e7e7d6da7c5a6bf73412ca536743b2189eeaac56cf618f68d773944646e2d8",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/osm-berries-bowls-1323149413.jsonl": "4f300e9ab244598990b843e250f8db9d89d1225937418e8055d08c47700f2ee7"
+  }
+}

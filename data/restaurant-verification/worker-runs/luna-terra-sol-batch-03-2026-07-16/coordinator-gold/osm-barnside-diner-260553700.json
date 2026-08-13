@@ -1,0 +1,223 @@
+{
+  "finalSources": [
+    {
+      "sourceId": "E-home",
+      "canonicalAuthorityTier": "restaurant_issued",
+      "stageEvidenceIds": {
+        "luna": [],
+        "terra": [
+          "E-home"
+        ],
+        "sol": [
+          "https://orderbarnsidediner.com/"
+        ]
+      }
+    },
+    {
+      "sourceId": "E-menu",
+      "canonicalAuthorityTier": "restaurant_issued",
+      "stageEvidenceIds": {
+        "luna": [],
+        "terra": [
+          "E-menu"
+        ],
+        "sol": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "sourceId": "E-directory",
+      "canonicalAuthorityTier": "third_party",
+      "stageEvidenceIds": {
+        "luna": [],
+        "terra": [
+          "E-directory"
+        ],
+        "sol": []
+      }
+    }
+  ],
+  "finalSurfaces": [
+    {
+      "surfaceId": "official-menu",
+      "stageIds": {
+        "luna": [],
+        "terra": [
+          "official-menu"
+        ]
+      }
+    }
+  ],
+  "finalProducts": [],
+  "findings": [
+    {
+      "findingId": "sol-confirmed-34dab9c7bc0cf04d",
+      "material": true,
+      "firstDiscoveredStage": "sol",
+      "stageFindingIds": {
+        "luna": [],
+        "terra": [],
+        "sol": [
+          "Affected baseline items: 0. Reconciliation: 134 baseline items reconciled, 134 unique, 0 duplicate keys, and all 134 were normalized_match/mismatch rather than exact matches."
+        ]
+      },
+      "expectedGateIds": [],
+      "resolution": "Accepted by the Sol-medium coordinator review."
+    },
+    {
+      "findingId": "sol-confirmed-69c7880dd0548b82",
+      "material": true,
+      "firstDiscoveredStage": "sol",
+      "stageFindingIds": {
+        "luna": [],
+        "terra": [],
+        "sol": [
+          "The restaurant-issued menu is accessible and fully enumerates 137 current products across 16 sections, confirming that Luna's inaccessible_source and scope_incomplete results were erroneous."
+        ]
+      },
+      "expectedGateIds": [],
+      "resolution": "Accepted by the Sol-medium coordinator review."
+    },
+    {
+      "findingId": "sol-confirmed-cde27bf93b305f60",
+      "material": true,
+      "firstDiscoveredStage": "sol",
+      "stageFindingIds": {
+        "luna": [],
+        "terra": [],
+        "sol": [
+          "Count drift is confirmed: the current menu has 137 products versus 134 frozen baseline products and the packet's officialItemCount of 82."
+        ]
+      },
+      "expectedGateIds": [],
+      "resolution": "Accepted by the Sol-medium coordinator review."
+    },
+    {
+      "findingId": "sol-confirmed-03366a2d54911b42",
+      "material": true,
+      "firstDiscoveredStage": "sol",
+      "stageFindingIds": {
+        "luna": [],
+        "terra": [],
+        "sol": [
+          "The official menu contains Iced Tea, Milk, and Juice beyond the 134 reconciled frozen products."
+        ]
+      },
+      "expectedGateIds": [],
+      "resolution": "Accepted by the Sol-medium coordinator review."
+    },
+    {
+      "findingId": "sol-confirmed-e92ad59b510a70df",
+      "material": true,
+      "firstDiscoveredStage": "sol",
+      "stageFindingIds": {
+        "luna": [],
+        "terra": [],
+        "sol": [
+          "The baseline_only gate is rejected because all 134 frozen products reconcile after normalization; the non_exact_reconciliation gate remains valid because normalization was required."
+        ]
+      },
+      "expectedGateIds": [],
+      "resolution": "Accepted by the Sol-medium coordinator review."
+    },
+    {
+      "findingId": "sol-confirmed-ec6623bbb22d0649",
+      "material": true,
+      "firstDiscoveredStage": "sol",
+      "stageFindingIds": {
+        "luna": [],
+        "terra": [],
+        "sol": [
+          "The menu does not publish an allergen matrix, complete ingredient lists, may-contain declarations, or cross-contact policy. It therefore cannot support negative allergen findings, complete allergen arrays, or cross-contact conclusions."
+        ]
+      },
+      "expectedGateIds": [],
+      "resolution": "Accepted by the Sol-medium coordinator review."
+    },
+    {
+      "findingId": "sol-confirmed-6569e4973ec9750b",
+      "material": true,
+      "firstDiscoveredStage": "sol",
+      "stageFindingIds": {
+        "luna": [],
+        "terra": [],
+        "sol": [
+          "Restaurant-issued descriptions and unavoidable named identities may still support narrow positive ingredient evidence, such as explicitly named cheese, egg, peanut butter, or pecans, without implying a complete allergen assessment."
+        ]
+      },
+      "expectedGateIds": [],
+      "resolution": "Accepted by the Sol-medium coordinator review."
+    },
+    {
+      "findingId": "sol-confirmed-3c9e0a9c7ad3c880",
+      "material": true,
+      "firstDiscoveredStage": "sol",
+      "stageFindingIds": {
+        "luna": [],
+        "terra": [],
+        "sol": [
+          "Luna's omission of the accessible official menu, menu surface, and current catalog confirms the validation_warnings and scout_flagged_risk gates."
+        ]
+      },
+      "expectedGateIds": [],
+      "resolution": "Accepted by the Sol-medium coordinator review."
+    },
+    {
+      "findingId": "sol-rejected-6ce4b031b76d8521",
+      "material": false,
+      "firstDiscoveredStage": "sol",
+      "stageFindingIds": {
+        "luna": [],
+        "terra": [],
+        "sol": [
+          "Terra's high-severity identity mismatch is not established solely by comparing the Alexandria postal address with the broad locationId arlington-falls-church; the packet does not show that this internal location key must exactly equal the postal municipality."
+        ]
+      },
+      "expectedGateIds": [],
+      "resolution": "Rejected by the Sol-medium coordinator review."
+    },
+    {
+      "findingId": "sol-rejected-e08805a9e683c176",
+      "material": false,
+      "firstDiscoveredStage": "sol",
+      "stageFindingIds": {
+        "luna": [],
+        "terra": [],
+        "sol": [
+          "The inaccessible_source and scope_incomplete deterministic gates are rejected for menu discovery because both restaurant-issued pages are accessible and the current product menu is complete."
+        ]
+      },
+      "expectedGateIds": [],
+      "resolution": "Rejected by the Sol-medium coordinator review."
+    },
+    {
+      "findingId": "sol-rejected-5fdb3d3f9cddb991",
+      "material": false,
+      "firstDiscoveredStage": "sol",
+      "stageFindingIds": {
+        "luna": [],
+        "terra": [],
+        "sol": [
+          "Any blanket interpretation of Terra F-003 that erases all official-ingredients positives is rejected. Explicit restaurant-issued ingredient statements remain valid as narrow positives even though they cannot establish complete arrays or negatives."
+        ]
+      },
+      "expectedGateIds": [],
+      "resolution": "Rejected by the Sol-medium coordinator review."
+    },
+    {
+      "findingId": "sol-rejected-c587211c8315fb5c",
+      "material": false,
+      "firstDiscoveredStage": "sol",
+      "stageFindingIds": {
+        "luna": [],
+        "terra": [],
+        "sol": [
+          "Culinary assumptions not stated by the restaurant must not be promoted to official ingredient evidence merely because an item conventionally contains an allergen."
+        ]
+      },
+      "expectedGateIds": [],
+      "resolution": "Rejected by the Sol-medium coordinator review."
+    }
+  ]
+}

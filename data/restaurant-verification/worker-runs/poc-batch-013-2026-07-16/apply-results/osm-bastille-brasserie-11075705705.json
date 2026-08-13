@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-013-2026-07-16",
+  "restaurantId": "osm-bastille-brasserie-11075705705",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "9ce1e7605910f281d436d8613da86d93cc04749fdadf210a3c464db9002ab4e6",
+    "currentProductCount": 67,
+    "directSourceTypeCounts": {
+      "restaurant_ingredients": 37,
+      "unavailable": 29,
+      "restaurant_linked_vendor": 1
+    },
+    "evidenceSourceCount": 15,
+    "currentCompleteSurfaceCounts": {
+      "official-dinner-pdf": 31,
+      "official-monthly-pdf": 2,
+      "official-happy-hour-pdf": 9,
+      "official-desserts-pdf": 14,
+      "official-kids-pdf": 14,
+      "official-beverages-pdf": 9,
+      "toast-current": 28
+    },
+    "reconciliationCounts": {
+      "artifact": 17,
+      "exact_match": 25,
+      "normalized_match": 6,
+      "equivalent_presentation": 4
+    },
+    "assertions": [
+      "stale fingerprint gate passed",
+      "strengthened validator passed before mutation",
+      "seven current complete surfaces union to 67",
+      "four navigation surfaces current:false",
+      "direct catalog finalized before Ingredient Intelligence",
+      "alcohol and modifiers excluded",
+      "second run is byte-identical"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-bastille-brasserie-11075705705.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-bastille-brasserie-11075705705.json",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-bastille-brasserie-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-013-2026-07-16/apply-results/osm-bastille-brasserie-11075705705.json"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "node scripts/restaurant-verification-poc-result.mjs (strengthened preflight)",
+    "serialized APPLY twice with byte/hash comparison"
+  ],
+  "secondRunDiff": "none",
+  "artifactHashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "4a24f80d914007cb7e5089422dd2dd0887f17387088ffb0f3da4ee63715c135a",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-bastille-brasserie-11075705705.json": "db83d704f76d90eca2c97bc751bf1246bb7995df687e41c545f7fa8635a657f3",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-bastille-brasserie-11075705705.json": "997607c5f5ce8bf634d2a8e34eb435726e136b11b158d70bd8f4f0657a17f189"
+  },
+  "counts": {
+    "publishedProducts": 67,
+    "dinnerPdf": 31,
+    "monthly": 2,
+    "happyHour": 9,
+    "desserts": 14,
+    "kids": 14,
+    "beverages": 9,
+    "toast": 28,
+    "directRestaurantIngredients": 37,
+    "directLinkedVendor": 1,
+    "directUnavailable": 29,
+    "mayContainProducts": 0,
+    "wheatOrGlutenProducts": 0,
+    "evidenceSources": 15,
+    "reconciliation": {
+      "artifact": 17,
+      "exact_match": 25,
+      "normalized_match": 6,
+      "equivalent_presentation": 4
+    }
+  }
+}

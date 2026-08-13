@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-011-2026-07-16",
+  "restaurantId": "bar-angie-dc",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "2b1ff4352c1e67feb76e7529b0786f315e03ed1c6bc9ecc20df4796aaed03e31",
+    "currentProductCount": 97,
+    "directSourceTypeCounts": {
+      "restaurant_ingredients": 68,
+      "unavailable": 29
+    },
+    "evidenceSourceCount": 9,
+    "evidencePreflightValid": true,
+    "assertions": [
+      "strengthened POC validator passed before mutation",
+      "97 distinct current products published",
+      "official lunch/dinner/brunch HTML are current complete surfaces with 79/79/70 products",
+      "official homepage and all three official PDFs are current=false supporting surfaces",
+      "reconciliation is 70 exact, 7 normalized, 5 equivalent presentations, and 15 unmapped artifacts",
+      "direct distribution is 68 restaurant_ingredients and 29 unavailable",
+      "zero wheat/gluten/mayContain direct positives",
+      "unavailable is not allergen-free and has no direct evidence",
+      "matrix verdict accurately_unavailable with four searches",
+      "all nine evidence sources canonical and resolvable",
+      "Ingredient Intelligence applied after final direct catalog",
+      "no Sol or Terra used",
+      "second run is byte-identical"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/bar-angie-dc.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/bar-angie-dc.json",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-bar-angie-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-011-2026-07-16/apply-results/bar-angie-dc.json"
+  ],
+  "commands": [
+    "node scripts/restaurant-verification-poc-result.mjs (strengthened preflight)",
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "serialized APPLY twice with byte/hash comparison",
+    "assert direct source-type distribution, allergen, surface, and reconciliation invariants"
+  ],
+  "secondRunDiff": "none",
+  "artifactHashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "e52aee6451df3190cc2168e01b8b3e91f71c3b4bf71bd37673dbad636ed5ee89",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/bar-angie-dc.json": "a86d358cb05c5bd887969b615f68696d456033c42d38708281418bc5851f0419",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/bar-angie-dc.json": "11ae14b5849914b3c850da6a679595bc5b8ac985d94eddf1a9c8398aca0c3c77"
+  },
+  "counts": {
+    "publishedProducts": 97,
+    "directRestaurantIngredients": 68,
+    "directUnavailable": 29,
+    "unmappedArtifactRows": 15,
+    "evidenceSources": 9,
+    "matrixSearches": 4,
+    "surfaceProducts": {
+      "official-lunch-html": 79,
+      "official-dinner-html": 79,
+      "official-brunch-html": 70
+    }
+  }
+}

@@ -18,6 +18,7 @@ type SnackbarTone = "error" | "info" | "success";
 
 type SnackbarOptions = {
   message: string;
+  placement?: "bottom" | "top";
   title?: string;
   tone?: SnackbarTone;
 };
@@ -104,7 +105,11 @@ export function useSnackbar() {
   return context;
 }
 
-export function SnackbarViewport() {
+type SnackbarViewportProps = {
+  insideSafeArea?: boolean;
+};
+
+export function SnackbarViewport({ insideSafeArea = false }: SnackbarViewportProps = {}) {
   const insets = useSafeAreaInsets();
   const context = useContext(SnackbarContext);
 
@@ -113,7 +118,9 @@ export function SnackbarViewport() {
   }
 
   const { animation, hideSnackbar, snackbar } = context;
+  const placement = snackbar.placement ?? "bottom";
   const tone = snackbar.tone ?? "error";
+  const restingOffset = placement === "top" ? -28 : 28;
 
   return (
     <Animated.View
@@ -121,13 +128,15 @@ export function SnackbarViewport() {
       style={[
         styles.overlay,
         {
-          bottom: Math.max(insets.bottom, spacing.two),
+          ...(placement === "top"
+            ? { top: insideSafeArea ? spacing.two : Math.max(insets.top, spacing.two) }
+            : { bottom: Math.max(insets.bottom, spacing.two) }),
           opacity: animation,
           transform: [
             {
               translateY: animation.interpolate({
                 inputRange: [0, 1],
-                outputRange: [28, 0],
+                outputRange: [restingOffset, 0],
               }),
             },
           ],
@@ -177,6 +186,7 @@ const styles = StyleSheet.create({
     lineHeight: 19,
   },
   overlay: {
+    elevation: 1000,
     left: spacing.two,
     position: "absolute",
     right: spacing.two,

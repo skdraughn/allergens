@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-002-2026-07-16",
+  "restaurantId": "barcelona-wine-bar-washington-dc-dc-metro",
+  "reviewType": "narrow_scope_conflict_resolution",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "role": "sol_reviewer"
+  },
+  "reviewedKeys": [
+    "7:brunch-fideos",
+    "18:mangalica-estrellados",
+    "27:steak-and-egg",
+    "31:vegetable-benedict"
+  ],
+  "resolution": {
+    "binding": true,
+    "outcome": "scope_conflict_resolved",
+    "sourceAssessment": {
+      "sourceEvidenceId": "SRC-BRUNCH",
+      "url": "https://barcelonawinebar.com/media/7-11-26-Brunch-Menu-14th-Street.pdf",
+      "authority": "restaurant_issued",
+      "locationScope": "14th Street, Washington, DC",
+      "servicePeriod": "brunch",
+      "currentAsOf": "2026-07-16",
+      "sufficientlyCurrentAndLocationSpecific": true,
+      "rationale": "The current official 14th Street location page links this restaurant-issued brunch PDF. Its filename is location-specific and dated 2026-07-11, five days before review, and the PDF identifies the active brunch surface."
+    },
+    "items": [
+      {
+        "auditItemKey": "7:brunch-fideos",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "prod-brunch-fideos"
+        ],
+        "currentProductMapping": {
+          "currentProductKey": "prod-brunch-fideos",
+          "name": "BRUNCH FIDEOS",
+          "description": "Chistorra, Pork Belly, Egg"
+        },
+        "sourceEvidenceIds": [
+          "SRC-BRUNCH"
+        ],
+        "rationale": "The current official 14th Street brunch PDF lists BRUNCH FIDEOS verbatim; the frozen item is current rather than stale or unresolved.",
+        "allergenAssessment": {
+          "explicitPositiveSupport": [
+            "egg"
+          ],
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfileEstablished": false
+        },
+        "safetySourceAuthorityConflictRemains": false
+      },
+      {
+        "auditItemKey": "18:mangalica-estrellados",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "prod-mangalica-estrellados"
+        ],
+        "currentProductMapping": {
+          "currentProductKey": "prod-mangalica-estrellados",
+          "name": "MANGALICA ESTRELLADOS",
+          "description": "Fries, Sunny Side Up Egg, Garlic Aioli"
+        },
+        "sourceEvidenceIds": [
+          "SRC-BRUNCH"
+        ],
+        "rationale": "The current official 14th Street brunch PDF lists MANGALICA ESTRELLADOS verbatim; the frozen item is current rather than stale or unresolved.",
+        "allergenAssessment": {
+          "explicitPositiveSupport": [
+            "egg"
+          ],
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfileEstablished": false
+        },
+        "safetySourceAuthorityConflictRemains": false
+      },
+      {
+        "auditItemKey": "27:steak-and-egg",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "prod-steak-and-egg"
+        ],
+        "currentProductMapping": {
+          "currentProductKey": "prod-steak-and-egg",
+          "name": "STEAK & EGG",
+          "description": "Red Chimichurri, Farm Egg"
+        },
+        "sourceEvidenceIds": [
+          "SRC-BRUNCH"
+        ],
+        "rationale": "The current official 14th Street brunch PDF lists STEAK & EGG verbatim apart from a non-semantic raw-or-undercooked footnote marker; the frozen item is current rather than stale or unresolved.",
+        "allergenAssessment": {
+          "explicitPositiveSupport": [
+            "egg"
+          ],
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfileEstablished": false
+        },
+        "safetySourceAuthorityConflictRemains": false
+      },
+      {
+        "auditItemKey": "31:vegetable-benedict",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "prod-vegetable-benedict"
+        ],
+        "currentProductMapping": {
+          "currentProductKey": "prod-vegetable-benedict",
+          "name": "VEGETABLE BENEDICT",
+          "description": "Arugula, Piquillos, Hollandaise"
+        },
+        "sourceEvidenceIds": [
+          "SRC-BRUNCH"
+        ],
+        "rationale": "The current official 14th Street brunch PDF lists VEGETABLE BENEDICT verbatim; the frozen item is current rather than stale or unresolved.",
+        "allergenAssessment": {
+          "explicitPositiveSupport": [],
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfileEstablished": false,
+          "notes": "This review does not infer an allergen from hollandaise or dish identity."
+        },
+        "safetySourceAuthorityConflictRemains": false
+      }
+    ],
+    "safetySourceAuthorityConflictRemains": false,
+    "allergenAuthorityLimitationRemains": true,
+    "allergenAuthorityRationale": "SRC-BRUNCH is authoritative for current product identity and supports only explicitly named positive ingredients. It is not a complete allergen matrix and cannot establish allergen negatives, may-contain negatives, or a complete allergen profile."
+  },
+  "remainingSolSignals": [
+    {
+      "signal": "allergen_authority_incomplete",
+      "status": "non_blocking_for_menu_identity",
+      "affectedKeys": [
+        "7:brunch-fideos",
+        "18:mangalica-estrellados",
+        "27:steak-and-egg",
+        "31:vegetable-benedict"
+      ],
+      "rationale": "The menu-presence conflict is resolved, but the brunch PDF remains a partial-positive ingredient source rather than an authoritative complete allergen disclosure."
+    }
+  ],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "reviewedKeyCount": 4,
+    "allAffectedKeysReviewedExactlyOnce": true,
+    "allDispositionsBinding": true,
+    "unresolvedReviewedKeys": [],
+    "staleReviewedKeys": [],
+    "unsupportedAllergenNegativesIntroduced": false,
+    "codexVerifiedClaimed": false
+  }
+}

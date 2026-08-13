@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-017-2026-07-17",
+  "restaurantId": "bethesda-bagels-dc",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "98cd07697319ff57863b96b42b0d2cdb866eb1edc96d8d39c1c81f6c68f5ec93",
+    "currentProductCount": 217,
+    "evidenceSourceCount": 10,
+    "reconciliation": {
+      "exact_match": 134,
+      "equivalent_presentation": 47,
+      "artifact": 10
+    },
+    "assertions": [
+      "fingerprint gate passed",
+      "accepted corrected JOB/RESULT validated",
+      "direct aggregate preserved exactly",
+      "canonical evidence purposes and IDs resolve",
+      "Ingredient Intelligence recomputed after direct finalization",
+      "all 191 item-checks updated exactly once",
+      "no ledger, manifest, parser, or other restaurant writes"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/bethesda-bagels-dc.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/bethesda-bagels-dc.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/bethesda-bagels-dc.jsonl",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-bethesda-bagels-dc-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-017-2026-07-17/apply-results/bethesda-bagels-dc.json"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "validatePocResearchResult",
+    "node scripts/apply-bethesda-bagels-dc-poc.mjs (twice)",
+    "sha256 comparison of owned artifacts"
+  ],
+  "secondRunDiff": "none",
+  "hashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "76b3683a3536b54c2f9b6ffaffe2d1be23aae7f116c14bdb9b8bba1dc8010ca2",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/bethesda-bagels-dc.json": "1311f9096c57df4e80dce3f8d9f38b6da573620b481489f31ca82f876c88fdda",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/bethesda-bagels-dc.json": "0e255a84c99b20c25d92085d56e704478819ea0a19eb7d9a39b8180a0ab0b055",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/bethesda-bagels-dc.jsonl": "87f137749d8ff010206a3b9c73f95bb6f321a3afb173e15a3b1b942848f8c02f"
+  },
+  "counts": {
+    "publishedProducts": 217,
+    "exact_match": 134,
+    "equivalent_presentation": 47,
+    "artifact": 10,
+    "unresolved": 0,
+    "directMilk": 45,
+    "directEgg": 18,
+    "directFish": 9,
+    "directPeanut": 1,
+    "directSoy": 6,
+    "directTreeNut": 2,
+    "directSesame": 3,
+    "directWheat": 2,
+    "gluten": 0,
+    "mayContainProducts": 0,
+    "evidenceSources": 10,
+    "currentCompleteSurfaces": 4
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-005-2026-07-16",
+  "restaurantId": "barmini-dc",
+  "validation": {
+    "valid": true,
+    "currentProductCount": 0,
+    "errors": [],
+    "identity": {
+      "restaurantId": "barmini-dc",
+      "name": "barmini by Jose Andres",
+      "address": "501 9th St NW, Washington, DC 20004"
+    },
+    "inScopeSurfaceCount": 0,
+    "supportingEvidenceValid": true,
+    "ingredientIntelligenceRowCount": 0,
+    "focusedReadback": "zero products, zero in-scope surfaces, correct identity/address, and canonical supporting evidence"
+  },
+  "changedPaths": [
+    "src/data/generated/restaurants.generated.json",
+    "data/restaurant-verification/restaurants/barmini-dc.json",
+    "data/restaurant-verification/evidence/barmini-dc.json",
+    "data/restaurant-verification/worker-runs/poc-batch-005-2026-07-16/apply-results/barmini-dc.json"
+  ],
+  "commands": [
+    "node scripts/.tmp-apply-barmini.mjs",
+    "node scripts/.tmp-apply-barmini.mjs",
+    "focused readback assertions for barmini identity, zero catalog, zero in-scope surfaces, canonical evidence, and zero Ingredient Intelligence rows",
+    "diff -u first-run snapshots against second-run outputs"
+  ],
+  "secondRunDiff": "none",
+  "notes": [
+    "Zero-product catalog is binding and legitimate; no products were invented.",
+    "Supporting surfaces are retained separately from currentCatalog.surfaces.",
+    "No ledger, item-check, or codex_verified claim was edited."
+  ]
+}

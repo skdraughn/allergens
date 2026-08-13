@@ -1,0 +1,877 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-batch-03-2026-07-16",
+  "restaurant": {
+    "restaurantId": "osm-barley-mac-4335908535",
+    "name": "Barley Mac",
+    "domain": "barleymac.com",
+    "locationId": "arlington",
+    "baselineItemCount": 76,
+    "baselineItemFingerprint": "7baafcd6219b6e404e0e6e7f34bfa9fb40ebb790075d9c422a6a791786149ccc",
+    "officialItemCount": 61,
+    "officialAllergenStatus": "not-found",
+    "sourceFamily": "generic-website",
+    "parserProfile": "generic-website",
+    "guideUrl": "https://barleymac.com/",
+    "sourceUrls": [
+      "https://www.barleymac.com/",
+      "https://www.barleymac.com/wp-content/uploads/2025/09/BM_Lunch_Dinner_web-_Jul.25.pdf",
+      "https://www.barleymac.com/wp-content/uploads/2025/09/Brunch-Menu24-1.pdf",
+      "https://www.toasttab.com/local/order/barley-mac-1600-wilson-boulevard/r-d6fb3ed4-c27f-4480-85bc-286734e59d99"
+    ]
+  },
+  "effectiveOutcome": "low_confidence",
+  "routingReasons": [
+    "Terra marked the result low_confidence.",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "validationWarnings": [
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "multi_service",
+      "pdf_or_image",
+      "scope_incomplete",
+      "count_drift",
+      "non_exact_reconciliation",
+      "cross_contact",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 76,
+      "reconciledItemCount": 76,
+      "uniqueReconciledItemCount": 76,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 4,
+      "activeMenuSurfaceCount": 4,
+      "accessibleMenuSurfaceCount": 3,
+      "serviceCount": 3,
+      "pdfImageSurfaceCount": 2,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 0,
+      "incompleteSurfaceCount": 0,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 0,
+      "currentOnlyCount": 0,
+      "baselineOnlyCount": 0,
+      "countDrift": true,
+      "duplicatePresentationCount": 0,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 0,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 76,
+      "allergenMismatchItemCount": 0,
+      "crossContactCount": 1,
+      "parserRepairFindingCount": 0,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 0,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "low_confidence",
+    "confidence": {
+      "level": "low",
+      "overall": 0.35,
+      "menu": 0.4,
+      "allergenSource": 0.15,
+      "extraction": 0.35,
+      "rationale": "Identity and the official menu index were independently re-opened, but lunch/dinner returned a verification loader, brunch and direct Toast retrieval failed, and multiple official menu surfaces remain unenumerated. This cannot support a complete current catalog, allergen negatives, complete arrays, or general cross-contact conclusions."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Barley Mac, 1600 Wilson Blvd, Arlington, VA 22209",
+      "confidence": 0.98,
+      "sourceEvidenceIds": [
+        "terra-home"
+      ],
+      "notes": "The official homepage identifies the Arlington/Rosslyn restaurant, address, telephone number, hours, and menu links."
+    },
+    "sources": [
+      {
+        "evidenceId": "terra-home",
+        "url": "https://www.barleymac.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Barley Mac official homepage",
+        "retrievedAt": "2026-07-16T16:30:00Z",
+        "excerpt": "1600 Wilson Blvd, Arlington, VA 22209; links Happy Hour, Wine & Specialty Cocktails, Beer/Draft List, Spirits, Lunch & Dinner, Brunch, Kid’s, Catering, Toast pickup, and DoorDash delivery.",
+        "stableRowId": "homepage-menu-links",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-dinner-attempt",
+        "url": "https://www.barleymac.com/wp-content/uploads/2025/09/BM_Lunch_Dinner_web-_Jul.25.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Lunch & Dinner Menu retrieval",
+        "retrievedAt": "2026-07-16T16:30:00Z",
+        "excerpt": "Direct retrieval returned a verification loader rather than the PDF menu content.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "Fresh captured PDF required"
+      },
+      {
+        "evidenceId": "terra-brunch-attempt",
+        "url": "https://www.barleymac.com/wp-content/uploads/2025/09/Brunch-Menu24-1.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Brunch Menu retrieval",
+        "retrievedAt": "2026-07-16T16:30:00Z",
+        "excerpt": "Direct retrieval failed with a cache miss; content was not independently extracted.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "Fresh captured PDF required"
+      },
+      {
+        "evidenceId": "terra-toast-attempt",
+        "url": "https://order.toasttab.com/online/barley-mac-1600-wilson-boulevard",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Toast ordering menu retrieval",
+        "retrievedAt": "2026-07-16T16:30:00Z",
+        "excerpt": "Direct location-specific ordering URL could not be re-opened because retrieval failed with a cache miss.",
+        "stableRowId": "toast-location-1600-wilson",
+        "contentHash": null,
+        "artifactSuggested": "Fresh linked-vendor capture required"
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://www.barleymac.com/",
+        "notes": "Official homepage independently re-opened."
+      },
+      {
+        "kind": "linked_source",
+        "status": "blocked",
+        "url": "https://www.barleymac.com/wp-content/uploads/2025/09/BM_Lunch_Dinner_web-_Jul.25.pdf",
+        "notes": "Restaurant-issued lunch/dinner PDF returned a verification loader; brunch PDF was also unavailable."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "error",
+        "url": "https://order.toasttab.com/online/barley-mac-1600-wilson-boulevard",
+        "notes": "Direct Toast location URL could not be independently re-opened."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": "https://www.barleymac.com/",
+        "notes": "Official menu index independently identified all linked menu families."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No archive evidence was relied on."
+      },
+      {
+        "kind": "third_party",
+        "status": "not_found",
+        "url": null,
+        "notes": "No third-party source was used for menu or allergen conclusions."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "multi_service",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-home"
+        ],
+        "notes": "The official homepage exposes distinct lunch/dinner, brunch, happy-hour, children’s, catering, beverage, pickup, and delivery surfaces."
+      },
+      {
+        "gateId": "pdf_or_image",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-home",
+          "terra-dinner-attempt",
+          "terra-brunch-attempt"
+        ],
+        "notes": "The restaurant-controlled food menus are PDF surfaces, and two core PDFs could not be independently extracted."
+      },
+      {
+        "gateId": "scope_incomplete",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-home",
+          "terra-dinner-attempt",
+          "terra-brunch-attempt",
+          "terra-toast-attempt"
+        ],
+        "notes": "The current lunch/dinner, brunch, Toast, food-service, and drink boundaries are not independently enumerable."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-home",
+          "terra-dinner-attempt",
+          "terra-brunch-attempt",
+          "terra-toast-attempt"
+        ],
+        "notes": "The scout supplied zero current products despite multiple current menu surfaces; no complete current count can be established."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-home",
+          "terra-dinner-attempt",
+          "terra-brunch-attempt"
+        ],
+        "notes": "Frozen navigation artifacts, duplicate names, service-specific presentations, and unavailable core PDFs prevent exact reconciliation."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "unresolved",
+        "sourceEvidenceIds": [
+          "terra-dinner-attempt",
+          "terra-brunch-attempt"
+        ],
+        "notes": "No independently accessible current restaurant cross-contact statement was available; no general conclusion is made."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-home",
+          "terra-dinner-attempt",
+          "terra-brunch-attempt",
+          "terra-toast-attempt"
+        ],
+        "notes": "Independent source access and catalog coverage are insufficient for a higher-confidence result."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-dinner-attempt",
+          "terra-brunch-attempt"
+        ],
+        "notes": "The scout’s difficult-extraction and incomplete-allergen-source risks remain independently supported by the inaccessible primary PDFs."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "official-home",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-home"
+        ],
+        "notes": "Homepage and its menu-family links were independently re-opened."
+      },
+      {
+        "surfaceId": "dinner-pdf",
+        "verdict": "unverifiable",
+        "sourceEvidenceIds": [
+          "terra-dinner-attempt"
+        ],
+        "notes": "Direct re-open returned a verification loader rather than menu content."
+      },
+      {
+        "surfaceId": "brunch-pdf",
+        "verdict": "unverifiable",
+        "sourceEvidenceIds": [
+          "terra-brunch-attempt"
+        ],
+        "notes": "Direct re-open failed with a cache miss; menu content was not independently extracted."
+      },
+      {
+        "surfaceId": "toast-order",
+        "verdict": "unverifiable",
+        "sourceEvidenceIds": [
+          "terra-toast-attempt"
+        ],
+        "notes": "Direct linked-vendor menu retrieval failed; linked-vendor authority is preserved."
+      }
+    ],
+    "currentProductCheckGroups": [],
+    "additionalMenuSurfaces": [
+      {
+        "surfaceId": "happy-hour-pdf",
+        "title": "Happy Hour",
+        "service": "happy hour",
+        "url": "https://www.barleymac.com/",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "html",
+        "accessStatus": "partial",
+        "fullyEnumerated": false,
+        "scopeStatus": "partial",
+        "current": true,
+        "sourceEvidenceIds": [
+          "terra-home"
+        ],
+        "currentProductKeys": [],
+        "notes": "Official homepage separately links this omitted surface; its product boundary was not independently extracted."
+      },
+      {
+        "surfaceId": "kids-pdf",
+        "title": "Kid’s",
+        "service": "kids",
+        "url": "https://www.barleymac.com/",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "html",
+        "accessStatus": "partial",
+        "fullyEnumerated": false,
+        "scopeStatus": "partial",
+        "current": true,
+        "sourceEvidenceIds": [
+          "terra-home"
+        ],
+        "currentProductKeys": [],
+        "notes": "Official homepage separately links this omitted surface; its product boundary was not independently extracted."
+      },
+      {
+        "surfaceId": "catering-pdf",
+        "title": "Catering Menu",
+        "service": "catering",
+        "url": "https://www.barleymac.com/",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "html",
+        "accessStatus": "partial",
+        "fullyEnumerated": false,
+        "scopeStatus": "partial",
+        "current": true,
+        "sourceEvidenceIds": [
+          "terra-home"
+        ],
+        "currentProductKeys": [],
+        "notes": "Official homepage separately links this omitted surface; its product boundary was not independently extracted."
+      },
+      {
+        "surfaceId": "specialty-cocktails-pdf",
+        "title": "Wine & Specialty Cocktails",
+        "service": "drinks",
+        "url": "https://www.barleymac.com/",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "html",
+        "accessStatus": "partial",
+        "fullyEnumerated": false,
+        "scopeStatus": "partial",
+        "current": true,
+        "sourceEvidenceIds": [
+          "terra-home"
+        ],
+        "currentProductKeys": [],
+        "notes": "Official homepage separately links this omitted beverage surface."
+      },
+      {
+        "surfaceId": "spirits-pdf",
+        "title": "Spirits",
+        "service": "drinks",
+        "url": "https://www.barleymac.com/",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "html",
+        "accessStatus": "partial",
+        "fullyEnumerated": false,
+        "scopeStatus": "partial",
+        "current": true,
+        "sourceEvidenceIds": [
+          "terra-home"
+        ],
+        "currentProductKeys": [],
+        "notes": "Official homepage separately links this omitted beverage surface."
+      }
+    ],
+    "additionalCurrentProducts": [],
+    "reconciliationSummary": {
+      "reconciledItemCount": 76,
+      "counts": {
+        "missing_from_source/accurately_unavailable": 70,
+        "artifact/not_applicable": 6
+      }
+    },
+    "findings": [
+      {
+        "findingId": "terra-f1-catalog-omission",
+        "severity": "high",
+        "kind": "scope",
+        "summary": "The scout omitted current official Happy Hour, Kid’s, Catering, Wine & Specialty Cocktails, and Spirits menu surfaces visible on the restaurant’s menu index. Their product boundaries remain unenumerated in this attempt.",
+        "sourceEvidenceIds": [
+          "terra-home"
+        ],
+        "affectedAuditItemKeys": [
+          "21:cheese-pizza",
+          "37:goat-cheese-bruschetta",
+          "42:jalapeno-bacon-deviled-eggs",
+          "46:mac-and-cheese",
+          "49:meatballs-classico",
+          "54:pepperoni-pizza"
+        ]
+      },
+      {
+        "findingId": "terra-f2-primary-access",
+        "severity": "high",
+        "kind": "scope",
+        "summary": "The independently re-opened lunch/dinner and brunch sources were unavailable for extraction, and direct Toast retrieval failed. The current product catalog and exact frozen-item matching cannot be reproduced.",
+        "sourceEvidenceIds": [
+          "terra-dinner-attempt",
+          "terra-brunch-attempt",
+          "terra-toast-attempt"
+        ],
+        "affectedAuditItemKeys": [
+          "1:3-egg-plate",
+          "3:4-layer-carrot-cake",
+          "4:american-waffle",
+          "5:avocado-toast",
+          "9:barley-mac-smash-burger",
+          "13:bolognese-lasagna",
+          "16:buffalo-roasted-chicken-pizza",
+          "21:cheese-pizza",
+          "39:herb-mac-and-cheese",
+          "46:mac-and-cheese",
+          "54:pepperoni-pizza",
+          "61:shrimp-and-grits",
+          "73:veggie-pizza"
+        ]
+      },
+      {
+        "findingId": "terra-f3-allergen-authority",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "No independently accessible current restaurant allergen matrix, ingredient list, allergen absence claim, or general cross-contact disclosure was available. Frozen complete allergen arrays and negatives cannot be verified.",
+        "sourceEvidenceIds": [
+          "terra-dinner-attempt",
+          "terra-brunch-attempt"
+        ],
+        "affectedAuditItemKeys": [
+          "1:3-egg-plate",
+          "4:american-waffle",
+          "5:avocado-toast",
+          "13:bolognese-lasagna",
+          "21:cheese-pizza",
+          "29:crab-mac-and-cheese",
+          "45:lobster-mac",
+          "46:mac-and-cheese",
+          "61:shrimp-and-grits",
+          "74:waldorf-steak-salad"
+        ]
+      }
+    ],
+    "summary": "Identity is independently verified, but the scout’s zero-product catalog is not sufficient. The official homepage exposes multiple omitted current menu surfaces; core primary menus and direct Toast could not be independently re-opened. Because the scout itself supplied no currentProductKeys or presentationIds, no product verification groups are returned; this avoids inventing scout coverage. All 76 frozen audit keys are reconciled exactly once, while menu scope and allergen evidence remain unresolved for Sol review.",
+    "coordinatorNotes": [
+      "Read-only Terra result only; no ledger, evidence, dossier, item-check, or generated-data files were changed.",
+      "Every scout menu surface was checked exactly once.",
+      "The first item group’s missing_from_source disposition records unavailable independent verification, not a claim that the restaurant no longer sells those products."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "1:3-egg-plate",
+      "baseline": {
+        "itemId": "3-egg-plate",
+        "name": "3 Egg Plate",
+        "category": "american",
+        "variantGroup": "american",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.barleymac.com/wp-content/uploads/2025/09/Brunch-Menu24-1.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "3:4-layer-carrot-cake",
+      "baseline": {
+        "itemId": "4-layer-carrot-cake",
+        "name": "4-Layer Carrot Cake",
+        "category": "Dessert",
+        "variantGroup": "Dessert",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.barleymac.com/wp-content/uploads/2025/09/Brunch-Menu24-1.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "4:american-waffle",
+      "baseline": {
+        "itemId": "american-waffle",
+        "name": "American Waffle",
+        "category": "american",
+        "variantGroup": "american",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.barleymac.com/wp-content/uploads/2025/09/Brunch-Menu24-1.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "5:avocado-toast",
+      "baseline": {
+        "itemId": "avocado-toast",
+        "name": "Avocado Toast",
+        "category": "american",
+        "variantGroup": "american",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "egg",
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.barleymac.com/wp-content/uploads/2025/09/Brunch-Menu24-1.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "9:barley-mac-smash-burger",
+      "baseline": {
+        "itemId": "barley-mac-smash-burger",
+        "name": "Barley Mac Smash Burger",
+        "category": "american",
+        "variantGroup": "american",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.barleymac.com/wp-content/uploads/2025/09/BM_Lunch_Dinner_web-_Jul.25.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "13:bolognese-lasagna",
+      "baseline": {
+        "itemId": "bolognese-lasagna",
+        "name": "Bolognese Lasagna",
+        "category": "american",
+        "variantGroup": "american",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.barleymac.com/wp-content/uploads/2025/09/BM_Lunch_Dinner_web-_Jul.25.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "16:buffalo-roasted-chicken-pizza",
+      "baseline": {
+        "itemId": "buffalo-roasted-chicken-pizza",
+        "name": "Buffalo Roasted Chicken Pizza",
+        "category": "american",
+        "variantGroup": "american",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.barleymac.com/wp-content/uploads/2025/09/BM_Lunch_Dinner_web-_Jul.25.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "21:cheese-pizza",
+      "baseline": {
+        "itemId": "cheese-pizza",
+        "name": "Cheese Pizza",
+        "category": "american",
+        "variantGroup": "american",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.barleymac.com/wp-content/uploads/2025/09/BM_Lunch_Dinner_web-_Jul.25.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "29:crab-mac-and-cheese",
+      "baseline": {
+        "itemId": "crab-mac-and-cheese",
+        "name": "Crab Mac & Cheese",
+        "category": "american",
+        "variantGroup": "american",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.barleymac.com/wp-content/uploads/2025/09/BM_Lunch_Dinner_web-_Jul.25.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "37:goat-cheese-bruschetta",
+      "baseline": {
+        "itemId": "goat-cheese-bruschetta",
+        "name": "Goat Cheese Bruschetta",
+        "category": "american",
+        "variantGroup": "american",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.barleymac.com/wp-content/uploads/2025/09/BM_Lunch_Dinner_web-_Jul.25.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "39:herb-mac-and-cheese",
+      "baseline": {
+        "itemId": "herb-mac-and-cheese",
+        "name": "Herb Mac & Cheese",
+        "category": "american",
+        "variantGroup": "american",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.barleymac.com/wp-content/uploads/2025/09/BM_Lunch_Dinner_web-_Jul.25.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "42:jalapeno-bacon-deviled-eggs",
+      "baseline": {
+        "itemId": "jalapeno-bacon-deviled-eggs",
+        "name": "Jalapeño Bacon Deviled Eggs",
+        "category": "american",
+        "variantGroup": "american",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.barleymac.com/wp-content/uploads/2025/09/BM_Lunch_Dinner_web-_Jul.25.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "45:lobster-mac",
+      "baseline": {
+        "itemId": "lobster-mac",
+        "name": "Lobster Mac",
+        "category": "american",
+        "variantGroup": "american",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.barleymac.com/wp-content/uploads/2025/09/BM_Lunch_Dinner_web-_Jul.25.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "46:mac-and-cheese",
+      "baseline": {
+        "itemId": "mac-and-cheese",
+        "name": "Mac & Cheese",
+        "category": "american",
+        "variantGroup": "american",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.barleymac.com/wp-content/uploads/2025/09/BM_Lunch_Dinner_web-_Jul.25.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "49:meatballs-classico",
+      "baseline": {
+        "itemId": "meatballs-classico",
+        "name": "Meatballs Classico",
+        "category": "american",
+        "variantGroup": "american",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.barleymac.com/wp-content/uploads/2025/09/BM_Lunch_Dinner_web-_Jul.25.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "54:pepperoni-pizza",
+      "baseline": {
+        "itemId": "pepperoni-pizza",
+        "name": "Pepperoni Pizza",
+        "category": "american",
+        "variantGroup": "american",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.barleymac.com/wp-content/uploads/2025/09/BM_Lunch_Dinner_web-_Jul.25.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "61:shrimp-and-grits",
+      "baseline": {
+        "itemId": "shrimp-and-grits",
+        "name": "Shrimp And Grits",
+        "category": "american",
+        "variantGroup": "american",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.barleymac.com/wp-content/uploads/2025/09/BM_Lunch_Dinner_web-_Jul.25.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "73:veggie-pizza",
+      "baseline": {
+        "itemId": "veggie-pizza",
+        "name": "Veggie Pizza",
+        "category": "american",
+        "variantGroup": "american",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.barleymac.com/wp-content/uploads/2025/09/BM_Lunch_Dinner_web-_Jul.25.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "74:waldorf-steak-salad",
+      "baseline": {
+        "itemId": "waldorf-steak-salad",
+        "name": "Waldorf Steak Salad",
+        "category": "american",
+        "variantGroup": "american",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.barleymac.com/wp-content/uploads/2025/09/BM_Lunch_Dinner_web-_Jul.25.pdf"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-03-2026-07-16/jobs/osm-barley-mac-4335908535.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-03-2026-07-16/results/osm-barley-mac-4335908535.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/osm-barley-mac-4335908535.jsonl"
+  }
+}

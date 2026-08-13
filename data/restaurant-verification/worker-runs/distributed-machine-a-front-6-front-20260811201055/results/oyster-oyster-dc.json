@@ -1,0 +1,562 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-a-front-6-front-20260811201055",
+  "restaurantId": "oyster-oyster-dc",
+  "runId": "distributed-machine-a-front-6-front-20260811201055-oyster-oyster-dc-research-luna-1",
+  "stage": "poc_research_resolved",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "oyster-oyster-dc",
+    "name": "Oyster Oyster",
+    "locationId": "shaw-dc",
+    "domain": "oysteroysterdc.com",
+    "baselineItemCount": 11,
+    "baselineFingerprint": "b749498eae157ae8eece8b9087e8d94130fc8197f07b377c6af99f57b49395ba",
+    "itemChecksRead": 11,
+    "itemChecksPath": "data/restaurant-verification/item-checks/oyster-oyster-dc.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Oyster Oyster",
+    "location": "1440 8th Street NW, Washington, DC 20001",
+    "locationId": "shaw-dc",
+    "domain": "oysteroysterdc.com",
+    "officialHomepage": "https://www.oysteroysterdc.com/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-menu",
+      "ev-faq"
+    ],
+    "notes": "Official homepage, menu, and FAQ identify the Shaw DC restaurant; no other location was merged."
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-home",
+      "url": "https://www.oysteroysterdc.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Official Oyster Oyster homepage",
+      "retrievedAt": "2026-08-11T20:25:00.000Z",
+      "excerpt": "Oyster Oyster at 1440 8th Street NW, Washington, DC 20001; links Menu, FAQ, and reservations."
+    },
+    {
+      "evidenceId": "ev-menu",
+      "url": "https://www.oysteroysterdc.com/menus/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "both",
+      "title": "Official current Solstice menu",
+      "retrievedAt": "2026-08-11T20:25:00.000Z",
+      "excerpt": "Current seasonal vegetarian/vegan menu with optional oyster course; lists 11 food courses and states soy, sunflower seed, allium, nightshade, and mushroom allergies cannot be accommodated."
+    },
+    {
+      "evidenceId": "ev-faq",
+      "url": "https://www.oysteroysterdc.com/faq/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "Official allergy FAQ",
+      "retrievedAt": "2026-08-11T20:25:00.000Z",
+      "excerpt": "Restaurant says it can accommodate gluten-free, shellfish/oyster-free, and nut-free diets and asks guests with other allergies to email in advance."
+    },
+    {
+      "evidenceId": "ev-resy",
+      "url": "https://resy.com/cities/dc/venues/oyster-oyster",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "title": "Official-linked Resy reservation surface",
+      "retrievedAt": "2026-08-11T20:25:00.000Z",
+      "excerpt": "Official menu links reservations through Resy; no independent food or nonalcoholic product catalog was exposed."
+    },
+    {
+      "evidenceId": "ev-search-site",
+      "url": "https://www.oysteroysterdc.com/menus/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_site allergen search",
+      "retrievedAt": "2026-08-11T20:25:00.000Z",
+      "excerpt": "Inspected homepage navigation and menu pages; found allergy accommodation note, not a standalone allergen matrix."
+    },
+    {
+      "evidenceId": "ev-search-docs",
+      "url": "https://www.oysteroysterdc.com/faq/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_documents allergen search",
+      "retrievedAt": "2026-08-11T20:25:00.000Z",
+      "excerpt": "Inspected official FAQ and downloadable/document surfaces linked from the site; no allergen or nutrition document found."
+    },
+    {
+      "evidenceId": "ev-search-vendor",
+      "url": "https://resy.com/cities/dc/venues/oyster-oyster",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "title": "linked_vendor allergen search",
+      "retrievedAt": "2026-08-11T20:25:00.000Z",
+      "excerpt": "Inspected official-linked Resy surface; reservation information only, no allergen matrix."
+    },
+    {
+      "evidenceId": "ev-search-web",
+      "url": "https://www.google.com/search?q=site%3Aoysteroysterdc.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF+OR+menu",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "targeted_web_search allergen search",
+      "retrievedAt": "2026-08-11T20:25:00.000Z",
+      "excerpt": "Targeted domain searches found official menu/FAQ pages but no standalone allergen matrix."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-menu-html",
+      "title": "Current Solstice seasonal menu",
+      "url": "https://www.oysteroysterdc.com/menus/",
+      "current": true,
+      "scopeStatus": "complete",
+      "locationScope": "shaw-dc",
+      "servicePeriod": "seasonal tasting menu; Wednesday/Thursday three-course option",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "notes": [
+        "Complete current food and nonalcoholic menu boundary; alcohol-only offerings are out of scope."
+      ]
+    },
+    {
+      "surfaceId": "official-home",
+      "title": "Official homepage",
+      "url": "https://www.oysteroysterdc.com/",
+      "current": false,
+      "scopeStatus": "supporting",
+      "locationScope": "shaw-dc",
+      "servicePeriod": null,
+      "sourceEvidenceIds": [
+        "ev-home"
+      ],
+      "notes": [
+        "Identity/navigation surface, not an independent product menu."
+      ]
+    },
+    {
+      "surfaceId": "official-faq",
+      "title": "Official FAQ",
+      "url": "https://www.oysteroysterdc.com/faq/",
+      "current": false,
+      "scopeStatus": "supporting",
+      "locationScope": "shaw-dc",
+      "servicePeriod": null,
+      "sourceEvidenceIds": [
+        "ev-faq"
+      ],
+      "notes": [
+        "Dietary accommodation and cross-contact context."
+      ]
+    },
+    {
+      "surfaceId": "linked-resy",
+      "title": "Official-linked Resy",
+      "url": "https://resy.com/cities/dc/venues/oyster-oyster",
+      "current": false,
+      "scopeStatus": "supporting",
+      "locationScope": "shaw-dc",
+      "servicePeriod": "reservations",
+      "sourceEvidenceIds": [
+        "ev-resy"
+      ],
+      "notes": [
+        "No product catalog exposed."
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "welcoming-broth",
+      "name": "Welcoming Broth",
+      "category": "Menus",
+      "description": "Watermelon, Licorice Basil",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": "No direct allergen disclosure."
+    },
+    {
+      "currentProductKey": "oyster-on-the-half-shell-or-mushroom-puffed-potato-crisp",
+      "name": "Oyster on The Half Shell or Mushroom Puffed Potato Crisp",
+      "category": "Menus",
+      "description": "Tomatillo, delfino cilantro",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [
+        "shellfish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "notes": "Oyster option is explicitly named; mushroom option is not assigned an allergen absent a supported allergen claim."
+    },
+    {
+      "currentProductKey": "heirloom-tomato",
+      "name": "Heirloom Tomato",
+      "category": "Menus",
+      "description": "Potato Furikake, XO, Perilla, Potato Vinaigrette",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "celery-root-the-thing",
+      "name": "Celery Root ‘the thing’",
+      "category": "Menus",
+      "description": "Smoked celeriac, green onion",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "smoked-peas",
+      "name": "Smoked Peas",
+      "category": "Menus",
+      "description": "Pea Pod Cracker, Kohlrabi, Carrot",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "summer-squash",
+      "name": "Summer Squash",
+      "category": "Menus",
+      "description": "Chanterelle, Corn, Carolina Gold Rice",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "new-bread-old-bread-marigold-butter",
+      "name": "New Bread Old Bread | Marigold Butter",
+      "category": "Menus",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [
+        "wheat",
+        "gluten",
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-menu"
+      ]
+    },
+    {
+      "currentProductKey": "lions-mane-mushroom",
+      "name": "Lion’s Mane Mushroom",
+      "category": "Menus",
+      "description": "Sprouting Cauliflower, Fennel, Cherri-Yaki sauce",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-menu"
+      ]
+    },
+    {
+      "currentProductKey": "roasted-peach-sorbet",
+      "name": "Roasted Peach Sorbet",
+      "category": "Menus",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "summer-berries",
+      "name": "Summer Berries",
+      "category": "Menus",
+      "description": "Maple Cake, Pecans, Anise Hyssop",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [
+        "tree-nut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-menu"
+      ]
+    },
+    {
+      "currentProductKey": "spicebush-porcini-shortbread",
+      "name": "Spicebush Porcini Shortbread",
+      "category": "Menus",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "Official homepage navigation and https://www.oysteroysterdc.com/menus/",
+        "sourceEvidenceIds": [
+          "ev-search-site"
+        ],
+        "outcome": "No standalone allergen matrix; accommodation note found."
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "Official FAQ/document links and site search for allergen, allergy, nutrition, ingredients, PDF",
+        "sourceEvidenceIds": [
+          "ev-search-docs"
+        ],
+        "outcome": "No official allergen or nutrition document found."
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "https://resy.com/cities/dc/venues/oyster-oyster",
+        "sourceEvidenceIds": [
+          "ev-search-vendor"
+        ],
+        "outcome": "Reservation surface only; no allergen matrix."
+      },
+      {
+        "class": "targeted_web_search",
+        "queryOrLocation": "site:oysteroysterdc.com allergen OR allergy OR nutrition OR ingredients OR PDF OR menu",
+        "sourceEvidenceIds": [
+          "ev-search-web"
+        ],
+        "outcome": "Found official menu/FAQ pages; no standalone matrix."
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "evidenceId": "ev-menu",
+      "claim": "Soy, sunflower seeds, alliums, nightshades, and mushrooms cannot be accommodated."
+    },
+    {
+      "evidenceId": "ev-faq",
+      "claim": "Gluten-free, shellfish/oyster-free, and nut-free diets may be accommodated with advance contact; other allergy questions should be emailed in advance."
+    }
+  ],
+  "findings": [
+    "Mechanical catalog repair resolved: the current seasonal menu is represented as 11 distinct orderable food courses, with stale frozen entries retained only in reconciliation and current seasonal replacements represented.",
+    "Name/category cleanup resolved using the official menu wording and the existing Menus category.",
+    "Supported direct allergen evidence is preserved: shellfish for the oyster presentation, milk for marigold butter, wheat/gluten for the bread course, and tree-nut for the pecan-bearing summer berries course.",
+    "Official allergy notes remain restaurant-level accommodation and cross-contact context; unavailable item-level disclosure remains conservative."
+  ],
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:asparagus",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Not on current seasonal menu."
+      },
+      {
+        "auditItemKey": "2:celery-root",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "celery-root-the-thing"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "3:cucumber",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Not on current seasonal menu."
+      },
+      {
+        "auditItemKey": "4:golden-beets",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Not on current seasonal menu."
+      },
+      {
+        "auditItemKey": "5:lions-mane-mushroom",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lions-mane-mushroom"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "6:new-bread-old-bread",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "new-bread-old-bread-marigold-butter"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "7:oyster-on-the-half-shell-or-puffed-potato-crisp",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "oyster-on-the-half-shell-or-mushroom-puffed-potato-crisp"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "8:pumpkin-seed-sorbet",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Replaced by roasted peach sorbet."
+      },
+      {
+        "auditItemKey": "9:spicebush-porcini-shortbread",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "spicebush-porcini-shortbread"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "10:strawberry",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Replaced by summer berries."
+      },
+      {
+        "auditItemKey": "11:welcoming-broth",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "welcoming-broth"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "riskSignals": [
+    {
+      "type": "cross_contact_context",
+      "status": "documented",
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-faq"
+      ],
+      "notes": "Restaurant-level accommodation limits retained conservatively; no item-level may-contain inference."
+    }
+  ],
+  "recommendedLane": "verify",
+  "resolution": {
+    "resolvedBy": "luna-low-follow-up",
+    "resolvedAt": "2026-08-11T20:30:00.000Z",
+    "scope": [
+      "catalogDrift",
+      "staleItems",
+      "newItems",
+      "nameOrCategoryCleanup"
+    ],
+    "notes": "Mechanical catalog issues resolved in the isolated result; no safety escalation introduced."
+  }
+}

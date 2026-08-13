@@ -1,12 +1,11 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useFocusEffect, useRouter } from "expo-router";
 import {
-  BadgeInfo,
-  Plus,
   Search,
+  Sparkles,
   UserRound,
 } from "lucide-react-native";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import {
   type NativeScrollEvent,
   type NativeSyntheticEvent,
@@ -19,7 +18,9 @@ import {
 import Animated, {
   Easing as ReanimatedEasing,
   Extrapolation,
+  FadeIn,
   FadeInUp,
+  FadeOut,
   interpolate,
   runOnJS,
   useAnimatedScrollHandler,
@@ -28,11 +29,14 @@ import Animated, {
 } from "react-native-reanimated";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { IconButton } from "@/components/icon-button";
+import { IconButton, IconButtonSurface } from "@/components/icon-button";
 import { RestaurantLogo } from "@/components/restaurant-logo";
+import {
+  FloatingRestaurantRequestButton,
+  RestaurantRequestButton,
+} from "@/components/restaurant-request-button";
 import { ScreenBackground } from "@/components/screen-background";
 import { SereneLoader } from "@/components/serene-loader";
-import { normalizeAllergyIds } from "@/constants/allergies";
 import { colors, radius, spacing } from "@/constants/theme";
 import { getRestaurantBrand, getRestaurantBrandBackground } from "@/data/brand-assets";
 import type { Restaurant } from "@/data/restaurants";
@@ -43,6 +47,7 @@ import {
 import { useAllergyProfile } from "@/features/profile/allergy-profile-context";
 import { AllergyProfileManagerModal } from "@/features/profile/allergy-profile-manager-modal";
 import {
+  fallbackRestaurantSearch,
   getRestaurantSearchLocation,
   getSearchResultSummary,
   searchRestaurantPage,
@@ -51,7 +56,7 @@ import {
   type RestaurantSearchSummary,
 } from "@/features/restaurants/restaurant-search-service";
 import { useRestaurantData } from "@/features/restaurants/restaurant-data-context";
-import { getMenuItemSafety } from "@/lib/safety";
+import { useDebouncedValue } from "@/hooks/use-debounced-value";
 
 const restaurantResultPageSize = 50;
 type ReviewedRestaurant = {
@@ -62,15 +67,21 @@ type ReviewedRestaurant = {
 export function HomeScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { profiles, selectedAllergyIds, selectedProfileIds } = useAllergyProfile();
+  const {
+    isSyncing: isProfileSyncing,
+    profiles,
+    selectedAllergyIds,
+    selectedProfileIds,
+  } = useAllergyProfile();
   const { restaurants } = useRestaurantData();
   const scrollY = useSharedValue(0);
   const stickySearchInteractive = useSharedValue(false);
   const [query, setQuery] = useState("");
+  const debouncedQuery = useDebouncedValue(query);
   const [contributionMode, setContributionMode] = useState<ContributionMode | null>(null);
   const [profileManagerVisible, setProfileManagerVisible] = useState(false);
   const [stickySearchVisible, setStickySearchVisible] = useState(false);
-  const [pendingRestaurantId, setPendingRestaurantId] = useState<string | null>(null);
+  const navigationPendingRef = useRef(false);
   const locationQuery = useQuery({
     gcTime: 1000 * 60 * 30,
     queryFn: getRestaurantSearchLocation,
@@ -78,7 +89,8 @@ export function HomeScreen() {
     retry: false,
     staleTime: 1000 * 60 * 10,
   });
-  const normalizedQuery = normalizeSearchText(query);
+  const normalizedImmediateQuery = normalizeSearchText(query);
+  const normalizedRemoteQuery = normalizeSearchText(debouncedQuery);
   const restaurantDataSignature = useMemo(
     () =>
       `${restaurants.length}:${restaurants.reduce(
@@ -88,33 +100,79 @@ export function HomeScreen() {
     [restaurants],
   );
 
+  const immediateLocalResults = useMemo(
+    () =>
+      fallbackRestaurantSearch(
+        restaurants,
+        normalizedImmediateQuery,
+        restaurantResultPageSize,
+      ),
+    [normalizedImmediateQuery, restaurants],
+  );
+  const debouncedLocalResults = useMemo(
+    () =>
+      fallbackRestaurantSearch(
+        restaurants,
+        normalizedRemoteQuery,
+        restaurantResultPageSize,
+      ),
+    [normalizedRemoteQuery, restaurants],
+  );
   const searchQuery = useInfiniteQuery<RestaurantSearchPage>({
     gcTime: 1000 * 60 * 30,
     getNextPageParam: (lastPage) => lastPage.nextToken || undefined,
     initialPageParam: null as string | null,
-    queryFn: ({ pageParam }) =>
+    placeholderData:
+      restaurants.length > 0
+        ? {
+            pageParams: [null],
+            pages: [
+              {
+                nextToken: null,
+                results: debouncedLocalResults,
+              },
+            ],
+          }
+        : undefined,
+    queryFn: ({ pageParam, signal }) =>
       searchRestaurantPage({
         fallbackRestaurants: restaurants,
         limit: restaurantResultPageSize,
         location: locationQuery.data,
         nextToken: typeof pageParam === "string" ? pageParam : null,
-        query,
+        query: debouncedQuery,
+        signal,
       }),
     queryKey: [
       "restaurant-search",
-      normalizedQuery,
+      normalizedRemoteQuery,
       restaurantDataSignature,
       locationQuery.data?.lat ?? null,
       locationQuery.data?.lng ?? null,
     ],
     staleTime: 1000 * 60 * 5,
   });
-  const searchResults = useMemo(
+  const affirmedSearchResults = useMemo(
     () => searchQuery.data?.pages.flatMap((page) => page.results) ?? [],
     [searchQuery.data],
   );
-  const isInitialSearchLoading = searchQuery.isPending && searchResults.length === 0;
-  const canLoadMoreRestaurants = searchQuery.hasNextPage && !searchQuery.isFetchingNextPage;
+  const isWaitingForDebounce = normalizedImmediateQuery !== normalizedRemoteQuery;
+  const searchResults = isWaitingForDebounce
+    ? immediateLocalResults
+    : affirmedSearchResults;
+  const isAwaitingAffirmation =
+    normalizedImmediateQuery.length > 0 &&
+    (isWaitingForDebounce || searchQuery.isFetching);
+  const compatibilityIsProvisional =
+    isProfileSyncing ||
+    isWaitingForDebounce ||
+    searchQuery.isPlaceholderData ||
+    searchQuery.isPending ||
+    (searchQuery.isFetching && !searchQuery.isFetchingNextPage);
+  const canLoadMoreRestaurants =
+    !isWaitingForDebounce &&
+    searchQuery.hasNextPage &&
+    !searchQuery.isFetchingNextPage;
   const selectedProfiles = profiles.filter((profile) =>
     selectedProfileIds.includes(profile.id),
   );
@@ -147,7 +205,7 @@ export function HomeScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      setPendingRestaurantId(null);
+      navigationPendingRef.current = false;
     }, []),
   );
 
@@ -201,7 +259,6 @@ export function HomeScreen() {
       { scale: interpolate(scrollY.value, [72, 118], [1, 0.86], Extrapolation.CLAMP) },
     ],
   }));
-
   return (
     <ScreenBackground>
       <SafeAreaView style={styles.safeArea}>
@@ -217,6 +274,7 @@ export function HomeScreen() {
                 pressed ? styles.headerProfilePressed : null,
               ]}
             >
+              <IconButtonSurface />
               <View style={styles.headerProfileInitialCircle}>
                 <Text style={styles.headerProfileInitial}>{selectedProfileInitial}</Text>
               </View>
@@ -226,12 +284,21 @@ export function HomeScreen() {
             pointerEvents={stickySearchVisible ? "none" : "auto"}
             style={accountButtonScrollStyle}
           >
-            <IconButton Icon={UserRound} label="Account" onPress={() => router.push("/account")} />
+            <IconButton
+              glassActive={!stickySearchVisible}
+              Icon={UserRound}
+              label="Account"
+              onPress={() => router.push("/account")}
+            />
           </Animated.View>
           <Animated.View
             pointerEvents={stickySearchVisible ? "auto" : "none"}
             style={[styles.stickySearchWrap, stickySearchStyle]}
           >
+            <IconButtonSurface
+              active={stickySearchVisible}
+              interactive={false}
+            />
             <Search color={colors.muted} size={17} strokeWidth={2.4} />
             <TextInput
               autoCapitalize="none"
@@ -255,25 +322,16 @@ export function HomeScreen() {
             getRestaurantResultKey(restaurant)
           }
           ListEmptyComponent={
-            isInitialSearchLoading ? (
-              <View style={styles.loadingSearch}>
-                <SereneLoader />
-                <Text style={styles.loadingLabel}>Finding restaurants</Text>
-              </View>
-            ) : (
+            isAwaitingAffirmation ? null : (
               <View style={styles.emptySearch}>
                 <Text style={styles.emptySearchTitle}>No restaurant matches</Text>
                 <Text style={styles.emptySearchCopy}>
                   Request it and share any address or menu details you already have.
                 </Text>
-                <Pressable
-                  accessibilityRole="button"
+                <RestaurantRequestButton
+                  label="Request this restaurant"
                   onPress={() => setContributionMode("restaurant-request")}
-                  style={styles.requestButton}
-                >
-                  <Plus color={colors.primary} size={18} strokeWidth={2.6} />
-                  <Text style={styles.requestButtonText}>Request this restaurant</Text>
-                </Pressable>
+                />
               </View>
             )
           }
@@ -296,11 +354,12 @@ export function HomeScreen() {
               </Animated.View>
 
               <Animated.View
-                entering={FadeInUp.duration(820)
-                  .delay(90)
-                  .easing(ReanimatedEasing.bezier(0.16, 1, 0.3, 1))}
                 style={[styles.searchGroup, heroSearchStyle]}
               >
+                <IconButtonSurface
+                  active={!stickySearchVisible}
+                  interactive={false}
+                />
                 <Search color={colors.muted} size={20} strokeWidth={2.4} />
                 <TextInput
                   autoCapitalize="none"
@@ -321,14 +380,13 @@ export function HomeScreen() {
           onEndReachedThreshold={1.25}
           renderItem={({ item }) => (
             <RestaurantRow
-              disabled={pendingRestaurantId !== null}
-              loading={pendingRestaurantId === item.restaurant.restaurantId}
+              compatibilityIsProvisional={compatibilityIsProvisional}
               onPress={() => {
-                if (pendingRestaurantId !== null) {
+                if (navigationPendingRef.current) {
                   return;
                 }
 
-                setPendingRestaurantId(item.restaurant.restaurantId);
+                navigationPendingRef.current = true;
                 router.push({
                   params: {
                     id: item.restaurant.restaurantId,
@@ -339,7 +397,6 @@ export function HomeScreen() {
                 });
               }}
               restaurant={item.restaurant}
-              selectedAllergyIds={selectedAllergyIds}
               sourceRestaurant={item.sourceRestaurant}
               summary={item.summary}
             />
@@ -348,19 +405,9 @@ export function HomeScreen() {
           showsVerticalScrollIndicator={false}
         />
 
-        <View
-          pointerEvents="box-none"
-          style={[styles.floatingRequestWrap, { bottom: Math.max(insets.bottom + 14, 24) }]}
-        >
-          <Pressable
-            accessibilityRole="button"
-            onPress={() => setContributionMode("restaurant-request")}
-            style={styles.floatingRequestButton}
-          >
-            <Plus color={colors.primary} size={17} strokeWidth={2.6} />
-            <Text style={styles.floatingRequestText}>Missing a restaurant? Request it</Text>
-          </Pressable>
-        </View>
+        <FloatingRestaurantRequestButton
+          onPress={() => setContributionMode("restaurant-request")}
+        />
 
         <CommunityContributionModal
           initialRestaurantName={query}
@@ -393,19 +440,15 @@ function getRestaurantResultKey(restaurant: RestaurantSearchResult) {
 }
 
 function RestaurantRow({
-  disabled,
-  loading,
+  compatibilityIsProvisional,
   onPress,
   restaurant,
-  selectedAllergyIds,
   sourceRestaurant,
   summary,
 }: {
-  disabled: boolean;
-  loading: boolean;
+  compatibilityIsProvisional: boolean;
   onPress: () => void;
   restaurant: RestaurantSearchResult;
-  selectedAllergyIds: string[];
   sourceRestaurant?: Restaurant;
   summary: RestaurantSearchSummary;
 }) {
@@ -417,35 +460,37 @@ function RestaurantRow({
     logoUrl: restaurant.logoUrl ?? undefined,
     name: restaurant.name,
   });
-  const combinedMetric = sourceRestaurant
-    ? getCombinedReviewMetric(sourceRestaurant, selectedAllergyIds)
-    : null;
-  const usesIngredientIntelligenceMetric = Boolean(
-    combinedMetric?.hasIngredientIntelligence && combinedMetric.reviewedCount > 0,
+  const officialCompatibleCount = summary.okCount;
+  const ingredientIntelligenceCompatibleCount = summary.ingredientIntelligenceOkCount;
+  const usesIngredientIntelligenceOnly = Boolean(
+    officialCompatibleCount === 0 && summary.hasIngredientIntelligence,
   );
-  const compatibleCount = combinedMetric?.reviewedCount
-    ? combinedMetric.okCount
-    : summary.okCount;
-  const compatibleTotal = combinedMetric?.reviewedCount
-    ? combinedMetric.reviewedCount
-    : summary.totalCount;
+  const compatibleCount = officialCompatibleCount + ingredientIntelligenceCompatibleCount;
+  const compatibleTotal = summary.totalCount;
   const compatiblePercent =
     compatibleTotal > 0 ? Math.round((compatibleCount / compatibleTotal) * 100) : 0;
   const locationLabel = getRestaurantLocationLabel(restaurant);
   const itemCount = restaurant.totalItemCount ?? summary.totalCount;
   const policy = sourceRestaurant?.allergyAccommodationPolicy;
   const policyOnly = Boolean(policy && itemCount === 0);
-  const policyTone = policy ? getAccommodationPolicyTone(policy.status) : null;
+  const categoryLabel = /^restaurants?$/i.test(restaurant.category?.trim() ?? "")
+    ? null
+    : restaurant.category;
+  const metadataLabel = [
+    locationLabel,
+    categoryLabel,
+    policyOnly ? null : `${itemCount} menu items`,
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
     <Pressable
       accessibilityRole="button"
-      disabled={disabled}
       onPress={onPress}
       style={({ pressed }) => [
         styles.restaurantRow,
         pressed ? styles.restaurantRowPressed : null,
-        loading ? styles.restaurantRowLoading : null,
       ]}
     >
       <View style={[styles.logoWrap, { backgroundColor: getRestaurantBrandBackground(brand) }]}>
@@ -453,147 +498,76 @@ function RestaurantRow({
       </View>
       <View style={styles.restaurantText}>
         <Text style={styles.restaurantName}>{restaurant.name}</Text>
-        {policyOnly && policyTone ? (
-          <View style={styles.policyMetaRow}>
-            <BadgeInfo color={policyTone.color} size={14} strokeWidth={2.35} />
-            <Text style={[styles.policyMetaText, { color: policyTone.color }]}>
-              {policyTone.label}
-            </Text>
-          </View>
-        ) : (
+        {metadataLabel ? (
           <Text style={styles.restaurantMeta}>
-            {[locationLabel, restaurant.category, `${itemCount} menu items`]
-              .filter(Boolean)
-              .join(" · ")}
+            {metadataLabel}
           </Text>
-        )}
+        ) : null}
       </View>
-      {loading ? (
-        <View style={styles.rowLoadingIndicator}>
-          <SereneLoader size="small" />
-        </View>
-      ) : policyOnly && policyTone ? (
-        <View style={styles.policyBadgeBlock}>
-          <View style={[styles.policyBadge, { backgroundColor: policyTone.background }]}>
-            <Text style={[styles.policyBadgeText, { color: policyTone.color }]}>Policy</Text>
-          </View>
-        </View>
-      ) : (
-        <View style={styles.compatibilityBlock}>
+      {compatibilityIsProvisional && !policyOnly ? (
+        <CompatibilitySkeleton />
+      ) : policyOnly ? null : (
+        <Animated.View
+          entering={FadeIn.duration(180)}
+          exiting={FadeOut.duration(120)}
+          style={styles.compatibilityBlock}
+        >
           <Text style={styles.compatibilityPercent}>{compatiblePercent}%</Text>
-          <Text style={styles.compatibilityCount}>
-            {compatibleCount}/{compatibleTotal}
-          </Text>
+          <View
+            accessibilityLabel={
+              usesIngredientIntelligenceOnly
+                ? `${ingredientIntelligenceCompatibleCount} by Ingredient Intelligence out of ${compatibleTotal}`
+                : `${compatibleCount} okay out of ${compatibleTotal}`
+            }
+            accessible
+            style={styles.compatibilityCountRow}
+          >
+            {usesIngredientIntelligenceOnly ? (
+              <>
+                <Sparkles color="#B25E00" size={12} strokeWidth={2.45} />
+                <Text style={styles.compatibilityCount}>
+                  {ingredientIntelligenceCompatibleCount}/{compatibleTotal}
+                </Text>
+              </>
+            ) : (
+              <Text style={styles.compatibilityCount}>
+                {compatibleCount}/{compatibleTotal}
+              </Text>
+            )}
+          </View>
           <View style={styles.compatibilityTrack}>
             <View
               style={[
                 styles.compatibilityFill,
-                usesIngredientIntelligenceMetric && styles.compatibilityFillIntelligence,
-                { width: `${compatiblePercent}%` },
+                usesIngredientIntelligenceOnly && styles.compatibilityFillIntelligence,
+                {
+                  width: `${
+                    compatibleTotal > 0 ? (compatibleCount / compatibleTotal) * 100 : 0
+                  }%`,
+                },
               ]}
             />
           </View>
-        </View>
+        </Animated.View>
       )}
     </Pressable>
   );
 }
 
-function getAccommodationPolicyTone(status: NonNullable<Restaurant["allergyAccommodationPolicy"]>["status"]) {
-  if (status === "can-accommodate") {
-    return { background: "#EAF7EF", color: "#22863A", label: "Accommodation info" };
-  }
-
-  if (status === "partial-accommodation") {
-    return { background: "#FFF4E2", color: "#B25E00", label: "Limited accommodation info" };
-  }
-
-  if (status === "cannot-accommodate") {
-    return { background: "#FFECEE", color: "#C6283E", label: "Restriction policy" };
-  }
-
-  return { background: "#F2F2F7", color: colors.muted, label: "Policy research" };
-}
-
-function getCombinedReviewMetric(restaurant: Restaurant, selectedAllergyIds: string[]) {
-  const selectedIds = expandSelectedAllergyIds(selectedAllergyIds);
-  let reviewedCount = 0;
-  let okCount = 0;
-  let hasIngredientIntelligence = false;
-
-  for (const item of restaurant.items) {
-    const officialReviewed = isOfficiallyReviewed(item);
-    const intelligenceReviewed = isIngredientIntelligenceReviewed(item);
-
-    if (!officialReviewed && !intelligenceReviewed) {
-      continue;
-    }
-
-    reviewedCount += 1;
-
-    if (intelligenceReviewed && !officialReviewed) {
-      hasIngredientIntelligence = true;
-    }
-
-    if (selectedIds.size === 0) {
-      okCount += 1;
-      continue;
-    }
-
-    if (officialReviewed) {
-      if (getMenuItemSafety(item, selectedAllergyIds).status === "ok") {
-        okCount += 1;
-      }
-
-      continue;
-    }
-
-    const hasSelectedInferredSignal = (item.inferredAllergenSignals ?? []).some((signal) =>
-      selectedIds.has(signal.id),
-    );
-
-    if (!hasSelectedInferredSignal) {
-      okCount += 1;
-    }
-  }
-
-  return {
-    hasIngredientIntelligence,
-    okCount,
-    reviewedCount,
-  };
-}
-
-function isOfficiallyReviewed(item: Restaurant["items"][number]) {
-  return item.allergenSourceType !== "unavailable" && !isOfficialAllergenDataEmpty(item);
-}
-
-function isOfficialAllergenDataEmpty(item: Restaurant["items"][number]) {
+function CompatibilitySkeleton() {
   return (
-    !item.allergenSourceType &&
-    item.allergens.length === 0 &&
-    (item.mayContain ?? []).length === 0
+    <Animated.View
+      accessibilityLabel="Checking allergy compatibility"
+      accessibilityRole="progressbar"
+      entering={FadeIn.duration(160)}
+      exiting={FadeOut.duration(140)}
+      style={styles.compatibilitySkeleton}
+    >
+      <View style={styles.compatibilitySkeletonPercent} />
+      <View style={styles.compatibilitySkeletonCount} />
+      <View style={styles.compatibilitySkeletonTrack} />
+    </Animated.View>
   );
-}
-
-function isIngredientIntelligenceReviewed(item: Restaurant["items"][number]) {
-  return Boolean(
-    item.inferenceVersion ||
-      item.inferenceSummary ||
-      (item.inferredIngredients ?? []).length > 0 ||
-      (item.inferredAllergenSignals ?? []).length > 0,
-  );
-}
-
-function expandSelectedAllergyIds(selectedAllergyIds: string[]) {
-  const normalizedIds = normalizeAllergyIds(selectedAllergyIds);
-  const expandedIds = new Set(normalizedIds);
-
-  if (expandedIds.has("gluten")) {
-    expandedIds.add("wheat");
-  }
-
-  return expandedIds;
 }
 
 function getRestaurantLocationLabel(restaurant: RestaurantSearchResult) {
@@ -601,19 +575,34 @@ function getRestaurantLocationLabel(restaurant: RestaurantSearchResult) {
     return `${restaurant.distanceMiles} mi away`;
   }
 
-  if (restaurant.city && restaurant.region) {
-    return `${restaurant.city}, ${restaurant.region}`;
+  const city = normalizeCityForRegion(restaurant.city, restaurant.region);
+
+  if (city && restaurant.region) {
+    return `${city}, ${restaurant.region}`;
   }
 
-  if (restaurant.city) {
-    return restaurant.city;
+  if (city) {
+    return city;
   }
 
-  if (restaurant.type === "local") {
-    return "Local restaurant";
+  if (restaurant.displayAddress && isStreetAddress(restaurant.displayAddress)) {
+    return restaurant.displayAddress;
   }
 
   return null;
+}
+
+function isStreetAddress(value: string) {
+  return (
+    /\d/.test(value) &&
+    /\b(?:st(?:reet)?|ave(?:nue)?|rd|road|blvd|boulevard|dr(?:ive)?|ln|lane|ct|court|pl(?:ace)?|pkwy|parkway|hwy|highway|way|cir(?:cle)?|suite|floor)\b/i.test(value)
+  );
+}
+
+function normalizeCityForRegion(city: string | null | undefined, region: string | null | undefined) {
+  if (!city || !region) return city;
+  const escapedRegion = region.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return city.replace(new RegExp(`,\\s*${escapedRegion}$`, "i"), "").trim();
 }
 
 const styles = StyleSheet.create({
@@ -626,6 +615,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "700",
     lineHeight: 16,
+  },
+  compatibilityCountRow: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 3,
     marginTop: 1,
   },
   compatibilityFill: {
@@ -641,6 +635,30 @@ const styles = StyleSheet.create({
     fontSize: 19,
     fontWeight: "800",
     lineHeight: 23,
+  },
+  compatibilitySkeleton: {
+    alignItems: "flex-end",
+    gap: 5,
+    minWidth: 74,
+  },
+  compatibilitySkeletonCount: {
+    backgroundColor: "rgba(116,119,124,0.12)",
+    borderRadius: radius.pill,
+    height: 10,
+    width: 32,
+  },
+  compatibilitySkeletonPercent: {
+    backgroundColor: "rgba(116,119,124,0.14)",
+    borderRadius: 5,
+    height: 19,
+    width: 46,
+  },
+  compatibilitySkeletonTrack: {
+    backgroundColor: "rgba(116,119,124,0.12)",
+    borderRadius: radius.pill,
+    height: 5,
+    marginTop: 2,
+    width: 66,
   },
   compatibilityTrack: {
     backgroundColor: "#E5E5EA",
@@ -680,37 +698,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "800",
   },
-  floatingRequestButton: {
-    alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.96)",
-    borderColor: "rgba(0,122,255,0.18)",
-    borderRadius: radius.pill,
-    borderWidth: 1,
-    flexDirection: "row",
-    gap: 6,
-    justifyContent: "center",
-    minHeight: 40,
-    paddingHorizontal: 14,
-    shadowColor: "#000000",
-    shadowOffset: { height: 5, width: 0 },
-    shadowOpacity: 0.1,
-    shadowRadius: 14,
-  },
-  floatingRequestText: {
-    color: colors.primary,
-    fontSize: 13,
-    fontWeight: "800",
-  },
-  floatingRequestWrap: {
-    alignItems: "center",
-    left: spacing.three,
-    position: "absolute",
-    right: spacing.three,
-  },
   headerProfile: {
     alignItems: "center",
+    borderRadius: 24,
     height: 48,
     justifyContent: "center",
+    overflow: "hidden",
+    width: 48,
   },
   headerProfileInitial: {
     color: colors.primary,
@@ -720,7 +714,6 @@ const styles = StyleSheet.create({
   },
   headerProfileInitialCircle: {
     alignItems: "center",
-    backgroundColor: "#F5F5F7",
     borderCurve: "continuous",
     borderRadius: 24,
     height: 48,
@@ -755,17 +748,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: 48,
   },
-  loadingSearch: {
-    alignItems: "center",
-    gap: 8,
-    paddingVertical: spacing.four,
-  },
-  loadingLabel: {
-    color: colors.muted,
-    fontSize: 13,
-    fontWeight: "700",
-    lineHeight: 17,
-  },
   loadingMoreRestaurants: {
     alignItems: "center",
     paddingBottom: spacing.three,
@@ -789,16 +771,13 @@ const styles = StyleSheet.create({
     borderCurve: "continuous",
     borderRadius: 22,
     borderWidth: 1,
-    boxShadow: "0 10px 28px rgba(17,17,17,0.055)",
+    boxShadow: "0 8px 22px rgba(17,17,17,0.04)",
     flexDirection: "row",
     gap: 12,
     marginBottom: 10,
     minHeight: 78,
     paddingHorizontal: spacing.two,
     paddingVertical: 12,
-  },
-  restaurantRowLoading: {
-    opacity: 0.72,
   },
   restaurantRowPressed: {
     opacity: 0.72,
@@ -807,61 +786,17 @@ const styles = StyleSheet.create({
   restaurantText: {
     flex: 1,
   },
-  policyBadge: {
-    borderRadius: radius.pill,
-    paddingHorizontal: 9,
-    paddingVertical: 5,
-  },
-  policyBadgeBlock: {
-    alignItems: "flex-end",
-    minWidth: 66,
-  },
-  policyBadgeText: {
-    fontSize: 12,
-    fontWeight: "900",
-    lineHeight: 14,
-  },
-  policyMetaRow: {
-    alignItems: "center",
-    flexDirection: "row",
-    gap: 4,
-    marginTop: 3,
-  },
-  policyMetaText: {
-    flexShrink: 1,
-    fontSize: 13,
-    fontWeight: "800",
-    lineHeight: 17,
-  },
-  requestButton: {
-    alignItems: "center",
-    backgroundColor: colors.primaryLight,
-    borderRadius: radius.pill,
-    flexDirection: "row",
-    gap: 7,
-    minHeight: 44,
-    paddingHorizontal: spacing.two,
-  },
-  requestButtonText: {
-    color: colors.primary,
-    fontSize: 15,
-    fontWeight: "800",
-  },
-  rowLoadingIndicator: {
-    alignItems: "flex-end",
-    minWidth: 74,
-  },
   safeArea: {
     flex: 1,
   },
   searchGroup: {
     alignItems: "center",
-    backgroundColor: "#F2F2F7",
     borderRadius: radius.pill,
     flexDirection: "row",
     gap: 8,
     marginBottom: spacing.three,
     minHeight: 48,
+    overflow: "hidden",
     paddingHorizontal: 15,
   },
   searchInput: {
@@ -878,12 +813,12 @@ const styles = StyleSheet.create({
   },
   stickySearchWrap: {
     alignItems: "center",
-    backgroundColor: "#F2F2F7",
     borderRadius: radius.pill,
     flexDirection: "row",
     gap: 7,
     height: 48,
     left: spacing.three,
+    overflow: "hidden",
     paddingHorizontal: 13,
     position: "absolute",
     right: 80,

@@ -1,0 +1,240 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-012-2026-07-16",
+  "restaurantId": "osm-colline-13121610585",
+  "reviewType": "narrow_menu_scope_adjudication",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium",
+    "role": "sol_reviewer"
+  },
+  "reviewedKeys": [],
+  "reviewedAt": "2026-07-17T01:08:27.000Z",
+  "verdict": {
+    "toastOnlyCatalogSafe": false,
+    "markTenAbsentRowsStaleOrArtifact": false,
+    "menuScopeUnresolved": false,
+    "bindingResolution": "The restaurant identifies its linked official PDFs as current menus. They enumerate all ten disputed products, so canonical scope must union the official service menus with the complete Toast takeaway surface."
+  },
+  "evidence": [
+    {
+      "evidenceId": "S1",
+      "url": "https://www.barcolline.com/menu",
+      "authorityTier": "restaurant_issued",
+      "supports": "Official index identifies the linked documents as current menus."
+    },
+    {
+      "evidenceId": "E4",
+      "url": "https://www.barcolline.com/s/060526-Prix-Fixe-Lunch-Bar-Colline-1.pdf",
+      "authorityTier": "restaurant_issued",
+      "supports": "Current prix-fixe lunch menu."
+    },
+    {
+      "evidenceId": "E5",
+      "url": "https://www.barcolline.com/s/06052026-Dinner-Menu-Bar-Colline-1.pdf",
+      "authorityTier": "restaurant_issued",
+      "supports": "Current dinner menu."
+    },
+    {
+      "evidenceId": "E6",
+      "url": "https://www.barcolline.com/s/04102026-Dessert-Menu-Bar-Colline.pdf",
+      "authorityTier": "restaurant_issued",
+      "supports": "Current dessert menu."
+    },
+    {
+      "evidenceId": "E7",
+      "url": "https://www.barcolline.com/s/HAPPY-HOUR-MENU-652026.pdf",
+      "authorityTier": "restaurant_issued",
+      "supports": "Current happy-hour menu; replaces the stale CDN URL."
+    },
+    {
+      "evidenceId": "T3",
+      "url": "https://order.toasttab.com/online/bar-colline-269-19th-ct-s",
+      "authorityTier": "restaurant_linked_vendor",
+      "supports": "Complete takeaway catalog only."
+    }
+  ],
+  "auditItemRecommendations": [
+    {
+      "auditItemKey": "1:13-rillettes-maison",
+      "disposition": "normalized_match",
+      "matchedCurrentProductKeys": [
+        "rillettes-maison"
+      ],
+      "sourceEvidenceIds": [
+        "S1",
+        "E4",
+        "E5"
+      ]
+    },
+    {
+      "auditItemKey": "4:19-steak-tartare",
+      "disposition": "normalized_match",
+      "matchedCurrentProductKeys": [
+        "steak-tartare"
+      ],
+      "sourceEvidenceIds": [
+        "S1",
+        "E4",
+        "E5"
+      ]
+    },
+    {
+      "auditItemKey": "12:creme-brulee-shortbread-cookie",
+      "disposition": "exact_match",
+      "matchedCurrentProductKeys": [
+        "creme-brulee"
+      ],
+      "sourceEvidenceIds": [
+        "S1",
+        "E6"
+      ]
+    },
+    {
+      "auditItemKey": "13:croque-madame",
+      "disposition": "exact_match",
+      "matchedCurrentProductKeys": [
+        "croque-madame"
+      ],
+      "sourceEvidenceIds": [
+        "S1",
+        "E4"
+      ]
+    },
+    {
+      "auditItemKey": "16:escargots",
+      "disposition": "exact_match",
+      "matchedCurrentProductKeys": [
+        "escargots"
+      ],
+      "sourceEvidenceIds": [
+        "S1",
+        "E4",
+        "E5"
+      ]
+    },
+    {
+      "auditItemKey": "24:moules-frites",
+      "disposition": "exact_match",
+      "matchedCurrentProductKeys": [
+        "moules-frites"
+      ],
+      "sourceEvidenceIds": [
+        "S1",
+        "E4",
+        "E5"
+      ]
+    },
+    {
+      "auditItemKey": "35:shrimp-cocktail",
+      "disposition": "exact_match",
+      "matchedCurrentProductKeys": [
+        "shrimp-cocktail"
+      ],
+      "sourceEvidenceIds": [
+        "S1",
+        "E4",
+        "E5"
+      ]
+    },
+    {
+      "auditItemKey": "39:tartine",
+      "disposition": "exact_match",
+      "matchedCurrentProductKeys": [
+        "tartine"
+      ],
+      "sourceEvidenceIds": [
+        "S1",
+        "E4"
+      ]
+    },
+    {
+      "auditItemKey": "40:veloute-de-mais",
+      "disposition": "exact_match",
+      "matchedCurrentProductKeys": [
+        "veloute-de-mais"
+      ],
+      "sourceEvidenceIds": [
+        "S1",
+        "E4",
+        "E5"
+      ]
+    },
+    {
+      "auditItemKey": "41:yellowfin-tuna",
+      "disposition": "exact_match",
+      "matchedCurrentProductKeys": [
+        "yellowfin-tuna"
+      ],
+      "sourceEvidenceIds": [
+        "S1",
+        "E5"
+      ]
+    }
+  ],
+  "requiredResultCorrections": {
+    "currentCompleteSurfaces": [
+      "official-prix-fixe-lunch",
+      "official-dinner",
+      "official-dessert",
+      "official-happy-hour",
+      "toast-takeaway"
+    ],
+    "menuScopeUnresolved": false,
+    "newItems": true,
+    "recommendedLane": "luna_fix",
+    "reconciliationCounts": {
+      "exact_match": 19,
+      "normalized_match": 2,
+      "equivalent_presentation": 18,
+      "artifact": 2,
+      "unresolved": 0
+    }
+  },
+  "resolution": {
+    "binding": true,
+    "outcome": "official_service_menu_union_resolved",
+    "catalogDefinition": {
+      "scope": "Union of the current official prix-fixe lunch, dinner, dessert, and happy-hour menus with the complete Toast takeaway catalog.",
+      "completeAuthoritySurfaceIds": [
+        "official-prix-fixe-lunch",
+        "official-dinner",
+        "official-dessert",
+        "official-happy-hour",
+        "toast-takeaway"
+      ],
+      "existingProductCount": 41,
+      "additionalProductCount": 0,
+      "removedProductCount": 0,
+      "excludedProductCount": 0,
+      "resolvedCatalogProductCount": 41,
+      "rationale": "The corrected Luna result already incorporates this binding adjudication and reconciles the ten originally disputed rows."
+    },
+    "items": [],
+    "surfaceResolutions": [],
+    "safetySourceAuthorityConflictRemains": false
+  },
+  "remainingSolSignals": [],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "frozenBaselineItemCount": 41,
+    "researchReconciledItemCount": 41,
+    "unresolvedResearchKeyCount": 0,
+    "reviewedKeyCount": 0,
+    "resolutionItemCount": 0,
+    "allAffectedKeysReviewedExactlyOnce": true,
+    "researchCurrentProductCount": 41,
+    "additionalProductCount": 0,
+    "removedProductCount": 0,
+    "excludedProductCount": 0,
+    "resolvedCatalogProductCount": 41,
+    "surfaceResolutionCount": 0,
+    "partialSurfaceIds": [],
+    "resolvedSurfaceIds": [],
+    "allPartialSurfacesResolvedExactlyOnce": true,
+    "matrixSearchCount": 4,
+    "matrixStatusRemainsAccuratelyUnavailable": true,
+    "codexVerifiedClaimed": false
+  }
+}

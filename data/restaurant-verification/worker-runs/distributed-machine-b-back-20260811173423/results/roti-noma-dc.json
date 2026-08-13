@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811173423",
+  "restaurantId": "roti-noma-dc",
+  "name": "Roti Modern Mediterranean",
+  "locationId": "noma-dc",
+  "packetValidation": {
+    "baselineItemCount": 38,
+    "baselineFingerprint": "6eb0768e5c42514854a0117c2a3471f814bc3f8e6a5b27949e2245ed9315fa57",
+    "itemChecksPath": "data/restaurant-verification/item-checks/roti-noma-dc.jsonl",
+    "itemCheckCount": 38,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "Roti Modern Mediterranean",
+    "location": "1275 First Street NE, Washington, DC 20002",
+    "domain": "roti.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "official-locations",
+      "official-menu",
+      "toast-noma"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "official-menu",
+      "url": "https://roti.com/pages/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current official food menu",
+      "id": "official-menu",
+      "retrievedAt": "2026-08-11T17:34:23Z"
+    },
+    {
+      "evidenceId": "official-locations",
+      "url": "https://roti.com/pages/locations",
+      "authorityTier": "restaurant_issued",
+      "purpose": "NoMa location identity",
+      "id": "official-locations",
+      "retrievedAt": "2026-08-11T17:34:23Z"
+    },
+    {
+      "evidenceId": "toast-noma",
+      "url": "https://www.toasttab.com/local/order/roti-noma/item-build-your-own-greens-grains_d9661aa8-bbea-4362-a0c7-41ae0a9fbec9",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current NoMa ordering menu",
+      "id": "toast-noma",
+      "retrievedAt": "2026-08-11T17:34:23Z"
+    },
+    {
+      "evidenceId": "targeted-search",
+      "url": "https://www.google.com/search?q=site%3Aroti.com+Roti+allergen+allergy+nutrition+ingredients+PDF",
+      "authorityTier": "third_party",
+      "purpose": "targeted allergen search audit",
+      "id": "targeted-search",
+      "retrievedAt": "2026-08-11T17:34:23Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-menu",
+      "url": "https://roti.com/pages/menu",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "all Roti; applicable to NoMa",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; food and nonalcoholic menu sections inventoried; alcohol excluded",
+      "sourceEvidenceIds": [
+        "official-menu"
+      ]
+    },
+    {
+      "surfaceId": "official-locations",
+      "url": "https://roti.com/pages/locations",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "NoMa",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "official-locations"
+      ]
+    },
+    {
+      "surfaceId": "toast-noma",
+      "url": "https://www.toasttab.com/local/order/roti-noma/item-build-your-own-greens-grains_d9661aa8-bbea-4362-a0c7-41ae0a9fbec9",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "1275 First St NE, Washington, DC 20002",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; food, sides, desserts and drinks; alcohol excluded",
+      "sourceEvidenceIds": [
+        "toast-noma"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "roti-noma-current-menu",
+      "name": "Roti NoMa current food and nonalcoholic menu catalog",
+      "category": "Mediterranean",
+      "variantGroup": "current menu",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-noma"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": [],
+      "productCount": 38,
+      "boundary": "38 frozen food/nonalcoholic products reconciled; component choices and alcohol-only offerings excluded; current official menu also exposes component sides, dessert variants, and drinks as presentation surfaces."
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "query": "official homepage/menu navigation: allergen allergy nutrition ingredients",
+        "location": "roti.com homepage and menu",
+        "outcome": "completed; no official allergen matrix found",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "query": "site:roti.com allergen allergy nutrition ingredients PDF image sitemap",
+        "location": "Roti official document and nutrition surfaces",
+        "outcome": "completed; no current official allergen matrix found",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "query": "Roti NoMa menu allergen allergy ingredients",
+        "location": "NoMa Toast ordering menu",
+        "outcome": "completed; menu found but no complete allergen matrix or cross-contact policy",
+        "sourceEvidenceIds": [
+          "toast-noma"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "site:roti.com Roti allergen allergy nutrition ingredients PDF menu",
+        "location": "targeted web results",
+        "outcome": "completed; no authoritative current matrix found",
+        "sourceEvidenceIds": [
+          "targeted-search"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "evidenceId": "official-menu",
+      "statement": "Official menu publishes ingredient descriptions and dietary filter labels, but no complete allergen matrix or cross-contact policy was located.",
+      "authorityTier": "restaurant_issued",
+      "crossContact": "No explicit kitchen cross-contact statement disclosed; do not treat missing allergens as absence."
+    }
+  ],
+  "reconciliation": {
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:build-your-own-greens-and-grains",
+          "2:build-your-own-pita",
+          "3:build-your-own-rice-bowl",
+          "4:build-your-own-salad",
+          "5:cauliflower-rice",
+          "6:chicken-roti-tahini-pita",
+          "7:citrus-grilled-shrimp-bowl",
+          "8:citrus-grilled-shrimp-pita",
+          "9:citrus-grilled-shrimp-salad",
+          "10:citrus-grilled-shrimp-wrap",
+          "11:classic-falafel-street-pita",
+          "12:double-chicken-keto-bowl",
+          "13:falafel-trio",
+          "14:fiery-roti-dip-wpita",
+          "15:gluten-free-pita",
+          "16:harissa-chicken-bowl",
+          "17:hot-harissa-chicken-pita",
+          "18:hot-honey-harissa-chicken-bowl",
+          "19:hot-honey-harissa-chicken-salad",
+          "20:hot-honey-harissa-chicken-sandwich",
+          "21:hummus-and-pita",
+          "22:mediterranean-chopped-salad",
+          "23:mediterranean-yogurt-and-pita",
+          "24:mezze-protein-bowl",
+          "25:pita-chips",
+          "26:purple-cabbage",
+          "27:rainbow-veggie-bowl",
+          "28:regular-pita",
+          "29:roasted-veggie-pita",
+          "30:roti-fries",
+          "31:roti-greek-salad",
+          "32:saffron-rice",
+          "33:salmon-and-kale-bowl",
+          "34:signature-chocolate-chip-cookie",
+          "35:signature-chocolate-chip-cookie-box",
+          "36:skirt-steak-and-brussels-bowl",
+          "37:steak-burger-pita",
+          "38:zaatar-chicken-bowl"
+        ],
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roti-noma-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-noma"
+        ],
+        "notes": "Every frozen audit key reconciled exactly once to the current NoMa food/nonalcoholic catalog."
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify",
+  "outcome": "researched"
+}

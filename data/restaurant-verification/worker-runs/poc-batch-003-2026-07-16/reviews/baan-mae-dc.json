@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-003-2026-07-16",
+  "restaurantId": "baan-mae-dc",
+  "reviewType": "narrow_scope_conflict_resolution",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "role": "sol_reviewer"
+  },
+  "reviewedKeys": [
+    "7:green-crab"
+  ],
+  "resolution": {
+    "binding": true,
+    "outcome": "scope_conflict_resolved",
+    "sourceAssessment": {
+      "sourceEvidenceId": "E5",
+      "url": "https://order.toasttab.com/online/baanmaedc/item-green-crab_54f9e306-17df-4abd-b0e5-ee1c2e214aae",
+      "authority": "restaurant_linked_vendor",
+      "locationScope": "Baan Mae, 1604 7th St NW, Washington, DC 20001",
+      "servicePeriod": "online ordering catalog",
+      "currentAsOf": "2026-07-16",
+      "sufficientlyCurrentAndLocationSpecific": true,
+      "rationale": "The restaurant-issued homepage links to the Baan Mae Toast online ordering surface for the same Washington address. That current catalog lists GREEN CRAB verbatim as a $23 Main and exposes a stable GREEN CRAB item URL. This is direct current-product evidence for the affected key and is distinct from the separately listed GAENG DANG CRAB (PUU)."
+    },
+    "catalogDefinition": {
+      "scope": "Current linked-vendor food and nonalcoholic catalog for Baan Mae at 1604 7th St NW",
+      "completeSurfaceIds": [
+        "toast-local",
+        "toast-online"
+      ],
+      "enumerationRule": "union_of_current_toast_presentations",
+      "sourceEvidenceIds": [
+        "E1",
+        "E2",
+        "E5"
+      ],
+      "rationale": "Toast local and Toast online are current linked-vendor presentations for the same restaurant but are not row-identical. Their union defines the complete POC catalog; GREEN CRAB is present on toast-online even though it is absent from the toast-local presentation."
+    },
+    "items": [
+      {
+        "auditItemKey": "7:green-crab",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "cp-green-crab"
+        ],
+        "currentProductMapping": {
+          "currentProductKey": "cp-green-crab",
+          "name": "GREEN CRAB",
+          "category": "Mains",
+          "description": null,
+          "url": "https://order.toasttab.com/online/baanmaedc/item-green-crab_54f9e306-17df-4abd-b0e5-ee1c2e214aae"
+        },
+        "sourceEvidenceIds": [
+          "E1",
+          "E5"
+        ],
+        "rationale": "The current official-linked Toast online catalog lists GREEN CRAB verbatim at the verified Washington location. The name is an exact match, so the frozen item is current rather than stale, an artifact, a normalized match to GAENG DANG CRAB (PUU), a location mismatch, or unresolved.",
+        "allergenAssessment": {
+          "explicitPositiveSupport": [
+            "shellfish"
+          ],
+          "positiveSupportBasis": "The exact current product identity explicitly names crab; this supports only the narrow shellfish positive.",
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfileEstablished": false,
+          "notes": "The current row has no ingredient description or complete allergen matrix. No allergen absence, may-contain absence, or cross-contact conclusion is established."
+        },
+        "safetySourceAuthorityConflictRemains": false
+      }
+    ],
+    "surfaceResolutions": [
+      {
+        "surfaceId": "official-home",
+        "disposition": "excluded",
+        "title": "Official homepage",
+        "url": "https://www.baanmaedc.com/",
+        "authority": "restaurant_issued",
+        "locationScope": "Baan Mae, 1604 7th St NW, Washington, DC 20001",
+        "currentAsOf": "2026-07-16",
+        "current": true,
+        "scopeClassification": "identity_and_navigation_supporting_surface",
+        "sourceEvidenceIds": [
+          "E1",
+          "E5"
+        ],
+        "rationale": "The homepage is current and verifies the restaurant, Washington address, rotating-menu model, and official link to Toast. It does not enumerate products, so it is explicitly excluded from POC catalog enumeration and retained only as identity, location, and vendor-link support. Its prior partial status does not represent a catalog gap.",
+        "additionalProductsRequired": [],
+        "allergenAssessment": {
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfilesEstablished": false,
+          "notes": "This supporting surface supplies no item-level allergen conclusion."
+        },
+        "safetySourceAuthorityConflictRemains": false,
+        "allergenAuthorityLimitationRemains": true
+      },
+      {
+        "surfaceId": "official-menu",
+        "disposition": "excluded",
+        "title": "Official Mom's Menu / 555 Brunch Menu",
+        "url": "https://www.baanmaedc.com/menu",
+        "authority": "restaurant_issued",
+        "locationScope": "Baan Mae, 1604 7th St NW, Washington, DC 20001",
+        "servicePeriod": "daily rotating in-person menu context and Sunday-only 555 brunch",
+        "currentAsOf": "2026-07-16",
+        "current": true,
+        "scopeClassification": "service_specific_supporting_surface_outside_linked_vendor_poc_catalog",
+        "sourceEvidenceIds": [
+          "E3",
+          "E1",
+          "E2",
+          "E5"
+        ],
+        "rationale": "The official page is current but expressly says Mom's Menu is updated daily and directs diners to visit for the latest menu; the products it actually enumerates are a Sunday-only 555 brunch. The POC scope is the linked-vendor food and nonalcoholic catalog, so this changing in-person/service-specific page is explicitly excluded from POC enumeration and retained as supporting evidence. Toast local and Toast online, taken together, define the complete POC catalog.",
+        "additionalProductsRequired": [],
+        "allergenAssessment": {
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfilesEstablished": false,
+          "notes": "The official page contains selected ingredient positives but no complete allergen matrix; this scope resolution introduces no item-level negative or cross-contact claim."
+        },
+        "safetySourceAuthorityConflictRemains": false,
+        "allergenAuthorityLimitationRemains": true
+      }
+    ],
+    "safetySourceAuthorityConflictRemains": false,
+    "allergenAuthorityLimitationRemains": true,
+    "allergenAuthorityRationale": "The current linked-vendor product identity supports GREEN CRAB's presence and the narrow shellfish positive only. None of the reviewed surfaces establishes a complete allergen profile, allergen negatives, may-contain negatives, or cross-contact status."
+  },
+  "remainingSolSignals": [
+    {
+      "signal": "toast_presentation_drift",
+      "status": "non_blocking_for_current_product_identity",
+      "affectedKeys": [
+        "7:green-crab"
+      ],
+      "sourceEvidenceIds": [
+        "E2",
+        "E5"
+      ],
+      "rationale": "GREEN CRAB is present on toast-online but not toast-local. The union rule resolves current catalog membership, while preserving the fact that the two current Toast presentations differ."
+    },
+    {
+      "signal": "allergen_authority_incomplete",
+      "status": "non_blocking_for_menu_identity",
+      "affectedKeys": [
+        "7:green-crab"
+      ],
+      "sourceEvidenceIds": [
+        "E3",
+        "E5"
+      ],
+      "rationale": "The exact product identity supports shellfish as a narrow positive, but no reviewed source provides a complete allergen matrix or cross-contact disclosure."
+    }
+  ],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "reviewedKeyCount": 1,
+    "resolutionItemCount": 1,
+    "allAffectedKeysReviewedExactlyOnce": true,
+    "allDispositionsBinding": true,
+    "unresolvedReviewedKeys": [],
+    "staleReviewedKeys": [],
+    "surfaceResolutionCount": 2,
+    "partialSurfaceIds": [
+      "official-home",
+      "official-menu"
+    ],
+    "allPartialSurfacesResolvedExactlyOnce": true,
+    "unsupportedAllergenNegativesIntroduced": false,
+    "completeAllergenProfileClaimed": false,
+    "codexVerifiedClaimed": false
+  }
+}

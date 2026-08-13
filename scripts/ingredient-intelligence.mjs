@@ -16,6 +16,16 @@ const confidenceRank = {
   medium: 2,
   high: 3,
 };
+const officialDisclosureIngredientIds = new Set([
+  "almond", "anchovy", "branzino", "butter", "buttermilk", "casein", "cashew",
+  "cheese", "clam", "cod", "crab", "cream", "cream_cheese", "edamame", "egg",
+  "fish", "fish_sauce", "flounder", "halibut", "lobster", "mahi_mahi", "milk",
+  "miso", "mussel", "mustard", "octopus", "oyster", "parmesan", "peanut",
+  "pine_nut", "roe", "salmon", "scallop", "sea_bass", "sesame", "shellfish_mix",
+  "shrimp", "snapper", "soybean", "squid", "sulfite_preservative", "surimi",
+  "swordfish", "tilapia", "tofu", "tree_nut", "trout", "tuna", "wheat_flour",
+  "whitefish", "yellowtail", "yogurt",
+]);
 
 export async function loadIngredientIntelligenceManifest(manifestPath = defaultManifestPath) {
   const body = await readFile(manifestPath, "utf8");
@@ -28,8 +38,21 @@ export async function getDefaultIngredientIntelligenceManifest() {
 
 export async function annotateRestaurantWithIngredientIntelligence(restaurant, options = {}) {
   const manifest = options.manifest ?? (await getDefaultIngredientIntelligenceManifest());
+  const profiledItems = (restaurant.items ?? []).filter((item) => item.officialAllergenProfileId);
+  const comprehensiveOfficialIngredients =
+    profiledItems.length > 0 &&
+    profiledItems.every(
+      (item) =>
+        item.sourceType === "official-api" &&
+        String(item.ingredientsText ?? "").length > 0 &&
+        String(item.ingredientsText ?? "").length <= 20_000,
+    );
   const items = (restaurant.items ?? []).map((item) =>
-    annotateMenuItemWithIngredientIntelligence(item, { manifest }),
+    annotateMenuItemWithIngredientIntelligence(item, {
+      comprehensiveOfficialIngredients,
+      manifest,
+      officialAllergenProfiles: restaurant.officialAllergenProfiles,
+    }),
   );
   const { inferenceVersion: _inferenceVersion, ...cleanRestaurant } = restaurant;
 
@@ -38,8 +61,19 @@ export async function annotateRestaurantWithIngredientIntelligence(restaurant, o
     : { ...cleanRestaurant, items };
 }
 
-export function annotateMenuItemWithIngredientIntelligence(item, { manifest }) {
-  const inference = inferMenuItemIngredientIntelligence(item, { manifest });
+export function annotateMenuItemWithIngredientIntelligence(
+  item,
+  { comprehensiveOfficialIngredients = false, manifest, officialAllergenProfiles },
+) {
+  const promotedItem = promoteRestaurantIssuedAllergenDisclosures(item, {
+    comprehensiveOfficialIngredients,
+    manifest,
+    officialAllergenProfiles,
+  });
+  const inference = inferMenuItemIngredientIntelligence(promotedItem, {
+    manifest,
+    officialAllergenProfiles,
+  });
   const {
     extractedIngredientMentions: _extractedIngredientMentions,
     inferredIngredients: _inferredIngredients,
@@ -47,9 +81,10 @@ export function annotateMenuItemWithIngredientIntelligence(item, { manifest }) {
     inferenceQuestions: _inferenceQuestions,
     inferenceSuppressions: _inferenceSuppressions,
     inferenceSummary: _inferenceSummary,
+    ingredientIntelligenceReviewed: _ingredientIntelligenceReviewed,
     inferenceVersion: _inferenceVersion,
     ...cleanItem
-  } = item;
+  } = promotedItem;
 
   if (!inference) {
     return cleanItem;
@@ -61,12 +96,97 @@ export function annotateMenuItemWithIngredientIntelligence(item, { manifest }) {
   };
 }
 
-export function inferMenuItemIngredientIntelligence(item, { manifest }) {
+export function promoteRestaurantIssuedAllergenDisclosures(
+  item,
+  { comprehensiveOfficialIngredients = false, manifest, officialAllergenProfiles },
+) {
+  if (
+    !item?.officialAllergenProfileId ||
+    item.allergenSourceType !== "official-allergen-menu" ||
+    !manifest
+  ) {
+    return item;
+  }
+
+  const candidate = inferMenuItemIngredientIntelligence(item, {
+    includeOfficialCoveredSignals: comprehensiveOfficialIngredients,
+    manifest,
+    officialAllergenProfiles,
+  });
+
+  if (!candidate?.inferredAllergenSignals?.length) {
+    return item;
+  }
+
+  const direct = new Set(item.allergens ?? []);
+  const mayContain = new Set(item.mayContain ?? []);
+  const mentions = candidate.extractedIngredientMentions ?? [];
+
+  for (const signal of candidate.inferredAllergenSignals) {
+    if (signal.c !== "high" || !signal.e?.some((entry) => entry.startsWith("menu:"))) {
+      continue;
+    }
+
+    const supportingMentions = mentions.filter(
+      (mention) =>
+        officialDisclosureIngredientIds.has(mention.ingredientId) &&
+        isExplicitOfficialIngredientMention(mention) &&
+        isReliableOfficialDisclosureField(item, mention.sourceField) &&
+        (!comprehensiveOfficialIngredients ||
+          mention.sourceField === "ingredientsText" ||
+          mention.sourceField.startsWith("knownIngredients.")) &&
+        !mentionIsNegated(item, mention) &&
+        (manifest.allergenMappings?.[mention.ingredientId] ?? []).some(
+          (mapping) => mapping.id === signal.id,
+        ),
+    );
+
+    if (supportingMentions.length === 0) {
+      continue;
+    }
+
+    const onlyCrossContact = supportingMentions.every((mention) =>
+      mentionAppearsOnlyInMayContainClause(item, mention),
+    );
+
+    if (onlyCrossContact) {
+      if (!direct.has(signal.id)) mayContain.add(signal.id);
+    } else {
+      direct.add(signal.id);
+      mayContain.delete(signal.id);
+    }
+  }
+
+  const allergens = Array.from(direct).sort();
+  const mayContainAllergens = Array.from(mayContain).sort();
+
+  if (
+    arraysEqual(allergens, [...(item.allergens ?? [])].sort()) &&
+    arraysEqual(mayContainAllergens, [...(item.mayContain ?? [])].sort())
+  ) {
+    return item;
+  }
+
+  return {
+    ...item,
+    allergens,
+    mayContain: mayContainAllergens,
+    mayContainAllergens,
+  };
+}
+
+export function inferMenuItemIngredientIntelligence(
+  item,
+  { includeOfficialCoveredSignals = false, manifest, officialAllergenProfiles },
+) {
   if (!manifest) {
     throw new Error("Ingredient Intelligence manifest is required.");
   }
 
-  if (!officialAllergenDataUnavailable(item)) {
+  if (
+    !includeOfficialCoveredSignals &&
+    !officialAllergenDataUnavailable(item, officialAllergenProfiles, manifest)
+  ) {
     return null;
   }
 
@@ -76,6 +196,8 @@ export function inferMenuItemIngredientIntelligence(item, { manifest }) {
   const normalizedContextText = normalizeSearchText(
     contextFields.map((field) => field.value).join(" "),
   );
+  const explicitGlutenFreeName = hasLeadingGlutenFreeMarker(item.name) &&
+    !hasDirectWheatOrGlutenEvidence(item);
   const matches = new Map();
   const extractedIngredientMentions = [];
 
@@ -176,7 +298,7 @@ export function inferMenuItemIngredientIntelligence(item, { manifest }) {
     }
   }
 
-  if (matches.size === 0) {
+  if (matches.size === 0 && !explicitGlutenFreeName) {
     return null;
   }
 
@@ -207,14 +329,32 @@ export function inferMenuItemIngredientIntelligence(item, { manifest }) {
     }
   }
 
-  const inferredAllergenSignals = Array.from(signalsByAllergen.values()).sort((left, right) =>
-    left.id.localeCompare(right.id),
-  );
-  const { signals: contextAdjustedSignals, suppressions } = applyContextSuppressions({
+  const inferredAllergenSignals = Array.from(signalsByAllergen.values())
+    .filter(
+      (signal) =>
+        includeOfficialCoveredSignals ||
+        (!isAllergenCoveredByOfficialProfile(item, officialAllergenProfiles, signal.id) &&
+          !(item.allergens ?? []).includes(signal.id) &&
+          !(item.mayContain ?? []).includes(signal.id)),
+    )
+    .sort((left, right) => left.id.localeCompare(right.id));
+  const { signals: initiallyAdjustedSignals, suppressions: contextualSuppressions } = applyContextSuppressions({
     matches,
     normalizedContextText,
     signals: inferredAllergenSignals,
   });
+  const contextAdjustedSignals = explicitGlutenFreeName
+    ? initiallyAdjustedSignals.filter((signal) => signal.id !== "gluten" && signal.id !== "wheat")
+    : initiallyAdjustedSignals;
+  const suppressions = mergeSuppressions(
+    contextualSuppressions,
+    explicitGlutenFreeName
+      ? [
+          { id: "gluten", reasons: ["leading-item-gluten-free-marker"] },
+          { id: "wheat", reasons: ["leading-item-gluten-free-marker"] },
+        ]
+      : [],
+  );
 
   if (contextAdjustedSignals.length === 0 && suppressions.length === 0) {
     return null;
@@ -236,6 +376,7 @@ export function inferMenuItemIngredientIntelligence(item, { manifest }) {
     extractedIngredientMentions: compactMentions(extractedIngredientMentions),
     inferredIngredients,
     inferredAllergenSignals: contextAdjustedSignals,
+    ingredientIntelligenceReviewed: true,
     inferenceQuestions: buildInferenceQuestions(contextAdjustedSignals, matches),
     ...(suppressions.length > 0 ? { inferenceSuppressions: suppressions } : {}),
     inferenceSummary:
@@ -244,6 +385,70 @@ export function inferMenuItemIngredientIntelligence(item, { manifest }) {
         : suppressionSummary(suppressions),
     inferenceVersion: manifest.version,
   };
+}
+
+function isReliableOfficialDisclosureField(item, sourceField) {
+  if (sourceField === "name") return true;
+  if (sourceField === "description") return String(item.description ?? "").length <= 2_000;
+  if (sourceField === "ingredientsText") return String(item.ingredientsText ?? "").length <= 20_000;
+  if (sourceField.startsWith("knownIngredients.")) return true;
+  return false;
+}
+
+function isExplicitOfficialIngredientMention(mention) {
+  const text = normalizeSearchText(mention.text);
+
+  if (mention.ingredientId === "wheat_flour") {
+    return /\b(?:flour|wheat)\b/.test(text);
+  }
+
+  return true;
+}
+
+function mentionAppearsOnlyInMayContainClause(item, mention) {
+  const value = valueForDisclosureField(item, mention.sourceField);
+
+  if (!value) return false;
+
+  const withoutMayContain = value.replace(/\bmay\s+(?:also\s+)?contain(?:s)?\b\s*:?[^.\n]*/gi, " ");
+  const alias = normalizeSearchText(mention.text);
+
+  return (
+    aliasesMatch(normalizeSearchText(value), [alias]) &&
+    !aliasesMatch(normalizeSearchText(withoutMayContain), [alias])
+  );
+}
+
+function mentionIsNegated(item, mention) {
+  const value = normalizeSearchText(valueForDisclosureField(item, mention.sourceField));
+  const alias = normalizeSearchText(mention.text);
+
+  if (!value || !alias) return false;
+
+  const escaped = alias.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return [
+    `\\bwithout(?:\\s+[a-z0-9]+){0,3}\\s+${escaped}\\b`,
+    `\\bw o(?:\\s+[a-z0-9]+){0,3}\\s+${escaped}\\b`,
+    `\\bno(?:\\s+[a-z0-9]+){0,3}\\s+${escaped}\\b`,
+    `\\b${escaped}\\s+free\\b`,
+  ].some((pattern) => new RegExp(pattern).test(value));
+}
+
+function valueForDisclosureField(item, sourceField) {
+  if (sourceField === "name" || sourceField === "description" || sourceField === "ingredientsText") {
+    return String(item[sourceField] ?? "");
+  }
+
+  if (sourceField.startsWith("knownIngredients.")) {
+    const index = Number(sourceField.split(".")[1]);
+    return String(item.knownIngredients?.[index] ?? "");
+  }
+
+  return "";
+}
+
+function arraysEqual(left, right) {
+  return left.length === right.length && left.every((value, index) => value === right[index]);
 }
 
 function suppressedProfileIngredientIds(profile, normalizedText) {
@@ -536,13 +741,71 @@ function hasItemLevelGlutenFreeContext(normalizedContextText) {
   );
 }
 
-function officialAllergenDataUnavailable(item) {
+function hasLeadingGlutenFreeMarker(name) {
+  return /^(?:\s*[([{]\s*)*(?:gf\b|gluten[\s-]*free\b)/i.test(String(name ?? ""));
+}
+
+function hasDirectWheatOrGlutenEvidence(item) {
+  return [...(item.allergens ?? []), ...(item.mayContain ?? [])]
+    .some((allergenId) => allergenId === "wheat" || allergenId === "gluten");
+}
+
+function mergeSuppressions(...groups) {
+  const byAllergen = new Map();
+
+  for (const suppression of groups.flat()) {
+    byAllergen.set(suppression.id, {
+      id: suppression.id,
+      reasons: uniqueStrings([
+        ...(byAllergen.get(suppression.id)?.reasons ?? []),
+        ...(suppression.reasons ?? []),
+      ]),
+    });
+  }
+
+  return Array.from(byAllergen.values()).sort((left, right) => left.id.localeCompare(right.id));
+}
+
+function officialAllergenDataUnavailable(item, officialAllergenProfiles, manifest) {
   const allergens = item.allergens ?? [];
   const mayContain = item.mayContain ?? [];
+
+  if (item.officialAllergenProfileId) {
+    const supportedAllergenIds = new Set(
+      Object.values(manifest.allergenMappings ?? {})
+        .flat()
+        .map((mapping) => mapping.id),
+    );
+
+    return Array.from(supportedAllergenIds).some(
+      (allergenId) =>
+        !isAllergenCoveredByOfficialProfile(item, officialAllergenProfiles, allergenId),
+    );
+  }
 
   return (
     item.allergenSourceType === "unavailable" ||
     (!item.allergenSourceType && allergens.length === 0 && mayContain.length === 0)
+  );
+}
+
+function isAllergenCoveredByOfficialProfile(item, profiles, allergenId) {
+  const profileId = item.officialAllergenProfileId;
+
+  if (!profileId) {
+    return false;
+  }
+
+  if (item.allergenSourceType === "unavailable") {
+    return false;
+  }
+
+  const coveredIds = new Set(profiles?.[profileId]?.coveredAllergenIds ?? []);
+
+  return (
+    coveredIds.has(allergenId) ||
+    (allergenId === "gluten" && coveredIds.has("wheat")) ||
+    (allergenId === "wheat" && coveredIds.has("gluten"))
   );
 }
 
@@ -791,7 +1054,10 @@ function suppressionSummary(suppressions) {
     return "Common wheat or gluten assumptions were suppressed because the menu text indicates a dedicated gluten-free context.";
   }
 
-  if (reasonText.has("item-level-gluten-free-context")) {
+  if (
+    reasonText.has("item-level-gluten-free-context") ||
+    reasonText.has("leading-item-gluten-free-marker")
+  ) {
     return "Common wheat or gluten assumptions were suppressed because the menu text describes this item as gluten-free or wheat-free.";
   }
 

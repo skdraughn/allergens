@@ -1,0 +1,1566 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811144004",
+  "restaurantId": "sweet-leaf-mclean-dc-metro",
+  "packetValidation": {
+    "restaurantId": "sweet-leaf-mclean-dc-metro",
+    "baselineItemCount": 123,
+    "baselineFingerprint": "8d60a5779da874e03124fcabb510d7c4aa54e9a728c338a52b540647c6ee5396",
+    "itemChecksPath": "data/restaurant-verification/item-checks/sweet-leaf-mclean-dc-metro.jsonl",
+    "itemChecksRead": 123
+  },
+  "identity": {
+    "name": "Sweet Leaf McLean",
+    "location": "1359 Chain Bridge Rd, McLean, VA 22101",
+    "locationId": "mclean-va",
+    "domain": "sweetleafcafe.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "src-official-home",
+      "src-official-mclean",
+      "src-toast-mclean"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "src-official-home",
+      "url": "https://sweetleafcafe.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and brand identity",
+      "retrievedAt": "2026-08-11T14:41:00.000Z"
+    },
+    {
+      "evidenceId": "src-official-mclean",
+      "url": "https://sweetleafcafe.com/individual-store/mclean/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official McLean location identity and ordering link",
+      "retrievedAt": "2026-08-11T14:41:10.000Z"
+    },
+    {
+      "evidenceId": "src-toast-mclean",
+      "url": "https://order.toasttab.com/online/sweet-leaf-mclean",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current McLean menu and nonalcoholic drinks",
+      "retrievedAt": "2026-08-11T14:41:20.000Z"
+    },
+    {
+      "evidenceId": "src-allergen-pdf",
+      "url": "https://www.sweetleafcafe.com/wp-content/uploads/2016/06/SWEET-LEAF-Nutritional-Allergen-SUMMER-2020.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official allergen/nutrition document; historical and not treated as a current complete matrix",
+      "retrievedAt": "2026-08-11T14:41:30.000Z"
+    },
+    {
+      "evidenceId": "src-menu-pdf",
+      "url": "https://sweetleafcafe.com/wp-content/uploads/2026/02/WINTER-2026-IN-STORE-MENU-SWEET-LEAF.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official current in-store menu surface",
+      "retrievedAt": "2026-08-11T14:41:40.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-mclean",
+      "url": "https://sweetleafcafe.com/individual-store/mclean/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "mclean-va",
+      "servicePeriod": "current location page",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "identity confirmed; links to online ordering",
+      "sourceEvidenceIds": [
+        "src-official-mclean"
+      ]
+    },
+    {
+      "surfaceId": "toast-mclean",
+      "url": "https://order.toasttab.com/online/sweet-leaf-mclean",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "mclean-va",
+      "servicePeriod": "current all-day ordering menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "menu categories, products, options, and drinks inspected",
+      "sourceEvidenceIds": [
+        "src-toast-mclean"
+      ]
+    },
+    {
+      "surfaceId": "winter-2026-pdf",
+      "url": "https://sweetleafcafe.com/wp-content/uploads/2026/02/WINTER-2026-IN-STORE-MENU-SWEET-LEAF.pdf",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "brand menu; McLean applicability not item-complete",
+      "servicePeriod": "winter 2026",
+      "current": false,
+      "scopeStatus": "supporting",
+      "retrievalOutcome": "used as corroborating official menu surface; Toast McLean controls product boundary",
+      "sourceEvidenceIds": [
+        "src-menu-pdf"
+      ],
+      "notes": "The restaurant-issued Winter 2026 PDF is a current brand-level in-store menu but the captured evidence does not establish item-complete McLean applicability. It therefore corroborates the menu only and does not define an additional product boundary or support additional McLean products."
+    }
+  ],
+  "currentProducts": {
+    "products": [
+      {
+        "currentProductKey": "sweet-leaf-mclean-current-menu",
+        "name": "Sweet Leaf McLean current menu catalog",
+        "category": "restaurant menu",
+        "sourceEvidenceIds": [
+          "src-toast-mclean",
+          "src-official-mclean"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "notes": "The frozen packet contains 123 menu products/presentations; this consolidated catalog key preserves the complete current boundary while reconciliation retains each frozen key."
+      }
+    ]
+  },
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "Sweet Leaf homepage, McLean location page, navigation and menu links",
+        "outcome": "No current complete allergen matrix located",
+        "sourceEvidenceIds": [
+          "src-official-home",
+          "src-official-mclean"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "Official nutrition/allergen PDFs, downloadable menu PDFs and document surfaces",
+        "outcome": "Historical allergen PDF found; not current or complete for this menu; current menu PDF has no complete allergen matrix",
+        "sourceEvidenceIds": [
+          "src-allergen-pdf",
+          "src-menu-pdf"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Toast McLean ordering menu and item pages",
+        "outcome": "Current products and descriptions available; no complete allergen matrix or cross-contact policy exposed",
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "queryOrLocation": "sweetleafcafe.com allergen allergy nutrition ingredients PDF menu; Sweet Leaf McLean allergen",
+        "outcome": "Located official historical allergen documents and current menu surfaces; no current complete matrix",
+        "sourceEvidenceIds": [
+          "src-allergen-pdf",
+          "src-menu-pdf"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "evidenceId": "src-allergen-pdf",
+      "statement": "Official historical document identifies allergen columns and says the store offers products with common allergens; it is not used for unsupported current item negatives.",
+      "sourceEvidenceIds": [
+        "src-allergen-pdf"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "expectedCount": 123,
+    "reconciledCount": 123,
+    "duplicateKeys": [],
+    "missingKeys": [],
+    "items": [
+      {
+        "auditItemKey": "1:avo-blt",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "2:avo-mix",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "3:avo-toast",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "4:bacon",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "5:banana-apple-breeze-seasonal",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "6:berry-blanco",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "7:berry-haze",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "8:berry-toast-new",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "9:big-big-fin-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "10:big-chicken-caesar-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "11:big-chimichurri-grain-bowl",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "12:big-citrus-sesame-chicken-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "13:big-falafel-tzatziki-grain-bowl",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "14:big-fin",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "15:big-fin-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "16:big-greek-roots-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "17:big-kale-kobb-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "18:big-pesto-chicken-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "19:big-platter-15-sandwiches",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "20:big-sabroso-grain-bowl",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "21:big-salmon-wild-farro-grain-bowl",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "22:big-spicy-avocado-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "23:big-tofu-tango-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "24:brownie",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "25:brownie-bites-24-bites",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "26:brownie-bites-48-bites",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "27:caprese",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "28:chicken-barley",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "29:chicken-caesar",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "30:chicken-caesar-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "31:chicken-capri-seasonal",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "32:chicken-club",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "33:chicken-tortilla",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "34:chimichurri",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "35:chimichurri-grain-bowl",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "36:citrus-sesame-chicken",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "37:citrus-sesame-chicken-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "38:comfort-bundle-serves-4-6",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "39:comfort-bundle-serves-8-10",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "40:cookie-platter",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "41:cookies",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "42:craft-grain",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "43:craft-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "44:craft-sandwich",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "45:early-riser-breakfast-bundle",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "46:elote-toast",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "47:falafel-tzatziki",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "48:falafel-tzatziki-grain-bowl",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "49:farmers",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "50:froyo",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "51:fruit-bowl",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "52:fruit-cup",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "53:golden-club",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "54:greek-garden",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "55:greek-roots",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "56:greek-roots-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "57:green-cure",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "58:grilled-cheese",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "59:ham-hen",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "60:ham-n-jam-seasonal",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "61:hamwich",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "62:handheld-bundle-serves-4-6",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "63:handheld-bundle-serves-8-10",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "64:hardboiled-eggs",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "65:harvest-bowl",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "66:havana-chicken",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "67:kale-kobb",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "68:kale-kobb-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "69:koo-koo-roo",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "70:little-big-fin-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "71:little-chicken-caeser-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "72:little-chimichurri-grain-bowl",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "73:little-citrus-sesame-chicken-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "74:little-falafel-tzatziki-grain-bowl",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "75:little-greek-roots-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "76:little-kale-kobb-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "77:little-pesto-chicken-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "78:little-platter-5-sandwiches",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "79:little-sabroso-grain-bowl",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "80:little-salmon-wild-farro-grain-bowl",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "81:little-spicy-avocado-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "82:little-tofu-tango-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "83:malibu-melt",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "84:mango-buzz",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "85:medium-platter-10-sandwiches",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "86:mozzarella-tomato",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "87:pb-and-j",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "88:pesto-chicken",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "89:pesto-chicken-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "90:quinoa-mix",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "91:roasted-carrots",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "92:roasted-honey-carrots",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "93:roasted-veggies",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "94:rosemary-sweet-potatoes",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "95:sabroso",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "96:sabroso-grain-bowl",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "97:salmon-santorini",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "98:san-remo",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "99:sandwich-platters",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "100:seasonal-fruit",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "101:seasonal-veggies",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "102:so-cali-club",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "103:spicy-avocado",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "104:spicy-avocado-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "105:standard",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "106:strawberry-mint-seasonal",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "107:street-corn",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "108:sunrise-burrito",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "109:sweet-mango",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "110:sweet-potatoes",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "111:tender-sausage",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "112:toast",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "113:tofu-tango",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "114:tofu-tango-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "115:turkey-apple",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "116:tzatziki-pita",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "117:tzatziki-pita-chips",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "118:vegetable-lentil",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "119:veggie-stack",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "120:velvet-oreo",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "121:very-verde",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "122:wellness-bundle-serves-4-6",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      },
+      {
+        "auditItemKey": "123:wellness-bundle-serves-8-10",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sweet-leaf-mclean-current-menu"
+        ],
+        "mappingAmbiguous": false,
+        "sourceEvidenceIds": [
+          "src-toast-mclean"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "outcome": "researched",
+  "recommendedLane": "luna_fix",
+  "solConflictPacket": {
+    "required": true,
+    "resolved": true,
+    "reviewType": "narrow_menu_scope_resolution",
+    "reviewedKeys": [],
+    "resolvedSurfaceIds": [
+      "winter-2026-pdf"
+    ],
+    "excludedProductKeys": [],
+    "remainingSolSignals": []
+  }
+}

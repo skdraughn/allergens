@@ -1,0 +1,1233 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-073-2026-08-05",
+  "restaurantId": "churchkey-washington-dc-dc-metro",
+  "runId": "poc-batch-073-2026-08-05-churchkey-washington-dc-dc-metro-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "churchkey-washington-dc-dc-metro",
+    "name": "ChurchKey",
+    "locationId": "washington-dc",
+    "domain": "churchkeydc.com",
+    "baselineItemCount": 63,
+    "baselineFingerprint": "166884d29a69de19e1096b7eb10ae0203492e6efcc14fdb40dbbca575fb79694",
+    "itemChecksRead": 63,
+    "itemChecksPath": "data/restaurant-verification/item-checks/churchkey-washington-dc-dc-metro.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "ChurchKey",
+    "location": "1337 14th Street NW, Washington, DC 20005",
+    "locationId": "washington-dc",
+    "domain": "churchkeydc.com",
+    "officialHomepage": "https://www.churchkeydc.com/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-toast-food"
+    ],
+    "notes": "Official homepage and linked Toast vendor identify the single DC location; no other location merged."
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-home",
+      "url": "https://www.churchkeydc.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Official ChurchKey homepage",
+      "retrievedAt": "2026-08-05",
+      "excerpt": "1337 14th Street NW, Washington DC 20005; menus and Toast links."
+    },
+    {
+      "evidenceId": "ev-toast-food",
+      "url": "https://www.toasttab.com/local/order/nrg-amendment-2-birch-barley/item-ck-chicken-wings_67bcd695-954b-41af-aee9-ced60ccca1c2",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "both",
+      "title": "Official-linked Toast ChurchKey food and non-alcoholic menu",
+      "retrievedAt": "2026-08-05",
+      "excerpt": "Current CK snacks, sandwiches, flatbreads, and non-alcoholic beers; ingredient descriptions used only for direct positives."
+    },
+    {
+      "evidenceId": "ev-toast-beer",
+      "url": "https://order.toasttab.com/online/nrg-amendment-2-birch-barley",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "title": "Toast beer/retail catalog",
+      "retrievedAt": "2026-08-05",
+      "excerpt": "Large alcohol catalog; frozen beer rows are out of POC food/nonalcoholic scope."
+    },
+    {
+      "evidenceId": "ev-menu-pdf",
+      "url": "https://907a7244-9757-4bae-a689-03dcbc166a61.filesusr.com/ugd/5c8ca5_cb3c3c1a161843c9b31e31893f22d346.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "ChurchKey draft PDF",
+      "retrievedAt": "2026-08-05",
+      "excerpt": "Draft/beer menu; alcohol-only and excluded."
+    },
+    {
+      "evidenceId": "ev-search-site",
+      "url": "https://www.churchkeydc.com/menus",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_site allergen search",
+      "retrievedAt": "2026-08-05",
+      "excerpt": "Inspected homepage/menu navigation and linked pages; no allergen matrix."
+    },
+    {
+      "evidenceId": "ev-search-docs",
+      "url": "https://907a7244-9757-4bae-a689-03dcbc166a61.filesusr.com/ugd/5c8ca5_cb3c3c1a161843c9b31e31893f22d346.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_documents allergen search",
+      "retrievedAt": "2026-08-05",
+      "excerpt": "Inspected official PDFs/images and menu documents; no allergen matrix."
+    },
+    {
+      "evidenceId": "ev-search-vendor",
+      "url": "https://www.toasttab.com/local/order/nrg-amendment-2-birch-barley/item-ck-chicken-wings_67bcd695-954b-41af-aee9-ced60ccca1c2",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "title": "linked_vendor allergen search",
+      "retrievedAt": "2026-08-05",
+      "excerpt": "Inspected Toast food and beverage catalog; item descriptions provide some direct ingredients but no standalone matrix."
+    },
+    {
+      "evidenceId": "ev-search-web",
+      "url": "https://www.google.com/search?q=site%3Achurchkeydc.com+allergen+allergy+nutrition+ingredients+PDF",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "targeted_web_search allergen search",
+      "retrievedAt": "2026-08-05",
+      "excerpt": "Targeted domain search found no official allergen matrix."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "title": "Official ChurchKey website",
+      "url": "https://www.churchkeydc.com/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "1337 14th St NW Washington DC",
+      "servicePeriod": "all",
+      "surfaceType": "html_homepage",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-home"
+      ],
+      "currentProductKeys": [],
+      "outcome": "Identity, menu navigation, and linked ordering."
+    },
+    {
+      "surfaceId": "toast-food",
+      "title": "ChurchKey Food Menu",
+      "url": "https://www.toasttab.com/local/order/nrg-amendment-2-birch-barley/item-ck-chicken-wings_67bcd695-954b-41af-aee9-ced60ccca1c2",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "1337 14th St NW Washington DC",
+      "servicePeriod": "food",
+      "surfaceType": "linked_ordering_vendor",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "currentProductKeys": [
+        "ck-pimento-cheese",
+        "ck-fried-oysters",
+        "ck-truffle-fries",
+        "ck-truffle-tots",
+        "ck-chicken-wings",
+        "ck-hot-fried-chicken-sandwich",
+        "ck-mallard-steam-burger",
+        "ck-fried-catfish-sando",
+        "ck-buffalicious-flatbread",
+        "ck-cheese-pizza",
+        "ck-truffle-tremor",
+        "ck-for-better-or-wurst",
+        "na-bellwoods-stay-classy",
+        "na-hitachino-nest-non-ale",
+        "na-untitled-art-italian-pilsner",
+        "na-untitled-art-mango-dragonfruit-sour"
+      ],
+      "outcome": "Current food and nonalcoholic menu."
+    },
+    {
+      "surfaceId": "toast-beer",
+      "title": "Retail - Beer Bottles",
+      "url": "https://order.toasttab.com/online/nrg-amendment-2-birch-barley",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "1337 14th St NW Washington DC",
+      "servicePeriod": "beverage",
+      "surfaceType": "linked_ordering_vendor",
+      "current": false,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-toast-beer"
+      ],
+      "currentProductKeys": [],
+      "outcome": "Alcohol-only catalog excluded."
+    },
+    {
+      "surfaceId": "draft-pdf",
+      "title": "CK Draft 8.17.25",
+      "url": "https://907a7244-9757-4bae-a689-03dcbc166a61.filesusr.com/ugd/5c8ca5_cb3c3c1a161843c9b31e31893f22d346.pdf",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "1337 14th St NW Washington DC",
+      "servicePeriod": "beverage",
+      "surfaceType": "pdf-menu",
+      "current": false,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-menu-pdf"
+      ],
+      "currentProductKeys": [],
+      "outcome": "Alcohol-only draft menu excluded."
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "ck-pimento-cheese",
+      "name": "CK Pimento Cheese",
+      "category": "CK SNACKS + SMALLS",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "containsAllergens": [
+        "milk",
+        "tree-nut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": []
+    },
+    {
+      "currentProductKey": "ck-fried-oysters",
+      "name": "CK Fried Oysters",
+      "category": "CK SNACKS + SMALLS",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "containsAllergens": [
+        "egg",
+        "shellfish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": []
+    },
+    {
+      "currentProductKey": "ck-truffle-fries",
+      "name": "CK Truffle Fries",
+      "category": "CK SNACKS + SMALLS",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "containsAllergens": [
+        "milk",
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": []
+    },
+    {
+      "currentProductKey": "ck-truffle-tots",
+      "name": "CK Truffle Tots",
+      "category": "CK SNACKS + SMALLS",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "containsAllergens": [
+        "milk",
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": []
+    },
+    {
+      "currentProductKey": "ck-chicken-wings",
+      "name": "CK Chicken Wings",
+      "category": "CK SNACKS + SMALLS",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": []
+    },
+    {
+      "currentProductKey": "ck-hot-fried-chicken-sandwich",
+      "name": "CK Hot Fried Chicken Sandwich",
+      "category": "CK SANDWICHES + BIGS",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "containsAllergens": [
+        "wheat",
+        "gluten",
+        "egg",
+        "sesame"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": []
+    },
+    {
+      "currentProductKey": "ck-mallard-steam-burger",
+      "name": "CK Mallard Steam Burger",
+      "category": "CK SANDWICHES + BIGS",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten",
+        "egg",
+        "sesame"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": []
+    },
+    {
+      "currentProductKey": "ck-fried-catfish-sando",
+      "name": "CK Fried Catfish Sando",
+      "category": "CK SANDWICHES + BIGS",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten",
+        "sesame"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": []
+    },
+    {
+      "currentProductKey": "ck-buffalicious-flatbread",
+      "name": "CK Buffalicious",
+      "category": "CK FLATBREAD PIZZA",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": []
+    },
+    {
+      "currentProductKey": "ck-cheese-pizza",
+      "name": "CK Cheese Pizza",
+      "category": "CK FLATBREAD PIZZA",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "containsAllergens": [
+        "wheat",
+        "gluten",
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": []
+    },
+    {
+      "currentProductKey": "ck-truffle-tremor",
+      "name": "CK Truffle Tremor",
+      "category": "CK FLATBREAD PIZZA",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": []
+    },
+    {
+      "currentProductKey": "ck-for-better-or-wurst",
+      "name": "CK For Better or Wurst",
+      "category": "CK FLATBREAD PIZZA",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "containsAllergens": [
+        "wheat",
+        "gluten",
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": []
+    },
+    {
+      "currentProductKey": "na-bellwoods-stay-classy",
+      "name": "BELLWOODS STAY CLASSY",
+      "category": "Non-Alcoholic beverages",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "containsAllergens": [
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": []
+    },
+    {
+      "currentProductKey": "na-hitachino-nest-non-ale",
+      "name": "HITACHINO NEST NON-ALE",
+      "category": "Non-Alcoholic beverages",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": []
+    },
+    {
+      "currentProductKey": "na-untitled-art-italian-pilsner",
+      "name": "UNTITLED ART FLVR! ITALIAN PILSNER",
+      "category": "Non-Alcoholic beverages",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "containsAllergens": [
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": []
+    },
+    {
+      "currentProductKey": "na-untitled-art-mango-dragonfruit-sour",
+      "name": "UNTITLED ART FLVR! MANGO DRAGONFRUIT SOUR",
+      "category": "Non-Alcoholic beverages",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast-food"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": []
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "searchClass": "official_site",
+        "inspectedLocation": "churchkeydc.com homepage/menu navigation",
+        "queries": [
+          "allergen",
+          "allergy",
+          "nutrition",
+          "ingredients",
+          "PDF"
+        ],
+        "urls": [
+          "https://www.churchkeydc.com/menus"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-site"
+        ]
+      },
+      {
+        "searchClass": "official_documents",
+        "inspectedLocation": "official linked PDFs/images",
+        "queries": [
+          "allergen",
+          "allergy",
+          "nutrition",
+          "ingredients"
+        ],
+        "urls": [
+          "https://907a7244-9757-4bae-a689-03dcbc166a61.filesusr.com/ugd/5c8ca5_cb3c3c1a161843c9b31e31893f22d346.pdf"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-docs"
+        ]
+      },
+      {
+        "searchClass": "linked_vendor",
+        "inspectedLocation": "Toast ChurchKey food and beverage catalog",
+        "queries": [
+          "allergen",
+          "ingredients"
+        ],
+        "urls": [
+          "https://www.toasttab.com/local/order/nrg-amendment-2-birch-barley/item-ck-chicken-wings_67bcd695-954b-41af-aee9-ced60ccca1c2"
+        ],
+        "outcome": "partial_item_ingredients_no_matrix",
+        "evidenceIds": [
+          "ev-search-vendor"
+        ]
+      },
+      {
+        "searchClass": "targeted_web_search",
+        "inspectedLocation": "Google targeted site search",
+        "queries": [
+          "site:churchkeydc.com allergen",
+          "site:churchkeydc.com allergy nutrition ingredients PDF"
+        ],
+        "urls": [
+          "https://www.google.com/search?q=site%3Achurchkeydc.com+allergen+allergy+nutrition+ingredients+PDF"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-web"
+        ]
+      }
+    ],
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "status": "accurately_unavailable",
+      "matrixFound": false,
+      "sourceEvidenceIds": [
+        "ev-search-site",
+        "ev-search-docs",
+        "ev-search-vendor",
+        "ev-search-web"
+      ],
+      "crossContactClaims": []
+    }
+  ],
+  "reconciliation": {
+    "frozenItemCount": 63,
+    "reconciledItemCount": 63,
+    "items": [
+      {
+        "auditItemKey": "1:3-fonteinen-rode-perzik",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "2:bright",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "3:ck-buffalicious",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "ck-buffalicious-flatbread"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast-food"
+        ],
+        "notes": "Current ChurchKey food menu; normalized presentation."
+      },
+      {
+        "auditItemKey": "4:ck-cheesus-crust",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "5:ck-chicken-wings",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "ck-chicken-wings"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast-food"
+        ],
+        "notes": "Current ChurchKey food menu; normalized presentation."
+      },
+      {
+        "auditItemKey": "6:ck-clams-casino-flatbread",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "7:ck-flatbread-pizza",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "8:ck-fried-catfish-sando",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "ck-fried-catfish-sando"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast-food"
+        ],
+        "notes": "Current ChurchKey food menu; normalized presentation."
+      },
+      {
+        "auditItemKey": "9:ck-fried-oysters",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "ck-fried-oysters"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast-food"
+        ],
+        "notes": "Current ChurchKey food menu; normalized presentation."
+      },
+      {
+        "auditItemKey": "10:ck-heirloom-tomato-blt",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "11:ck-hot-fried-chicken-sandwich",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "ck-hot-fried-chicken-sandwich"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast-food"
+        ],
+        "notes": "Current ChurchKey food menu; normalized presentation."
+      },
+      {
+        "auditItemKey": "12:ck-mallard-steam-burger",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "ck-mallard-steam-burger"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast-food"
+        ],
+        "notes": "Current ChurchKey food menu; normalized presentation."
+      },
+      {
+        "auditItemKey": "13:ck-pimento-cheese",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "ck-pimento-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast-food"
+        ],
+        "notes": "Current ChurchKey food menu; normalized presentation."
+      },
+      {
+        "auditItemKey": "14:ck-truffle-fries",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "ck-truffle-fries"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast-food"
+        ],
+        "notes": "Current ChurchKey food menu; normalized presentation."
+      },
+      {
+        "auditItemKey": "15:ck-truffle-tots",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "ck-truffle-tots"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast-food"
+        ],
+        "notes": "Current ChurchKey food menu; normalized presentation."
+      },
+      {
+        "auditItemKey": "16:crooked-crab-nautical-nonsense",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "17:crooked-run-glimpse",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "18:crooked-run-sticky-rice",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "19:crooked-stave-el-churro",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "20:de-struise-xxxx-reserva-2018-quadrupel",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "21:delicate",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "22:dovetail-rauchbier",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "23:dunkles-bock-malt-toasty-and-nutty",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "24:freigeist-urgose",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "25:good-word-no-mirrors",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "26:housemade-tots",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "27:humble-forager-dowdle-dart",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "28:malt",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "29:mortalis-hydra-slayer",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "30:off-color-plant-club",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "31:omnipollo-a-decade-of-pastry",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "32:omnipollo-ba-ice-cream-maple-truffle",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "33:other",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "34:pepperoni",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "35:perennial-barrel-aged-abraxas",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "36:perennial-coffee-abraxas",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "37:pinkus-munster-alt",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "38:plank-dunkler-weizenbock",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "39:plank-grandpa-planks-weissbier-hefeweizen",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "40:rar-fruited-floating-with-friends",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "41:rochefort-6-dubbel-bel-75percent",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "42:rye",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "43:schneeeule-gurkenkaiser",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "44:schneeeule-walter",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "45:schnieder-aventinus-eisbock",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "46:side-project-tete-de-cuvee",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "47:smoke",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "48:sojourn-bogues-bay",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "49:sojourn-luftschloss",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "50:southern-grist-tang-melted-sno-cone",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "51:spicy-and-meaty",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "52:stillwater-extra-dry",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "53:subdued-smolder",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "54:the-veil-double-apple-brandy-barrel-toast-e-coilz",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "55:the-veil-dub-razz-tastee",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "56:the-veil-never-gonnagetit",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "57:the-veil-small-plates",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "58:thiriez-amber",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "59:tilquin-horals-oude-gueuze-megablend",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "60:timber-blended-w-lumber-7",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "61:trillium-crates",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "62:wayward-lane-hollow-ground",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "63:whites",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-toast-beer"
+        ],
+        "notes": "Frozen item is alcohol-only beer/cider/beer-menu artifact and excluded from POC food/nonalcoholic boundary."
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": true,
+    "newItems": true,
+    "nameOrCategoryCleanup": true,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "proposedChanges": [
+    "Replace stale alcohol-only frozen catalog with current ChurchKey food and nonalcoholic products.",
+    "Retain direct Toast ingredient positives only; mark all other allergens unavailable.",
+    "Exclude beer/cider/whiskey alcohol-only surfaces from POC boundary."
+  ],
+  "routingSignals": {
+    "lightweightRepairSignals": [
+      "catalogDrift",
+      "staleItems",
+      "newItems",
+      "nameOrCategoryCleanup"
+    ],
+    "safetyEscalationSignals": []
+  },
+  "blockedReason": null
+}

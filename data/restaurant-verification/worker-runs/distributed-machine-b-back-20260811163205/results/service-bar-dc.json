@@ -1,0 +1,857 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811163205",
+  "restaurantId": "service-bar-dc",
+  "name": "Service Bar",
+  "domain": "servicebardc.com",
+  "outcome": "researched",
+  "recommendedLane": "verify",
+  "packetValidation": {
+    "baselineItemCount": 29,
+    "baselineFingerprint": "0ad6304e466c8f1dc38c578bbff298a37cb94b2d1f01a222e874b242ec0f7b1a"
+  },
+  "identity": {
+    "name": "Service Bar",
+    "locationId": "washington",
+    "address": "926 U St NW, Washington, DC 20001",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "official-home",
+      "official-location"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "official-home",
+      "url": "https://www.servicebardc.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and identity",
+      "retrievedAt": "2026-08-11T20:00:00Z"
+    },
+    {
+      "evidenceId": "official-menu",
+      "url": "https://www.servicebardc.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current food, cocktail, and nonalcoholic menu",
+      "retrievedAt": "2026-08-11T20:00:00Z"
+    },
+    {
+      "evidenceId": "official-location",
+      "url": "https://www.servicebardc.com/hours-and-location",
+      "authorityTier": "restaurant_issued",
+      "purpose": "Washington DC location",
+      "retrievedAt": "2026-08-11T20:00:00Z"
+    },
+    {
+      "evidenceId": "linked-shop",
+      "url": "https://shop.servicebardc.com/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "restaurant-linked online shop surface",
+      "retrievedAt": "2026-08-11T20:00:00Z"
+    },
+    {
+      "evidenceId": "linked-grubhub",
+      "url": "https://www.grubhub.com/restaurant/service-bar-dc-926-u-st-nw-washington/2359002",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "linked delivery/menu search surface",
+      "retrievedAt": "2026-08-11T20:00:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-menu",
+      "current": true,
+      "authorityTier": "restaurant_issued",
+      "scopeStatus": "complete",
+      "url": "https://www.servicebardc.com/menu",
+      "servicePeriod": "current eat and drink; food, cocktails, beer, wine, sherry, nonalcoholic",
+      "sourceEvidenceIds": [
+        "official-menu"
+      ]
+    },
+    {
+      "surfaceId": "official-location",
+      "current": true,
+      "authorityTier": "restaurant_issued",
+      "scopeStatus": "complete",
+      "url": "https://www.servicebardc.com/hours-and-location",
+      "servicePeriod": "location",
+      "sourceEvidenceIds": [
+        "official-location"
+      ]
+    },
+    {
+      "surfaceId": "linked-shop",
+      "current": true,
+      "authorityTier": "restaurant_linked_vendor",
+      "scopeStatus": "complete",
+      "url": "https://shop.servicebardc.com/",
+      "servicePeriod": "online shop; out of prepared-food scope",
+      "sourceEvidenceIds": [
+        "linked-shop"
+      ]
+    },
+    {
+      "surfaceId": "linked-grubhub",
+      "current": false,
+      "authorityTier": "restaurant_linked_vendor",
+      "scopeStatus": "supporting",
+      "url": "https://www.grubhub.com/restaurant/service-bar-dc-926-u-st-nw-washington/2359002",
+      "servicePeriod": "delivery menu; accessible listing",
+      "sourceEvidenceIds": [
+        "linked-grubhub"
+      ],
+      "notes": "The restaurant-linked Grubhub listing is location-bound to Service Bar at 926 U St NW and supports the vendor and venue association, but the routed capture identifies it only as an accessible listing and does not provide an independently enumerated menu catalog. The complete restaurant-issued official-menu surface supports all 29 reconciled current products, so Grubhub is supporting evidence only and requires no additional products."
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "query": "Service Bar DC official menu allergen allergy nutrition ingredients",
+        "location": "servicebardc.com homepage, menu, about, location",
+        "url": "https://www.servicebardc.com/menu",
+        "outcome": "completed; current menu inspected; no authoritative allergen matrix",
+        "sourceEvidenceIds": [
+          "official-home",
+          "official-menu",
+          "official-location"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "query": "site:servicebardc.com allergen OR allergy OR nutrition OR ingredients PDF",
+        "location": "official site navigation and downloadable-document surfaces",
+        "url": "https://www.servicebardc.com/menu",
+        "outcome": "completed; no authoritative allergen/nutrition document found",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "query": "Service Bar DC linked vendor menu allergen allergy ingredients",
+        "location": "restaurant-linked shop and Grubhub listing",
+        "url": "https://www.grubhub.com/restaurant/service-bar-dc-926-u-st-nw-washington/2359002",
+        "outcome": "completed; no authoritative allergen matrix found",
+        "sourceEvidenceIds": [
+          "linked-shop",
+          "linked-grubhub"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "Service Bar Washington DC allergen allergy nutrition ingredients PDF",
+        "location": "targeted web results",
+        "url": "https://www.servicebardc.com/menu",
+        "outcome": "completed; no authoritative current allergen matrix found",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      }
+    ]
+  },
+  "currentProducts": {
+    "products": [
+      {
+        "currentProductKey": "african-penguin",
+        "name": "african penguin",
+        "category": "Birds",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "buffalo",
+        "name": "BUFFALO",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "buffalo-chicken-caesar-wrap",
+        "name": "buffalo Chicken Caesar Wrap",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "buffalo-chicken-dip",
+        "name": "BUFFALO CHICKEN DIP",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "charred-carrots",
+        "name": "CHARRED CARROTS",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "chicken-tenders",
+        "name": "CHICKEN TENDERS",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "confit-chicken-wings",
+        "name": "CONFIT CHICKEN WINGS",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "crinkle-fries",
+        "name": "CRINKLE FRIES",
+        "category": "Sides",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "deviled-eggs",
+        "name": "Deviled eggs",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "flying-squirrel",
+        "name": "flying squirrel",
+        "category": "Birds",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [
+          "tree-nut"
+        ],
+        "mayContainAllergens": [],
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "official-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients"
+      },
+      {
+        "currentProductKey": "fried-chicken",
+        "name": "FRIED CHICKEN",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "giant-guajillo-chicken-nachos",
+        "name": "giant GUAJILLO CHICKEN NACHOS",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "golden-pheasant",
+        "name": "golden pheasant",
+        "category": "Birds",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "helmet-vanga",
+        "name": "helmet vanga",
+        "category": "Birds",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "official-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients"
+      },
+      {
+        "currentProductKey": "honey-eggplant",
+        "name": "HONEY EGGPLANT",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "hot-spice-dust",
+        "name": "HOT SPICE DUST",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "kale-caesar-salad",
+        "name": "kale CAESAR salad",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "kiwi",
+        "name": "kiwi",
+        "category": "Birds",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "mac-and-cheese",
+        "name": "MAC & CHEESE",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "north-american-barn-owl",
+        "name": "north american barn owl",
+        "category": "Birds",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "oyster-mushrooms",
+        "name": "Oyster Mushrooms",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "pickled-vegetables",
+        "name": "PICKLED VEGETABLES",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "road-runner",
+        "name": "road runner",
+        "category": "Birds",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "sacred-ibis",
+        "name": "sacred ibis",
+        "category": "Birds",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [
+          "tree-nut"
+        ],
+        "mayContainAllergens": [],
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "official-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients"
+      },
+      {
+        "currentProductKey": "satanic-nightjar",
+        "name": "satanic nightjar",
+        "category": "Birds",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "official-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients"
+      },
+      {
+        "currentProductKey": "sauteed-green-beans",
+        "name": "SAUTÉED GREEN BEANS",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "sb-mozzarella-balls",
+        "name": "SB MOZZARELLA BALLS",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "shishito-peppers",
+        "name": "SHISHITO PEPPERS",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "violetear-hummingbird",
+        "name": "violetear hummingbird",
+        "category": "Birds",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      }
+    ]
+  },
+  "reconciliation": {
+    "expectedCount": 29,
+    "reconciledCount": 29,
+    "duplicateKeys": [],
+    "missingKeys": [],
+    "items": [
+      {
+        "auditItemKey": "1:african-penguin",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "african-penguin"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "2:buffalo",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "buffalo"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "3:buffalo-chicken-caesar-wrap",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "buffalo-chicken-caesar-wrap"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "4:buffalo-chicken-dip",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "buffalo-chicken-dip"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "5:charred-carrots",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "charred-carrots"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "6:chicken-tenders",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "chicken-tenders"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "7:confit-chicken-wings",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "confit-chicken-wings"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "8:crinkle-fries",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "crinkle-fries"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "9:deviled-eggs",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "deviled-eggs"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "10:flying-squirrel",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "flying-squirrel"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "11:fried-chicken",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "fried-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "12:giant-guajillo-chicken-nachos",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "giant-guajillo-chicken-nachos"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "13:golden-pheasant",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "golden-pheasant"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "14:helmet-vanga",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "helmet-vanga"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "15:honey-eggplant",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "honey-eggplant"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "16:hot-spice-dust",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "hot-spice-dust"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "17:kale-caesar-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "kale-caesar-salad"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "18:kiwi",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "kiwi"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "19:mac-and-cheese",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "mac-and-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "20:north-american-barn-owl",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "north-american-barn-owl"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "21:oyster-mushrooms",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "oyster-mushrooms"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "22:pickled-vegetables",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "pickled-vegetables"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "23:road-runner",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "road-runner"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "24:sacred-ibis",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sacred-ibis"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "25:satanic-nightjar",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "satanic-nightjar"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "26:sauteed-green-beans",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sauteed-green-beans"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "27:sb-mozzarella-balls",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "sb-mozzarella-balls"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "28:shishito-peppers",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "shishito-peppers"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "29:violetear-hummingbird",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "violetear-hummingbird"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "solConflictPacket": {
+    "required": true,
+    "resolved": true,
+    "reviewType": "narrow_menu_scope_resolution",
+    "reviewedKeys": [],
+    "resolvedSurfaceIds": [
+      "linked-grubhub"
+    ],
+    "excludedProductKeys": [],
+    "remainingSolSignals": []
+  }
+}

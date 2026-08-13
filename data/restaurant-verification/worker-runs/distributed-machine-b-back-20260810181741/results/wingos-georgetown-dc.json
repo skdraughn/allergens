@@ -1,0 +1,1097 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260810181741",
+  "restaurantId": "wingos-georgetown-dc",
+  "outcome": "researched",
+  "recommendedLane": "verify",
+  "packetValidation": {
+    "baselineItemCount": 88,
+    "baselineFingerprint": "4748d0c52090c38e6640d9aa369b217c61018152033e6b35b156b4f379e34a05",
+    "itemChecksRead": 88,
+    "itemChecksRestaurantMatch": true
+  },
+  "identity": {
+    "name": "Wingo's Georgetown",
+    "locationId": "georgetown-dc",
+    "address": "3207 O St NW, Washington, DC 20007",
+    "phone": "202-338-2478",
+    "domain": "wingos.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "official-home",
+      "official-about",
+      "vendor-order"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "official-home",
+      "url": "https://wingos.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage, location identity and ordering entry point",
+      "retrievedAt": "2026-08-10T18:30:00.000Z"
+    },
+    {
+      "evidenceId": "official-about",
+      "url": "https://wingos.com/about/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official restaurant identity and Georgetown origin",
+      "retrievedAt": "2026-08-10T18:30:00.000Z"
+    },
+    {
+      "evidenceId": "official-food-menu",
+      "url": "https://wingos.com/menus/food-menu/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current official food menu",
+      "retrievedAt": "2026-08-10T18:30:00.000Z"
+    },
+    {
+      "evidenceId": "official-pdf-menu",
+      "url": "https://wingos.com/wp-content/uploads/2024/04/Wingos-O-Street-REV-R3449772-1108LA-v2-2.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official Georgetown O Street PDF menu",
+      "retrievedAt": "2026-08-10T18:30:00.000Z"
+    },
+    {
+      "evidenceId": "vendor-order",
+      "url": "https://www.order.com/order/restaurant/wingos-menu/7171",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "linked ordering menu and nonalcoholic drinks",
+      "retrievedAt": "2026-08-10T18:30:00.000Z"
+    },
+    {
+      "evidenceId": "web-search",
+      "url": "https://www.google.com/search?q=site%3Awingos.com+allergen+nutrition+ingredients+PDF",
+      "authorityTier": "third_party",
+      "purpose": "targeted web search audit",
+      "retrievedAt": "2026-08-10T18:30:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-food",
+      "url": "https://wingos.com/menus/food-menu/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "all Wingo's locations; Georgetown selected",
+      "servicePeriod": "all day",
+      "scopeStatus": "complete",
+      "current": true,
+      "sourceEvidenceIds": [
+        "official-food-menu"
+      ]
+    },
+    {
+      "surfaceId": "official-pdf",
+      "url": "https://wingos.com/wp-content/uploads/2024/04/Wingos-O-Street-REV-R3449772-1108LA-v2-2.pdf",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "3207 O Street NW Georgetown",
+      "servicePeriod": "all day",
+      "scopeStatus": "complete",
+      "current": true,
+      "sourceEvidenceIds": [
+        "official-pdf-menu"
+      ]
+    },
+    {
+      "surfaceId": "linked-order",
+      "url": "https://www.order.com/order/restaurant/wingos-menu/7171",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "3207 O St NW",
+      "servicePeriod": "all day",
+      "scopeStatus": "complete",
+      "current": true,
+      "sourceEvidenceIds": [
+        "vendor-order"
+      ]
+    }
+  ],
+  "currentProductBoundary": {
+    "scope": "food and nonalcoholic products on official and linked Georgetown menu surfaces; alcohol-only products excluded",
+    "baselineProductsReviewed": 88,
+    "menuEvidenceIds": [
+      "official-food-menu",
+      "official-pdf-menu",
+      "vendor-order"
+    ]
+  },
+  "currentProducts": [
+    {
+      "currentProductKey": "wingos-georgetown-current-menu",
+      "name": "Wingo's Georgetown current food and nonalcoholic menu catalog",
+      "category": "menu-catalog",
+      "sourceEvidenceIds": [
+        "official-food-menu",
+        "official-pdf-menu",
+        "vendor-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current Georgetown menu catalog; individual frozen entries reconcile to this catalog. Official item-level allergen matrix was not found."
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "query": "official Wingo's site navigation, food menu, location pages",
+        "outcome": "no official allergen or nutrition matrix found",
+        "sourceEvidenceIds": [
+          "official-home",
+          "official-food-menu"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "query": "official PDFs, downloadable documents, sitemap and menu assets",
+        "outcome": "menu PDF found; no allergen or nutrition matrix found",
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "query": "restaurant-linked order menu and vendor pages",
+        "outcome": "menu and drinks found; no allergen matrix",
+        "sourceEvidenceIds": [
+          "vendor-order"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "Wingo's site allergen allergy nutrition ingredients PDF",
+        "outcome": "no authoritative allergen matrix found",
+        "sourceEvidenceIds": [
+          "web-search"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "evidenceIds": [
+        "official-food-menu",
+        "official-pdf-menu"
+      ],
+      "statement": "Official menu surfaces provide descriptions but no complete allergen matrix; do not infer absent allergens."
+    }
+  ],
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:3-tender-personal-size",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "auditItemKey": "2:5-tender-personal-size",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "auditItemKey": "3:all-beef-with-bbq-dipping",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "auditItemKey": "4:apple-pie",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "5:baked-mac-and-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "6:bbq-honey",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "7:beignets",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "8:black-angus-chili",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "9:boneless-and-vegetarian-wings-available",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "auditItemKey": "10:breakfast-platter",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "11:buffalo-chicken-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "12:butterfly-shrimp",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "auditItemKey": "13:butterfly-shrimp-8",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "14:caesar-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "15:cali-wrap",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "16:cheeseburger-paradise",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "17:chicago-dog",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "18:chicken-caesar-wrap",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "19:chicken-tenderloins-3",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "auditItemKey": "20:chicken-wings-n-waffle",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "21:chicken-wings",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "auditItemKey": "22:classic-tuna-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "23:corn-dog",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "24:country-club-sub",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "25:crazy-burger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "26:cream-cheese-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "27:double-chocolate-layer-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "28:double-trouble",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "29:el-pollo-chicken-salad-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "30:farm-fresh-and-antibiotic-free",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "auditItemKey": "31:french-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "auditItemKey": "32:fresh-fried-mozzarella",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "33:fresh-idaho-potato-puree-mixed",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "auditItemKey": "34:fried-cheese-ravioli-8",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "35:fried-mac-and-cheese-bites",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "36:garden-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "37:georgetown-wrap",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "38:grilled-cheese-supreme",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "39:grilled-corn",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "40:home-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "41:honey-dipped-chicken-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "42:honey-mustard",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "43:hoya-burger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "44:ice-cream-pints",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "45:italian-stallion",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "46:jalapeno-cream-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "auditItemKey": "47:jalapeno-cream-cheese-poppers-6",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "48:jumbo-bavarian-pretzel",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "49:just-celery",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "auditItemKey": "50:lemon-pepper-honey",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "51:mashed-potatoes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "52:meltdown-burger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "53:milkshakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "54:mini-corn-dogs-8",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "55:molten-lava-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "56:mozzarella-sticks-8",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "57:naked-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "58:new-england-clam-chowder-soup",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "auditItemKey": "59:old-bay-honey",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "60:onion-rings-8",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "61:oreo-mousse-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "62:original-cheese-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "auditItemKey": "63:original-cheesecake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "64:personal-order",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "65:philly-cheese-steak",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "66:potato-skins",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "67:regular-or-seasoned-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "68:salmon-with-herb-butter",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "69:side-celery",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "auditItemKey": "70:single-waffle",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "71:six-lightly-breaded-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "auditItemKey": "72:southern-fried-chicken-wings",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "73:steak-and-cheese-poppers",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "auditItemKey": "74:steak-and-cheese-poppers-6",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "75:super-bucket",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "76:the-bucket",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "77:the-impossible-burger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "78:the-original-wingos-burger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "79:tijuana-dog",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "80:too-many-to-count",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "auditItemKey": "81:toppings",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "82:tys-cobb-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "83:wango-tango",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "84:whole-bird",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      },
+      {
+        "auditItemKey": "85:wingos-chicken-noodle-lentil-tomato-basil-new-england-clam-chowder",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "86:wingos-egg-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "87:woody-dog",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-food-menu"
+        ]
+      },
+      {
+        "auditItemKey": "88:woody-dog-all-beef",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingos-georgetown-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-pdf-menu"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "riskSignals": [
+    {
+      "type": "official_allergen_matrix_unavailable",
+      "severity": "caution",
+      "evidenceIds": [
+        "official-food-menu",
+        "official-pdf-menu",
+        "vendor-order"
+      ]
+    }
+  ]
+}

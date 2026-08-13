@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-154-2026-08-07",
+  "restaurantId": "osm-green-olive-buffet-7765743294",
+  "reviewType": "narrow_menu_scope_conflict_resolution",
+  "model": { "id": "gpt-5.6-sol", "reasoningEffort": "medium", "role": "sol_reviewer" },
+  "evidence": [
+    { "evidenceId": "job-packet", "artifact": "data/restaurant-verification/worker-runs/poc-batch-154-2026-08-07/jobs/osm-green-olive-buffet-7765743294.json", "finding": "The 72 frozen SinglePlatform rows are not affirmative evidence of the current menu boundary." },
+    { "evidenceId": "ev-placejoys", "url": "https://green-olive-buffet.placejoys.com/", "finding": "The current descriptive listing confirms buffet service and broad categories but does not enumerate a complete orderable catalog." },
+    { "evidenceId": "ev-singleplatform", "url": "http://places.singleplatform.com/green-olive-buffet--grill/menu", "finding": "The itemized vendor surface is robot-blocked, so none of its frozen rows can be verified as current." }
+  ],
+  "resolution": {
+    "binding": true,
+    "outcome": "blocked_unverifiable",
+    "blockedUnverifiable": true,
+    "menuScopeComplete": false,
+    "completeItemizedCatalogSupported": false,
+    "zeroProductCatalogSupported": false,
+    "descriptivePlaceholderPublishableAsCompleteCatalog": false,
+    "catalogDefinition": null,
+    "frozenRows": { "count": 72, "bindingDisposition": "stale", "removeFromCurrentCatalog": true, "provesCurrentCatalog": false, "provesZeroProductCatalog": false },
+    "rationale": "No authoritative current surface enumerates the complete food and nonalcoholic menu. A generic buffet-service description is not an itemized catalog.",
+    "officialAllergenStatus": "accurately_unavailable",
+    "unsupportedNegativeClaimsIntroduced": false,
+    "allergenAbsenceClaimsSupported": false,
+    "crossContactAbsenceClaimsSupported": false
+  },
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "reviewLimitedToNamedMenuScopeQuestion": true,
+    "fullDiscoveryRepeated": false,
+    "frozenItemCount": 72,
+    "reconciledFrozenItemCount": 72,
+    "staleFrozenItemCount": 72,
+    "completeCurrentEnumeratingSurfaceCount": 0,
+    "publishableCurrentItemizedProductCount": 0,
+    "matrixSearchClassCount": 4,
+    "allRequiredMatrixSearchClassesCompleted": true,
+    "matrixStatusPreservedAsAccuratelyUnavailable": true,
+    "unsupportedAllergenNegativesIntroduced": false,
+    "codexVerifiedClaimed": false
+  },
+  "coordinatorRecommendation": "Record Green Olive Buffet as blocked_unverifiable, remove the 72 stale rows from current-catalog claims, and do not publish the descriptive placeholder."
+}

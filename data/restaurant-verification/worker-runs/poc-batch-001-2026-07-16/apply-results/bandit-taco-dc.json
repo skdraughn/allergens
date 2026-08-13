@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-001-2026-07-16",
+  "restaurantId": "bandit-taco-dc",
+  "changedPaths": [
+    "data/restaurant-verification/restaurants/bandit-taco-dc.json",
+    "data/restaurant-verification/evidence/bandit-taco-dc.json",
+    "data/fixtures/bandit-taco-tenleytown-current-poc.json",
+    "src/data/generated/restaurants.generated.json"
+  ],
+  "commands": [
+    {
+      "command": "SHA-256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+      "exitCode": 0,
+      "result": "de77c1aa6f6f1bc86ba97eacbe607dff934ea0f97dcf9264889b4b4367ef6f53; exact baseline contract match"
+    },
+    {
+      "command": "validatePocResearchResult for bandit-taco-dc",
+      "exitCode": 0,
+      "result": "valid=true; currentProductCount=121; reconciledItemCount=113; undefinedMappings=0; route=luna_fix"
+    },
+    {
+      "command": "node scripts/recompute-ingredient-intelligence.mjs --input /tmp/bandit-ii-input.json --output /tmp/bandit-ii-output.json --restaurants bandit-taco-dc",
+      "exitCode": 0,
+      "result": "ingredient-intelligence-v2; 121 items processed; 53 items annotated"
+    },
+    {
+      "command": "deterministic target fixture generation, first run",
+      "exitCode": 0,
+      "result": "sha256=b68c791440d75b708bd7cc04acd245a237fa93ded48dbcc791d8ad7d607ef478"
+    },
+    {
+      "command": "deterministic target fixture generation, second identical run",
+      "exitCode": 0,
+      "result": "sha256=b68c791440d75b708bd7cc04acd245a237fa93ded48dbcc791d8ad7d607ef478; secondRunDiff=none"
+    },
+    {
+      "command": "target publish from data/fixtures/bandit-taco-tenleytown-current-poc.json",
+      "exitCode": 0,
+      "result": "replaced only bandit-taco-dc generated record; preserved identity/location fields; published 121 enriched items"
+    },
+    {
+      "command": "read generated record back: jq bandit-taco-dc item count/source URL",
+      "exitCode": 0,
+      "result": "itemCount=121; sourceUrls=[https://www.toasttab.com/local/order/bandit-taco-tenleytown]; guideUrl=Tenleytown source; inferenceVersion=ingredient-intelligence-v2"
+    },
+    {
+      "command": "deterministic publish second identical run",
+      "exitCode": 0,
+      "result": "secondRunDiff=none; generated record hash unchanged"
+    }
+  ],
+  "beforeFingerprint": "0c2bae6c80669a2f2c7de850d865526fd3ff5f7dd84f7483d9f9614e985d8415",
+  "afterFingerprint": "53c3d8c0ddba9218eaf1c0bec519f86f5e03f6d356bed2de2dd6a4b292de9ad2",
+  "secondRunDiff": "none",
+  "validation": {
+    "valid": true,
+    "baselineContractHashMatched": true,
+    "currentProductCount": 121,
+    "reconciledItemCount": 113,
+    "wrongLocationRows": 13,
+    "undefinedMappings": 0,
+    "ingredientIntelligenceVersion": "ingredient-intelligence-v2",
+    "unsupportedNegativeClaims": false,
+    "crossContactStatus": "unavailable",
+    "publishedGeneratedRecord": true,
+    "publishedItemCount": 121,
+    "publishedTenleytownSourceUrl": true,
+    "publishedInferenceVersion": "ingredient-intelligence-v2",
+    "otherRestaurantsUntouched": true,
+    "generatedBeforeFingerprint": "0c2bae6c80669a2f2c7de850d865526fd3ff5f7dd84f7483d9f9614e985d8415",
+    "generatedAfterFingerprint": "53c3d8c0ddba9218eaf1c0bec519f86f5e03f6d356bed2de2dd6a4b292de9ad2"
+  },
+  "remainingIssues": [
+    "Official allergen matrix remains accurately unavailable.",
+    "Unsupported allergen negatives and cross-contact conclusions remain unavailable.",
+    "Ledger transition and terminal closeout remain coordinator-owned and untouched."
+  ]
+}

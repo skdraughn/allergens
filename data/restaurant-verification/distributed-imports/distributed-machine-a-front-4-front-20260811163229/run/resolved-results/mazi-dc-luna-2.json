@@ -1,0 +1,1101 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-a-front-4-front-20260811163229",
+  "restaurantId": "mazi-dc",
+  "packetValidation": {
+    "baselineItemCount": 32,
+    "baselineFingerprint": "527a3ff68716b276cc2a115c07df361fefe280e5a142c6367b649de7bbfa114f",
+    "itemChecksRead": 32,
+    "restaurantIdMatched": true
+  },
+  "identity": {
+    "status": "confirmed",
+    "name": "Mazi",
+    "location": "1518 K St NW, Washington, DC 20005",
+    "locationId": "downtown-dc",
+    "domain": "mazidc.com",
+    "officialHomepage": "https://www.mazidc.com/",
+    "sourceEvidenceIds": [
+      "s-home",
+      "s-contact",
+      "s-menu"
+    ]
+  },
+  "sources": [
+    {
+      "id": "s-home",
+      "url": "https://www.mazidc.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and identity",
+      "retrievedAt": "2026-08-11T16:45:00.000Z"
+    },
+    {
+      "id": "s-contact",
+      "url": "https://www.mazidc.com/contact-us/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official DC address and hours",
+      "retrievedAt": "2026-08-11T16:45:00.000Z"
+    },
+    {
+      "id": "s-menu",
+      "url": "https://www.mazidc.com/menus/carry-out-and-patio/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current official food, nonalcoholic, and beverage menu surface",
+      "retrievedAt": "2026-08-11T16:45:00.000Z"
+    },
+    {
+      "id": "s-delivery",
+      "url": "https://www.mazidc.com/delivery/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official delivery page and linked ordering vendors",
+      "retrievedAt": "2026-08-11T16:45:00.000Z"
+    },
+    {
+      "id": "s-spoton",
+      "url": "https://order.spoton.com/BL-D017-BC52-FE49",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "official homepage pickup ordering link; fetch failed/cache miss",
+      "retrievedAt": "2026-08-11T16:45:00.000Z"
+    },
+    {
+      "id": "s-grubhub",
+      "url": "https://www.grubhub.com/restaurant/mazi-dc-1518-k-st-nw-washington/2614682",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "official delivery-page-linked vendor menu surface",
+      "retrievedAt": "2026-08-11T16:45:00.000Z"
+    },
+    {
+      "id": "s-search",
+      "url": "https://www.google.com/search?q=site%3Amazidc.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF",
+      "authorityTier": "third_party",
+      "purpose": "targeted official-domain allergen search",
+      "retrievedAt": "2026-08-11T16:45:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-menu",
+      "url": "https://www.mazidc.com/menus/carry-out-and-patio/",
+      "authority": "restaurant_issued",
+      "locationScope": "downtown-dc",
+      "servicePeriod": "current carry-out and patio food menu; lunch/dinner",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "s-menu"
+      ]
+    },
+    {
+      "surfaceId": "official-home",
+      "url": "https://www.mazidc.com/",
+      "authority": "restaurant_issued",
+      "locationScope": "downtown-dc",
+      "servicePeriod": "homepage/menu navigation",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "s-home"
+      ]
+    },
+    {
+      "surfaceId": "official-delivery",
+      "url": "https://www.mazidc.com/delivery/",
+      "authority": "restaurant_issued",
+      "locationScope": "downtown-dc",
+      "servicePeriod": "delivery vendor links",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "s-delivery"
+      ]
+    },
+    {
+      "surfaceId": "spoton-pickup",
+      "url": "https://order.spoton.com/BL-D017-BC52-FE49",
+      "authority": "restaurant_linked_vendor",
+      "locationScope": "downtown-dc",
+      "servicePeriod": "pickup",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "s-spoton"
+      ],
+      "notes": "Linked by official site; text retrieval failed with cache miss. The restaurant-linked SpotOn pickup surface is current and scoped to Mazi's downtown DC location, but retrieval failed with a cache miss and the isolated result captures no SpotOn product inventory or allergen claims. The restaurant-issued official-menu surface is recorded as complete for the same location and defines all 34 evidence-supported current products. SpotOn is therefore retained only as supporting same-location ordering and linked-vendor search evidence; it requires no product mappings or additional products."
+    },
+    {
+      "surfaceId": "grubhub-delivery",
+      "url": "https://www.grubhub.com/restaurant/mazi-dc-1518-k-st-nw-washington/2614682",
+      "authority": "restaurant_linked_vendor",
+      "locationScope": "downtown-dc",
+      "servicePeriod": "delivery/pickup",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "s-grubhub"
+      ],
+      "notes": "Vendor page is JavaScript-gated; search extract exposed food categories but not a complete product payload. The restaurant-linked Grubhub delivery/pickup surface is current and scoped to Mazi at 1518 K St NW, but JavaScript-gated retrieval exposed only food categories and no complete evidence-supported product payload or allergen claims. The restaurant-issued official-menu surface is recorded as complete for the same location and defines all 34 evidence-supported current products. Grubhub is therefore retained only as supporting same-location vendor and linked-vendor search evidence; it requires no product mappings or additional products."
+    }
+  ],
+  "currentProducts": {
+    "products": [
+      {
+        "currentProductKey": "chicken-alfredo",
+        "name": "Chicken Alfredo",
+        "category": "Main",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "chicken-kebab",
+        "name": "Chicken Kebab",
+        "category": "Main",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "chicken-with-wine",
+        "name": "Chicken with Wine",
+        "category": "Main",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "chillean-sea-bass",
+        "name": "Chillean Sea Bass",
+        "category": "Main",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "fillet",
+        "name": "Fillet",
+        "category": "Main",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "fish-and-chips",
+        "name": "Fish and Chips",
+        "category": "Main",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "fish"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "lamb-burger",
+        "name": "Lamb Burger",
+        "category": "Main",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "lamb-chops",
+        "name": "Lamb Chops",
+        "category": "Main",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "mediterranean-sea-bass",
+        "name": "Mediterranean Sea Bass",
+        "category": "Main",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "ny-strip",
+        "name": "NY Strip",
+        "category": "Main",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "pappardelle-with-mushrooms",
+        "name": "Pappardelle with Mushrooms",
+        "category": "Main",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "penne-pasta-primavera",
+        "name": "Penne Pasta Primavera",
+        "category": "Main",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "pork-chop",
+        "name": "Pork Chop",
+        "category": "Main",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "pork-souvlaki",
+        "name": "Pork Souvlaki",
+        "category": "Main",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "rib-eye-tomahawk",
+        "name": "Rib Eye Tomahawk",
+        "category": "Main",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "salmon",
+        "name": "Salmon",
+        "category": "Main",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "fish"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "seafood-pasta",
+        "name": "Seafood Pasta",
+        "category": "Main",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "milk",
+          "shellfish"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "greek-authentica",
+        "name": "Greek Authentica",
+        "category": "Salads",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "halloumi-salad",
+        "name": "Halloumi Salad",
+        "category": "Salads",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "mediterranean-salad",
+        "name": "Mediterranean Salad",
+        "category": "Salads",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "caesar-salad",
+        "name": "Caesar",
+        "category": "Salads",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "crispy-brussels-sprouts",
+        "name": "Crispy Brussels Sprouts",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "eggplant-with-cheese",
+        "name": "Eggplant with Cheese",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "fried-calamari",
+        "name": "Fried Calamari",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "halloumi-cheese-bruschetta",
+        "name": "Halloumi Cheese Bruschetta",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "honey-feta-cheese",
+        "name": "Honey Feta Cheese",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "milk",
+          "sesame"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "kefte",
+        "name": "Kefte",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "lamb-cubes",
+        "name": "Lamb Cubes",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "mussels",
+        "name": "Mussels",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "milk",
+          "shellfish"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "pan-fried-crispy-pork-belly",
+        "name": "Pan Fried Crispy Pork Belly",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "saganaki",
+        "name": "Saganaki",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "shrimp-tempura",
+        "name": "Shrimp Tempura",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [
+          "shellfish"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [
+          "s-menu"
+        ],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued"
+      },
+      {
+        "currentProductKey": "trio-of-mushroom",
+        "name": "Trio of Mushroom",
+        "category": "Starters",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      },
+      {
+        "currentProductKey": "burger",
+        "name": "Burger",
+        "category": "Main",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceEvidenceIds": [],
+        "allergenSourceType": "unavailable"
+      }
+    ]
+  },
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "query": "Inspected official homepage, menu navigation, and menu page for allergen, allergy, nutrition, ingredients, and PDF links.",
+        "urlsInspected": [
+          "https://www.mazidc.com/",
+          "https://www.mazidc.com/menus/carry-out-and-patio/",
+          "https://www.mazidc.com/sitemap/"
+        ],
+        "outcome": "No official allergen matrix or nutrition document found.",
+        "sourceEvidenceIds": [
+          "s-home",
+          "s-menu"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "query": "Inspected official documents/downloadable surfaces and sitemap for allergen, nutrition, ingredients, PDF, and menu assets.",
+        "urlsInspected": [
+          "https://www.mazidc.com/sitemap/",
+          "https://www.mazidc.com/menus/carry-out-and-patio/"
+        ],
+        "outcome": "No official allergen or ingredient document found.",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "query": "Inspected official delivery links and linked SpotOn/Grubhub vendor surfaces.",
+        "urlsInspected": [
+          "https://www.mazidc.com/delivery/",
+          "https://order.spoton.com/BL-D017-BC52-FE49",
+          "https://www.grubhub.com/restaurant/mazi-dc-1518-k-st-nw-washington/2614682"
+        ],
+        "outcome": "SpotOn fetch failed/cache miss; Grubhub is JavaScript-gated; no allergen matrix found.",
+        "sourceEvidenceIds": [
+          "s-delivery",
+          "s-spoton",
+          "s-grubhub"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "site:mazidc.com allergen OR allergy OR nutrition OR ingredients OR PDF OR menu",
+        "urlsInspected": [
+          "https://www.google.com/search?q=site%3Amazidc.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF"
+        ],
+        "outcome": "Search found official menu/homepage but no official allergen matrix.",
+        "sourceEvidenceIds": [
+          "s-search"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "evidenceId": "s-menu",
+      "authorityTier": "restaurant_issued",
+      "statement": "Please inform us of any food allergies or preferences before your meal. Menu items marked * can be prepared gluten free; this is not a complete allergen matrix.",
+      "allergens": [],
+      "mayContainAllergens": []
+    }
+  ],
+  "reconciliation": {
+    "expectedCount": 32,
+    "reconciledCount": 32,
+    "duplicateKeys": [],
+    "missingKeys": [],
+    "items": [
+      {
+        "auditItemKey": "1:chicken-alfredo",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken-alfredo"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "2:chicken-kebab",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken-kebab"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "3:chicken-with-wine",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken-with-wine"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "4:chillean-sea-bass",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chillean-sea-bass"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "5:fillet",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "fillet"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "6:fish-and-chips",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "fish-and-chips"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "7:lamb-burger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lamb-burger"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "8:lamb-chops",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lamb-chops"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "9:mediterranean-sea-bass",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mediterranean-sea-bass"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "10:ny-strip",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ny-strip"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "11:pappardelle-with-mushrooms",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pappardelle-with-mushrooms"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "12:penne-pasta-primavera",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "penne-pasta-primavera"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "13:pork-chop",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pork-chop"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "14:pork-souvlaki",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pork-souvlaki"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "15:rib-eye-tomahawk",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rib-eye-tomahawk"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "16:salmon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "salmon"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "17:seafood-pasta",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "seafood-pasta"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "18:greek-authentica",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "greek-authentica"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "19:halloumi-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "halloumi-salad"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "20:mediterranean-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mediterranean-salad"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "21:crispy-brussels-sprouts",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "crispy-brussels-sprouts"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "22:eggplant-with-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "eggplant-with-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "23:fried-calamari",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "fried-calamari"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "24:halloumi-cheese-bruschetta",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "halloumi-cheese-bruschetta"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "25:honey-feta-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "honey-feta-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "26:kefte",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kefte"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "27:lamb-cubes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lamb-cubes"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "28:mussels",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mussels"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "29:pan-fried-crispy-pork-belly",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pan-fried-crispy-pork-belly"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "30:saganaki",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "saganaki"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "31:shrimp-tempura",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "shrimp-tempura"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "32:trio-of-mushroom",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "trio-of-mushroom"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "findings": [
+    {
+      "type": "catalog_repair_applied",
+      "items": [
+        "caesar-salad",
+        "burger"
+      ],
+      "notes": [
+        "Added the two current official-menu products to the isolated catalog; frozen reconciliation and supported direct allergen evidence were preserved."
+      ]
+    },
+    {
+      "type": "excluded_scope",
+      "notes": [
+        "Alcohol-only wines, beer, cocktails, and Black Manhattans are excluded; no current nonalcoholic orderable product was separately listed."
+      ]
+    }
+  ],
+  "recommendedLane": "verify",
+  "solConflictPacket": {
+    "required": true,
+    "resolved": true,
+    "reviewType": "narrow_menu_scope_conflict_resolution",
+    "reviewedKeys": [],
+    "resolvedSurfaceIds": [
+      "spoton-pickup",
+      "grubhub-delivery"
+    ],
+    "excludedProductKeys": [],
+    "remainingSolSignals": []
+  }
+}

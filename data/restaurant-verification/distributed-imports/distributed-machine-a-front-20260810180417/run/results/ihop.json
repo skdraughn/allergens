@@ -1,0 +1,2104 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-a-front-20260810180417",
+  "restaurantId": "ihop",
+  "packetValidation": {
+    "baselineItemCount": 184,
+    "baselineFingerprint": "4669658625feca5c9239b78e8365c80aded72328134ec1d249709fc2bd16101c",
+    "itemChecksRead": 184,
+    "restaurantIdMatched": true
+  },
+  "identity": {
+    "status": "confirmed",
+    "name": "IHOP",
+    "location": "U.S. chain; packet has no locationId; store-scoped official menu used",
+    "locationId": null,
+    "domain": "ihop.com",
+    "officialHomepage": "https://www.ihop.com/",
+    "sourceEvidenceIds": [
+      "s-home",
+      "s-menu"
+    ]
+  },
+  "sources": [
+    {
+      "id": "s-home",
+      "url": "https://www.ihop.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official IHOP homepage and brand identity",
+      "retrievedAt": "2026-08-10T18:30:00.000Z"
+    },
+    {
+      "id": "s-menu",
+      "url": "https://www.ihop.com/en/menu?StoreNumber=1230",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current official food and nonalcoholic menu surface",
+      "retrievedAt": "2026-08-10T18:30:00.000Z"
+    },
+    {
+      "id": "s-nutrition",
+      "url": "https://www.ihop.com/en/nutrition/calculator",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current official nutrition, ingredient, and allergen calculator",
+      "retrievedAt": "2026-08-10T18:30:00.000Z"
+    },
+    {
+      "id": "s-faq",
+      "url": "https://www.ihop.com/en/about-ihop/faqs/our-menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official menu FAQ",
+      "retrievedAt": "2026-08-10T18:30:00.000Z"
+    },
+    {
+      "id": "s-allergen-pdf",
+      "url": "https://www.ihop.com/-/media/ihop/files/ihop-allergen-information.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official allergen document and cross-contact disclaimer",
+      "retrievedAt": "2026-08-10T18:30:00.000Z"
+    },
+    {
+      "id": "s-search",
+      "url": "https://www.google.com/search?q=site%3Aihop.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted web search for official allergen materials",
+      "retrievedAt": "2026-08-10T18:30:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://www.ihop.com/",
+      "authority": "restaurant_issued",
+      "locationScope": "IHOP U.S. brand",
+      "servicePeriod": "all published periods",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "s-home"
+      ]
+    },
+    {
+      "surfaceId": "official-menu",
+      "url": "https://www.ihop.com/en/menu?StoreNumber=1230",
+      "authority": "restaurant_issued",
+      "locationScope": "store-scoped U.S. menu",
+      "servicePeriod": "all published periods",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "s-menu"
+      ]
+    },
+    {
+      "surfaceId": "official-nutrition",
+      "url": "https://www.ihop.com/en/nutrition/calculator",
+      "authority": "restaurant_issued",
+      "locationScope": "IHOP U.S. menu",
+      "servicePeriod": "all published periods",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "s-nutrition"
+      ]
+    },
+    {
+      "surfaceId": "official-allergen-document",
+      "url": "https://www.ihop.com/-/media/ihop/files/ihop-allergen-information.pdf",
+      "authority": "restaurant_issued",
+      "locationScope": "U.S. main menu; historical document",
+      "servicePeriod": "2018 document period",
+      "current": false,
+      "scopeStatus": "partial",
+      "sourceEvidenceIds": [
+        "s-allergen-pdf"
+      ]
+    },
+    {
+      "surfaceId": "linked-vendor",
+      "url": "https://www.ihop.com/en/menu?StoreNumber=1230",
+      "authority": "restaurant_linked_vendor",
+      "locationScope": "official store menu; no separate vendor URL exposed",
+      "servicePeriod": "all published periods",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "s-menu"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "ihop-menu-catalog",
+      "name": "Current IHOP food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "s-menu",
+        "s-nutrition"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable"
+    }
+  ],
+  "matrixSearch": {
+    "status": "found",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "IHOP homepage, menu, nutrition calculator, and menu FAQ",
+        "urlsInspected": [
+          "https://www.ihop.com/",
+          "https://www.ihop.com/en/menu?StoreNumber=1230",
+          "https://www.ihop.com/en/nutrition/calculator",
+          "https://www.ihop.com/en/about-ihop/faqs/our-menu"
+        ],
+        "outcome": "Current official interactive allergen surface found; no single downloadable current matrix identified",
+        "sourceEvidenceIds": [
+          "s-home",
+          "s-menu",
+          "s-nutrition",
+          "s-faq"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "IHOP official PDFs and downloadable documents",
+        "urlsInspected": [
+          "https://www.ihop.com/-/media/ihop/files/ihop-allergen-information.pdf",
+          "https://www.ihop.com/-/media/ihop/files/Nutrition_Handout_Spring_2018.pdf",
+          "https://www.ihop.com/en/nutrition/calculator"
+        ],
+        "outcome": "Historical official allergen PDF found; current calculator is authoritative current surface",
+        "sourceEvidenceIds": [
+          "s-allergen-pdf",
+          "s-nutrition"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "official IHOP store menu/order-linked surface",
+        "urlsInspected": [
+          "https://www.ihop.com/en/menu?StoreNumber=1230"
+        ],
+        "outcome": "Store-scoped official menu inspected; no separate vendor matrix exposed",
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "queryOrLocation": "site:ihop.com allergen OR allergy OR nutrition OR ingredients PDF menu",
+        "urlsInspected": [
+          "https://www.google.com/search?q=site%3Aihop.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+PDF+menu"
+        ],
+        "outcome": "Official menu, calculator, FAQ, and allergen document results located",
+        "sourceEvidenceIds": [
+          "s-search",
+          "s-nutrition"
+        ]
+      }
+    ],
+    "notes": [
+      "No negative allergen claims made; catalog-level direct allergen status remains unavailable because interactive data is not flattened here."
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "evidenceId": "s-nutrition",
+      "authorityTier": "restaurant_issued",
+      "type": "allergen_matrix",
+      "status": "found",
+      "statement": "IHOP provides current interactive nutrition, ingredient, and allergen information for menu items.",
+      "sourceEvidenceIds": [
+        "s-nutrition"
+      ]
+    },
+    {
+      "evidenceId": "s-allergen-pdf",
+      "authorityTier": "restaurant_issued",
+      "type": "cross_contact",
+      "status": "may_contain",
+      "statement": "Shared cooking and preparation areas, including common fryer oil, mean IHOP cannot guarantee menu items are completely free of allergens or gluten-containing ingredients.",
+      "sourceEvidenceIds": [
+        "s-allergen-pdf"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "type": "cross_contact",
+      "status": "may_contain",
+      "statement": "Shared cooking and preparation areas, including common fryer oil, create cross-contact risk; no item is represented as allergen-free.",
+      "sourceEvidenceIds": [
+        "s-menu",
+        "s-allergen-pdf"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:3-original-buttermilk-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "2:4-chocolate-chip-pancakes-with-buttermilk",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "3:4-chocolate-chocolate-chip-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "4:4-cinn-a-stack-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "5:4-cupcake-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "6:4-double-blueberry-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "7:4-mexican-tres-leches-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "8:4-new-york-cheesecake-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "9:4-oreo-cheesecake-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "10:4-protein-power-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "11:4-strawberry-banana-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "12:5-original-buttermilk-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "13:55-breakfast-sampler",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "14:55-crispy-fish",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "15:55-crispy-shrimp",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "16:55-french-toast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "17:55-rise-n-shine",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "18:all-natural-black-angus-jr-cheeseburger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "19:appetizer-sampler",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "20:avocado-toast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "21:bacon-avocado-benedict",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "22:bacon-avocado-ranch",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "23:bacon-temptation-omelette",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "24:bacon-egg-and-cheese-anytime-tacos",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "25:belgian-waffle",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "26:big-breakfast-burrito",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "27:big-brunch",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "28:big-steak-omelette",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "29:blt",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "30:blueberry-syrup",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "31:bold-bbq-pulled-pork-omelette",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "32:breakfast-biscuit-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "33:breakfast-crepes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "34:breakfast-faves-combo",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "35:breakfast-sampler",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "36:buffalo-chicken-omelette",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "37:build-your-combo-belgian-waffle",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "38:build-your-combo-chocolate-chip-pancakes-with-buttermilk",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "39:build-your-combo-chocolate-chocolate-chip-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "40:build-your-combo-cinn-a-stack-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "41:build-your-combo-cinnamon-bun-crepes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "42:build-your-combo-classic-thick-n-fluffy-french-toast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "43:build-your-combo-cupcake-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "44:build-your-combo-double-blueberry-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "45:build-your-combo-fresh-berry-crepes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "46:build-your-combo-mexican-tres-leches-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "47:build-your-combo-new-york-cheesecake-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "48:build-your-combo-oreo-cheesecake-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "49:build-your-combo-original-buttermilk-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "50:build-your-combo-protein-power-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "51:build-your-combo-strawberry-banana-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "52:build-your-combo-strawberry-banana-thick-n-fluffy-french-toast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "53:build-your-combo-strawberry-cheesecake-waffle",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "54:build-your-own-omelette",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "55:butter-pecan-syrup",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "56:buttered-english-muffin",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "57:buttered-toast-with-jam-multigrain",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "58:buttered-toast-with-jam-rye-bread",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "59:buttered-toast-with-jam-sourdough",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "60:buttered-toast-with-jam-wheatberry",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "61:buttered-toast-with-jam-white",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "62:buttered-toast-with-jam-whole-wheat",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "63:buttermilk-biscuit-with-butter",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "64:buttermilk-biscuit-with-country-gravy",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "65:buttermilk-biscuit-with-sausage-gravy",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "66:buttermilk-biscuits-and-gravy-combo",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "67:buttermilk-crispy-chicken-strips-and-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "68:cali-roasted-turkey-melt",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "69:cheeseburger-omelette",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "70:chicken-and-pancakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "71:chicken-and-waffles",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "72:chicken-biscuit-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "73:chicken-fajita-omelette",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "74:chicken-florentine-crepes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "75:chicken-fried-chicken-and-eggs-with-country-gravy",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "76:chicken-quesadilla",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "77:chocolate-milkshake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "78:chopped-chicken-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "79:cinn-a-stack-milkshake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "80:cinnamon-bun-crepes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "81:cinnamon-bun-hot-chocolate",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "82:cinnamon-dippers",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "83:classic-benedict",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "84:classic-bowl",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "85:classic-cheeseburger-with-fries-for-burger-family-feast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "86:classic-chicken-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "87:classic-thick-n-fluffy-french-toast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "88:colorado-omelette",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "89:country-fried-steak-and-eggs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "90:country-fried-steak-dinner",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "91:country-omelette",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "92:cowboy-bbq",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "93:crispy-breakfast-potatoes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "94:crispy-fish-and-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "95:crispy-shrimp",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "96:crispy-shrimp-and-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "97:cupcake-milkshake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "98:double-blt",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "99:double-espresso",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "100:fishermans-platter",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "101:french-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "102:french-toast-breakfast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "103:french-toast-sticks",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "104:fresh-berry-crepes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "105:fresh-fruit",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "106:fresh-strawberries-and-cream-biscuit",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "107:garden-omelette",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "108:grilled-chicken-dinner",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "109:grits",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "110:ham-and-cheese-omelette",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "111:happy-face-pancake-with-buttermilk-pancake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "112:happy-face-pancake-with-chocolate-pancake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "113:hash-browns",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "114:hot-americano-16-fl-oz",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "115:hot-caramel-latte",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "116:hot-latte",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "117:hot-mocha-latte",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "118:hot-vanilla-latte",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "119:house-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "120:house-scramble",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "121:huevos-rancheros",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "122:ice-cream-sundae",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "123:iced-americano-16-fl-oz",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "124:iced-caramel-latte-large",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "125:iced-caramel-latte-regular",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "126:iced-latte-large",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "127:iced-latte-regular",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "128:iced-mocha-latte-large",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "129:iced-mocha-latte-regular",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "130:iced-vanilla-latte-large",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "131:iced-vanilla-latte-regular",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "132:jalapeno-kick",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "133:jr-chicken-strips",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "134:jr-cupcake-pancake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "135:jr-protein-pancake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "136:jr-waffle",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "137:loco-moco",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "138:macaroni-and-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "139:machaca",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "140:migas",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "141:mozza-sticks",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "142:oatmeal",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "143:old-fashioned-syrup",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "144:onion-rings",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "145:pancake-creations-family-feast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "146:peppermint-hot-chocolate",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "147:philly-cheese-steak-stacker",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "148:pot-roast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "149:quick-2-egg-breakfast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "150:salmon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "151:salted-caramel-hot-chocolate",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "152:scrapple",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "153:silver",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "154:single-espresso",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "155:sirloin-steak-and-eggs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "156:sirloin-steak-tips",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "157:sirloin-steak-tips-and-crispy-shrimp",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "158:sirloin-tips-and-eggs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "159:slice-of-ham",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "160:smoked-sausage",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "161:smoked-sausage-links",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "162:smokehouse-combo",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "163:southwest-chicken-burrito",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "164:specialty-hot-chocolate",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "165:spicy-poblano-benedict",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "166:spicy-poblano-fajita-burrito",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "167:spicy-poblano-omelette",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "168:spicy-shredded-beef-anytime-tacos",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "169:spinach-and-mushroom-omelette",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "170:split-decision-breakfast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "171:strawberry-banana-thick-n-fluffy-french-toast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "172:strawberry-cheesecake-waflfe",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "173:strawberry-hot-chocolate",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "174:strawberry-milkshake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "175:strawberry-syrup",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "176:t-bone-steak-10-oz",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "177:t-bone-steak-and-eggs-10-oz",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "178:the-classic-with-bacon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "179:thick-n-fluffy-french-toast-10-slices",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "180:tomato-basil-soup",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "181:vanilla-milkshake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "182:veggie-egg-white-omelette",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "183:waffle-sundae-with-caramel",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      },
+      {
+        "auditItemKey": "184:waffle-sundae-with-strawberriers",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ihop-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify"
+}

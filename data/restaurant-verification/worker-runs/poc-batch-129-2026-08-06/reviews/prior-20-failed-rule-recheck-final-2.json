@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-129-2026-08-06",
+  "restaurantId": "farmers-and-distillers-dc",
+  "reviewType": "prior_20_failed_rule_recheck_final_2",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium",
+    "role": "sol_reviewer"
+  },
+  "reviewedRules": [
+    "current_menu_surface_completeness_and_membership_truth",
+    "linked_vendor_search_credibility_and_source_surface_authority_consistency"
+  ],
+  "regressionChecks": [
+    "frozen_direct_positive_preservation",
+    "reconciliation_coverage"
+  ],
+  "evidence": [
+    {
+      "evidenceId": "ev-breakfast-pdf",
+      "url": "https://www.wearefoundingfarmers.com/wp-content/uploads/2023/03/FFD-Breakfast_10.21.25_PHASE-4_F.pdf",
+      "authorityTier": "restaurant_issued",
+      "finding": "All 28 fd-breakfast product names resolve in the source-specific official breakfast PDF."
+    },
+    {
+      "evidenceId": "ev-brunch-pdf",
+      "url": "https://www.wearefoundingfarmers.com/wp-content/uploads/2023/03/FFD-Brunch_10.7.25_F.pdf",
+      "authorityTier": "restaurant_issued",
+      "finding": "All six fd-brunch product names resolve in the source-specific official brunch PDF."
+    },
+    {
+      "evidenceId": "surface-membership-final",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-126-2026-08-06/results/farmers-and-distillers-dc.json",
+      "finding": "fd-breakfast and fd-brunch are no longer identical all-product surfaces. They contain 28 and six keys respectively, cite ev-breakfast-pdf and ev-brunch-pdf respectively, and overlap only on six beverages that appear on both official documents."
+    },
+    {
+      "evidenceId": "catalog-union-final",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-126-2026-08-06/results/farmers-and-distillers-dc.json",
+      "finding": "The union of all current surface keys is exactly 168, equal to the 168-product catalog, with zero orphan products and zero undefined surface keys."
+    },
+    {
+      "evidenceId": "ev-search-vendor",
+      "url": "https://www.wearefoundingfarmers.com/order-food-to-go-delivery/",
+      "authorityTier": "restaurant_issued",
+      "finding": "Canonical evidence classifies the restaurant-controlled official ordering entrypoint restaurant_issued and truthfully reports that no location-specific outbound vendor resolved."
+    },
+    {
+      "evidenceId": "official-order-surface",
+      "artifact": "data/restaurant-verification/restaurants/farmers-and-distillers-dc.json",
+      "finding": "fd-order uses restaurant_issued authority, is supporting rather than current product-bearing, and has zero product keys."
+    },
+    {
+      "evidenceId": "positive-reconciliation-regression",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-126-2026-08-06/apply-results/farmers-and-distillers-dc.json",
+      "finding": "The final artifacts preserve 117 direct-positive products and reconcile all 168 frozen rows as normalized matches, with no unresolved rows."
+    }
+  ],
+  "resolution": {
+    "binding": true,
+    "outcome": "prior_20_recheck_passed_no_remaining_failed_rules",
+    "items": [],
+    "surfaceResolutions": [],
+    "safetySourceAuthorityConflictRemains": false
+  },
+  "ruleResults": {
+    "currentMenuSurfaceCompletenessAndMembershipTruth": "pass",
+    "linkedVendorSearchCredibilityAndSourceSurfaceAuthorityConsistency": "pass",
+    "frozenDirectPositivePreservationRegression": "pass",
+    "reconciliationCoverageRegression": "pass"
+  },
+  "remainingFailures": [],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "currentProductCount": 168,
+    "currentSurfaceUnionProductCount": 168,
+    "orphanCurrentProductCount": 0,
+    "undefinedSurfaceKeyCount": 0,
+    "breakfastProductCount": 28,
+    "brunchProductCount": 6,
+    "breakfastEvidenceId": "ev-breakfast-pdf",
+    "brunchEvidenceId": "ev-brunch-pdf",
+    "breakfastMembershipNameMismatchCount": 0,
+    "brunchMembershipNameMismatchCount": 0,
+    "breakfastBrunchSharedBeverageCount": 6,
+    "directPositiveProductCount": 117,
+    "frozenItemCount": 168,
+    "reconciledFrozenItemCount": 168,
+    "normalizedMatchCount": 168,
+    "unresolvedReconciliationCount": 0,
+    "vendorEvidenceAuthority": "restaurant_issued",
+    "officialOrderSurfaceAuthority": "restaurant_issued",
+    "materialSafetyError": false,
+    "codexVerifiedClaimed": false
+  },
+  "coordinatorRecommendation": "Binding final selector recheck passes. All prior-20 failed rules are now clear; resume coordinator-owned terminal validation and closeout. This review does not mutate the ledger or mark any restaurant codex_verified."
+}

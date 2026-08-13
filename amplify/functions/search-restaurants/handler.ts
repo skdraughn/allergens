@@ -1,5 +1,6 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
+  BatchGetCommand,
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
@@ -373,8 +374,81 @@ async function queryPage(pk: string, limit: number, nextToken?: string | null) {
 
   return {
     nextToken: encodePageToken(result.LastEvaluatedKey),
-    results: result.Items ?? [],
+    results: await hydrateRestaurantRows(result.Items ?? []),
   };
+}
+
+async function hydrateRestaurantRows(rows: Record<string, unknown>[]) {
+  if (rows.length === 0) {
+    return [];
+  }
+
+  const tableName = getTableName();
+  const keysById = new Map<string, { pk: string; sk: string }>();
+
+  for (const row of rows) {
+    const restaurantId = stringFromBody(row.restaurantId);
+    const locationId = stringFromBody(row.locationId) ?? nationalLocationId;
+
+    if (!restaurantId) {
+      continue;
+    }
+
+    keysById.set(`${restaurantId}\u0000${locationId}`, {
+      pk: `META#${restaurantId}#${locationId}`,
+      sk: "METADATA",
+    });
+  }
+
+  const metadataRows = await batchGetAll(tableName, Array.from(keysById.values()));
+  const metadataById = new Map(
+    metadataRows.map((row) => [
+      `${String(row.restaurantId)}\u0000${String(row.locationId ?? nationalLocationId)}`,
+      row,
+    ]),
+  );
+
+  return rows.flatMap((row) => {
+    const restaurantId = stringFromBody(row.restaurantId);
+    const locationId = stringFromBody(row.locationId) ?? nationalLocationId;
+    const metadata = restaurantId
+      ? metadataById.get(`${restaurantId}\u0000${locationId}`)
+      : undefined;
+
+    if (metadata) {
+      return [metadata];
+    }
+
+    // Full legacy lookup rows remain valid during a rolling index migration.
+    return typeof row.name === "string" ? [row] : [];
+  });
+}
+
+async function batchGetAll(tableName: string, keys: { pk: string; sk: string }[]) {
+  const items: Record<string, unknown>[] = [];
+
+  for (let index = 0; index < keys.length; index += 100) {
+    let pending = keys.slice(index, index + 100);
+
+    while (pending.length > 0) {
+      const result = await dynamo.send(
+        new BatchGetCommand({
+          RequestItems: {
+            [tableName]: {
+              Keys: pending,
+            },
+          },
+        }),
+      );
+      items.push(...(result.Responses?.[tableName] ?? []));
+      pending = (result.UnprocessedKeys?.[tableName]?.Keys ?? []) as {
+        pk: string;
+        sk: string;
+      }[];
+    }
+  }
+
+  return items;
 }
 
 function nearbyGeohashes(lat: number, lng: number) {

@@ -1,0 +1,360 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811141754",
+  "restaurantId": "taco-bell",
+  "name": "Taco Bell",
+  "domain": "tacobell.com",
+  "outcome": "researched",
+  "packetValidation": {
+    "baselineItemCount": 107,
+    "baselineFingerprint": "f90152e90a1b4eb76c9e4f26cf6349c273cc3ccacbaba08b6bf2d0eaf1ee66d9",
+    "itemCheckCount": 107,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "Taco Bell",
+    "locationId": null,
+    "address": null,
+    "domain": "tacobell.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "official-home",
+      "official-food"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "official-home",
+      "url": "https://www.tacobell.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and location navigation",
+      "retrievedAt": "2026-08-11T14:22:00Z"
+    },
+    {
+      "evidenceId": "official-food",
+      "url": "https://www.tacobell.com/food",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current national food and nonalcoholic menu category boundary",
+      "retrievedAt": "2026-08-11T14:22:00Z"
+    },
+    {
+      "evidenceId": "official-allergen",
+      "url": "https://www.tacobell.com/nutrition/allergen-info",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official allergen information tool and menu allergen disclosures",
+      "retrievedAt": "2026-08-11T14:22:00Z"
+    },
+    {
+      "evidenceId": "official-ingredients",
+      "url": "https://www.tacobell.com/nutrition/ingredients",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official ingredient statements and nutrition surface",
+      "retrievedAt": "2026-08-11T14:22:00Z"
+    },
+    {
+      "evidenceId": "official-faq",
+      "url": "https://www.tacobell.com/faqs/nutrition/allergies-and-sensitivities",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official allergy FAQ and cross-contact disclosures",
+      "retrievedAt": "2026-08-11T14:22:00Z"
+    },
+    {
+      "evidenceId": "official-menu-data",
+      "url": "https://nix-vue-inm.s3.amazonaws.com/restaurant/taco-bell/data/menu-latest.json.gz",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "linked current menu-data presentation represented in frozen packet",
+      "retrievedAt": "2026-08-11T14:22:00Z"
+    },
+    {
+      "evidenceId": "targeted-search",
+      "url": "https://www.google.com/search?q=site%3Atacobell.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted official-domain allergen/document search",
+      "retrievedAt": "2026-08-11T14:22:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-food",
+      "url": "https://www.tacobell.com/food",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "U.S. participating locations; location selection affects availability",
+      "servicePeriod": "current all-day menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; categories include best sellers, featured, online exclusives, value, cantina chicken, combos, tacos, burritos, specialties, snacks/sweets, quesadillas, drinks, nachos, groups, veggie cravings, bowls, and breakfast",
+      "sourceEvidenceIds": [
+        "official-food"
+      ]
+    },
+    {
+      "surfaceId": "official-nutrition",
+      "url": "https://www.tacobell.com/nutrition/allergen-info",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "U.S. participating locations",
+      "servicePeriod": "current nutrition/allergen tool",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "official-allergen",
+        "official-ingredients"
+      ]
+    },
+    {
+      "surfaceId": "official-menu-data",
+      "url": "https://nix-vue-inm.s3.amazonaws.com/restaurant/taco-bell/data/menu-latest.json.gz",
+      "authority": "linked menu-data vendor",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "Taco Bell menu catalog; location availability may vary",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; 107 frozen food/nonalcoholic presentations reconciled; alcohol excluded",
+      "sourceEvidenceIds": [
+        "official-menu-data"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "taco-bell-current-menu-catalog",
+      "name": "Taco Bell current food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "official-food",
+        "official-menu-data"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "productCount": 107,
+      "boundary": "107 frozen food and nonalcoholic menu presentations; configurable variants consolidated to the frozen presentation boundary; alcohol-only items excluded"
+    }
+  ],
+  "matrixSearch": {
+    "status": "found",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "official homepage, menu navigation, food categories and nutrition navigation",
+        "location": "tacobell.com",
+        "outcome": "completed; official menu and allergen tool located",
+        "sourceEvidenceIds": [
+          "official-home",
+          "official-food",
+          "official-allergen"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "official nutrition, allergen, ingredient, FAQ, PDF, image, sitemap and downloadable-document surfaces",
+        "location": "tacobell.com nutrition/document surfaces",
+        "outcome": "completed; official allergen tool, ingredient statements and FAQ located; no standalone complete PDF matrix relied upon",
+        "sourceEvidenceIds": [
+          "official-allergen",
+          "official-ingredients",
+          "official-faq"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "linked current Taco Bell menu-data and ordering/menu surfaces",
+        "location": "restaurant-linked menu data",
+        "outcome": "completed; current menu catalog located; official allergen semantics retained from restaurant-issued tool/FAQ",
+        "sourceEvidenceIds": [
+          "official-menu-data"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "site:tacobell.com allergen allergy nutrition ingredients PDF menu",
+        "location": "targeted web search",
+        "outcome": "completed; official FAQ, menu, ingredient and allergen surfaces located",
+        "sourceEvidenceIds": [
+          "targeted-search",
+          "official-faq",
+          "official-allergen"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "evidenceId": "official-faq",
+      "statement": "Taco Bell says products are prepared in a common kitchen/shared equipment and cannot guarantee allergen cross-contact will not occur; it also identifies egg, milk, soy, wheat and other allergens and says regular menu items may be produced in facilities handling peanuts, tree nuts, fish and shellfish.",
+      "sourceEvidenceIds": [
+        "official-faq",
+        "official-allergen"
+      ],
+      "authorityTier": "restaurant_issued",
+      "crossContact": "Explicit common-kitchen/shared-equipment warning; no item should be treated as cross-contact-free."
+    }
+  ],
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "reconciliation": {
+    "expectedCount": 107,
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:3-cheese-chicken-flatbread-melt"
+        ],
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "taco-bell-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu-data"
+        ]
+      },
+      {
+        "auditItemKeys": [
+          "2:bbq-slow-roasted-chicken-nacho-fries",
+          "3:bean-burrito",
+          "4:bean-burrito-v",
+          "5:beefy-5-layer-burrito",
+          "6:black-bean-grilled-cheese-burrito",
+          "7:black-beans",
+          "8:black-beans-v",
+          "9:black-beans-and-rice-v",
+          "10:black-beans-and-rice",
+          "11:breakfast-beverages",
+          "12:breakfast-california-crunchwrap",
+          "13:breakfast-crunchwrap",
+          "14:breakfast-quesadilla-sausage",
+          "15:breakfast-quesadilla-bacon",
+          "16:breakfast-quesadilla-steak",
+          "17:breakfast-salsa-packet-v",
+          "18:cantina-chicken-bowl",
+          "19:cantina-chicken-burrito",
+          "20:cantina-chicken-crispy-taco",
+          "21:cantina-chicken-quesadilla",
+          "22:cantina-chicken-soft-taco",
+          "23:caramel-dulce-churro-chiller-16-oz",
+          "24:caramel-dulce-churro-chiller-20-oz",
+          "25:cheese-quesadilla",
+          "26:cheese-quesadilla-v",
+          "27:cheesy-bean-and-rice-burrito-v",
+          "28:cheesy-bean-and-rice-burrito",
+          "29:cheesy-double-beef-burrito",
+          "30:cheesy-fiesta-potatoes",
+          "31:cheesy-fiesta-potatoes-v",
+          "32:cheesy-gordita-crunch",
+          "33:cheesy-roll-up",
+          "34:cheesy-roll-up-v",
+          "35:cheesy-toasted-breakfast-burrito",
+          "36:cheesy-toasted-breakfast-burrito-fiesta-potato-v",
+          "37:chicken-enchilada-burrito",
+          "38:chili-cheese-burrito-regional",
+          "39:chips-and-nacho-cheese-sauce",
+          "40:chips-and-nacho-cheese-sauce-v",
+          "41:cinnamon-twists",
+          "42:cinnamon-twists-v",
+          "43:crispy-chicken-burrito-bbq-spicy-ranch",
+          "44:crispy-chicken-strips-2-piece",
+          "45:crispy-chicken-strips-4-piece",
+          "46:crispy-chicken-taco-bbq-spicy-ranch",
+          "47:crunchy-taco",
+          "48:diablo-sauce-packet-v",
+          "49:double-stacked-taco",
+          "50:dragonfruit-berry-agua-refresca",
+          "51:dragonfruit-berry-limonada",
+          "52:fire-sauce-packet-v",
+          "53:fountain-beverages-16-oz",
+          "54:fountain-beverages-20-oz",
+          "55:fountain-beverages-30-oz",
+          "56:grande-toasted-breakfast-burrito",
+          "57:grilled-cheese-burrito",
+          "58:hash-brown",
+          "59:hash-brown-v",
+          "60:hashbrown-toasted-breakfast-burrito",
+          "61:hot-coffee-with-creamer",
+          "62:hot-sauce-packet-v",
+          "63:iced-coffee-with-creamer",
+          "64:large-nacho-fries",
+          "65:loaded-beef-nachos",
+          "66:lowfat-milk-ca-regional",
+          "67:lowfat-milk-federal-regional",
+          "68:mango-peach-agua-refresca",
+          "69:mango-peach-limonada",
+          "70:mexican-chocolate-churro-chiller-16-oz",
+          "71:mexican-chocolate-churro-chiller-20-oz",
+          "72:mexican-mocha-coffee-hot",
+          "73:mexican-mocha-coffee-iced-16-oz",
+          "74:mexican-mocha-coffee-iced-20-oz",
+          "75:mexican-mocha-latte-chiller-16-oz",
+          "76:mexican-mocha-latte-chiller-20-oz",
+          "77:mexican-pizza",
+          "78:mild-sauce-packet-v",
+          "79:nacho-fries",
+          "80:orange-juice",
+          "81:pineapple-lime-rockstar-refresca",
+          "82:pink-lemonade-frost-16-oz",
+          "83:pink-lemonade-frost-20oz",
+          "84:pintos-n-cheese",
+          "85:pintos-n-cheese-v",
+          "86:premium-roast-coffee-hot",
+          "87:premium-roast-coffee-iced",
+          "88:soft-taco",
+          "89:spicy-potato-soft-taco",
+          "90:spicy-potato-soft-taco-v",
+          "91:stacker",
+          "92:strawberry-matcha-chiller-16-oz",
+          "93:strawberry-matcha-chiller-20-oz",
+          "94:strawberry-passionfruit-agua-refresca",
+          "95:strawberry-passionfruit-limonada",
+          "96:tropical-punch-rockstar-refresca",
+          "97:vanilla-crema-coffee-hot",
+          "98:vanilla-crema-coffee-iced-16-oz",
+          "99:vanilla-crema-coffee-iced-20-oz",
+          "100:vanilla-crema-latte-chiller-16-oz",
+          "101:vanilla-crema-latte-chiller-20-oz",
+          "102:veggie-bowl",
+          "103:veggie-mexican-pizza",
+          "104:veggie-mexican-pizza-v",
+          "105:water",
+          "106:wild-strawberry-churro-chiller-16-oz",
+          "107:wild-strawberry-churro-chiller-20-oz"
+        ],
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "taco-bell-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu-data"
+        ]
+      }
+    ]
+  },
+  "recommendedLane": "verify",
+  "processLog": [
+    "packet_validated",
+    "identity_verified",
+    "menu_surfaces_inventoried",
+    "matrix_search_completed",
+    "products_reconciled",
+    "validator_passed"
+  ]
+}

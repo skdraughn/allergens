@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-005-2026-07-16",
+  "restaurantId": "barmini-dc",
+  "reviewType": "binding_menu_scope_and_authority_resolution",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "role": "sol_reviewer"
+  },
+  "reviewedKeys": [],
+  "resolution": {
+    "binding": true,
+    "outcome": "zero_product_catalog_scope_resolved",
+    "catalogDefinition": {
+      "scope": "Current named food, small-bite, and explicitly nonalcoholic products published for barmini by Jose Andres at 501 9th Street NW, Washington, DC 20004.",
+      "completeSurfaceIds": [],
+      "supportingSurfaceIds": [
+        "official-home",
+        "official-location",
+        "official-faq",
+        "linked-vendor"
+      ],
+      "enumerationRule": "include_only_named_sellable_food_or_explicitly_nonalcoholic_product_rows_from_current_location_specific_restaurant_issued_or_restaurant_linked_sources",
+      "sourceEvidenceIds": [
+        "official-home",
+        "official-location",
+        "official-faq",
+        "linked-opentable"
+      ],
+      "existingPlaceholderCount": 5,
+      "additionalProductCount": 0,
+      "resolvedCatalogProductCount": 0,
+      "excludedAlcoholicProductKeys": [
+        "cocktail-flights",
+        "curated-wine"
+      ],
+      "excludedCategoryPlaceholderKeys": [
+        "cocktail-flights",
+        "alcohol-free-a-la-carte-beverages",
+        "inventive-snacks-small-bites",
+        "curated-wine",
+        "non-alcoholic-beverages"
+      ],
+      "excludedNonAuthoritativeSources": [
+        "third-party-wherevi",
+        "third-party-pdf"
+      ],
+      "rationale": "The current official location page and FAQ establish only offering scope: more than 100 libations, experiential flights, inventive snacks or small bites, an alcohol-free a la carte beverage experience, curated wine, and non-alcoholic beverages. None is a named sellable item row. Cocktail flights and curated wine are additionally outside the POC food and explicitly nonalcoholic boundary. The exact-location OpenTable profile enumerates reservations but no Barmini product catalog, and its menu link targets the unrelated thebazaar.com domain. The official Events page's Tock order link now redirects to Tock's generic homepage and supplies no product rows. Because no authoritative current source names an in-scope product, zero products is the complete binding POC catalog rather than an unresolved count."
+    },
+    "items": [],
+    "additionalProducts": [],
+    "surfaceResolutions": [
+      {
+        "surfaceId": "official-home",
+        "disposition": "excluded",
+        "title": "Official homepage navigation",
+        "url": "https://www.minibarbyjoseandres.com/",
+        "authority": "restaurant_issued",
+        "locationScope": "Minibar and Barmini official site navigation",
+        "currentAsOf": "2026-07-16",
+        "current": true,
+        "scopeClassification": "identity_and_navigation_supporting_surface",
+        "sourceEvidenceIds": [
+          "official-home",
+          "official-location",
+          "official-faq"
+        ],
+        "rationale": "The current homepage routes users to Barmini's location, discovery, FAQ, and reservation pages but contains no named food or nonalcoholic product rows. It is explicitly excluded from catalog enumeration and retained as official identity and navigation support.",
+        "additionalProductsRequired": [],
+        "allergenAssessment": {
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfilesEstablished": false,
+          "notes": "The navigation surface supplies no item-level allergen or cross-contact conclusion."
+        },
+        "safetySourceAuthorityConflictRemains": false,
+        "allergenAuthorityLimitationRemains": true
+      },
+      {
+        "surfaceId": "official-location",
+        "disposition": "excluded",
+        "title": "Official Barmini location page",
+        "url": "https://www.minibarbyjoseandres.com/location/barmini-by-jose-andres/",
+        "authority": "restaurant_issued",
+        "locationScope": "barmini, 501 9th Street NW, Washington, DC 20004",
+        "currentAsOf": "2026-07-16",
+        "current": true,
+        "scopeClassification": "current_location_specific_scope_evidence_without_product_enumeration",
+        "sourceEvidenceIds": [
+          "official-location"
+        ],
+        "rationale": "The page currently verifies the exact address, hours, and that Barmini offers libations, experiential flights, and inventive snacks. Those are category-level statements, not named sellable product rows. The page is therefore excluded from direct enumeration while remaining authoritative evidence that an unitemized food service exists.",
+        "excludedCategoryPlaceholderKeys": [
+          "inventive-snacks-small-bites"
+        ],
+        "additionalProductsRequired": [],
+        "allergenAssessment": {
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfilesEstablished": false,
+          "notes": "The category statement has no ingredients or item-level allergen semantics."
+        },
+        "safetySourceAuthorityConflictRemains": false,
+        "allergenAuthorityLimitationRemains": true
+      },
+      {
+        "surfaceId": "official-faq",
+        "disposition": "excluded",
+        "title": "Official Barmini FAQ",
+        "url": "https://www.minibarbyjoseandres.com/faq-barmini/",
+        "authority": "restaurant_issued",
+        "locationScope": "barmini, 501 9th Street NW, Washington, DC 20004",
+        "currentAsOf": "2026-07-16",
+        "current": true,
+        "scopeClassification": "current_service_scope_and_guest_policy_evidence_without_product_enumeration",
+        "sourceEvidenceIds": [
+          "official-faq",
+          "official-location"
+        ],
+        "rationale": "The FAQ confirms a cocktail flight, alcohol-free a la carte beverage service, inventive snacks or small bites, curated wine, and non-alcoholic beverages. It names no individual products. Cocktail flights and curated wine are alcohol-only and excluded; the remaining concepts are category placeholders used only to define service scope. The allergy-contact instruction establishes a concierge process but no ingredient, negative, may-contain, or cross-contact conclusion.",
+        "excludedAlcoholicProductKeys": [
+          "cocktail-flights",
+          "curated-wine"
+        ],
+        "excludedCategoryPlaceholderKeys": [
+          "cocktail-flights",
+          "alcohol-free-a-la-carte-beverages",
+          "inventive-snacks-small-bites",
+          "curated-wine",
+          "non-alcoholic-beverages"
+        ],
+        "additionalProductsRequired": [],
+        "allergenAssessment": {
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfilesEstablished": false,
+          "notes": "Directing guests to the concierge does not establish any item-level allergen or cross-contact fact."
+        },
+        "safetySourceAuthorityConflictRemains": false,
+        "allergenAuthorityLimitationRemains": true
+      },
+      {
+        "surfaceId": "linked-vendor",
+        "disposition": "excluded",
+        "title": "OpenTable linked profile and menu shell",
+        "url": "https://www.opentable.com/r/barmini-by-jose-andres-washington",
+        "authority": "restaurant_linked_vendor",
+        "locationScope": "barmini, 501 9th Street NW, Washington, DC 20004",
+        "servicePeriod": "current reservations and experiences",
+        "currentAsOf": "2026-07-16",
+        "current": true,
+        "scopeClassification": "identity_and_reservation_supporting_surface_with_mismatched_external_menu_target",
+        "sourceEvidenceIds": [
+          "linked-opentable",
+          "official-location",
+          "official-faq"
+        ],
+        "rationale": "OpenTable is current and exact-location for reservations, but it enumerates no food or explicitly nonalcoholic product rows. Its Menu section links to thebazaar.com rather than a Barmini catalog, so that target is a source mismatch and cannot contribute products. OpenTable editorial cocktail examples are alcohol-focused vendor prose and are not promoted into the POC catalog.",
+        "additionalProductsRequired": [],
+        "allergenAssessment": {
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfilesEstablished": false,
+          "notes": "The reservation shell supplies no authoritative item-level allergen or cross-contact evidence."
+        },
+        "safetySourceAuthorityConflictRemains": false,
+        "allergenAuthorityLimitationRemains": true
+      }
+    ],
+    "safetySourceAuthorityConflictRemains": false,
+    "allergenAuthorityLimitationRemains": true,
+    "allergenAuthorityRationale": "All four required matrix searches are complete and accurately unavailable. No named in-scope product is published by the reviewed authoritative surfaces, and no allergen negative, may-contain absence, complete profile, or cross-contact conclusion is introduced."
+  },
+  "remainingSolSignals": [
+    {
+      "signal": "unitemized_current_food_and_nonalcoholic_service",
+      "status": "resolved_as_zero_enumerated_product_catalog",
+      "affectedSurfaces": [
+        "official-location",
+        "official-faq"
+      ],
+      "sourceEvidenceIds": [
+        "official-location",
+        "official-faq"
+      ],
+      "rationale": "Official sources confirm that small bites and alcohol-free beverages are offered but publish no product names. Future source refreshes may add rows, but the current binding product catalog is zero."
+    },
+    {
+      "signal": "linked_menu_target_mismatch",
+      "status": "excluded_non_blocking",
+      "affectedSurfaces": [
+        "linked-vendor"
+      ],
+      "sourceEvidenceIds": [
+        "linked-opentable"
+      ],
+      "rationale": "The OpenTable Menu link points to an unrelated restaurant domain and is excluded rather than treated as a Barmini catalog."
+    },
+    {
+      "signal": "allergen_authority_incomplete",
+      "status": "accurately_unavailable_non_blocking_for_zero_product_catalog",
+      "affectedSurfaces": [
+        "official-home",
+        "official-location",
+        "official-faq",
+        "linked-vendor"
+      ],
+      "sourceEvidenceIds": [
+        "official-home",
+        "official-location",
+        "official-faq",
+        "linked-opentable"
+      ],
+      "rationale": "No complete official ingredient, allergen, may-contain, or cross-contact matrix was found after the four completed searches."
+    }
+  ],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "baselineItemCount": 0,
+    "reviewedKeyCount": 0,
+    "resolutionItemCount": 0,
+    "allAffectedKeysReviewedExactlyOnce": true,
+    "allDispositionsBinding": true,
+    "surfaceResolutionCount": 4,
+    "partialSurfaceIds": [
+      "official-home",
+      "official-location",
+      "official-faq",
+      "linked-vendor"
+    ],
+    "allPartialSurfacesResolvedExactlyOnce": true,
+    "lunaPlaceholderCount": 5,
+    "excludedAlcoholicProductCount": 2,
+    "excludedCategoryPlaceholderCount": 5,
+    "additionalProductCount": 0,
+    "resolvedCatalogProductCount": 0,
+    "zeroProductCatalogLegitimate": true,
+    "unsupportedAllergenNegativesIntroduced": false,
+    "itemSpecificMayContainClaimsIntroduced": false,
+    "crossContactConclusionIntroduced": false,
+    "completeAllergenProfileClaimed": false,
+    "matrixStatusRemainsAccuratelyUnavailable": true,
+    "codexVerifiedClaimed": false
+  }
+}

@@ -1,0 +1,632 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-156-2026-08-07",
+  "restaurantId": "chain-kabob",
+  "runId": "poc-batch-156-2026-08-07-chain-kabob-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "chain-kabob",
+    "name": "Grill Kabob",
+    "locationId": "dc-metro",
+    "domain": "grillkabobrestaurants.com",
+    "baselineItemCount": 28,
+    "baselineFingerprint": "6d4261eb3c3fbe0cf4fce6615e3754eb4a0ed9d0b93c56083bffb9708e0ba1ab",
+    "itemChecksRead": 28,
+    "itemChecksPath": "data/restaurant-verification/item-checks/chain-kabob.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Grill Kabob",
+    "location": "1028 19th St NW, Washington, DC 20036",
+    "locationId": "dc-metro",
+    "domain": "grillkabobrestaurants.com",
+    "officialHomepage": "https://www.grillkabobrestaurants.com/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-menu",
+      "ev-vendor"
+    ],
+    "notes": "Official location is 19th and L NW; other Grill Kabob locations were not merged."
+  },
+  "sources": [
+    {
+      "id": "ev-home",
+      "evidenceId": "ev-home",
+      "url": "https://www.grillkabobrestaurants.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Official Grill Kabob homepage",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Official restaurant identity and Afghan menu."
+    },
+    {
+      "id": "ev-menu",
+      "evidenceId": "ev-menu",
+      "url": "https://www.grillkabobrestaurants.com/menu.php",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Official menu page",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Menu page lists kabobs, salads, sandwiches and platters."
+    },
+    {
+      "id": "ev-vendor",
+      "evidenceId": "ev-vendor",
+      "url": "https://www.beyondmenu.com/56396/washington/grill-kabob-washington-20036.aspx",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "title": "Beyond Menu 19th Street listing",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Linked vendor menu for 1028 19th St NW."
+    },
+    {
+      "id": "ev-search-site",
+      "evidenceId": "ev-search-site",
+      "url": "https://www.grillkabobrestaurants.com/menu.php",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "Official site allergen search",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "No allergen or ingredient matrix exposed."
+    },
+    {
+      "id": "ev-search-docs",
+      "evidenceId": "ev-search-docs",
+      "url": "https://www.grillkabobrestaurants.com/sitemap.xml",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "Official documents search",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "No nutrition, allergen or ingredient document found."
+    },
+    {
+      "id": "ev-search-vendor",
+      "evidenceId": "ev-search-vendor",
+      "url": "https://www.beyondmenu.com/56396/washington/grill-kabob-washington-20036.aspx",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "title": "Linked vendor allergen search",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Vendor menu has descriptions but no allergen matrix."
+    },
+    {
+      "id": "ev-search-web",
+      "evidenceId": "ev-search-web",
+      "url": "https://www.google.com/search?q=site%3Agrillkabobrestaurants.com+allergen+allergy+nutrition+ingredients+PDF",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "Targeted web search",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Search found menu listings only; no official allergen matrix."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "S1",
+      "url": "https://www.grillkabobrestaurants.com/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "dc-metro",
+      "servicePeriod": "all-day",
+      "retrievalOutcome": "blocked_406_but indexed menu cards",
+      "current": false,
+      "sourceEvidenceIds": [
+        "ev-home"
+      ],
+      "scopeStatus": "supporting",
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "S2",
+      "url": "https://www.grillkabobrestaurants.com/menu.php",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "dc-metro",
+      "servicePeriod": "all-day",
+      "retrievalOutcome": "indexed official menu",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "scopeStatus": "complete",
+      "currentProductKeys": [
+        "kobeeda-kabob",
+        "chicken-kabob",
+        "beef-kabob",
+        "lamb-kabob",
+        "falafel-platter"
+      ]
+    },
+    {
+      "surfaceId": "S3",
+      "url": "https://www.beyondmenu.com/56396/washington/grill-kabob-washington-20036.aspx",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "1028 19th St NW",
+      "servicePeriod": "all-day",
+      "retrievalOutcome": "current vendor menu",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-vendor"
+      ],
+      "scopeStatus": "complete",
+      "currentProductKeys": [
+        "kobeeda-kabob",
+        "chicken-kabob",
+        "beef-kabob",
+        "lamb-kabob",
+        "falafel-platter"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "kobeeda-kabob",
+      "name": "Kobeeda Kabob",
+      "category": "kabobs",
+      "servicePeriod": "all-day",
+      "presentationIds": [
+        "platter"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Official menu provides no allergen matrix."
+      ]
+    },
+    {
+      "currentProductKey": "chicken-kabob",
+      "name": "Chicken Kabob",
+      "category": "kabobs",
+      "servicePeriod": "all-day",
+      "presentationIds": [
+        "platter",
+        "sandwich",
+        "salad"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": []
+    },
+    {
+      "currentProductKey": "beef-kabob",
+      "name": "Beef Kabob",
+      "category": "kabobs",
+      "servicePeriod": "all-day",
+      "presentationIds": [
+        "platter",
+        "sandwich",
+        "salad"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": []
+    },
+    {
+      "currentProductKey": "lamb-kabob",
+      "name": "Lamb Kabob",
+      "category": "kabobs",
+      "servicePeriod": "all-day",
+      "presentationIds": [
+        "platter",
+        "sandwich",
+        "salad"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": []
+    },
+    {
+      "currentProductKey": "falafel-platter",
+      "name": "Falafel Platter",
+      "category": "platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [
+        "sandwich"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": []
+    }
+  ],
+  "restaurantLevelAllergenEvidence": [],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "authorityTier": null,
+    "matrixType": null,
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "locationOrQuery": "official homepage and menu navigation",
+        "url": "https://www.grillkabobrestaurants.com/menu.php",
+        "outcome": "no allergen matrix",
+        "sourceEvidenceIds": [
+          "ev-search-site"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "locationOrQuery": "official sitemap/download/document surfaces",
+        "url": "https://www.grillkabobrestaurants.com/sitemap.xml",
+        "outcome": "no allergen or nutrition document",
+        "sourceEvidenceIds": [
+          "ev-search-docs"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "locationOrQuery": "Beyond Menu 1028 19th St NW",
+        "url": "https://www.beyondmenu.com/56396/washington/grill-kabob-washington-20036.aspx",
+        "outcome": "menu descriptions only; no matrix",
+        "sourceEvidenceIds": [
+          "ev-search-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "locationOrQuery": "site:grillkabobrestaurants.com allergen allergy nutrition ingredients PDF",
+        "url": "https://www.google.com/search?q=site%3Agrillkabobrestaurants.com+allergen+allergy+nutrition+ingredients+PDF",
+        "outcome": "no official matrix found",
+        "sourceEvidenceIds": [
+          "ev-search-web"
+        ]
+      }
+    ],
+    "notes": "Unavailable is not allergen-free."
+  },
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:authentic-afghan-recipes",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-home"
+        ],
+        "notes": "Slogan/marketing text."
+      },
+      {
+        "auditItemKey": "12:exceptional-quality",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-home"
+        ],
+        "notes": "Marketing claim."
+      },
+      {
+        "auditItemKey": "16:halal-certified",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-home"
+        ],
+        "notes": "Certification claim, not orderable product."
+      },
+      {
+        "auditItemKey": "2:beef-and-chicken-kabob",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "beef-kabob",
+          "chicken-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "3:beef-and-chicken-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "beef-kabob",
+          "chicken-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "4:beef-kabob",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "beef-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "5:beef-kabob-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "beef-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "6:beef-kabob-sandwich",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "beef-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "7:chicken-kabob",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "8:chicken-kabob-platter",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "chicken-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "9:chicken-kabob-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "chicken-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "10:chicken-kabob-sandwich",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "chicken-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "11:curry-platter",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "falafel-platter"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "13:falafel-platter",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "falafel-platter"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "14:falafel-sandwich",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "falafel-platter"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "15:gyro-salad",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "lamb-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-vendor"
+        ]
+      },
+      {
+        "auditItemKey": "17:kobeeda-and-chicken-kabob",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "kobeeda-kabob",
+          "chicken-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "18:kobeeda-and-chicken-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "kobeeda-kabob",
+          "chicken-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "19:kobeeda-kabob",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kobeeda-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "20:kobeeda-kabob-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "kobeeda-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "21:kobeeda-sandwich",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "kobeeda-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "22:lamb-and-beef-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "lamb-kabob",
+          "beef-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "23:lamb-and-chicken-kabob",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "lamb-kabob",
+          "chicken-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "24:lamb-kabob",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lamb-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "25:lamb-kabob-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "lamb-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "26:lamb-kabob-sandwich",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "lamb-kabob"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "27:vegetarian-platter",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "falafel-platter"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "28:veggie-kabob",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Not present on current official menu."
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": true,
+    "catalogDrift": true,
+    "staleItems": true,
+    "newItems": true,
+    "nameOrCategoryCleanup": true,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": true
+  },
+  "proposedChanges": [
+    "Consolidate equivalent kabob platter/salad/sandwich presentations while retaining source references.",
+    "Mark slogans and certification text as artifacts; remove stale veggie-kabob row.",
+    "Preserve official allergen status as unavailable; do not infer negatives."
+  ],
+  "routingSignals": {
+    "lane": "luna_fix",
+    "solRequired": false,
+    "reasons": [
+      "catalog drift and artifact cleanup",
+      "official allergen matrix accurately unavailable"
+    ]
+  },
+  "blockedReason": null
+}

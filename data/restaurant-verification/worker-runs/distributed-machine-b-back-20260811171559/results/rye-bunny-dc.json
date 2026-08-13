@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811171559",
+  "restaurantId": "rye-bunny-dc",
+  "name": "Rye Bunny",
+  "locationId": "washington",
+  "domain": "ryebunny.com",
+  "outcome": "researched",
+  "recommendedLane": "verify",
+  "packetValidation": {
+    "baselineItemCount": 0,
+    "baselineFingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "itemChecksPath": "data/restaurant-verification/item-checks/rye-bunny-dc.json"
+  },
+  "identity": {
+    "name": "Rye Bunny",
+    "address": "1827 Adams Mill Rd NW, Washington, DC 20009",
+    "location": "1827 Adams Mill Rd NW, Washington, DC 20009",
+    "domain": "ryebunny.com",
+    "locationId": "washington",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "official-home"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "official-home",
+      "url": "https://www.ryebunny.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and DC location identity",
+      "retrievedAt": "2026-08-11T17:18:00.000Z"
+    },
+    {
+      "evidenceId": "official-menu",
+      "url": "https://www.ryebunny.com/menu1",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official current food menu image surface",
+      "retrievedAt": "2026-08-11T17:18:00.000Z"
+    },
+    {
+      "evidenceId": "official-menu-image",
+      "url": "https://images.squarespace-cdn.com/content/v1/69017b7a4daad61a8dd00515/0a03de33-593f-49d4-8841-bcfb34aa9418/RyeBunny_Menu_081026.jpg",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official menu image capture",
+      "retrievedAt": "2026-08-11T17:18:00.000Z"
+    },
+    {
+      "evidenceId": "linked-toast",
+      "url": "https://www.toasttab.com/local/order/rye-bunny-1827-adams-mill-road-nw-retail-a",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "restaurant-linked ordering and beverage surface",
+      "retrievedAt": "2026-08-11T17:18:00.000Z"
+    },
+    {
+      "evidenceId": "targeted-search",
+      "url": "https://www.google.com/search?q=site%3Aryebunny.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted allergen/nutrition/ingredients/PDF search; no official matrix located",
+      "retrievedAt": "2026-08-11T17:18:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://www.ryebunny.com/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "Washington DC",
+      "servicePeriod": "homepage",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "official-home"
+      ]
+    },
+    {
+      "surfaceId": "official-menu",
+      "url": "https://www.ryebunny.com/menu1",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "Washington DC",
+      "servicePeriod": "current food menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "official-menu-image"
+      ]
+    },
+    {
+      "surfaceId": "toast-beverages",
+      "url": "https://www.toasttab.com/local/order/rye-bunny-1827-adams-mill-road-nw-retail-a",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "Washington DC",
+      "servicePeriod": "beverages",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "linked-toast"
+      ]
+    },
+    {
+      "surfaceId": "toast-alcohol",
+      "url": "https://www.toasttab.com/local/order/rye-bunny-1827-adams-mill-road-nw-retail-a",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "Washington DC",
+      "servicePeriod": "alcohol",
+      "current": false,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "linked-toast"
+      ]
+    }
+  ],
+  "currentProducts": [],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "searchClass": "official_site",
+        "class": "official_site",
+        "locationInspected": "ryebunny.com homepage and /menu1",
+        "queryOrLocation": "ryebunny.com homepage and /menu1",
+        "urls": [
+          "https://www.ryebunny.com/",
+          "https://www.ryebunny.com/menu1"
+        ],
+        "outcome": "no allergen matrix or ingredient disclosure found",
+        "sourceEvidenceIds": [
+          "official-home",
+          "official-menu"
+        ]
+      },
+      {
+        "searchClass": "official_documents",
+        "class": "official_documents",
+        "locationInspected": "official navigation, menu image, PDF/document surfaces",
+        "queryOrLocation": "official navigation, menu image, PDF/document surfaces",
+        "urls": [
+          "https://www.ryebunny.com/menu1",
+          "https://images.squarespace-cdn.com/content/v1/69017b7a4daad61a8dd00515/0a03de33-593f-49d4-8841-bcfb34aa9418/RyeBunny_Menu_081026.jpg"
+        ],
+        "outcome": "no official allergen, nutrition, ingredient, or PDF matrix found",
+        "sourceEvidenceIds": [
+          "official-menu-image"
+        ]
+      },
+      {
+        "searchClass": "linked_vendor",
+        "class": "linked_vendor",
+        "locationInspected": "Toast linked ordering surface",
+        "queryOrLocation": "Toast linked ordering surface for Rye Bunny Washington DC",
+        "urls": [
+          "https://www.toasttab.com/local/order/rye-bunny-1827-adams-mill-road-nw-retail-a"
+        ],
+        "outcome": "menu/beverage listings present; no allergen matrix or cross-contact statement found",
+        "sourceEvidenceIds": [
+          "linked-toast"
+        ]
+      },
+      {
+        "searchClass": "targeted_web_search",
+        "class": "targeted_web_search",
+        "query": "site:ryebunny.com allergen allergy nutrition ingredients PDF menu",
+        "queryOrLocation": "site:ryebunny.com allergen allergy nutrition ingredients PDF menu",
+        "urls": [
+          "https://www.google.com/search?q=site%3Aryebunny.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+        ],
+        "outcome": "no official allergen matrix found",
+        "sourceEvidenceIds": [
+          "targeted-search"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [],
+  "reconciliation": {
+    "items": []
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "riskSignals": []
+}

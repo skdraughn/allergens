@@ -1,0 +1,1332 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-136-2026-08-07",
+  "restaurantId": "osm-foster-s-3200208879",
+  "runId": "poc-batch-136-2026-08-07-osm-foster-s-3200208879-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "osm-foster-s-3200208879",
+    "name": "Foster's Grill",
+    "locationId": "dc-metro",
+    "domain": "fostersgrille.com",
+    "baselineItemCount": 29,
+    "baselineFingerprint": "fa62f4ce54831a069bf8edea5864b9b8ad94f1b6a0a44ac922aca90386c04dd7",
+    "itemChecksRead": 29,
+    "itemChecksPath": "data/restaurant-verification/item-checks/osm-foster-s-3200208879.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Foster's Grill",
+    "location": "DC metro area (chain menu; individual locations listed on official locations page)",
+    "locationId": "dc-metro",
+    "domain": "fostersgrille.com",
+    "officialHomepage": "https://www.fostersgrille.com/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-locations"
+    ],
+    "notes": "Official site identifies Foster’s Grille and DC-metro locations; no out-of-scope location merged."
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-home",
+      "url": "https://www.fostersgrille.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Foster's Grille official homepage",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Official homepage identifies Foster’s Grille and links food, nutrition, locations and ordering."
+    },
+    {
+      "evidenceId": "ev-locations",
+      "url": "https://www.fostersgrille.com/locations/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Foster’s Grille locations",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Official locations page lists DC-metro restaurants."
+    },
+    {
+      "evidenceId": "ev-food",
+      "url": "https://www.fostersgrille.com/food/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Official food menu",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Current food menu surface."
+    },
+    {
+      "evidenceId": "ev-nutrition",
+      "url": "https://www.fostersgrille.com/nutrition/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "both",
+      "title": "Official nutrition menu",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Current nutrition item pages and values; no standalone allergen matrix."
+    },
+    {
+      "evidenceId": "ev-search-site",
+      "url": "https://www.fostersgrille.com/food/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_site allergen search",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Food/menu navigation inspected; no matrix."
+    },
+    {
+      "evidenceId": "ev-search-docs",
+      "url": "https://www.fostersgrille.com/wp-content/uploads/2025/08/Catering-Menu-August-25-1.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_documents allergen search",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Nutrition and downloadable-document surfaces inspected; no matrix."
+    },
+    {
+      "evidenceId": "ev-search-vendor",
+      "url": "https://order.chownow.com/order/restaurant/fosters-grille",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "title": "Official ChowNow linked vendor search",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Vendor menu inspected; no matrix."
+    },
+    {
+      "evidenceId": "ev-search-web",
+      "url": "https://www.google.com/search?q=site%3Afostersgrille.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "targeted_web_search allergen search",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Targeted domain query found official menu/nutrition pages but no matrix."
+    },
+    {
+      "evidenceId": "ev-catering",
+      "url": "https://www.fostersgrille.com/wp-content/uploads/2025/08/Catering-Menu-August-25-1.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Official catering menu August 2025",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Officially linked catering PDF inspected."
+    },
+    {
+      "evidenceId": "ev-chownow",
+      "url": "https://order.chownow.com/order/restaurant/fosters-grille",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "title": "Official linked ChowNow vendor search",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Linked vendor inspected; no matrix."
+    },
+    {
+      "evidenceId": "ev-orderonline",
+      "url": "https://order.online/store/fosters-grille",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "title": "Official linked order.online vendor search",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Linked vendor inspected; no matrix."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-food",
+      "title": "Official food menu",
+      "url": "https://www.fostersgrille.com/food/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "DC metro",
+      "servicePeriod": "all",
+      "surfaceType": "html_menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "currentProductKeys": [
+        "authentic-buffalo-wings-asian",
+        "authentic-buffalo-wings-bbq",
+        "authentic-buffalo-wings-chessie",
+        "authentic-buffalo-wings-lemon-pepper",
+        "authentic-buffalo-wings-mild-or-hot",
+        "authentic-buffalo-wings-plain",
+        "authentic-buffalo-wings-southwest",
+        "backyard-garden-burger",
+        "basket-of-fries",
+        "basket-of-onion-rings",
+        "cake",
+        "chicken-sandwich",
+        "fish-chips",
+        "fosters-famous-grilled-hot-dog",
+        "fosters-garden-salad",
+        "fosters-garden-salad-with-chicken",
+        "fresh-chicken-fingers",
+        "grilled-cheese",
+        "lil-charburger",
+        "olde-fashioned-charburger",
+        "philly-cheesesteak",
+        "side-salad",
+        "turkey-burger",
+        "extra-thick-milkshake",
+        "ice-cream",
+        "cookies",
+        "assorted-fountain-drinks",
+        "lemonade",
+        "sweet-tea",
+        "unsweetened-tea"
+      ]
+    },
+    {
+      "surfaceId": "official-nutrition",
+      "title": "Official nutrition menu",
+      "url": "https://www.fostersgrille.com/nutrition/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "DC metro",
+      "servicePeriod": "all",
+      "surfaceType": "html_menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-nutrition"
+      ],
+      "currentProductKeys": [
+        "authentic-buffalo-wings-asian",
+        "authentic-buffalo-wings-bbq",
+        "authentic-buffalo-wings-chessie",
+        "authentic-buffalo-wings-lemon-pepper",
+        "authentic-buffalo-wings-mild-or-hot",
+        "authentic-buffalo-wings-plain",
+        "authentic-buffalo-wings-southwest",
+        "backyard-garden-burger",
+        "basket-of-fries",
+        "basket-of-onion-rings",
+        "cake",
+        "chicken-sandwich",
+        "fish-chips",
+        "fosters-famous-grilled-hot-dog",
+        "fosters-garden-salad",
+        "fosters-garden-salad-with-chicken",
+        "fresh-chicken-fingers",
+        "grilled-cheese",
+        "lil-charburger",
+        "olde-fashioned-charburger",
+        "philly-cheesesteak",
+        "side-salad",
+        "turkey-burger",
+        "extra-thick-milkshake",
+        "ice-cream",
+        "cookies",
+        "assorted-fountain-drinks",
+        "lemonade",
+        "sweet-tea",
+        "unsweetened-tea"
+      ]
+    },
+    {
+      "surfaceId": "official-catering",
+      "title": "Official catering menu August 2025",
+      "url": "https://www.fostersgrille.com/wp-content/uploads/2025/08/Catering-Menu-August-25-1.pdf",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "DC metro",
+      "servicePeriod": "catering",
+      "surfaceType": "pdf_menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "currentProductKeys": [
+        "turkey-wrap",
+        "chicken-caesar-wrap",
+        "boxed-lunch",
+        "brownies",
+        "nachos",
+        "catering-wings",
+        "charburger-platter",
+        "chicken-platter-grilled",
+        "chicken-platter-fried",
+        "turkey-burger-platter",
+        "veggie-burger-platter",
+        "fries-tray",
+        "catering-salad",
+        "chips",
+        "pickle",
+        "soda-water",
+        "catering-cake",
+        "catering-chicken-fingers",
+        "catering-onion-rings"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "authentic-buffalo-wings-asian",
+      "name": "Authentic Buffalo Wings – Asian",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "authentic-buffalo-wings-bbq",
+      "name": "Authentic Buffalo Wings – BBQ",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "authentic-buffalo-wings-chessie",
+      "name": "Authentic Buffalo Wings – Chessie",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "authentic-buffalo-wings-lemon-pepper",
+      "name": "Authentic Buffalo Wings – Lemon Pepper",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "authentic-buffalo-wings-mild-or-hot",
+      "name": "Authentic Buffalo Wings – Mild or Hot",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "authentic-buffalo-wings-plain",
+      "name": "Authentic Buffalo Wings – Plain",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "authentic-buffalo-wings-southwest",
+      "name": "Authentic Buffalo Wings – Southwest",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "backyard-garden-burger",
+      "name": "Backyard Garden Burger",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "basket-of-fries",
+      "name": "Basket of Fries",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "basket-of-onion-rings",
+      "name": "Basket of Onion Rings",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "cake",
+      "name": "Cake",
+      "category": "burger",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [
+        "milk",
+        "wheat",
+        "gluten",
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "chicken-sandwich",
+      "name": "Chicken Sandwich",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "fish-chips",
+      "name": "Fish Chips",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [
+        "fish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "fosters-famous-grilled-hot-dog",
+      "name": "Foster’s Famous Grilled Hot Dog",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "fosters-garden-salad",
+      "name": "Foster’s Garden Salad",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "fosters-garden-salad-with-chicken",
+      "name": "Foster’s Garden Salad with Chicken",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "fresh-chicken-fingers",
+      "name": "Fresh Chicken Fingers",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "grilled-cheese",
+      "name": "Grilled Cheese",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "lil-charburger",
+      "name": "Lil’ Charburger",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "olde-fashioned-charburger",
+      "name": "Olde Fashioned Charburger",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "philly-cheesesteak",
+      "name": "Philly Cheesesteak",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "side-salad",
+      "name": "Side Salad",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "turkey-burger",
+      "name": "Turkey Burger",
+      "category": "Nutrition",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "allergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "containsAllergens": [],
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "extra-thick-milkshake",
+      "name": "Extra Thick Milkshake",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "ice-cream",
+      "name": "Ice Cream",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "cookies",
+      "name": "Cookies",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "assorted-fountain-drinks",
+      "name": "Assorted Fountain Drinks",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "lemonade",
+      "name": "Lemonade",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "sweet-tea",
+      "name": "Sweet Tea",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "unsweetened-tea",
+      "name": "Unsweetened Tea",
+      "sourceEvidenceIds": [
+        "ev-food"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "turkey-wrap",
+      "name": "Turkey Wrap",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "chicken-caesar-wrap",
+      "name": "Chicken Caesar Wrap",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "boxed-lunch",
+      "name": "Boxed Lunch",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "brownies",
+      "name": "Brownies",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "nachos",
+      "name": "Nachos",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "catering-wings",
+      "name": "Catering Wings",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "charburger-platter",
+      "name": "Charburger Platter",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "chicken-platter-grilled",
+      "name": "Chicken Platter - Grilled",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "chicken-platter-fried",
+      "name": "Chicken Platter - Fried",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "turkey-burger-platter",
+      "name": "Turkey Burger Platter",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "veggie-burger-platter",
+      "name": "Veggie Burger Platter",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "fries-tray",
+      "name": "Fries Tray",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "catering-salad",
+      "name": "Catering Salad",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "chips",
+      "name": "Chips",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "pickle",
+      "name": "Pickle",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "soda-water",
+      "name": "Soda Water",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "catering-cake",
+      "name": "Catering Cake",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "catering-chicken-fingers",
+      "name": "Catering Chicken Fingers",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "catering-onion-rings",
+      "name": "Catering Onion Rings",
+      "sourceEvidenceIds": [
+        "ev-catering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    }
+  ],
+  "matrixSearchAudit": [
+    {
+      "class": "official_site",
+      "locationOrQuery": "Official homepage, food and locations navigation",
+      "urls": [
+        "https://www.fostersgrille.com/food/"
+      ],
+      "outcome": "not_found",
+      "evidenceIds": [
+        "ev-search-site"
+      ]
+    },
+    {
+      "class": "official_documents",
+      "locationOrQuery": "Official nutrition, sitemap, PDF/image/document paths",
+      "urls": [
+        "https://www.fostersgrille.com/wp-content/uploads/2025/08/Catering-Menu-August-25-1.pdf"
+      ],
+      "outcome": "not_found",
+      "evidenceIds": [
+        "ev-search-docs"
+      ]
+    },
+    {
+      "class": "linked_vendor",
+      "locationOrQuery": "Official homepage outbound ChowNow and order.online vendor links",
+      "urls": [
+        "https://order.chownow.com/order/restaurant/fosters-grille",
+        "https://order.online/store/fosters-grille"
+      ],
+      "outcome": "not_found",
+      "evidenceIds": [
+        "ev-search-vendor"
+      ]
+    },
+    {
+      "class": "targeted_web_search",
+      "locationOrQuery": "site:fostersgrille.com allergen allergy nutrition ingredients PDF menu",
+      "urls": [
+        "https://www.google.com/search?q=site%3Afostersgrille.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+      ],
+      "outcome": "not_found",
+      "evidenceIds": [
+        "ev-search-web"
+      ]
+    }
+  ],
+  "officialAllergenStatus": "accurately_unavailable",
+  "reconciliation": {
+    "expectedCount": 29,
+    "items": [
+      {
+        "auditItemKey": "1:authentic-buffalo-wings-asian",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "authentic-buffalo-wings-asian"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "2:authentic-buffalo-wings-bbq",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "authentic-buffalo-wings-bbq"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "3:authentic-buffalo-wings-chessie",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "authentic-buffalo-wings-chessie"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "4:authentic-buffalo-wings-lemon-pepper",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "authentic-buffalo-wings-lemon-pepper"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "5:authentic-buffalo-wings-mild-or-hot",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "authentic-buffalo-wings-mild-or-hot"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "6:authentic-buffalo-wings-plain",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "authentic-buffalo-wings-plain"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "7:authentic-buffalo-wings-southwest",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "authentic-buffalo-wings-southwest"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "8:backyard-garden-burger",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "backyard-garden-burger"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "9:basket-of-fries",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "basket-of-fries"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "10:basket-of-onion-rings",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "basket-of-onion-rings"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "11:cake",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "cake"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "12:cheese",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Heading/non-orderable artifact; no independently orderable product representation."
+      },
+      {
+        "auditItemKey": "13:chicken",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Heading/non-orderable artifact; no independently orderable product representation."
+      },
+      {
+        "auditItemKey": "14:chicken-sandwich",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "chicken-sandwich"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "15:dining-for-dollars",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Heading/non-orderable artifact; no independently orderable product representation."
+      },
+      {
+        "auditItemKey": "16:dressings-and-sauces",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Heading/non-orderable artifact; no independently orderable product representation."
+      },
+      {
+        "auditItemKey": "17:fish-chips",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "fish-chips"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "18:fosters-famous-grilled-hot-dog",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "fosters-famous-grilled-hot-dog"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "19:fosters-garden-salad",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "fosters-garden-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "20:fosters-garden-salad-with-chicken",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "fosters-garden-salad-with-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "21:free",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Heading/non-orderable artifact; no independently orderable product representation."
+      },
+      {
+        "auditItemKey": "22:fresh-chicken-fingers",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "fresh-chicken-fingers"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "23:grilled-cheese",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "grilled-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "24:lil-charburger",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "lil-charburger"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "25:olde-fashioned-charburger",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "olde-fashioned-charburger"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "26:other",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Heading/non-orderable artifact; no independently orderable product representation."
+      },
+      {
+        "auditItemKey": "27:philly-cheesesteak",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "philly-cheesesteak"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "28:side-salad",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "side-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      },
+      {
+        "auditItemKey": "29:turkey-burger",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "turkey-burger"
+        ],
+        "sourceEvidenceIds": [
+          "ev-food",
+          "ev-nutrition"
+        ],
+        "notes": "Current official nutrition/menu presentation; frozen record retained."
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "proposedChanges": [
+    "Preserve current official Foster’s Grille food and nutrition catalog and frozen direct allergen positives.",
+    "Mark official allergen matrix accurately_unavailable after all four searches; do not infer negatives."
+  ],
+  "routingSignals": {
+    "lightweightRepairSignals": [],
+    "safetyEscalationSignals": []
+  },
+  "blockedReason": null,
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": []
+  }
+}

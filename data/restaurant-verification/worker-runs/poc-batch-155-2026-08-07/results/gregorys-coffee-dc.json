@@ -1,0 +1,931 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-155-2026-08-07",
+  "restaurantId": "gregorys-coffee-dc",
+  "runId": "poc-batch-155-2026-08-07-gregorys-coffee-dc-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "gregorys-coffee-dc",
+    "name": "Gregorys Coffee",
+    "locationId": "dc-metro",
+    "domain": "gregoryscoffee.com",
+    "baselineItemCount": 20,
+    "baselineFingerprint": "883b6f74c4f1d43f6ad417ca4ee11484ea6bf71bbd2c4cd37aed5f431f652290",
+    "itemChecksRead": 20,
+    "itemChecksPath": "data/restaurant-verification/item-checks/gregorys-coffee-dc.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Gregorys Coffee",
+    "location": "DC metro locations",
+    "locationId": "dc-metro",
+    "domain": "gregoryscoffee.com",
+    "officialHomepage": "https://gregoryscoffee.com/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-menu"
+    ],
+    "notes": "Official Gregorys site and DC metro scope; no ambiguous location merged."
+  },
+  "sources": [
+    {
+      "url": "https://gregoryscoffee.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Gregorys Coffee homepage",
+      "excerpt": "Official company site.",
+      "id": "ev-home",
+      "retrievedAt": "2026-08-07"
+    },
+    {
+      "url": "https://gregoryscoffee.com/collections/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Current menu collection",
+      "excerpt": "Drinks, Food, Grab N Go and product links.",
+      "id": "ev-menu",
+      "retrievedAt": "2026-08-07"
+    },
+    {
+      "url": "https://drive.google.com/file/d/1p7RVQ9AnCRCYpMZxL1Hxlq-BjtKDfEAl/view?usp=sharing",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "Official Nutrition Guide",
+      "excerpt": "Linked from Our Menu for nutrition/allergen information.",
+      "id": "ev-guide",
+      "retrievedAt": "2026-08-07"
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "officialAllergenStatus": "extracted",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "searchClass": "official_site",
+        "class": "official_site",
+        "inspectedLocation": "gregoryscoffee.com menu and product pages",
+        "query": null,
+        "urls": [
+          "https://gregoryscoffee.com/collections/menu"
+        ],
+        "outcome": "menu descriptions and product boundary found; no complete allergen matrix",
+        "evidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "searchClass": "official_documents",
+        "class": "official_documents",
+        "inspectedLocation": "Our Menu Nutrition Guide",
+        "query": null,
+        "urls": [
+          "https://drive.google.com/file/d/1p7RVQ9AnCRCYpMZxL1Hxlq-BjtKDfEAl/view?usp=sharing"
+        ],
+        "outcome": "official linked nutrition/allergen document inspected; direct positives retained; no negatives inferred",
+        "evidenceIds": [
+          "ev-guide"
+        ]
+      },
+      {
+        "searchClass": "linked_vendor",
+        "class": "linked_vendor",
+        "inspectedLocation": "official Order Now link",
+        "query": null,
+        "urls": [
+          "https://order.incentivio.com"
+        ],
+        "outcome": "vendor link reachable from official site; no authoritative allergen disclosures used",
+        "evidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "searchClass": "targeted_web_search",
+        "class": "targeted_web_search",
+        "inspectedLocation": "Gregorys Coffee allergen guide DC",
+        "query": "Gregorys Coffee allergen guide DC",
+        "urls": [
+          "https://www.google.com/search?q=Gregorys+Coffee+allergen+guide"
+        ],
+        "outcome": "no additional authoritative source adopted",
+        "evidenceIds": []
+      }
+    ]
+  },
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:coffee-black-forest-latte",
+        "disposition": "exact_match",
+        "allergenVerdict": "direct_positive_preserved",
+        "matchedCurrentProductKeys": [
+          "coffee-black-forest-latte"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ]
+      },
+      {
+        "auditItemKey": "2:food-blueberry-muffin",
+        "disposition": "exact_match",
+        "allergenVerdict": "direct_positive_preserved",
+        "matchedCurrentProductKeys": [
+          "food-blueberry-muffin"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ]
+      },
+      {
+        "auditItemKey": "3:coffee-caffe-vienna",
+        "disposition": "exact_match",
+        "allergenVerdict": "accurately_unavailable",
+        "matchedCurrentProductKeys": [
+          "coffee-caffe-vienna"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "4:food-chocolate-croissant",
+        "disposition": "exact_match",
+        "allergenVerdict": "direct_positive_preserved",
+        "matchedCurrentProductKeys": [
+          "food-chocolate-croissant"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ]
+      },
+      {
+        "auditItemKey": "5:food-croissant",
+        "disposition": "exact_match",
+        "allergenVerdict": "direct_positive_preserved",
+        "matchedCurrentProductKeys": [
+          "food-croissant"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ]
+      },
+      {
+        "auditItemKey": "6:food-ham-and-cheese-croissant",
+        "disposition": "exact_match",
+        "allergenVerdict": "direct_positive_preserved",
+        "matchedCurrentProductKeys": [
+          "food-ham-and-cheese-croissant"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ]
+      },
+      {
+        "auditItemKey": "7:coffee-iced-black-forest-latte",
+        "disposition": "exact_match",
+        "allergenVerdict": "direct_positive_preserved",
+        "matchedCurrentProductKeys": [
+          "coffee-iced-black-forest-latte"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ]
+      },
+      {
+        "auditItemKey": "8:coffee-iced-rainbow-cookie-latte",
+        "disposition": "exact_match",
+        "allergenVerdict": "direct_positive_preserved",
+        "matchedCurrentProductKeys": [
+          "coffee-iced-rainbow-cookie-latte"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ]
+      },
+      {
+        "auditItemKey": "9:coffee-iced-rainbow-cookie-matcha",
+        "disposition": "exact_match",
+        "allergenVerdict": "direct_positive_preserved",
+        "matchedCurrentProductKeys": [
+          "coffee-iced-rainbow-cookie-matcha"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ]
+      },
+      {
+        "auditItemKey": "10:coffee-matcha-latte-gf-v",
+        "disposition": "exact_match",
+        "allergenVerdict": "direct_positive_preserved",
+        "matchedCurrentProductKeys": [
+          "coffee-matcha-latte-gf-v"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ]
+      },
+      {
+        "auditItemKey": "11:smoothies-morning-boost",
+        "disposition": "exact_match",
+        "allergenVerdict": "accurately_unavailable",
+        "matchedCurrentProductKeys": [
+          "smoothies-morning-boost"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "12:coffee-protein-coffee",
+        "disposition": "exact_match",
+        "allergenVerdict": "direct_positive_preserved",
+        "matchedCurrentProductKeys": [
+          "coffee-protein-coffee"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ]
+      },
+      {
+        "auditItemKey": "13:coffee-pumpkin-spice-latte",
+        "disposition": "exact_match",
+        "allergenVerdict": "direct_positive_preserved",
+        "matchedCurrentProductKeys": [
+          "coffee-pumpkin-spice-latte"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ]
+      },
+      {
+        "auditItemKey": "14:coffee-rainbow-cookie-latte",
+        "disposition": "exact_match",
+        "allergenVerdict": "direct_positive_preserved",
+        "matchedCurrentProductKeys": [
+          "coffee-rainbow-cookie-latte"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ]
+      },
+      {
+        "auditItemKey": "15:food-the-deluxe",
+        "disposition": "exact_match",
+        "allergenVerdict": "direct_positive_preserved",
+        "matchedCurrentProductKeys": [
+          "food-the-deluxe"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ]
+      },
+      {
+        "auditItemKey": "16:food-the-new-yorker",
+        "disposition": "exact_match",
+        "allergenVerdict": "accurately_unavailable",
+        "matchedCurrentProductKeys": [
+          "food-the-new-yorker"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "17:food-the-skinny",
+        "disposition": "exact_match",
+        "allergenVerdict": "direct_positive_preserved",
+        "matchedCurrentProductKeys": [
+          "food-the-skinny"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ]
+      },
+      {
+        "auditItemKey": "18:food-vegan-bar-gf-v",
+        "disposition": "exact_match",
+        "allergenVerdict": "direct_positive_preserved",
+        "matchedCurrentProductKeys": [
+          "food-vegan-bar-gf-v"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ]
+      },
+      {
+        "auditItemKey": "19:food-vegan-chia-seed-croissant-v",
+        "disposition": "exact_match",
+        "allergenVerdict": "direct_positive_preserved",
+        "matchedCurrentProductKeys": [
+          "food-vegan-chia-seed-croissant-v"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ]
+      },
+      {
+        "auditItemKey": "20:food-vegan-deluxe-v",
+        "disposition": "exact_match",
+        "allergenVerdict": "direct_positive_preserved",
+        "matchedCurrentProductKeys": [
+          "food-vegan-deluxe-v"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ]
+      }
+    ],
+    "counts": {
+      "exact_match": 20,
+      "normalized_match": 0,
+      "equivalent_presentation": 0,
+      "stale": 0,
+      "artifact": 0,
+      "location_mismatch": 0,
+      "unresolved": 0
+    }
+  },
+  "changes": {
+    "menuBoundaryChanged": true,
+    "allergenDataChanged": false,
+    "needsRepair": true,
+    "lightweightRepair": true,
+    "safetyEscalation": false,
+    "identityChanged": false,
+    "scopeChanged": false,
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "routingSignals": {
+    "route": "lightweight_repair",
+    "conflicts": [],
+    "blockedReason": null
+  },
+  "blockedReason": null,
+  "menuSurfaces": [
+    {
+      "surfaceId": "menu-collection",
+      "title": "menu-collection",
+      "url": "https://gregoryscoffee.com/collections/menu",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "DC metro Gregorys Coffee locations",
+      "servicePeriod": "all-day",
+      "surfaceType": "html_menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "currentProductKeys": [
+        "coffee-black-forest-latte",
+        "food-blueberry-muffin",
+        "coffee-caffe-vienna",
+        "food-chocolate-croissant",
+        "food-croissant",
+        "food-ham-and-cheese-croissant",
+        "coffee-iced-black-forest-latte",
+        "coffee-iced-rainbow-cookie-latte",
+        "coffee-iced-rainbow-cookie-matcha",
+        "coffee-matcha-latte-gf-v",
+        "smoothies-morning-boost",
+        "coffee-protein-coffee",
+        "coffee-pumpkin-spice-latte",
+        "coffee-rainbow-cookie-latte",
+        "food-the-deluxe",
+        "food-the-new-yorker",
+        "food-the-skinny",
+        "food-vegan-bar-gf-v",
+        "food-vegan-chia-seed-croissant-v",
+        "food-vegan-deluxe-v"
+      ],
+      "outcome": "current drinks, food and grab-n-go"
+    },
+    {
+      "surfaceId": "our-menu",
+      "title": "our-menu",
+      "url": "https://gregoryscoffee.com/pages/our-menu",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "DC metro Gregorys Coffee locations",
+      "servicePeriod": "all-day",
+      "surfaceType": "html_menu",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "currentProductKeys": [],
+      "outcome": "menu landing and nutrition guide link"
+    },
+    {
+      "surfaceId": "order-vendor",
+      "title": "order-vendor",
+      "url": "https://order.incentivio.com",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "DC metro Gregorys Coffee locations",
+      "servicePeriod": "all-day",
+      "surfaceType": "linked_vendor_menu",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "currentProductKeys": [],
+      "outcome": "official order-now vendor linked from site"
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "coffee-black-forest-latte",
+      "name": "Black Forest Latte",
+      "category": "coffee",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "food-blueberry-muffin",
+      "name": "Blueberry Muffin",
+      "category": "food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "gluten",
+        "milk",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "coffee-caffe-vienna",
+      "name": "Caffe Vienna",
+      "category": "coffee",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": []
+    },
+    {
+      "currentProductKey": "food-chocolate-croissant",
+      "name": "Chocolate Croissant",
+      "category": "food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "gluten",
+        "milk",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "food-croissant",
+      "name": "Croissant",
+      "category": "food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "gluten",
+        "milk",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "food-ham-and-cheese-croissant",
+      "name": "Ham and Cheese Croissant",
+      "category": "food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "gluten",
+        "milk",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "coffee-iced-black-forest-latte",
+      "name": "Iced Black Forest Latte",
+      "category": "coffee",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "coffee-iced-rainbow-cookie-latte",
+      "name": "Iced Rainbow Cookie Latte",
+      "category": "coffee",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "milk",
+        "tree-nut",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "coffee-iced-rainbow-cookie-matcha",
+      "name": "Iced Rainbow Cookie Matcha",
+      "category": "coffee",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "milk",
+        "tree-nut",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "coffee-matcha-latte-gf-v",
+      "name": "Matcha Latte (GF | V)",
+      "category": "coffee",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "tree-nut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "smoothies-morning-boost",
+      "name": "Morning Boost",
+      "category": "smoothies",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": []
+    },
+    {
+      "currentProductKey": "coffee-protein-coffee",
+      "name": "Protein Coffee",
+      "category": "coffee",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "peanut",
+        "tree-nut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "coffee-pumpkin-spice-latte",
+      "name": "Pumpkin Spice Latte",
+      "category": "coffee",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "coffee-rainbow-cookie-latte",
+      "name": "Rainbow Cookie Latte",
+      "category": "coffee",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "milk",
+        "tree-nut",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "food-the-deluxe",
+      "name": "The Deluxe",
+      "category": "food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "gluten",
+        "milk",
+        "soy",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "food-the-new-yorker",
+      "name": "The New Yorker",
+      "category": "food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": []
+    },
+    {
+      "currentProductKey": "food-the-skinny",
+      "name": "The Skinny",
+      "category": "food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "gluten",
+        "milk",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "food-vegan-bar-gf-v",
+      "name": "Vegan Bar (GF | V)",
+      "category": "food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "peanut",
+        "sesame",
+        "tree-nut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "food-vegan-chia-seed-croissant-v",
+      "name": "Vegan Chia Seed Croissant (V)",
+      "category": "food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "gluten",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "food-vegan-deluxe-v",
+      "name": "Vegan Deluxe (V)",
+      "category": "food",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "gluten",
+        "tree-nut",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    }
+  ]
+}

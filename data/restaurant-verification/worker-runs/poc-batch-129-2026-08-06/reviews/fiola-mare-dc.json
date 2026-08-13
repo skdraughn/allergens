@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-129-2026-08-06",
+  "restaurantId": "fiola-mare-dc",
+  "reviewType": "scheduled_one_in_20_audit_final_recheck_3",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium",
+    "role": "sol_reviewer"
+  },
+  "reviewedFailedRules": [
+    "current_dinner_lunch_brunch_membership_truth",
+    "direct_positive_current_scope_truth_for_16_affected_products",
+    "surface_vendor_restaurant_issued_authority_consistency"
+  ],
+  "regressionChecks": [
+    "official_documents_actual_sitemap_evidence",
+    "unsupported_allergen_negatives"
+  ],
+  "evidence": [
+    {
+      "evidenceId": "final-result",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-129-2026-08-06/results/fiola-mare-dc.json",
+      "finding": "The final result contains an exact 57-product union. Current surface memberships are dinner 37, lunch 24, and brunch 29; every published product belongs to at least one current surface and every surface key resolves to a published product."
+    },
+    {
+      "evidenceId": "official-dinner-final",
+      "url": "https://www.fiolamaredc.com/dinner",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-06",
+      "finding": "All 37 asserted dinner product names are present in the current official Dinner Menu section. Fiola Mare Lobster Ravioli is directly present and was correctly retained from the prior 22-key review set."
+    },
+    {
+      "evidenceId": "official-lunch-final",
+      "url": "https://www.fiolamaredc.com/lunch",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-06",
+      "finding": "All 24 asserted lunch product names are present in the current official Lunch Menu section."
+    },
+    {
+      "evidenceId": "official-brunch-final",
+      "url": "https://www.fiolamaredc.com/brunch",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-06",
+      "finding": "All 29 asserted brunch product names are present in the current official Brunch Menu section. Merasheen Bay Oysters is directly present and was correctly retained from the prior 22-key review set."
+    },
+    {
+      "evidenceId": "prior-22-resolution",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-129-2026-08-06/reviews/fiola-mare-dc.scheduled-sol-audit-final-2.json",
+      "finding": "The prior 22-key set is fully resolved: 20 unsupported products and memberships were removed; fiola-mare-lobster-ravioli and merasheen-bay-oysters were retained because focused official-page reinspection proves them current. Neither retained key is now unsupported."
+    },
+    {
+      "evidenceId": "direct-positive-final",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-129-2026-08-06/results/fiola-mare-dc.json",
+      "finding": "The current catalog contains 34 direct-positive products with structurally valid restaurant-issued evidence. Of the previously affected 16 direct-positive keys, 14 now have stale dispositions with no current match, while Fiola Mare Lobster Ravioli and Merasheen Bay Oysters have truthful normalized current matches supported by their official service-period pages."
+    },
+    {
+      "evidenceId": "reconciliation-final",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-129-2026-08-06/results/fiola-mare-dc.json",
+      "finding": "All 64 frozen audit keys reconcile exactly once: 45 normalized_match and 19 stale, with no empty match on normalized rows and no current match on stale rows."
+    },
+    {
+      "evidenceId": "vendor-authority-final",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-129-2026-08-06/results/fiola-mare-dc.json",
+      "finding": "surface-vendor now classifies https://www.fiolamaredc.com/menus as restaurant_issued. The canonical dossier and evidence entries ev-menus and ev-vendor use the same restaurant-issued authority; the no-outbound-vendor search outcome remains truthful."
+    },
+    {
+      "evidenceId": "apply-final",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-129-2026-08-06/apply-results/fiola-mare-dc.json",
+      "finding": "Final APPLY validation passes with 57 published products, 34 direct-positive products, 64 reconciliations, zero orphan or undefined keys, dossier equality, recomputed Ingredient Intelligence, and a byte-identical second application."
+    },
+    {
+      "evidenceId": "regressions-final",
+      "artifact": "data/restaurant-verification/restaurants/fiola-mare-dc.json",
+      "finding": "The official sitemap search remains credible and no unsupported allergen-negative claim was introduced."
+    }
+  ],
+  "resolution": {
+    "binding": true,
+    "outcome": "audit_passed_no_material_safety_error",
+    "items": [],
+    "surfaceResolutions": [],
+    "safetySourceAuthorityConflictRemains": false
+  },
+  "ruleResults": {
+    "currentDinnerLunchBrunchMembershipTruth": "pass",
+    "directPositiveCurrentScopeAndReconciliationTruth": "pass",
+    "surfaceVendorRestaurantIssuedAuthorityConsistency": "pass",
+    "officialDocumentsSitemapRegression": "pass",
+    "unsupportedAllergenNegativesRegression": "pass"
+  },
+  "remainingRules": [],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "currentProductCount": 57,
+    "currentSurfaceUnionProductCount": 57,
+    "dinnerProductCount": 37,
+    "lunchProductCount": 24,
+    "brunchProductCount": 29,
+    "surfaceMembershipNameMismatchCount": 0,
+    "orphanCurrentProductCount": 0,
+    "undefinedSurfaceKeyCount": 0,
+    "priorUnsupportedSetCount": 22,
+    "priorUnsupportedProductsRemovedCount": 20,
+    "priorKeysRetainedWithCurrentOfficialProofCount": 2,
+    "currentDirectPositiveProductCount": 34,
+    "affectedDirectPositiveKeysReclassifiedStaleCount": 14,
+    "affectedDirectPositiveKeysRetainedWithCurrentOfficialProofCount": 2,
+    "frozenItemCount": 64,
+    "reconciledFrozenItemCount": 64,
+    "uniqueReconciledFrozenItemCount": 64,
+    "normalizedMatchCount": 45,
+    "staleCount": 19,
+    "linkedVendorSearchOutcomeTruthful": true,
+    "surfaceVendorAuthority": "restaurant_issued",
+    "linkedVendorAuthorityConsistent": true,
+    "officialDocumentsSearchRegressionPassed": true,
+    "unsupportedAllergenNegativeClaimCount": 0,
+    "materialSafetyError": false,
+    "codexVerifiedClaimed": false
+  },
+  "coordinatorRecommendation": "Binding final recheck passes all remaining rules and regressions. Proceed with coordinator-owned terminal validation and closeout; this review does not itself mutate the ledger or mark fiola-mare-dc codex_verified."
+}

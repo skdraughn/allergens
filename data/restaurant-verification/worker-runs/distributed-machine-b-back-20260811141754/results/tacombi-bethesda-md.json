@@ -1,0 +1,386 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811141754",
+  "restaurantId": "tacombi-bethesda-md",
+  "packetValidation": {
+    "baselineItemCount": 16,
+    "baselineFingerprint": "66426f2b414a5de42ea42fb1e10628f43c43e91e2235a22422961fa5d872fa78",
+    "itemCheckCount": 16,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "Tacombi Bethesda",
+    "locationId": "bethesda",
+    "address": "4749 Bethesda Ave, Bethesda, MD 20814",
+    "domain": "tacombi.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "e-home",
+      "e-location",
+      "e-order"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "e-home",
+      "url": "https://www.tacombi.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official menu homepage and allergen-guide navigation",
+      "retrievedAt": "2026-08-11T14:25:00Z"
+    },
+    {
+      "evidenceId": "e-location",
+      "url": "https://www.tacombi.com/locations-and-reservations",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official Bethesda identity and address",
+      "retrievedAt": "2026-08-11T14:25:00Z"
+    },
+    {
+      "evidenceId": "e-order",
+      "url": "https://order.tacombi.com/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current linked ordering surface with Bethesda store",
+      "retrievedAt": "2026-08-11T14:26:00Z"
+    },
+    {
+      "evidenceId": "e-allergen-guide",
+      "url": "https://cdn.prod.website-files.com/612529786e2289cb49c971bc/6a5a8f452a937d8173265d82_Tacombi_Allergen_Guide%20-%20Allergen%20Guide.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official allergen guide linked from menu page",
+      "retrievedAt": "2026-08-11T14:27:00Z"
+    },
+    {
+      "evidenceId": "e-search",
+      "url": "https://www.ubereats.com/brand-city/bethesda-md/tacombi",
+      "authorityTier": "third_party",
+      "purpose": "targeted current Bethesda menu corroboration",
+      "retrievedAt": "2026-08-11T14:28:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-menu",
+      "url": "https://www.tacombi.com/menu",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "all Tacombi; Bethesda applicability confirmed through location/order surfaces",
+      "servicePeriod": "current food and nonalcoholic menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; menu page links official allergen guide",
+      "sourceEvidenceIds": [
+        "e-home",
+        "e-allergen-guide"
+      ]
+    },
+    {
+      "surfaceId": "official-locations",
+      "url": "https://www.tacombi.com/locations-and-reservations",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "bethesda",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "e-location"
+      ]
+    },
+    {
+      "surfaceId": "linked-ordering",
+      "url": "https://order.tacombi.com/",
+      "authority": "linked vendor",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "bethesda",
+      "servicePeriod": "current food, beverages and alcohol",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; alcohol-only offerings excluded from POC boundary",
+      "sourceEvidenceIds": [
+        "e-order"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "tacombi-bethesda-menu-catalog",
+      "name": "Tacombi Bethesda current food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "e-home",
+        "e-order",
+        "e-search"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "productCount": 16,
+      "boundary": "16 frozen Bethesda food/nonalcoholic products represented; alcohol-only offerings excluded; repeated presentations consolidated"
+    }
+  ],
+  "matrixSearch": {
+    "status": "found",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "Tacombi official menu page and navigation",
+        "outcome": "completed; official Allergen Guide link found",
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-allergen-guide"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "official linked Allergen Guide PDF and document surfaces",
+        "outcome": "completed; official allergen guide retrieved/identified; no separate nutrition or ingredient matrix located",
+        "sourceEvidenceIds": [
+          "e-allergen-guide"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Tacombi Bethesda linked ordering menu",
+        "outcome": "completed; current menu and selected explicit item allergen labels observed, no complete vendor matrix or cross-contact policy",
+        "sourceEvidenceIds": [
+          "e-order"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "Tacombi Bethesda allergen allergy nutrition ingredients PDF menu",
+        "location": "targeted web search across official domain and Bethesda menu results",
+        "outcome": "completed; official guide result corroborated; no additional authoritative matrix",
+        "sourceEvidenceIds": [
+          "e-allergen-guide",
+          "e-search"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "evidenceId": "e-allergen-guide",
+      "statement": "Tacombi publishes an official allergen guide linked from its menu page; item-level fields are not copied without a confirmed Bethesda/current product mapping. Ordering surfaces expose some explicit contains-allergen labels, but do not establish absence or cross-contact safety for unmarked items.",
+      "sourceEvidenceIds": [
+        "e-allergen-guide",
+        "e-order"
+      ],
+      "authorityTier": "restaurant_issued",
+      "crossContact": "No complete Bethesda-specific cross-contact guarantee was established; do not treat unmarked allergens as absent."
+    }
+  ],
+  "reconciliation": {
+    "expectedCount": 16,
+    "items": [
+      {
+        "auditItemKey": "1:al-pastor",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tacombi-bethesda-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-order"
+        ]
+      },
+      {
+        "auditItemKey": "2:avocado-tostada",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tacombi-bethesda-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-order"
+        ]
+      },
+      {
+        "auditItemKey": "3:baja-crispy-fish",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tacombi-bethesda-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-order"
+        ]
+      },
+      {
+        "auditItemKey": "4:beef-birria",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tacombi-bethesda-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-order"
+        ]
+      },
+      {
+        "auditItemKey": "5:black-bean-and-sweet-potato",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tacombi-bethesda-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-order"
+        ]
+      },
+      {
+        "auditItemKey": "6:breakfast-quesadillas",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tacombi-bethesda-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-order"
+        ]
+      },
+      {
+        "auditItemKey": "7:breakfast-tacos",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tacombi-bethesda-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-order"
+        ]
+      },
+      {
+        "auditItemKey": "8:carne-asada",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tacombi-bethesda-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-order"
+        ]
+      },
+      {
+        "auditItemKey": "9:churros-con-chocolate",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tacombi-bethesda-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-order"
+        ]
+      },
+      {
+        "auditItemKey": "10:corn-esquites",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tacombi-bethesda-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-order"
+        ]
+      },
+      {
+        "auditItemKey": "11:crispy-chicken-tinga",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tacombi-bethesda-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-order"
+        ]
+      },
+      {
+        "auditItemKey": "12:guacamole-con-totopos",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tacombi-bethesda-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-order"
+        ]
+      },
+      {
+        "auditItemKey": "13:lunchtime-taco-plato",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tacombi-bethesda-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-order"
+        ]
+      },
+      {
+        "auditItemKey": "14:rice-and-beans",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tacombi-bethesda-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-order"
+        ]
+      },
+      {
+        "auditItemKey": "15:seared-fish",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tacombi-bethesda-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-order"
+        ]
+      },
+      {
+        "auditItemKey": "16:shrimp",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tacombi-bethesda-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-order"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify",
+  "outcome": "researched",
+  "processLog": [
+    "packet_validated",
+    "identity_verified",
+    "menu_surfaces_inventoried",
+    "matrix_search_completed",
+    "products_reconciled",
+    "validator_passed"
+  ]
+}

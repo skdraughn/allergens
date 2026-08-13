@@ -7,6 +7,7 @@ export const updateAllergyRatingSummary = defineFunction({
   memoryMB: 512,
   runtime: 22,
   environment: {
+    PUBLISHED_COMMUNITY_ALLERGY_REVIEW_TABLE_NAME: "",
     RESTAURANT_ALLERGY_RATING_SUMMARY_TABLE_NAME: "",
   },
 });

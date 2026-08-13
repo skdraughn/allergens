@@ -1,0 +1,1325 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-batch-04-2026-07-16",
+  "restaurant": {
+    "restaurantId": "barrel-and-crow-bethesda-dc-metro",
+    "name": "Barrel & Crow Bethesda",
+    "domain": "barrelandcrow.com",
+    "locationId": "bethesda-md",
+    "baselineItemCount": 39,
+    "baselineItemFingerprint": "be12b886c996616917d31a753d210b5120bc3c44749ecf7d269af7dd653a73e6",
+    "officialItemCount": 23,
+    "officialAllergenStatus": "not-found",
+    "sourceFamily": "toast",
+    "parserProfile": "toast-menu",
+    "guideUrl": "https://order.toasttab.com/online/barrel-and-crow",
+    "sourceUrls": [
+      "https://order.toasttab.com/online/barrel-and-crow"
+    ]
+  },
+  "effectiveOutcome": "blocked_unverifiable",
+  "routingReasons": [
+    "Terra marked the result blocked_unverifiable.",
+    "Low confidence must be explicitly marked low_confidence.",
+    "Terra must verify every scout product presentation exactly once.",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra reported a mismatched or unverifiable current product.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "validationWarnings": [
+    "Low confidence must be explicitly marked low_confidence.",
+    "Terra must verify every scout product presentation exactly once.",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra reported a mismatched or unverifiable current product.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "pdf_or_image",
+      "count_drift",
+      "current_only",
+      "duplicate_presentations",
+      "cross_contact",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 39,
+      "reconciledItemCount": 39,
+      "uniqueReconciledItemCount": 39,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 3,
+      "activeMenuSurfaceCount": 2,
+      "accessibleMenuSurfaceCount": 2,
+      "serviceCount": 1,
+      "pdfImageSurfaceCount": 1,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 0,
+      "incompleteSurfaceCount": 0,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 2,
+      "currentOnlyCount": 1,
+      "baselineOnlyCount": 0,
+      "countDrift": true,
+      "duplicatePresentationCount": 1,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 0,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 0,
+      "allergenMismatchItemCount": 0,
+      "crossContactCount": 2,
+      "parserRepairFindingCount": 0,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 0,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "blocked_unverifiable",
+    "confidence": {
+      "level": "low",
+      "overall": 0.42,
+      "menu": 0.62,
+      "allergenSource": 0.1,
+      "extraction": 0.45,
+      "rationale": "Identity and the accessible Toast dinner listing are independently corroborated, but the restaurant site exposes additional image-based menu pages that cannot be enumerated from accessible text, while no complete allergen matrix, ingredient list, negative claim, or cross-contact statement was found."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Barrel & Crow, 4867 Cordell Ave, Bethesda, MD 20814; restaurant-controlled site and linked Toast ordering page agree.",
+      "confidence": 0.98,
+      "sourceEvidenceIds": [
+        "official-food-drink",
+        "toast-current-menu"
+      ],
+      "notes": "Official Food & Drink page gives the Bethesda address and links Order Online; Toast gives the same address."
+    },
+    "sources": [
+      {
+        "evidenceId": "official-food-drink",
+        "url": "https://barrelandcrow.com/food-drink/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Food & Drink — Barrel and Crow",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Restaurant-controlled page identifies 4867 Cordell Ave., Bethesda, MD 20814, lists menu pages, and links its Toast ordering page.",
+        "stableRowId": "lines-20-31,53-77",
+        "contentHash": null,
+        "artifactSuggested": "html"
+      },
+      {
+        "evidenceId": "toast-current-menu",
+        "url": "https://order.toasttab.com/online/barrel-and-crow",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Barrel and Crow — Toast Order Online",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Linked ordering page identifies Barrel and Crow at 4867 Cordell Ave, Bethesda and lists dinner appetizers, entrees, desserts, sides, and merchandise.",
+        "stableRowId": "lines-14-31,44-147",
+        "contentHash": null,
+        "artifactSuggested": "html"
+      },
+      {
+        "evidenceId": "official-dinner-pdf",
+        "url": "https://barrelandcrow.com/wp-content/uploads/2025/05/Dinner-Menu-2025-2.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Dinner Menu 2025",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "One-page restaurant-issued dinner PDF with food descriptions and a raw/undercooked-food warning; it has no allergen legend, allergen arrays, or cross-contact statement.",
+        "stableRowId": "page-1",
+        "contentHash": null,
+        "artifactSuggested": "pdf"
+      },
+      {
+        "evidenceId": "official-brunch-pdf",
+        "url": "https://barrelandcrow.com/wp-content/uploads/2023/04/Updated-BC-Brunch-Menu-20234-1.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Updated B+C Brunch Menu 2023",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "One-page dated restaurant-issued brunch PDF with brunch-specific products and only a raw/undercooked-food warning; it has no allergen disclosure.",
+        "stableRowId": "page-1",
+        "contentHash": null,
+        "artifactSuggested": "pdf"
+      },
+      {
+        "evidenceId": "opentable-menu",
+        "url": "https://www.opentable.com/barrel-and-crow",
+        "authorityTier": "third_party",
+        "purpose": "menu",
+        "title": "Barrel & Crow — OpenTable",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Third-party page presents dinner, brunch, wine, cocktail, happy-hour, dessert, and beer menus; used only to corroborate the restaurant's multi-service offering.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://barrelandcrow.com/food-drink/",
+        "notes": "Accessible restaurant-controlled identity page and menu-page index."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://barrelandcrow.com/wp-content/uploads/2025/05/Dinner-Menu-2025-2.pdf",
+        "notes": "Accessible restaurant-issued one-page dinner PDF."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://order.toasttab.com/online/barrel-and-crow",
+        "notes": "Accessible restaurant-linked Toast menu; it is the strongest accessible current food listing."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": "https://www.google.com/search?q=site%3Abarrelandcrow.com+allergen+OR+allergies+OR+ingredients+%22Barrel+and+Crow%22",
+        "notes": "No restaurant-issued allergen, ingredient, or cross-contact document located."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No authoritative archived allergen disclosure located in the reviewed results."
+      },
+      {
+        "kind": "third_party",
+        "status": "accessible",
+        "url": "https://www.opentable.com/barrel-and-crow",
+        "notes": "Accessible third-party corroboration only; not promoted to restaurant-issued authority."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "pdf_or_image",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "official-dinner-pdf",
+          "official-brunch-pdf",
+          "official-food-drink"
+        ],
+        "notes": "Both scout PDFs are image/PDF extraction risks, and the official Dessert, Happy Hour, wine, beer, and cocktail pages contain menu images rather than accessible menu text."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "toast-current-menu"
+        ],
+        "notes": "Toast presents current food entries outside the frozen baseline, including Gazpacho, Hanger Steak, Seard Tuna Special, four additional desserts, and SD Grits; live/search representations also show non-baseline New York and an out-of-stock Braised Pork Shank state."
+      },
+      {
+        "gateId": "current_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "toast-current-menu"
+        ],
+        "notes": "Current Toast-only food entries are present and the official image menu surfaces remain unenumerated."
+      },
+      {
+        "gateId": "duplicate_presentations",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "toast-current-menu"
+        ],
+        "notes": "Toast repeats featured products in their category listings; presentation-level duplication must not be interpreted as distinct products."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "unresolved",
+        "sourceEvidenceIds": [
+          "toast-current-menu",
+          "official-dinner-pdf",
+          "official-brunch-pdf"
+        ],
+        "notes": "The only explicit global warning concerns raw/undercooked foods. No restaurant-issued cross-contact, shared-equipment, or may-contain disclosure was found; no cross-contact conclusion can be made."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "official-food-drink",
+          "toast-current-menu"
+        ],
+        "notes": "Current scope is incomplete because restaurant-controlled menu pages are image-only and have not been text-enumerated; allergen authority is unavailable."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "toast-current-menu",
+          "official-dinner-pdf",
+          "official-brunch-pdf"
+        ],
+        "notes": "The independently observed allergen-disclosure gap and source-scope issues remain material."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "surface-toast-dinner",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "toast-current-menu"
+        ],
+        "notes": "Accessible restaurant-linked vendor surface. Dinner food, desserts, and sides are text-enumerable; featured-item duplication is present."
+      },
+      {
+        "surfaceId": "surface-official-dinner-pdf",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "official-dinner-pdf"
+        ],
+        "notes": "Accessible restaurant-issued one-page dinner PDF, but its 2025 filename/date and differences from Toast prevent it from proving a complete current catalog."
+      },
+      {
+        "surfaceId": "surface-official-brunch-pdf",
+        "verdict": "unverifiable",
+        "sourceEvidenceIds": [
+          "official-brunch-pdf",
+          "official-food-drink"
+        ],
+        "notes": "Accessible 2023 restaurant-issued brunch PDF. The current restaurant site advertises Sunday brunch, but this dated PDF cannot establish the current brunch catalog."
+      }
+    ],
+    "currentProductCheckGroups": [
+      {
+        "currentProductKeys": [
+          "toast-food-catalog"
+        ],
+        "presentationIds": [
+          "toast-menu"
+        ],
+        "verdict": "mismatch",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "toast-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "toast-current-menu"
+        ],
+        "notes": "The scout's single aggregate product is not a valid complete-product reconciliation: it conceals individual product scope and cannot support aggregate allergen arrays. Toast descriptions support only narrow named-ingredient positives, never complete arrays, negatives, or cross-contact conclusions."
+      },
+      {
+        "currentProductKeys": [
+          "toast-additional-food-items"
+        ],
+        "presentationIds": [
+          "toast-menu"
+        ],
+        "verdict": "mismatch",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "toast-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "toast-current-menu"
+        ],
+        "notes": "Scout correctly recognized additional items but did not enumerate New York, shown as out of stock in current search evidence, and did not account for the unresolved restaurant-issued image-menu catalog. The group cannot carry complete allergen arrays."
+      }
+    ],
+    "additionalMenuSurfaces": [
+      {
+        "surfaceId": "surface-official-dessert-image",
+        "title": "Dessert Menu",
+        "service": "dessert",
+        "url": "https://barrelandcrow.com/food-drink/dessertmenu01/",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "image",
+        "accessStatus": "partial",
+        "fullyEnumerated": false,
+        "scopeStatus": "unresolved",
+        "current": null,
+        "sourceEvidenceIds": [
+          "official-food-drink"
+        ],
+        "currentProductKeys": [],
+        "notes": "Restaurant index links this menu; its accessible page contains an image but no readable item text."
+      },
+      {
+        "surfaceId": "surface-official-happy-hour-image",
+        "title": "Bar & Happy Hour Menu",
+        "service": "happy_hour",
+        "url": "https://barrelandcrow.com/food-drink/barhappyhourmenu01/",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "image",
+        "accessStatus": "partial",
+        "fullyEnumerated": false,
+        "scopeStatus": "unresolved",
+        "current": null,
+        "sourceEvidenceIds": [
+          "official-food-drink"
+        ],
+        "currentProductKeys": [],
+        "notes": "Restaurant index links this menu; its accessible page contains an image but no readable item text."
+      },
+      {
+        "surfaceId": "surface-official-red-wine-image",
+        "title": "Red Wine Menu",
+        "service": "beverage",
+        "url": "https://barrelandcrow.com/food-drink/redwinemenu01/",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "image",
+        "accessStatus": "partial",
+        "fullyEnumerated": false,
+        "scopeStatus": "unresolved",
+        "current": null,
+        "sourceEvidenceIds": [
+          "official-food-drink"
+        ],
+        "currentProductKeys": [],
+        "notes": "Additional restaurant-controlled menu surface omitted by scout; image-only in accessible text."
+      },
+      {
+        "surfaceId": "surface-official-white-wine-image",
+        "title": "White Wine & Wines by the Glass Menu",
+        "service": "beverage",
+        "url": "https://barrelandcrow.com/food-drink/whitewinemenu01/",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "image",
+        "accessStatus": "partial",
+        "fullyEnumerated": false,
+        "scopeStatus": "unresolved",
+        "current": null,
+        "sourceEvidenceIds": [
+          "official-food-drink"
+        ],
+        "currentProductKeys": [],
+        "notes": "Additional restaurant-controlled menu surface omitted by scout; image-only in accessible text."
+      },
+      {
+        "surfaceId": "surface-official-beer-image",
+        "title": "Beer Menu",
+        "service": "beverage",
+        "url": "https://barrelandcrow.com/food-drink/beermenu01/",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "image",
+        "accessStatus": "partial",
+        "fullyEnumerated": false,
+        "scopeStatus": "unresolved",
+        "current": null,
+        "sourceEvidenceIds": [
+          "official-food-drink"
+        ],
+        "currentProductKeys": [],
+        "notes": "Additional restaurant-controlled menu surface omitted by scout; image-only in accessible text."
+      },
+      {
+        "surfaceId": "surface-official-cocktails-image",
+        "title": "Cocktails & Spirits Menu",
+        "service": "beverage",
+        "url": "https://barrelandcrow.com/food-drink/cocktailsspiritsmenu01/",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "image",
+        "accessStatus": "partial",
+        "fullyEnumerated": false,
+        "scopeStatus": "unresolved",
+        "current": null,
+        "sourceEvidenceIds": [
+          "official-food-drink"
+        ],
+        "currentProductKeys": [],
+        "notes": "Additional restaurant-controlled menu surface omitted by scout; image-only in accessible text."
+      }
+    ],
+    "additionalCurrentProducts": [
+      {
+        "currentProductKey": "toast-new-york-out-of-stock",
+        "name": "New York",
+        "category": "entree",
+        "surfaceIds": [
+          "surface-toast-dinner"
+        ],
+        "presentationIds": [
+          "toast-menu"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "toast-current-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "unverifiable",
+        "notes": "Additional Toast entree presentation omitted from Luna's additional-item enumeration; shown as OUT OF STOCK. No ingredients or allergen disclosure are available."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 39,
+      "counts": {
+        "exact_match/accurately_unavailable": 37,
+        "missing_from_source/accurately_unavailable": 2
+      }
+    },
+    "findings": [
+      {
+        "findingId": "official-menu-surfaces-omitted",
+        "severity": "high",
+        "kind": "scope",
+        "summary": "Luna omitted six restaurant-controlled menu surfaces linked from Food & Drink. Their menu content is image-only in accessible text, leaving dessert, happy-hour, and beverage scope unresolved.",
+        "sourceEvidenceIds": [
+          "official-food-drink"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "toast-current-product-boundary-not-enumerated",
+        "severity": "high",
+        "kind": "menu",
+        "summary": "Luna used two aggregate catalog records rather than independently enumerating current products; it omitted the current Toast New York presentation and did not account for the unresolved official image-menu catalog.",
+        "sourceEvidenceIds": [
+          "toast-current-menu",
+          "official-food-drink"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "allergen-authority-and-cross-contact-gap",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "No complete restaurant-issued allergen or ingredient source was found. Toast menu descriptions are restaurant-linked-vendor ingredient text and support only narrow named positives; they cannot support complete arrays, negatives, may-contain arrays, or cross-contact claims.",
+        "sourceEvidenceIds": [
+          "toast-current-menu",
+          "official-dinner-pdf",
+          "official-brunch-pdf"
+        ],
+        "affectedAuditItemKeys": [
+          "1:ahi-tuna-taquitos",
+          "2:andouille-and-seafood-gumbo",
+          "3:blackened-salmon",
+          "4:braised-pork-shank",
+          "5:calamari",
+          "6:crab-beignets",
+          "7:crab-entree",
+          "8:duck-fat-fries",
+          "9:duck-tostadas",
+          "10:fresh-burrata",
+          "11:fried-amish-chicken-and-waffles",
+          "12:fried-green-tomatoes",
+          "13:grilled-chicken-sandwich",
+          "14:heritage-breed-pork-chop",
+          "15:kids-beef-sliders",
+          "16:kids-belgian-waffle",
+          "17:kids-chicken-fingers",
+          "18:kids-pasta",
+          "19:lamb-bolognese",
+          "20:mixed-green-salad",
+          "21:mussels-app",
+          "22:organic-chicken-wings",
+          "23:pan-seared-trout",
+          "24:parisienne-gnocchi",
+          "25:plain-salt-fries",
+          "26:pulled-brisket-sandwich",
+          "27:roasted-beet-salad",
+          "28:roasted-red-pepper-ravioli",
+          "29:roseda-farm-cheeseburger",
+          "30:salmon-burger",
+          "31:sd-baby-potatoes",
+          "32:sd-collard-greens",
+          "33:sd-green-beans",
+          "34:sd-grilled-asparagus",
+          "35:seafood-pasta",
+          "36:smoked-duck-breast",
+          "37:soft-shell-crab-sandwich",
+          "38:spiced-shrimp-and-grits",
+          "39:sweet-beignets-6"
+        ]
+      },
+      {
+        "findingId": "baseline-items-not-on-accessible-current-toast",
+        "severity": "medium",
+        "kind": "menu",
+        "summary": "Braised Pork Shank and Pulled Brisket Sandwich were not present in the directly opened current Toast listing. The old official PDFs show different shank/brisket preparations and do not establish a current match.",
+        "sourceEvidenceIds": [
+          "toast-current-menu",
+          "official-dinner-pdf",
+          "official-brunch-pdf"
+        ],
+        "affectedAuditItemKeys": [
+          "4:braised-pork-shank",
+          "26:pulled-brisket-sandwich"
+        ]
+      }
+    ],
+    "summary": "Independent verification confirms the Bethesda identity and accessible Toast dinner surface, but finds six additional restaurant-controlled image-menu surfaces and a missed Toast New York presentation. The current catalog is not fully enumerable and no authoritative complete allergen or cross-contact disclosure exists; the frozen items cannot support the existing complete allergen arrays or negative/cross-contact semantics.",
+    "coordinatorNotes": [
+      "Read-only Terra result; no ledger or source artifacts were mutated.",
+      "All 39 frozen auditItemKeys are reconciled exactly once across the three item-check groups.",
+      "The sole scout presentation ID, toast-menu, was independently checked once for each scout current-product group."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "1:ahi-tuna-taquitos",
+      "baseline": {
+        "itemId": "ahi-tuna-taquitos",
+        "name": "Ahi Tuna Taquitos",
+        "category": "American",
+        "variantGroup": "Kids Chicken Fingers",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "2:andouille-and-seafood-gumbo",
+      "baseline": {
+        "itemId": "andouille-and-seafood-gumbo",
+        "name": "Andouille & Seafood Gumbo",
+        "category": "American",
+        "variantGroup": "American",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "3:blackened-salmon",
+      "baseline": {
+        "itemId": "blackened-salmon",
+        "name": "Blackened Salmon",
+        "category": "American",
+        "variantGroup": "Andouille & Seafood Gumbo",
+        "isConfigurable": false,
+        "allergens": [
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "4:braised-pork-shank",
+      "baseline": {
+        "itemId": "braised-pork-shank",
+        "name": "Braised Pork Shank",
+        "category": "American",
+        "variantGroup": "Crab Entree",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "5:calamari",
+      "baseline": {
+        "itemId": "calamari",
+        "name": "Calamari",
+        "category": "American",
+        "variantGroup": "American",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "6:crab-beignets",
+      "baseline": {
+        "itemId": "crab-beignets",
+        "name": "Crab Beignets",
+        "category": "American",
+        "variantGroup": "Calamari",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "7:crab-entree",
+      "baseline": {
+        "itemId": "crab-entree",
+        "name": "Crab Entree",
+        "category": "American",
+        "variantGroup": "Soft Shell Crab Sandwich",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "8:duck-fat-fries",
+      "baseline": {
+        "itemId": "duck-fat-fries",
+        "name": "Duck Fat Fries",
+        "category": "American",
+        "variantGroup": "Crab Beignets",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "9:duck-tostadas",
+      "baseline": {
+        "itemId": "duck-tostadas",
+        "name": "Duck Tostadas",
+        "category": "American",
+        "variantGroup": "Duck Fat Fries",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "10:fresh-burrata",
+      "baseline": {
+        "itemId": "fresh-burrata",
+        "name": "Fresh Burrata",
+        "category": "American",
+        "variantGroup": "American",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "11:fried-amish-chicken-and-waffles",
+      "baseline": {
+        "itemId": "fried-amish-chicken-and-waffles",
+        "name": "Fried Amish Chicken & Waffles",
+        "category": "American",
+        "variantGroup": "Blackened Salmon",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "12:fried-green-tomatoes",
+      "baseline": {
+        "itemId": "fried-green-tomatoes",
+        "name": "Fried Green Tomatoes",
+        "category": "American",
+        "variantGroup": "Fresh Burrata",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "13:grilled-chicken-sandwich",
+      "baseline": {
+        "itemId": "grilled-chicken-sandwich",
+        "name": "Grilled Chicken Sandwich",
+        "category": "American",
+        "variantGroup": "Fried Amish Chicken & Waffles",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "14:heritage-breed-pork-chop",
+      "baseline": {
+        "itemId": "heritage-breed-pork-chop",
+        "name": "Heritage Breed Pork Chop",
+        "category": "American",
+        "variantGroup": "Hanger Steak",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "15:kids-beef-sliders",
+      "baseline": {
+        "itemId": "kids-beef-sliders",
+        "name": "Kids Beef Sliders",
+        "category": "American",
+        "variantGroup": "Heritage Breed Pork Chop",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "16:kids-belgian-waffle",
+      "baseline": {
+        "itemId": "kids-belgian-waffle",
+        "name": "Kids Belgian Waffle",
+        "category": "American",
+        "variantGroup": "Kids Beef Sliders",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "17:kids-chicken-fingers",
+      "baseline": {
+        "itemId": "kids-chicken-fingers",
+        "name": "Kids Chicken Fingers",
+        "category": "American",
+        "variantGroup": "Organic Chicken Wings",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "18:kids-pasta",
+      "baseline": {
+        "itemId": "kids-pasta",
+        "name": "Kids Pasta",
+        "category": "American",
+        "variantGroup": "Kids Chicken Fingers",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "19:lamb-bolognese",
+      "baseline": {
+        "itemId": "lamb-bolognese",
+        "name": "Lamb Bolognese",
+        "category": "American",
+        "variantGroup": "Kids Pasta",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "20:mixed-green-salad",
+      "baseline": {
+        "itemId": "mixed-green-salad",
+        "name": "Mixed Green Salad",
+        "category": "American",
+        "variantGroup": "Fried Green Tomatoes",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "21:mussels-app",
+      "baseline": {
+        "itemId": "mussels-app",
+        "name": "Mussels App",
+        "category": "American",
+        "variantGroup": "Mixed Green Salad",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "22:organic-chicken-wings",
+      "baseline": {
+        "itemId": "organic-chicken-wings",
+        "name": "Organic Chicken Wings",
+        "category": "American",
+        "variantGroup": "Roseda Farm Cheeseburger",
+        "isConfigurable": false,
+        "allergens": [
+          "soy",
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "23:pan-seared-trout",
+      "baseline": {
+        "itemId": "pan-seared-trout",
+        "name": "Pan Seared Trout",
+        "category": "American",
+        "variantGroup": "American",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "24:parisienne-gnocchi",
+      "baseline": {
+        "itemId": "parisienne-gnocchi",
+        "name": "Parisienne Gnocchi",
+        "category": "American",
+        "variantGroup": "Organic Chicken Wings",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "25:plain-salt-fries",
+      "baseline": {
+        "itemId": "plain-salt-fries",
+        "name": "Plain Salt Fries",
+        "category": "American",
+        "variantGroup": "Roasted Beet Salad",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "26:pulled-brisket-sandwich",
+      "baseline": {
+        "itemId": "pulled-brisket-sandwich",
+        "name": "Pulled Brisket Sandwich",
+        "category": "American",
+        "variantGroup": "Pan Seared Trout",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "27:roasted-beet-salad",
+      "baseline": {
+        "itemId": "roasted-beet-salad",
+        "name": "Roasted Beet Salad",
+        "category": "American",
+        "variantGroup": "Parisienne Gnocchi",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "28:roasted-red-pepper-ravioli",
+      "baseline": {
+        "itemId": "roasted-red-pepper-ravioli",
+        "name": "Roasted Red Pepper Ravioli",
+        "category": "American",
+        "variantGroup": "Pulled Brisket Sandwich",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "29:roseda-farm-cheeseburger",
+      "baseline": {
+        "itemId": "roseda-farm-cheeseburger",
+        "name": "Roseda Farm Cheeseburger",
+        "category": "American",
+        "variantGroup": "American",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "30:salmon-burger",
+      "baseline": {
+        "itemId": "salmon-burger",
+        "name": "Salmon Burger",
+        "category": "American",
+        "variantGroup": "Roseda Farm Cheeseburger",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "31:sd-baby-potatoes",
+      "baseline": {
+        "itemId": "sd-baby-potatoes",
+        "name": "SD Baby Potatoes",
+        "category": "American",
+        "variantGroup": "Sd Grits",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "32:sd-collard-greens",
+      "baseline": {
+        "itemId": "sd-collard-greens",
+        "name": "SD Collard Greens",
+        "category": "American",
+        "variantGroup": "Rustic Peach Tart",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "33:sd-green-beans",
+      "baseline": {
+        "itemId": "sd-green-beans",
+        "name": "SD Green Beans",
+        "category": "American",
+        "variantGroup": "Sd Collard Greens",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "34:sd-grilled-asparagus",
+      "baseline": {
+        "itemId": "sd-grilled-asparagus",
+        "name": "SD Grilled Asparagus",
+        "category": "American",
+        "variantGroup": "Sd Baby Potatoes",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "35:seafood-pasta",
+      "baseline": {
+        "itemId": "seafood-pasta",
+        "name": "Seafood Pasta",
+        "category": "American",
+        "variantGroup": "Spiced Shrimp & Grits",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "36:smoked-duck-breast",
+      "baseline": {
+        "itemId": "smoked-duck-breast",
+        "name": "Smoked Duck Breast",
+        "category": "American",
+        "variantGroup": "Salmon Burger",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "37:soft-shell-crab-sandwich",
+      "baseline": {
+        "itemId": "soft-shell-crab-sandwich",
+        "name": "Soft Shell Crab Sandwich",
+        "category": "American",
+        "variantGroup": "New York",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "38:spiced-shrimp-and-grits",
+      "baseline": {
+        "itemId": "spiced-shrimp-and-grits",
+        "name": "Spiced Shrimp & Grits",
+        "category": "American",
+        "variantGroup": "Smoked Duck Breast",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "39:sweet-beignets-6",
+      "baseline": {
+        "itemId": "sweet-beignets-6",
+        "name": "Sweet Beignets (6)",
+        "category": "American",
+        "variantGroup": "American",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/barrel-and-crow"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-04-2026-07-16/jobs/barrel-and-crow-bethesda-dc-metro.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-04-2026-07-16/results/barrel-and-crow-bethesda-dc-metro.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/barrel-and-crow-bethesda-dc-metro.jsonl"
+  }
+}

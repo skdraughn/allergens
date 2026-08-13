@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-129-2026-08-06",
+  "restaurantId": "fiola-mare-dc",
+  "reviewType": "scheduled_one_in_20_audit_final_recheck",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium",
+    "role": "sol_reviewer"
+  },
+  "reviewedFailedRules": [
+    "current_dinner_lunch_brunch_scope_and_membership",
+    "historical_direct_positive_preservation_or_item_specific_stale_reason",
+    "official_documents_search_credibility",
+    "linked_vendor_search_credibility_and_authority",
+    "unsupported_allergen_negatives"
+  ],
+  "evidence": [
+    {
+      "evidenceId": "repaired-result",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-129-2026-08-06/results/fiola-mare-dc.json",
+      "finding": "The repaired result publishes only 13 products: six dinner deltas, three lunch deltas, and four brunch deltas. It marks every one of the 64 frozen rows stale, including products still printed verbatim on the current official menu sections."
+    },
+    {
+      "evidenceId": "official-dinner-recheck",
+      "url": "https://www.fiolamaredc.com/dinner",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-06",
+      "finding": "The current Dinner Menu section contains at least 25 frozen direct-positive rows that the repair marks stale, including the seafood tower, Angel Hair al Limone, Fiola Mare Basil Caesar Salad, Fiola Mare Lobster Ravioli, Ligurian Pesto Ravioli, Octopus Arrabbiata, Royal Oscietra, Sassano Burrata, Whole Canary Islands Branzino, Whole Grilled Maine Lobster, and Wild Rhode Island Calamari. None is represented in the six-product dinner membership."
+    },
+    {
+      "evidenceId": "official-lunch-recheck",
+      "url": "https://www.fiolamaredc.com/lunch",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-06",
+      "finding": "The current Lunch Menu section contains at least 16 frozen direct-positive rows that the repair marks stale, including the seafood tower, Angel Hair al Limone, Fiola Mare Basil Caesar Salad, Ligurian Pesto Ravioli, Shrimp Cocktail, Spring Garden, Tuna Tartare Puttanesca, Whole Canary Islands Branzino, and Wild Rhode Island Calamari. None is represented in the three-product lunch membership."
+    },
+    {
+      "evidenceId": "official-brunch-recheck",
+      "url": "https://www.fiolamaredc.com/brunch",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-06",
+      "finding": "The current Brunch Menu section contains at least 21 frozen direct-positive rows that the repair marks stale, including Bombolini, Chef Kate's Pastry & Bread Basket, Dry Aged Double Smash Burger, Fiola Mare Basil Caesar Salad, Fiola Mare Tiramisu, Fusilli Cacio e Pepe, Lemon Berry Cake, Ligurian Pesto Ravioli, Merasheen Bay Oysters, Smoked Salmon Scramble, and Wild Rhode Island Calamari. None is represented in the four-product brunch membership."
+    },
+    {
+      "evidenceId": "false-stale-direct-positive-set",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-129-2026-08-06/results/fiola-mare-dc.json",
+      "finding": "Thirty-five of the 48 historical direct-positive rows are still present verbatim in at least one current official menu section. Their identical generic note states that each item is absent, so the claimed item-specific stale reason is factually false and cannot justify dropping its positive semantics."
+    },
+    {
+      "evidenceId": "official-sitemap-recheck",
+      "url": "https://www.fiolamaredc.com/sitemap.xml",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-06",
+      "finding": "The official sitemap resolves successfully and contains no allergen, ingredient, nutrition, or PDF URL. The repaired official_documents search is credible."
+    },
+    {
+      "evidenceId": "tock-authority-recheck",
+      "url": "https://www.exploretock.com/fiolamare",
+      "authorityTier": "unresolved",
+      "retrievedAt": "2026-08-06",
+      "finding": "The URL returns HTTP 403 to direct inspection, and no exploretock/Tock link appears on the official homepage, /menus, /dinner, /lunch, /brunch, or sitemap surfaces inspected for this focused recheck. The packet provides no referring restaurant-issued URL or captured proof establishing this as a restaurant-linked vendor."
+    },
+    {
+      "evidenceId": "canonical-evidence-recheck",
+      "artifact": "data/restaurant-verification/evidence/fiola-mare-dc.json",
+      "finding": "ev-tock assigns restaurant_linked_vendor authority but has null finalUrl, httpStatus, sha256, artifactPath, and request, and only the generic excerpt 'Inspected source.' It does not resolve the restaurant-linkage authority question. The obsolete ev-vendor entry also remains mislabeled restaurant_linked_vendor for the restaurant-controlled /menus URL."
+    },
+    {
+      "evidenceId": "apply-result-recheck",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-129-2026-08-06/apply-results/fiola-mare-dc.json",
+      "finding": "Mechanical validation reports 13 published products, 64 stale rows, and zero direct positives; those internally consistent counts reproduce rather than detect the incomplete catalog and false stale adjudications."
+    }
+  ],
+  "resolution": {
+    "binding": true,
+    "outcome": "audit_recheck_failed_material_safety_error",
+    "items": [
+      {
+        "resolution": "false_stale_reason_and_direct_positive_loss",
+        "affectedAuditItemKeys": [
+          "1:a-collection-of-seafood-crudi-inspired-by-the-amalfi-coast",
+          "4:amalfi-coast-delizia-al-limone",
+          "5:angel-hair-al-limone",
+          "10:bombolini",
+          "14:canary-islands-branzino",
+          "17:cassata-siciliana",
+          "19:caviar-sourdough-milk-toast",
+          "20:chef-kates-pastry-and-bread-basket",
+          "24:dry-aged-double-smash-burger",
+          "25:eggplant-al-funghetto",
+          "26:fiola-mare-basil-caesar-salad",
+          "27:fiola-mare-grand-chocolate-cake",
+          "28:fiola-mare-lobster-ravioli",
+          "29:fiola-mare-seafood-tower",
+          "30:fiola-mare-tiramisu",
+          "31:fusilli-cacio-e-pepe",
+          "32:grand-chocolate-cake",
+          "36:lemon-berry-cake",
+          "37:ligurian-pesto-ravioli",
+          "39:merasheen-bay-oysters",
+          "40:neapolitan-paccheri-frutti-di-mare",
+          "41:octopus-arrabbiata",
+          "43:royal-oscietra",
+          "44:sassano-burrata",
+          "46:setaro-spaghetti-chitarra-alle-vongole",
+          "48:shrimp-cocktail",
+          "49:siberian-royal",
+          "50:smoked-salmon-scramble",
+          "52:spring-garden",
+          "53:strawberry-shortcake",
+          "54:tuna-tartare-puttanesca",
+          "56:venetian-tiramisu",
+          "58:whole-canary-islands-branzino",
+          "59:whole-grilled-maine-lobster",
+          "63:wild-rhode-island-calamari"
+        ],
+        "requiredAction": "Restore each still-current product to the appropriate current surface membership and preserve its restaurant-issued direct positive where the current presentation still supports it; otherwise provide a truthful item-and-presentation-specific evidence reason."
+      }
+    ],
+    "surfaceResolutions": [
+      {
+        "surfaceId": "surface-dinner",
+        "resolution": "incomplete",
+        "publishedProductCount": 6,
+        "minimumDemonstratedOmittedFrozenDirectPositiveCount": 25
+      },
+      {
+        "surfaceId": "surface-lunch",
+        "resolution": "incomplete",
+        "publishedProductCount": 3,
+        "minimumDemonstratedOmittedFrozenDirectPositiveCount": 16
+      },
+      {
+        "surfaceId": "surface-brunch",
+        "resolution": "incomplete",
+        "publishedProductCount": 4,
+        "minimumDemonstratedOmittedFrozenDirectPositiveCount": 21
+      }
+    ],
+    "safetySourceAuthorityConflictRemains": true
+  },
+  "ruleResults": {
+    "currentDinnerLunchBrunchScopeAndMembership": "fail",
+    "historicalDirectPositivePreservationOrTruthfulStaleReason": "fail",
+    "officialDocumentsActualSitemapEvidence": "pass",
+    "genuineLinkedTockVendorEvidenceAndAuthority": "fail",
+    "unsupportedAllergenNegatives": "pass"
+  },
+  "remainingRules": [
+    "current_dinner_lunch_brunch_scope_and_membership",
+    "historical_direct_positive_preservation_or_truthful_item_specific_stale_reason",
+    "linked_vendor_search_credibility_and_restaurant_linked_vendor_authority"
+  ],
+  "validation": {
+    "valid": false,
+    "errors": [
+      "The repair converted a 64-product catalog into only the 13 newly observed deltas and omitted continuing products from all three current surfaces.",
+      "Thirty-five historical direct-positive products are demonstrably current but have false absent/stale reasons and lost their direct-positive semantics.",
+      "Tock restaurant linkage and restaurant_linked_vendor authority remain unsupported by a restaurant-issued referring source or capture."
+    ],
+    "currentProductCount": 13,
+    "currentMenuSurfaceCount": 3,
+    "surfacesWithCompleteTruthfulMembership": 0,
+    "frozenItemCount": 64,
+    "reconciledFrozenItemCount": 64,
+    "historicalDirectPositiveItemCount": 48,
+    "demonstrablyCurrentFalseStaleDirectPositiveItemCount": 35,
+    "preservedCurrentDirectPositiveItemCount": 0,
+    "officialDocumentsSearchCredible": true,
+    "linkedVendorSearchCredible": false,
+    "linkedVendorAuthorityResolved": false,
+    "unsupportedAllergenNegativeClaimCount": 0,
+    "materialSafetyError": true,
+    "codexVerifiedClaimed": false
+  },
+  "coordinatorRecommendation": "Final re-audit fails. Keep fiola-mare-dc nonterminal and claims paused. Repair the full dinner/lunch/brunch product boundaries rather than publishing only the 13 deltas; correct the 35 enumerated false stale adjudications and preserve supported direct positives; replace or substantiate Tock with a restaurant-issued referring source and remove the obsolete false ev-vendor authority. The sitemap search and unsupported-negative checks need no further repair. Repeat only these three remaining failed rules."
+}

@@ -3,67 +3,132 @@
   "verificationContractVersion": 2,
   "restaurantId": "gravitas-dc",
   "name": "Gravitas",
-  "status": "blocked_unverifiable",
-  "createdAt": "2026-08-07T17:33:32.036Z",
-  "updatedAt": "2026-08-07T17:39:46.335Z",
-  "completedAt": "2026-08-07T17:39:46.335Z",
-  "model": {
-    "id": "gpt-5.6-sol",
-    "reasoningEffort": "medium"
+  "status": "codex_verified",
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Gravitas",
+    "location": "1401 Okie Street Northeast, Washington, DC 20002",
+    "locationId": null,
+    "domain": "gravitasdc.com",
+    "officialHomepage": "https://www.gravitasdc.com/",
+    "sourceEvidenceIds": [
+      "ev-toast-identity",
+      "ev-tock-identity"
+    ],
+    "notes": "Toast and Tock independently identify the same Gravitas at 1401 Okie Street NE; no other location merged. Official homepage currently returns 404, so it is retained as the packet domain but not treated as a menu source.",
+    "status": "confirmed"
   },
+  "currentCatalog": {
+    "status": "verified",
+    "reviewedBaselineItemCount": 0,
+    "currentProductCount": 0,
+    "reconciledCurrentProductCount": 0,
+    "inventoryFingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "surfaces": [
+      {
+        "surfaceId": "closed-current-catalog",
+        "title": null,
+        "url": "https://www.gravitasdc.com/",
+        "current": true,
+        "scopeStatus": "complete",
+        "verified": true,
+        "evidenceIds": [
+          "ev-official-home"
+        ],
+        "notes": [
+          "closed"
+        ]
+      }
+    ],
+    "products": [],
+    "notes": [
+      "Coordinator terminal catalog derived from validated Luna research and serialized APPLY output."
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [],
   "checks": {
     "menu": {
-      "verdict": "unverifiable",
+      "verdict": "verified",
       "reviewedItemCount": 0,
-      "sourceItemCount": null,
+      "sourceItemCount": 0,
       "notes": [
-        "Binding Sol review found no complete current public menu boundary."
+        "POC catalog and every frozen item were coordinator-reconciled."
       ]
     },
     "allergenSource": {
       "verdict": "accurately_unavailable",
+      "directPositiveCount": 0,
+      "directAssertionCount": 0,
       "highestAuthorityTier": null,
       "notes": [
-        "All four searches completed without an item matrix."
+        "All four official-matrix search classes completed; direct positives are retained and missing disclosure remains unavailable."
       ]
     },
     "extraction": {
       "verdict": "not_applicable",
       "parserReviewed": false,
       "semanticsVerified": true,
-      "notes": []
+      "notes": [
+        "POC closeout uses a verified target-specific catalog transformation; shared-parser review is deferred."
+      ]
     }
   },
-  "currentCatalog": {
-    "status": "unverifiable",
-    "reviewedBaselineItemCount": 0,
-    "currentProductCount": 0,
-    "reconciledCurrentProductCount": 0,
-    "inventoryFingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-    "surfaces": [],
-    "products": [],
-    "notes": [
-      "Private-dining and seasonal observations are partial; zero baseline does not establish an empty catalog."
-    ]
+  "sourceAttempts": [
+    {
+      "class": "official_site",
+      "url": "https://www.gravitasdc.com/",
+      "outcome": "not_found",
+      "evidenceIds": [
+        "ev-search-site"
+      ]
+    },
+    {
+      "class": "official_documents",
+      "url": "https://www.gravitasdc.com/robots.txt",
+      "outcome": "not_found",
+      "evidenceIds": [
+        "ev-search-docs"
+      ]
+    },
+    {
+      "class": "linked_vendor",
+      "url": "https://order.toasttab.com/online/gravitas",
+      "outcome": "not_found",
+      "evidenceIds": [
+        "ev-search-vendor"
+      ]
+    },
+    {
+      "class": "targeted_web_search",
+      "query": "site:gravitasdc.com allergen allergy nutrition ingredients PDF menu",
+      "outcome": "not_found",
+      "evidenceIds": [
+        "ev-search-web"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "unresolved": 0
   },
   "adjudication": {
     "type": "coordinator",
     "runId": "poc-batch-152-2026-08-07",
-    "decidedAt": "2026-08-07T17:39:46.010Z",
-    "recommendation": "blocked_unverifiable",
+    "decidedAt": "2026-08-12T14:36:03.641Z",
+    "recommendation": "codex_verified",
     "model": {
       "id": "codex-poc-coordinator",
       "reasoningEffort": "high"
     },
-    "rationale": "Binding Sol review requires blocked status until the rotating public tasting menu is completely enumerated.",
+    "rationale": "Research structure, current product mappings, direct allergen authority, target repair, Ingredient Intelligence timing, focused validation, and idempotency passed the POC terminal gates.",
     "artifactHashes": []
   },
   "workerHandoff": {
     "runId": "poc-batch-152-2026-08-07",
     "restaurantId": "gravitas-dc",
-    "preparedAt": "2026-08-07T17:39:46.010Z",
-    "routeDestination": "sol_medium",
-    "solRequired": true,
+    "preparedAt": "2026-08-12T14:36:03.639Z",
+    "routeDestination": "coordinator",
+    "solRequired": false,
     "artifacts": [
       {
         "kind": "poc_job",
@@ -73,132 +138,47 @@
       {
         "kind": "poc_research",
         "path": "worker-runs/poc-batch-152-2026-08-07/results/gravitas-dc.json",
-        "sha256": "313ebbdb9e8e9f1eb6854c83f46212a127f02fdafaadbf8c5dc8837f8e9bb306"
+        "sha256": "27c823a3e31c82aa24fce820268000fbe82cea6758584752465206aa235ee2f1"
       },
       {
-        "kind": "sol_review",
-        "path": "worker-runs/poc-batch-152-2026-08-07/reviews/gravitas-menu-scope.json",
-        "sha256": "790079a5f70bf1ec5965e28785369b8a97c5244e9e1068b477fd1f4757de2c55"
-      },
-      {
-        "kind": "sol_validation",
-        "path": "worker-runs/poc-batch-152-2026-08-07/review-validations/gravitas-dc.json",
-        "sha256": "f1c6a3dc2b98dd658cdc5053406bb8638cb8e4578f4f1c890c6efc0da2367294"
+        "kind": "poc_apply",
+        "path": "worker-runs/poc-batch-152-2026-08-07/apply-results/gravitas-dc.json",
+        "sha256": "220b2d6c1af8415b8a5922a2a3185ef489b5b8ed8dfd546b6db248efaa3e2b2c"
       }
     ],
     "notes": [
-      "Binding Sol menu-scope review persisted."
+      "POC worker artifacts persisted by the root coordinator."
     ]
   },
-  "sourceAttempts": [
+  "findings": [],
+  "repairs": [
     {
-      "id": "attempt-official-site",
-      "kind": "official_site",
-      "url": "https://www.gravitasdc.com/",
-      "attemptedAt": "2026-08-07T17:39:46.010Z",
-      "outcome": "Official domain returns 404.",
-      "status": "blocked",
-      "query": null,
-      "request": null,
-      "evidenceIds": [
-        "ev-official-home"
+      "id": "poc-batch-152-2026-08-07-gravitas-dc-target-repair",
+      "status": "verified",
+      "summary": "Applied and validated the restaurant-specific POC catalog repair.",
+      "files": [
+        "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+        "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/gravitas-dc.json",
+        "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/gravitas-dc.json",
+        "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-152-2026-08-07/apply-results/gravitas-dc.json",
+        "/Users/skdraughn/software/allergy-app/scripts/apply-batch40-poc.mjs"
       ],
-      "scopeImpact": "No official public menu is available.",
-      "notes": []
-    },
-    {
-      "id": "attempt-linked-source",
-      "kind": "linked_source",
-      "url": "https://order.toasttab.com/online/gravitas",
-      "attemptedAt": "2026-08-07T17:39:46.010Z",
-      "outcome": "Toast exposes private-dining and seasonal packages only.",
-      "status": "contradictory",
-      "query": null,
-      "request": null,
-      "evidenceIds": [
-        "ev-toast-identity"
+      "fixturePaths": [
+        "data/restaurant-verification/worker-runs/poc-batch-152-2026-08-07/results/gravitas-dc.json"
       ],
-      "scopeImpact": "Partial packages cannot prove the regular public catalog.",
-      "notes": []
-    },
-    {
-      "id": "attempt-ordering-vendor",
-      "kind": "ordering_vendor",
-      "url": "https://www.exploretock.com/gravitasdc",
-      "attemptedAt": "2026-08-07T17:39:46.010Z",
-      "outcome": "Tock booking page does not enumerate the rotating tasting menu.",
-      "status": "blocked",
-      "query": null,
-      "request": null,
-      "evidenceIds": [
-        "ev-tock-identity"
-      ],
-      "scopeImpact": "Dish-level current boundary remains unknown.",
-      "notes": []
-    },
-    {
-      "id": "attempt-targeted-search",
-      "kind": "targeted_search",
-      "url": null,
-      "attemptedAt": "2026-08-07T17:39:46.010Z",
-      "outcome": "No complete current public menu or item matrix found.",
-      "status": "not_found",
-      "query": "site:gravitasdc.com allergen menu tasting ingredients",
-      "request": null,
-      "evidenceIds": [
-        "ev-search-web"
-      ],
-      "scopeImpact": "Search did not resolve scope.",
-      "notes": []
-    },
-    {
-      "id": "attempt-archive",
-      "kind": "archive",
-      "url": null,
-      "attemptedAt": "2026-08-07T17:39:46.010Z",
-      "outcome": "No archive suitable to prove current membership found.",
-      "status": "not_found",
-      "query": "Gravitas DC archived current tasting menu",
-      "request": null,
-      "evidenceIds": [
-        "ev-search-web"
-      ],
-      "scopeImpact": "Historical menus cannot prove the current rotating catalog.",
-      "notes": []
-    },
-    {
-      "id": "attempt-third-party",
-      "kind": "third_party",
-      "url": "https://www.exploretock.com/gravitasdc",
-      "attemptedAt": "2026-08-07T17:39:46.010Z",
-      "outcome": "Booking context confirms operation but not complete menu membership.",
-      "status": "contradictory",
-      "query": null,
-      "request": null,
-      "evidenceIds": [
-        "ev-tock-identity"
-      ],
-      "scopeImpact": "Third-party/linked context cannot establish a complete catalog.",
-      "notes": []
+      "verificationCommands": [
+        "fingerprint gate",
+        "validatePocResearchFiles",
+        "exact current-surface preflight",
+        "target-only canonical apply",
+        "recompute Ingredient Intelligence after direct finalization",
+        "run twice and compare owned bytes"
+      ]
     }
   ],
-  "findings": [
-    {
-      "id": "unverifiable-rotating-public-menu",
-      "severity": "high",
-      "kind": "menu_scope",
-      "summary": "Complete current Gravitas tasting menu cannot be verified.",
-      "evidenceIds": [
-        "ev-official-home",
-        "ev-toast-identity",
-        "ev-tock-identity"
-      ],
-      "resolved": true,
-      "resolution": "Binding Sol review requires blocked_unverifiable until a complete current public menu is captured."
-    }
-  ],
-  "repairs": [],
   "notes": [
-    "Coordinator blocked closeout for unresolved rotating public menu."
-  ]
+    "Coordinator-only POC closeout packet generated after serialized APPLY."
+  ],
+  "updatedAt": "2026-08-12T14:36:18.922Z",
+  "completedAt": "2026-08-12T14:36:18.922Z"
 }

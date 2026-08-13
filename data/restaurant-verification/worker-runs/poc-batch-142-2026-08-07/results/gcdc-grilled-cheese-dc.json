@@ -1,0 +1,2200 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-142-2026-08-07",
+  "restaurantId": "gcdc-grilled-cheese-dc",
+  "runId": "poc-batch-142-2026-08-07-gcdc-grilled-cheese-dc-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "gcdc-grilled-cheese-dc",
+    "name": "GCDC Grilled Cheese Bar",
+    "locationId": "downtown-dc",
+    "domain": "grilledcheesebar.com",
+    "baselineItemCount": 60,
+    "baselineFingerprint": "1bf7a713e47ac4dac49cf37673554d08cd34c90153778fca6e1778a482165b22",
+    "itemChecksRead": 60,
+    "itemChecksPath": "data/restaurant-verification/item-checks/gcdc-grilled-cheese-dc.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "GCDC Grilled Cheese Bar",
+    "location": "Washington, DC (Downtown)",
+    "locationId": "downtown-dc",
+    "domain": "grilledcheesebar.com",
+    "officialHomepage": "https://grilledcheesebar.com/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-toast"
+    ],
+    "notes": "Official homepage and linked Toast ordering surface confirm GCDC Washington DC scope."
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-home",
+      "id": "ev-home",
+      "url": "https://grilledcheesebar.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "GCDC Grilled Cheese Bar official homepage",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Official homepage identifies GCDC Grilled Cheese Bar in Washington, DC and links its Toast ordering menu."
+    },
+    {
+      "evidenceId": "ev-toast",
+      "id": "ev-toast",
+      "url": "https://order.toasttab.com/online/gcdc",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "title": "GCDC Toast ordering menu",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Official homepage-linked Toast ordering endpoint; Cloudflare challenge prevented live item detail retrieval, so frozen Toast catalog is retained conservatively."
+    },
+    {
+      "evidenceId": "ev-search-site",
+      "id": "ev-search-site",
+      "url": "https://grilledcheesebar.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "Official site allergen search",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Inspected official homepage and navigation; no allergen or nutrition matrix link found."
+    },
+    {
+      "evidenceId": "ev-search-docs",
+      "id": "ev-search-docs",
+      "url": "https://grilledcheesebar.com/sitemap.xml",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "Official documents search",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Inspected sitemap/document paths and homepage assets; no official allergen PDF, image, FAQ, or ingredient matrix found."
+    },
+    {
+      "evidenceId": "ev-search-vendor",
+      "id": "ev-search-vendor",
+      "url": "https://order.toasttab.com/online/gcdc",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "title": "Linked Toast allergen search",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Inspected official linked Toast vendor; Cloudflare challenge blocked validated allergen matrix retrieval."
+    },
+    {
+      "evidenceId": "ev-search-web",
+      "id": "ev-search-web",
+      "url": "https://www.google.com/search?q=site%3Agrilledcheesebar.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "Targeted web allergen search",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Targeted domain query found no official standalone allergen matrix."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "title": "Official GCDC homepage",
+      "url": "https://grilledcheesebar.com/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "Downtown Washington, DC",
+      "servicePeriod": "all",
+      "surfaceType": "html",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-home"
+      ],
+      "currentProductKeys": [],
+      "outcome": "Homepage and order link inspected."
+    },
+    {
+      "surfaceId": "toast-gcdc",
+      "title": "Official linked Toast ordering menu",
+      "url": "https://order.toasttab.com/online/gcdc",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "Downtown Washington, DC",
+      "servicePeriod": "all",
+      "surfaceType": "linked_ordering_vendor",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "currentProductKeys": [
+        "1-meat-2-sides",
+        "2-meats-3-sides",
+        "3-meats-4-sides",
+        "bacon-jalapeno-popper-grilled-cheese",
+        "bbq-sauce",
+        "brisket-sandwich",
+        "buffa-que-mac-and-cheese",
+        "buffalo-blue-grilled-cheese",
+        "buffalo-chicken-mac-and-cheese",
+        "buffalo-sauce",
+        "build-your-own-cheeseburger",
+        "build-your-own-grilled-cheese",
+        "build-your-own-mac-and-cheese",
+        "build-your-own-quesadilla",
+        "cajun-grilled-cheese",
+        "carbonara-mac-and-cheese",
+        "carolina-bbq-grilled-cheese",
+        "cheeseburgers",
+        "cheesesteak-grilled-cheese",
+        "chicken-and-avocado-quesadilla",
+        "chicken-bacon-alfredo-mac-and-cheese",
+        "chopped-chicken-sandwich",
+        "classic-burger",
+        "coca-cola-can",
+        "coleslaw",
+        "cordon-bleu-mac-and-cheese",
+        "creole-mac-and-cheese",
+        "cubano-grilled-cheese",
+        "diet-coke-can",
+        "french-onion-grilled-cheese",
+        "gcdc-sauce",
+        "greek-gyro-burger",
+        "green-goddess-grilled-cheese",
+        "grilled-cheese",
+        "ham-and-fig-grilled-cheese",
+        "jumbo-chocolate-chunk-cookie",
+        "latin-cemita-burger",
+        "mac-and-cheese-bowl",
+        "mediterranean-grilled-cheese",
+        "mexican-coke",
+        "mikes-hot-honey",
+        "new-bbq-plates-and-sandwiches",
+        "pepperoni-pizza-grilled-cheese",
+        "pesto",
+        "pizza-sauce",
+        "potato-salad",
+        "pulled-pork-sandwich",
+        "reuben-style-grilled-cheese",
+        "side-mac-and-cheese-not-vgf",
+        "side-salad",
+        "southwest-grilled-cheese",
+        "spicy-chicken-and-chorizo-quesadilla",
+        "sprite-can",
+        "sweet-iced-tea",
+        "texas-bbq-burger",
+        "tomato-soup-cup",
+        "truffle-bacon-burger",
+        "unsweetened-iced-tea",
+        "whole-pickle",
+        "young-american-grilled-cheeese"
+      ],
+      "outcome": "Frozen 60-item Toast catalog retained; live page Cloudflare challenge."
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "1-meat-2-sides",
+      "name": "1 Meat + 2 Sides",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "2-meats-3-sides",
+      "name": "2 Meats + 3 Sides",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "3-meats-4-sides",
+      "name": "3 Meats + 4 Sides",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "bacon-jalapeno-popper-grilled-cheese",
+      "name": "Bacon Jalapeno Popper Grilled Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "bbq-sauce",
+      "name": "BBQ Sauce",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "brisket-sandwich",
+      "name": "Brisket Sandwich",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "buffa-que-mac-and-cheese",
+      "name": "Buffa-Que Mac & Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "buffalo-blue-grilled-cheese",
+      "name": "Buffalo Blue Grilled Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "buffalo-chicken-mac-and-cheese",
+      "name": "Buffalo Chicken Mac & Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "buffalo-sauce",
+      "name": "Buffalo Sauce",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "build-your-own-cheeseburger",
+      "name": "Build Your Own Cheeseburger",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "build-your-own-grilled-cheese",
+      "name": "Build Your Own Grilled Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "build-your-own-mac-and-cheese",
+      "name": "Build Your Own Mac & Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "build-your-own-quesadilla",
+      "name": "Build Your Own Quesadilla",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "cajun-grilled-cheese",
+      "name": "Cajun Grilled Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten",
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "carbonara-mac-and-cheese",
+      "name": "Carbonara Mac & Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "carolina-bbq-grilled-cheese",
+      "name": "Carolina BBQ Grilled Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "cheeseburgers",
+      "name": "Cheeseburgers",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "cheesesteak-grilled-cheese",
+      "name": "Cheesesteak Grilled Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten",
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "chicken-and-avocado-quesadilla",
+      "name": "Chicken & Avocado Quesadilla",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "chicken-bacon-alfredo-mac-and-cheese",
+      "name": "Chicken Bacon Alfredo Mac & Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "chopped-chicken-sandwich",
+      "name": "Chopped Chicken Sandwich",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "classic-burger",
+      "name": "Classic Burger",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten",
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "coca-cola-can",
+      "name": "Coca-Cola, Can",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "coleslaw",
+      "name": "Coleslaw",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "cordon-bleu-mac-and-cheese",
+      "name": "Cordon Bleu Mac & Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "creole-mac-and-cheese",
+      "name": "Creole Mac & Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten",
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "cubano-grilled-cheese",
+      "name": "Cubano Grilled Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "diet-coke-can",
+      "name": "Diet Coke, Can",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "french-onion-grilled-cheese",
+      "name": "French Onion Grilled Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "gcdc-sauce",
+      "name": "GCDC Sauce",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "greek-gyro-burger",
+      "name": "Greek Gyro Burger",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "green-goddess-grilled-cheese",
+      "name": "Green Goddess Grilled Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "grilled-cheese",
+      "name": "Grilled Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "ham-and-fig-grilled-cheese",
+      "name": "Ham & Fig Grilled Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "jumbo-chocolate-chunk-cookie",
+      "name": "Jumbo Chocolate Chunk Cookie",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "latin-cemita-burger",
+      "name": "Latin Cemita Burger",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "mac-and-cheese-bowl",
+      "name": "Mac & Cheese Bowl",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "mediterranean-grilled-cheese",
+      "name": "Mediterranean Grilled Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "mexican-coke",
+      "name": "Mexican Coke",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "mikes-hot-honey",
+      "name": "Mike's Hot Honey",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "new-bbq-plates-and-sandwiches",
+      "name": "NEW: BBQ Plates & Sandwiches",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "pepperoni-pizza-grilled-cheese",
+      "name": "Pepperoni Pizza Grilled Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "pesto",
+      "name": "Pesto",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "pizza-sauce",
+      "name": "Pizza Sauce",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "potato-salad",
+      "name": "Potato Salad",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "pulled-pork-sandwich",
+      "name": "Pulled Pork Sandwich",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "reuben-style-grilled-cheese",
+      "name": "Reuben Style Grilled Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "side-mac-and-cheese-not-vgf",
+      "name": "Side Mac & Cheese (Not V/GF)",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "side-salad",
+      "name": "Side Salad",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "southwest-grilled-cheese",
+      "name": "Southwest Grilled Cheese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "spicy-chicken-and-chorizo-quesadilla",
+      "name": "Spicy Chicken & Chorizo Quesadilla",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "sprite-can",
+      "name": "Sprite, Can",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "sweet-iced-tea",
+      "name": "Sweet Iced Tea",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "texas-bbq-burger",
+      "name": "Texas BBQ Burger",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "tomato-soup-cup",
+      "name": "Tomato Soup Cup",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "truffle-bacon-burger",
+      "name": "Truffle Bacon Burger",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten",
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "unsweetened-iced-tea",
+      "name": "Unsweetened Iced Tea",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "whole-pickle",
+      "name": "Whole Pickle",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    },
+    {
+      "currentProductKey": "young-american-grilled-cheeese",
+      "name": "Young American Grilled Cheeese",
+      "category": "Sandwich",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "notes": "Frozen Toast-linked direct allergen positives preserved conservatively; no current matrix available."
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "query": "https://grilledcheesebar.com/ homepage/navigation",
+        "urls": [
+          "https://grilledcheesebar.com/"
+        ],
+        "outcome": "no_official_allergen_matrix",
+        "evidenceIds": [
+          "ev-search-site"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "query": "official sitemap and linked document/assets paths",
+        "urls": [
+          "https://grilledcheesebar.com/sitemap.xml"
+        ],
+        "outcome": "no_official_allergen_matrix",
+        "evidenceIds": [
+          "ev-search-docs"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "query": "Toast GCDC ordering menu",
+        "urls": [
+          "https://order.toasttab.com/online/gcdc"
+        ],
+        "outcome": "vendor_blocked_no_validated_matrix",
+        "evidenceIds": [
+          "ev-search-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "site:grilledcheesebar.com allergen allergy nutrition ingredients PDF menu",
+        "urls": [
+          "https://www.google.com/search?q=site%3Agrilledcheesebar.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+        ],
+        "outcome": "no_official_allergen_matrix",
+        "evidenceIds": [
+          "ev-search-web"
+        ]
+      }
+    ]
+  },
+  "matrixSearchAudit": [
+    {
+      "searchClass": "official_site",
+      "inspectedLocationOrQuery": "https://grilledcheesebar.com/ homepage/navigation",
+      "urlsInspected": [
+        "https://grilledcheesebar.com/"
+      ],
+      "outcome": "no_official_allergen_matrix",
+      "sourceEvidenceIds": [
+        "ev-search-site"
+      ]
+    },
+    {
+      "searchClass": "official_documents",
+      "inspectedLocationOrQuery": "official sitemap and linked document/assets paths",
+      "urlsInspected": [
+        "https://grilledcheesebar.com/sitemap.xml"
+      ],
+      "outcome": "no_official_allergen_matrix",
+      "sourceEvidenceIds": [
+        "ev-search-docs"
+      ]
+    },
+    {
+      "searchClass": "linked_vendor",
+      "inspectedLocationOrQuery": "Toast GCDC ordering menu",
+      "urlsInspected": [
+        "https://order.toasttab.com/online/gcdc"
+      ],
+      "outcome": "vendor_blocked_no_validated_matrix",
+      "sourceEvidenceIds": [
+        "ev-search-vendor"
+      ]
+    },
+    {
+      "searchClass": "targeted_web_search",
+      "inspectedLocationOrQuery": "site:grilledcheesebar.com allergen allergy nutrition ingredients PDF menu",
+      "urlsInspected": [
+        "https://www.google.com/search?q=site%3Agrilledcheesebar.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+      ],
+      "outcome": "no_official_allergen_matrix",
+      "sourceEvidenceIds": [
+        "ev-search-web"
+      ]
+    }
+  ],
+  "officialAllergenStatus": {
+    "status": "accurately_unavailable",
+    "authority": "restaurant_issued_and_linked_vendor",
+    "notes": "No validated current official matrix found after all four required searches; direct frozen positives retained."
+  },
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:1-meat-2-sides",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "1-meat-2-sides"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "2:2-meats-3-sides",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "2-meats-3-sides"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "3:3-meats-4-sides",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "3-meats-4-sides"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "4:bacon-jalapeno-popper-grilled-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "bacon-jalapeno-popper-grilled-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "5:bbq-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "bbq-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "6:brisket-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "brisket-sandwich"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "7:buffa-que-mac-and-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "buffa-que-mac-and-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "8:buffalo-blue-grilled-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "buffalo-blue-grilled-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "9:buffalo-chicken-mac-and-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "buffalo-chicken-mac-and-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "10:buffalo-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "buffalo-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "11:build-your-own-cheeseburger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "build-your-own-cheeseburger"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "12:build-your-own-grilled-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "build-your-own-grilled-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "13:build-your-own-mac-and-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "build-your-own-mac-and-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "14:build-your-own-quesadilla",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "build-your-own-quesadilla"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "15:cajun-grilled-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "cajun-grilled-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "16:carbonara-mac-and-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "carbonara-mac-and-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "17:carolina-bbq-grilled-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "carolina-bbq-grilled-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "18:cheeseburgers",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "cheeseburgers"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "19:cheesesteak-grilled-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "cheesesteak-grilled-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "20:chicken-and-avocado-quesadilla",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken-and-avocado-quesadilla"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "21:chicken-bacon-alfredo-mac-and-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken-bacon-alfredo-mac-and-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "22:chopped-chicken-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chopped-chicken-sandwich"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "23:classic-burger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "classic-burger"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "24:coca-cola-can",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "coca-cola-can"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "25:coleslaw",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "coleslaw"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "26:cordon-bleu-mac-and-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "cordon-bleu-mac-and-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "27:creole-mac-and-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "creole-mac-and-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "28:cubano-grilled-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "cubano-grilled-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "29:diet-coke-can",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "diet-coke-can"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "30:french-onion-grilled-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "french-onion-grilled-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "31:gcdc-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "gcdc-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "32:greek-gyro-burger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "greek-gyro-burger"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "33:green-goddess-grilled-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "green-goddess-grilled-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "34:grilled-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "grilled-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "35:ham-and-fig-grilled-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ham-and-fig-grilled-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "36:jumbo-chocolate-chunk-cookie",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "jumbo-chocolate-chunk-cookie"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "37:latin-cemita-burger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "latin-cemita-burger"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "38:mac-and-cheese-bowl",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mac-and-cheese-bowl"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "39:mediterranean-grilled-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mediterranean-grilled-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "40:mexican-coke",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mexican-coke"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "41:mikes-hot-honey",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mikes-hot-honey"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "42:new-bbq-plates-and-sandwiches",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "new-bbq-plates-and-sandwiches"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "43:pepperoni-pizza-grilled-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pepperoni-pizza-grilled-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "44:pesto",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pesto"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "45:pizza-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pizza-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "46:potato-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "potato-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "47:pulled-pork-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pulled-pork-sandwich"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "48:reuben-style-grilled-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "reuben-style-grilled-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "49:side-mac-and-cheese-not-vgf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "side-mac-and-cheese-not-vgf"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "50:side-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "side-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "51:southwest-grilled-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "southwest-grilled-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "52:spicy-chicken-and-chorizo-quesadilla",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "spicy-chicken-and-chorizo-quesadilla"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "53:sprite-can",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sprite-can"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "54:sweet-iced-tea",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sweet-iced-tea"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "55:texas-bbq-burger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "texas-bbq-burger"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "56:tomato-soup-cup",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tomato-soup-cup"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "57:truffle-bacon-burger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "truffle-bacon-burger"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "58:unsweetened-iced-tea",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "unsweetened-iced-tea"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "59:whole-pickle",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "whole-pickle"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      },
+      {
+        "auditItemKey": "60:young-american-grilled-cheeese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "young-american-grilled-cheeese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Frozen Toast catalog item retained; live vendor challenge prevented independent refresh."
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "proposedChanges": [
+    "Retain 60 current Toast-linked products and preserve frozen direct allergen positives; mark absent matrix unavailable."
+  ],
+  "recommendedLane": "verify",
+  "routingSignals": {
+    "lightweightRepairSignals": [
+      "catalog confirmation",
+      "vendor refresh blocked by Cloudflare"
+    ],
+    "safetyEscalationSignals": []
+  },
+  "blockedReason": null
+}

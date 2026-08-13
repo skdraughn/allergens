@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-002-2026-07-16",
+  "restaurantId": "barcelona-wine-bar-washington-dc-dc-metro",
+  "stage": "apply",
+  "solReviewPath": "data/restaurant-verification/worker-runs/poc-batch-002-2026-07-16/reviews/barcelona-wine-bar-washington-dc-dc-metro.json",
+  "changedPaths": [
+    "src/data/generated/restaurants.generated.json",
+    "data/restaurant-verification/restaurants/barcelona-wine-bar-washington-dc-dc-metro.json",
+    "data/restaurant-verification/evidence/barcelona-wine-bar-washington-dc-dc-metro.json",
+    "data/restaurant-verification/worker-runs/poc-batch-002-2026-07-16/apply-results/barcelona-wine-bar-washington-dc-dc-metro.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-002-2026-07-16/apply-results/barcelona-wine-bar-washington-dc-dc-metro.json"
+  ],
+  "commands": [
+    {
+      "command": "SHA-256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/recompute-ingredient-intelligence.mjs --input src/data/generated/restaurants.generated.json --output src/data/generated/restaurants.generated.json --restaurants barcelona-wine-bar-washington-dc-dc-metro",
+      "exitCode": 0
+    },
+    {
+      "command": "same recompute command (second run)",
+      "exitCode": 0
+    },
+    {
+      "command": "node --test scripts/restaurant-verification-poc-result.test.mjs scripts/restaurant-verification-poc-closeout.test.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "target correction: add prod-tea-time from existing SRC-DINNER evidence",
+      "exitCode": 0
+    }
+  ],
+  "beforeFingerprint": "ff8ce154f796bb25420d7692341b5cce9462a95f343c1bf2a27768078643f06e",
+  "afterFingerprint": "86a6b486689cda016cf59c8df9403a7779808a15d30b921cea533134df7394d9",
+  "secondRunDiff": "none",
+  "validation": {
+    "valid": true,
+    "baselineItemCount": 35,
+    "baselineFingerprint": "3ac538a85fcddbd8b28edca295c00388fdb2136ad6473c7326dcaf0f15b7b004",
+    "currentProductCount": 81,
+    "uniqueCurrentProductIds": 81,
+    "allSourcesCurrent14thStreet": true,
+    "excludedAlcoholOnlyProducts": true,
+    "ingredientIntelligenceVersion": "ingredient-intelligence-v2",
+    "solMappings": [
+      "7:brunch-fideos -> prod-brunch-fideos",
+      "18:mangalica-estrellados -> prod-mangalica-estrellados",
+      "27:steak-and-egg -> prod-steak-and-egg",
+      "31:vegetable-benedict -> prod-vegetable-benedict"
+    ],
+    "teaTimeMapping": "29:tea-time -> prod-tea-time"
+  },
+  "remainingIssues": [
+    "Official PDFs provide partial item-specific positives, not a complete allergen matrix; unsupported negatives, may-contain negatives, and cross-contact remain unavailable.",
+    "Ledger remains repair_in_progress; no codex_verified claim made."
+  ]
+}

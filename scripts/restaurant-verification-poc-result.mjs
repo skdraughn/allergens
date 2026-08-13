@@ -97,8 +97,10 @@ export function validatePocResearchResult({ job, result, itemChecks }) {
   }
 
   const products = normalizeCurrentProducts(result.currentProducts);
-  const explicitlyEmptyPreOpeningCatalog = products.length === 0 &&
-    result.emptyCatalogReason === "not_yet_published";
+  const explicitlyEmptyPreOpeningCatalog = products.length === 0 && [
+    "not_yet_published",
+    "closed_or_no_current_catalog",
+  ].includes(result.emptyCatalogReason);
   const productKeys = products.map((product) => product.currentProductKey).filter(Boolean);
   const definedProductKeys = new Set(productKeys);
   const duplicateProductKeys = duplicates(productKeys);
@@ -230,6 +232,26 @@ export function validatePocResearchResult({ job, result, itemChecks }) {
   if (ambiguousGroupedMappings.length) {
     errors.push(`${ambiguousGroupedMappings.length} grouped rows have ambiguous current-product mapping cardinality.`);
   }
+  const matchedRows = reconciliation.filter((entry) => matchedDispositions.has(entry.disposition));
+  const mappedProductKeys = new Set(matchedRows.flatMap((entry) => entry.matchedCurrentProductKeys));
+  const mappingFanIn = new Map();
+  for (const entry of matchedRows) {
+    for (const key of entry.matchedCurrentProductKeys) {
+      mappingFanIn.set(key, (mappingFanIn.get(key) ?? 0) + 1);
+    }
+  }
+  const aggregateProducts = products.filter((product) =>
+    Number(product.productCount ?? 0) > 1 ||
+    /(?:current|complete|full|entire).*\b(?:menu|catalog)\b|\b(?:menu|catalog)\b.*(?:aggregate|boundary)/i.test(product.name ?? "") ||
+    /\b(?:all|entire|complete)\b.*\bproducts?\b/i.test(product.boundary ?? ""));
+  const implausiblyCollapsed = matchedRows.length >= 10 &&
+    mappedProductKeys.size <= Math.max(2, Math.floor(matchedRows.length * 0.2)) &&
+    Math.max(0, ...mappingFanIn.values()) >= 5;
+  if (aggregateProducts.length || implausiblyCollapsed) {
+    errors.push(
+      `Current catalog collapses ${matchedRows.length} matched frozen rows into ${mappedProductKeys.size} product mappings; aggregate catalog placeholders are not publishable products.`,
+    );
+  }
 
   const unresolvedKeys = reconciliation
     .filter((entry) => entry.disposition === "unresolved")
@@ -283,6 +305,7 @@ export function validatePocResearchResult({ job, result, itemChecks }) {
     duplicateKeys,
     undefinedMappings,
     mappedNonmatchKeys: mappedNonmatches.map((entry) => entry.auditItemKey),
+    maximumMappingFanIn: Math.max(0, ...mappingFanIn.values()),
     sourceCount: sources.length,
     unresolvedEvidenceIds,
     attemptedMatrixSearches: [...attemptedSearches],

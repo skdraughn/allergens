@@ -1,0 +1,1869 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-087-2026-08-05",
+  "restaurantId": "crumbl",
+  "runId": "poc-batch-087-2026-08-05-crumbl-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "crumbl",
+    "name": "Crumbl",
+    "locationId": null,
+    "domain": "crumblcookies.com",
+    "baselineItemCount": 154,
+    "baselineFingerprint": "15fbcec77d4a455b0a97b729345ad03c915f2b706084ca1ea4359156b5f6e12f",
+    "itemChecksRead": 154,
+    "itemChecksPath": "data/restaurant-verification/item-checks/crumbl.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Crumbl",
+    "location": "United States; location-aware Crumbl Cookies ordering (no single store/location supplied in packet)",
+    "locationId": null,
+    "domain": "crumblcookies.com",
+    "officialHomepage": "https://crumblcookies.com/en-US",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-menu"
+    ],
+    "notes": "National official site; no ambiguous individual location merged."
+  },
+  "sources": [
+    {
+      "id": "ev-home",
+      "url": "https://crumblcookies.com/en-US",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Official Crumbl homepage",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Official Crumbl Cookies homepage and current menu entry point."
+    },
+    {
+      "id": "ev-menu",
+      "url": "https://crumblcookies.com/en-US/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Official current menu surface",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Current weekly and classic menu; menu is location-aware."
+    },
+    {
+      "id": "ev-classics",
+      "url": "https://crumblcookies.com/blog/crumbl-classics-menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Crumbl Classics menu",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Official classics menu identifies permanent cookie offerings."
+    },
+    {
+      "id": "ev-nutrition",
+      "url": "https://crumblcookies.com/nutrition/regular",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "Official Nutritionix/Crumbl nutrition surface",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Official nutrition/allergen-linked surface; direct assertions retained only where published."
+    },
+    {
+      "id": "ev-vendor",
+      "url": "https://crumblcookies.com/order/pickup",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "title": "Official-linked ordering vendor",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Location-aware ordering entry point."
+    },
+    {
+      "id": "ev-search-site",
+      "url": "https://crumblcookies.com/en-US",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_site allergen search",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Inspected official site navigation/menu; no complete standalone matrix located."
+    },
+    {
+      "id": "ev-search-docs",
+      "url": "https://crumblcookies.com/nutrition/regular",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_documents allergen search",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Inspected official nutrition and linked document surfaces; Nutritionix/Crumbl assertions retained."
+    },
+    {
+      "id": "ev-search-vendor",
+      "url": "https://crumblcookies.com/order/pickup",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "title": "linked_vendor allergen search",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Inspected linked ordering vendor; no standalone matrix exposed."
+    },
+    {
+      "id": "ev-search-web",
+      "url": "https://www.google.com/search?q=site%3Acrumblcookies.com+allergen+allergy+nutrition+ingredients+PDF",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "targeted_web_search allergen search",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Targeted domain search found official nutrition/menu surfaces but no newer complete matrix."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "title": "Official Crumbl homepage",
+      "url": "https://crumblcookies.com/en-US",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "national/location-aware",
+      "servicePeriod": "current",
+      "surfaceType": "html_menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-home"
+      ],
+      "currentProductKeys": [
+        "current-classic-milk-chocolate-chip-cookie",
+        "current-classic-pink-sugar-cookie",
+        "current-brownie-batter-cookie",
+        "current-semi-sweet-chocolate-chunk-cookie",
+        "current-chocolate-cake-batter-cookie",
+        "current-churro-cookie",
+        "current-peanut-butter-chocolate-chip-cookie",
+        "current-snickerdoodle-cookie",
+        "current-chocolate-covered-strawberry-cookie",
+        "current-key-lime-pie"
+      ]
+    },
+    {
+      "surfaceId": "official-nutrition",
+      "title": "Official Nutritionix/Crumbl nutrition",
+      "url": "https://crumblcookies.com/nutrition/regular",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "national",
+      "servicePeriod": "current",
+      "surfaceType": "html",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-nutrition"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "official-order",
+      "title": "Official linked ordering",
+      "url": "https://crumblcookies.com/order/pickup",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "location-aware",
+      "servicePeriod": "current",
+      "surfaceType": "ordering_vendor",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-vendor"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "flavor-archive",
+      "title": "Official flavor profiles/archive",
+      "url": "https://crumblcookies.com/profiles",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "national",
+      "servicePeriod": "archive",
+      "surfaceType": "html_archive",
+      "current": false,
+      "scopeStatus": "excluded",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "currentProductKeys": []
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "current-classic-milk-chocolate-chip-cookie",
+      "name": "Milk Chocolate Chip Cookie",
+      "category": "Cookies",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-home",
+        "ev-menu",
+        "ev-classics"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current menu/product boundary only; rotating flavor archive profiles are not treated as current."
+      ]
+    },
+    {
+      "currentProductKey": "current-classic-pink-sugar-cookie",
+      "name": "Classic Pink Sugar Cookie",
+      "category": "Cookies",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-home",
+        "ev-menu",
+        "ev-classics"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current menu/product boundary only; rotating flavor archive profiles are not treated as current."
+      ]
+    },
+    {
+      "currentProductKey": "current-brownie-batter-cookie",
+      "name": "Brownie Batter Cookie",
+      "category": "Cookies",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-home",
+        "ev-menu",
+        "ev-classics"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current menu/product boundary only; rotating flavor archive profiles are not treated as current."
+      ]
+    },
+    {
+      "currentProductKey": "current-semi-sweet-chocolate-chunk-cookie",
+      "name": "Semi-Sweet Chocolate Chunk Cookie",
+      "category": "Cookies",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-home",
+        "ev-menu",
+        "ev-classics"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current menu/product boundary only; rotating flavor archive profiles are not treated as current."
+      ]
+    },
+    {
+      "currentProductKey": "current-chocolate-cake-batter-cookie",
+      "name": "Chocolate Cake Batter Cookie",
+      "category": "Cookies",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-home",
+        "ev-menu",
+        "ev-classics"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current menu/product boundary only; rotating flavor archive profiles are not treated as current."
+      ]
+    },
+    {
+      "currentProductKey": "current-churro-cookie",
+      "name": "Churro Cookie",
+      "category": "Cookies",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-home",
+        "ev-menu",
+        "ev-classics"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current menu/product boundary only; rotating flavor archive profiles are not treated as current."
+      ]
+    },
+    {
+      "currentProductKey": "current-peanut-butter-chocolate-chip-cookie",
+      "name": "Peanut Butter Chocolate Chip Cookie",
+      "category": "Cookies",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-home",
+        "ev-menu",
+        "ev-classics"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current menu/product boundary only; rotating flavor archive profiles are not treated as current."
+      ]
+    },
+    {
+      "currentProductKey": "current-snickerdoodle-cookie",
+      "name": "Snickerdoodle Cookie",
+      "category": "Cookies",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-home",
+        "ev-menu",
+        "ev-classics"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current menu/product boundary only; rotating flavor archive profiles are not treated as current."
+      ]
+    },
+    {
+      "currentProductKey": "current-chocolate-covered-strawberry-cookie",
+      "name": "Chocolate Covered Strawberry Cookie",
+      "category": "Cookies",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-home",
+        "ev-menu",
+        "ev-classics"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current menu/product boundary only; rotating flavor archive profiles are not treated as current."
+      ]
+    },
+    {
+      "currentProductKey": "current-key-lime-pie",
+      "name": "Key Lime Pie",
+      "category": "Desserts",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-home",
+        "ev-menu",
+        "ev-classics"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current menu/product boundary only; rotating flavor archive profiles are not treated as current."
+      ]
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "query": "https://crumblcookies.com/en-US",
+        "url": "https://crumblcookies.com/en-US",
+        "outcome": "no complete standalone matrix; official menu inspected",
+        "evidenceIds": [
+          "ev-search-site"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "query": "https://crumblcookies.com/nutrition/regular",
+        "url": "https://crumblcookies.com/nutrition/regular",
+        "outcome": "official Nutritionix/Crumbl assertions inspected; no complete standalone matrix",
+        "evidenceIds": [
+          "ev-search-docs"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "query": "https://crumblcookies.com/order/pickup",
+        "url": "https://crumblcookies.com/order/pickup",
+        "outcome": "no standalone allergen matrix exposed",
+        "evidenceIds": [
+          "ev-search-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "site:crumblcookies.com allergen allergy nutrition ingredients PDF",
+        "url": "site:crumblcookies.com allergen allergy nutrition ingredients PDF",
+        "outcome": "official surfaces found; no newer complete matrix",
+        "evidenceIds": [
+          "ev-search-web"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "frozenKeys": 154,
+    "staleCount": 154,
+    "normalizedMatchCount": 0,
+    "exactMatchCount": 0,
+    "equivalentPresentationCount": 0,
+    "artifactCount": 0,
+    "locationMismatchCount": 0,
+    "unresolvedCount": 0,
+    "items": [
+      {
+        "auditItemKey": "1:andesr-green-mint-brownie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "2:biscoffr-crunch-brownie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "3:brookie-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "4:brookies-and-cream-cookie-ft-oreor",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "5:brownie-batter-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "6:brownie-dippers",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "7:brownie-sundae",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "8:brownie-sundae-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "9:buckeye-brownie-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "10:cake-batter-blondie-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "11:cake-batter-blondie-cookie-pink-and-white",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "12:candy-cane-brownie-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "13:chocolate-glazed-brownie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "14:chocolate-peanut-butter-brownie-ft-reeses-pieces",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "15:classic-krispies-bar-ft-rice-krispiesr",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "16:cookies-and-cream-brownie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "17:apple-cider-muffin-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "18:banana-bread",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "19:banana-bread-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "20:banana-caramel-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "21:banana-pudding",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "22:banana-upside-down-cake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "23:berry-trifle-cake-cup",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "24:birthday-cake-cookie-ft-oreor",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "25:biscoffr-cake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "26:biscoffr-tres-leches-cake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "27:black-forest-cake-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "28:blueberry-crumb-cake-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "29:blueberry-muffin-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "30:butter-cake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "31:cake-batter-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "32:cake-batter-cupcake-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "33:caramel-pumpkin-cake-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "34:caramel-sheet-cake-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "35:caramel-toffee-butter-cake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "36:carlota-de-limon-icebox-cake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "37:carrot-cake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "38:carrot-cake-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "39:chocolate-cake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "40:chocolate-cake-batter-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "41:chocolate-cake-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "42:chocolate-covered-banana-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "43:chocolate-crumb-cake-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "44:chocolate-mallow-cupcake-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "45:chocolate-mint-cake-ft-andesr",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "46:chocolate-toffee-cake-cookie-ft-heath",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "47:chocolate-toffee-cake-cup",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "48:chocolate-toffee-cake-ft-heath",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "49:chocolate-toffee-tres-leches-cake-ft-heath",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "50:churro-cake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "51:cinnamon-scone-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "52:coconut-cake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "53:coconut-cake-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "54:confetti-cake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "55:confetti-cake-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "56:confetti-milkshake-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "57:cookies-and-cream-cake-ft-oreor",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "58:cookies-and-cream-cocoa-mousse-cup",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "59:aloha-pie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "60:banana-cream-pie-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "61:banoffee-pie-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "62:biscoffr-cheesecake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "63:biscoffr-pie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "64:blueberry-cheesecake-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "65:boston-cream-pie-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "66:brookie-pie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "67:caramel-apple-crisp-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "68:cherry-cheesecake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "69:chocolate-cheesecake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "70:chocolate-covered-pretzel-pie-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "71:chocolate-hazelnut-cheesecake-ft-nutellar",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "72:chocolate-peanut-butter-cup-cheesecake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "73:chocolate-peanut-butter-pie-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "74:chocolate-peanut-butter-pie-ft-oreor-x-reeses",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "75:chocolate-pistachio-pie-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "76:chocolate-pumpkin-cheesecake-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "77:chocolate-strawberry-cheesecake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "78:cinnamon-roll-cheesecake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "79:classic-cheesecake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "80:coconut-cream-pie-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "81:confetti-cake-batter-cheesecake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "82:cookie-dough-pie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "83:cookies-and-cream-cheesecake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "84:almond-coconut-fudge-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "85:almost-everything-bagel-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "86:banana-split-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "87:berries-and-cream-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "88:berry-crunch-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "89:biscoffr-ice-cream-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "90:biscoffr-lava-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "91:biscoffr-skillet-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "92:biscoffr-white-chip-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "93:blue-monster-cookie-ft-chips-ahoyr",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "94:blue-raspberry-cookie-ft-iceer",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "95:blue-raspberry-sports-drink-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "96:blueberry-pancake-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "97:brown-sugar-cinnamon-cookie-ft-pop-tartsr",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "98:bubble-gum-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "99:buttermilk-pancake-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "100:butterscotch-chip-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "101:campfire-skillet-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "102:candy-corn-sugar-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "103:cannoli-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "104:caramel-apple-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "105:caramel-coconut-fudge-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "106:caramel-oatmeal-cookie-ft-rolor",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "107:caramel-popcorn-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "108:caramel-praline-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "109:caramel-shortbread-cookie-ft-twixr",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "110:carmelita-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "111:cereal-milk-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "112:cereal-milk-sandwich-cookie-ft-fruity-pebblesr",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "113:cerulean-blue-sugar-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "114:cherry-bomb-cookie-ft-golden-oreor",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "115:chocolate-caramel-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "116:chocolate-chip-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "117:chocolate-cookies-and-cream-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "118:chocolate-covered-strawberry-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "119:chocolate-cupcake-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "120:chocolate-green-mint-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "121:chocolate-malt-cookie-ft-tootsie-rollr",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "122:chocolate-milk-cookie-ft-pirouliner",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "123:chocolate-milkshake-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "124:chocolate-mint-cookie-ft-york",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "125:chocolate-peanut-butter-chip-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "126:chocolate-peanut-butter-cookie-ft-oreor",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "127:chocolate-peanut-butter-puffs-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "128:chocolate-peanut-butter-sandwich-cookie-ft-oreor-x-reeses",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "129:chocolate-raspberry-truffle-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "130:chocolate-reeses-pieces-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "131:chocolate-sea-salt-toffee-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "132:chocolate-sprinkle-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "133:chocolate-strawberry-cup-gluten-friendly",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "134:chocolate-swiss-roll-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "135:chocolate-tart-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "136:chocolate-vanilla-ice-cream-swirl-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "137:churro-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "138:churro-toffee-white-chip-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "139:cinnamon-crunch-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "140:cinnamon-pretzel-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "141:cinnamon-roll-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "142:classic-oatmeal-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "143:classic-peanut-butter-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "144:classic-pink-sugar-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "145:coconut-lime-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "146:coconut-white-chip-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "147:confetti-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "148:conversation-hearts-pink-sugar-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "149:cookie-dough-bits",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "150:cookie-dough-cookie",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "151:12-pack-dessert",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "152:4-pack-dessert",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "153:6-pack-dessert",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      },
+      {
+        "auditItemKey": "154:single-dessert",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "notes": "Frozen flavor archive profile is not verified as current on the present weekly menu."
+      }
+    ]
+  },
+  "findings": [],
+  "routingSignals": {
+    "lightweightRepairSignals": [
+      "rotating flavor archive rows are stale relative to current menu boundary",
+      "catalog boundary should retain current classics/weekly products only"
+    ],
+    "safetyEscalationSignals": []
+  },
+  "proposedChanges": [
+    "Replace stale archive-derived catalog with current location-aware menu boundary; preserve direct Nutritionix/Crumbl assertions and cross-contact language exactly."
+  ],
+  "blockedReason": null,
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 154,
+      "sourceItemCount": 10
+    },
+    "allergenSource": {
+      "verdict": "accurately_unavailable",
+      "directContainsCount": 0,
+      "directMayContainCount": 0
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": false,
+      "semanticsVerified": true
+    }
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": true,
+    "newItems": true,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": true,
+    "parserIssue": false
+  }
+}

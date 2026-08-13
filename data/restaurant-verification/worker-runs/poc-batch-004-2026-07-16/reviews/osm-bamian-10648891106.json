@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-004-2026-07-16",
+  "restaurantId": "osm-bamian-10648891106",
+  "reviewType": "narrow_menu_scope_resolution",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "role": "sol_reviewer"
+  },
+  "reviewedKeys": [],
+  "resolution": {
+    "binding": true,
+    "outcome": "menu_scope_resolved",
+    "catalogDefinition": {
+      "scope": "Current regular food and nonalcoholic catalog for Bamian Restaurant at 5634 Leesburg Pike, Falls Church, Virginia.",
+      "completeSurfaceIds": [
+        "MS-OFFICIAL-HTML",
+        "MS-OFFICIAL-PDF",
+        "MS-DOORDASH"
+      ],
+      "excludedSurfaceIds": [
+        "MS-RAMADAN-PDF"
+      ],
+      "enumerationRule": "official_html_catalog_is_authoritative_with_official_pdf_and_exact_location_doordash_as_deduplicated_alternate_presentations",
+      "sourceEvidenceIds": [
+        "E-OFFICIAL-MENU-2026-07-16",
+        "E-OFFICIAL-PDF-2026-07-16",
+        "E-LINKED-VENDOR-2026-07-16"
+      ],
+      "existingProductCount": 90,
+      "additionalProductCount": 4,
+      "resolvedCatalogProductCount": 94,
+      "rationale": "The live official HTML menu is current, identifies the Falls Church address, and fully enumerates the regular food and nonalcoholic catalog. The official PDF redirects to that same current catalog. DoorDash is current, merchant-priced, and exact-location, but functions as an alternate ordering presentation: its visible categories and rows overlap the official catalog, and Family Style Bamian Platter is a quantity/presentation variant of the existing Bamian Platter rather than a distinct product identity. Four beverage rows now visible on the authoritative official menu were omitted from the 90-product result and are added to the binding boundary."
+    },
+    "items": [],
+    "surfaceResolutions": [
+      {
+        "surfaceId": "MS-DOORDASH",
+        "disposition": "complete",
+        "title": "Bamian Restaurant Falls Church DoorDash",
+        "url": "https://www.doordash.com/en/store/bamian-restaurant-falls-church-26395",
+        "authority": "restaurant_linked_vendor",
+        "locationScope": "Bamian Restaurant, 5634 Leesburg Pike, Falls Church, VA 22041",
+        "servicePeriod": "regular delivery and pickup",
+        "currentAsOf": "2026-07-16",
+        "current": true,
+        "scopeClassification": "included_exact_location_alternate_ordering_presentation",
+        "sourceEvidenceIds": [
+          "E-LINKED-VENDOR-2026-07-16",
+          "E-OFFICIAL-MENU-2026-07-16",
+          "E-OFFICIAL-PDF-2026-07-16"
+        ],
+        "rationale": "DoorDash indexed this exact store within the prior week, identifies the Falls Church restaurant, publishes regular service hours and merchant-set prices, and exposes the same Appetizers, Soup & Salad, Kabob, Entrees, Sides, Sandwiches, Children's Menu, Dessert, and Beverages families as the official menu. It is current and in scope, but lower-authority and only partially accessible. Its Family Platters category contributes Family Style Bamian Platter, which has the same combination, rice, side, and three-kabob identity as the existing Bamian Platter and is therefore an equivalent presentation rather than a new product.",
+        "additionalProductsRequired": [
+          {
+            "currentProductKey": "s-pellegrino-sparkling-water-250ml",
+            "name": "S. Pellegrino Sparkling Water 250ml",
+            "category": "Beverage",
+            "description": null,
+            "sourceEvidenceIds": [
+              "E-OFFICIAL-MENU-2026-07-16"
+            ]
+          },
+          {
+            "currentProductKey": "minute-maid-apple-juice",
+            "name": "Minute Maid Apple Juice",
+            "category": "Beverage",
+            "description": "Minute Maid Juice-to-Go apple juice, 12 oz",
+            "sourceEvidenceIds": [
+              "E-OFFICIAL-MENU-2026-07-16"
+            ]
+          },
+          {
+            "currentProductKey": "minute-maid-orange-juice",
+            "name": "Minute Maid Orange Juice",
+            "category": "Beverage",
+            "description": "Minute Maid Juice-to-Go orange juice, 12 oz",
+            "sourceEvidenceIds": [
+              "E-OFFICIAL-MENU-2026-07-16"
+            ]
+          },
+          {
+            "currentProductKey": "minute-maid-cranberry-grape-juice",
+            "name": "Minute Maid Cranberry Grape Juice",
+            "category": "Beverage",
+            "description": "Minute Maid Juice-to-Go cranberry grape juice, 12 oz",
+            "sourceEvidenceIds": [
+              "E-OFFICIAL-MENU-2026-07-16"
+            ]
+          }
+        ],
+        "coveredExistingProductMappings": [
+          {
+            "doorDashProductName": "Family Style Bamian Platter",
+            "currentProductKey": "bamian-platter",
+            "presentation": "family-style quantity and price presentation"
+          }
+        ],
+        "allergenAssessment": {
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfilesEstablished": false,
+          "notes": "DoorDash and official menu descriptions can support directly named positive ingredients only. This scope resolution makes no allergen-negative, may-contain, or cross-contact conclusion."
+        },
+        "safetySourceAuthorityConflictRemains": false,
+        "allergenAuthorityLimitationRemains": true
+      }
+    ],
+    "safetySourceAuthorityConflictRemains": false,
+    "allergenAuthorityLimitationRemains": true,
+    "allergenAuthorityRationale": "All four required searches remain complete and accurately unavailable for a comprehensive matrix. Product descriptions preserve direct positives only; omitted ingredients do not establish negatives or cross-contact status."
+  },
+  "remainingSolSignals": [
+    {
+      "signal": "doordash_direct_access_limited",
+      "status": "non_blocking_after_official_catalog_binding",
+      "affectedSurfaces": [
+        "MS-DOORDASH"
+      ],
+      "sourceEvidenceIds": [
+        "E-LINKED-VENDOR-2026-07-16",
+        "E-OFFICIAL-MENU-2026-07-16"
+      ],
+      "rationale": "Direct item-level DoorDash retrieval remains inconsistent, but current indexed exact-location metadata and visible rows are sufficient to classify it as an alternate presentation because the complete higher-authority official catalog is accessible."
+    },
+    {
+      "signal": "allergen_authority_incomplete",
+      "status": "accurately_unavailable_non_blocking_for_catalog_identity",
+      "affectedSurfaces": [
+        "MS-OFFICIAL-HTML",
+        "MS-OFFICIAL-PDF",
+        "MS-DOORDASH"
+      ],
+      "sourceEvidenceIds": [
+        "E-OFFICIAL-MENU-2026-07-16",
+        "E-OFFICIAL-PDF-2026-07-16",
+        "E-LINKED-VENDOR-2026-07-16"
+      ],
+      "rationale": "No complete allergen, may-contain, or cross-contact matrix was found."
+    }
+  ],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "reviewedKeyCount": 0,
+    "resolutionItemCount": 0,
+    "unresolvedFrozenKeyCount": 0,
+    "allAffectedKeysReviewedExactlyOnce": true,
+    "allDispositionsBinding": true,
+    "surfaceResolutionCount": 1,
+    "partialSurfaceIds": [
+      "MS-DOORDASH"
+    ],
+    "allPartialSurfacesResolvedExactlyOnce": true,
+    "existingProductCount": 90,
+    "additionalProductCount": 4,
+    "resolvedCatalogProductCount": 94,
+    "additionalProductKeysUnique": true,
+    "additionalProductKeysDisjointFromExistingCatalog": true,
+    "doorDashCurrentAndLocationSpecific": true,
+    "doorDashDistinctProductCount": 0,
+    "unsupportedAllergenNegativesIntroduced": false,
+    "crossContactConclusionIntroduced": false,
+    "completeAllergenProfileClaimed": false,
+    "matrixStatusRemainsAccuratelyUnavailable": true,
+    "codexVerifiedClaimed": false
+  }
+}

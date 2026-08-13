@@ -75,6 +75,8 @@ type AppleAuthenticationModule = {
 
 function loadGoogleSignIn(): GoogleSignInModule {
   try {
+    // The native module is loaded lazily so web and unsupported native targets can render safely.
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     return require("@react-native-google-signin/google-signin") as GoogleSignInModule;
   } catch {
     throw new Error("Google sign-in requires a new native build with Google Sign-In included.");
@@ -83,6 +85,8 @@ function loadGoogleSignIn(): GoogleSignInModule {
 
 function loadAppleAuthentication(): AppleAuthenticationModule {
   try {
+    // The native module is loaded lazily so non-iOS targets never evaluate it.
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     return require("expo-apple-authentication") as AppleAuthenticationModule;
   } catch {
     throw new Error("Apple sign-in requires a new native build with Apple Authentication included.");

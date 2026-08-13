@@ -1,0 +1,844 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-150-2026-08-07",
+  "restaurantId": "grace-street-georgetown-dc",
+  "runId": "poc-batch-150-2026-08-07-grace-street-georgetown-dc-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "grace-street-georgetown-dc",
+    "name": "Grace Street Georgetown",
+    "locationId": "georgetown-dc",
+    "domain": "gracestreetdc.com",
+    "baselineItemCount": 17,
+    "baselineFingerprint": "3084e5c2c769e7ae2597476241eafa9d7eb5ef04ef4a90ced6001916be44ce4a",
+    "itemChecksRead": 17,
+    "itemChecksPath": "data/restaurant-verification/item-checks/grace-street-georgetown-dc.jsonl",
+    "valid": true
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Grace Street Georgetown",
+    "location": "3299 K Street Northwest, Washington, DC 20007 (Georgetown)",
+    "locationId": "georgetown-dc",
+    "domain": "gracestreetdc.com",
+    "officialHomepage": "https://www.gracestcoffee.com/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-locations",
+      "ev-toast"
+    ],
+    "notes": "Georgetown location verified; Bethesda Toast/location explicitly excluded."
+  },
+  "sources": [
+    {
+      "id": "ev-home",
+      "url": "https://www.gracestcoffee.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Grace Street Coffee Roasters official homepage",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Official Grace Street Coffee Roasters site identifies the brand and links locations including Georgetown."
+    },
+    {
+      "id": "ev-locations",
+      "url": "https://www.gracestcoffee.com/locations",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Locations",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Official locations page lists Georgetown at 3299 K Street NW, Washington, DC 20007; Bethesda is a separate location."
+    },
+    {
+      "id": "ev-toast",
+      "url": "https://www.toasttab.com/local/order/grace-street-coffee-georgetown",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "title": "Grace Street Coffee Roasters Georgetown Toast menu",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Linked Toast ordering page identifies Georgetown location at 3299 K Street Northwest and presents food items."
+    },
+    {
+      "id": "ev-search-site",
+      "url": "https://www.gracestcoffee.com/locations",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_site allergen search",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Inspected official homepage, locations and navigation; no item-level allergen matrix."
+    },
+    {
+      "id": "ev-search-docs",
+      "url": "https://www.gracestcoffee.com/sitemap.xml",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_documents allergen search",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Inspected official document/sitemap surfaces; no allergen or ingredient PDF/matrix found."
+    },
+    {
+      "id": "ev-search-vendor",
+      "url": "https://www.toasttab.com/local/order/grace-street-coffee-georgetown",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "title": "linked_vendor allergen search",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Inspected Georgetown Toast menu and item details; no official item-level allergen matrix or cross-contact statement exposed."
+    },
+    {
+      "id": "ev-search-web",
+      "url": "https://www.google.com/search?q=site%3Agracestcoffee.com+allergen+nutrition+ingredients+menu",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "targeted_web_search allergen search",
+      "retrievedAt": "2026-08-07T00:00:00.000Z",
+      "excerpt": "Targeted domain search found no authoritative allergen matrix."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://www.gracestcoffee.com/",
+      "authority": "restaurant_issued",
+      "locationScope": "brand/DC locations",
+      "servicePeriod": "current",
+      "retrievalOutcome": "success",
+      "sourceEvidenceIds": [
+        "ev-home"
+      ],
+      "current": false,
+      "scopeStatus": "supporting",
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "official-locations",
+      "url": "https://www.gracestcoffee.com/locations",
+      "authority": "restaurant_issued",
+      "locationScope": "Georgetown and separate Bethesda listings",
+      "servicePeriod": "current",
+      "retrievalOutcome": "success",
+      "sourceEvidenceIds": [
+        "ev-locations"
+      ],
+      "current": false,
+      "scopeStatus": "supporting",
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "georgetown-toast",
+      "url": "https://www.toasttab.com/local/order/grace-street-coffee-georgetown",
+      "authority": "restaurant_linked_vendor",
+      "locationScope": "Georgetown DC only",
+      "servicePeriod": "current",
+      "retrievalOutcome": "success",
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "current": true,
+      "scopeStatus": "complete",
+      "currentProductKeys": [
+        "toast-almond-croissant",
+        "toast-bean-and-cheese-burrito",
+        "toast-breakfast-burrito",
+        "toast-brekkie-bowl",
+        "toast-buckwheat-cake",
+        "toast-burrito-bowl",
+        "toast-butter-croissant",
+        "toast-el-jefe-burrito",
+        "toast-guac-and-chips",
+        "toast-ham-and-cheese-croissant",
+        "toast-lemon-poppyseed-cake",
+        "toast-monstera-burrito",
+        "toast-side-fries",
+        "toast-side-of-pinto-beans",
+        "toast-side-of-spanish-rice",
+        "toast-sun-up-burrito",
+        "toast-super-breakfast"
+      ]
+    }
+  ],
+  "currentProducts": {
+    "products": [
+      {
+        "currentProductKey": "toast-almond-croissant",
+        "name": "Almond Croissant",
+        "category": "Cafe",
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "presentationRefs": [
+          "https://order.toasttab.com/online/grace-street-coffee-georgetown"
+        ],
+        "containsAllergens": [
+          "wheat",
+          "gluten",
+          "tree-nut"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_linked_vendor",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "current": true
+      },
+      {
+        "currentProductKey": "toast-bean-and-cheese-burrito",
+        "name": "BEAN & CHEESE BURRITO",
+        "category": "Cafe",
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "presentationRefs": [
+          "https://order.toasttab.com/online/grace-street-coffee-georgetown"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_linked_vendor",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "current": true
+      },
+      {
+        "currentProductKey": "toast-breakfast-burrito",
+        "name": "BREAKFAST BURRITO",
+        "category": "Cafe",
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "presentationRefs": [
+          "https://order.toasttab.com/online/grace-street-coffee-georgetown"
+        ],
+        "containsAllergens": [
+          "egg",
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_linked_vendor",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "current": true
+      },
+      {
+        "currentProductKey": "toast-brekkie-bowl",
+        "name": "BREKKIE BOWL",
+        "category": "Cafe",
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "presentationRefs": [
+          "https://order.toasttab.com/online/grace-street-coffee-georgetown"
+        ],
+        "containsAllergens": [
+          "egg",
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_linked_vendor",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "current": true
+      },
+      {
+        "currentProductKey": "toast-buckwheat-cake",
+        "name": "Buckwheat Cake",
+        "category": "Cafe",
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "presentationRefs": [
+          "https://order.toasttab.com/online/grace-street-coffee-georgetown"
+        ],
+        "containsAllergens": [
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_linked_vendor",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "current": true
+      },
+      {
+        "currentProductKey": "toast-burrito-bowl",
+        "name": "BURRITO BOWL",
+        "category": "Cafe",
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "presentationRefs": [
+          "https://order.toasttab.com/online/grace-street-coffee-georgetown"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_linked_vendor",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "current": true
+      },
+      {
+        "currentProductKey": "toast-butter-croissant",
+        "name": "Butter Croissant",
+        "category": "Cafe",
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "presentationRefs": [
+          "https://order.toasttab.com/online/grace-street-coffee-georgetown"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_linked_vendor",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "current": true
+      },
+      {
+        "currentProductKey": "toast-el-jefe-burrito",
+        "name": "EL JEFE BURRITO",
+        "category": "Cafe",
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "presentationRefs": [
+          "https://order.toasttab.com/online/grace-street-coffee-georgetown"
+        ],
+        "containsAllergens": [
+          "egg",
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_linked_vendor",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "current": true
+      },
+      {
+        "currentProductKey": "toast-guac-and-chips",
+        "name": "GUAC & CHIPS",
+        "category": "Cafe",
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "presentationRefs": [
+          "https://order.toasttab.com/online/grace-street-coffee-georgetown"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "current": true
+      },
+      {
+        "currentProductKey": "toast-ham-and-cheese-croissant",
+        "name": "Ham & Cheese Croissant",
+        "category": "Cafe",
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "presentationRefs": [
+          "https://order.toasttab.com/online/grace-street-coffee-georgetown"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_linked_vendor",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "current": true
+      },
+      {
+        "currentProductKey": "toast-lemon-poppyseed-cake",
+        "name": "lemon poppyseed cake",
+        "category": "Cafe",
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "presentationRefs": [
+          "https://order.toasttab.com/online/grace-street-coffee-georgetown"
+        ],
+        "containsAllergens": [
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_linked_vendor",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "current": true
+      },
+      {
+        "currentProductKey": "toast-monstera-burrito",
+        "name": "MONSTERA BURRITO",
+        "category": "Cafe",
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "presentationRefs": [
+          "https://order.toasttab.com/online/grace-street-coffee-georgetown"
+        ],
+        "containsAllergens": [
+          "egg",
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_linked_vendor",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "current": true
+      },
+      {
+        "currentProductKey": "toast-side-fries",
+        "name": "SIDE FRIES",
+        "category": "Cafe",
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "presentationRefs": [
+          "https://order.toasttab.com/online/grace-street-coffee-georgetown"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "current": true
+      },
+      {
+        "currentProductKey": "toast-side-of-pinto-beans",
+        "name": "SIDE OF PINTO BEANS",
+        "category": "Cafe",
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "presentationRefs": [
+          "https://order.toasttab.com/online/grace-street-coffee-georgetown"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_linked_vendor",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "current": true
+      },
+      {
+        "currentProductKey": "toast-side-of-spanish-rice",
+        "name": "SIDE OF SPANISH RICE",
+        "category": "Cafe",
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "presentationRefs": [
+          "https://order.toasttab.com/online/grace-street-coffee-georgetown"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_linked_vendor",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "current": true
+      },
+      {
+        "currentProductKey": "toast-sun-up-burrito",
+        "name": "SUN-UP BURRITO",
+        "category": "Cafe",
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "presentationRefs": [
+          "https://order.toasttab.com/online/grace-street-coffee-georgetown"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_linked_vendor",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "current": true
+      },
+      {
+        "currentProductKey": "toast-super-breakfast",
+        "name": "SUPER BREAKFAST",
+        "category": "Cafe",
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "presentationRefs": [
+          "https://order.toasttab.com/online/grace-street-coffee-georgetown"
+        ],
+        "containsAllergens": [
+          "egg",
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_linked_vendor",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "current": true
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "inspected": [
+          "https://www.gracestcoffee.com/",
+          "https://www.gracestcoffee.com/locations"
+        ],
+        "queries": [
+          "allergen",
+          "allergy",
+          "ingredients",
+          "nutrition"
+        ],
+        "outcome": "no_item_matrix",
+        "sourceEvidenceIds": [
+          "ev-search-site"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "inspected": [
+          "https://www.gracestcoffee.com/sitemap.xml"
+        ],
+        "queries": [
+          "PDF",
+          "allergen",
+          "nutrition",
+          "ingredients"
+        ],
+        "outcome": "no_matrix_found",
+        "sourceEvidenceIds": [
+          "ev-search-docs"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "inspected": [
+          "https://www.toasttab.com/local/order/grace-street-coffee-georgetown"
+        ],
+        "queries": [
+          "allergen",
+          "allergy",
+          "ingredients",
+          "nutrition"
+        ],
+        "outcome": "no_item_matrix",
+        "sourceEvidenceIds": [
+          "ev-search-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "inspected": [
+          "https://www.google.com/search?q=site%3Agracestcoffee.com+allergen+nutrition+ingredients+menu"
+        ],
+        "queries": [
+          "site:gracestcoffee.com allergen nutrition ingredients menu"
+        ],
+        "outcome": "no_authoritative_matrix",
+        "sourceEvidenceIds": [
+          "ev-search-web"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:almond-croissant",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toast-almond-croissant"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Georgetown Toast presentation matches frozen item; direct linked-vendor positives preserved where present."
+      },
+      {
+        "auditItemKey": "2:bean-and-cheese-burrito",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toast-bean-and-cheese-burrito"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Georgetown Toast presentation matches frozen item; direct linked-vendor positives preserved where present."
+      },
+      {
+        "auditItemKey": "3:breakfast-burrito",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toast-breakfast-burrito"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Georgetown Toast presentation matches frozen item; direct linked-vendor positives preserved where present."
+      },
+      {
+        "auditItemKey": "4:brekkie-bowl",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toast-brekkie-bowl"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Georgetown Toast presentation matches frozen item; direct linked-vendor positives preserved where present."
+      },
+      {
+        "auditItemKey": "5:buckwheat-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toast-buckwheat-cake"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Georgetown Toast presentation matches frozen item; direct linked-vendor positives preserved where present."
+      },
+      {
+        "auditItemKey": "6:burrito-bowl",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toast-burrito-bowl"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Georgetown Toast presentation matches frozen item; direct linked-vendor positives preserved where present."
+      },
+      {
+        "auditItemKey": "7:butter-croissant",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toast-butter-croissant"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Georgetown Toast presentation matches frozen item; direct linked-vendor positives preserved where present."
+      },
+      {
+        "auditItemKey": "8:el-jefe-burrito",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toast-el-jefe-burrito"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Georgetown Toast presentation matches frozen item; direct linked-vendor positives preserved where present."
+      },
+      {
+        "auditItemKey": "9:guac-and-chips",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toast-guac-and-chips"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Georgetown Toast presentation matches frozen item; direct linked-vendor positives preserved where present."
+      },
+      {
+        "auditItemKey": "10:ham-and-cheese-croissant",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toast-ham-and-cheese-croissant"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Georgetown Toast presentation matches frozen item; direct linked-vendor positives preserved where present."
+      },
+      {
+        "auditItemKey": "11:lemon-poppyseed-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toast-lemon-poppyseed-cake"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Georgetown Toast presentation matches frozen item; direct linked-vendor positives preserved where present."
+      },
+      {
+        "auditItemKey": "12:monstera-burrito",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toast-monstera-burrito"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Georgetown Toast presentation matches frozen item; direct linked-vendor positives preserved where present."
+      },
+      {
+        "auditItemKey": "13:side-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toast-side-fries"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Georgetown Toast presentation matches frozen item; direct linked-vendor positives preserved where present."
+      },
+      {
+        "auditItemKey": "14:side-of-pinto-beans",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toast-side-of-pinto-beans"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Georgetown Toast presentation matches frozen item; direct linked-vendor positives preserved where present."
+      },
+      {
+        "auditItemKey": "15:side-of-spanish-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toast-side-of-spanish-rice"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Georgetown Toast presentation matches frozen item; direct linked-vendor positives preserved where present."
+      },
+      {
+        "auditItemKey": "16:sun-up-burrito",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toast-sun-up-burrito"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Georgetown Toast presentation matches frozen item; direct linked-vendor positives preserved where present."
+      },
+      {
+        "auditItemKey": "17:super-breakfast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toast-super-breakfast"
+        ],
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ],
+        "notes": "Current Georgetown Toast presentation matches frozen item; direct linked-vendor positives preserved where present."
+      }
+    ]
+  },
+  "proposedChanges": {
+    "summary": "Preserve Georgetown Toast catalog and existing direct linked-vendor positives; mark absent matrix unavailable.",
+    "changes": [
+      "No shared parser changes. Exclude Bethesda location/menu."
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "routingSignals": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "blockedReason": null
+}

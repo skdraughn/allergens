@@ -1,0 +1,1500 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-a-front-20260811131720",
+  "restaurantId": "osm-ichiban-izakaya-12207907591",
+  "packetValidation": {
+    "baselineItemCount": 118,
+    "baselineFingerprint": "885c9dd1774ca9ee7b7ba8b6d66ba01e40c3dc359aa8e41aa087dd5b471ee7f4",
+    "itemChecksRead": 118,
+    "restaurantIdMatched": true
+  },
+  "identity": {
+    "status": "confirmed",
+    "name": "Ichiban Izakaya",
+    "location": "2281 Eisenhower Ave, Alexandria, VA 22314-5358",
+    "locationId": "alexandria",
+    "domain": "ichibanizakaya.com",
+    "officialHomepage": "https://www.ichibanizakaya.com/",
+    "sourceEvidenceIds": [
+      "s-home",
+      "s-order"
+    ]
+  },
+  "sources": [
+    {
+      "id": "s-home",
+      "url": "https://www.ichibanizakaya.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage, identity, location, hours, alcohol notice",
+      "retrievedAt": "2026-08-11T17:30:00.000Z"
+    },
+    {
+      "id": "s-menu",
+      "url": "https://www.ichibanizakaya.com/menus?menu=our-menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official current menu surface",
+      "retrievedAt": "2026-08-11T17:30:00.000Z"
+    },
+    {
+      "id": "s-order",
+      "url": "https://order.toasttab.com/online/ichiban-izakaya-2281-eisenhower-ave",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "restaurant-linked ordering menu and product descriptions",
+      "retrievedAt": "2026-08-11T17:30:00.000Z"
+    },
+    {
+      "id": "s-search",
+      "url": "https://www.google.com/search?q=site%3Aichibanizakaya.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted allergen search",
+      "retrievedAt": "2026-08-11T17:30:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://www.ichibanizakaya.com/",
+      "authority": "restaurant_issued",
+      "locationScope": "Alexandria",
+      "servicePeriod": "all published periods",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "s-home"
+      ]
+    },
+    {
+      "surfaceId": "official-menu",
+      "url": "https://www.ichibanizakaya.com/menus?menu=our-menu",
+      "authority": "restaurant_issued",
+      "locationScope": "Alexandria",
+      "servicePeriod": "all published periods",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "s-menu"
+      ]
+    },
+    {
+      "surfaceId": "linked-toast",
+      "url": "https://order.toasttab.com/online/ichiban-izakaya-2281-eisenhower-ave",
+      "authority": "restaurant_linked_vendor",
+      "locationScope": "2281 Eisenhower Ave, Alexandria",
+      "servicePeriod": "online ordering; all published menu sections",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "s-order"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "menu-catalog",
+      "name": "Current Ichiban Izakaya Alexandria food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "s-menu",
+        "s-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable"
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "Official homepage and menu navigation, including / and /menus?menu=our-menu",
+        "urlsInspected": [
+          "https://www.ichibanizakaya.com/",
+          "https://www.ichibanizakaya.com/menus?menu=our-menu"
+        ],
+        "outcome": "No official allergen or nutrition matrix located; raw/undercooked food warning only",
+        "sourceEvidenceIds": [
+          "s-home",
+          "s-menu"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "Official documents, PDFs, images, FAQ, sitemap and downloadable-document surfaces",
+        "urlsInspected": [
+          "https://www.ichibanizakaya.com/",
+          "https://www.ichibanizakaya.com/menus?menu=our-menu"
+        ],
+        "outcome": "No official allergen, ingredient, nutrition, PDF or downloadable matrix located",
+        "sourceEvidenceIds": [
+          "s-home",
+          "s-menu"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Restaurant-linked Toast ordering menu for 2281 Eisenhower Ave",
+        "urlsInspected": [
+          "https://order.toasttab.com/online/ichiban-izakaya-2281-eisenhower-ave"
+        ],
+        "outcome": "Current menu and ingredient-style descriptions found; no official allergen matrix or cross-contact policy exposed",
+        "sourceEvidenceIds": [
+          "s-order"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "queryOrLocation": "site:ichibanizakaya.com allergen OR allergy OR nutrition OR ingredients PDF menu",
+        "urlsInspected": [
+          "https://www.google.com/search?q=site%3Aichibanizakaya.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+PDF+menu"
+        ],
+        "outcome": "No authoritative Ichiban Izakaya Alexandria allergen matrix found",
+        "sourceEvidenceIds": [
+          "s-search"
+        ]
+      }
+    ],
+    "notes": [
+      "No negative allergen claims made; direct allergen and cross-contact status is unavailable."
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [],
+  "findings": [
+    {
+      "type": "cross_contact",
+      "status": "unavailable",
+      "statement": "Official sources do not publish a complete cross-contact policy or allergen matrix.",
+      "sourceEvidenceIds": [
+        "s-home",
+        "s-order"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:agedashi-tofu",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "2:american-dream-roll-6-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "3:asakusa-roll-8-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "4:asakusa-tonkotsu-chashu-ramen",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "5:avocado-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "6:beef-teriyaki",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "7:black-pepper-seared-tuna",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "8:bubble-tea",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "9:cheese-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "10:chef-pick-tasting",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "11:chef-special-rolls",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "12:chicken-katsudon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "13:chicken-teriyaki",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "14:chicken-teriyaki-appetizer",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "15:chirashi-combination",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "16:coca-cola-zero-sugar",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "17:complete-rankings-solution",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "18:crab-stick-kani",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "19:crispy-jalapeno",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "20:daily-email-of-your-rankings",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "21:ebi-shrimp",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "22:edamame",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "23:family-time-comb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "24:flying-fish-roe",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "25:french-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "26:fresh-salmon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "27:fresh-tuna",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "28:fuji-tonkotsu-chicken-ramen",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "29:ginza-roll-8-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "30:ginza-shoyu-chashu-ramen",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "31:gion-spicy-miso-shrimp-ramen",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "32:green-tea",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "33:gyudon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "34:hakkaisan-honjozo",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "35:hamachi-kama",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "36:harumaki",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "37:heart-roll-8-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "38:hot-green-tea",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "39:izakaya-roll-10-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "40:ichiban-bulgogi",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "41:ichiban-bun",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "42:ichiban-chefs-choice-serving-for-2",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "43:ichiban-house-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "44:ichiban-poke-bowl",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "45:ichiban-roll-8-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "46:ikageso-karaage",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "47:inari-tofu",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "48:japanese-a4-wagyu",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "49:kani-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "50:karaage",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "51:karaage-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "52:kiyormizu-shoyu-vegetable-ramen",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "53:kyoto-roll-8-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "54:landing-pages-optimizer",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "55:lobster-tempura-roll-10-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "56:maki-comb-a",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "57:maki-comb-b",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "58:mamma-mia-roll-8-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "59:mango-mousse-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "60:matcha-latte",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "61:miso-soup",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "62:momokawa",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "63:mount-fuji-roll-10-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "64:oyako-don",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "65:plain-ramen-with-soup",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "66:pork-gyoza",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "67:pork-katsudon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "68:rainbow-roll-8-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "69:rock-n-roll-6-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "70:salmon-avocado-roll-6-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "71:salmon-roe",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "72:salmon-roll",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "73:salmon-teriyaki",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "74:sashimi-supreme-comb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "75:sashimi-tasting",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "76:scallion-pancake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "77:seaweed-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "78:shrimp-ebi",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "79:shrimp-shumai-steam-or-fried",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "80:shrimp-tempura",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "81:shrimp-tempura-appetizer",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "82:shrimp-teriyaki",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "83:sky-tree-roll-8-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "84:smoked-salmon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "85:snow-beauty-junmai",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "86:spicy-salmon-roll-6-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "87:spicy-tuna-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "88:spicy-tuna-roll-6-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "89:spider-roll-10-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "90:spy-on-your-competitors",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "91:steam-shumai",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "92:suica-roll-8-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "93:suica-tonkotsu-shrimp-chashu-ramen",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "94:sushi-and-sashimi-combination",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "95:sushi-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "96:sushi-supreme-comb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "97:sushi-tasting",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "98:takoyaki",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "99:tamago-egg",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "100:tempura-chicken-roll-6-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "101:tempura-salmon-roll-6-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "102:tempura-shrimp-roll-6-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "103:thai-tea",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "104:tofu-teriyaki",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "105:tsukiji-roll-8-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "106:tuna",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "107:tuna-roll",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "108:tuna-tataki",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "109:ube-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "110:unagi-don",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "111:unagi-eel",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "112:veget-tempura",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "113:volcano-roll-8-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "114:white-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "115:yami-yummy-roll-6-pcs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "116:yellowtail",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "117:yellowtail-jalapeno",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      },
+      {
+        "auditItemKey": "118:yellowtail-jalopeno",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "s-menu",
+          "s-order"
+        ]
+      }
+    ],
+    "notes": [
+      "All 118 frozen audit keys reconciled exactly once against the current Alexandria menu boundary; alcohol-only items were excluded from the nonalcoholic product boundary but remain covered by the catalog audit."
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify"
+}

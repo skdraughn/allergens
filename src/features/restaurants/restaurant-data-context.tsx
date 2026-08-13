@@ -1,63 +1,77 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery } from "@tanstack/react-query";
 import { downloadData } from "aws-amplify/storage";
-import { createContext, useContext, useMemo, type ReactNode } from "react";
+import { ungzip } from "pako";
+import { createContext, useCallback, useContext, useMemo, type ReactNode } from "react";
 
-import {
-  restaurantDataGeneratedAt,
-  restaurantDataCacheVersion,
-  restaurants as bundledRestaurants,
-  type Restaurant,
-} from "@/data/restaurants";
+import type { Restaurant } from "@/data/restaurants";
 import { isAmplifyConfigured } from "@/lib/amplify";
 
-const legacyCacheKey = "restaurant-data/latest";
-const cacheKey = `restaurant-data/latest/${restaurantDataCacheVersion}`;
-const cacheKeyPrefix = "restaurant-data/latest/";
 const supportedSnapshotVersion = 1;
-const restaurantDataQueryKey = ["restaurant-data", restaurantDataCacheVersion] as const;
+const restaurantDataQueryKey = ["restaurant-data", "remote-only-v2"] as const;
+const emptyRestaurants: Restaurant[] = [];
 
 type RestaurantRepository = {
+  generatedAt: string | null;
   restaurants: Restaurant[];
   snapshotVersion: number;
-  source: RestaurantDataContextValue["source"];
 };
 
 type RestaurantDataContextValue = {
+  error: Error | null;
+  generatedAt: string | null;
   getRestaurantById: (id: string) => Restaurant | undefined;
+  isLoading: boolean;
   isRefreshing: boolean;
+  refresh: () => Promise<void>;
   restaurants: Restaurant[];
-  source: "bundled" | "cache" | "remote";
+  source: "remote" | null;
 };
 
 const RestaurantDataContext = createContext<RestaurantDataContextValue>({
-  getRestaurantById: (id) => bundledRestaurants.find((restaurant) => restaurant.id === id),
+  error: null,
+  generatedAt: null,
+  getRestaurantById: () => undefined,
+  isLoading: true,
   isRefreshing: false,
-  restaurants: bundledRestaurants,
-  source: "bundled",
+  refresh: async () => undefined,
+  restaurants: [],
+  source: null,
 });
 
 export function RestaurantDataProvider({ children }: { children: ReactNode }) {
   const query = useQuery({
     gcTime: 1000 * 60 * 60 * 24 * 7,
-    initialData: bundledRepository(),
-    queryFn: fetchRestaurantRepository,
+    queryFn: fetchRemoteRestaurantRepository,
     queryKey: restaurantDataQueryKey,
-    retry: 1,
-    staleTime: 1000 * 60 * 60 * 6,
+    retry: 2,
+    staleTime: 1000 * 60 * 15,
   });
 
-  const restaurants = query.data.restaurants;
-  const source = query.data.source;
-
+  const restaurants = query.data?.restaurants ?? emptyRestaurants;
+  const restaurantsById = useMemo(
+    () => new Map(restaurants.map((restaurant) => [restaurant.id, restaurant])),
+    [restaurants],
+  );
+  const getRestaurantById = useCallback(
+    (id: string) => restaurantsById.get(id),
+    [restaurantsById],
+  );
+  const refetch = query.refetch;
+  const refresh = useCallback(async () => {
+    await refetch();
+  }, [refetch]);
   const value = useMemo(
     () => ({
-      getRestaurantById: (id: string) => restaurants.find((restaurant) => restaurant.id === id),
+      error: query.error,
+      generatedAt: query.data?.generatedAt ?? null,
+      getRestaurantById,
+      isLoading: query.isPending,
       isRefreshing: query.isFetching,
+      refresh,
       restaurants,
-      source,
+      source: query.data ? ("remote" as const) : null,
     }),
-    [query.isFetching, restaurants, source],
+    [getRestaurantById, query.data, query.error, query.isFetching, query.isPending, refresh, restaurants],
   );
 
   return (
@@ -72,79 +86,92 @@ export function useRestaurantData() {
 export function useRestaurantDetail(restaurantId: string | undefined, snapshotPath?: string) {
   const context = useRestaurantData();
   const normalizedPath = snapshotPath?.trim() || null;
-  const fallbackRestaurant =
-    restaurantId && (!isAmplifyConfigured || !normalizedPath)
-      ? context.getRestaurantById(restaurantId)
-      : undefined;
+  const summaryRestaurant = restaurantId ? context.getRestaurantById(restaurantId) : undefined;
   const remoteDetailEnabled = Boolean(restaurantId && normalizedPath && isAmplifyConfigured);
   const query = useQuery<Restaurant | undefined>({
     enabled: remoteDetailEnabled,
     gcTime: 1000 * 60 * 60 * 24,
-    initialData: fallbackRestaurant,
     queryFn: async () => {
       if (!normalizedPath) {
-        return fallbackRestaurant;
+        return summaryRestaurant;
       }
 
       const result = await downloadData({ path: normalizedPath }).result;
-      const text = await result.body.text();
-      const parsed = parseRestaurantDetail(text);
+      const parsed = parseRestaurantDetail(await readDownloadBody(result.body));
 
-      return parsed ? mergeBundledRestaurantMetadata(parsed, fallbackRestaurant) : fallbackRestaurant;
+      if (!parsed) {
+        throw new Error(`Invalid remote restaurant detail: ${normalizedPath}`);
+      }
+
+      return parsed;
     },
-    queryKey: ["restaurant-detail", restaurantId, normalizedPath, restaurantDataCacheVersion],
-    retry: 1,
-    staleTime: 1000 * 60 * 60 * 6,
+    queryKey: [
+      "restaurant-detail-v2",
+      restaurantId,
+      normalizedPath,
+      context.generatedAt,
+    ],
+    retry: 2,
+    staleTime: 1000 * 60 * 30,
   });
-  const restaurant = query.data ?? fallbackRestaurant;
+  const restaurant = remoteDetailEnabled ? query.data : summaryRestaurant;
 
   return {
-    isLoading: !restaurant && remoteDetailEnabled && query.isPending,
+    isLoading: remoteDetailEnabled && query.isPending,
     isRefreshing: query.isFetching,
-    notFound:
-      Boolean(restaurantId) &&
-      !restaurant &&
-      (!remoteDetailEnabled || query.isError || query.isSuccess),
+    notFound: Boolean(restaurantId) && !restaurant && (query.isError || query.isSuccess),
     restaurant,
   };
 }
 
-async function fetchRestaurantRepository(): Promise<RestaurantRepository> {
-  await removeStaleRestaurantCaches();
-  const cached = await readCachedRepository();
-
+async function fetchRemoteRestaurantRepository(): Promise<RestaurantRepository> {
   if (!isAmplifyConfigured) {
-    return cached ?? bundledRepository();
+    throw new Error("Remote restaurant storage is not configured.");
   }
 
-  return cached ?? bundledRepository();
-}
+  let repository: RestaurantRepository | null;
 
-async function removeStaleRestaurantCaches() {
-  const keys = await AsyncStorage.getAllKeys();
-  const staleKeys = keys.filter(
-    (key) => key === legacyCacheKey || (key.startsWith(cacheKeyPrefix) && key !== cacheKey),
-  );
-
-  if (staleKeys.length > 0) {
-    await AsyncStorage.multiRemove(staleKeys);
-  }
-}
-
-async function readCachedRepository() {
-  const value = await AsyncStorage.getItem(cacheKey);
-
-  if (!value) {
-    return null;
+  try {
+    const result = await downloadData({ path: "restaurant-data/latest.json" }).result;
+    repository = parseRestaurantRepository(await readDownloadBody(result.body));
+  } catch (error) {
+    console.error("Remote restaurant catalog download failed", error);
+    throw error;
   }
 
-  return parseRestaurantRepository(value, "cache");
+  if (!repository) {
+    throw new Error("The remote restaurant catalog is invalid or unsupported.");
+  }
+
+  return repository;
 }
 
-function parseRestaurantRepository(
-  value: string,
-  source: RestaurantDataContextValue["source"],
-) {
+async function readDownloadBody(body: { blob: () => Promise<Blob> }): Promise<string> {
+  const bytes = new Uint8Array(await readBlobAsArrayBuffer(await body.blob()));
+
+  if (bytes[0] === 0x1f && bytes[1] === 0x8b) {
+    return ungzip(bytes, { toText: true });
+  }
+
+  return new TextDecoder().decode(bytes);
+}
+
+function readBlobAsArrayBuffer(blob: Blob) {
+  return new Promise<ArrayBuffer>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(reader.error ?? new Error("Could not read catalog response."));
+    reader.onload = () => {
+      if (reader.result instanceof ArrayBuffer) {
+        resolve(reader.result);
+      } else {
+        reject(new Error("Catalog response was not binary data."));
+      }
+    };
+    reader.readAsArrayBuffer(blob);
+  });
+}
+
+function parseRestaurantRepository(value: string): RestaurantRepository | null {
   try {
     const parsed = JSON.parse(value) as {
       generatedAt?: string;
@@ -155,54 +182,29 @@ function parseRestaurantRepository(
     if (
       parsed.snapshotVersion !== supportedSnapshotVersion ||
       !Array.isArray(parsed.restaurants) ||
-      !parsed.restaurants.every(isValidRestaurant) ||
-      isOlderThanBundledRepository(parsed.generatedAt)
+      !parsed.restaurants.every(isValidRestaurant)
     ) {
       return null;
     }
 
-    const bundledById = new Map(
-      bundledRestaurants.map((restaurant) => [restaurant.id, restaurant]),
-    );
-    const restaurants = parsed.restaurants.filter(
-        (restaurant) =>
-          !restaurant.coverageStatus ||
-          restaurant.coverageStatus === "complete" ||
-          restaurant.coverageStatus === "kept-previous",
-      ).map((restaurant) => mergeBundledRestaurantMetadata(restaurant, bundledById.get(restaurant.id)));
-    const remoteIds = new Set(restaurants.map((restaurant) => restaurant.id));
-    const bundledLocalRestaurants = bundledRestaurants.filter(
-      (restaurant) =>
-        restaurant.type === "local" &&
-        !remoteIds.has(restaurant.id) &&
-        (!restaurant.coverageStatus ||
-          restaurant.coverageStatus === "complete" ||
-          restaurant.coverageStatus === "kept-previous"),
-    );
-
     return {
-      restaurants: [...restaurants, ...bundledLocalRestaurants],
+      generatedAt: parsed.generatedAt ?? null,
+      restaurants: parsed.restaurants
+        .filter(
+          (restaurant) =>
+            !restaurant.coverageStatus ||
+            restaurant.coverageStatus === "complete" ||
+            restaurant.coverageStatus === "kept-previous",
+        )
+        .map((restaurant) => ({
+          ...restaurant,
+          items: Array.isArray(restaurant.items) ? restaurant.items : [],
+        })),
       snapshotVersion: parsed.snapshotVersion,
-      source,
     };
   } catch {
     return null;
   }
-}
-
-function isOlderThanBundledRepository(generatedAt?: string) {
-  if (!generatedAt) {
-    return false;
-  }
-
-  const remoteGeneratedAtMs = Date.parse(generatedAt);
-  const bundledGeneratedAtMs = Date.parse(restaurantDataGeneratedAt);
-
-  return (
-    Number.isFinite(remoteGeneratedAtMs) &&
-    Number.isFinite(bundledGeneratedAtMs) &&
-    remoteGeneratedAtMs < bundledGeneratedAtMs
-  );
 }
 
 function parseRestaurantDetail(value: string) {
@@ -228,28 +230,6 @@ function parseRestaurantDetail(value: string) {
   }
 }
 
-function mergeBundledRestaurantMetadata(
-  restaurant: Restaurant,
-  bundledRestaurant?: Restaurant,
-) {
-  if (!bundledRestaurant?.allergyAccommodationPolicy || restaurant.allergyAccommodationPolicy) {
-    return restaurant;
-  }
-
-  return {
-    ...restaurant,
-    allergyAccommodationPolicy: bundledRestaurant.allergyAccommodationPolicy,
-  };
-}
-
-function bundledRepository(): RestaurantRepository {
-  return {
-    restaurants: bundledRestaurants,
-    snapshotVersion: supportedSnapshotVersion,
-    source: "bundled",
-  };
-}
-
 function isValidRestaurant(restaurant: unknown): restaurant is Restaurant {
   if (!restaurant || typeof restaurant !== "object") {
     return false;
@@ -261,7 +241,10 @@ function isValidRestaurant(restaurant: unknown): restaurant is Restaurant {
     typeof record.id === "string" &&
     typeof record.name === "string" &&
     typeof record.rank === "number" &&
-    Array.isArray(record.items) &&
-    record.items.every((item) => typeof item.name === "string" && Array.isArray(item.allergens))
+    (!record.items ||
+      (Array.isArray(record.items) &&
+        record.items.every(
+          (item) => typeof item.name === "string" && Array.isArray(item.allergens),
+        )))
   );
 }

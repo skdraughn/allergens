@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-035-2026-07-21",
+  "restaurantId": "osm-botanero-11895212138",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "f4df29f42b2729f2479fc0b32e41fc9be32d98b792087c38fa6be252e3eacb27",
+    "currentProductCount": 48,
+    "exactMatchCount": 48,
+    "staleCount": 23,
+    "reconciliationCount": 71,
+    "directPositiveProductCount": 19,
+    "directAssertionCount": 20,
+    "allergenCounts": {
+      "shellfish": 9,
+      "fish": 3,
+      "tree-nut": 1,
+      "milk": 6,
+      "egg": 1
+    },
+    "mayContainCount": 0,
+    "matrixSearchCount": 4,
+    "currentCompleteSurfaceCount": 2,
+    "ingredientIntelligenceRecomputed": true,
+    "evidencePurposeSet": [
+      "identity",
+      "menu",
+      "allergen",
+      "ingredients",
+      "cross_contact",
+      "both",
+      "other"
+    ],
+    "evidenceArtifactIntegrityValid": true
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-botanero-11895212138.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-botanero-11895212138.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/osm-botanero-11895212138.jsonl",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-osm-botanero-11895212138-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-035-2026-07-21/apply-results/osm-botanero-11895212138.json"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "validatePocResearchFiles",
+    "target-only catalog/dossier/evidence/item-check apply",
+    "recompute Ingredient Intelligence after direct catalog finalization",
+    "official closeout preflight",
+    "run apply twice and compare owned artifact bytes"
+  ],
+  "secondRunDiff": "none",
+  "artifactHashes": {
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-botanero-11895212138.json": "2ad2b64faaa3615a51e145ecf2e54bff92aec6123a2b988d0a64bff3f2b77346"
+  },
+  "counts": {
+    "products": 48,
+    "exact_match": 48,
+    "stale": 23,
+    "directPositiveProducts": 19,
+    "directAssertions": 20,
+    "mayContain": 0,
+    "matrixSearches": 4
+  }
+}

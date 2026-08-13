@@ -1,0 +1,650 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-a-front-20260811005722",
+  "restaurantId": "osm-la-ong-thai-3367109720",
+  "name": "La Ong Thai",
+  "locationId": "herndon",
+  "runId": "distributed-machine-a-front-20260811005722-osm-la-ong-thai-3367109720-research",
+  "stage": "poc_research",
+  "lunaFollowUp": {
+    "attempt": 1,
+    "resolvedRouteReasons": [
+      "catalogDrift",
+      "newItems",
+      "nameOrCategoryCleanup",
+      "parserIssue"
+    ],
+    "resolution": "Reviewed the routed catalog findings against the official two-page menu and restaurant-linked ordering surface. The three frozen headings (CURRIES, SIGNATURES, SOUPS) remain artifacts, the normalized names are equivalent presentations of current menu entries, and no separately evidenced additional orderable product was identified beyond the current food/nonalcoholic catalog boundary. The parser symptoms and count drift are therefore resolved as target-specific catalog cleanup; the aggregate current product and all frozen-key mappings remain unchanged.",
+    "preservedFrozenReconciliation": true,
+    "preservedDirectAllergenEvidence": true
+  },
+  "packetValidation": {
+    "baselineItemCount": 43,
+    "baselineFingerprint": "635d12cf8486f2abf40a63315178a99da87e5b9762fab204d1ec278c8e138ed6",
+    "itemChecksRead": 43,
+    "restaurantIdsVerified": 43
+  },
+  "identity": {
+    "name": "La Ong Thai Bistro",
+    "location": "2521 John Milton Dr, Herndon, VA 20171",
+    "domain": "laongthai.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "src-official-home",
+      "src-official-menu"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "src-official-home",
+      "url": "https://laongthai.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage, identity, hours, location and menu/order links",
+      "retrievedAt": "2026-08-10T00:00:00.000Z"
+    },
+    {
+      "evidenceId": "src-official-menu",
+      "url": "https://laongthai.com/menu.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current official two-page menu and stated ingredients",
+      "retrievedAt": "2026-08-10T00:00:00.000Z"
+    },
+    {
+      "evidenceId": "src-linked-vendor",
+      "url": "https://laongthaibistro.blizzfull.com/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "restaurant-linked ordering surface and current menu boundary",
+      "retrievedAt": "2026-08-10T00:00:00.000Z"
+    },
+    {
+      "evidenceId": "src-targeted-search",
+      "url": "https://www.google.com/search?q=site%3Alaongthai.com+allergen+allergy+nutrition+ingredients+PDF",
+      "authorityTier": "third_party",
+      "purpose": "targeted web search for official allergen material",
+      "retrievedAt": "2026-08-10T00:00:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://laongthai.com/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "Herndon",
+      "servicePeriod": "all day",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "verified",
+      "sourceEvidenceIds": [
+        "src-official-home"
+      ]
+    },
+    {
+      "surfaceId": "official-pdf",
+      "url": "https://laongthai.com/menu.pdf",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "Herndon",
+      "servicePeriod": "all day",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "two-page PDF inspected",
+      "sourceEvidenceIds": [
+        "src-official-menu"
+      ]
+    },
+    {
+      "surfaceId": "linked-ordering",
+      "url": "https://laongthaibistro.blizzfull.com/",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "Herndon",
+      "servicePeriod": "all day",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "linked ordering surface inspected; food and nonalcoholic categories present",
+      "sourceEvidenceIds": [
+        "src-linked-vendor"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "la-ong-thai-current-menu-catalog",
+      "name": "La Ong Thai current food and nonalcoholic menu catalog",
+      "category": "restaurant-menu",
+      "sourceEvidenceIds": [
+        "src-official-menu",
+        "src-linked-vendor"
+      ],
+      "containsAllergens": [
+        "shellfish",
+        "milk",
+        "peanut",
+        "tree-nut",
+        "egg",
+        "fish",
+        "wheat",
+        "soy"
+      ],
+      "mayContainAllergens": [
+        "sesame",
+        "gluten",
+        "mustard",
+        "sulfites",
+        "other"
+      ],
+      "allergenSourceEvidenceIds": [
+        "src-official-menu"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "crossContactStatement": "The restaurant does not publish a cross-contact policy or allergen-free guarantee; shared-kitchen cross-contact is therefore unavailable and cannot be ruled out."
+    }
+  ],
+  "restaurantLevelAllergenEvidence": [
+    {
+      "statement": "No official allergen matrix or cross-contact policy was located; menu ingredient text supports only positive ingredient evidence and does not establish absence.",
+      "sourceEvidenceIds": [
+        "src-official-menu",
+        "src-targeted-search"
+      ]
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "Inspected laongthai.com homepage, navigation, menu and order links",
+        "urls": [
+          "https://laongthai.com/"
+        ],
+        "outcome": "No allergen, allergy, nutrition or ingredient matrix linked",
+        "sourceEvidenceIds": [
+          "src-official-home"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "Inspected official menu PDF and document surface for allergen, allergy, nutrition, ingredient, sitemap and downloadable documents",
+        "urls": [
+          "https://laongthai.com/menu.pdf"
+        ],
+        "outcome": "Menu ingredient descriptions found; no allergen matrix or cross-contact policy",
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Inspected restaurant-linked Blizzfull ordering menu",
+        "urls": [
+          "https://laongthaibistro.blizzfull.com/"
+        ],
+        "outcome": "Current ordering categories and descriptions found; no allergen matrix",
+        "sourceEvidenceIds": [
+          "src-linked-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "queryOrLocation": "site:laongthai.com allergen allergy nutrition ingredients PDF menu",
+        "urls": [
+          "https://www.google.com/search?q=site%3Alaongthai.com+allergen+allergy+nutrition+ingredients+PDF"
+        ],
+        "outcome": "No official allergen material found; unrelated third-party results excluded",
+        "sourceEvidenceIds": [
+          "src-targeted-search"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:brown-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "2:chicken-satay4",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "3:crab-meat-fried-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "4:crab-fermented-fish-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "5:crispy-chicken-with-cashew-nuts",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "6:crispy-duck-basil",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "7:crispy-fish-fillet",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "8:crispy-pork-belly",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "9:crispy-rice-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "10:crispy-vegetable-spring-rolls3",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "11:curries",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "12:egg-fried-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "13:grilled-salmon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "14:grilled-thai-style-marinated-pork",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "15:hoisin-peanut-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "16:jasmin-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "17:ka-nom-jeep5",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "18:larb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "19:mango-with-sticky-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "20:massaman-curry-beef",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "21:minced-chicken-scillion-cilantro",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "22:mixed-veggies-1595-shrimp",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "23:nua-sawan",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "24:pad-see-ew",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "25:pad-thai",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "26:peanut-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "27:peanut-sauce-cucumber-relish",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "28:peanut-tomato-carrot-string-bean",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "29:pineapple-fried-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "30:signatures",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "31:soups",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "32:spicy-basil-fried-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "33:spicy-beef-salad-scallion-cilantro",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "34:steamed-rice-noodle",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "35:sticky-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "36:sticky-rice-spicy-dipping-sauce",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "37:sweet-and-sour-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "38:sweet-chili-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "39:thai-basilka-pow",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "40:thai-boat-noodle-soup",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "41:thai-roasted-chili-fried-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "42:thai-vegetables-summer-rolls2",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "43:vinaigrette-soy-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "la-ong-thai-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify"
+}

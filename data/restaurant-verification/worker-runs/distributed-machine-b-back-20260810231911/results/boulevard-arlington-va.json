@@ -1,0 +1,320 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260810231911",
+  "restaurantId": "boulevard-arlington-va",
+  "name": "The Boulevard",
+  "locationId": "arlington",
+  "packetValidation": {
+    "baselineItemCount": 92,
+    "baselineFingerprint": "c82cd5cd1e6b225b5cd2d9dd2ca018ce3c90be32f4d2ad8b84668d1e25c4837e",
+    "itemChecksPath": "data/restaurant-verification/item-checks/boulevard-arlington-va.jsonl"
+  },
+  "identity": {
+    "name": "The Boulevard",
+    "location": "2915 Wilson Boulevard, Arlington, VA 22201",
+    "domain": "boulevardva.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "src-home"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "src-home",
+      "url": "https://boulevardva.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and location identity",
+      "retrievedAt": "2026-08-10T23:30:00.000Z"
+    },
+    {
+      "evidenceId": "src-menu",
+      "url": "https://boulevardva.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official current food menu and linked menu surfaces",
+      "retrievedAt": "2026-08-10T23:30:00.000Z"
+    },
+    {
+      "evidenceId": "src-toast",
+      "url": "https://order.toasttab.com/online/boulevard-wilson-2915-wilson-blvd",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "restaurant-linked ordering/menu surface",
+      "retrievedAt": "2026-08-10T23:30:00.000Z"
+    },
+    {
+      "evidenceId": "src-targeted-search",
+      "url": "https://www.google.com/search?q=site%3Aboulevardva.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted official-domain allergen search; no official matrix located",
+      "retrievedAt": "2026-08-10T23:30:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-menu",
+      "url": "https://boulevardva.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "2915 Wilson Boulevard, Arlington VA",
+      "servicePeriod": "dinner; happy hour and cocktails/wine linked",
+      "current": true,
+      "fullyEnumerated": true,
+      "scopeStatus": "complete",
+      "currentProductKeys": [
+        "boulevard-current-menu"
+      ],
+      "sourceEvidenceIds": [
+        "src-menu"
+      ]
+    },
+    {
+      "surfaceId": "linked-toast",
+      "url": "https://order.toasttab.com/online/boulevard-wilson-2915-wilson-blvd",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "Boulevard Wilson",
+      "servicePeriod": "online ordering",
+      "current": true,
+      "fullyEnumerated": true,
+      "scopeStatus": "complete",
+      "currentProductKeys": [
+        "boulevard-current-menu"
+      ],
+      "sourceEvidenceIds": [
+        "src-toast"
+      ]
+    },
+    {
+      "surfaceId": "official-home",
+      "url": "https://boulevardva.com/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "2915 Wilson Boulevard, Arlington VA",
+      "servicePeriod": "all",
+      "current": true,
+      "fullyEnumerated": true,
+      "scopeStatus": "complete",
+      "currentProductKeys": [
+        "boulevard-current-menu"
+      ],
+      "sourceEvidenceIds": [
+        "src-home"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "boulevard-current-menu",
+      "name": "Boulevard current food and nonalcoholic menu catalog",
+      "category": "Modern American",
+      "sourceEvidenceIds": [
+        "src-menu",
+        "src-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "locationInspected": "boulevardva.com homepage, menu, about, FAQ, linked navigation",
+        "outcome": "no official allergen matrix located",
+        "sourceEvidenceIds": [
+          "src-home",
+          "src-menu"
+        ],
+        "location": "The Boulevard, 2915 Wilson Boulevard, Arlington, VA 22201",
+        "query": "boulevardva.com official homepage menu allergen allergy nutrition ingredients",
+        "url": "https://boulevardva.com/menu/"
+      },
+      {
+        "class": "official_documents",
+        "locationInspected": "official menu-linked pages and downloadable/document navigation",
+        "outcome": "no official allergen, nutrition, ingredient document located",
+        "sourceEvidenceIds": [
+          "src-menu"
+        ],
+        "location": "The Boulevard, 2915 Wilson Boulevard, Arlington, VA 22201",
+        "query": "site:boulevardva.com allergen OR allergy OR nutrition OR ingredients PDF menu",
+        "url": "https://boulevardva.com/menu/"
+      },
+      {
+        "class": "linked_vendor",
+        "locationInspected": "restaurant-linked Toast ordering surface",
+        "outcome": "menu/order surface found; no official allergen matrix located",
+        "sourceEvidenceIds": [
+          "src-toast"
+        ],
+        "location": "Boulevard Wilson Toast ordering surface, 2915 Wilson Boulevard, Arlington, VA 22201",
+        "query": "Boulevard Arlington VA Toast menu allergen allergy ingredients",
+        "url": "https://order.toasttab.com/online/boulevard-wilson-2915-wilson-blvd"
+      },
+      {
+        "class": "targeted_web_search",
+        "locationInspected": "official-domain search for allergen, allergy, nutrition, ingredients, PDF, menu",
+        "outcome": "no official allergen matrix located",
+        "sourceEvidenceIds": [
+          "src-targeted-search"
+        ],
+        "location": "Official-domain web search scoped to The Boulevard Arlington, VA",
+        "query": "The Boulevard Arlington VA boulevardva.com allergen allergy nutrition ingredients PDF menu",
+        "url": "https://www.google.com/search?q=site%3Aboulevardva.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+      }
+    ]
+  },
+  "reconciliation": {
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:adejagreig"
+        ],
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-menu"
+        ],
+        "notes": "Non-menu author artifact."
+      },
+      {
+        "auditItemKeys": [
+          "2:apple-pie"
+        ],
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "boulevard-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "src-menu"
+        ]
+      },
+      {
+        "auditItemKeys": [
+          "3:arugula-frisee-salad-raspberry-vinaigrette",
+          "4:asparagus",
+          "5:avocado-cucumber",
+          "6:avocado-cucumber-roll",
+          "7:avocado-toast",
+          "8:beetroot-risotto",
+          "9:black-forest",
+          "10:bluefin-tuna-nigiri-flight",
+          "11:boulevard",
+          "12:boulevard-burger",
+          "13:butter-pasta",
+          "14:buttermilk-yams-watercress-oil-salmon-roe",
+          "15:calamari",
+          "16:california",
+          "17:california-roll",
+          "18:cavatelli-pasta",
+          "19:cheesecake",
+          "20:chicken-parm",
+          "21:chicken-parmesan",
+          "22:chicken-pasta",
+          "23:chopped-tuna-sriracha-mayo-avocado-scallions",
+          "24:crab-benedict",
+          "25:crab-dip-toast",
+          "26:creamed-spinach-tart",
+          "27:crispy-brussel-sprouts",
+          "28:crispy-chicken-bites",
+          "29:crunchy-spicy-salmon",
+          "30:crunchy-spicy-salmon-roll",
+          "31:edamame",
+          "32:flourless-chocolate-cake",
+          "33:fontina-cheese-red-pepper-mayo",
+          "34:fried-chicken-bao-buns",
+          "35:garlic-shrimp",
+          "36:grapefruit",
+          "37:grapefruit-salad",
+          "38:greek-salad-sherry-vinaigrette",
+          "39:grilled-chicken-sandwich",
+          "40:grilled-octopus",
+          "41:half-chicken",
+          "42:hamachi",
+          "43:hamachi-roll",
+          "44:hamachi-avocado-scallions",
+          "45:hand-cut-fries",
+          "46:hand-cut-truffle-fries",
+          "47:handcut-fries",
+          "48:handcut-truffle-fries",
+          "49:housemade-sweet-potato-buns",
+          "50:jicama-and-watercress",
+          "51:key-lime-pie",
+          "52:king-mushroom-cavatelli-pasta",
+          "53:king-salmon-nigiri",
+          "54:king-salmon-tiradito",
+          "55:king-salmon-bluefin-tuna-hamachi",
+          "56:lamb-chops",
+          "57:loaded-crispy-potatoes",
+          "58:luxury",
+          "59:mashed-potatoes",
+          "60:mashed-potatoes-beet-salad-pickles-dill",
+          "61:mini-bao-buns",
+          "62:mini-burger",
+          "63:mushrooms",
+          "64:mussel-pot",
+          "65:nigiri-plate",
+          "66:pineapple-gastrique-worcestershire-sauce-scallions",
+          "67:pork-chop-milanese",
+          "68:pork-dumplings",
+          "69:primavera-pasta",
+          "70:rice-and-sofrito-asparagus-beef-jus",
+          "71:rice-and-sofrito-fontina-cheese-romesco",
+          "72:sabor-latino",
+          "73:salmon",
+          "74:salmon-roll",
+          "75:salmon-avocado",
+          "76:scallop",
+          "77:seafood-pasta",
+          "78:short-rib",
+          "79:short-rib-arancini",
+          "80:shrimp-tempura",
+          "81:shrimp-tempura-roll",
+          "82:spicy-tuna",
+          "83:spicy-tuna-roll",
+          "84:spinach-pie",
+          "85:steak-frites",
+          "86:sundays",
+          "87:sweet-potato-buns",
+          "88:tuna-nigiri",
+          "89:tuna-tartar",
+          "90:vanilla-sundae",
+          "91:wild-seduction",
+          "92:zucchini-croquettes"
+        ],
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "boulevard-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "src-menu",
+          "src-toast"
+        ],
+        "notes": "Consolidated current food/nonalcoholic menu boundary; frozen variants reconciled once."
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify",
+  "outcome": "researched"
+}

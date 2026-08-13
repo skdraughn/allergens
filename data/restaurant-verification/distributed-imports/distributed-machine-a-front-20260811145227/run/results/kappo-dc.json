@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-a-front-20260811145227",
+  "restaurantId": "kappo-dc",
+  "packetValidation": {"baselineItemCount": 0, "baselineFingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945", "itemChecksRead": 0, "restaurantIdMatched": true},
+  "identity": {"status": "confirmed", "name": "Kappo DC", "location": "4822 MacArthur Blvd NW, Washington, DC 20007", "locationId": null, "domain": "kappodc.com", "officialHomepage": "https://kappodc.com/", "sourceEvidenceIds": ["s-home"]},
+  "sources": [
+    {"id": "s-home", "url": "https://kappodc.com/", "authorityTier": "restaurant_issued", "purpose": "official homepage, identity, address, current tasting-menu scope", "retrievedAt": "2026-08-11T15:00:00.000Z"},
+    {"id": "s-robots", "url": "https://kappodc.com/robots.txt", "authorityTier": "restaurant_issued", "purpose": "official document and crawl-surface check", "retrievedAt": "2026-08-11T15:00:00.000Z"},
+    {"id": "s-search", "url": "https://www.google.com/search?q=site%3Akappodc.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF+OR+menu", "authorityTier": "third_party", "purpose": "targeted official-domain allergen search", "retrievedAt": "2026-08-11T15:00:00.000Z"}
+  ],
+  "menuSurfaces": [{"surfaceId": "official-home-menu", "url": "https://kappodc.com/", "authority": "restaurant_issued", "locationScope": "Washington DC", "servicePeriod": "dinner tasting menu; Tuesday-Sunday seatings", "current": true, "scopeStatus": "complete", "sourceEvidenceIds": ["s-home"]}],
+  "currentProducts": [{"currentProductKey": "wagyū-kōsu", "name": "Wagyū kōsu (eight-course wagyu tasting menu)", "category": "food tasting menu", "description": "Reservation-only eight-course wagyu-centric tasting menu; beverage program is separately described and alcohol-only offerings are excluded.", "sourceEvidenceIds": ["s-home"], "containsAllergens": [], "mayContainAllergens": [], "allergenSourceEvidenceIds": [], "allergenSourceType": "unavailable", "notes": ["The official site publishes the course as a chef-led tasting menu rather than an itemized food/nonalcoholic ordering catalog."]}],
+  "matrixSearch": {"status": "accurately_unavailable", "attempted": ["official_site", "official_documents", "linked_vendor", "targeted_web_search"], "attempts": [
+    {"class": "official_site", "queryOrLocation": "Official homepage and all visible navigation/menu links", "urlsInspected": ["https://kappodc.com/"], "outcome": "Current tasting-menu and beverage-program description found; no allergen matrix or ingredient disclosure.", "sourceEvidenceIds": ["s-home"]},
+    {"class": "official_documents", "queryOrLocation": "Official robots, sitemap/document links, downloadable PDFs/images and FAQ surfaces", "urlsInspected": ["https://kappodc.com/", "https://kappodc.com/robots.txt"], "outcome": "No official allergen, nutrition, ingredient, PDF, image-matrix, or downloadable document found.", "sourceEvidenceIds": ["s-home", "s-robots"]},
+    {"class": "linked_vendor", "queryOrLocation": "Official homepage inspected for ordering/menu-provider links", "urlsInspected": ["https://kappodc.com/"], "outcome": "No restaurant-linked ordering vendor or menu provider exposed.", "sourceEvidenceIds": ["s-home"]},
+    {"class": "targeted_web_search", "queryOrLocation": "site:kappodc.com allergen OR allergy OR nutrition OR ingredients OR PDF OR menu", "urlsInspected": ["https://www.google.com/search?q=site%3Akappodc.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF+OR+menu"], "outcome": "No authoritative allergen matrix located.", "sourceEvidenceIds": ["s-search"]}
+  ], "notes": ["No negative allergen claims made; direct allergen and cross-contact evidence are unavailable."]},
+  "restaurantLevelAllergenEvidence": [],
+  "findings": [{"type": "cross_contact", "status": "unavailable", "statement": "Official sources do not publish a complete cross-contact policy or allergen matrix.", "sourceEvidenceIds": ["s-home"]}],
+  "reconciliation": {"items": []},
+  "changes": {"identityAmbiguous": false, "menuScopeUnresolved": false, "officialAllergenConflict": false, "crossContactConflict": false, "unsupportedNegativeClaim": false, "sourceAuthorityAmbiguous": false, "duplicateItems": false, "catalogDrift": false, "staleItems": false, "newItems": false, "nameOrCategoryCleanup": false, "restaurantSpecificExtraction": false, "parserIssue": false},
+  "proposedChanges": [],
+  "recommendedLane": "verify",
+  "riskSignals": []
+}

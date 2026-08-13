@@ -1,4 +1,5 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { Buffer } from "node:buffer";
 import path from "node:path";
 
 const inputPath = process.argv[2] ?? "src/data/generated/restaurants.generated.json";
@@ -18,7 +19,7 @@ const summary = {
     allergyAccommodationPolicy: restaurant.allergyAccommodationPolicy,
     brandKey: restaurant.brandKey,
     category: restaurant.category,
-    city: restaurant.city,
+    city: normalizeCityForRegion(restaurant.city, restaurant.region),
     country: restaurant.country,
     coveragePercent: restaurant.coveragePercent,
     coverageStatus: restaurant.coverageStatus,
@@ -68,3 +69,9 @@ console.log(
     2,
   ),
 );
+
+function normalizeCityForRegion(city, region) {
+  if (typeof city !== "string" || typeof region !== "string") return city;
+  const escapedRegion = region.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return city.replace(new RegExp(`,\\s*${escapedRegion}$`, "i"), "").trim();
+}

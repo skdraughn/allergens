@@ -18,7 +18,7 @@ export const socialAuthNative = defineFunction({
   environment: {
     APP_JWT_SECRET: appJwtSecret,
     APP_JWT_TTL_SECONDS: "3600",
-    APPLE_CLIENT_IDS: process.env.APPLE_CLIENT_IDS ?? "com.truflag.allergyapp",
+    APPLE_CLIENT_IDS: process.env.APPLE_CLIENT_IDS ?? "com.cliqinvite.mysafeplate",
     GOOGLE_CLIENT_IDS: process.env.GOOGLE_CLIENT_IDS ?? defaultGoogleClientIds,
     SOCIAL_AUTH_PASSWORD_PEPPER: socialAuthPasswordPepper,
   },

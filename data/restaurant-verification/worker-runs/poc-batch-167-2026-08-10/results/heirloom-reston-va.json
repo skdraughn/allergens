@@ -1,0 +1,982 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-167-2026-08-10",
+  "restaurantId": "heirloom-reston-va",
+  "runId": "poc-batch-167-2026-08-10-heirloom-reston-va-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "heirloom-reston-va",
+    "name": "Heirloom Reston",
+    "locationId": "reston",
+    "domain": "heirloomreston.com",
+    "baselineItemCount": 27,
+    "baselineFingerprint": "7cf3bc59b356cb09cb4a37b3a2e1fffcd65a34b641fce47f026e86bd0a1fcfbe",
+    "itemChecksRead": 27,
+    "itemChecksPath": "data/restaurant-verification/item-checks/heirloom-reston-va.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Heirloom Reston",
+    "location": "11800 Sunrise Valley Dr, Reston, VA 20191 (inside Open Road Distilling Co.)",
+    "locationId": "reston",
+    "domain": "heirloomreston.com",
+    "officialHomepage": "https://heirloomreston.com/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-pdf"
+    ],
+    "notes": "Official homepage identifies Heirloom in Reston, Virginia; no other Heirloom location merged."
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-home",
+      "url": "https://heirloomreston.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Official Heirloom Reston homepage",
+      "retrievedAt": "2026-08-10T00:00:00.000Z",
+      "excerpt": "Heirloom is located in Open Road Distilling Co.; dinner daily 4 PM to close."
+    },
+    {
+      "evidenceId": "ev-pdf",
+      "url": "https://heirloomreston.com/wp-content/uploads/2026/03/HEIRLOOM-Core-SPRING-2026.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "both",
+      "title": "Current Spring 2026 food menu PDF",
+      "retrievedAt": "2026-08-10T00:00:00.000Z",
+      "excerpt": "Current Reston dinner menu lists the frozen products and sides; advises guests to notify server of allergies."
+    },
+    {
+      "evidenceId": "ev-food",
+      "url": "https://heirloomreston.com/menu/food/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Official food-menu page",
+      "retrievedAt": "2026-08-10T00:00:00.000Z",
+      "excerpt": "Official food menu navigation; product content is image/PDF-backed."
+    },
+    {
+      "evidenceId": "ev-search-site",
+      "url": "https://heirloomreston.com/menu/food/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_site allergen search",
+      "retrievedAt": "2026-08-10T00:00:00.000Z",
+      "excerpt": "Inspected homepage, food, drinks and happy-hour navigation; no standalone allergen matrix."
+    },
+    {
+      "evidenceId": "ev-search-docs",
+      "url": "https://heirloomreston.com/wp-content/uploads/2026/03/HEIRLOOM-Core-SPRING-2026.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_documents allergen search",
+      "retrievedAt": "2026-08-10T00:00:00.000Z",
+      "excerpt": "Inspected current PDF and document/image surfaces; only allergy notice, no ingredient/allergen matrix."
+    },
+    {
+      "evidenceId": "ev-search-vendor",
+      "url": "https://heirloomreston.com/menu/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "title": "linked_vendor allergen search",
+      "retrievedAt": "2026-08-10T00:00:00.000Z",
+      "excerpt": "No Reston ordering vendor is linked from official menu; inspected linked surfaces and found no matrix."
+    },
+    {
+      "evidenceId": "ev-search-web",
+      "url": "https://www.google.com/search?q=site%3Aheirloomreston.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "targeted_web_search allergen search",
+      "retrievedAt": "2026-08-10T00:00:00.000Z",
+      "excerpt": "Targeted domain search found the official menu PDF and allergy notice, but no matrix."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "title": "Official homepage",
+      "url": "https://heirloomreston.com/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "Reston, VA",
+      "servicePeriod": "dinner",
+      "surfaceType": "html_homepage",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-home"
+      ],
+      "currentProductKeys": [],
+      "outcome": "Identity, location and service period confirmed."
+    },
+    {
+      "surfaceId": "official-food",
+      "title": "Official food menu page",
+      "url": "https://heirloomreston.com/menu/food/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "Reston, VA",
+      "servicePeriod": "dinner",
+      "surfaceType": "html_menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-food",
+        "ev-pdf"
+      ],
+      "currentProductKeys": [
+        "baked-shrimp",
+        "beef-carpaccio",
+        "blue-bay-mussels",
+        "burrata",
+        "caesar-salad",
+        "dry-aged-roasted-free-bird-chicken",
+        "garlic-spinach",
+        "gnocchi",
+        "grilled-jumbo-asparagus",
+        "hand-cut",
+        "heirloom-burger",
+        "herb-and-parmesan-crispy-layer-potatoes",
+        "house-made-herb-focaccia",
+        "korean-chili-spiced-tuna",
+        "oysters-rockefeller",
+        "pan-roasted-chilean-seabass",
+        "pan-roasted-sea-scallops",
+        "pork-belly",
+        "roasted-mushrooms",
+        "seafood-cioppino",
+        "short-rib",
+        "smoked-gouda-mac",
+        "spicy-bucatini",
+        "truffle-parmesan-fries",
+        "tuna-carpaccio",
+        "meyer-lemon-ricotta-ravioli",
+        "spring-lamb-genovese",
+        "glazed-duck-breast",
+        "bone-in-kc-strip"
+      ],
+      "outcome": "Current dinner menu image/PDF; alcohol-only drink menu excluded."
+    },
+    {
+      "surfaceId": "spring-pdf",
+      "title": "Spring 2026 menu PDF",
+      "url": "https://heirloomreston.com/wp-content/uploads/2026/03/HEIRLOOM-Core-SPRING-2026.pdf",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "Reston, VA",
+      "servicePeriod": "dinner",
+      "surfaceType": "pdf_menu",
+      "current": false,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "currentProductKeys": [],
+      "outcome": "Current official PDF; additional current products (ravioli, lamb, duck, strip) retained as new products."
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "baked-shrimp",
+      "name": "Baked Shrimp",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "beef-carpaccio",
+      "name": "Beef Carpaccio",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "blue-bay-mussels",
+      "name": "Blue Bay Mussels",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "burrata",
+      "name": "Burrata",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "caesar-salad",
+      "name": "Caesar Salad",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "dry-aged-roasted-free-bird-chicken",
+      "name": "Dry Aged Roasted Free Bird Chicken",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "garlic-spinach",
+      "name": "Garlic Spinach",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "gnocchi",
+      "name": "Gnocchi",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "grilled-jumbo-asparagus",
+      "name": "Grilled Jumbo Asparagus",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "hand-cut",
+      "name": "Hand Cut 8 oz CAB Filet",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "heirloom-burger",
+      "name": "Heirloom Burger",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "herb-and-parmesan-crispy-layer-potatoes",
+      "name": "Herb + Parmesan Crispy Layer Potatoes",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "house-made-herb-focaccia",
+      "name": "House Made Herb Focaccia",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "korean-chili-spiced-tuna",
+      "name": "Korean Chili Spiced Tuna",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "oysters-rockefeller",
+      "name": "Oysters Rockefeller",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "pan-roasted-chilean-seabass",
+      "name": "Pan Roasted Chilean Seabass",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "pan-roasted-sea-scallops",
+      "name": "Pan Roasted Sea Scallops",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "pork-belly",
+      "name": "Pork Belly",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "roasted-mushrooms",
+      "name": "Roasted Mushrooms",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "seafood-cioppino",
+      "name": "Seafood Cioppino",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "short-rib",
+      "name": "Red Wine Braised Short Rib",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "smoked-gouda-mac",
+      "name": "Smoked Gouda Mac",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "spicy-bucatini",
+      "name": "Spicy Bucatini",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "truffle-parmesan-fries",
+      "name": "Truffle Parmesan Fries",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "tuna-carpaccio",
+      "name": "Tuna Carpaccio",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "meyer-lemon-ricotta-ravioli",
+      "name": "Meyer Lemon Ricotta Ravioli",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "spring-lamb-genovese",
+      "name": "Spring Lamb Genovese",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "glazed-duck-breast",
+      "name": "7 OZ Glazed Duck Breast",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    },
+    {
+      "currentProductKey": "bone-in-kc-strip",
+      "name": "18 OZ Bone in Prime Kansas City Strip",
+      "allergenSourceType": "unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenAuthorityTier": null
+    }
+  ],
+  "matrixSearchAudit": [
+    {
+      "searchClass": "official_site",
+      "inspectedLocationOrQuery": "heirloomreston.com homepage, menu/food, menu/drinks, happy hour",
+      "urls": [
+        "https://heirloomreston.com/menu/food/"
+      ],
+      "outcome": "no_matrix",
+      "evidenceIds": [
+        "ev-search-site"
+      ]
+    },
+    {
+      "searchClass": "official_documents",
+      "inspectedLocationOrQuery": "official PDFs, images, sitemap/document links",
+      "urls": [
+        "https://heirloomreston.com/wp-content/uploads/2026/03/HEIRLOOM-Core-SPRING-2026.pdf"
+      ],
+      "outcome": "no_matrix",
+      "evidenceIds": [
+        "ev-search-docs"
+      ]
+    },
+    {
+      "searchClass": "linked_vendor",
+      "inspectedLocationOrQuery": "official menu linked ordering surfaces",
+      "urls": [
+        "https://heirloomreston.com/menu/"
+      ],
+      "outcome": "no_matrix",
+      "evidenceIds": [
+        "ev-search-vendor"
+      ]
+    },
+    {
+      "searchClass": "targeted_web_search",
+      "inspectedLocationOrQuery": "site:heirloomreston.com allergen allergy nutrition ingredients PDF menu",
+      "urls": [
+        "https://www.google.com/search?q=site%3Aheirloomreston.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+      ],
+      "outcome": "no_matrix",
+      "evidenceIds": [
+        "ev-search-web"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:baked-shrimp",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "baked-shrimp"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "2:beef-carpaccio",
+        "disposition": "normalized_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "beef-carpaccio"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "3:blue-bay-mussels",
+        "disposition": "normalized_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "blue-bay-mussels"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "4:burrata",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "burrata"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "5:caesar-salad",
+        "disposition": "normalized_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "caesar-salad"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "6:dry-aged-roasted-free-bird-chicken",
+        "disposition": "normalized_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "dry-aged-roasted-free-bird-chicken"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "7:garlic-spinach",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "garlic-spinach"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "8:gnocchi",
+        "disposition": "normalized_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "gnocchi"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "9:grilled-jumbo-asparagus",
+        "disposition": "normalized_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "grilled-jumbo-asparagus"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "10:hand-cut",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "hand-cut"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "11:heirloom-burger",
+        "disposition": "normalized_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "heirloom-burger"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "12:herb-and-parmesan-crispy-layer-potatoes",
+        "disposition": "normalized_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "herb-and-parmesan-crispy-layer-potatoes"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "13:house-made-herb-focaccia",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "house-made-herb-focaccia"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "14:korean-chili-spiced-tuna",
+        "disposition": "normalized_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "korean-chili-spiced-tuna"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "15:mediterranean-salad",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [],
+        "notes": null
+      },
+      {
+        "auditItemKey": "16:oysters-rockefeller",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "oysters-rockefeller"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "17:pan-roasted-chilean-seabass",
+        "disposition": "normalized_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "pan-roasted-chilean-seabass"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "18:pan-roasted-sea-scallops",
+        "disposition": "normalized_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "pan-roasted-sea-scallops"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "19:pork-belly",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "pork-belly"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "20:roasted-mushrooms",
+        "disposition": "normalized_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "roasted-mushrooms"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "21:seafood-cioppino",
+        "disposition": "normalized_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "seafood-cioppino"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "22:short-rib",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "short-rib"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "23:shrimp-fettuccine",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [],
+        "notes": null
+      },
+      {
+        "auditItemKey": "24:smoked-gouda-mac",
+        "disposition": "normalized_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "smoked-gouda-mac"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "25:spicy-bucatini",
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "spicy-bucatini"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "26:truffle-parmesan-fries",
+        "disposition": "normalized_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "truffle-parmesan-fries"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "27:tuna-carpaccio",
+        "disposition": "normalized_match",
+        "sourceEvidenceIds": [
+          "ev-pdf"
+        ],
+        "matchedCurrentProductKeys": [
+          "tuna-carpaccio"
+        ],
+        "notes": null
+      }
+    ]
+  },
+  "proposedChanges": {
+    "catalog": true,
+    "allergens": true,
+    "identity": false,
+    "extraction": true,
+    "changes": {
+      "identityAmbiguous": false,
+      "menuScopeUnresolved": false,
+      "officialAllergenConflict": false,
+      "crossContactConflict": false,
+      "unsupportedNegativeClaim": false,
+      "sourceAuthorityAmbiguous": false,
+      "duplicateItems": false,
+      "catalogDrift": true,
+      "staleItems": true,
+      "newItems": true,
+      "nameOrCategoryCleanup": true,
+      "restaurantSpecificExtraction": true,
+      "parserIssue": true
+    },
+    "technicalDebt": [
+      "Image-backed menu extraction."
+    ]
+  },
+  "routingSignals": {
+    "lunaFixRequired": true,
+    "solReviewRequired": false,
+    "signals": [
+      "ordinary catalog drift",
+      "image/PDF extraction artifact",
+      "missing official allergen matrix after all four searches"
+    ],
+    "changes": {
+      "identityAmbiguous": false,
+      "menuScopeUnresolved": false,
+      "officialAllergenConflict": false,
+      "crossContactConflict": false,
+      "unsupportedNegativeClaim": false,
+      "sourceAuthorityAmbiguous": false,
+      "duplicateItems": false,
+      "catalogDrift": true,
+      "staleItems": true,
+      "newItems": true,
+      "nameOrCategoryCleanup": true,
+      "restaurantSpecificExtraction": true,
+      "parserIssue": true
+    }
+  },
+  "blockedReason": null,
+  "validator": {
+    "valid": true,
+    "errors": []
+  },
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "url": "https://heirloomreston.com/menu/food/",
+        "outcome": "no_matrix",
+        "sourceEvidenceIds": [
+          "ev-search-site"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "url": "https://heirloomreston.com/wp-content/uploads/2026/03/HEIRLOOM-Core-SPRING-2026.pdf",
+        "outcome": "no_matrix",
+        "sourceEvidenceIds": [
+          "ev-search-docs"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "url": "https://heirloomreston.com/menu/",
+        "outcome": "no_matrix",
+        "sourceEvidenceIds": [
+          "ev-search-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "url": "https://www.google.com/search?q=site%3Aheirloomreston.com+allergen",
+        "outcome": "no_matrix",
+        "sourceEvidenceIds": [
+          "ev-search-web"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": true,
+    "newItems": true,
+    "nameOrCategoryCleanup": true,
+    "restaurantSpecificExtraction": true,
+    "parserIssue": true
+  }
+}

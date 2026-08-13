@@ -115,6 +115,29 @@ test("pairs grouped keys and product keys by position", () => {
   assert.deepEqual(validation.undefinedMappings, []);
 });
 
+test("rejects an aggregate product used as a many-to-one catalog mapping", () => {
+  const collapseJob = { ...job, baselineItemCount: 10 };
+  const collapseChecks = Array.from({ length: 10 }, (_, index) => ({ auditItemKey: `${index + 1}:item-${index + 1}` }));
+  const result = validResult();
+  result.packetValidation.baselineItemCount = 10;
+  result.currentProducts = [{
+    ...result.currentProducts[0],
+    currentProductKey: "current-menu-catalog",
+    name: "Current food and nonalcoholic menu catalog",
+    productCount: 10,
+  }];
+  result.reconciliation.items = collapseChecks.map(({ auditItemKey }) => ({
+    auditItemKey,
+    disposition: "exact_match",
+    matchedCurrentProductKeys: ["current-menu-catalog"],
+    sourceEvidenceIds: ["source"],
+  }));
+  const validation = validatePocResearchResult({ job: collapseJob, itemChecks: collapseChecks, result });
+  assert.equal(validation.valid, false);
+  assert.equal(validation.maximumMappingFanIn, 10);
+  assert.match(validation.errors.join("\n"), /aggregate catalog placeholders are not publishable products/);
+});
+
 test("routes a partial current menu surface to Sol even when the worker misses the signal", () => {
   const result = validResult();
   result.menuSurfaces = [{ surfaceId: "catering", current: true, scopeStatus: "partial" }];

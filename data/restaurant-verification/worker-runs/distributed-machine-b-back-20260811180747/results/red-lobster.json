@@ -1,0 +1,390 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811180747",
+  "restaurantId": "red-lobster",
+  "name": "Red Lobster",
+  "locationId": null,
+  "domain": "redlobster.com",
+  "packetValidation": {
+    "itemChecksPath": "data/restaurant-verification/item-checks/red-lobster.jsonl",
+    "baselineFingerprint": "7fdc0c1c807ec65d9c7c5d14a1d9d5b4f500259e2575a43fb8ffc40f4454d5a4",
+    "baselineItemCount": 127,
+    "fingerprintVerified": true,
+    "itemCheckCount": 127
+  },
+  "identity": {
+    "name": "Red Lobster",
+    "domain": "redlobster.com",
+    "sourceEvidenceIds": [
+      "home",
+      "order"
+    ],
+    "identityAmbiguous": false,
+    "address": null,
+    "locationId": null
+  },
+  "sources": [
+    {
+      "evidenceId": "home",
+      "url": "https://www.redlobster.com/",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-11T18:09:52.2786597Z",
+      "purpose": "identity"
+    },
+    {
+      "evidenceId": "menu",
+      "url": "https://www.redlobster.com/Menu",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-11T18:09:52.2786597Z",
+      "purpose": "current menu"
+    },
+    {
+      "evidenceId": "allergen",
+      "url": "https://img-ecomm-rl-prod-fye5gqbxdtbghqer.a03.azurefd.net/brandsite/documents/US_Allergen_Final_Guide_4-20-26.pdf",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-11T18:09:52.2786597Z",
+      "purpose": "official allergen matrix"
+    },
+    {
+      "evidenceId": "order",
+      "url": "https://www.redlobster.com/order/location/order",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-11T18:09:52.2786597Z",
+      "purpose": "locations"
+    },
+    {
+      "evidenceId": "linked",
+      "url": "https://www.redlobster.com/order?rlid=10680",
+      "authorityTier": "restaurant_linked_vendor",
+      "retrievedAt": "2026-08-11T18:09:52.2786597Z",
+      "purpose": "linked menu"
+    },
+    {
+      "evidenceId": "search",
+      "url": "https://www.google.com/search?q=site%3Aredlobster.com+allergen+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "retrievedAt": "2026-08-11T18:09:52.2786597Z",
+      "purpose": "targeted search"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-menu",
+      "url": "https://www.redlobster.com/Menu",
+      "locationScope": "US chain",
+      "authorityTier": "restaurant_issued",
+      "sourceEvidenceIds": [
+        "menu"
+      ],
+      "scopeStatus": "complete",
+      "current": true,
+      "servicePeriod": "current",
+      "retrievalOutcome": "all food and nonalcoholic categories inspected"
+    },
+    {
+      "surfaceId": "official-allergen",
+      "url": "https://img-ecomm-rl-prod-fye5gqbxdtbghqer.a03.azurefd.net/brandsite/documents/US_Allergen_Final_Guide_4-20-26.pdf",
+      "locationScope": "US chain",
+      "authorityTier": "restaurant_issued",
+      "sourceEvidenceIds": [
+        "allergen"
+      ],
+      "scopeStatus": "complete",
+      "current": true,
+      "servicePeriod": "current",
+      "retrievalOutcome": "official matrix"
+    },
+    {
+      "surfaceId": "order",
+      "url": "https://www.redlobster.com/order/location/order",
+      "locationScope": "locations",
+      "authorityTier": "restaurant_issued",
+      "sourceEvidenceIds": [
+        "order"
+      ],
+      "scopeStatus": "complete",
+      "current": true,
+      "servicePeriod": "current",
+      "retrievalOutcome": "inspected"
+    },
+    {
+      "surfaceId": "linked",
+      "url": "https://www.redlobster.com/order?rlid=10680",
+      "locationScope": "example location only",
+      "authorityTier": "restaurant_linked_vendor",
+      "sourceEvidenceIds": [
+        "linked"
+      ],
+      "scopeStatus": "complete",
+      "current": false,
+      "servicePeriod": "current",
+      "retrievalOutcome": "excluded from packet location"
+    },
+    {
+      "surfaceId": "search",
+      "url": "https://www.google.com/search?q=site%3Aredlobster.com+allergen+nutrition+ingredients+PDF+menu",
+      "locationScope": "official domain",
+      "authorityTier": "third_party",
+      "sourceEvidenceIds": [
+        "search"
+      ],
+      "scopeStatus": "complete",
+      "current": false,
+      "servicePeriod": "current",
+      "retrievalOutcome": "targeted search"
+    }
+  ],
+  "currentProducts": [
+    {
+      "mayContainAllergens": [],
+      "variantGroup": "Current US menu",
+      "allergenSourceType": "restaurant_allergen_document",
+      "currentProductKey": "red-lobster-current-catalog",
+      "productCount": 127,
+      "category": "All current categories",
+      "name": "Red Lobster current food and nonalcoholic menu catalog",
+      "allergenAuthorityTier": "restaurant_issued",
+      "sourceEvidenceIds": [
+        "menu",
+        "linked"
+      ],
+      "allergenSourceEvidenceIds": [
+        "allergen"
+      ],
+      "boundary": "127 frozen current food/nonalcoholic products; alcohol-only items excluded.",
+      "containsAllergens": [
+        "egg",
+        "fish",
+        "gluten",
+        "milk",
+        "sesame",
+        "shellfish",
+        "soy",
+        "tree-nut",
+        "wheat"
+      ]
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "found",
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "Red Lobster official homepage and Menu navigation: https://www.redlobster.com/ and https://www.redlobster.com/Menu",
+        "location": "Red Lobster official homepage and Menu navigation",
+        "outcome": "Inspected current restaurant-controlled menu and navigation; official allergen matrix linked from official materials.",
+        "sourceEvidenceIds": [
+          "home",
+          "menu",
+          "allergen"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "Red Lobster official allergen PDF and downloadable document surfaces: https://img-ecomm-rl-prod-fye5gqbxdtbghqer.a03.azurefd.net/brandsite/documents/US_Allergen_Final_Guide_4-20-26.pdf",
+        "location": "Red Lobster official allergen PDF and downloadable document surfaces",
+        "outcome": "Found and inspected the current official US allergen matrix PDF.",
+        "sourceEvidenceIds": [
+          "allergen"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Restaurant-linked ordering menu: https://www.redlobster.com/order?rlid=10680",
+        "location": "Restaurant-linked ordering menu",
+        "outcome": "Inspected linked ordering surface; retained official matrix as controlling chain-level allergen source.",
+        "sourceEvidenceIds": [
+          "linked",
+          "allergen"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "queryOrLocation": "site:redlobster.com allergen allergy nutrition ingredients PDF menu",
+        "location": "Targeted redlobster.com allergen, allergy, nutrition, ingredients, PDF, and menu queries",
+        "outcome": "Located/confirmed the official current allergen matrix; no conflicting authority identified.",
+        "sourceEvidenceIds": [
+          "search",
+          "allergen"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:6-oz-filet-mignon-steaks",
+          "2:6-oz-filet-mignon-steaks-with-crab-topping-crab-ify-it",
+          "3:7-oz-sirloin-steak",
+          "4:7-oz-sirloin-steaks",
+          "5:7-oz-sirloin-steaks-with-crab-topping-crab-ify-it",
+          "6:admirals-feast",
+          "7:asparagus-roasted",
+          "8:atlantic-salmon-grilled",
+          "9:bacon-cheeseburger",
+          "10:bacon-mac-and-cheese",
+          "11:bacon-wrapped-sea-scallops",
+          "12:baked-potato",
+          "13:baked-shrimp",
+          "14:barbeque-sauce",
+          "15:black-tiger-shrimp-cocktail",
+          "16:blue-cheese-dressing",
+          "17:broccoli-seasoned",
+          "18:brownie-overboardtm",
+          "19:butter",
+          "20:butter-100percent-pure-melted",
+          "21:caesar-dressing",
+          "22:caesar-side-salad",
+          "23:cajun-butter",
+          "24:cajun-sausage-add-on",
+          "25:calamari-hand-breaded",
+          "26:celebration-dessert",
+          "27:cheddar-bay-biscuitsr-each",
+          "28:chesapeake-fries",
+          "29:chocolate-wave",
+          "30:citrus-vinaigrette-dressing",
+          "31:classic-caesar-salad",
+          "32:classic-caesar-salad-with-grilled-chicken",
+          "33:cocktail-sauce",
+          "34:coleslaw",
+          "35:crab-carbonara-pasta",
+          "36:crab-queso-dip",
+          "37:crab-with-crispy-potatoes",
+          "38:crab-topped-asparagus",
+          "39:crab-topped-baked-potato",
+          "40:crab-topped-mashed-potatoes",
+          "41:crispy-brussels-sprouts",
+          "42:crispy-dragon-shrimp",
+          "43:crunch-fried-flounder-wild-caught",
+          "44:crunch-fried-flounder-sandwich-with-chesapeake-fries-and-hush-puppies",
+          "45:fish-and-chips-with-chesapeake-fries-and-hush-puppies",
+          "46:flatbread-lobster",
+          "47:fluff-maine-tail",
+          "48:french-dressing",
+          "49:fresh-broccoli-seasoned",
+          "50:friday-fish-and-chips-with-chesapeake-fries-and-hush-puppies",
+          "51:garlic-linguini-alfredo-with-cajun-chicken",
+          "52:garlic-shrimp-scampi",
+          "53:golden-fried-fish",
+          "54:grilled-chicken-tenders",
+          "55:grilled-shrimp",
+          "56:grilled-shrimp-skewer-with-orzo-rice",
+          "57:hand-breaded-chicken-tenders",
+          "58:honey-mustard-dressing",
+          "59:house-side-salad-does-not-include-salad-dressing",
+          "60:hush-puppies",
+          "61:ice-cream-vanilla",
+          "62:ketchup",
+          "63:key-lime-pie",
+          "64:lemon-pepper-butter",
+          "65:lemon-vinaigrette",
+          "66:live-maine-lobster-steamed",
+          "67:live-maine-lobster-stuffed",
+          "68:lobster-and-shrimp-linguini",
+          "69:lobster-dip",
+          "70:lobster-lovers-duo",
+          "71:lobster-topped-baked-potato",
+          "72:lobster-topped-mashed-potatoes",
+          "73:macaroni-and-cheese",
+          "74:maine-lobster-tail-and-7-oz-sirloin-surf-and-turf",
+          "75:mango-pineapple-vinaigrette",
+          "76:marinara-sauce",
+          "77:mariners-boil",
+          "78:marry-me-shrimp",
+          "79:mashed-potatoes",
+          "80:monday-lobster-and-garlic-shrimp-scampi",
+          "81:mozzarella-cheesesticks",
+          "82:old-bay-r-and-butter",
+          "83:orange-wedges",
+          "84:original",
+          "85:orzo-rice",
+          "86:parmesan-crusted-chicken",
+          "87:parrot-isle-jumbo-coconut-shrimp",
+          "88:petite-maine-lobster-tail",
+          "89:pina-colada-sauce",
+          "90:popcorn-shrimp",
+          "91:ranch-dressing",
+          "92:rl-signature-butter",
+          "93:roasted-garlic-butter",
+          "94:rock-lobster-tail",
+          "95:sailors-boil",
+          "96:sailors-platter",
+          "97:salmon-grilled",
+          "98:salmon-grilled-with-crab-topping-crab-ify-it",
+          "99:salmon-new-orleans-halffull",
+          "100:seafood-stuffed-mushrooms-with-crab-topping-crab-ify-it",
+          "101:seafood-stuffed-mushrooms",
+          "102:sesame-dressing",
+          "103:sesame-soy-salmon-bowl-with-orzo-rice",
+          "104:shrimp-linguini-alfredo",
+          "105:simply-steamed",
+          "106:snow-crab-legs",
+          "107:snow-crab-legs-12-lb",
+          "108:soups-lobster-bisque-cupbowl",
+          "109:soups-new-england-clam-chowder-cupbowl",
+          "110:sour-cream",
+          "111:southwest-shrimp-bowl-with-orzo-rice",
+          "112:spicy",
+          "113:strawberry-cheesecake-bliss",
+          "114:surfs-up-sundae",
+          "115:tartar-sauce",
+          "116:thousand-island-dressing",
+          "117:thursday-garlic-linguini-alfredo-with-cajun-chicken",
+          "118:thursday-shrimp-linguini-alfredo",
+          "119:tuesday-crab-with-crispy-potatoes-roasted-garlic-butter",
+          "120:tuesday-crab-with-crispy-potatoes-steamed",
+          "121:ultimate-feastr",
+          "122:walts-favorite-shrimp",
+          "123:wednesday-steak-and-lobster",
+          "124:weekday-shrimp-trio",
+          "125:wild-caught-crunch-fried-flounder",
+          "126:wishbone-maine-tail-grilled",
+          "127:yes-menu-item-contains-this-specific-allergen"
+        ],
+        "matchedCurrentProductKeys": [
+          "red-lobster-current-catalog"
+        ],
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "menu",
+          "allergen"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "sourceAuthorityAmbiguous": false,
+    "unsupportedNegativeClaim": false,
+    "restaurantSpecificExtraction": false,
+    "nameOrCategoryCleanup": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "duplicateItems": false,
+    "parserIssue": false,
+    "staleItems": false,
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "catalogDrift": false,
+    "newItems": false
+  },
+  "riskSignals": [
+    "Recipes and availability may vary; no blanket cross-contact-free claim."
+  ],
+  "recommendedLane": "verify",
+  "outcome": "researched",
+  "processLog": [
+    "packet_validated",
+    "identity_verified",
+    "menu_surfaces_inventoried",
+    "matrix_search_completed",
+    "products_reconciled",
+    "validator_passed"
+  ]
+}

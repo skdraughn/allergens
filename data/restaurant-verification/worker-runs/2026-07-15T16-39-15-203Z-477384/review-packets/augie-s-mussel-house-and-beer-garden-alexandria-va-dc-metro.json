@@ -1,0 +1,413 @@
+{
+  "schemaVersion": 1,
+  "runId": "2026-07-15T16-39-15-203Z-477384",
+  "restaurant": {
+    "restaurantId": "augie-s-mussel-house-and-beer-garden-alexandria-va-dc-metro",
+    "name": "Augie's Mussel House and Beer Garden",
+    "domain": "eataugies.com",
+    "locationId": "alexandria-va",
+    "baselineItemCount": 69,
+    "baselineItemFingerprint": "659dc292d0962034bd7872e758e9dd4ed8f6ef949693a1473a53ae976c41be36",
+    "officialItemCount": 63,
+    "officialAllergenStatus": "not-found",
+    "sourceFamily": "generic-website",
+    "parserProfile": "generic-website",
+    "guideUrl": "https://www.eataugies.com/",
+    "sourceUrls": [
+      "https://www.eataugies.com/",
+      "https://www.eataugies.com/augies-alexandria-menu",
+      "https://www.eataugies.com/augies-annapolis-menu"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found."
+  ],
+  "validationWarnings": [],
+  "terra": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "medium",
+      "overall": 0.76,
+      "menu": 0.94,
+      "allergenSource": 0.68,
+      "extraction": 0.92,
+      "rationale": "The current restaurant-issued Alexandria menu reconciles the menu names and exposes six parser artifacts. The public Toast ordering menu provides current, restaurant-associated allergen labels for four rows that conflict with the baseline claims, but it is not a complete allergen matrix for every item."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Augie's Alexandria public menu at 1106 King Street, Alexandria, VA; restaurant-issued Alexandria and Annapolis pages were used only to reconcile the frozen location-scoped baseline.",
+      "confidence": 0.96,
+      "sourceEvidenceIds": [
+        "official-home",
+        "official-alex-menu",
+        "toast-alex-ordering"
+      ],
+      "notes": "The restaurant-issued home page identifies Augie's as the Old Town Alexandria beer garden and separately identifies Annapolis; Toast identifies the Alexandria ordering location as 1106 King Street."
+    },
+    "sources": [
+      {
+        "evidenceId": "official-home",
+        "url": "https://www.eataugies.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "HOME | Eataugies",
+        "retrievedAt": "2026-07-15T16:40:51Z",
+        "excerpt": "Augie's describes its Old Town Alexandria beer garden and Annapolis location, and identifies the business as Augie's Mussel House and Beer Garden.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "official-alex-menu",
+        "url": "https://www.eataugies.com/augies-alexandria-menu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "ALEXANDRIA | Eataugies",
+        "retrievedAt": "2026-07-15T16:40:51Z",
+        "excerpt": "The page is headed “MENU — Alexandria, VA,” lists the reconciled Alexandria menu and brunch items, and states: “Augie's is not a gluten free kitchen. Please let your server know of any allergies before consumption.”",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "official-annapolis-menu",
+        "url": "https://www.eataugies.com/augies-annapolis-menu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "ANNAPOLIS | Eataugies",
+        "retrievedAt": "2026-07-15T16:40:51Z",
+        "excerpt": "The page is headed “MENU — Annapolis, MD,” lists the location-specific crab, brunch, and beverage rows, and says Augie's is not a gluten-free facility.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "toast-alex-ordering",
+        "url": "https://www.toasttab.com/local/order/augies-mussel-house-patio",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "allergen",
+        "title": "Augie's Mussel House & Patio | Toast",
+        "retrievedAt": "2026-07-15T16:40:51Z",
+        "excerpt": "Toast identifies Augie's Mussel House & Patio at 1106 King Street, Alexandria. Its item rows label Cheese Fries “Allergens: Gluten, Dairy,” Fried Mozzarella “Allergens: Gluten, Dairy,” Steak & Cheese Eggrolls “Allergens: Gluten, Dairy,” and Tuna Tartar “Allergens: Gluten, Dairy, Nut, Fish.”",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://www.eataugies.com/augies-alexandria-menu",
+        "notes": "Current restaurant-issued Alexandria menu accessible; it has ingredient descriptions and a gluten-free-kitchen warning, not a complete allergen matrix."
+      },
+      {
+        "kind": "linked_source",
+        "status": "not_found",
+        "url": null,
+        "notes": "No restaurant-issued allergen guide, nutrition document, or ingredient/allergen matrix was linked from the public menu surfaces reviewed."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://www.toasttab.com/local/order/augies-mussel-house-patio",
+        "notes": "Current Alexandria Toast ordering menu accessible and contains partial item-level allergen labels."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": "https://www.toasttab.com/local/order/augies-mussel-house-patio",
+        "notes": "Targeted public search found the current Toast order surface and no separate restaurant-issued allergen guide."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No material official allergen archive was found in targeted public results."
+      },
+      {
+        "kind": "third_party",
+        "status": "accessible",
+        "url": "https://www.doordash.com/en/store/augie%27s-mussel-house-%26-patio-alexandria-23147096/",
+        "notes": "A current DoorDash Alexandria listing was found, but it did not supply an allergen matrix used for verification."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 69,
+      "counts": {
+        "artifact/not_applicable": 6,
+        "normalized_match/accurately_unavailable": 1,
+        "variant_match/accurately_unavailable": 1,
+        "exact_match/mismatch": 4,
+        "exact_match/accurately_unavailable": 57
+      }
+    },
+    "findings": [
+      {
+        "findingId": "allergen-source-partial-matrix-conflicts",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "The current restaurant-associated Toast ordering source explicitly labels Gluten and Dairy for Cheese Fries, Fried Mozzarella, and Steak & Cheese Eggrolls, and Gluten, Dairy, Nut, and Fish for Tuna Tartar. These conflict with the frozen baseline allergen arrays, which omit the vendor-disclosed gluten/dairy fields and include unsupported egg fields for two rows. The restaurant-issued menus do not provide a complete allergen matrix to resolve all other item claims.",
+        "sourceEvidenceIds": [
+          "official-alex-menu",
+          "toast-alex-ordering"
+        ],
+        "affectedAuditItemKeys": [
+          "15:cheese-fries",
+          "23:fried-mozzarella",
+          "47:steak-and-cheese-egg-rolls",
+          "48:tuna-tartare"
+        ]
+      },
+      {
+        "findingId": "parser-inline-text-artifacts",
+        "severity": "medium",
+        "kind": "extraction",
+        "summary": "Six frozen records are menu headings or continuation text rather than independently orderable dishes: concatenated brunch upgrades, Cobb Salad and French Dip descriptions, the crab-cake size choice, and the Upgrades heading.",
+        "sourceEvidenceIds": [
+          "official-alex-menu",
+          "official-annapolis-menu"
+        ],
+        "affectedAuditItemKeys": [
+          "1:smoked-salmon-and-spinach-2-steak-and-asparagus",
+          "2:smoked-salmon-and-spinach-2-steak-and-asparagus-5-crab-cake",
+          "20:croutons-red-onion-herb-vinaigrette",
+          "25:horseradish-provolone-crispy-onions",
+          "44:single-or-double",
+          "68:upgrades"
+        ]
+      },
+      {
+        "findingId": "cross-contact-warning",
+        "severity": "medium",
+        "kind": "cross_contact",
+        "summary": "Both restaurant-issued location menus warn that Augie's is not a gluten-free kitchen/facility and request that guests tell a server about allergies. This is a cross-contact warning, not a complete item-level allergen disclosure.",
+        "sourceEvidenceIds": [
+          "official-alex-menu",
+          "official-annapolis-menu"
+        ],
+        "affectedAuditItemKeys": []
+      }
+    ],
+    "summary": "Identity and current menu coverage are verified, but the frozen baseline contains six extraction artifacts and four item-level allergen conflicts against current restaurant-associated Toast labels. The restaurant-issued menus provide no complete allergen matrix and state that the kitchen is not gluten-free; escalation is required.",
+    "coordinatorNotes": [
+      "Read-only Terra result only; no canonical files, ledger rows, or generated restaurant data were changed.",
+      "All 69 frozen auditItemKeys are reconciled exactly once."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "1:smoked-salmon-and-spinach-2-steak-and-asparagus",
+      "baseline": {
+        "itemId": "smoked-salmon-and-spinach-2-steak-and-asparagus",
+        "name": "smoked salmon & spinach +2 steak* & asparagus +",
+        "category": "Alexandria, Va",
+        "variantGroup": "Alexandria, Va",
+        "isConfigurable": false,
+        "allergens": [
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.eataugies.com/augies-alexandria-menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "2:smoked-salmon-and-spinach-2-steak-and-asparagus-5-crab-cake",
+      "baseline": {
+        "itemId": "smoked-salmon-and-spinach-2-steak-and-asparagus-5-crab-cake",
+        "name": "smoked salmon & spinach +2 steak* & asparagus +5 crab cake +",
+        "category": "Annapolis, Md",
+        "variantGroup": "Annapolis, Md",
+        "isConfigurable": false,
+        "allergens": [
+          "fish",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.eataugies.com/augies-annapolis-menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "15:cheese-fries",
+      "baseline": {
+        "itemId": "cheese-fries",
+        "name": "Cheese Fries",
+        "category": "Restaurant",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.eataugies.com/augies-alexandria-menu",
+          "https://www.eataugies.com/augies-annapolis-menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "20:croutons-red-onion-herb-vinaigrette",
+      "baseline": {
+        "itemId": "croutons-red-onion-herb-vinaigrette",
+        "name": "croutons, red onion, herb vinaigrette",
+        "category": "Restaurant",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [
+          "fish",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.eataugies.com/augies-alexandria-menu",
+          "https://www.eataugies.com/augies-annapolis-menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "23:fried-mozzarella",
+      "baseline": {
+        "itemId": "fried-mozzarella",
+        "name": "Fried Mozzarella",
+        "category": "Restaurant",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.eataugies.com/augies-alexandria-menu",
+          "https://www.eataugies.com/augies-annapolis-menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "25:horseradish-provolone-crispy-onions",
+      "baseline": {
+        "itemId": "horseradish-provolone-crispy-onions",
+        "name": "horseradish, provolone, crispy onions",
+        "category": "Restaurant",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.eataugies.com/augies-alexandria-menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "44:single-or-double",
+      "baseline": {
+        "itemId": "single-or-double",
+        "name": "single or double",
+        "category": "Restaurant",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.eataugies.com/augies-annapolis-menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "47:steak-and-cheese-egg-rolls",
+      "baseline": {
+        "itemId": "steak-and-cheese-egg-rolls",
+        "name": "Steak & Cheese Egg Rolls",
+        "category": "Restaurant",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.eataugies.com/augies-alexandria-menu",
+          "https://www.eataugies.com/augies-annapolis-menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "48:tuna-tartare",
+      "baseline": {
+        "itemId": "tuna-tartare",
+        "name": "Tuna Tartare",
+        "category": "Restaurant",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "egg",
+          "fish",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.eataugies.com/augies-alexandria-menu",
+          "https://www.eataugies.com/augies-annapolis-menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "68:upgrades",
+      "baseline": {
+        "itemId": "upgrades",
+        "name": "Upgrades:",
+        "category": "Sides",
+        "variantGroup": "Sides",
+        "isConfigurable": false,
+        "allergens": [
+          "fish",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.eataugies.com/augies-alexandria-menu",
+          "https://www.eataugies.com/augies-annapolis-menu"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/2026-07-15T16-39-15-203Z-477384/jobs/augie-s-mussel-house-and-beer-garden-alexandria-va-dc-metro.json",
+    "workerResultPath": "data/restaurant-verification/worker-runs/2026-07-15T16-39-15-203Z-477384/results/augie-s-mussel-house-and-beer-garden-alexandria-va-dc-metro.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/augie-s-mussel-house-and-beer-garden-alexandria-va-dc-metro.jsonl"
+  }
+}

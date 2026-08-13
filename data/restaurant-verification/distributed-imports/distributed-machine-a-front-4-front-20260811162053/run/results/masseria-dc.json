@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-a-front-4-front-20260811162053",
+  "restaurantId": "masseria-dc",
+  "packetValidation": {"baselineItemCount": 11, "baselineFingerprint": "c33a43be3a485672017568f55db5052d65c1cd6040321a4ea79d90d69ced3fa6", "itemChecksRead": 11, "restaurantIdMatches": true},
+  "identity": {"status":"confirmed","name":"Masseria","location":"1340 4th Street Northeast, Washington, DC 20002","locationId":"union-market-dc","domain":"masseria-dc.com","officialHomepage":"https://www.masseria-dc.com/","sourceEvidenceIds":["ev-home","ev-menu"],"notes":["Official site and menu identify the Union Market/NoMa Masseria location; no other Masseria DC location was found."]},
+  "sources": [
+    {"evidenceId":"ev-home","url":"https://www.masseria-dc.com/","authorityTier":"restaurant_issued","purpose":"official homepage and identity cross-check","retrievedAt":"2026-08-11T16:25:00.000Z"},
+    {"evidenceId":"ev-menu","url":"https://www.masseria-dc.com/menu","authorityTier":"restaurant_issued","purpose":"current official menu, dining experiences, bar a la carte, Caviale, and dietary-restriction notice","retrievedAt":"2026-08-11T16:25:00.000Z"},
+    {"evidenceId":"ev-menu-option","url":"https://www.masseria-dc.com/menu-option","authorityTier":"restaurant_issued","purpose":"current official menu-options and service-location scope","retrievedAt":"2026-08-11T16:25:00.000Z"},
+    {"evidenceId":"ev-4course","url":"https://www.masseria-dc.com/4coursemenu","authorityTier":"restaurant_issued","purpose":"official example four-course surface and frozen-item reconciliation","retrievedAt":"2026-08-11T16:25:00.000Z"},
+    {"evidenceId":"ev-reservations","url":"https://www.masseria-dc.com/reservations/","authorityTier":"restaurant_issued","purpose":"current reservation page confirming current five- and seven-course experiences","retrievedAt":"2026-08-11T16:25:00.000Z"},
+    {"evidenceId":"ev-a-casa","url":"https://www.masseria-dc.com/a-casa","authorityTier":"restaurant_issued","purpose":"official hospitality-at-home surface; checked for current food products","retrievedAt":"2026-08-11T16:25:00.000Z"},
+    {"evidenceId":"ev-search","url":"https://www.google.com/search?q=site%3Amasseria-dc.com+allergen+allergy+nutrition+ingredients+PDF+menu","authorityTier":"third_party","purpose":"targeted web-search audit for official allergen material","retrievedAt":"2026-08-11T16:25:00.000Z"}
+  ],
+  "menuSurfaces": [
+    {"surfaceId":"official-home","title":"Official homepage","url":"https://www.masseria-dc.com/","current":true,"scopeStatus":"supporting","currentProductKeys":[],"sourceEvidenceIds":["ev-home"]},
+    {"surfaceId":"official-menu","title":"Current official menu","url":"https://www.masseria-dc.com/menu","current":true,"scopeStatus":"complete","currentProductKeys":["caviale"],"sourceEvidenceIds":["ev-menu"]},
+    {"surfaceId":"official-menu-options","title":"Current official menu options","url":"https://www.masseria-dc.com/menu-option","current":true,"scopeStatus":"supporting","currentProductKeys":["caviale"],"sourceEvidenceIds":["ev-menu-option"]},
+    {"surfaceId":"official-reservations","title":"Current reservations/dining experiences","url":"https://www.masseria-dc.com/reservations/","current":true,"scopeStatus":"supporting","currentProductKeys":[],"sourceEvidenceIds":["ev-reservations"]},
+    {"surfaceId":"official-four-course-example","title":"Four-course example menu","url":"https://www.masseria-dc.com/4coursemenu","current":false,"scopeStatus":"historical_example","currentProductKeys":[],"sourceEvidenceIds":["ev-4course"]},
+    {"surfaceId":"official-a-casa","title":"Dinner Club / a casa","url":"https://www.masseria-dc.com/a-casa","current":true,"scopeStatus":"supporting","currentProductKeys":[],"sourceEvidenceIds":["ev-a-casa"]}
+  ],
+  "currentProducts": [{"currentProductKey":"caviale","name":"Caviale","category":"Enhancement / Bar à la carte","description":"Petrossian Royal Daurenki caviar and freshly shucked Wellfleet oysters with traditional accompaniments.","presentationIds":["menu-caviale","menu-option-caviale"],"sourceEvidenceIds":["ev-menu","ev-menu-option"],"containsAllergens":["shellfish"],"mayContainAllergens":[],"allergenSourceEvidenceIds":["ev-menu"],"allergenSourceType":"restaurant_ingredients","allergenAuthorityTier":"restaurant_issued","notes":["Shellfish is explicit from the official description of freshly shucked oysters; no broader allergen absence is inferred."]}],
+  "matrixSearch": {"status":"accurately_unavailable","attempted":["official_site","official_documents","linked_vendor","targeted_web_search"],"attempts":[
+    {"class":"official_site","query":"Inspected official homepage navigation, /menu, /menu-option, /reservations/, and /a-casa for allergen, allergy, nutrition, ingredient, PDF, image, and downloadable menu links.","urlsInspected":["https://www.masseria-dc.com/","https://www.masseria-dc.com/menu","https://www.masseria-dc.com/menu-option","https://www.masseria-dc.com/reservations/","https://www.masseria-dc.com/a-casa"],"outcome":"No official allergen matrix or nutrition/ingredient document found; dietary restrictions are handled by advance notice.","evidenceIds":["ev-home","ev-menu","ev-menu-option","ev-reservations","ev-a-casa"]},
+    {"class":"official_documents","query":"Inspected official-site document/download surfaces and linked menu pages for allergen, nutrition, ingredients, PDF, image, sitemap, and CDN references.","urlsInspected":["https://www.masseria-dc.com/menu","https://www.masseria-dc.com/menu-option","https://www.masseria-dc.com/4coursemenu"],"outcome":"No current official allergen matrix or ingredient document found; /4coursemenu is an example menu and contains no matrix.","evidenceIds":["ev-menu","ev-menu-option","ev-4course"]},
+    {"class":"linked_vendor","query":"Inspected current official menu pages for restaurant-linked ordering/menu vendor links.","urlsInspected":["https://www.masseria-dc.com/menu","https://www.masseria-dc.com/menu-option"],"outcome":"No linked ordering vendor or vendor-hosted allergen matrix was exposed.","evidenceIds":["ev-menu","ev-menu-option"]},
+    {"class":"targeted_web_search","query":"site:masseria-dc.com allergen allergy nutrition ingredients PDF menu","urlsInspected":["https://www.google.com/search?q=site%3Amasseria-dc.com+allergen+allergy+nutrition+ingredients+PDF+menu"],"outcome":"Search returned official menu pages but no official allergen matrix or nutrition/ingredient document.","evidenceIds":["ev-search","ev-menu","ev-menu-option"]}
+  ],"notes":["Official allergen disclosure is unavailable after all four required searches; the explicit oyster ingredient is preserved as a direct shellfish claim."]},
+  "restaurantLevelAllergenEvidence": [{"evidenceId":"ev-menu","authorityTier":"restaurant_issued","claim":"The restaurant asks guests to report dietary restrictions in advance so menus can be tailored.","allergens":[],"mayContainAllergens":[],"notes":["This is accommodation guidance, not a cross-contact guarantee or negative allergen claim."]}],
+  "reconciliation": {"frozenKeys":11,"items":[
+    {"auditItemKey":"1:agnello","disposition":"stale","matchedCurrentProductKeys":[],"sourceEvidenceIds":["ev-4course"],"notes":"Example four-course dish, not presented as current menu product."},
+    {"auditItemKey":"2:asparagi","disposition":"stale","matchedCurrentProductKeys":[],"sourceEvidenceIds":["ev-4course"],"notes":"Example four-course dish, not current."},
+    {"auditItemKey":"3:barbabietola","disposition":"stale","matchedCurrentProductKeys":[],"sourceEvidenceIds":["ev-4course"],"notes":"Example four-course dish, not current."},
+    {"auditItemKey":"4:caviale","disposition":"normalized_match","matchedCurrentProductKeys":["caviale"],"sourceEvidenceIds":["ev-menu","ev-menu-option"]},
+    {"auditItemKey":"5:dishes-change-regularly-based-on-availability-and-our-chefs-inspiration","disposition":"artifact","matchedCurrentProductKeys":[],"sourceEvidenceIds":["ev-4course"],"notes":"Policy/prose text, not an orderable product."},
+    {"auditItemKey":"6:holland-jumbo-white-asparagus-fermented-asparagus-sorrel-cream","disposition":"stale","matchedCurrentProductKeys":[],"sourceEvidenceIds":["ev-4course"]},
+    {"auditItemKey":"7:la-cucina","disposition":"artifact","matchedCurrentProductKeys":[],"sourceEvidenceIds":["ev-menu-option"],"notes":"Named tasting experience, not an individual product."},
+    {"auditItemKey":"8:maccheroni","disposition":"stale","matchedCurrentProductKeys":[],"sourceEvidenceIds":["ev-4course"]},
+    {"auditItemKey":"9:raviolo","disposition":"stale","matchedCurrentProductKeys":[],"sourceEvidenceIds":["ev-4course"]},
+    {"auditItemKey":"10:stinging-nettle-sheeps-milk-ricotta-egg-yolk-parmigiano-fonduta","disposition":"stale","matchedCurrentProductKeys":[],"sourceEvidenceIds":["ev-4course"]},
+    {"auditItemKey":"11:torta-al-cioccolato","disposition":"stale","matchedCurrentProductKeys":[],"sourceEvidenceIds":["ev-4course"]}
+  ]},
+  "changes":{"identityAmbiguous":false,"menuScopeUnresolved":false,"officialAllergenConflict":false,"crossContactConflict":false,"unsupportedNegativeClaim":false,"sourceAuthorityAmbiguous":false,"duplicateItems":false,"catalogDrift":true,"staleItems":true,"newItems":false,"nameOrCategoryCleanup":true,"restaurantSpecificExtraction":false,"parserIssue":false},
+  "recommendedLane":"luna_fix",
+  "findings":[{"findingId":"f-menu-drift","kind":"catalogDrift","severity":"low","summary":"Frozen checks describe an example four-course menu while the current official menu presents updated tasting experiences and Caviale.","sourceEvidenceIds":["ev-menu","ev-menu-option","ev-4course"]}],
+  "notes":["Research-only result. No canonical ledger, generated projection, dossier, evidence, or item-check files were modified."]
+}

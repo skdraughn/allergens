@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-002-2026-07-16",
+  "restaurantId": "osm-bai-khao-thai-3763902064",
+  "changedPaths": [
+    "src/data/generated/restaurants.generated.json",
+    "data/restaurant-verification/restaurants/osm-bai-khao-thai-3763902064.json",
+    "data/restaurant-verification/evidence/osm-bai-khao-thai-3763902064.json",
+    "data/restaurant-verification/worker-runs/poc-batch-002-2026-07-16/apply-results/osm-bai-khao-thai-3763902064.json"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "target-specific generated catalog transformation",
+    "annotateRestaurantWithIngredientIntelligence(..., ingredient-intelligence-v2)",
+    "node scripts/recompute-ingredient-intelligence.mjs --input src/data/generated/restaurants.generated.json --output /tmp/bai-khao-recompute-1.json --restaurants osm-bai-khao-thai-3763902064",
+    "node scripts/recompute-ingredient-intelligence.mjs --input /tmp/bai-khao-recompute-1.json --output /tmp/bai-khao-recompute-2.json --restaurants osm-bai-khao-thai-3763902064",
+    "node --test scripts/restaurant-verification-poc-result.test.mjs scripts/restaurant-verification-poc-policy.test.mjs"
+  ],
+  "exitCodes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "beforeFingerprint": "not-captured-preexisting-worktree-change",
+  "afterFingerprint": "0c0308dc93e2956f44088123c51e085e62764ec6187bab15664db7ba7be2786d",
+  "secondRunDiff": false,
+  "solResolution": {
+    "reviewPath": "data/restaurant-verification/worker-runs/poc-batch-002-2026-07-16/reviews/osm-bai-khao-thai-3763902064.json",
+    "binding": true,
+    "surfaceId": "S4",
+    "disposition": "excluded",
+    "current": false,
+    "scopeStatus": "excluded",
+    "verified": true,
+    "presentationCount": 33,
+    "coveredProductCount": 29,
+    "additionalProductsRequired": 0,
+    "rationale": "S4 catering is duplicate presentations only; all presentations map to products already covered by S1/S3.",
+    "sourceEvidenceIds": [
+      "E6",
+      "E2",
+      "E4"
+    ]
+  },
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "itemCheckCount": 70,
+    "itemCheckFingerprint": "183981e543e947da2971c1d40b4691217b6e62ea70cc428b15500c597c32586f",
+    "currentProductCount": 77,
+    "uniqueCurrentProductCount": 77,
+    "currentSourceCount": 5,
+    "ingredientIntelligenceVersion": "ingredient-intelligence-v2",
+    "unsupportedMayContainProductCount": 0,
+    "itemSpecificPositiveProductCount": 6,
+    "focusedTestsPassed": 21,
+    "codexVerifiedClaim": false
+  },
+  "remainingIssues": [
+    "The generated file had pre-existing uncommitted changes and Bai Khao Thai was absent from HEAD, so the exact pre-apply worktree fingerprint could not be reconstructed.",
+    "Ledger and item checks were intentionally not modified.",
+    "S4 catering is excluded by binding Sol resolution as duplicate presentations only; no additional products were added."
+  ]
+}

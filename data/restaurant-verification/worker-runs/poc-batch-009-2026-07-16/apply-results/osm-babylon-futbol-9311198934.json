@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-009-2026-07-16",
+  "restaurantId": "osm-babylon-futbol-9311198934",
+  "validation": {
+    "valid": true,
+    "currentProductCount": 12,
+    "evidenceSourceCount": 19,
+    "evidencePreflightValid": true,
+    "assertions": [
+      "baseline fingerprint matches job",
+      "12 current food/nonalcoholic products published",
+      "official-food-menu is the only current complete catalog surface",
+      "hookah, tobacco, alcohol, navigation, cart, account, and RSVP artifacts excluded",
+      "direct allergen fields come only from validated result containsAllergens and mayContainAllergens",
+      "missing direct allergen evidence is unavailable",
+      "generic undercooked warning remains restaurant-level only",
+      "Ingredient Intelligence runs after direct catalog finalization",
+      "canonical evidence references resolve",
+      "dossier retains restaurantId and name",
+      "second run is byte-identical"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-babylon-futbol-9311198934.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-babylon-futbol-9311198934.json",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-babylon-futbol-cafe-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-009-2026-07-16/apply-results/osm-babylon-futbol-9311198934.json"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "target canonical catalog repair",
+    "recompute Ingredient Intelligence after direct catalog finalization",
+    "target closeout preflight"
+  ],
+  "secondRunDiff": "none"
+}

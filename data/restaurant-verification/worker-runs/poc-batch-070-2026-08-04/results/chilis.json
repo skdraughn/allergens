@@ -1,0 +1,5459 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-070-2026-08-04",
+  "restaurantId": "chilis",
+  "runId": "poc-batch-070-2026-08-04-chilis-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "chilis",
+    "name": "Chili's",
+    "locationId": "",
+    "domain": "chilis.com",
+    "baselineItemCount": 103,
+    "baselineFingerprint": "051a757e54d983cbb2db9fa01259f25eca370a3a185167d8bea77752f5de6b35",
+    "itemChecksRead": 103,
+    "itemChecksPath": "data/restaurant-verification/item-checks/chilis.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Chili's",
+    "location": "National Chili’s brand menu scope; packet locationId is empty (no specific location supplied)",
+    "locationId": "",
+    "domain": "chilis.com",
+    "officialHomepage": "https://www.chilis.com/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-location"
+    ],
+    "notes": "Official domain and location finder confirm Chili’s Grill & Bar; no location was frozen in packet, so no locations were merged."
+  },
+  "sources": [
+    {
+      "id": "ev-home",
+      "url": "https://www.chilis.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Chili's official homepage",
+      "excerpt": "Official Chili's Grill & Bar site.",
+      "retrievedAt": "2026-08-04",
+      "evidenceId": "ev-home"
+    },
+    {
+      "id": "ev-menu",
+      "url": "https://www.chilis.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Chili's current menu",
+      "excerpt": "Current menu categories and products.",
+      "retrievedAt": "2026-08-04",
+      "evidenceId": "ev-menu"
+    },
+    {
+      "id": "ev-location",
+      "url": "https://www.chilis.com/locations",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Official location finder",
+      "excerpt": "Location finder requires selecting a restaurant; packet has no locationId and therefore scope is national brand menu.",
+      "retrievedAt": "2026-08-04",
+      "evidenceId": "ev-location"
+    },
+    {
+      "id": "ev-vendor",
+      "url": "https://www.chilis.com/order",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "title": "Official order handoff",
+      "excerpt": "Order page links location-specific ordering vendors.",
+      "retrievedAt": "2026-08-04",
+      "evidenceId": "ev-vendor"
+    },
+    {
+      "id": "ev-search-site",
+      "url": "https://www.chilis.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_site allergen search",
+      "excerpt": "Inspected menu/navigation; no matrix exposed.",
+      "retrievedAt": "2026-08-04",
+      "evidenceId": "ev-search-site"
+    },
+    {
+      "id": "ev-search-docs",
+      "url": "https://www.chilis.com/sitemap.xml",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_documents allergen search",
+      "excerpt": "Inspected sitemap/downloadable document paths; no official matrix located.",
+      "retrievedAt": "2026-08-04",
+      "evidenceId": "ev-search-docs"
+    },
+    {
+      "id": "ev-search-vendor",
+      "url": "https://www.chilis.com/order",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "title": "linked_vendor allergen search",
+      "excerpt": "Ordering handoff inspected; no allergen matrix exposed.",
+      "retrievedAt": "2026-08-04",
+      "evidenceId": "ev-search-vendor"
+    },
+    {
+      "id": "ev-search-web",
+      "url": "https://www.google.com/search?q=site%3Achilis.com+allergen+allergy+nutrition+ingredients+PDF",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "targeted_web_search allergen search",
+      "excerpt": "Search surfaced third-party reposts, not an official chilis.com document.",
+      "retrievedAt": "2026-08-04",
+      "evidenceId": "ev-search-web"
+    },
+    {
+      "id": "ev-thirdparty-pdf",
+      "url": "https://chilismenuusa.com/wp-content/uploads/2026/02/Chilis-Allergen-Menu-PDF-2026.pdf",
+      "authorityTier": "third_party",
+      "purpose": "other",
+      "title": "Chili's allergen PDF repost",
+      "excerpt": "Third-party hosted matrix; not treated as restaurant-issued authority.",
+      "retrievedAt": "2026-08-04",
+      "evidenceId": "ev-thirdparty-pdf"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-menu",
+      "title": "Chili's official menu",
+      "url": "https://www.chilis.com/menu",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "national brand (packet locationId empty)",
+      "servicePeriod": "all-day",
+      "surfaceType": "html_menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "currentProductKeys": [
+        "12-count-boneless-wings-buffalo",
+        "12-count-boneless-wings-honey-chipotle",
+        "12-count-boneless-wings-house-bbq",
+        "12-count-boneless-wings-nashville-hot",
+        "12-count-wings-buffalo",
+        "12-count-wings-honey-chipotle",
+        "12-count-wings-house-bbq",
+        "12-count-wings-nashville-hot",
+        "16-count-boneless-wings-buffalo",
+        "16-count-boneless-wings-honey-chipotle",
+        "16-count-boneless-wings-house-bbq",
+        "16-count-boneless-wings-nashville-hot",
+        "16-count-wings-buffalo",
+        "16-count-wings-honey-chipotle",
+        "16-count-wings-house-bbq",
+        "16-count-wings-nashville-hot",
+        "32-count-boneless-wings-buffalo",
+        "32-count-boneless-wings-honey-chipotle",
+        "32-count-boneless-wings-house-bbq",
+        "32-count-boneless-wings-nashville-hot",
+        "32-count-wings-buffalo",
+        "32-count-wings-honey-chipotle",
+        "32-count-wings-house-bbq",
+        "32-count-wings-nashville-hot",
+        "48-count-boneless-wings-buffalo",
+        "48-count-boneless-wings-honey-chipotle",
+        "48-count-boneless-wings-house-bbq",
+        "48-count-boneless-wings-nashville-hot",
+        "48-count-wings-buffalo",
+        "48-count-wings-honey-chipotle",
+        "48-count-wings-house-bbq",
+        "48-count-wings-nashville-hot",
+        "8-count-boneless-wings-buffalo",
+        "8-count-boneless-wings-honey-chipotle",
+        "8-count-boneless-wings-house-bbq",
+        "8-count-boneless-wings-nashville-hot",
+        "8-count-wings-buffalo",
+        "8-count-wings-honey-chipotle",
+        "8-count-wings-house-bbq",
+        "8-count-wings-nashville-hot",
+        "alexs-santa-fe-burger",
+        "avocado-ranch",
+        "bacon-cheeseburger",
+        "bacon-ranch-chicken-quesadilla",
+        "bacon-rancher-burger",
+        "big-crispy-chicken-sandwich",
+        "big-mouth-bites-12-count",
+        "blue-cheese",
+        "bowl-of-loaded-street-corn",
+        "buffalo-ranch",
+        "burger-big-mouthr-bites",
+        "chicken-bacon-ranch-nachos",
+        "chipotle-chicken-fresh-mex-bowl",
+        "crispers-honey-chipotle-with-ranch",
+        "crispers-nashville-hot-with-ranch",
+        "crispy-crispers",
+        "deluxe-big-crispy-chicken-sandwich",
+        "deluxe-grilled-chicken-sandwich",
+        "dip-trio-house-made-ranch",
+        "fried-mozzarella-3-count",
+        "fried-mozzarella-6-count",
+        "honey-mustard",
+        "loaded-mac-and-cheese",
+        "molten-chocolate-cake",
+        "mushroom-swiss-burger",
+        "quesadillas-brisket",
+        "quesadillas-chicken-bacon-ranch",
+        "ranch-dressing",
+        "ranch",
+        "santa-fe-chicken-salad-with-crispers",
+        "santa-fe-chicken-salad-with-grilled-chicken",
+        "santa-fe",
+        "side-dippable-house-made-ranch",
+        "side-salad-with-ranch",
+        "skillet-chocolate-chip-cookie",
+        "southwestern-eggrolls",
+        "southwestern-eggrolls-12-count",
+        "spicy-big-crispy-chicken-sandwich",
+        "td-big-mouthr-bites",
+        "td-bone-in-wings-buffalo",
+        "td-bone-in-wings-honey-chipotle",
+        "td-bone-in-wings-house-bbq",
+        "td-boneless-wings-buffalo",
+        "td-boneless-wings-honey-chipotle",
+        "td-boneless-wings-house-bbq",
+        "td-fried-mozzarella",
+        "td-fried-mozzarella-honey-chipotle",
+        "td-fried-mozzarella-nashville-sauce",
+        "td-honey-chipotle-chicken-crispers",
+        "td-nashville-hot-chicken-crispers",
+        "td-southwestern-eggrolls",
+        "tdtm-big-mouth-bites-6-count",
+        "tdtm-fried-mozzarella-6-count",
+        "tdtm-honey-chipotle-crispers-12-count",
+        "tdtm-nashville-hot-crispers-12-count",
+        "tdtm-southwestern-eggrolls-6-count",
+        "texas-cheese-fries",
+        "texas-cheese-fries-half-order",
+        "the-big-smasher-burger",
+        "the-double-big-smasher-burger",
+        "thousand-island",
+        "veggie-santa-fe-burger",
+        "white-cheddar-mac-and-cheese"
+      ],
+      "outcome": "Current food and nonalcoholic menu surface."
+    },
+    {
+      "surfaceId": "official-order",
+      "title": "Chili's official order handoff",
+      "url": "https://www.chilis.com/order",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "location-specific vendors linked by official site",
+      "servicePeriod": "all-day",
+      "surfaceType": "linked_ordering_vendor",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-vendor"
+      ],
+      "currentProductKeys": [],
+      "outcome": "Ordering handoff inspected; vendor menus vary by location and packet supplies none."
+    }
+  ],
+  "products": [
+    {
+      "currentProductKey": "12-count-boneless-wings-buffalo",
+      "name": "12 Count Boneless Wings - Buffalo",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "12-count-boneless-wings-honey-chipotle",
+      "name": "12 Count Boneless Wings - Honey Chipotle",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "12-count-boneless-wings-house-bbq",
+      "name": "12 Count Boneless Wings - House BBQ",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "12-count-boneless-wings-nashville-hot",
+      "name": "12 Count Boneless Wings - Nashville Hot",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "12-count-wings-buffalo",
+      "name": "12 Count Wings - Buffalo",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "12-count-wings-honey-chipotle",
+      "name": "12 Count Wings - Honey Chipotle",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "12-count-wings-house-bbq",
+      "name": "12 Count Wings - House BBQ",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "12-count-wings-nashville-hot",
+      "name": "12 Count Wings - Nashville Hot",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "16-count-boneless-wings-buffalo",
+      "name": "16 Count Boneless Wings - Buffalo",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "16-count-boneless-wings-honey-chipotle",
+      "name": "16 Count Boneless Wings - Honey Chipotle",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "16-count-boneless-wings-house-bbq",
+      "name": "16 Count Boneless Wings - House BBQ",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "16-count-boneless-wings-nashville-hot",
+      "name": "16 Count Boneless Wings - Nashville Hot",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "16-count-wings-buffalo",
+      "name": "16 Count Wings - Buffalo",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "16-count-wings-honey-chipotle",
+      "name": "16 Count Wings - Honey Chipotle",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "16-count-wings-house-bbq",
+      "name": "16 Count Wings - House BBQ",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "16-count-wings-nashville-hot",
+      "name": "16 Count Wings - Nashville Hot",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "32-count-boneless-wings-buffalo",
+      "name": "32 Count Boneless Wings - Buffalo",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "32-count-boneless-wings-honey-chipotle",
+      "name": "32 Count Boneless Wings - Honey Chipotle",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "32-count-boneless-wings-house-bbq",
+      "name": "32 Count Boneless Wings - House BBQ",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "32-count-boneless-wings-nashville-hot",
+      "name": "32 Count Boneless Wings - Nashville Hot",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "32-count-wings-buffalo",
+      "name": "32 Count Wings - Buffalo",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "32-count-wings-honey-chipotle",
+      "name": "32 Count Wings - Honey Chipotle",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "32-count-wings-house-bbq",
+      "name": "32 Count Wings - House BBQ",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "32-count-wings-nashville-hot",
+      "name": "32 Count Wings - Nashville Hot",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "48-count-boneless-wings-buffalo",
+      "name": "48 Count Boneless Wings - Buffalo",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "48-count-boneless-wings-honey-chipotle",
+      "name": "48 Count Boneless Wings - Honey Chipotle",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "48-count-boneless-wings-house-bbq",
+      "name": "48 Count Boneless Wings - House BBQ",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "48-count-boneless-wings-nashville-hot",
+      "name": "48 Count Boneless Wings - Nashville Hot",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "48-count-wings-buffalo",
+      "name": "48 Count Wings - Buffalo",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "48-count-wings-honey-chipotle",
+      "name": "48 Count Wings - Honey Chipotle",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "48-count-wings-house-bbq",
+      "name": "48 Count Wings - House BBQ",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "48-count-wings-nashville-hot",
+      "name": "48 Count Wings - Nashville Hot",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "8-count-boneless-wings-buffalo",
+      "name": "8 Count Boneless Wings - Buffalo",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "8-count-boneless-wings-honey-chipotle",
+      "name": "8 Count Boneless Wings - Honey Chipotle",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "8-count-boneless-wings-house-bbq",
+      "name": "8 Count Boneless Wings - House BBQ",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "8-count-boneless-wings-nashville-hot",
+      "name": "8 Count Boneless Wings - Nashville Hot",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "8-count-wings-buffalo",
+      "name": "8 Count Wings - Buffalo",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "8-count-wings-honey-chipotle",
+      "name": "8 Count Wings - Honey Chipotle",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "8-count-wings-house-bbq",
+      "name": "8 Count Wings - House BBQ",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "8-count-wings-nashville-hot",
+      "name": "8 Count Wings - Nashville Hot",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "alexs-santa-fe-burger",
+      "name": "Alex's Santa Fe Burger",
+      "category": "Big Mouth Burgers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "avocado-ranch",
+      "name": "Avocado Ranch",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "bacon-cheeseburger",
+      "name": "Bacon Cheeseburger",
+      "category": "Big Mouth Burgers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "bacon-ranch-chicken-quesadilla",
+      "name": "Bacon Ranch Chicken Quesadilla",
+      "category": "BBQ Classics",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "bacon-rancher-burger",
+      "name": "Bacon Rancher Burger",
+      "category": "Big Mouth Burgers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "big-crispy-chicken-sandwich",
+      "name": "Big Crispy Chicken Sandwich",
+      "category": "Crispy Chicken Sandwiches",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "big-mouth-bites-12-count",
+      "name": "Big Mouth Bites, 12 Count",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "blue-cheese",
+      "name": "Blue Cheese",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "bowl-of-loaded-street-corn",
+      "name": "Bowl of Loaded Street Corn",
+      "category": "Sides",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "buffalo-ranch",
+      "name": "Buffalo Ranch",
+      "category": "Dipping Sauces",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "burger-big-mouthr-bites",
+      "name": "Burger Big Mouth® Bites",
+      "category": "Big Mouth Burgers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "chicken-bacon-ranch-nachos",
+      "name": "Chicken Bacon Ranch Nachos",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "chipotle-chicken-fresh-mex-bowl",
+      "name": "Chipotle Chicken Fresh Mex Bowl",
+      "category": "Salads, Soups, and Bowls",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "crispers-honey-chipotle-with-ranch",
+      "name": "Crispers Honey Chipotle with Ranch",
+      "category": "BBQ Classics",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "crispers-nashville-hot-with-ranch",
+      "name": "Crispers Nashville Hot with Ranch",
+      "category": "BBQ Classics",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "crispy-crispers",
+      "name": "Crispy Crispers",
+      "category": "Kids Menu",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "deluxe-big-crispy-chicken-sandwich",
+      "name": "Deluxe Big Crispy Chicken Sandwich",
+      "category": "Crispy Chicken Sandwiches",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "deluxe-grilled-chicken-sandwich",
+      "name": "Deluxe Grilled Chicken Sandwich",
+      "category": "Crispy Chicken Sandwiches",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "dip-trio-house-made-ranch",
+      "name": "Dip Trio - House-Made Ranch",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "fried-mozzarella-3-count",
+      "name": "Fried Mozzarella, 3 Count",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "fried-mozzarella-6-count",
+      "name": "Fried Mozzarella, 6 Count",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "honey-mustard",
+      "name": "Honey Mustard",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "loaded-mac-and-cheese",
+      "name": "Loaded Mac & Cheese",
+      "category": "Sides",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "molten-chocolate-cake",
+      "name": "Molten Chocolate Cake",
+      "category": "Desserts",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "mushroom-swiss-burger",
+      "name": "Mushroom Swiss Burger",
+      "category": "Big Mouth Burgers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "quesadillas-brisket",
+      "name": "Quesadillas - Brisket",
+      "category": "Quesadillas",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "quesadillas-chicken-bacon-ranch",
+      "name": "Quesadillas - Chicken Bacon Ranch",
+      "category": "Quesadillas",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "ranch-dressing",
+      "name": "Ranch Dressing",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "ranch",
+      "name": "Ranch",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "santa-fe-chicken-salad-with-crispers",
+      "name": "Santa Fe Chicken Salad with Crispers",
+      "category": "Salads, Soups, and Bowls",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "santa-fe-chicken-salad-with-grilled-chicken",
+      "name": "Santa Fe Chicken Salad with Grilled Chicken",
+      "category": "Salads, Soups, and Bowls",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "santa-fe",
+      "name": "Santa Fe",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "side-dippable-house-made-ranch",
+      "name": "Side Dippable House-Made Ranch",
+      "category": "Extras and Add-Ons",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "side-salad-with-ranch",
+      "name": "Side Salad with Ranch",
+      "category": "Kids Menu",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "skillet-chocolate-chip-cookie",
+      "name": "Skillet Chocolate Chip Cookie",
+      "category": "Desserts",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "southwestern-eggrolls",
+      "name": "Southwestern Eggrolls",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "southwestern-eggrolls-12-count",
+      "name": "Southwestern Eggrolls, 12 Count",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "spicy-big-crispy-chicken-sandwich",
+      "name": "Spicy Big Crispy Chicken Sandwich",
+      "category": "Crispy Chicken Sandwiches",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-big-mouthr-bites",
+      "name": "TD Big Mouth® Bites",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-bone-in-wings-buffalo",
+      "name": "TD Bone-In Wings - Buffalo",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-bone-in-wings-honey-chipotle",
+      "name": "TD Bone-In Wings - Honey-Chipotle",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-bone-in-wings-house-bbq",
+      "name": "TD Bone-In Wings - House BBQ",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-boneless-wings-buffalo",
+      "name": "TD Boneless Wings - Buffalo",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-boneless-wings-honey-chipotle",
+      "name": "TD Boneless Wings - Honey-Chipotle",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-boneless-wings-house-bbq",
+      "name": "TD Boneless Wings - House BBQ",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-fried-mozzarella",
+      "name": "TD Fried Mozzarella",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-fried-mozzarella-honey-chipotle",
+      "name": "TD Fried Mozzarella Honey Chipotle",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-fried-mozzarella-nashville-sauce",
+      "name": "TD Fried Mozzarella Nashville Sauce",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-honey-chipotle-chicken-crispers",
+      "name": "TD Honey-Chipotle Chicken Crispers",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-nashville-hot-chicken-crispers",
+      "name": "TD Nashville Hot Chicken Crispers",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-southwestern-eggrolls",
+      "name": "TD Southwestern Eggrolls",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "tdtm-big-mouth-bites-6-count",
+      "name": "TD™ Big Mouth Bites, 6 Count",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "tdtm-fried-mozzarella-6-count",
+      "name": "TD™ Fried Mozzarella, 6 Count",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "tdtm-honey-chipotle-crispers-12-count",
+      "name": "TD™ Honey-Chipotle Crispers, 12 Count",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "tdtm-nashville-hot-crispers-12-count",
+      "name": "TD™ Nashville Hot Crispers, 12 Count",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "tdtm-southwestern-eggrolls-6-count",
+      "name": "TD™ Southwestern Eggrolls, 6 Count",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "texas-cheese-fries",
+      "name": "Texas Cheese Fries",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "texas-cheese-fries-half-order",
+      "name": "Texas Cheese Fries - Half Order",
+      "category": "Sides",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "the-big-smasher-burger",
+      "name": "The Big Smasher Burger",
+      "category": "Big Mouth Burgers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "the-double-big-smasher-burger",
+      "name": "The Double Big Smasher Burger",
+      "category": "Big Mouth Burgers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "thousand-island",
+      "name": "Thousand Island",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "veggie-santa-fe-burger",
+      "name": "Veggie Santa Fe Burger",
+      "category": "Big Mouth Burgers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "white-cheddar-mac-and-cheese",
+      "name": "White Cheddar Mac & Cheese",
+      "category": "Sides",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "searches": [
+      {
+        "searchClass": "official_site",
+        "locationOrQuery": "chilis.com menu/navigation",
+        "urls": [
+          "https://www.chilis.com/menu"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-site"
+        ]
+      },
+      {
+        "searchClass": "official_documents",
+        "locationOrQuery": "chilis.com sitemap/downloadable documents",
+        "urls": [
+          "https://www.chilis.com/sitemap.xml"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-docs"
+        ]
+      },
+      {
+        "searchClass": "linked_vendor",
+        "locationOrQuery": "official order handoff and linked ordering vendors",
+        "urls": [
+          "https://www.chilis.com/order"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-vendor"
+        ]
+      },
+      {
+        "searchClass": "targeted_web_search",
+        "locationOrQuery": "site:chilis.com allergen allergy nutrition ingredients PDF",
+        "urls": [
+          "https://www.google.com/search?q=site%3Achilis.com+allergen+allergy+nutrition+ingredients+PDF"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-web"
+        ]
+      }
+    ],
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ]
+  },
+  "reconciliation": {
+    "frozenItemCount": 103,
+    "reconciledItemCount": 103,
+    "items": [
+      {
+        "auditItemKey": "1:12-count-boneless-wings-buffalo",
+        "disposition": "normalized_match",
+        "currentProductKey": "12-count-boneless-wings-buffalo",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "12-count-boneless-wings-buffalo"
+        ]
+      },
+      {
+        "auditItemKey": "2:12-count-boneless-wings-honey-chipotle",
+        "disposition": "normalized_match",
+        "currentProductKey": "12-count-boneless-wings-honey-chipotle",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "12-count-boneless-wings-honey-chipotle"
+        ]
+      },
+      {
+        "auditItemKey": "3:12-count-boneless-wings-house-bbq",
+        "disposition": "normalized_match",
+        "currentProductKey": "12-count-boneless-wings-house-bbq",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "12-count-boneless-wings-house-bbq"
+        ]
+      },
+      {
+        "auditItemKey": "4:12-count-boneless-wings-nashville-hot",
+        "disposition": "normalized_match",
+        "currentProductKey": "12-count-boneless-wings-nashville-hot",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "12-count-boneless-wings-nashville-hot"
+        ]
+      },
+      {
+        "auditItemKey": "5:12-count-wings-buffalo",
+        "disposition": "normalized_match",
+        "currentProductKey": "12-count-wings-buffalo",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "12-count-wings-buffalo"
+        ]
+      },
+      {
+        "auditItemKey": "6:12-count-wings-honey-chipotle",
+        "disposition": "normalized_match",
+        "currentProductKey": "12-count-wings-honey-chipotle",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "12-count-wings-honey-chipotle"
+        ]
+      },
+      {
+        "auditItemKey": "7:12-count-wings-house-bbq",
+        "disposition": "normalized_match",
+        "currentProductKey": "12-count-wings-house-bbq",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "12-count-wings-house-bbq"
+        ]
+      },
+      {
+        "auditItemKey": "8:12-count-wings-nashville-hot",
+        "disposition": "normalized_match",
+        "currentProductKey": "12-count-wings-nashville-hot",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "12-count-wings-nashville-hot"
+        ]
+      },
+      {
+        "auditItemKey": "9:16-count-boneless-wings-buffalo",
+        "disposition": "normalized_match",
+        "currentProductKey": "16-count-boneless-wings-buffalo",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "16-count-boneless-wings-buffalo"
+        ]
+      },
+      {
+        "auditItemKey": "10:16-count-boneless-wings-honey-chipotle",
+        "disposition": "normalized_match",
+        "currentProductKey": "16-count-boneless-wings-honey-chipotle",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "16-count-boneless-wings-honey-chipotle"
+        ]
+      },
+      {
+        "auditItemKey": "11:16-count-boneless-wings-house-bbq",
+        "disposition": "normalized_match",
+        "currentProductKey": "16-count-boneless-wings-house-bbq",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "16-count-boneless-wings-house-bbq"
+        ]
+      },
+      {
+        "auditItemKey": "12:16-count-boneless-wings-nashville-hot",
+        "disposition": "normalized_match",
+        "currentProductKey": "16-count-boneless-wings-nashville-hot",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "16-count-boneless-wings-nashville-hot"
+        ]
+      },
+      {
+        "auditItemKey": "13:16-count-wings-buffalo",
+        "disposition": "normalized_match",
+        "currentProductKey": "16-count-wings-buffalo",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "16-count-wings-buffalo"
+        ]
+      },
+      {
+        "auditItemKey": "14:16-count-wings-honey-chipotle",
+        "disposition": "normalized_match",
+        "currentProductKey": "16-count-wings-honey-chipotle",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "16-count-wings-honey-chipotle"
+        ]
+      },
+      {
+        "auditItemKey": "15:16-count-wings-house-bbq",
+        "disposition": "normalized_match",
+        "currentProductKey": "16-count-wings-house-bbq",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "16-count-wings-house-bbq"
+        ]
+      },
+      {
+        "auditItemKey": "16:16-count-wings-nashville-hot",
+        "disposition": "normalized_match",
+        "currentProductKey": "16-count-wings-nashville-hot",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "16-count-wings-nashville-hot"
+        ]
+      },
+      {
+        "auditItemKey": "17:32-count-boneless-wings-buffalo",
+        "disposition": "normalized_match",
+        "currentProductKey": "32-count-boneless-wings-buffalo",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "32-count-boneless-wings-buffalo"
+        ]
+      },
+      {
+        "auditItemKey": "18:32-count-boneless-wings-honey-chipotle",
+        "disposition": "normalized_match",
+        "currentProductKey": "32-count-boneless-wings-honey-chipotle",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "32-count-boneless-wings-honey-chipotle"
+        ]
+      },
+      {
+        "auditItemKey": "19:32-count-boneless-wings-house-bbq",
+        "disposition": "normalized_match",
+        "currentProductKey": "32-count-boneless-wings-house-bbq",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "32-count-boneless-wings-house-bbq"
+        ]
+      },
+      {
+        "auditItemKey": "20:32-count-boneless-wings-nashville-hot",
+        "disposition": "normalized_match",
+        "currentProductKey": "32-count-boneless-wings-nashville-hot",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "32-count-boneless-wings-nashville-hot"
+        ]
+      },
+      {
+        "auditItemKey": "21:32-count-wings-buffalo",
+        "disposition": "normalized_match",
+        "currentProductKey": "32-count-wings-buffalo",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "32-count-wings-buffalo"
+        ]
+      },
+      {
+        "auditItemKey": "22:32-count-wings-honey-chipotle",
+        "disposition": "normalized_match",
+        "currentProductKey": "32-count-wings-honey-chipotle",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "32-count-wings-honey-chipotle"
+        ]
+      },
+      {
+        "auditItemKey": "23:32-count-wings-house-bbq",
+        "disposition": "normalized_match",
+        "currentProductKey": "32-count-wings-house-bbq",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "32-count-wings-house-bbq"
+        ]
+      },
+      {
+        "auditItemKey": "24:32-count-wings-nashville-hot",
+        "disposition": "normalized_match",
+        "currentProductKey": "32-count-wings-nashville-hot",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "32-count-wings-nashville-hot"
+        ]
+      },
+      {
+        "auditItemKey": "25:48-count-boneless-wings-buffalo",
+        "disposition": "normalized_match",
+        "currentProductKey": "48-count-boneless-wings-buffalo",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "48-count-boneless-wings-buffalo"
+        ]
+      },
+      {
+        "auditItemKey": "26:48-count-boneless-wings-honey-chipotle",
+        "disposition": "normalized_match",
+        "currentProductKey": "48-count-boneless-wings-honey-chipotle",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "48-count-boneless-wings-honey-chipotle"
+        ]
+      },
+      {
+        "auditItemKey": "27:48-count-boneless-wings-house-bbq",
+        "disposition": "normalized_match",
+        "currentProductKey": "48-count-boneless-wings-house-bbq",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "48-count-boneless-wings-house-bbq"
+        ]
+      },
+      {
+        "auditItemKey": "28:48-count-boneless-wings-nashville-hot",
+        "disposition": "normalized_match",
+        "currentProductKey": "48-count-boneless-wings-nashville-hot",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "48-count-boneless-wings-nashville-hot"
+        ]
+      },
+      {
+        "auditItemKey": "29:48-count-wings-buffalo",
+        "disposition": "normalized_match",
+        "currentProductKey": "48-count-wings-buffalo",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "48-count-wings-buffalo"
+        ]
+      },
+      {
+        "auditItemKey": "30:48-count-wings-honey-chipotle",
+        "disposition": "normalized_match",
+        "currentProductKey": "48-count-wings-honey-chipotle",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "48-count-wings-honey-chipotle"
+        ]
+      },
+      {
+        "auditItemKey": "31:48-count-wings-house-bbq",
+        "disposition": "normalized_match",
+        "currentProductKey": "48-count-wings-house-bbq",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "48-count-wings-house-bbq"
+        ]
+      },
+      {
+        "auditItemKey": "32:48-count-wings-nashville-hot",
+        "disposition": "normalized_match",
+        "currentProductKey": "48-count-wings-nashville-hot",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "48-count-wings-nashville-hot"
+        ]
+      },
+      {
+        "auditItemKey": "33:8-count-boneless-wings-buffalo",
+        "disposition": "normalized_match",
+        "currentProductKey": "8-count-boneless-wings-buffalo",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "8-count-boneless-wings-buffalo"
+        ]
+      },
+      {
+        "auditItemKey": "34:8-count-boneless-wings-honey-chipotle",
+        "disposition": "normalized_match",
+        "currentProductKey": "8-count-boneless-wings-honey-chipotle",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "8-count-boneless-wings-honey-chipotle"
+        ]
+      },
+      {
+        "auditItemKey": "35:8-count-boneless-wings-house-bbq",
+        "disposition": "normalized_match",
+        "currentProductKey": "8-count-boneless-wings-house-bbq",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "8-count-boneless-wings-house-bbq"
+        ]
+      },
+      {
+        "auditItemKey": "36:8-count-boneless-wings-nashville-hot",
+        "disposition": "normalized_match",
+        "currentProductKey": "8-count-boneless-wings-nashville-hot",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "8-count-boneless-wings-nashville-hot"
+        ]
+      },
+      {
+        "auditItemKey": "37:8-count-wings-buffalo",
+        "disposition": "normalized_match",
+        "currentProductKey": "8-count-wings-buffalo",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "8-count-wings-buffalo"
+        ]
+      },
+      {
+        "auditItemKey": "38:8-count-wings-honey-chipotle",
+        "disposition": "normalized_match",
+        "currentProductKey": "8-count-wings-honey-chipotle",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "8-count-wings-honey-chipotle"
+        ]
+      },
+      {
+        "auditItemKey": "39:8-count-wings-house-bbq",
+        "disposition": "normalized_match",
+        "currentProductKey": "8-count-wings-house-bbq",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "8-count-wings-house-bbq"
+        ]
+      },
+      {
+        "auditItemKey": "40:8-count-wings-nashville-hot",
+        "disposition": "normalized_match",
+        "currentProductKey": "8-count-wings-nashville-hot",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "8-count-wings-nashville-hot"
+        ]
+      },
+      {
+        "auditItemKey": "41:alexs-santa-fe-burger",
+        "disposition": "normalized_match",
+        "currentProductKey": "alexs-santa-fe-burger",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "alexs-santa-fe-burger"
+        ]
+      },
+      {
+        "auditItemKey": "42:avocado-ranch",
+        "disposition": "normalized_match",
+        "currentProductKey": "avocado-ranch",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "avocado-ranch"
+        ]
+      },
+      {
+        "auditItemKey": "43:bacon-cheeseburger",
+        "disposition": "normalized_match",
+        "currentProductKey": "bacon-cheeseburger",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "bacon-cheeseburger"
+        ]
+      },
+      {
+        "auditItemKey": "44:bacon-ranch-chicken-quesadilla",
+        "disposition": "normalized_match",
+        "currentProductKey": "bacon-ranch-chicken-quesadilla",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "bacon-ranch-chicken-quesadilla"
+        ]
+      },
+      {
+        "auditItemKey": "45:bacon-rancher-burger",
+        "disposition": "normalized_match",
+        "currentProductKey": "bacon-rancher-burger",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "bacon-rancher-burger"
+        ]
+      },
+      {
+        "auditItemKey": "46:big-crispy-chicken-sandwich",
+        "disposition": "normalized_match",
+        "currentProductKey": "big-crispy-chicken-sandwich",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "big-crispy-chicken-sandwich"
+        ]
+      },
+      {
+        "auditItemKey": "47:big-mouth-bites-12-count",
+        "disposition": "normalized_match",
+        "currentProductKey": "big-mouth-bites-12-count",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "big-mouth-bites-12-count"
+        ]
+      },
+      {
+        "auditItemKey": "48:blue-cheese",
+        "disposition": "normalized_match",
+        "currentProductKey": "blue-cheese",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "blue-cheese"
+        ]
+      },
+      {
+        "auditItemKey": "49:bowl-of-loaded-street-corn",
+        "disposition": "normalized_match",
+        "currentProductKey": "bowl-of-loaded-street-corn",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "bowl-of-loaded-street-corn"
+        ]
+      },
+      {
+        "auditItemKey": "50:buffalo-ranch",
+        "disposition": "normalized_match",
+        "currentProductKey": "buffalo-ranch",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "buffalo-ranch"
+        ]
+      },
+      {
+        "auditItemKey": "51:burger-big-mouthr-bites",
+        "disposition": "normalized_match",
+        "currentProductKey": "burger-big-mouthr-bites",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "burger-big-mouthr-bites"
+        ]
+      },
+      {
+        "auditItemKey": "52:chicken-bacon-ranch-nachos",
+        "disposition": "normalized_match",
+        "currentProductKey": "chicken-bacon-ranch-nachos",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "chicken-bacon-ranch-nachos"
+        ]
+      },
+      {
+        "auditItemKey": "53:chipotle-chicken-fresh-mex-bowl",
+        "disposition": "normalized_match",
+        "currentProductKey": "chipotle-chicken-fresh-mex-bowl",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "chipotle-chicken-fresh-mex-bowl"
+        ]
+      },
+      {
+        "auditItemKey": "54:crispers-honey-chipotle-with-ranch",
+        "disposition": "normalized_match",
+        "currentProductKey": "crispers-honey-chipotle-with-ranch",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "crispers-honey-chipotle-with-ranch"
+        ]
+      },
+      {
+        "auditItemKey": "55:crispers-nashville-hot-with-ranch",
+        "disposition": "normalized_match",
+        "currentProductKey": "crispers-nashville-hot-with-ranch",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "crispers-nashville-hot-with-ranch"
+        ]
+      },
+      {
+        "auditItemKey": "56:crispy-crispers",
+        "disposition": "normalized_match",
+        "currentProductKey": "crispy-crispers",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "crispy-crispers"
+        ]
+      },
+      {
+        "auditItemKey": "57:deluxe-big-crispy-chicken-sandwich",
+        "disposition": "normalized_match",
+        "currentProductKey": "deluxe-big-crispy-chicken-sandwich",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "deluxe-big-crispy-chicken-sandwich"
+        ]
+      },
+      {
+        "auditItemKey": "58:deluxe-grilled-chicken-sandwich",
+        "disposition": "normalized_match",
+        "currentProductKey": "deluxe-grilled-chicken-sandwich",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "deluxe-grilled-chicken-sandwich"
+        ]
+      },
+      {
+        "auditItemKey": "59:dip-trio-house-made-ranch",
+        "disposition": "normalized_match",
+        "currentProductKey": "dip-trio-house-made-ranch",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "dip-trio-house-made-ranch"
+        ]
+      },
+      {
+        "auditItemKey": "60:fried-mozzarella-3-count",
+        "disposition": "normalized_match",
+        "currentProductKey": "fried-mozzarella-3-count",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "fried-mozzarella-3-count"
+        ]
+      },
+      {
+        "auditItemKey": "61:fried-mozzarella-6-count",
+        "disposition": "normalized_match",
+        "currentProductKey": "fried-mozzarella-6-count",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "fried-mozzarella-6-count"
+        ]
+      },
+      {
+        "auditItemKey": "62:honey-mustard",
+        "disposition": "normalized_match",
+        "currentProductKey": "honey-mustard",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "honey-mustard"
+        ]
+      },
+      {
+        "auditItemKey": "63:loaded-mac-and-cheese",
+        "disposition": "normalized_match",
+        "currentProductKey": "loaded-mac-and-cheese",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "loaded-mac-and-cheese"
+        ]
+      },
+      {
+        "auditItemKey": "64:molten-chocolate-cake",
+        "disposition": "normalized_match",
+        "currentProductKey": "molten-chocolate-cake",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "molten-chocolate-cake"
+        ]
+      },
+      {
+        "auditItemKey": "65:mushroom-swiss-burger",
+        "disposition": "normalized_match",
+        "currentProductKey": "mushroom-swiss-burger",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "mushroom-swiss-burger"
+        ]
+      },
+      {
+        "auditItemKey": "66:quesadillas-brisket",
+        "disposition": "normalized_match",
+        "currentProductKey": "quesadillas-brisket",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "quesadillas-brisket"
+        ]
+      },
+      {
+        "auditItemKey": "67:quesadillas-chicken-bacon-ranch",
+        "disposition": "normalized_match",
+        "currentProductKey": "quesadillas-chicken-bacon-ranch",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "quesadillas-chicken-bacon-ranch"
+        ]
+      },
+      {
+        "auditItemKey": "68:ranch-dressing",
+        "disposition": "normalized_match",
+        "currentProductKey": "ranch-dressing",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "ranch-dressing"
+        ]
+      },
+      {
+        "auditItemKey": "69:ranch",
+        "disposition": "normalized_match",
+        "currentProductKey": "ranch",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "ranch"
+        ]
+      },
+      {
+        "auditItemKey": "70:santa-fe-chicken-salad-with-crispers",
+        "disposition": "normalized_match",
+        "currentProductKey": "santa-fe-chicken-salad-with-crispers",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "santa-fe-chicken-salad-with-crispers"
+        ]
+      },
+      {
+        "auditItemKey": "71:santa-fe-chicken-salad-with-grilled-chicken",
+        "disposition": "normalized_match",
+        "currentProductKey": "santa-fe-chicken-salad-with-grilled-chicken",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "santa-fe-chicken-salad-with-grilled-chicken"
+        ]
+      },
+      {
+        "auditItemKey": "72:santa-fe",
+        "disposition": "normalized_match",
+        "currentProductKey": "santa-fe",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "santa-fe"
+        ]
+      },
+      {
+        "auditItemKey": "73:side-dippable-house-made-ranch",
+        "disposition": "normalized_match",
+        "currentProductKey": "side-dippable-house-made-ranch",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "side-dippable-house-made-ranch"
+        ]
+      },
+      {
+        "auditItemKey": "74:side-salad-with-ranch",
+        "disposition": "normalized_match",
+        "currentProductKey": "side-salad-with-ranch",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "side-salad-with-ranch"
+        ]
+      },
+      {
+        "auditItemKey": "75:skillet-chocolate-chip-cookie",
+        "disposition": "normalized_match",
+        "currentProductKey": "skillet-chocolate-chip-cookie",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "skillet-chocolate-chip-cookie"
+        ]
+      },
+      {
+        "auditItemKey": "76:southwestern-eggrolls",
+        "disposition": "normalized_match",
+        "currentProductKey": "southwestern-eggrolls",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "southwestern-eggrolls"
+        ]
+      },
+      {
+        "auditItemKey": "77:southwestern-eggrolls-12-count",
+        "disposition": "normalized_match",
+        "currentProductKey": "southwestern-eggrolls-12-count",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "southwestern-eggrolls-12-count"
+        ]
+      },
+      {
+        "auditItemKey": "78:spicy-big-crispy-chicken-sandwich",
+        "disposition": "normalized_match",
+        "currentProductKey": "spicy-big-crispy-chicken-sandwich",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "spicy-big-crispy-chicken-sandwich"
+        ]
+      },
+      {
+        "auditItemKey": "79:td-big-mouthr-bites",
+        "disposition": "normalized_match",
+        "currentProductKey": "td-big-mouthr-bites",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "td-big-mouthr-bites"
+        ]
+      },
+      {
+        "auditItemKey": "80:td-bone-in-wings-buffalo",
+        "disposition": "normalized_match",
+        "currentProductKey": "td-bone-in-wings-buffalo",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "td-bone-in-wings-buffalo"
+        ]
+      },
+      {
+        "auditItemKey": "81:td-bone-in-wings-honey-chipotle",
+        "disposition": "normalized_match",
+        "currentProductKey": "td-bone-in-wings-honey-chipotle",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "td-bone-in-wings-honey-chipotle"
+        ]
+      },
+      {
+        "auditItemKey": "82:td-bone-in-wings-house-bbq",
+        "disposition": "normalized_match",
+        "currentProductKey": "td-bone-in-wings-house-bbq",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "td-bone-in-wings-house-bbq"
+        ]
+      },
+      {
+        "auditItemKey": "83:td-boneless-wings-buffalo",
+        "disposition": "normalized_match",
+        "currentProductKey": "td-boneless-wings-buffalo",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "td-boneless-wings-buffalo"
+        ]
+      },
+      {
+        "auditItemKey": "84:td-boneless-wings-honey-chipotle",
+        "disposition": "normalized_match",
+        "currentProductKey": "td-boneless-wings-honey-chipotle",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "td-boneless-wings-honey-chipotle"
+        ]
+      },
+      {
+        "auditItemKey": "85:td-boneless-wings-house-bbq",
+        "disposition": "normalized_match",
+        "currentProductKey": "td-boneless-wings-house-bbq",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "td-boneless-wings-house-bbq"
+        ]
+      },
+      {
+        "auditItemKey": "86:td-fried-mozzarella",
+        "disposition": "normalized_match",
+        "currentProductKey": "td-fried-mozzarella",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "td-fried-mozzarella"
+        ]
+      },
+      {
+        "auditItemKey": "87:td-fried-mozzarella-honey-chipotle",
+        "disposition": "normalized_match",
+        "currentProductKey": "td-fried-mozzarella-honey-chipotle",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "td-fried-mozzarella-honey-chipotle"
+        ]
+      },
+      {
+        "auditItemKey": "88:td-fried-mozzarella-nashville-sauce",
+        "disposition": "normalized_match",
+        "currentProductKey": "td-fried-mozzarella-nashville-sauce",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "td-fried-mozzarella-nashville-sauce"
+        ]
+      },
+      {
+        "auditItemKey": "89:td-honey-chipotle-chicken-crispers",
+        "disposition": "normalized_match",
+        "currentProductKey": "td-honey-chipotle-chicken-crispers",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "td-honey-chipotle-chicken-crispers"
+        ]
+      },
+      {
+        "auditItemKey": "90:td-nashville-hot-chicken-crispers",
+        "disposition": "normalized_match",
+        "currentProductKey": "td-nashville-hot-chicken-crispers",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "td-nashville-hot-chicken-crispers"
+        ]
+      },
+      {
+        "auditItemKey": "91:td-southwestern-eggrolls",
+        "disposition": "normalized_match",
+        "currentProductKey": "td-southwestern-eggrolls",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "td-southwestern-eggrolls"
+        ]
+      },
+      {
+        "auditItemKey": "92:tdtm-big-mouth-bites-6-count",
+        "disposition": "normalized_match",
+        "currentProductKey": "tdtm-big-mouth-bites-6-count",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "tdtm-big-mouth-bites-6-count"
+        ]
+      },
+      {
+        "auditItemKey": "93:tdtm-fried-mozzarella-6-count",
+        "disposition": "normalized_match",
+        "currentProductKey": "tdtm-fried-mozzarella-6-count",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "tdtm-fried-mozzarella-6-count"
+        ]
+      },
+      {
+        "auditItemKey": "94:tdtm-honey-chipotle-crispers-12-count",
+        "disposition": "normalized_match",
+        "currentProductKey": "tdtm-honey-chipotle-crispers-12-count",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "tdtm-honey-chipotle-crispers-12-count"
+        ]
+      },
+      {
+        "auditItemKey": "95:tdtm-nashville-hot-crispers-12-count",
+        "disposition": "normalized_match",
+        "currentProductKey": "tdtm-nashville-hot-crispers-12-count",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "tdtm-nashville-hot-crispers-12-count"
+        ]
+      },
+      {
+        "auditItemKey": "96:tdtm-southwestern-eggrolls-6-count",
+        "disposition": "normalized_match",
+        "currentProductKey": "tdtm-southwestern-eggrolls-6-count",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "tdtm-southwestern-eggrolls-6-count"
+        ]
+      },
+      {
+        "auditItemKey": "97:texas-cheese-fries",
+        "disposition": "normalized_match",
+        "currentProductKey": "texas-cheese-fries",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "texas-cheese-fries"
+        ]
+      },
+      {
+        "auditItemKey": "98:texas-cheese-fries-half-order",
+        "disposition": "normalized_match",
+        "currentProductKey": "texas-cheese-fries-half-order",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "texas-cheese-fries-half-order"
+        ]
+      },
+      {
+        "auditItemKey": "99:the-big-smasher-burger",
+        "disposition": "normalized_match",
+        "currentProductKey": "the-big-smasher-burger",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "the-big-smasher-burger"
+        ]
+      },
+      {
+        "auditItemKey": "100:the-double-big-smasher-burger",
+        "disposition": "normalized_match",
+        "currentProductKey": "the-double-big-smasher-burger",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "the-double-big-smasher-burger"
+        ]
+      },
+      {
+        "auditItemKey": "101:thousand-island",
+        "disposition": "normalized_match",
+        "currentProductKey": "thousand-island",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "thousand-island"
+        ]
+      },
+      {
+        "auditItemKey": "102:veggie-santa-fe-burger",
+        "disposition": "normalized_match",
+        "currentProductKey": "veggie-santa-fe-burger",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "veggie-santa-fe-burger"
+        ]
+      },
+      {
+        "auditItemKey": "103:white-cheddar-mac-and-cheese",
+        "disposition": "normalized_match",
+        "currentProductKey": "white-cheddar-mac-and-cheese",
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ],
+        "matchedCurrentProductKeys": [
+          "white-cheddar-mac-and-cheese"
+        ]
+      }
+    ]
+  },
+  "proposedChanges": [
+    {
+      "type": "luna_fix",
+      "description": "Replace stale Nutritionix-derived allergen positives with current official menu catalog while marking allergen disclosure unavailable; retain third-party PDF as non-authoritative reference."
+    }
+  ],
+  "routingSignals": {
+    "lightweightRepairSignals": [
+      "official-api source is stale/third-party-derived",
+      "allergen matrix unavailable after required searches"
+    ],
+    "safetyEscalationSignals": [],
+    "route": "luna_fix"
+  },
+  "blockedReason": null,
+  "currentProducts": [
+    {
+      "currentProductKey": "12-count-boneless-wings-buffalo",
+      "name": "12 Count Boneless Wings - Buffalo",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "12-count-boneless-wings-honey-chipotle",
+      "name": "12 Count Boneless Wings - Honey Chipotle",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "12-count-boneless-wings-house-bbq",
+      "name": "12 Count Boneless Wings - House BBQ",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "12-count-boneless-wings-nashville-hot",
+      "name": "12 Count Boneless Wings - Nashville Hot",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "12-count-wings-buffalo",
+      "name": "12 Count Wings - Buffalo",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "12-count-wings-honey-chipotle",
+      "name": "12 Count Wings - Honey Chipotle",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "12-count-wings-house-bbq",
+      "name": "12 Count Wings - House BBQ",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "12-count-wings-nashville-hot",
+      "name": "12 Count Wings - Nashville Hot",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "16-count-boneless-wings-buffalo",
+      "name": "16 Count Boneless Wings - Buffalo",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "16-count-boneless-wings-honey-chipotle",
+      "name": "16 Count Boneless Wings - Honey Chipotle",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "16-count-boneless-wings-house-bbq",
+      "name": "16 Count Boneless Wings - House BBQ",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "16-count-boneless-wings-nashville-hot",
+      "name": "16 Count Boneless Wings - Nashville Hot",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "16-count-wings-buffalo",
+      "name": "16 Count Wings - Buffalo",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "16-count-wings-honey-chipotle",
+      "name": "16 Count Wings - Honey Chipotle",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "16-count-wings-house-bbq",
+      "name": "16 Count Wings - House BBQ",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "16-count-wings-nashville-hot",
+      "name": "16 Count Wings - Nashville Hot",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "32-count-boneless-wings-buffalo",
+      "name": "32 Count Boneless Wings - Buffalo",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "32-count-boneless-wings-honey-chipotle",
+      "name": "32 Count Boneless Wings - Honey Chipotle",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "32-count-boneless-wings-house-bbq",
+      "name": "32 Count Boneless Wings - House BBQ",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "32-count-boneless-wings-nashville-hot",
+      "name": "32 Count Boneless Wings - Nashville Hot",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "32-count-wings-buffalo",
+      "name": "32 Count Wings - Buffalo",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "32-count-wings-honey-chipotle",
+      "name": "32 Count Wings - Honey Chipotle",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "32-count-wings-house-bbq",
+      "name": "32 Count Wings - House BBQ",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "32-count-wings-nashville-hot",
+      "name": "32 Count Wings - Nashville Hot",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "48-count-boneless-wings-buffalo",
+      "name": "48 Count Boneless Wings - Buffalo",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "48-count-boneless-wings-honey-chipotle",
+      "name": "48 Count Boneless Wings - Honey Chipotle",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "48-count-boneless-wings-house-bbq",
+      "name": "48 Count Boneless Wings - House BBQ",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "48-count-boneless-wings-nashville-hot",
+      "name": "48 Count Boneless Wings - Nashville Hot",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "48-count-wings-buffalo",
+      "name": "48 Count Wings - Buffalo",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "48-count-wings-honey-chipotle",
+      "name": "48 Count Wings - Honey Chipotle",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "48-count-wings-house-bbq",
+      "name": "48 Count Wings - House BBQ",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "48-count-wings-nashville-hot",
+      "name": "48 Count Wings - Nashville Hot",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "8-count-boneless-wings-buffalo",
+      "name": "8 Count Boneless Wings - Buffalo",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "8-count-boneless-wings-honey-chipotle",
+      "name": "8 Count Boneless Wings - Honey Chipotle",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "8-count-boneless-wings-house-bbq",
+      "name": "8 Count Boneless Wings - House BBQ",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "8-count-boneless-wings-nashville-hot",
+      "name": "8 Count Boneless Wings - Nashville Hot",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "8-count-wings-buffalo",
+      "name": "8 Count Wings - Buffalo",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "8-count-wings-honey-chipotle",
+      "name": "8 Count Wings - Honey Chipotle",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "8-count-wings-house-bbq",
+      "name": "8 Count Wings - House BBQ",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "8-count-wings-nashville-hot",
+      "name": "8 Count Wings - Nashville Hot",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "alexs-santa-fe-burger",
+      "name": "Alex's Santa Fe Burger",
+      "category": "Big Mouth Burgers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "avocado-ranch",
+      "name": "Avocado Ranch",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "bacon-cheeseburger",
+      "name": "Bacon Cheeseburger",
+      "category": "Big Mouth Burgers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "bacon-ranch-chicken-quesadilla",
+      "name": "Bacon Ranch Chicken Quesadilla",
+      "category": "BBQ Classics",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "bacon-rancher-burger",
+      "name": "Bacon Rancher Burger",
+      "category": "Big Mouth Burgers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "big-crispy-chicken-sandwich",
+      "name": "Big Crispy Chicken Sandwich",
+      "category": "Crispy Chicken Sandwiches",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "big-mouth-bites-12-count",
+      "name": "Big Mouth Bites, 12 Count",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "blue-cheese",
+      "name": "Blue Cheese",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "bowl-of-loaded-street-corn",
+      "name": "Bowl of Loaded Street Corn",
+      "category": "Sides",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "buffalo-ranch",
+      "name": "Buffalo Ranch",
+      "category": "Dipping Sauces",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "burger-big-mouthr-bites",
+      "name": "Burger Big Mouth® Bites",
+      "category": "Big Mouth Burgers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "chicken-bacon-ranch-nachos",
+      "name": "Chicken Bacon Ranch Nachos",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "chipotle-chicken-fresh-mex-bowl",
+      "name": "Chipotle Chicken Fresh Mex Bowl",
+      "category": "Salads, Soups, and Bowls",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "crispers-honey-chipotle-with-ranch",
+      "name": "Crispers Honey Chipotle with Ranch",
+      "category": "BBQ Classics",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "crispers-nashville-hot-with-ranch",
+      "name": "Crispers Nashville Hot with Ranch",
+      "category": "BBQ Classics",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "crispy-crispers",
+      "name": "Crispy Crispers",
+      "category": "Kids Menu",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "deluxe-big-crispy-chicken-sandwich",
+      "name": "Deluxe Big Crispy Chicken Sandwich",
+      "category": "Crispy Chicken Sandwiches",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "deluxe-grilled-chicken-sandwich",
+      "name": "Deluxe Grilled Chicken Sandwich",
+      "category": "Crispy Chicken Sandwiches",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "dip-trio-house-made-ranch",
+      "name": "Dip Trio - House-Made Ranch",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "fried-mozzarella-3-count",
+      "name": "Fried Mozzarella, 3 Count",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "fried-mozzarella-6-count",
+      "name": "Fried Mozzarella, 6 Count",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "honey-mustard",
+      "name": "Honey Mustard",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "loaded-mac-and-cheese",
+      "name": "Loaded Mac & Cheese",
+      "category": "Sides",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "molten-chocolate-cake",
+      "name": "Molten Chocolate Cake",
+      "category": "Desserts",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "mushroom-swiss-burger",
+      "name": "Mushroom Swiss Burger",
+      "category": "Big Mouth Burgers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "quesadillas-brisket",
+      "name": "Quesadillas - Brisket",
+      "category": "Quesadillas",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "quesadillas-chicken-bacon-ranch",
+      "name": "Quesadillas - Chicken Bacon Ranch",
+      "category": "Quesadillas",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "ranch-dressing",
+      "name": "Ranch Dressing",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "ranch",
+      "name": "Ranch",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "santa-fe-chicken-salad-with-crispers",
+      "name": "Santa Fe Chicken Salad with Crispers",
+      "category": "Salads, Soups, and Bowls",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "santa-fe-chicken-salad-with-grilled-chicken",
+      "name": "Santa Fe Chicken Salad with Grilled Chicken",
+      "category": "Salads, Soups, and Bowls",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "santa-fe",
+      "name": "Santa Fe",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "side-dippable-house-made-ranch",
+      "name": "Side Dippable House-Made Ranch",
+      "category": "Extras and Add-Ons",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "side-salad-with-ranch",
+      "name": "Side Salad with Ranch",
+      "category": "Kids Menu",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "skillet-chocolate-chip-cookie",
+      "name": "Skillet Chocolate Chip Cookie",
+      "category": "Desserts",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "southwestern-eggrolls",
+      "name": "Southwestern Eggrolls",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "southwestern-eggrolls-12-count",
+      "name": "Southwestern Eggrolls, 12 Count",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "spicy-big-crispy-chicken-sandwich",
+      "name": "Spicy Big Crispy Chicken Sandwich",
+      "category": "Crispy Chicken Sandwiches",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-big-mouthr-bites",
+      "name": "TD Big Mouth® Bites",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-bone-in-wings-buffalo",
+      "name": "TD Bone-In Wings - Buffalo",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-bone-in-wings-honey-chipotle",
+      "name": "TD Bone-In Wings - Honey-Chipotle",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-bone-in-wings-house-bbq",
+      "name": "TD Bone-In Wings - House BBQ",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-boneless-wings-buffalo",
+      "name": "TD Boneless Wings - Buffalo",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-boneless-wings-honey-chipotle",
+      "name": "TD Boneless Wings - Honey-Chipotle",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-boneless-wings-house-bbq",
+      "name": "TD Boneless Wings - House BBQ",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-fried-mozzarella",
+      "name": "TD Fried Mozzarella",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-fried-mozzarella-honey-chipotle",
+      "name": "TD Fried Mozzarella Honey Chipotle",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-fried-mozzarella-nashville-sauce",
+      "name": "TD Fried Mozzarella Nashville Sauce",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-honey-chipotle-chicken-crispers",
+      "name": "TD Honey-Chipotle Chicken Crispers",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-nashville-hot-chicken-crispers",
+      "name": "TD Nashville Hot Chicken Crispers",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "td-southwestern-eggrolls",
+      "name": "TD Southwestern Eggrolls",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "tdtm-big-mouth-bites-6-count",
+      "name": "TD™ Big Mouth Bites, 6 Count",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "tdtm-fried-mozzarella-6-count",
+      "name": "TD™ Fried Mozzarella, 6 Count",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "tdtm-honey-chipotle-crispers-12-count",
+      "name": "TD™ Honey-Chipotle Crispers, 12 Count",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "tdtm-nashville-hot-crispers-12-count",
+      "name": "TD™ Nashville Hot Crispers, 12 Count",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "tdtm-southwestern-eggrolls-6-count",
+      "name": "TD™ Southwestern Eggrolls, 6 Count",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "texas-cheese-fries",
+      "name": "Texas Cheese Fries",
+      "category": "Appetizers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "texas-cheese-fries-half-order",
+      "name": "Texas Cheese Fries - Half Order",
+      "category": "Sides",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "the-big-smasher-burger",
+      "name": "The Big Smasher Burger",
+      "category": "Big Mouth Burgers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "the-double-big-smasher-burger",
+      "name": "The Double Big Smasher Burger",
+      "category": "Big Mouth Burgers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "thousand-island",
+      "name": "Thousand Island",
+      "category": "Party Platters",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "veggie-santa-fe-burger",
+      "name": "Veggie Santa Fe Burger",
+      "category": "Big Mouth Burgers",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    },
+    {
+      "currentProductKey": "white-cheddar-mac-and-cheese",
+      "name": "White Cheddar Mac & Cheese",
+      "category": "Sides",
+      "servicePeriod": "all-day",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "No current official allergen matrix disclosure located; do not infer negatives."
+      ]
+    }
+  ],
+  "allergenMatrixSearch": {
+    "status": "accurately_unavailable",
+    "searches": [
+      {
+        "searchClass": "official_site",
+        "locationOrQuery": "chilis.com menu/navigation",
+        "urls": [
+          "https://www.chilis.com/menu"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-site"
+        ]
+      },
+      {
+        "searchClass": "official_documents",
+        "locationOrQuery": "chilis.com sitemap/downloadable documents",
+        "urls": [
+          "https://www.chilis.com/sitemap.xml"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-docs"
+        ]
+      },
+      {
+        "searchClass": "linked_vendor",
+        "locationOrQuery": "official order handoff and linked ordering vendors",
+        "urls": [
+          "https://www.chilis.com/order"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-vendor"
+        ]
+      },
+      {
+        "searchClass": "targeted_web_search",
+        "locationOrQuery": "site:chilis.com allergen allergy nutrition ingredients PDF",
+        "urls": [
+          "https://www.google.com/search?q=site%3Achilis.com+allergen+allergy+nutrition+ingredients+PDF"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-web"
+        ]
+      }
+    ],
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": true,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": true,
+    "parserIssue": false
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-008-2026-07-16",
+  "restaurantId": "beau-thai-dc",
+  "validation": {
+    "valid": true,
+    "currentProductCount": 59,
+    "evidenceSourceCount": 13,
+    "evidencePreflightValid": true,
+    "assertions": [
+      "baseline fingerprint matches job",
+      "59 distinct current Shaw food/nonalcoholic products published",
+      "Mount Pleasant and alcohol excluded",
+      "resolved duplicate identities remain collapsed",
+      "direct allergen fields come only from merged result",
+      "missing direct allergen evidence is unavailable",
+      "E6 restaurant-wide caution is not item mayContain",
+      "Ingredient Intelligence runs after direct catalog finalization",
+      "canonical evidence references resolve"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/beau-thai-dc.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/beau-thai-dc.json",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-beau-thai-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-008-2026-07-16/apply-results/beau-thai-dc.json"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "target canonical catalog repair",
+    "recompute Ingredient Intelligence after direct catalog finalization",
+    "target closeout preflight"
+  ],
+  "secondRunDiff": "none"
+}

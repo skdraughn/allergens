@@ -1,0 +1,2616 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-131-2026-08-06",
+  "restaurantId": "first-watch",
+  "runId": "poc-batch-131-2026-08-06-first-watch-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "first-watch",
+    "name": "First Watch",
+    "locationId": null,
+    "domain": "firstwatch.com",
+    "baselineItemCount": 81,
+    "baselineFingerprint": "307bc197125e93a6e83d8eea61a3df6ebbdb2caea9ae0a19cf2f9e9e9b86bb7f",
+    "itemChecksRead": 81,
+    "itemChecksPath": "data/restaurant-verification/item-checks/first-watch.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "First Watch",
+    "location": "First Watch restaurant chain; location-specific menu selected by official site locator",
+    "locationId": null,
+    "domain": "firstwatch.com",
+    "officialHomepage": "https://firstwatch.com/"
+  },
+  "sources": [
+    {
+      "id": "ev-fw-home",
+      "evidenceId": "ev-fw-home",
+      "url": "https://firstwatch.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-08-06",
+      "excerpt": "brand"
+    },
+    {
+      "id": "ev-fw-menu",
+      "evidenceId": "ev-fw-menu",
+      "url": "https://firstwatch.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-08-06",
+      "excerpt": "current menu"
+    },
+    {
+      "id": "ev-fw-order",
+      "evidenceId": "ev-fw-order",
+      "url": "https://order.firstwatch.com/menu/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "retrievedAt": "2026-08-06",
+      "excerpt": "ordering menu"
+    },
+    {
+      "id": "ev-fw-allergen-guide",
+      "evidenceId": "ev-fw-allergen-guide",
+      "url": "https://www.firstwatch.com/docs/allergenguide.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "retrievedAt": "2026-08-06",
+      "excerpt": "allergen/nutrition PDF"
+    },
+    {
+      "id": "ev-fw-targeted-search",
+      "evidenceId": "ev-fw-targeted-search",
+      "url": "https://www.google.com/search?q=site%3Afirstwatch.com+allergen+nutrition+ingredients+pdf",
+      "authorityTier": "third_party",
+      "purpose": "menu",
+      "retrievedAt": "2026-08-06",
+      "excerpt": "discovery"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-menu",
+      "url": "https://firstwatch.com/menu",
+      "authority": "restaurant_issued",
+      "locationScope": "brand/location selector",
+      "servicePeriod": "breakfast brunch lunch",
+      "retrievalOutcome": "success",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-fw-menu"
+      ],
+      "currentProductKeys": [
+        "banana-brittle-french-toast",
+        "blueberry-muffin",
+        "chipotle-steak-and-queso-hash",
+        "early-bird-breakfast-tacos",
+        "fresh-beet-juice",
+        "fresh-strawberry-juice",
+        "green-onion-cornbread",
+        "honey-butter-biscuit-bites",
+        "jammy-bacon-cornbread",
+        "lemon-dressed-mixed-greens",
+        "million-dollar-bacon",
+        "million-dollar-breakfast-sandwich",
+        "strawberry-glow-up",
+        "strawberry-matcha-milk",
+        "the-santorini-sunrise",
+        "triple-berry-acai-bowl",
+        "watermelon-wake-up",
+        "the-traditional",
+        "chickichanga",
+        "farmhouse-hash",
+        "elevated-egg-sandwich",
+        "am-superfoods-bowl",
+        "pesto-chicken-quinoa-bowl",
+        "tri-fecta",
+        "parma-skillet",
+        "lemon-ricotta-pancakes",
+        "belgian-waffle",
+        "floridian-french-toast",
+        "morning-meditation",
+        "purple-haze",
+        "kale-tonic",
+        "coffee",
+        "iced-coffee",
+        "hot-tea",
+        "bacado-omelet",
+        "chicken-pesto-omelet",
+        "ham-and-gruyere-omelet",
+        "healthy-turkey-omelet",
+        "market-skillet",
+        "parma-hash",
+        "power-bowl",
+        "avocado-toast",
+        "chicken-avocado-chop-salad",
+        "lemon-dressed-greens",
+        "mixed-greens-salad",
+        "classic-french-toast",
+        "multigrain-pancake",
+        "chocolate-chip-pancakes",
+        "banana-pancake",
+        "four-egg-whites",
+        "sides-two-eggs",
+        "turkey-sausage",
+        "pork-sausage",
+        "smoked-bacon",
+        "fresh-fruit",
+        "seasoned-potatoes",
+        "housemade-granola",
+        "fresh-squeezed-orange-juice",
+        "fresh-squeezed-grapefruit-juice",
+        "lemonade",
+        "iced-tea",
+        "cold-brew-coffee",
+        "cafe-latte",
+        "cappuccino",
+        "hot-chocolate",
+        "sparkling-water"
+      ]
+    },
+    {
+      "surfaceId": "linked-order-menu",
+      "url": "https://order.firstwatch.com/menu/",
+      "authority": "restaurant_linked_vendor",
+      "locationScope": "location selector",
+      "servicePeriod": "breakfast brunch lunch",
+      "retrievalOutcome": "success",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-fw-order"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "official-allergen-guide",
+      "url": "https://www.firstwatch.com/docs/allergenguide.pdf",
+      "authority": "restaurant_issued",
+      "locationScope": "brand/core and seasonal",
+      "servicePeriod": "all",
+      "retrievalOutcome": "success",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "currentProductKeys": []
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "banana-brittle-french-toast",
+      "name": "Banana Brittle French Toast",
+      "category": "Allergen Guide",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-allergen-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "soy",
+        "tree-nut",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ]
+    },
+    {
+      "currentProductKey": "blueberry-muffin",
+      "name": "Blueberry Muffin",
+      "category": "Summer Seasonal Lto Menu",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-allergen-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ]
+    },
+    {
+      "currentProductKey": "chipotle-steak-and-queso-hash",
+      "name": "Chipotle Steak & Queso Hash",
+      "category": "Allergen Guide",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-allergen-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "soy",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ]
+    },
+    {
+      "currentProductKey": "early-bird-breakfast-tacos",
+      "name": "Early Bird Breakfast Tacos",
+      "category": "Summer Seasonal Lto Menu",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-allergen-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "soy",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ]
+    },
+    {
+      "currentProductKey": "fresh-beet-juice",
+      "name": "Fresh Beet Juice",
+      "category": "Summer Seasonal Lto Menu",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-allergen-guide"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "fresh-strawberry-juice",
+      "name": "Fresh Strawberry Juice",
+      "category": "Summer Seasonal Lto Menu",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-allergen-guide"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "green-onion-cornbread",
+      "name": "Green Onion Cornbread",
+      "category": "Summer Seasonal Lto Menu",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-allergen-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "soy",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ]
+    },
+    {
+      "currentProductKey": "honey-butter-biscuit-bites",
+      "name": "Honey Butter Biscuit Bites",
+      "category": "Allergen Guide",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-allergen-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "soy",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ]
+    },
+    {
+      "currentProductKey": "jammy-bacon-cornbread",
+      "name": "Jammy Bacon Cornbread",
+      "category": "Summer Seasonal Lto Menu",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-allergen-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "soy",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ]
+    },
+    {
+      "currentProductKey": "lemon-dressed-mixed-greens",
+      "name": "Lemon Dressed Mixed Greens",
+      "category": "Allergen Guide",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-allergen-guide"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "million-dollar-bacon",
+      "name": "Million Dollar Bacon",
+      "category": "Allergen Guide",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-allergen-guide"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "million-dollar-breakfast-sandwich",
+      "name": "Million Dollar Breakfast Sandwich",
+      "category": "Allergen Guide",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-allergen-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "soy",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ]
+    },
+    {
+      "currentProductKey": "strawberry-glow-up",
+      "name": "Strawberry Glow Up",
+      "category": "Summer Seasonal Lto Menu",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-allergen-guide"
+      ],
+      "containsAllergens": [
+        "milk",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ]
+    },
+    {
+      "currentProductKey": "strawberry-matcha-milk",
+      "name": "Strawberry Matcha Milk",
+      "category": "Summer Seasonal Lto Menu",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-allergen-guide"
+      ],
+      "containsAllergens": [
+        "milk",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ]
+    },
+    {
+      "currentProductKey": "the-santorini-sunrise",
+      "name": "The Santorini Sunrise",
+      "category": "Summer Seasonal Lto Menu",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-allergen-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "soy",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ]
+    },
+    {
+      "currentProductKey": "triple-berry-acai-bowl",
+      "name": "Triple Berry Acai Bowl",
+      "category": "Summer Seasonal Lto Menu",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-allergen-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "tree-nut",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ]
+    },
+    {
+      "currentProductKey": "watermelon-wake-up",
+      "name": "Watermelon Wake-Up",
+      "category": "Allergen Guide",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-allergen-guide"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "the-traditional",
+      "name": "The Traditional",
+      "category": "Breakfast",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "chickichanga",
+      "name": "Chickichanga",
+      "category": "Breakfast",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "farmhouse-hash",
+      "name": "Farmhouse Hash",
+      "category": "Breakfast",
+      "description": null,
+      "presentationIds": [
+        "market-hash"
+      ],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "soy",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Official allergen guide positives preserved (egg, milk, soy, wheat, gluten); restaurant-issued evidence ev-fw-allergen-guide."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "elevated-egg-sandwich",
+      "name": "Elevated Egg Sandwich",
+      "category": "Breakfast",
+      "description": null,
+      "presentationIds": [
+        "the-elevated-egg-sandwich"
+      ],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "soy",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "am-superfoods-bowl",
+      "name": "AM Superfoods Bowl",
+      "category": "Bowls",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "pesto-chicken-quinoa-bowl",
+      "name": "Pesto Chicken Quinoa Bowl",
+      "category": "Bowls",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "tri-fecta",
+      "name": "Tri-Fecta",
+      "category": "Breakfast",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "parma-skillet",
+      "name": "Parma Skillet",
+      "category": "Breakfast",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "lemon-ricotta-pancakes",
+      "name": "Lemon Ricotta Pancakes",
+      "category": "Breakfast",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "belgian-waffle",
+      "name": "Belgian Waffle",
+      "category": "Breakfast",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "floridian-french-toast",
+      "name": "Floridian French Toast",
+      "category": "Breakfast",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "morning-meditation",
+      "name": "Morning Meditation",
+      "category": "Beverages",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "purple-haze",
+      "name": "Purple Haze",
+      "category": "Beverages",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "kale-tonic",
+      "name": "Kale Tonic",
+      "category": "Beverages",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "coffee",
+      "name": "Coffee",
+      "category": "Beverages",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "iced-coffee",
+      "name": "Iced Coffee",
+      "category": "Beverages",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "hot-tea",
+      "name": "Hot Tea",
+      "category": "Beverages",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "bacado-omelet",
+      "name": "Bacado Omelet",
+      "category": "Eggs & Omelets",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "chicken-pesto-omelet",
+      "name": "Chicken Pesto Omelet",
+      "category": "Eggs & Omelets",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "ham-and-gruyere-omelet",
+      "name": "Ham & Gruyere Omelet",
+      "category": "Eggs & Omelets",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "healthy-turkey-omelet",
+      "name": "Healthy Turkey Omelet",
+      "category": "Eggs & Omelets",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "market-skillet",
+      "name": "Market Skillet",
+      "category": "Eggs & Omelets",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "parma-hash",
+      "name": "Parma Hash",
+      "category": "Eggs & Omelets",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "power-bowl",
+      "name": "Power Bowl",
+      "category": "Power Bowls",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "tree-nut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "avocado-toast",
+      "name": "Avocado Toast",
+      "category": "Power Bowls",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "chicken-avocado-chop-salad",
+      "name": "Chicken Avocado Chop Salad",
+      "category": "Salads",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "lemon-dressed-greens",
+      "name": "Lemon Dressed Greens",
+      "category": "Salads",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "mixed-greens-salad",
+      "name": "Mixed Greens Salad",
+      "category": "Salads",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "classic-french-toast",
+      "name": "Classic French Toast",
+      "category": "Pancakes Waffles French Toast",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "multigrain-pancake",
+      "name": "Multigrain Pancake",
+      "category": "Pancakes Waffles French Toast",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "chocolate-chip-pancakes",
+      "name": "Chocolate Chip Pancakes",
+      "category": "Pancakes Waffles French Toast",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "banana-pancake",
+      "name": "Banana Pancakes",
+      "category": "Pancakes Waffles French Toast",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk",
+        "wheat",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "four-egg-whites",
+      "name": "Four Egg Whites",
+      "category": "Sides",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "sides-two-eggs",
+      "name": "Two Eggs",
+      "category": "Sides",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "turkey-sausage",
+      "name": "Turkey Sausage",
+      "category": "Sides",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "pork-sausage",
+      "name": "Pork Sausage",
+      "category": "Sides",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "smoked-bacon",
+      "name": "Smoked Bacon",
+      "category": "Sides",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "fresh-fruit",
+      "name": "Fresh Fruit",
+      "category": "Sides",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "seasoned-potatoes",
+      "name": "Seasoned Potatoes",
+      "category": "Sides",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "housemade-granola",
+      "name": "Housemade Granola",
+      "category": "Sides",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "fresh-squeezed-orange-juice",
+      "name": "Fresh Squeezed Orange Juice",
+      "category": "Juices",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "fresh-squeezed-grapefruit-juice",
+      "name": "Fresh Squeezed Grapefruit Juice",
+      "category": "Juices",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "lemonade",
+      "name": "Lemonade",
+      "category": "Beverages",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "iced-tea",
+      "name": "Iced Tea",
+      "category": "Beverages",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "cold-brew-coffee",
+      "name": "Cold Brew Coffee",
+      "category": "Beverages",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "cafe-latte",
+      "name": "Café Latte",
+      "category": "Beverages",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "cappuccino",
+      "name": "Cappuccino",
+      "category": "Beverages",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "hot-chocolate",
+      "name": "Hot Chocolate",
+      "category": "Beverages",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-fw-allergen-guide"
+      ],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    },
+    {
+      "currentProductKey": "sparkling-water",
+      "name": "Sparkling Water",
+      "category": "Beverages",
+      "description": null,
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-fw-menu",
+        "ev-fw-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Current orderable menu product; official allergen disclosure unavailable."
+      ],
+      "matchedBaselineAuditItemKeys": [],
+      "inferredAllergenSignals": [],
+      "inferredIngredients": [],
+      "inferredQuestions": []
+    }
+  ],
+  "matrixSearch": {
+    "status": "found",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "url": "https://firstwatch.com/menu",
+        "query": "site navigation menu allergen allergy nutrition ingredients",
+        "outcome": "menu page links nutrition/allergen guide",
+        "sourceEvidenceIds": [
+          "ev-fw-menu"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "url": "https://www.firstwatch.com/docs/allergenguide.pdf",
+        "query": "official allergen guide nutrition ingredient PDF",
+        "outcome": "found official allergen guide with direct positives",
+        "sourceEvidenceIds": [
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "url": "https://order.firstwatch.com/menu/",
+        "query": "First Watch ordering menu allergen nutrition ingredients",
+        "outcome": "menu surface inspected; no separate matrix",
+        "sourceEvidenceIds": [
+          "ev-fw-order"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "url": "https://www.google.com/search?q=site%3Afirstwatch.com+allergen+nutrition+ingredients+pdf",
+        "query": "site:firstwatch.com allergen nutrition ingredients pdf",
+        "outcome": "official allergen guide corroborated",
+        "sourceEvidenceIds": [
+          "ev-fw-targeted-search",
+          "ev-fw-allergen-guide"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:acai-sorbet",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "2:almond-butter-creme-anglaise",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "3:arugula",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "4:avocado",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "5:bacon-jam",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "6:banana-brittle-french-toast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "banana-brittle-french-toast"
+        ],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "7:bananas",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "8:beef-brisket",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "9:biscuits",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "10:black-beans",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "11:blueberries",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "12:blueberry-muffin",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "blueberry-muffin"
+        ],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "13:cage-free-eggs",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "14:challah-bread",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "15:cheddar-jack-cheese",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "16:cheedar-jack-blend",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "17:chipotle-queso",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "18:chipotle-steak-and-queso-hash",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chipotle-steak-and-queso-hash"
+        ],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "19:cilantro",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "20:cooking-oil",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "21:cotija-cheese",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "22:early-bird-breakfast-tacos",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "early-bird-breakfast-tacos"
+        ],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "23:english-muffin",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "24:feta-cheese",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "25:french-toast-custard",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "26:fresh-beet-juice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "fresh-beet-juice"
+        ],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "27:fresh-blackberries",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "28:fresh-blueberries",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "29:fresh-seasoned-potatoes",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "30:fresh-strawberries",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "31:fresh-strawberry-juice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "fresh-strawberry-juice"
+        ],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "32:gouda-cheese",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "33:granola",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "34:grape-tomatoes",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "35:greek-lemon-crema",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "36:greek-seasoned-steak",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "37:green-onion-cornbread",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "green-onion-cornbread"
+        ],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "38:green-onions",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "39:herb-mix",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "40:honey-butter-biscuit-bites",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "honey-butter-biscuit-bites"
+        ],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "41:honey-roasted-almonds",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "42:jammy-bacon-cornbread",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "jammy-bacon-cornbread"
+        ],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "43:lemon-dressed-mixed-greens",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lemon-dressed-mixed-greens"
+        ],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "44:lemon-juice",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "45:lemon-wedge",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "46:lime-crema",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "47:made-which-may-not-be-immediately-reflected-in-this-chart",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "48:maldon-salt",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "49:matcha-powder",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "50:mikes-hot-honey",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "51:million-dollar-bacon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "million-dollar-bacon"
+        ],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "52:million-dollar-breakfast-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "million-dollar-breakfast-sandwich"
+        ],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "53:mint",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "54:mixed-berry-compote",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "55:mozzarella-cheese",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "56:pico-de-gallo",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "57:pita-bread",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "58:pork-sausage-patty",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "59:powdered-cinnamon-sugar",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "60:red-bell-peppers",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "61:roasted-corn",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "62:roasted-onions",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "63:salted-caramel-sauce",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "64:salted-honey-butter",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "65:seasoned-carne-asada-steak",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "66:simple-syrup",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "67:spiked-watemelon-wake-up",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "68:spinach",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "69:strawberry-glow-up",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "strawberry-glow-up"
+        ],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "70:strawberry-matcha-milk",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "strawberry-matcha-milk"
+        ],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "71:strawberry-puree",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "72:sweet-cream",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "73:sweet-cream-soft-topping",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "74:the-santorini-sunrise",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "the-santorini-sunrise"
+        ],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "75:this-chart",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "76:triple-berry-acai-bowl",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "triple-berry-acai-bowl"
+        ],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "77:water",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "78:watermelon-wake-up",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "watermelon-wake-up"
+        ],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "79:whipped-butter",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "80:whipped-cream",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      },
+      {
+        "auditItemKey": "81:yellowbird-jalapeno-hot-saucer",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-fw-menu",
+          "ev-fw-allergen-guide"
+        ]
+      }
+    ],
+    "baselineItemCount": 81,
+    "reconciledItemCount": 81
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": true,
+    "newItems": false,
+    "nameOrCategoryCleanup": true,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false,
+    "catalogChanges": [
+      "Rebuilt current POC boundary from orderable First Watch dishes and nonalcoholic beverages; allergen-guide components and prose retained as artifacts or parent evidence.",
+      "Expanded current boundary with ordinary breakfast, bowl, and nonalcoholic beverage menu products from official menu surface.",
+      "Enumerated ordinary menu families and staple products across eggs, bowls, pancakes, sandwiches, salads, sides, juices, coffee, and beverages."
+    ],
+    "safetyChanges": [],
+    "proposedPaths": []
+  },
+  "recommendedLane": "luna_fix",
+  "blockedReason": null
+}

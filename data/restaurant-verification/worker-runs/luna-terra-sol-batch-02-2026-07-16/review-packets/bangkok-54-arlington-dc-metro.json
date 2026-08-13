@@ -1,0 +1,569 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-batch-02-2026-07-16",
+  "restaurant": {
+    "restaurantId": "bangkok-54-arlington-dc-metro",
+    "name": "Bangkok 54 Arlington",
+    "domain": "bangkok54restaurant.com",
+    "locationId": "arlington-va",
+    "baselineItemCount": 262,
+    "baselineItemFingerprint": "9b0020e2738dc7aa242291667c4203bbc4a615c24536fd3b1242fddd46aba68e",
+    "officialItemCount": 148,
+    "officialAllergenStatus": "not-found",
+    "sourceFamily": "toast",
+    "parserProfile": "toast-menu",
+    "guideUrl": "https://order.toasttab.com/online/bangkok-54-restaurant",
+    "sourceUrls": [
+      "https://order.toasttab.com/online/bangkok-54-restaurant"
+    ]
+  },
+  "effectiveOutcome": "low_confidence",
+  "routingReasons": [
+    "Terra marked the result low_confidence.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "validationWarnings": [
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "multi_service",
+      "scope_incomplete",
+      "count_drift",
+      "baseline_only",
+      "non_exact_reconciliation",
+      "cross_contact",
+      "parser_or_repair_finding",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 262,
+      "reconciledItemCount": 262,
+      "uniqueReconciledItemCount": 262,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 3,
+      "activeMenuSurfaceCount": 2,
+      "accessibleMenuSurfaceCount": 2,
+      "serviceCount": 2,
+      "pdfImageSurfaceCount": 0,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 0,
+      "incompleteSurfaceCount": 2,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 0,
+      "currentOnlyCount": 0,
+      "baselineOnlyCount": 262,
+      "countDrift": true,
+      "duplicatePresentationCount": 0,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 0,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 262,
+      "allergenMismatchItemCount": 0,
+      "crossContactCount": 1,
+      "parserRepairFindingCount": 1,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 0,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "low_confidence",
+    "confidence": {
+      "level": "low",
+      "overall": 0.18,
+      "menu": 0.32,
+      "allergenSource": 0.02,
+      "extraction": 0.2,
+      "rationale": "Scout supplied zero current products and zero presentations. Reopened primary sources confirm active omitted products, but current boundary and complete allergen evidence remain incomplete."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Bangkok 54 Restaurant & Bar, 2919 Columbia Pike, Arlington, VA 22204; separate Market excluded.",
+      "confidence": 0.98,
+      "sourceEvidenceIds": [
+        "terra-home",
+        "terra-toast"
+      ],
+      "notes": "Official home page and linked Toast catalog agree."
+    },
+    "sources": [
+      {
+        "evidenceId": "terra-home",
+        "url": "https://bangkok54restaurant.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Official homepage",
+        "retrievedAt": "2026-07-16T18:20:00Z",
+        "excerpt": "The Restaurant is at 2919 Columbia Pike; separate Market at 2927 Columbia Pike.",
+        "stableRowId": "official-home-address",
+        "contentHash": null,
+        "artifactSuggested": "official-home.html"
+      },
+      {
+        "evidenceId": "terra-menu",
+        "url": "https://bangkok54restaurant.com/menu/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Official menu",
+        "retrievedAt": "2026-07-16T18:20:00Z",
+        "excerpt": "Dinner, lunch and sushi menu; not all ingredients are listed; gluten-containing products are prepared in its kitchens.",
+        "stableRowId": "official-menu-global-warning",
+        "contentHash": null,
+        "artifactSuggested": "official-menu.html"
+      },
+      {
+        "evidenceId": "terra-toast",
+        "url": "https://order.toasttab.com/online/bangkok-54-restaurant",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Linked Toast ordering catalog",
+        "retrievedAt": "2026-07-16T18:20:00Z",
+        "excerpt": "Current food, sushi, beverage, seasonal and catering categories. Pad Thai Noodles names egg and crushed peanuts.",
+        "stableRowId": "toast-page",
+        "contentHash": null,
+        "artifactSuggested": "linked-toast-menu.html"
+      },
+      {
+        "evidenceId": "terra-lunch-pdf",
+        "url": "https://bangkok54restaurant.com/wp-content/uploads/2015/01/lunchmenu62013.2.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Official lunch PDF",
+        "retrievedAt": "2026-07-16T18:20:00Z",
+        "excerpt": "One-page lunch menu PDF with historical filename.",
+        "stableRowId": "pdf-page-1",
+        "contentHash": null,
+        "artifactSuggested": "official-lunch-menu.pdf"
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://bangkok54restaurant.com/",
+        "notes": "Reopened."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://bangkok54restaurant.com/menu/",
+        "notes": "Reopened."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://order.toasttab.com/online/bangkok-54-restaurant",
+        "notes": "Reopened live catalog."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": null,
+        "notes": "Primary sources located."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "Not needed to establish source limitation."
+      },
+      {
+        "kind": "third_party",
+        "status": "not_found",
+        "url": null,
+        "notes": "No credible allergen matrix located."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "multi_service",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-menu",
+          "terra-toast",
+          "terra-lunch-pdf"
+        ],
+        "notes": "Multiple service surfaces."
+      },
+      {
+        "gateId": "scope_incomplete",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-menu",
+          "terra-toast"
+        ],
+        "notes": "Scout catalog empty despite live catalog."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "notes": "262 frozen items versus zero scout products."
+      },
+      {
+        "gateId": "baseline_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "notes": "Scout reconciled no enumerated current products."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "notes": "No scout inventory supports exact matching."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-menu"
+        ],
+        "notes": "Global kitchen gluten statement is not item-specific may-contain evidence."
+      },
+      {
+        "gateId": "parser_or_repair_finding",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "notes": "Toast-only frozen claims cannot be restaurant-issued."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-menu",
+          "terra-toast"
+        ],
+        "notes": "Scope, allergen authority, and extraction remain low."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-menu"
+        ],
+        "notes": "Incomplete-ingredient warning requires semantic review."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "surface-official-menu",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-menu"
+        ],
+        "notes": "Accessible, partial current catalog."
+      },
+      {
+        "surfaceId": "surface-official-lunch-pdf",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-lunch-pdf"
+        ],
+        "notes": "Accessible historical surface."
+      },
+      {
+        "surfaceId": "surface-toast",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "notes": "Accessible live linked ordering catalog."
+      }
+    ],
+    "currentProductCheckGroups": [],
+    "additionalMenuSurfaces": [],
+    "additionalCurrentProducts": [
+      {
+        "currentProductKey": "toast-pad-thai-noodles",
+        "name": "Pad Thai Noodles",
+        "category": "NOODLES & RICE",
+        "surfaceIds": [
+          "surface-toast"
+        ],
+        "presentationIds": [
+          "toast:Pad Thai Noodles"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "143:pad-thai-bowl",
+          "145:pad-thai-noodles"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "egg",
+          "peanut"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "verified",
+        "notes": "Named positives only; no complete array, negatives, or cross-contact conclusion."
+      },
+      {
+        "currentProductKey": "toast-spring-rolls",
+        "name": "Spring Rolls",
+        "category": "APPETIZERS",
+        "surfaceIds": [
+          "surface-toast"
+        ],
+        "presentationIds": [
+          "toast:Spring Rolls"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "213:spring-rolls"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "unverified",
+        "notes": "Live product omitted by scout; no stated major allergen."
+      },
+      {
+        "currentProductKey": "toast-drunken-noodles",
+        "name": "Drunken Noodles",
+        "category": "NOODLES & RICE",
+        "surfaceIds": [
+          "surface-toast"
+        ],
+        "presentationIds": [
+          "toast:Drunken Noodles"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "46:drunken-noodles",
+          "47:drunken-noodles-bowl",
+          "49:drunken-noodles-tray"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "unverified",
+        "notes": "Live product omitted by scout; no stated major allergen."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 262,
+      "counts": {
+        "missing_from_source/accurately_unavailable": 262
+      }
+    },
+    "findings": [
+      {
+        "findingId": "terra-current-catalog-omitted",
+        "severity": "high",
+        "kind": "menu",
+        "summary": "Luna reported zero current products and zero presentations although linked Toast lists current products.",
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "affectedAuditItemKeys": [
+          "143:pad-thai-bowl",
+          "145:pad-thai-noodles",
+          "213:spring-rolls",
+          "46:drunken-noodles",
+          "47:drunken-noodles-bowl",
+          "49:drunken-noodles-tray"
+        ]
+      },
+      {
+        "findingId": "terra-incomplete-allergen-evidence",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "No complete restaurant-issued allergen matrix was located; incomplete menus support only named positives.",
+        "sourceEvidenceIds": [
+          "terra-menu",
+          "terra-toast"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "terra-authority-misclassification",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "Toast-only frozen claims cannot be restaurant-issued.",
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "terra-extraction-scope",
+        "severity": "high",
+        "kind": "extraction",
+        "summary": "Empty scout catalog prevents reliable exact reconciliation.",
+        "sourceEvidenceIds": [
+          "terra-toast",
+          "terra-menu"
+        ],
+        "affectedAuditItemKeys": []
+      }
+    ],
+    "summary": "Low-confidence correction: all scout surfaces reopened and all nine deterministic gates confirmed. Scout supplied zero products/presentations, so current-product groups are empty and discoveries are additional only.",
+    "coordinatorNotes": [
+      "Attempt 2 emits no unknown scout currentProductKey or presentationId.",
+      "Low confidence explicit; requires Sol adjudication."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "46:drunken-noodles",
+      "baseline": {
+        "itemId": "drunken-noodles",
+        "name": "Drunken Noodles",
+        "category": "Thai",
+        "variantGroup": "Spring Rolls",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bangkok-54-restaurant"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "47:drunken-noodles-bowl",
+      "baseline": {
+        "itemId": "drunken-noodles-bowl",
+        "name": "Drunken Noodles Bowl",
+        "category": "Thai",
+        "variantGroup": "Simple Fried Rice Bowl",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bangkok-54-restaurant"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "49:drunken-noodles-tray",
+      "baseline": {
+        "itemId": "drunken-noodles-tray",
+        "name": "Drunken Noodles Tray",
+        "category": "Thai",
+        "variantGroup": "Pad Thai Noodles Tray",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bangkok-54-restaurant"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "143:pad-thai-bowl",
+      "baseline": {
+        "itemId": "pad-thai-bowl",
+        "name": "Pad Thai Bowl",
+        "category": "Thai",
+        "variantGroup": "Drunken Noodles Bowl",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "peanut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bangkok-54-restaurant"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "145:pad-thai-noodles",
+      "baseline": {
+        "itemId": "pad-thai-noodles",
+        "name": "Pad Thai Noodles",
+        "category": "Thai",
+        "variantGroup": "Featured Items",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "peanut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bangkok-54-restaurant"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "213:spring-rolls",
+      "baseline": {
+        "itemId": "spring-rolls",
+        "name": "Spring Rolls",
+        "category": "Thai",
+        "variantGroup": "Thai",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bangkok-54-restaurant"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-02-2026-07-16/jobs/bangkok-54-arlington-dc-metro.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-02-2026-07-16/results/bangkok-54-arlington-dc-metro.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/bangkok-54-arlington-dc-metro.jsonl"
+  }
+}

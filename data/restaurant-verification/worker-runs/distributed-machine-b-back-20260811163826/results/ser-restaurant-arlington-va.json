@@ -1,0 +1,330 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811163826",
+  "restaurantId": "ser-restaurant-arlington-va",
+  "name": "SER Restaurant",
+  "outcome": "researched",
+  "packetValidation": {
+    "baselineItemCount": 122,
+    "baselineFingerprint": "082c7c98de28b5e5fcbbbf966943b2a21be612b51c27a3f3152777bc538bd3bf",
+    "itemCheckCount": 122,
+    "restaurantIdMatches": true,
+    "locationMatches": true,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "SER Restaurant",
+    "locationId": "arlington",
+    "address": "1110 North Glebe Rd, Arlington, VA 22201",
+    "domain": "serrestaurant.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "e-home",
+      "e-order"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "e-home",
+      "url": "https://serrestaurant.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and identity",
+      "retrievedAt": "2026-08-11T16:50:00Z"
+    },
+    {
+      "evidenceId": "e-menus",
+      "url": "https://serrestaurant.com/menus-pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official menu/PDF hub",
+      "retrievedAt": "2026-08-11T16:50:00Z"
+    },
+    {
+      "evidenceId": "e-order",
+      "url": "https://serrestaurant.com/order",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current linked ordering menu",
+      "retrievedAt": "2026-08-11T16:50:00Z"
+    },
+    {
+      "evidenceId": "e-search",
+      "url": "https://www.google.com/search?q=site%3Aserrestaurant.com+allergen+OR+allergy+OR+nutrition+OR+ingredients",
+      "authorityTier": "third_party",
+      "purpose": "targeted allergen searches",
+      "retrievedAt": "2026-08-11T16:50:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://serrestaurant.com/",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "arlington",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "e-home"
+      ]
+    },
+    {
+      "surfaceId": "official-menu-pdf-hub",
+      "url": "https://serrestaurant.com/menus-pdf",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "arlington",
+      "servicePeriod": "lunch,dinner,dessert,sunday-supper,brunch,kids,happy-hour,drinks",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; wine/alcohol excluded from POC boundary",
+      "sourceEvidenceIds": [
+        "e-menus"
+      ]
+    },
+    {
+      "surfaceId": "linked-ordering",
+      "url": "https://serrestaurant.com/order",
+      "authority": "linked vendor",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "arlington",
+      "servicePeriod": "dinner,beverage,retail-wine",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; alcohol and retail wine excluded",
+      "sourceEvidenceIds": [
+        "e-order"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "ser-arlington-food-na-catalog",
+      "name": "SER current food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "e-menus",
+        "e-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "productCount": 122,
+      "boundary": "122 frozen food and nonalcoholic products reconciled; alcohol-only and retail wine excluded"
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "location": "serrestaurant.com homepage, navigation, menu links",
+        "outcome": "no official allergen matrix found",
+        "sourceEvidenceIds": [
+          "e-home"
+        ],
+        "queryOrLocation": "serrestaurant.com homepage, navigation, menu links",
+        "urls": [
+          "https://serrestaurant.com/"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "location": "official menu/PDF hub and linked lunch, dinner, dessert, Sunday supper, brunch, kids, happy hour, drinks, wine surfaces",
+        "outcome": "menu documents found; no allergen, nutrition, ingredient, or cross-contact matrix found",
+        "sourceEvidenceIds": [
+          "e-menus"
+        ],
+        "queryOrLocation": "official menu/PDF hub and linked lunch, dinner, dessert, Sunday supper, brunch, kids, happy hour, drinks, wine surfaces",
+        "urls": [
+          "https://serrestaurant.com/menus-pdf"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "location": "SER order page and linked ordering menu",
+        "outcome": "current item/menu descriptions found; no complete official allergen matrix or cross-contact policy found",
+        "sourceEvidenceIds": [
+          "e-order"
+        ],
+        "queryOrLocation": "SER order page and linked ordering menu",
+        "urls": [
+          "https://serrestaurant.com/order"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "location": "targeted SER/domain allergen, allergy, nutrition, ingredients, PDF, and menu queries",
+        "outcome": "no authoritative complete allergen matrix found",
+        "sourceEvidenceIds": [
+          "e-search"
+        ],
+        "queryOrLocation": "site:serrestaurant.com allergen allergy nutrition ingredients PDF menu",
+        "urls": [
+          "https://www.google.com/search?q=site%3Aserrestaurant.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "expectedCount": 122,
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:almond-sauce",
+          "2:bacalao",
+          "3:berenjenas",
+          "4:bikini-con-sopa-de-tomate",
+          "5:bilbaina-sauce",
+          "6:blt",
+          "7:boquerones-fritos",
+          "8:bunuelos",
+          "9:bunuelos-de-bacalao-luci",
+          "10:cana-de-lomo",
+          "11:candelas-coffee-and-tea-of-life",
+          "12:carpacho-pluma-ibericagf",
+          "13:cazon",
+          "14:cazon-en-adobo",
+          "15:cerdo-a-la-mozarabe",
+          "16:cerdo-a-la-mozarabe-gfdollar14",
+          "17:cheeseburger",
+          "18:chicken-and-waffle",
+          "19:chipirones",
+          "20:chipirones-a-la-plancha-dollar28-gf",
+          "21:chivito",
+          "22:choricitos-en-sidra",
+          "23:chorizo-iberico",
+          "24:chuleton-de-buey",
+          "25:churros-con-chocolate",
+          "26:conference-room",
+          "27:costillas",
+          "28:creamy-mushroom-risotto",
+          "29:crispy-brussel-sprouts-with-peppers-cheese-sauce",
+          "30:croquetas",
+          "31:crudo-de-atun",
+          "32:escalivada",
+          "33:escalivada-con-queso-gfv",
+          "34:filete-de-ternera",
+          "35:flan-de-la-casa",
+          "36:gambas-al-ajillo",
+          "37:gambas-al-ajillo-gf",
+          "38:gambas-cocidas-gf",
+          "39:gambas-y-semola",
+          "40:genessis",
+          "41:goat-cheese",
+          "42:gofres-con-sirope",
+          "43:huevos-a-tu-manera",
+          "44:huevos-benedicto",
+          "45:iberico-cold-cuts",
+          "46:ice-cream-and-sorbet-mini-waffle-cones",
+          "47:jamon-pata-negra",
+          "48:jarrete-de-cordero",
+          "49:langostinos",
+          "50:large-seafood-platter",
+          "51:lasana-de-espinacas",
+          "52:lobster-paella",
+          "53:magret-de-pato",
+          "54:market-salad",
+          "55:mashed-potatoes",
+          "56:meat-paella",
+          "57:medium-seafood-platter",
+          "58:mejillones",
+          "59:menu-del-dia",
+          "60:mousse-de-chocolate-y-nutella-con-helado-de-menta",
+          "61:ostras-de-mercado",
+          "62:paella-brunch",
+          "63:pan-catalana",
+          "64:pan-de-cristal-a-la-catalana-vv",
+          "65:papas-bravas",
+          "66:papas-bravas-v",
+          "67:parrillada",
+          "68:parrillada-de-verduras",
+          "69:parrillada-de-verduras-vvgf",
+          "70:pepito",
+          "71:pepito-de-ternera",
+          "72:pimientos",
+          "73:pimientos-del-padron-vvgf",
+          "74:platters",
+          "75:pollo-en-pepitoria",
+          "76:presa",
+          "77:pulpo-a-la-gallega",
+          "78:puntillitas",
+          "79:queso-de-cabra-v",
+          "80:quesos-cheeses",
+          "81:rack-of-lamb",
+          "82:razor-clams",
+          "83:request-advisory",
+          "84:revuelto-de-setas",
+          "85:sara-montiel",
+          "86:sara-montiel-sandwich",
+          "87:sardinas",
+          "88:sardinas-a-la-plancha",
+          "89:seafood-paella",
+          "90:segoviano",
+          "91:selection-of-all-four-cold-cuts",
+          "92:selection-of-all-six-cheeses",
+          "93:serranito",
+          "94:side-fries",
+          "95:side-rice",
+          "96:small-salad",
+          "97:small-seafood-platter",
+          "98:souffle-del-dia",
+          "99:soup-of-the-day",
+          "100:special-market-salad",
+          "101:squid-ink-paella",
+          "102:tableside-mashed-potatoes",
+          "103:tarta-de-queso-manchego",
+          "104:the-rabbit-mary",
+          "105:the-sea-ser",
+          "106:thunnus",
+          "107:torta-balear-grilled-cheese",
+          "108:torta-balear-v",
+          "109:tortilla-de-patatas",
+          "110:tortilla-de-patatasvgf",
+          "111:tortilla-espanola-v",
+          "112:tortilla-sandwich",
+          "113:tosta-de-aguacate",
+          "114:tuna-sandwich",
+          "115:valencian-chivito",
+          "116:vegetariano",
+          "117:vegetariano-v",
+          "118:veggie-paella",
+          "119:vieras-a-la-plancha",
+          "120:yogurt-con-granola",
+          "121:zanahorias",
+          "122:zanahorias-salteadas-vgf"
+        ],
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ser-arlington-food-na-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menus",
+          "e-order"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify"
+}

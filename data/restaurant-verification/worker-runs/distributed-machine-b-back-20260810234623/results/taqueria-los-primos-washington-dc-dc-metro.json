@@ -1,0 +1,312 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260810234623",
+  "restaurantId": "taqueria-los-primos-washington-dc-dc-metro",
+  "packetValidation": {
+    "baselineItemCount": 68,
+    "baselineFingerprint": "d6aacaad89a5d2aa34ee60eb92e1ba62dc8812de0109b724fe49b8be8ed52f31",
+    "itemCheckCount": 68,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "Taqueria Los Primos",
+    "locationId": "washington-dc",
+    "address": null,
+    "domain": "taquerialosprimos.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "src-home",
+      "src-menu",
+      "src-locations"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "src-home",
+      "url": "https://www.taquerialosprimos.biz/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and location/navigation identity",
+      "retrievedAt": "2026-08-10T23:50:00Z"
+    },
+    {
+      "evidenceId": "src-menu",
+      "url": "https://www.taquerialosprimos.biz/menus",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current official food menu and menu item evidence",
+      "retrievedAt": "2026-08-10T23:50:00Z"
+    },
+    {
+      "evidenceId": "src-locations",
+      "url": "https://www.taquerialosprimos.biz/order-now",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official location list and order routing",
+      "retrievedAt": "2026-08-10T23:50:00Z"
+    },
+    {
+      "evidenceId": "src-search",
+      "url": "https://www.taquerialosprimos.com/",
+      "authorityTier": "third_party",
+      "purpose": "job-domain inspection; no matching official DC menu identity established",
+      "retrievedAt": "2026-08-10T23:50:00Z"
+    },
+    {
+      "evidenceId": "src-vendor",
+      "url": "https://www.ubereats.com/store/taqueria-los-primos-college-park/TMMNf9hOVty8L4sqRwIkHA",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "linked/vendor-style current location menu surface for DMV scope",
+      "retrievedAt": "2026-08-10T23:50:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://www.taquerialosprimos.biz/",
+      "authority": "Taqueria Los Primos",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "DMV/Maryland; no Washington DC address listed",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "src-home",
+        "src-locations"
+      ]
+    },
+    {
+      "surfaceId": "official-menu",
+      "url": "https://www.taquerialosprimos.biz/menus",
+      "authority": "Taqueria Los Primos",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "DMV/Maryland multi-location menu",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; food and nonalcoholic items inventoried",
+      "sourceEvidenceIds": [
+        "src-menu"
+      ]
+    },
+    {
+      "surfaceId": "official-order-routing",
+      "url": "https://www.taquerialosprimos.biz/order-now",
+      "authority": "Taqueria Los Primos",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "DMV/Maryland multi-location",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; location selector and order links",
+      "sourceEvidenceIds": [
+        "src-locations"
+      ]
+    },
+    {
+      "surfaceId": "linked-vendor-college-park",
+      "url": "https://www.ubereats.com/store/taqueria-los-primos-college-park/TMMNf9hOVty8L4sqRwIkHA",
+      "authority": "Uber Eats",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "College Park, Maryland",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; corroborating vendor surface, not used to assert DC identity",
+      "sourceEvidenceIds": [
+        "src-vendor"
+      ]
+    },
+    {
+      "surfaceId": "job-domain",
+      "url": "https://www.taquerialosprimos.com/",
+      "authority": "job-specified domain",
+      "authorityTier": "third_party",
+      "locationScope": "unresolved",
+      "servicePeriod": "current",
+      "current": false,
+      "scopeStatus": "unresolved",
+      "retrievalOutcome": "no matching official restaurant identity established",
+      "sourceEvidenceIds": [
+        "src-search"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "los-primos-current-menu-catalog",
+      "name": "Taqueria Los Primos current official food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "src-menu",
+        "src-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "productCount": 68,
+      "boundary": "68 frozen food/nonalcoholic products represented by the official menu/API baseline; alcohol-only items excluded; Maryland DMV scope retained; no separate Washington DC location verified"
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "query": "Taqueria Los Primos official site allergen allergy nutrition ingredients menu",
+        "outcome": "searched; no official allergen matrix located",
+        "location": "official homepage, menu, navigation, and location pages",
+        "url": "https://www.taquerialosprimos.biz/menus",
+        "sourceEvidenceIds": [
+          "src-home",
+          "src-menu",
+          "src-locations"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "query": "site:taquerialosprimos.biz (allergen OR allergy OR nutrition OR ingredients OR PDF) Taqueria Los Primos",
+        "outcome": "searched; no official nutrition/allergen/ingredient matrix located",
+        "location": "official menu pages, downloadable/document/image/navigation surfaces",
+        "url": "https://www.taquerialosprimos.biz/menus",
+        "sourceEvidenceIds": [
+          "src-menu",
+          "src-home"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "query": "Uber Eats Taqueria Los Primos College Park allergen allergy ingredients nutrition",
+        "outcome": "searched; current vendor menu had no allergen matrix or cross-contact statement",
+        "location": "linked/vendor ordering surface inspected for DMV location",
+        "url": "https://www.ubereats.com/store/taqueria-los-primos-college-park/TMMNf9hOVty8L4sqRwIkHA",
+        "sourceEvidenceIds": [
+          "src-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "Taqueria Los Primos Washington DC allergen allergy nutrition ingredients PDF menu",
+        "outcome": "searched with allergen, allergy, nutrition, ingredients, PDF, and menu terms; no authoritative matrix located",
+        "location": "targeted searches across official domain and restaurant name",
+        "url": "https://www.taquerialosprimos.biz/menus",
+        "sourceEvidenceIds": [
+          "src-search",
+          "src-menu"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:aguachile",
+          "2:aguachile-verde",
+          "3:alambre",
+          "4:aquachile",
+          "5:arroz-con-leche",
+          "6:balas-de-ostion",
+          "7:barbacoa-de-borrego",
+          "8:birria",
+          "9:caldo-de-mariscos",
+          "10:caldo-de-res",
+          "11:camaron-shrimp",
+          "12:camarones-a-la-cucaracha",
+          "13:camarones-a-la-diabla",
+          "14:camarones-a-la-veracruzana",
+          "15:camarones-al-ajillo",
+          "16:camarones-empanizados",
+          "17:camarones-enchipotlados",
+          "18:campechano",
+          "19:carne-asada-fajitas",
+          "20:ceviche",
+          "21:ceviche-mixto",
+          "22:chicken-enchiladas",
+          "23:chicken-tenders",
+          "24:chilaquiles",
+          "25:chile-relleno-poblano",
+          "26:chips",
+          "27:cielo-mar-y-tierra",
+          "28:coctel-de-camaron",
+          "29:coctel-de-camaron",
+          "30:el-7-mares7-seas",
+          "31:elotes",
+          "32:fajitas",
+          "33:filete-empanizado",
+          "34:fish-sticks-and-fries",
+          "35:flan",
+          "36:flautas",
+          "37:fresas-con-crema",
+          "38:gorditas",
+          "39:gringas",
+          "40:house-drinks",
+          "41:huarache",
+          "42:huevos-al-gusto",
+          "43:kid-quesadilla",
+          "44:mangonada",
+          "45:mariscos",
+          "46:mariscosseafood",
+          "47:menudo",
+          "48:mexican-sodas",
+          "49:mojarra-frita",
+          "50:mulitas",
+          "51:ostiones",
+          "52:ostiones-los-primos",
+          "53:pastel-de-3-leches",
+          "54:pescado",
+          "55:picaditas",
+          "56:pina-colada",
+          "57:pozole",
+          "58:pulpo",
+          "59:quesabirria",
+          "60:quesadilla-and-fries",
+          "61:salchipulpos",
+          "62:sincronizada",
+          "63:sopes",
+          "64:tacos-de-birria",
+          "65:torre-de-mariscos",
+          "66:tortas",
+          "67:tostadas",
+          "68:vuelve-a-la-vida"
+        ],
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "los-primos-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-menu"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify",
+  "outcome": "researched",
+  "processLog": [
+    "packet_validated",
+    "identity_verified",
+    "menu_surfaces_inventoried",
+    "matrix_search_completed",
+    "products_reconciled",
+    "validator_passed"
+  ]
+}

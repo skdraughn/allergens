@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-102-2026-08-05",
+  "restaurantId": "osm-dolan-4198051508",
+  "reviewType": "scheduled_one_in_20_audit_final_continuation",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium",
+    "role": "sol_reviewer"
+  },
+  "reviewedKeys": [],
+  "evidence": [
+    {
+      "evidenceId": "final-research-result",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-102-2026-08-05/results/osm-dolan-4198051508.json",
+      "finding": "Final result contains 79 current products, one complete 79-key Rockville surface, complete 20-row reconciliation, four recorded searches, and canonical milk/wheat mayContain evidence on every product."
+    },
+    {
+      "evidenceId": "official-yext-rockville",
+      "url": "https://sites.yext.com/354917-menu.js",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-05",
+      "finding": "The official embedded Rockville payload contains 80 top-level product presentations and 79 unique exact product names after consolidating the repeated Chocolate Cake presentation. All 79 final result names match the 79 official unique names exactly."
+    },
+    {
+      "evidenceId": "official-rockville-location-menu",
+      "url": "https://www.dolanuyghur.com/rockville/menu",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-05",
+      "finding": "The official location-specific page identifies the Rockville daily menu and embeds Yext menu 354917. The final complete surface is scoped to 20-A Maryland Ave, Rockville, MD 20850."
+    },
+    {
+      "evidenceId": "official-cross-contact",
+      "url": "https://sites.yext.com/354917-menu.js",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-05",
+      "location": "ADDITIONAL NOTES > Food Allergy Notice",
+      "finding": "The official notice states that the kitchen handles dairy and gluten and that all items may contact those allergens. The final result canonically maps this to milk and wheat on all 79 genuine products, producing 158 mayContain assertions."
+    },
+    {
+      "evidenceId": "official-chownow",
+      "url": "https://direct.chownow.com/order/29282/locations",
+      "authorityTier": "restaurant_linked_vendor",
+      "retrievedAt": "2026-08-05",
+      "finding": "The restaurant-linked ChowNow company endpoint was inspected for the linked_vendor search class; no official allergen matrix was found."
+    },
+    {
+      "evidenceId": "canonical-evidence",
+      "artifact": "data/restaurant-verification/evidence/osm-dolan-4198051508.json",
+      "finding": "Canonical evidence now registers six sources, including the Yext menu payload, Yext cross-contact notice, official ChowNow endpoint, official homepage, and menu sources."
+    },
+    {
+      "evidenceId": "final-apply-result",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-102-2026-08-05/apply-results/osm-dolan-4198051508.json",
+      "finding": "APPLY validation reports 79 products, 79 complete-surface keys, zero orphan or undefined keys, 79 direct-positive products, 158 mayContain assertions, four matrix searches, recomputed Ingredient Intelligence, claim equality, and a byte-identical second run."
+    }
+  ],
+  "resolution": {
+    "binding": true,
+    "outcome": "audit_passed_no_material_safety_error",
+    "identityAmbiguous": false,
+    "bindingName": "Dolan",
+    "bindingLocation": "20-A Maryland Ave, Rockville, MD 20850",
+    "bindingCurrentMenuUrl": "https://www.dolanuyghur.com/rockville/menu",
+    "bindingYextPayloadUrl": "https://sites.yext.com/354917-menu.js",
+    "bindingUniqueProductCount": 79,
+    "bindingMayContainAllergens": [
+      "milk",
+      "wheat"
+    ],
+    "terminalDecision": "audit_passed_proceed_to_coordinator_terminal_validation",
+    "items": [],
+    "surfaceResolutions": [],
+    "safetySourceAuthorityConflictRemains": false,
+    "rationale": "The final packet exactly matches the authoritative 79-name Rockville product boundary, preserves the restaurant-issued all-items dairy/gluten cross-contact notice as canonical milk/wheat mayContain evidence, completes all four search classes with the correct official and linked-vendor surfaces, and has a matching idempotent APPLY artifact."
+  },
+  "remainingSolSignals": [],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "identityConfirmed": true,
+    "locationConfirmed": true,
+    "resultLocationMatchesBindingLocation": true,
+    "identityEvidenceRegistrationValid": true,
+    "officialProductPresentationCount": 80,
+    "officialUniqueProductNameCount": 79,
+    "resultCurrentProductCount": 79,
+    "strictExactNameMatchCount": 79,
+    "strictExactNameFalsePositiveCount": 0,
+    "strictExactNameMissingCount": 0,
+    "surfaceCurrentProductKeyCount": 79,
+    "undefinedSurfaceKeyCount": 0,
+    "orphanCurrentProductCount": 0,
+    "duplicateCurrentProductKeyCount": 0,
+    "surfacesWithTruthfulCurrentProductKeys": 1,
+    "requiredMatrixSearchClassCount": 4,
+    "recordedMatrixSearchClassCount": 4,
+    "credibleMatrixSearchClassCount": 4,
+    "officialMatrixSearchComplete": true,
+    "linkedVendorSearchCredible": true,
+    "officialCrossContactNoticeFound": true,
+    "resultProductsWithMilkWheatMayContainCount": 79,
+    "mayContainAssertionCount": 158,
+    "crossContactCanonicalTermsCorrect": true,
+    "crossContactEvidenceRegistrationValid": true,
+    "canonicalEvidenceComplete": true,
+    "unsupportedAllergenNegativeClaimCount": 0,
+    "materialSafetyError": false,
+    "frozenItemCount": 20,
+    "reconciledFrozenItemCount": 20,
+    "reconciliationKeySetValid": true,
+    "applyResultMatchesFinalResearch": true,
+    "ingredientIntelligenceRecomputed": true,
+    "secondRunByteIdentical": true,
+    "codexVerifiedClaimed": false
+  },
+  "coordinatorRecommendation": "Scheduled audit passes. Proceed with coordinator-owned terminal validation and closeout; no further Sol repair is required."
+}

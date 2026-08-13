@@ -1,0 +1,734 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811172106",
+  "restaurantId": "osm-rus-uz-3732378171",
+  "packetValidation": {
+    "baselineItemCount": 46,
+    "baselineFingerprint": "b1217edc1278d0060a8834d0ce173138a305c7fb550756492bf25752995ba71b",
+    "itemCheckCount": 46,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "Rus Uz",
+    "locationId": "arlington",
+    "address": "1000 N. Randolph St, Arlington, VA 22201",
+    "domain": "rusuz.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "e-home",
+      "e-locations",
+      "e-toast"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "e-home",
+      "url": "https://rusuz.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and Arlington identity",
+      "retrievedAt": "2026-08-11T17:28:00Z"
+    },
+    {
+      "evidenceId": "e-menu",
+      "url": "https://rusuz.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current official food and nonalcoholic menu",
+      "retrievedAt": "2026-08-11T17:28:00Z"
+    },
+    {
+      "evidenceId": "e-locations",
+      "url": "https://rusuz.com/locations",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official Arlington address and phone",
+      "retrievedAt": "2026-08-11T17:28:00Z"
+    },
+    {
+      "evidenceId": "e-toast",
+      "url": "https://www.toasttab.com/local/order/rus-uz-arlington",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "linked Arlington ordering menu and beverages",
+      "retrievedAt": "2026-08-11T17:29:00Z"
+    },
+    {
+      "evidenceId": "e-search",
+      "url": "https://www.google.com/search?q=site%3Arusuz.com+allergen+allergy+nutrition+ingredients+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted allergen and menu search",
+      "retrievedAt": "2026-08-11T17:30:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://rusuz.com/",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "arlington",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "e-home"
+      ]
+    },
+    {
+      "surfaceId": "official-menu",
+      "url": "https://rusuz.com/menu",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "arlington",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; wines and bar alcohol excluded from POC",
+      "sourceEvidenceIds": [
+        "e-menu"
+      ]
+    },
+    {
+      "surfaceId": "official-locations",
+      "url": "https://rusuz.com/locations",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "arlington",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "e-locations"
+      ]
+    },
+    {
+      "surfaceId": "toast-arlington",
+      "url": "https://www.toasttab.com/local/order/rus-uz-arlington",
+      "authority": "linked vendor",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "arlington",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; alcohol-only categories excluded",
+      "sourceEvidenceIds": [
+        "e-toast"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "rusuz-arlington-menu-catalog",
+      "name": "Rus Uz Arlington current food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "e-menu",
+        "e-toast"
+      ],
+      "containsAllergens": [
+        "milk",
+        "wheat",
+        "gluten",
+        "egg",
+        "fish"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "e-menu"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "productCount": 43,
+      "boundary": "43 current food/nonalcoholic products reconciled; alcohol-only wines, beers, mixed drinks and infused vodka excluded; homepage marketing cards are not products."
+    }
+  ],
+  "restaurantLevelAllergenEvidence": [
+    {
+      "statement": "Official menu descriptions explicitly name dairy ingredients or accompaniments (sour cream, yogurt, butter), wheat-containing dough/pastry, eggs, and fish in applicable products. No complete allergen matrix, comprehensive ingredient statement, or kitchen cross-contact policy was located.",
+      "sourceEvidenceIds": [
+        "e-menu"
+      ],
+      "authorityTier": "restaurant_issued",
+      "crossContact": "No explicit cross-contact policy disclosed; do not infer absence."
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "rusuz.com homepage, menu, locations, navigation",
+        "urls": [
+          "https://rusuz.com/",
+          "https://rusuz.com/menu",
+          "https://rusuz.com/locations"
+        ],
+        "outcome": "No official allergen matrix found.",
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-menu",
+          "e-locations"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "rusuz.com PDF, image, FAQ, nutrition, ingredient, sitemap and downloadable-document surfaces",
+        "urls": [
+          "https://rusuz.com/menu",
+          "https://rusuz.com/"
+        ],
+        "outcome": "No current official allergen/nutrition document or matrix found; menu pages are descriptive only.",
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-home"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Toast Rus Uz Arlington ordering menu",
+        "urls": [
+          "https://www.toasttab.com/local/order/rus-uz-arlington"
+        ],
+        "outcome": "Current linked menu inspected; no complete allergen matrix or cross-contact policy found.",
+        "sourceEvidenceIds": [
+          "e-toast"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "site:rusuz.com allergen allergy nutrition ingredients menu",
+        "urls": [
+          "https://www.google.com/search?q=site%3Arusuz.com+allergen+allergy+nutrition+ingredients+menu"
+        ],
+        "outcome": "No authoritative official allergen matrix located.",
+        "sourceEvidenceIds": [
+          "e-search",
+          "e-menu"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "expectedCount": 46,
+    "items": [
+      {
+        "auditItemKey": "1:market",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "2:ayron",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "3:beef-stroganoff",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "4:black-caviar-tart",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "5:blini",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "6:boiled-raviolis-filled-with-potato-served-with-sour-cream-on-top",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "7:borsch",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "8:bottled-sparkling-mineral-water",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "9:chebureki",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "10:chicken-kiev",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "11:chicken-shashlyk-shish-kabob",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "12:dolma",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "13:family-owned-prepared-with-passion-great-food-full-bar",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "e-home"
+        ]
+      },
+      {
+        "auditItemKey": "14:fish-under-coat",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "15:french-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "16:goluptsi",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "17:kazan-kabob-lamb-chops",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "18:kvas",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "19:lamb-shank",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "20:lamb-shashlyk-shish-kabob",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "21:lula-kabob",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "22:main-courses",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "23:manti",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "24:mashed-potatoes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "25:mastava",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "26:meat-pirozhki",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "27:mors",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "28:olivier-salad-russian-potato-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "29:pelmeni",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "30:plov",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "31:potato-pirozhki",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "32:puff-pastry-tarts-topped-with-black-caviar",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "33:radish-and-cucumber-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "34:red-caviar-tart",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "35:russian-roasted-salmon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "36:samsa",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "37:shurpa",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "38:soups",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "39:steamed-vegitables",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "40:tomato-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "41:vareniki-russian-style-ravioli",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "42:veal-chops",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "43:vinaigrette-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "44:visit-the-restaurant",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "e-home"
+        ]
+      },
+      {
+        "auditItemKey": "45:white-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rusuz-arlington-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      },
+      {
+        "auditItemKey": "46:join-our-world-renowned-chef-from-uzbekistan",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "e-home"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify",
+  "outcome": "researched"
+}

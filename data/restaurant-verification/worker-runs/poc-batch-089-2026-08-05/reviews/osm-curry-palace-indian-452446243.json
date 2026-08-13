@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-089-2026-08-05",
+  "restaurantId": "osm-curry-palace-indian-452446243",
+  "reviewType": "narrow_identity_location_adjudication",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium",
+    "role": "sol_reviewer"
+  },
+  "reviewedKeys": [],
+  "conflict": {
+    "packetIdentity": {
+      "name": "Curry Palace Indian Restaurant",
+      "locationId": "silver-spring",
+      "domain": "curryplacemd.com"
+    },
+    "lunaClaim": "The packet target is a Silver Spring location mismatch because curryplacemd.com identifies only Curry Place Germantown at 12951 Wisteria Dr.",
+    "question": "Whether the target moved or closed, is a stale wrong-location target, or remains identity-ambiguous; and whether it may be verified with all frozen rows excluded as location_mismatch."
+  },
+  "evidence": [
+    {
+      "evidenceId": "sol-ev-osm-history",
+      "url": "https://api.openstreetmap.org/api/0.6/node/452446243/history",
+      "authorityTier": "target_registry",
+      "retrievedAt": "2026-08-05",
+      "location": "node 452446243 version 3, timestamp 2019-07-23T22:32:43Z",
+      "finding": "The target node is fixed at 39.0413596,-76.9885876 and records 11229 New Hampshire Avenue, Silver Spring, MD 20904, phone +1-301-593-7222, name Curry Palace Indian Restaurant, and the then-associated curryplacemd.com URL. Earlier node history shows the same coordinates under Bombay Indian, so the OSM name and website fields are historical point-in-time tags, not proof that the Silver Spring target moved to Germantown."
+    },
+    {
+      "evidenceId": "sol-ev-silver-spring-official",
+      "url": "https://cpsilverspring.com/",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-05",
+      "location": "homepage lines 14-42 and 63-75",
+      "finding": "The current restaurant-controlled site identifies Curry Place Silver Spring at exactly 11229 New Hampshire Avenue, Silver Spring, MD 20904, with phone 301-593-7222, current daily hours, dine-in, takeout, delivery, menu, and ordering links. The address and phone exactly match the target node."
+    },
+    {
+      "evidenceId": "sol-ev-germantown-official",
+      "url": "https://curryplacemd.com/",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-05",
+      "location": "homepage lines 134-176",
+      "finding": "The site used by Luna identifies Curry Place Germantown at 12951 Wisteria Dr, Germantown, MD 20874, phone 301-972-1005. Its different address and phone distinguish it from the simultaneously represented Silver Spring restaurant."
+    },
+    {
+      "evidenceId": "research-ev-home",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-089-2026-08-05/results/osm-curry-palace-indian-452446243.json#sources[0]",
+      "authorityTier": "restaurant_issued",
+      "finding": "The frozen Luna evidence establishes only the Germantown identity of curryplacemd.com; it does not establish closure, relocation, or nonexistence of the Silver Spring target."
+    }
+  ],
+  "resolution": {
+    "binding": true,
+    "outcome": "live_silver_spring_target_confirmed_stale_name_and_wrong_domain_association",
+    "identityAmbiguous": false,
+    "sameBusinessMovedToGermantown": false,
+    "wrongLocationStaleTarget": false,
+    "targetStatus": "active_same_location_currently_branded_curry_place_silver_spring",
+    "bindingName": "Curry Place Silver Spring",
+    "bindingLocation": "11229 New Hampshire Avenue, Silver Spring, MD 20904",
+    "bindingPhone": "301-593-7222",
+    "bindingDomain": "cpsilverspring.com",
+    "germantownIsDistinctLocation": true,
+    "allFrozenRowsMayBeExcludedAsLocationMismatch": false,
+    "closureMarkerSupported": false,
+    "coordinatorMayVerifyCurrentPacket": false,
+    "terminalDecision": "block_pending_correct_location_research_and_reconciliation",
+    "items": [],
+    "surfaceResolutions": [],
+    "safetySourceAuthorityConflictRemains": false,
+    "rationale": "Exact address-and-phone continuity binds the target to the active Silver Spring restaurant. The stale OSM name and former/wrong website association do not convert the target into Germantown and do not support closure. Because Luna inspected the distinct Germantown site and reconciled all 177 frozen rows solely on that mistaken scope, its menu boundary and reconciliation cannot satisfy terminal verification for Silver Spring."
+  },
+  "remainingSolSignals": [],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "identityConflictResolved": true,
+    "liveTargetConfirmed": true,
+    "distinctGermantownLocationConfirmed": true,
+    "locationMismatchExclusionRejected": true,
+    "closureClaimRejected": true,
+    "frozenBaselineItemCount": 177,
+    "researchLocationMismatchCount": 177,
+    "researchCurrentProductCount": 0,
+    "correctLocationMenuScopeReviewedBySol": false,
+    "correctLocationAllergenSearchReviewedBySol": false,
+    "unsupportedAllergenNegativesIntroduced": false,
+    "codexVerifiedClaimed": false
+  },
+  "coordinatorRecommendation": "Do not verify or close the target with a location-mismatch or closure marker. Keep it nonterminal and issue a focused target-specific retry using Curry Place Silver Spring at cpsilverspring.com, preserving the Silver Spring address and phone; inventory that location's current menu surfaces, complete the four required official-allergen searches for that location, and reconcile the 177 frozen rows against the correct Silver Spring catalog before routing again. Treat curryplacemd.com as Germantown-only evidence and do not merge its products into this target."
+}

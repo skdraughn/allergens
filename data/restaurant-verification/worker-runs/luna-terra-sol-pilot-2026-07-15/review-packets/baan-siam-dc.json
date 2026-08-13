@@ -1,0 +1,1858 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-pilot-2026-07-15",
+  "restaurant": {
+    "restaurantId": "baan-siam-dc",
+    "name": "Baan Siam",
+    "domain": "baansiamdc.com",
+    "locationId": "mount-vernon-triangle-dc",
+    "baselineItemCount": 76,
+    "baselineItemFingerprint": "e2d5cc9c21b52c80b56c5488a30a4aa40aa8d363ebed13983a272b50a6a9a9dd",
+    "officialItemCount": 41,
+    "officialAllergenStatus": "extracted",
+    "sourceFamily": "toast",
+    "parserProfile": "toast-menu",
+    "guideUrl": "https://www.baansiamdc.com/_files/ugd/35c3ff_15ffa8f57f934f7bbfc1728cdb03bb0a.pdf",
+    "sourceUrls": [
+      "https://www.baansiamdc.com/_files/ugd/35c3ff_15ffa8f57f934f7bbfc1728cdb03bb0a.pdf",
+      "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "validationWarnings": [
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "multi_service",
+      "pdf_or_image",
+      "scope_incomplete",
+      "count_drift",
+      "baseline_only",
+      "non_exact_reconciliation",
+      "cross_contact",
+      "parser_or_repair_finding",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 76,
+      "reconciledItemCount": 76,
+      "uniqueReconciledItemCount": 76,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 2,
+      "activeMenuSurfaceCount": 2,
+      "accessibleMenuSurfaceCount": 2,
+      "serviceCount": 2,
+      "pdfImageSurfaceCount": 1,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 0,
+      "incompleteSurfaceCount": 0,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 0,
+      "currentOnlyCount": 0,
+      "baselineOnlyCount": 2,
+      "countDrift": true,
+      "duplicatePresentationCount": 0,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 0,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 76,
+      "allergenMismatchItemCount": 0,
+      "crossContactCount": 2,
+      "parserRepairFindingCount": 1,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 0,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "medium",
+      "overall": 0.82,
+      "menu": 0.93,
+      "allergenSource": 0.38,
+      "extraction": 0.9,
+      "rationale": "The official site, current restaurant-issued PDF, and linked Toast catalog were reopened. Luna’s valid structured catalog contains zero currentProductKeys and zero presentationIds, so Terra cannot place independently discovered products in scout verification groups. The sources provide ingredient descriptions but no complete allergen matrix or cross-contact disclosure."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Baan Siam, 425 Eye/I St NW, Washington, DC 20001 (Mount Vernon Triangle)",
+      "confidence": 0.99,
+      "sourceEvidenceIds": [
+        "src-home",
+        "src-toast",
+        "src-pdf"
+      ],
+      "notes": "The official site identifies Baan Siam and the linked Toast catalog identifies the same Washington, DC location."
+    },
+    "sources": [
+      {
+        "evidenceId": "src-home",
+        "url": "https://www.baansiamdc.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Baan Siam official homepage",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Official Baan Siam website.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "src-toast",
+        "url": "https://order.toasttab.com/online/baan-siam-425-i-st-nw",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Baan Siam Toast online ordering catalog",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Baan Siam, 425 Eye St NW, Washington, DC; delivery/pickup catalog with current categories, product names, and item ingredient descriptions.",
+        "stableRowId": "toast-baan-siam-425-i-st-nw",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "src-pdf",
+        "url": "https://www.baansiamdc.com/_files/ugd/35c3ff_15ffa8f57f934f7bbfc1728cdb03bb0a.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "ingredients",
+        "title": "Baan Siam Menu 2026 Summer",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Ten-page current menu; it lists main ingredients, asks guests to advise staff of food allergies, and gives a raw-food warning. It does not provide a complete allergen matrix, may-contain policy, shared-equipment statement, or cross-contact controls.",
+        "stableRowId": "pdf-pages-0-9",
+        "contentHash": null,
+        "artifactSuggested": null
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://www.baansiamdc.com/",
+        "notes": "Official site accessible."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://www.baansiamdc.com/_files/ugd/35c3ff_15ffa8f57f934f7bbfc1728cdb03bb0a.pdf",
+        "notes": "Restaurant-issued PDF accessible and readable."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://order.toasttab.com/online/baan-siam-425-i-st-nw",
+        "notes": "Officially linked Toast catalog accessible and enumerable."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "not_found",
+        "url": null,
+        "notes": "No separate restaurant allergen matrix or policy located."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No authoritative archived allergen document located."
+      },
+      {
+        "kind": "third_party",
+        "status": "not_found",
+        "url": null,
+        "notes": "No reliable third-party allergen disclosure located."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "multi_service",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-pdf"
+        ],
+        "notes": "Toast is delivery/pickup and the PDF is dine-in; both are current."
+      },
+      {
+        "gateId": "pdf_or_image",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "src-pdf"
+        ],
+        "notes": "The restaurant-issued menu is a ten-page PDF requiring extracted-text interpretation."
+      },
+      {
+        "gateId": "scope_incomplete",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-pdf"
+        ],
+        "notes": "Luna marked both surfaces complete while supplying no current products or presentations."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-pdf"
+        ],
+        "notes": "The frozen count is 76 and Luna’s current-product count is zero; its count comparison is therefore not substantiated."
+      },
+      {
+        "gateId": "baseline_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-pdf"
+        ],
+        "notes": "The two frozen wine rows are alcoholic and outside the food/nonalcoholic boundary."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-pdf"
+        ],
+        "notes": "There are service-specific, spelling, and duplicate-presentation normalizations, including the two frozen fried-egg rows."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-pdf"
+        ],
+        "notes": "Neither source supplies may-contain, shared-equipment, or cross-contact controls; silence cannot clear this gate."
+      },
+      {
+        "gateId": "parser_or_repair_finding",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-pdf"
+        ],
+        "notes": "Frozen complete-looking ingredient allergen arrays and official-ingredients attribution are not supported by the reopened sources."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-pdf"
+        ],
+        "notes": "Allergen completeness and cross-contact semantics remain low confidence."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-pdf"
+        ],
+        "notes": "Independent review confirms substantive catalog and allergen-source risks."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "surface-toast-online",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "src-toast"
+        ],
+        "notes": "Accessible linked ordering catalog with delivery/pickup categories and individual current entries."
+      },
+      {
+        "surfaceId": "surface-official-summer-pdf",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "src-pdf"
+        ],
+        "notes": "Accessible restaurant-issued dine-in menu PDF with food, nonalcoholic drinks, alcohol, and ingredient text."
+      }
+    ],
+    "currentProductCheckGroups": [],
+    "additionalMenuSurfaces": [],
+    "additionalCurrentProducts": [
+      {
+        "currentProductKey": "cp-coke-can",
+        "name": "Coke Can",
+        "category": "Drinks",
+        "surfaceIds": [
+          "surface-toast-online"
+        ],
+        "presentationIds": [
+          "toast:76"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "src-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "src-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current in-scope nonalcoholic product omitted from Luna’s zero-product catalog and from frozen rows."
+      },
+      {
+        "currentProductKey": "cp-diet-coke-can",
+        "name": "Diet Coke Can",
+        "category": "Drinks",
+        "surfaceIds": [
+          "surface-toast-online"
+        ],
+        "presentationIds": [
+          "toast:77"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "src-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "src-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current in-scope nonalcoholic product omitted from Luna’s zero-product catalog and from frozen rows."
+      },
+      {
+        "currentProductKey": "cp-sprite-can",
+        "name": "Sprite Can",
+        "category": "Drinks",
+        "surfaceIds": [
+          "surface-toast-online"
+        ],
+        "presentationIds": [
+          "toast:78"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "src-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "src-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current in-scope nonalcoholic product omitted from Luna’s zero-product catalog and from frozen rows."
+      },
+      {
+        "currentProductKey": "cp-ein-zwei-zero-rose",
+        "name": "Ein-Zwei-Zero Rosé",
+        "category": "Drinks",
+        "surfaceIds": [
+          "surface-toast-online",
+          "surface-official-summer-pdf"
+        ],
+        "presentationIds": [
+          "toast:90",
+          "pdf:p1"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-pdf"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "src-toast",
+          "src-pdf"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Both surfaces explicitly describe this product as alcohol-free; it is in scope and omitted from Luna’s zero-product catalog and frozen rows."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 76,
+      "counts": {
+        "normalized_match/mismatch": 69,
+        "stale_extra/accurately_unavailable": 2,
+        "missing_from_source/accurately_unavailable": 5
+      }
+    },
+    "findings": [
+      {
+        "findingId": "finding-luna-omitted-current-catalog",
+        "severity": "high",
+        "kind": "scope",
+        "summary": "Luna marked both accessible menu surfaces complete but recorded zero current products and zero presentation IDs. Terra independently observed current products on both surfaces, including four in-scope nonalcoholic products absent from frozen rows.",
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-pdf"
+        ],
+        "affectedAuditItemKeys": [
+          "1:khua-kling-chicken",
+          "2:pad-cha-shrimp",
+          "3:baan-siam-green-chili-paste",
+          "4:baan-siam-red-chili-paste",
+          "6:beef-nahm-dtok-salad",
+          "7:beef-massaman-curry",
+          "8:boiled-egg-1",
+          "9:brown-rice",
+          "10:chicken-and-basil-fried-rice-w-thai-style-fried-egg",
+          "11:chicken-green-curry",
+          "12:chicken-jungle-curry",
+          "13:chicken-red-curry-w-bamboo-shoots",
+          "14:chicken-tapioca-dumplings",
+          "15:coconut-milk-griddle-snac",
+          "16:coconut-soup-with-chicken",
+          "17:crab-paste-fried-rice-with-crab-meat",
+          "18:crispy-lotus-root-and-grilled-shrimp-salad",
+          "19:crispy-pork-belly",
+          "20:deep-fried-asian-pumpkin",
+          "22:fried-tofu",
+          "23:ginger-branzino",
+          "24:golden-fried-pockets",
+          "25:green-mango-salad",
+          "26:grilled-pork-skewers",
+          "30:khao-soi-gai",
+          "31:lemongrass-chicken",
+          "32:mango-and-sticky-rice-seasonal",
+          "33:mixed-vegetable-fried-rice-with-tofu-vegetarian",
+          "34:northern-thai-mix-curry-chicken",
+          "35:northern-thai-pork-curry",
+          "36:peanut-sauce",
+          "37:pork-and-pineapple-red-curry",
+          "38:roasted-duck-red-curry",
+          "40:seasoned-noodle-soup-broth",
+          "41:shrimp-stir-fried-with-spicy-shrimp-paste",
+          "42:shrimp-chili-paste-fried-rice-with-crispy-pork-belly",
+          "43:small-cucumber-salad",
+          "44:southern-thai-beef-curry",
+          "45:spicy-deep-fried-mushrooms-vegetarian",
+          "46:spicy-glass-noodle-salad-w-ground-ghicken",
+          "47:spicy-roasted-duck-salad",
+          "48:spicy-salmon-salad",
+          "49:spicy-stir-fried-beef-with-green-beans",
+          "50:spicy-sour-soup-with-shrimp",
+          "51:steamed-noodles",
+          "52:steamed-tofu",
+          "53:steamed-vegetables",
+          "54:sticky-rice",
+          "55:stir-fired-basil-with-tofu-and-green-beans-vegetarian",
+          "56:stir-fried-cuttlefish-with-chili-paste",
+          "57:stir-fried-garlic-rice",
+          "58:stir-fried-garlic-rice-with-thai-style-deep-fried-chicken",
+          "59:stir-fried-glass-noodles-with-chicken-and-shrimp",
+          "60:stir-fried-green-beans-with-tofu-vegetarian",
+          "61:stir-fried-napa-cabbage-with-tofu-vegetarian",
+          "62:stir-fried-rice-with-garlic-shrimp",
+          "63:stir-fried-woon-sen-noodles-with-tofu-vegetarian",
+          "64:sweet-and-sour-sauce",
+          "65:sweet-chili-sauce",
+          "66:thai-iced-tea",
+          "67:thai-vermicelli-noodles",
+          "68:thai-style-deep-fried-chicken-wings",
+          "69:thai-style-fried-chicken-breast",
+          "70:thai-style-fried-egg-1",
+          "71:thai-style-fried-egg-one",
+          "72:tom-yum-chili-paste-egg-noodles-w-chicken-and-shrimp",
+          "73:tom-yum-fried-rice-with-shrimp",
+          "74:tom-yum-noodle-soup-wroasted-pork-and-ground-chicken",
+          "76:white-jasmine-rice"
+        ]
+      },
+      {
+        "findingId": "finding-allergen-authority-and-cross-contact",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "The restaurant PDF lists ingredients and asks guests to advise staff of allergies but supplies no complete allergen, may-contain, shared-equipment, or cross-contact declarations. Toast ingredient descriptions are restaurant-linked-vendor evidence, not restaurant-issued allergen evidence. Complete frozen allergen arrays and official-ingredients attribution cannot be verified.",
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-pdf"
+        ],
+        "affectedAuditItemKeys": [
+          "2:pad-cha-shrimp",
+          "8:boiled-egg-1",
+          "10:chicken-and-basil-fried-rice-w-thai-style-fried-egg",
+          "12:chicken-jungle-curry",
+          "13:chicken-red-curry-w-bamboo-shoots",
+          "14:chicken-tapioca-dumplings",
+          "15:coconut-milk-griddle-snac",
+          "17:crab-paste-fried-rice-with-crab-meat",
+          "18:crispy-lotus-root-and-grilled-shrimp-salad",
+          "20:deep-fried-asian-pumpkin",
+          "22:fried-tofu",
+          "23:ginger-branzino",
+          "24:golden-fried-pockets",
+          "25:green-mango-salad",
+          "26:grilled-pork-skewers",
+          "30:khao-soi-gai",
+          "32:mango-and-sticky-rice-seasonal",
+          "33:mixed-vegetable-fried-rice-with-tofu-vegetarian",
+          "34:northern-thai-mix-curry-chicken",
+          "36:peanut-sauce",
+          "41:shrimp-stir-fried-with-spicy-shrimp-paste",
+          "42:shrimp-chili-paste-fried-rice-with-crispy-pork-belly",
+          "45:spicy-deep-fried-mushrooms-vegetarian",
+          "48:spicy-salmon-salad",
+          "50:spicy-sour-soup-with-shrimp",
+          "51:steamed-noodles",
+          "52:steamed-tofu",
+          "55:stir-fired-basil-with-tofu-and-green-beans-vegetarian",
+          "56:stir-fried-cuttlefish-with-chili-paste",
+          "59:stir-fried-glass-noodles-with-chicken-and-shrimp",
+          "60:stir-fried-green-beans-with-tofu-vegetarian",
+          "61:stir-fried-napa-cabbage-with-tofu-vegetarian",
+          "62:stir-fried-rice-with-garlic-shrimp",
+          "63:stir-fried-woon-sen-noodles-with-tofu-vegetarian",
+          "66:thai-iced-tea",
+          "67:thai-vermicelli-noodles",
+          "70:thai-style-fried-egg-1",
+          "71:thai-style-fried-egg-one",
+          "72:tom-yum-chili-paste-egg-noodles-w-chicken-and-shrimp",
+          "73:tom-yum-fried-rice-with-shrimp",
+          "74:tom-yum-noodle-soup-wroasted-pork-and-ground-chicken"
+        ]
+      }
+    ],
+    "summary": "Independent primary-source review confirms Baan Siam identity and both current surfaces, but the scout’s catalog is structurally empty. No scout currentProductKey or presentationId exists to verify: currentProductCheckGroups is intentionally empty, avoiding invented/unknown scout IDs. All independently observed products are discoveries and the four products absent from the frozen catalog are reported above. The frozen catalog has menu-scope and allergen-authority discrepancies; source silence does not establish negatives or cross-contact conclusions.",
+    "coordinatorNotes": [
+      "Read-only Terra result; no ledger, artifact, generated-data, repair, or terminal-state mutation performed.",
+      "The scout artifact contains zero currentProducts and zero presentationIds. Terra must not assign independently reconstructed keys or presentation IDs to currentProductCheckGroups because those fields are restricted to exact scout identifiers.",
+      "Escalate to Sol: current catalog omission, incomplete allergen disclosure, authority mismatch, cross-contact uncertainty, PDF extraction, and frozen reconciliation require adjudication."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "1:khua-kling-chicken",
+      "baseline": {
+        "itemId": "khua-kling-chicken",
+        "name": "“Khua kling” Chicken",
+        "category": "Thai",
+        "variantGroup": "“Pad Cha” Shrimp",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "2:pad-cha-shrimp",
+      "baseline": {
+        "itemId": "pad-cha-shrimp",
+        "name": "“Pad cha” Shrimp",
+        "category": "Thai",
+        "variantGroup": "Chicken & Basil Fried Rice W/ Thai-Style Fried Egg",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "3:baan-siam-green-chili-paste",
+      "baseline": {
+        "itemId": "baan-siam-green-chili-paste",
+        "name": "Baan Siam Green Chili Paste",
+        "category": "Thai",
+        "variantGroup": "Baan Siam Red Chili Paste",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "4:baan-siam-red-chili-paste",
+      "baseline": {
+        "itemId": "baan-siam-red-chili-paste",
+        "name": "Baan Siam Red Chili Paste",
+        "category": "Thai",
+        "variantGroup": "Thai",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "6:beef-nahm-dtok-salad",
+      "baseline": {
+        "itemId": "beef-nahm-dtok-salad",
+        "name": "Beef \"Nahm Dtok\" Salad",
+        "category": "Thai",
+        "variantGroup": "Crispy Lotus Root & Grilled Shrimp Salad",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "7:beef-massaman-curry",
+      "baseline": {
+        "itemId": "beef-massaman-curry",
+        "name": "Beef Massaman Curry",
+        "category": "Thai",
+        "variantGroup": "Chicken Red Curry W/ Bamboo Shoots",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "8:boiled-egg-1",
+      "baseline": {
+        "itemId": "boiled-egg-1",
+        "name": "Boiled Egg (1)",
+        "category": "Thai",
+        "variantGroup": "Steamed Vegetables",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "9:brown-rice",
+      "baseline": {
+        "itemId": "brown-rice",
+        "name": "Brown Rice",
+        "category": "Thai",
+        "variantGroup": "White Jasmine Rice",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "10:chicken-and-basil-fried-rice-w-thai-style-fried-egg",
+      "baseline": {
+        "itemId": "chicken-and-basil-fried-rice-w-thai-style-fried-egg",
+        "name": "Chicken & Basil Fried Rice w/ Thai-Style Fried Egg",
+        "category": "Thai",
+        "variantGroup": "Tom Yum Chili Paste Egg Noodles W/ Chicken & Shrimp",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "11:chicken-green-curry",
+      "baseline": {
+        "itemId": "chicken-green-curry",
+        "name": "Chicken Green Curry",
+        "category": "Thai",
+        "variantGroup": "Beef Massaman Curry",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "12:chicken-jungle-curry",
+      "baseline": {
+        "itemId": "chicken-jungle-curry",
+        "name": "Chicken Jungle Curry",
+        "category": "Thai",
+        "variantGroup": "Stir-Fried Glass Noodles With Chicken & Shrimp",
+        "isConfigurable": false,
+        "allergens": [
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "13:chicken-red-curry-w-bamboo-shoots",
+      "baseline": {
+        "itemId": "chicken-red-curry-w-bamboo-shoots",
+        "name": "Chicken Red Curry w/ Bamboo Shoots",
+        "category": "Thai",
+        "variantGroup": "Northern Thai Pork Curry",
+        "isConfigurable": false,
+        "allergens": [
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "14:chicken-tapioca-dumplings",
+      "baseline": {
+        "itemId": "chicken-tapioca-dumplings",
+        "name": "Chicken Tapioca Dumplings",
+        "category": "Thai",
+        "variantGroup": "Coconut Soup With Chicken",
+        "isConfigurable": false,
+        "allergens": [
+          "peanut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "15:coconut-milk-griddle-snac",
+      "baseline": {
+        "itemId": "coconut-milk-griddle-snac",
+        "name": "Coconut Milk Griddle Snac",
+        "category": "Thai",
+        "variantGroup": "Thai",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "16:coconut-soup-with-chicken",
+      "baseline": {
+        "itemId": "coconut-soup-with-chicken",
+        "name": "Coconut Soup with Chicken",
+        "category": "Thai",
+        "variantGroup": "Spicy-Sour Soup With Shrimp",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "17:crab-paste-fried-rice-with-crab-meat",
+      "baseline": {
+        "itemId": "crab-paste-fried-rice-with-crab-meat",
+        "name": "Crab Paste Fried Rice with Crab Meat",
+        "category": "Thai",
+        "variantGroup": "Shrimp Stir-Fried With Spicy Shrimp Paste",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "18:crispy-lotus-root-and-grilled-shrimp-salad",
+      "baseline": {
+        "itemId": "crispy-lotus-root-and-grilled-shrimp-salad",
+        "name": "Crispy Lotus Root & Grilled Shrimp Salad",
+        "category": "Thai",
+        "variantGroup": "Green Mango Salad",
+        "isConfigurable": false,
+        "allergens": [
+          "peanut",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "19:crispy-pork-belly",
+      "baseline": {
+        "itemId": "crispy-pork-belly",
+        "name": "Crispy pork belly",
+        "category": "Thai",
+        "variantGroup": "Thai",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.baansiamdc.com/_files/ugd/35c3ff_15ffa8f57f934f7bbfc1728cdb03bb0a.pdf",
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "20:deep-fried-asian-pumpkin",
+      "baseline": {
+        "itemId": "deep-fried-asian-pumpkin",
+        "name": "Deep-Fried Asian Pumpkin",
+        "category": "Thai",
+        "variantGroup": "Thai",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "22:fried-tofu",
+      "baseline": {
+        "itemId": "fried-tofu",
+        "name": "Fried Tofu",
+        "category": "Thai",
+        "variantGroup": "Steamed Tofu",
+        "isConfigurable": false,
+        "allergens": [
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "23:ginger-branzino",
+      "baseline": {
+        "itemId": "ginger-branzino",
+        "name": "Ginger Branzino",
+        "category": "Thai",
+        "variantGroup": "Chicken Jungle Curry",
+        "isConfigurable": false,
+        "allergens": [
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "24:golden-fried-pockets",
+      "baseline": {
+        "itemId": "golden-fried-pockets",
+        "name": "Golden-Fried Pockets",
+        "category": "Thai",
+        "variantGroup": "Thai",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "25:green-mango-salad",
+      "baseline": {
+        "itemId": "green-mango-salad",
+        "name": "Green Mango Salad",
+        "category": "Thai",
+        "variantGroup": "Thai Vermicelli Noodles",
+        "isConfigurable": false,
+        "allergens": [
+          "peanut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "26:grilled-pork-skewers",
+      "baseline": {
+        "itemId": "grilled-pork-skewers",
+        "name": "Grilled Pork Skewers",
+        "category": "Thai",
+        "variantGroup": "Golden-Fried Pockets",
+        "isConfigurable": false,
+        "allergens": [
+          "peanut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "30:khao-soi-gai",
+      "baseline": {
+        "itemId": "khao-soi-gai",
+        "name": "Khao Soi Gai",
+        "category": "Thai",
+        "variantGroup": "Thai",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "31:lemongrass-chicken",
+      "baseline": {
+        "itemId": "lemongrass-chicken",
+        "name": "Lemongrass Chicken",
+        "category": "Thai",
+        "variantGroup": "Spicy Stir-Fried Beef With Green Beans",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "32:mango-and-sticky-rice-seasonal",
+      "baseline": {
+        "itemId": "mango-and-sticky-rice-seasonal",
+        "name": "Mango & Sticky Rice (Seasonal)",
+        "category": "Thai",
+        "variantGroup": "Coconut Milk Griddle Snac",
+        "isConfigurable": false,
+        "allergens": [
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "33:mixed-vegetable-fried-rice-with-tofu-vegetarian",
+      "baseline": {
+        "itemId": "mixed-vegetable-fried-rice-with-tofu-vegetarian",
+        "name": "Mixed vegetable fried rice with tofu (Vegetarian)",
+        "category": "Thai",
+        "variantGroup": "Stir-Fried Woon Sen Noodles With Tofu (Vegetarian)",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "34:northern-thai-mix-curry-chicken",
+      "baseline": {
+        "itemId": "northern-thai-mix-curry-chicken",
+        "name": "Northern Thai Mix Curry Chicken",
+        "category": "Thai",
+        "variantGroup": "Ginger Branzino",
+        "isConfigurable": false,
+        "allergens": [
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "35:northern-thai-pork-curry",
+      "baseline": {
+        "itemId": "northern-thai-pork-curry",
+        "name": "Northern Thai Pork Curry",
+        "category": "Thai",
+        "variantGroup": "Northern Thai Mix Curry Chicken",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "36:peanut-sauce",
+      "baseline": {
+        "itemId": "peanut-sauce",
+        "name": "Peanut Sauce",
+        "category": "Thai",
+        "variantGroup": "Small Cucumber Salad",
+        "isConfigurable": false,
+        "allergens": [
+          "peanut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "37:pork-and-pineapple-red-curry",
+      "baseline": {
+        "itemId": "pork-and-pineapple-red-curry",
+        "name": "Pork & Pineapple Red Curry",
+        "category": "Thai",
+        "variantGroup": "“Khua Kling” Chicken",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "38:roasted-duck-red-curry",
+      "baseline": {
+        "itemId": "roasted-duck-red-curry",
+        "name": "Roasted Duck Red Curry",
+        "category": "Thai",
+        "variantGroup": "Southern Thai Beef Curry",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "40:seasoned-noodle-soup-broth",
+      "baseline": {
+        "itemId": "seasoned-noodle-soup-broth",
+        "name": "Seasoned noodle soup broth",
+        "category": "Thai",
+        "variantGroup": "Thai",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.baansiamdc.com/_files/ugd/35c3ff_15ffa8f57f934f7bbfc1728cdb03bb0a.pdf",
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "41:shrimp-stir-fried-with-spicy-shrimp-paste",
+      "baseline": {
+        "itemId": "shrimp-stir-fried-with-spicy-shrimp-paste",
+        "name": "Shrimp Stir-Fried with Spicy Shrimp Paste",
+        "category": "Thai",
+        "variantGroup": "Lemongrass Chicken",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "42:shrimp-chili-paste-fried-rice-with-crispy-pork-belly",
+      "baseline": {
+        "itemId": "shrimp-chili-paste-fried-rice-with-crispy-pork-belly",
+        "name": "Shrimp-Chili-Paste Fried Rice with Crispy Pork Belly",
+        "category": "Thai",
+        "variantGroup": "Green Mango Salad",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "43:small-cucumber-salad",
+      "baseline": {
+        "itemId": "small-cucumber-salad",
+        "name": "Small cucumber salad",
+        "category": "Thai",
+        "variantGroup": "Thai",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.baansiamdc.com/_files/ugd/35c3ff_15ffa8f57f934f7bbfc1728cdb03bb0a.pdf",
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "44:southern-thai-beef-curry",
+      "baseline": {
+        "itemId": "southern-thai-beef-curry",
+        "name": "Southern Thai Beef Curry",
+        "category": "Thai",
+        "variantGroup": "Chicken Green Curry",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "45:spicy-deep-fried-mushrooms-vegetarian",
+      "baseline": {
+        "itemId": "spicy-deep-fried-mushrooms-vegetarian",
+        "name": "Spicy deep-fried mushrooms (Vegetarian)",
+        "category": "Thai",
+        "variantGroup": "The Vegetarian",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "46:spicy-glass-noodle-salad-w-ground-ghicken",
+      "baseline": {
+        "itemId": "spicy-glass-noodle-salad-w-ground-ghicken",
+        "name": "Spicy Glass Noodle Salad w/ Ground Ghicken",
+        "category": "Thai",
+        "variantGroup": "Seasonal Specials",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "47:spicy-roasted-duck-salad",
+      "baseline": {
+        "itemId": "spicy-roasted-duck-salad",
+        "name": "Spicy Roasted Duck Salad",
+        "category": "Thai",
+        "variantGroup": "Spicy Salmon Salad",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "48:spicy-salmon-salad",
+      "baseline": {
+        "itemId": "spicy-salmon-salad",
+        "name": "Spicy Salmon Salad",
+        "category": "Thai",
+        "variantGroup": "Grilled Pork Skewers",
+        "isConfigurable": false,
+        "allergens": [
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "49:spicy-stir-fried-beef-with-green-beans",
+      "baseline": {
+        "itemId": "spicy-stir-fried-beef-with-green-beans",
+        "name": "Spicy Stir-fried Beef with Green Beans",
+        "category": "Thai",
+        "variantGroup": "Stir-Fried Cuttlefish With Chili Paste",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "50:spicy-sour-soup-with-shrimp",
+      "baseline": {
+        "itemId": "spicy-sour-soup-with-shrimp",
+        "name": "Spicy-sour Soup with Shrimp",
+        "category": "Thai",
+        "variantGroup": "The Start",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "51:steamed-noodles",
+      "baseline": {
+        "itemId": "steamed-noodles",
+        "name": "Steamed noodles",
+        "category": "Thai",
+        "variantGroup": "Thai",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.baansiamdc.com/_files/ugd/35c3ff_15ffa8f57f934f7bbfc1728cdb03bb0a.pdf",
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "52:steamed-tofu",
+      "baseline": {
+        "itemId": "steamed-tofu",
+        "name": "Steamed Tofu",
+        "category": "Thai",
+        "variantGroup": "Thai-Style Fried Egg (1)",
+        "isConfigurable": false,
+        "allergens": [
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "53:steamed-vegetables",
+      "baseline": {
+        "itemId": "steamed-vegetables",
+        "name": "Steamed vegetables",
+        "category": "Thai",
+        "variantGroup": "Thai",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.baansiamdc.com/_files/ugd/35c3ff_15ffa8f57f934f7bbfc1728cdb03bb0a.pdf",
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "54:sticky-rice",
+      "baseline": {
+        "itemId": "sticky-rice",
+        "name": "Sticky Rice",
+        "category": "Thai",
+        "variantGroup": "Brown Rice",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "55:stir-fired-basil-with-tofu-and-green-beans-vegetarian",
+      "baseline": {
+        "itemId": "stir-fired-basil-with-tofu-and-green-beans-vegetarian",
+        "name": "Stir-fired basil with tofu and green beans (Vegetarian)",
+        "category": "Thai",
+        "variantGroup": "Stir-Fried Green Beans With Tofu (Vegetarian)",
+        "isConfigurable": false,
+        "allergens": [
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "56:stir-fried-cuttlefish-with-chili-paste",
+      "baseline": {
+        "itemId": "stir-fried-cuttlefish-with-chili-paste",
+        "name": "Stir-fried cuttlefish with chili paste",
+        "category": "Thai",
+        "variantGroup": "Thai",
+        "isConfigurable": false,
+        "allergens": [
+          "peanut",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "57:stir-fried-garlic-rice",
+      "baseline": {
+        "itemId": "stir-fried-garlic-rice",
+        "name": "Stir-fried garlic rice",
+        "category": "Thai",
+        "variantGroup": "Thai",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.baansiamdc.com/_files/ugd/35c3ff_15ffa8f57f934f7bbfc1728cdb03bb0a.pdf",
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "58:stir-fried-garlic-rice-with-thai-style-deep-fried-chicken",
+      "baseline": {
+        "itemId": "stir-fried-garlic-rice-with-thai-style-deep-fried-chicken",
+        "name": "Stir-Fried Garlic Rice with Thai-Style Deep-Fried Chicken",
+        "category": "Thai",
+        "variantGroup": "Tom Yum Fried Rice With Shrimp",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "59:stir-fried-glass-noodles-with-chicken-and-shrimp",
+      "baseline": {
+        "itemId": "stir-fried-glass-noodles-with-chicken-and-shrimp",
+        "name": "Stir-Fried Glass Noodles with Chicken & Shrimp",
+        "category": "Thai",
+        "variantGroup": "Tom Yum Noodle Soup W/Roasted Pork & Ground Chicken",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "shellfish",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "60:stir-fried-green-beans-with-tofu-vegetarian",
+      "baseline": {
+        "itemId": "stir-fried-green-beans-with-tofu-vegetarian",
+        "name": "Stir-fried green beans with tofu (Vegetarian)",
+        "category": "Thai",
+        "variantGroup": "Stir-Fried Napa Cabbage With Tofu (Vegetarian)",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "61:stir-fried-napa-cabbage-with-tofu-vegetarian",
+      "baseline": {
+        "itemId": "stir-fried-napa-cabbage-with-tofu-vegetarian",
+        "name": "Stir-fried Napa cabbage with tofu (Vegetarian)",
+        "category": "Thai",
+        "variantGroup": "Spicy Deep-Fried Mushrooms (Vegetarian)",
+        "isConfigurable": false,
+        "allergens": [
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "62:stir-fried-rice-with-garlic-shrimp",
+      "baseline": {
+        "itemId": "stir-fried-rice-with-garlic-shrimp",
+        "name": "Stir-Fried Rice with Garlic Shrimp",
+        "category": "Thai",
+        "variantGroup": "Stir-Fried Garlic Rice With Thai-Style Deep-Fried Chicken",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "63:stir-fried-woon-sen-noodles-with-tofu-vegetarian",
+      "baseline": {
+        "itemId": "stir-fried-woon-sen-noodles-with-tofu-vegetarian",
+        "name": "Stir-fried Woon Sen noodles with tofu (Vegetarian)",
+        "category": "Thai",
+        "variantGroup": "Stir-Fired Basil With Tofu And Green Beans (Vegetarian)",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "64:sweet-and-sour-sauce",
+      "baseline": {
+        "itemId": "sweet-and-sour-sauce",
+        "name": "Sweet & sour sauce",
+        "category": "Thai",
+        "variantGroup": "Thai",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.baansiamdc.com/_files/ugd/35c3ff_15ffa8f57f934f7bbfc1728cdb03bb0a.pdf",
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "65:sweet-chili-sauce",
+      "baseline": {
+        "itemId": "sweet-chili-sauce",
+        "name": "Sweet chili sauce",
+        "category": "Thai",
+        "variantGroup": "Thai",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.baansiamdc.com/_files/ugd/35c3ff_15ffa8f57f934f7bbfc1728cdb03bb0a.pdf",
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "66:thai-iced-tea",
+      "baseline": {
+        "itemId": "thai-iced-tea",
+        "name": "Thai Iced Tea",
+        "category": "Thai",
+        "variantGroup": "Btl Domainethierry Drouin Chardonnay",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "67:thai-vermicelli-noodles",
+      "baseline": {
+        "itemId": "thai-vermicelli-noodles",
+        "name": "Thai Vermicelli Noodles",
+        "category": "Thai",
+        "variantGroup": "Featured Items",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "peanut",
+          "shellfish",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "68:thai-style-deep-fried-chicken-wings",
+      "baseline": {
+        "itemId": "thai-style-deep-fried-chicken-wings",
+        "name": "Thai-Style Deep-Fried Chicken Wings",
+        "category": "Thai",
+        "variantGroup": "Deep-Fried Asian Pumpkin",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "69:thai-style-fried-chicken-breast",
+      "baseline": {
+        "itemId": "thai-style-fried-chicken-breast",
+        "name": "Thai-style fried chicken breast",
+        "category": "Thai",
+        "variantGroup": "Thai",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.baansiamdc.com/_files/ugd/35c3ff_15ffa8f57f934f7bbfc1728cdb03bb0a.pdf",
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "70:thai-style-fried-egg-1",
+      "baseline": {
+        "itemId": "thai-style-fried-egg-1",
+        "name": "Thai-Style Fried Egg (1)",
+        "category": "Thai",
+        "variantGroup": "Boiled Egg (1)",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "71:thai-style-fried-egg-one",
+      "baseline": {
+        "itemId": "thai-style-fried-egg-one",
+        "name": "Thai-style fried egg (one)",
+        "category": "Thai",
+        "variantGroup": "Thai",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.baansiamdc.com/_files/ugd/35c3ff_15ffa8f57f934f7bbfc1728cdb03bb0a.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "72:tom-yum-chili-paste-egg-noodles-w-chicken-and-shrimp",
+      "baseline": {
+        "itemId": "tom-yum-chili-paste-egg-noodles-w-chicken-and-shrimp",
+        "name": "Tom Yum Chili Paste Egg Noodles w/ Chicken & Shrimp",
+        "category": "Thai",
+        "variantGroup": "Spicy Glass Noodle Salad W/ Ground Ghicken",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "gluten",
+          "peanut",
+          "shellfish",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "73:tom-yum-fried-rice-with-shrimp",
+      "baseline": {
+        "itemId": "tom-yum-fried-rice-with-shrimp",
+        "name": "Tom Yum Fried Rice with Shrimp",
+        "category": "Thai",
+        "variantGroup": "Shrimp-Chili-Paste Fried Rice With Crispy Pork Belly",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "74:tom-yum-noodle-soup-wroasted-pork-and-ground-chicken",
+      "baseline": {
+        "itemId": "tom-yum-noodle-soup-wroasted-pork-and-ground-chicken",
+        "name": "Tom Yum Noodle Soup w/Roasted Pork & Ground Chicken",
+        "category": "Thai",
+        "variantGroup": "Khao Soi Gai",
+        "isConfigurable": false,
+        "allergens": [
+          "peanut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "76:white-jasmine-rice",
+      "baseline": {
+        "itemId": "white-jasmine-rice",
+        "name": "White jasmine rice",
+        "category": "Thai",
+        "variantGroup": "Thai",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://www.baansiamdc.com/_files/ugd/35c3ff_15ffa8f57f934f7bbfc1728cdb03bb0a.pdf",
+          "https://order.toasttab.com/online/baan-siam-425-i-st-nw"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-pilot-2026-07-15/jobs/baan-siam-dc.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-pilot-2026-07-15/results/baan-siam-dc.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/baan-siam-dc.jsonl"
+  }
+}

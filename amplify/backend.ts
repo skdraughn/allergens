@@ -8,6 +8,7 @@ import { DynamoEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
 import { auth } from "./auth/resource.ts";
 import { data } from "./data/resource.ts";
 import { autoConfirmSignUp } from "./functions/auto-confirm-sign-up/resource.ts";
+import { deleteAccount } from "./functions/delete-account/resource.ts";
 import { refreshRestaurantData } from "./functions/refresh-restaurant-data/resource.ts";
 import { processRestaurantRefreshJobs } from "./functions/process-restaurant-refresh-jobs/resource.ts";
 import { notifyCommunitySubmission } from "./functions/notify-community-submission/resource.ts";
@@ -20,6 +21,7 @@ const backend = defineBackend({
   auth,
   autoConfirmSignUp,
   data,
+  deleteAccount,
   notifyCommunitySubmission,
   processRestaurantRefreshJobs,
   refreshRestaurantData,
@@ -93,6 +95,7 @@ restaurantRefreshJobsTable.grantReadWriteData(
 );
 
 const communitySubmissionTables = [
+  backend.data.resources.tables.CommunityReviewReport,
   backend.data.resources.tables.MenuItemReport,
   backend.data.resources.tables.RestaurantRequest,
 ];
@@ -113,7 +116,14 @@ backend.updateAllergyRatingSummary.addEnvironment(
   "RESTAURANT_ALLERGY_RATING_SUMMARY_TABLE_NAME",
   backend.data.resources.tables.RestaurantAllergyRatingSummary.tableName,
 );
+backend.updateAllergyRatingSummary.addEnvironment(
+  "PUBLISHED_COMMUNITY_ALLERGY_REVIEW_TABLE_NAME",
+  backend.data.resources.tables.PublishedCommunityAllergyReview.tableName,
+);
 backend.data.resources.tables.RestaurantAllergyRatingSummary.grantReadWriteData(
+  backend.updateAllergyRatingSummary.resources.lambda,
+);
+backend.data.resources.tables.PublishedCommunityAllergyReview.grantReadWriteData(
   backend.updateAllergyRatingSummary.resources.lambda,
 );
 backend.data.resources.tables.CommunityAllergyReview.grantStreamRead(
@@ -129,6 +139,30 @@ backend.updateAllergyRatingSummary.resources.lambda.addEventSource(
 );
 
 const { cfnUserPool, cfnUserPoolClient } = backend.auth.resources.cfnResources;
+
+const accountDeletionTables = {
+  ALLERGY_PROFILE_TABLE_NAME: backend.data.resources.tables.AllergyProfile,
+  BLOCKED_COMMUNITY_USER_TABLE_NAME: backend.data.resources.tables.BlockedCommunityUser,
+  COMMUNITY_ALLERGY_REVIEW_TABLE_NAME: backend.data.resources.tables.CommunityAllergyReview,
+  COMMUNITY_COMMENT_TABLE_NAME: backend.data.resources.tables.CommunityComment,
+  COMMUNITY_MENU_ITEM_TABLE_NAME: backend.data.resources.tables.CommunityMenuItem,
+  COMMUNITY_REVIEW_REPORT_TABLE_NAME: backend.data.resources.tables.CommunityReviewReport,
+  MENU_ITEM_REPORT_TABLE_NAME: backend.data.resources.tables.MenuItemReport,
+  RESTAURANT_REQUEST_TABLE_NAME: backend.data.resources.tables.RestaurantRequest,
+};
+
+for (const [environmentKey, table] of Object.entries(accountDeletionTables)) {
+  backend.deleteAccount.addEnvironment(environmentKey, table.tableName);
+  table.grantReadWriteData(backend.deleteAccount.resources.lambda);
+}
+
+backend.deleteAccount.addEnvironment("COGNITO_USER_POOL_ID", cfnUserPool.ref);
+backend.deleteAccount.resources.lambda.addToRolePolicy(
+  new PolicyStatement({
+    actions: ["cognito-idp:AdminDeleteUser"],
+    resources: [cfnUserPool.attrArn],
+  }),
+);
 
 cfnUserPool.usernameAttributes = undefined;
 cfnUserPool.schema = [

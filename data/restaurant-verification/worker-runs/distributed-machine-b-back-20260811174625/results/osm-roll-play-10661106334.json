@@ -1,0 +1,1278 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811174625",
+  "restaurantId": "osm-roll-play-10661106334",
+  "packetValidation": {
+    "baselineItemCount": 109,
+    "baselineFingerprint": "d3fd97b7807cdcbea11681d57125a5d83e373a0d7fe150d5d522370ac6d4bbd4",
+    "itemCheckCount": 109,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "Roll Play",
+    "locationId": "arlington",
+    "address": "1800 N Lynn St #102, Arlington, VA 22209",
+    "domain": "rollplaygrill.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "official-home"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "official-home",
+      "url": "https://rollplaygrill.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage",
+      "retrievedAt": "2026-08-11T17:55:00Z"
+    },
+    {
+      "evidenceId": "official-order",
+      "url": "https://rollplaygrill.com/order-online/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "Rosslyn location",
+      "retrievedAt": "2026-08-11T17:55:00Z"
+    },
+    {
+      "evidenceId": "linked-rosslyn-menu",
+      "url": "https://order.rollplaygrill.com/order/rp-rosslyn",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current menu",
+      "retrievedAt": "2026-08-11T17:55:00Z"
+    },
+    {
+      "evidenceId": "official-allergen-pdf",
+      "url": "https://rollplaygrill.com/wp-content/uploads/2026/02/RP-Nutrition-Allergen-Sheet_2.8.26.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen matrix",
+      "retrievedAt": "2026-08-11T17:55:00Z"
+    },
+    {
+      "evidenceId": "targeted-search",
+      "url": "https://www.google.com/search?q=site%3Arollplaygrill.com+allergen",
+      "authorityTier": "third_party",
+      "purpose": "targeted search",
+      "retrievedAt": "2026-08-11T17:55:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "rosslyn-menu",
+      "url": "https://order.rollplaygrill.com/order/rp-rosslyn",
+      "authority": "linked vendor",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "Rosslyn Arlington",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "all food and nonalcoholic categories inspected; alcohol excluded",
+      "currentProductKeys": [
+        "rollplay-rosslyn-current-menu"
+      ],
+      "sourceEvidenceIds": [
+        "linked-rosslyn-menu"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "rollplay-rosslyn-current-menu",
+      "name": "Roll Play Rosslyn current food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "linked-rosslyn-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "productCount": 109,
+      "boundary": "Current Rosslyn food and nonalcoholic menu; alcohol-only and other-location surfaces excluded."
+    }
+  ],
+  "matrixSearch": {
+    "status": "found",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "official homepage and order online",
+        "urls": [
+          "https://rollplaygrill.com/"
+        ],
+        "outcome": "identity and menu navigation inspected",
+        "sourceEvidenceIds": [
+          "official-home"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "official allergen PDF",
+        "urls": [
+          "https://rollplaygrill.com/wp-content/uploads/2026/02/RP-Nutrition-Allergen-Sheet_2.8.26.pdf"
+        ],
+        "outcome": "matrix found",
+        "sourceEvidenceIds": [
+          "official-allergen-pdf"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Rosslyn ordering vendor",
+        "urls": [
+          "https://order.rollplaygrill.com/order/rp-rosslyn"
+        ],
+        "outcome": "menu inspected; allergy advisory; no cross-contact absence claim",
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "site:rollplaygrill.com allergen allergy nutrition ingredients PDF",
+        "urls": [
+          "https://www.google.com/search?q=site%3Arollplaygrill.com+allergen"
+        ],
+        "outcome": "official PDF found",
+        "sourceEvidenceIds": [
+          "targeted-search",
+          "official-allergen-pdf"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "evidenceId": "official-allergen-pdf",
+      "claim": "Official matrix is direct evidence for named components; no absence inferred for unlisted products.",
+      "authorityTier": "restaurant_issued",
+      "sourceEvidenceIds": [
+        "official-allergen-pdf"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "expectedCount": 109,
+    "items": [
+      {
+        "auditItemKey": "1:the-wagyu-of-porkpasture-raised-deep-umami",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "2:viet-food-that-loves-you",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "3:100g-protein",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "4:16-ounces-of-any-premium-protein-every-option-except-tofu-hits-100-grams",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "5:65g-protein",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "6:65g-protein-dual-protein-selection-cage-free-egg-meet-your-macros",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "7:am-wagyu-beef-steak",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "8:american-wagyu-beef-steak-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "9:atlantic-salmon",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "10:atlantic-salmon-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "11:atlantic-salmon-pho-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "12:banh-mi-glaze",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "13:banh-mi-sandwich",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "14:beautifully-grilled-jumbo-shrimp-served-with-your-choice-of-broth",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "15:beef-brisket-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "16:berkshire-pork-belly",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "17:berkshire-pork-belly-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "18:bok-choy-seasonal-veggie",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "19:braised-brisket",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "20:chicken-and-shrimp-egg-rolls",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "21:chicken-and-shrimp-egg-rolls-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "22:chicken-pho-gf-abf-halal-humane",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "23:chicken-wings",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "24:chili-crunch",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "25:cilantro-jalapeno-aioli",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "26:cleanest-highest-quality-meats",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "27:connect",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "28:crispy-roll",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "29:crushed-peanuts",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "30:dream-dessert-jar-v-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "31:french-baguette",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "32:french-dip-banh-mi-with-oxtail-bone-broth-grass-fed",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "33:fried-egg",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "34:fried-rice-base",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "35:fried-rice-proteins",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "36:fried-shallots",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "37:garden-bowl",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "38:garlic-rice",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "39:glazed-tofu",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "40:halal-and-antibiotic-free-chicken",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "41:hello-avocado-oil",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "42:hibiscus-dragon",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "43:house-made-sauce",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "44:jumbo-shrimp",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "45:jumbo-shrimp-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "46:lemongrass-chicken",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "47:lemongrass-chicken-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "48:low-carb-pho-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "49:mango-sago-jar",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "50:moms-fried-rice-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "51:new-marinades",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "52:new-1-pound-protein-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "53:new-all-in-combination-beef-pho-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "54:new-beef-brisket-pho-gf-grass-fed",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "55:new-chefs-loaded-fries",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "56:new-crispy-shoestring-fries",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "57:non-gmo",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "58:noodle-salad-bowl-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "59:nutritional-info",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "60:our-pho-broth-doesnt-take-shortcuts-two-full-days-of-slow-simmering",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "61:oxtail-and-am-wagyu-mix",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "62:oxtail-and-american-wagyu-mix-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "63:oxtail-broth",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "64:peach-paradise",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "65:peanut-sauce",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "66:pho-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "67:pho-braised-tacos",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "68:pho-rice-noodle",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "69:phoplay",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "70:popcorn-chicken",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "71:power-bowl-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "72:power-pho-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "73:rice-paper",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "74:saigon-bowl-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "75:sate-chili-oil",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "76:sauteed-veggies-onion-and-bell-peppers",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "77:scrambled-eggs",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "78:shirataki-noodle",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "79:shoestring-fries",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "80:shrimp-pho-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "81:spicy-oxtail-broth",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "82:spicy-oxtail-pho-gf-s-grass-fed",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "83:spicy-peanut-sauce",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "84:spicy-sweet-chili-wing-sauce",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "85:spicy-veggie-broth",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "86:sriracha-mayo",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "87:story",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "88:strawberry-matcha-jar",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "89:summer-rolls-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "90:sweet-chili",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "91:tender-thinly-sliced-american-wagyu-beef-eye-round-steak-served-with-oxtail-bone-broth",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "92:thai-tea-refresher",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "93:the-heart-and-health-behind-our-pho",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "94:the-result-more-tender-more-flavorful-and-it-doesnt-weigh-you-down",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "95:tofu-pho",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "96:try-our-new-non-gmo-organic-tofu-if-youre-plant-based",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "97:vegan-pho-v-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "98:vegan-ranch",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "99:vegan-suggestions",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "100:vegetarian-egg-rolls",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "101:veggie-broth",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "102:vermicelli-noodle",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "103:viet-coffee",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "104:viet-coffee-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "105:viet-mayo",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "106:viet-style-wing-sauce",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "107:vietnamese-vinaigrette",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "108:wagyu-beef-steak-pho-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      },
+      {
+        "auditItemKey": "109:white-rice",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rollplay-rosslyn-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "linked-rosslyn-menu"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify",
+  "outcome": "researched",
+  "processLog": [
+    "packet_validated",
+    "identity_verified",
+    "menu_surfaces_inventoried",
+    "matrix_search_completed",
+    "products_reconciled",
+    "validator_passed"
+  ]
+}

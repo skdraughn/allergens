@@ -1,0 +1,577 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-batch-03-2026-07-16",
+  "restaurant": {
+    "restaurantId": "barmini-dc",
+    "name": "barmini by Jose Andres",
+    "domain": "minibarbyjoseandres.com",
+    "locationId": null,
+    "baselineItemCount": 0,
+    "baselineItemFingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "officialItemCount": 0,
+    "officialAllergenStatus": "not-applicable",
+    "sourceFamily": "manual-review",
+    "parserProfile": "accommodation-policy-shell",
+    "guideUrl": "https://www.minibarbyjoseandres.com/faq-barmini/",
+    "sourceUrls": [
+      "https://www.minibarbyjoseandres.com/faq-barmini/"
+    ]
+  },
+  "effectiveOutcome": "blocked_unverifiable",
+  "routingReasons": [
+    "Terra marked the result blocked_unverifiable.",
+    "Low confidence must be explicitly marked low_confidence.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "validationWarnings": [
+    "Low confidence must be explicitly marked low_confidence.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "multi_service",
+      "pdf_or_image",
+      "inaccessible_source",
+      "scope_incomplete",
+      "unresolved_surface",
+      "count_drift",
+      "current_only",
+      "different_domain",
+      "cross_contact",
+      "validation_warnings",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 0,
+      "reconciledItemCount": 0,
+      "uniqueReconciledItemCount": 0,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 7,
+      "activeMenuSurfaceCount": 6,
+      "accessibleMenuSurfaceCount": 3,
+      "serviceCount": 4,
+      "pdfImageSurfaceCount": 1,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 1,
+      "incompleteSurfaceCount": 3,
+      "unresolvedSurfaceCount": 3,
+      "currentProductCount": 5,
+      "currentOnlyCount": 5,
+      "baselineOnlyCount": 0,
+      "countDrift": true,
+      "duplicatePresentationCount": 0,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 0,
+      "differentDomainCount": 1,
+      "nonExactItemCount": 0,
+      "allergenMismatchItemCount": 0,
+      "crossContactCount": 1,
+      "parserRepairFindingCount": 0,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 1,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "blocked_unverifiable",
+    "confidence": {
+      "level": "low",
+      "overall": 0.73,
+      "menu": 0.3,
+      "allergenSource": 0.05,
+      "extraction": 0.8,
+      "rationale": "Restaurant-issued pages verify identity and five category-level offerings but do not enumerate a complete current item catalog or provide ingredients, allergen arrays, or cross-contact semantics. Linked-vendor and third-party menu leads cannot resolve those gaps."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "barmini by José Andrés, 501 9th St NW, Washington, DC 20004",
+      "confidence": 0.99,
+      "sourceEvidenceIds": [
+        "terra-official-location",
+        "terra-joseandres-location",
+        "terra-opentable-profile"
+      ],
+      "notes": "The official location page, José Andrés Group location page, and linked OpenTable profile agree on name and address."
+    },
+    "sources": [
+      {
+        "evidenceId": "terra-official-home",
+        "url": "https://www.minibarbyjoseandres.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Minibar & Barmini official homepage",
+        "retrievedAt": "2026-07-16T20:00:00Z",
+        "excerpt": "The navigation exposes Barmini about, Discover, FAQ, and reservations links but no enumerated Barmini menu.",
+        "stableRowId": "homepage navigation",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-official-location",
+        "url": "https://www.minibarbyjoseandres.com/location/barmini-by-jose-andres/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Hours & Location | Barmini",
+        "retrievedAt": "2026-07-16T20:00:00Z",
+        "excerpt": "Lists 501 9th St NW and describes more than 100 libations, experiential flights, and inventive snacks; it contains no itemized catalog.",
+        "stableRowId": "main content lines 49-61",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-official-faq",
+        "url": "https://www.minibarbyjoseandres.com/faq-barmini/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "allergen",
+        "title": "FAQ Barmini",
+        "retrievedAt": "2026-07-16T20:00:00Z",
+        "excerpt": "Confirms cocktail flights, an alcohol-free a-la-carte beverage experience, small bites, wine, and non-alcoholic beverages. Allergy considerations must be communicated to concierge; no ingredients, allergen matrix, or cross-contact statement is supplied.",
+        "stableRowId": "FAQ sections cocktail flight, food, and beverages",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-joseandres-location",
+        "url": "https://www.joseandres.com/location/barmini-washington-dc/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "José Andrés Group — barmini Washington, DC",
+        "retrievedAt": "2026-07-16T20:00:00Z",
+        "excerpt": "Restaurant-group location page identifies barmini at 501 9th St NW, Washington, DC 20004 and exposes no menu catalog.",
+        "stableRowId": "main content lines 61-68",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-opentable-profile",
+        "url": "https://www.opentable.com/r/barmini-by-jose-andres-washington",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "OpenTable barmini by José Andrés profile",
+        "retrievedAt": "2026-07-16T20:00:00Z",
+        "excerpt": "Matches name and address, describes the cocktail lab, offers a Barmini Tickets experience, and has a Menu section whose external 'View menu on restaurant's website' link resolves only to the unrelated thebazaar.com domain in this retrieval; no enumerated current Barmini menu is rendered.",
+        "stableRowId": "profile Menu section lines 156-160",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-third-party-pdf",
+        "url": "https://wnam-cdn.menuweb.menu/storage/media/companies_menu_pdf/114573434/barmini-by-jose-andres-washington-dc-menu.pdf",
+        "authorityTier": "third_party",
+        "purpose": "menu",
+        "title": "Menuweb PDF labeled Minibar By José Andrés",
+        "retrievedAt": "2026-07-16T20:00:00Z",
+        "excerpt": "Six-page PDF mixes generic categories and names, labels itself Minibar By José Andrés, and offers no reliable date, provenance, complete currentness, or allergen legend.",
+        "stableRowId": "PDF pages 0-5",
+        "contentHash": null,
+        "artifactSuggested": "PDF artifact"
+      },
+      {
+        "evidenceId": "terra-third-party-wherevi",
+        "url": "https://barmini.wherevi.com/menu.html",
+        "authorityTier": "third_party",
+        "purpose": "menu",
+        "title": "Wherevi barmini Menu",
+        "retrievedAt": "2026-07-16T20:00:00Z",
+        "excerpt": "Purports to be updated January 2026 but directs users to call for current prices and includes an incongruous 'Classic Chinese takeout favorites' statement; it is not linked from a restaurant-controlled source.",
+        "stableRowId": "About the Menu and What's on the Menu sections",
+        "contentHash": null,
+        "artifactSuggested": null
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://www.minibarbyjoseandres.com/faq-barmini/",
+        "notes": "Re-opened homepage, Barmini location page, and FAQ. They establish category-level offerings only; no complete menu or allergen document was found."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://www.joseandres.com/location/barmini-washington-dc/",
+        "notes": "Restaurant-group location page re-opened; it corroborates identity but has no menu or allergen content."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://www.opentable.com/r/barmini-by-jose-andres-washington",
+        "notes": "Linked reservation vendor re-opened. Its profile/menu shell does not render an itemized menu; its external menu link is a different-domain lead that failed to resolve to a Barmini menu."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": "https://barmini.wherevi.com/menu.html",
+        "notes": "Third-party purported menu re-opened. Its internal inconsistency and call-for-current-prices qualifier prevent current-catalog use."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No restaurant-issued archived current menu, ingredient file, allergen matrix, or cross-contact document was located."
+      },
+      {
+        "kind": "third_party",
+        "status": "accessible",
+        "url": "https://wnam-cdn.menuweb.menu/storage/media/companies_menu_pdf/114573434/barmini-by-jose-andres-washington-dc-menu.pdf",
+        "notes": "Third-party PDF re-opened. It is extractable but non-authoritative, unverified for currentness, and semantically unreliable for menu or allergen claims."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "multi_service",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-location",
+          "terra-official-faq",
+          "terra-opentable-profile"
+        ],
+        "notes": "Official sources distinguish a-la-carte beverages, cocktail flights, small bites, wine, and non-alcoholic beverages; vendor reservations add an experience surface."
+      },
+      {
+        "gateId": "pdf_or_image",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-third-party-pdf",
+          "terra-third-party-wherevi"
+        ],
+        "notes": "The third-party PDF and menu-photo surface require difficult extraction and cannot establish authoritative current menu scope."
+      },
+      {
+        "gateId": "inaccessible_source",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-opentable-profile"
+        ],
+        "notes": "The linked-vendor Menu section's external target did not resolve to a usable Barmini menu during verification, leaving the vendor menu path incomplete."
+      },
+      {
+        "gateId": "scope_incomplete",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-location",
+          "terra-official-faq"
+        ],
+        "notes": "Restaurant-issued pages list only broad categories, not all current food or beverage products."
+      },
+      {
+        "gateId": "unresolved_surface",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-opentable-profile",
+          "terra-third-party-pdf",
+          "terra-third-party-wherevi"
+        ],
+        "notes": "Vendor and third-party menu leads do not resolve into a complete, authoritative, current Barmini catalog."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-location",
+          "terra-official-faq"
+        ],
+        "notes": "The frozen baseline has zero items, while the official sources establish five category-level current offering concepts. Neither count is a complete item catalog."
+      },
+      {
+        "gateId": "current_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-faq"
+        ],
+        "notes": "All five scout current-product concepts have no baseline match; incomplete official scope prevents treating the concepts as a complete current catalog."
+      },
+      {
+        "gateId": "different_domain",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-opentable-profile",
+          "terra-third-party-pdf",
+          "terra-third-party-wherevi"
+        ],
+        "notes": "Material menu leads occur on OpenTable, Menuweb, Wherevi, and an unresolved thebazaar.com external target; none is promoted to restaurant-issued authority."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "unresolved",
+        "sourceEvidenceIds": [
+          "terra-official-faq"
+        ],
+        "notes": "The FAQ directs allergy considerations to concierge but does not state whether allergens, cross-contact, shared equipment, or accommodations apply. This is not a negative cross-contact conclusion."
+      },
+      {
+        "gateId": "validation_warnings",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-opentable-profile"
+        ],
+        "notes": "The packet's validation-warning signal is materially supported by the vendor Menu section's different-domain external target and lack of a resolvable item catalog."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-location",
+          "terra-official-faq",
+          "terra-opentable-profile"
+        ],
+        "notes": "Identity confidence is high, but menu completeness and allergen-source confidence remain low."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-location",
+          "terra-official-faq",
+          "terra-opentable-profile"
+        ],
+        "notes": "Independent reopening confirms the scout's core unresolved-menu and unavailable-allergen risks."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "official-home",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-official-home"
+        ],
+        "notes": "Checked once. Current restaurant-controlled navigation is accessible but has no itemized Barmini menu."
+      },
+      {
+        "surfaceId": "official-location",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-official-location"
+        ],
+        "notes": "Checked once. Current identity/location and broad offering categories are supported; menu scope is partial."
+      },
+      {
+        "surfaceId": "official-faq",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-official-faq"
+        ],
+        "notes": "Checked once. Current category-level offerings and allergy-contact instruction are supported; no item or allergen enumeration exists."
+      },
+      {
+        "surfaceId": "joseandres-location",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-joseandres-location"
+        ],
+        "notes": "Checked once. Identity-only restaurant-group surface; no menu catalog."
+      },
+      {
+        "surfaceId": "opentable-menu-shell",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-opentable-profile"
+        ],
+        "notes": "Checked once. Linked-vendor profile is current and accessible, but the menu path is incomplete and non-authoritative."
+      },
+      {
+        "surfaceId": "third-party-pdf-result",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-third-party-pdf"
+        ],
+        "notes": "Checked once. PDF exists and is extractable, but currentness, provenance, completeness, and allergen semantics remain unresolved."
+      },
+      {
+        "surfaceId": "third-party-menu-page",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-third-party-wherevi"
+        ],
+        "notes": "Checked once. Third-party menu page exists but its currentness and reliability are unresolved."
+      }
+    ],
+    "currentProductCheckGroups": [
+      {
+        "currentProductKeys": [
+          "cocktail-flight"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "terra-official-faq",
+          "terra-opentable-profile"
+        ],
+        "notes": "Checked once. Official FAQ confirms a cocktail flight; OpenTable describes a six-cocktail flight only as linked-vendor context. No ingredient or allergen disclosure."
+      },
+      {
+        "currentProductKeys": [
+          "alcohol-free-a-la-carte-beverage"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "terra-official-faq"
+        ],
+        "notes": "Checked once. Official FAQ confirms an alcohol-free a-la-carte beverage experience and expressly says non-alcoholic flights are not accommodated. No products, ingredients, or allergen disclosure."
+      },
+      {
+        "currentProductKeys": [
+          "small-bites"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "terra-official-location",
+          "terra-official-faq"
+        ],
+        "notes": "Checked once. Official pages confirm inventive snacks/small bites but do not enumerate dishes or allergen data."
+      },
+      {
+        "currentProductKeys": [
+          "curated-wine-list"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "terra-official-faq"
+        ],
+        "notes": "Checked once. Official FAQ confirms a curated wine list but provides no current product enumeration or allergen data."
+      },
+      {
+        "currentProductKeys": [
+          "non-alcoholic-beverages"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "terra-official-faq"
+        ],
+        "notes": "Checked once. Official FAQ confirms non-alcoholic beverages but provides no current product enumeration or allergen data."
+      }
+    ],
+    "additionalMenuSurfaces": [
+      {
+        "surfaceId": "opentable-external-menu-target",
+        "title": "OpenTable external 'View menu on restaurant's website' target",
+        "service": "menu link",
+        "url": "https://www.thebazaar.com/",
+        "authorityTier": "restaurant_linked_vendor",
+        "mediaType": "html",
+        "accessStatus": "error",
+        "fullyEnumerated": false,
+        "scopeStatus": "unresolved",
+        "current": null,
+        "sourceEvidenceIds": [
+          "terra-opentable-profile"
+        ],
+        "currentProductKeys": [],
+        "notes": "Luna did not separately enumerate this vendor-linked different-domain target. It did not resolve to a usable Barmini menu in verification and establishes no product or allergen claim."
+      }
+    ],
+    "additionalCurrentProducts": [],
+    "reconciliationSummary": {
+      "reconciledItemCount": 0,
+      "counts": {}
+    },
+    "findings": [
+      {
+        "findingId": "terra-no-complete-current-menu",
+        "severity": "high",
+        "kind": "menu",
+        "summary": "Restaurant-issued pages confirm only broad offerings, while vendor and third-party leads fail to establish a complete, authoritative current item catalog. The OpenTable Menu section additionally points to an unresolved different-domain target.",
+        "sourceEvidenceIds": [
+          "terra-official-location",
+          "terra-official-faq",
+          "terra-opentable-profile",
+          "terra-third-party-pdf",
+          "terra-third-party-wherevi"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "terra-allergen-and-cross-contact-unavailable",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "No restaurant-issued ingredient list, allergen matrix, or cross-contact disclosure was found. The FAQ's request to contact concierge for allergy considerations does not establish ingredient, negative, or cross-contact semantics.",
+        "sourceEvidenceIds": [
+          "terra-official-faq"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "terra-third-party-menu-unreliable",
+        "severity": "medium",
+        "kind": "extraction",
+        "summary": "The third-party menu page contains an incongruous cuisine statement and the PDF mixes generic categories; neither may be used as an authoritative current catalog or allergen source.",
+        "sourceEvidenceIds": [
+          "terra-third-party-pdf",
+          "terra-third-party-wherevi"
+        ],
+        "affectedAuditItemKeys": []
+      }
+    ],
+    "summary": "Terra independently verified all seven scout surfaces, all five scout current-product groups, and every empty presentation-ID array. The full frozen item file contains no auditItemKeys, so zero item-check groups is the exact complete reconciliation. No additional current products are established by authoritative evidence; one additional unresolved vendor-linked external menu target was identified. Official current sources are incomplete and cannot support negative, complete-array, or cross-contact conclusions. No restaurant-issued allergen evidence exists; third-party evidence remains third-party. Result remains blocked/unverifiable.",
+    "coordinatorNotes": [
+      "Read-only verification only; no files, ledger rows, dossiers, evidence manifests, or generated data were changed.",
+      "Do not treat the five category-level concepts as a complete product catalog, and do not ingest third-party item names or inferred allergens as current restaurant-issued data.",
+      "The deterministic cross-contact gate remains unresolved, not cleared."
+    ]
+  },
+  "affectedBaselineItems": [],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-03-2026-07-16/jobs/barmini-dc.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-03-2026-07-16/results/barmini-dc.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/barmini-dc.jsonl"
+  }
+}

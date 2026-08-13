@@ -1,0 +1,314 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811144438",
+  "restaurantId": "sushi-hachi-dc",
+  "name": "Sushi Hachi",
+  "locationId": "capitol-hill-dc",
+  "packetValidation": {
+    "baselineItemCount": 96,
+    "baselineFingerprint": "819c7bacbec535c43fc3466266904a4ee1b7e7be6ff0a7908ad6a41e955be2ee",
+    "itemChecksRead": 96
+  },
+  "identity": {
+    "name": "Sushi Hachi",
+    "locationId": "capitol-hill-dc",
+    "address": "735 8th Street SE, Washington, DC 20003",
+    "domain": "sushihachidc.com",
+    "officialHomepage": "https://www.sushihachidc.com/",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "src-official-about",
+      "src-official-home"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "src-official-home",
+      "url": "https://www.sushihachidc.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and identity",
+      "retrievedAt": "2026-08-11T15:00:05.000Z"
+    },
+    {
+      "evidenceId": "src-official-about",
+      "url": "https://www.sushihachidc.com/about",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity and location",
+      "retrievedAt": "2026-08-11T15:00:05.000Z"
+    },
+    {
+      "evidenceId": "src-official-menu",
+      "url": "https://www.sushihachidc.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official food menu surface",
+      "retrievedAt": "2026-08-11T15:00:05.000Z"
+    },
+    {
+      "evidenceId": "src-toast-menu",
+      "url": "https://order.toasttab.com/online/sushi-hachi-735-8th-st-se",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "linked current food and nonalcoholic ordering menu",
+      "retrievedAt": "2026-08-11T15:00:05.000Z"
+    },
+    {
+      "evidenceId": "src-targeted-search",
+      "url": "https://www.google.com/search?q=Sushi+Hachi+DC+allergen+nutrition+ingredients",
+      "authorityTier": "third_party",
+      "purpose": "targeted allergen search audit",
+      "retrievedAt": "2026-08-11T15:00:05.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://www.sushihachidc.com/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "735 8th Street SE, Washington, DC 20003",
+      "servicePeriod": "all",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "confirmed; links to menu and order",
+      "sourceEvidenceIds": [
+        "src-official-home"
+      ]
+    },
+    {
+      "surfaceId": "official-menu",
+      "url": "https://www.sushihachidc.com/menu",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "735 8th Street SE, Washington, DC 20003",
+      "servicePeriod": "all",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "official food menu",
+      "sourceEvidenceIds": [
+        "src-official-menu"
+      ]
+    },
+    {
+      "surfaceId": "toast-linked-menu",
+      "url": "https://order.toasttab.com/online/sushi-hachi-735-8th-st-se",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "735 8th St SE, Washington, DC 20003",
+      "servicePeriod": "all",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "linked food and nonalcoholic ordering menu; alcohol excluded from POC scope",
+      "sourceEvidenceIds": [
+        "src-toast-menu"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "sushi-hachi-current-menu-boundary",
+      "name": "Sushi Hachi current food and nonalcoholic menu boundary (96 reconciled products)",
+      "category": "POC menu boundary",
+      "variantGroup": "all current food and nonalcoholic presentations",
+      "sourceEvidenceIds": [
+        "src-official-menu",
+        "src-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": [],
+      "notes": "The frozen 96 product presentations are enumerated by the reconciliation; direct allergen evidence is unavailable except for selected vendor positives in the frozen baseline and is not generalized here."
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "searchClass": "official_site",
+        "locationInspected": "official homepage, about, and menu navigation",
+        "outcome": "no allergen or nutrition matrix found",
+        "sourceEvidenceIds": [
+          "src-official-home",
+          "src-official-menu"
+        ],
+        "queryOrLocation": "sushihachidc.com official homepage, about, and menu navigation",
+        "urls": [
+          "https://www.sushihachidc.com/",
+          "https://www.sushihachidc.com/about",
+          "https://www.sushihachidc.com/menu"
+        ]
+      },
+      {
+        "searchClass": "official_documents",
+        "locationInspected": "official PDF, image, sitemap, FAQ, and downloadable surfaces",
+        "outcome": "no official allergen or ingredient document found",
+        "sourceEvidenceIds": [
+          "src-official-menu"
+        ],
+        "queryOrLocation": "sushihachidc.com official PDF, image, sitemap, FAQ, and downloadable surfaces",
+        "urls": [
+          "https://www.sushihachidc.com/"
+        ]
+      },
+      {
+        "searchClass": "linked_vendor",
+        "locationInspected": "Toast linked ordering menu and item pages",
+        "outcome": "selected ingredient positives but no complete allergen matrix or cross-contact policy",
+        "sourceEvidenceIds": [
+          "src-toast-menu"
+        ],
+        "queryOrLocation": "Toast linked ordering menu and item pages for Sushi Hachi Capitol Hill DC",
+        "urls": [
+          "https://order.toasttab.com/online/sushi-hachi-735-8th-st-se"
+        ]
+      },
+      {
+        "searchClass": "targeted_web_search",
+        "locationInspected": "targeted searches for allergen, allergy, nutrition, ingredients, PDF, and menu",
+        "outcome": "no authoritative complete allergen matrix found",
+        "sourceEvidenceIds": [
+          "src-targeted-search"
+        ],
+        "query": "site:sushihachidc.com allergen allergy nutrition ingredients PDF menu",
+        "urls": [
+          "https://www.google.com/search?q=Sushi+Hachi+DC+allergen+nutrition+ingredients"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:14-sashimi-pieces-over-a-bed-of-sushi-rice",
+          "2:8th-street-8pcs",
+          "3:agedashi-tofu",
+          "4:alaska",
+          "5:alaska-8pcs",
+          "6:amberjack",
+          "7:bowl-of-sushi-rice",
+          "8:california",
+          "9:california-8pcs",
+          "10:capitol",
+          "11:capitol-8pcs",
+          "12:chefs-sushi-platter",
+          "13:chefs-tasting-platter",
+          "14:chicken-kara-age",
+          "15:chicken-katsu",
+          "16:crunch-shrimp-8pcseel-sauce",
+          "17:crunch-shrimpeel-sauce",
+          "18:cucumber-avocado-onion-jam",
+          "19:cucumber-avocado-onion-jam-8-pcs",
+          "20:dragon",
+          "21:dragon-8pcs",
+          "22:eel",
+          "23:eel-avocado",
+          "24:eel-avocado-8pcs",
+          "25:eel-sauce",
+          "26:fried-rice",
+          "27:gluten-free-soy-sauce",
+          "28:grilled-octopus-with-ahi-tuna",
+          "29:hachi",
+          "30:hachi-8pcs",
+          "31:hachis-chirashi-bowl-sushi",
+          "32:house-salad",
+          "33:mackerel",
+          "34:miso-soup",
+          "35:nigiri-amberjack",
+          "36:nigiri-black-snapper",
+          "37:nigiri-chu-toro",
+          "38:nigiri-eel",
+          "39:nigiri-mackerel",
+          "40:nigiri-o-toro",
+          "41:nigiri-octopus",
+          "42:nigiri-prime-beef",
+          "43:nigiri-salmon",
+          "44:nigiri-salmon-roe",
+          "45:nigiri-scallop",
+          "46:nigiri-sweet-shrimp",
+          "47:nigiri-tuna",
+          "48:nigiri-uni",
+          "49:nigiri-yellowtail",
+          "50:octopus",
+          "51:prime-beef",
+          "52:prime-beef-ishiyaki-grilling-hot-stone-5-pcs",
+          "53:salmon",
+          "54:salmon-avocado",
+          "55:salmon-avocado-8pcs",
+          "56:salmon-roe",
+          "57:sashimi-amberjack",
+          "58:sashimi-black-snapper",
+          "59:sashimi-chu-toro",
+          "60:sashimi-eel",
+          "61:sashimi-o-toro",
+          "62:sashimi-octopus",
+          "63:sashimi-prime-beef",
+          "64:sashimi-salmon",
+          "65:sashimi-salmon-roe",
+          "66:sashimi-scallop",
+          "67:sashimi-sweet-shrimp",
+          "68:sashimi-tuna",
+          "69:sashimi-uni",
+          "70:sashimi-yellowtail",
+          "71:scallop",
+          "72:sea-bass",
+          "73:seaweed-salad",
+          "74:shiitake-mushroom-cucumber-avocado-soy-paper",
+          "75:shitake-mushroomcarrotcucumberavocado-soy-paper-8-pcs",
+          "76:shrimp-tempura",
+          "77:snapper-miso-ceviche",
+          "78:spicy-salmon-avocado",
+          "79:spicy-salmon-avocado-8pcs",
+          "80:spicy-tuna-avocado",
+          "81:spicy-tuna-avocado-8pcs",
+          "82:sriracha-sauce",
+          "83:sweet-shrimp",
+          "84:tempura-udon-noodle",
+          "85:todays-best-10-sashimi-pieces-over-a-bed-of-sushi-rice",
+          "86:tuna",
+          "87:tuna-roll-6pcs",
+          "88:uni",
+          "89:veggie-tempura",
+          "90:volcano",
+          "91:volcano-8pcs",
+          "92:yellowtail",
+          "93:yellowtail-cilantro",
+          "94:yellowtail-cilantro-8pcs",
+          "95:yellowtail-scallion-jalapeno-ponzu",
+          "96:yellowtail-scallion-8pcs-jalapeno-ponzu"
+        ],
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sushi-hachi-current-menu-boundary"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menu",
+          "src-toast-menu"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "outcome": "researched",
+  "recommendedLane": "verify",
+  "notes": [
+    "POC Phase A research only; canonical files and ledger not modified.",
+    "Alcohol-only products are out of scope."
+  ]
+}

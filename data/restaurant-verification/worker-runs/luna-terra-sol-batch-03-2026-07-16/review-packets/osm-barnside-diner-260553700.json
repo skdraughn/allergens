@@ -1,0 +1,712 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-batch-03-2026-07-16",
+  "restaurant": {
+    "restaurantId": "osm-barnside-diner-260553700",
+    "name": "Barnside Diner",
+    "domain": "orderbarnsidediner.com",
+    "locationId": "arlington-falls-church",
+    "baselineItemCount": 134,
+    "baselineItemFingerprint": "abe316b1fbfa9143b68c1519276c967b47e3d32474ce5ce21ab3cd7e4511aab0",
+    "officialItemCount": 82,
+    "officialAllergenStatus": "not-found",
+    "sourceFamily": "generic-website",
+    "parserProfile": "generic-website",
+    "guideUrl": "https://orderbarnsidediner.com/",
+    "sourceUrls": [
+      "https://orderbarnsidediner.com/",
+      "https://orderbarnsidediner.com/menu"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found.",
+    "Low confidence must be explicitly marked low_confidence.",
+    "Terra identity verdict is mismatch.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "validationWarnings": [
+    "Low confidence must be explicitly marked low_confidence.",
+    "Terra identity verdict is mismatch.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "inaccessible_source",
+      "scope_incomplete",
+      "count_drift",
+      "baseline_only",
+      "non_exact_reconciliation",
+      "validation_warnings",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 134,
+      "reconciledItemCount": 134,
+      "uniqueReconciledItemCount": 134,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 0,
+      "activeMenuSurfaceCount": 0,
+      "accessibleMenuSurfaceCount": 0,
+      "serviceCount": 0,
+      "pdfImageSurfaceCount": 0,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 3,
+      "incompleteSurfaceCount": 0,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 0,
+      "currentOnlyCount": 0,
+      "baselineOnlyCount": 134,
+      "countDrift": true,
+      "duplicatePresentationCount": 0,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 0,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 134,
+      "allergenMismatchItemCount": 0,
+      "crossContactCount": 0,
+      "parserRepairFindingCount": 0,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 3,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "low",
+      "overall": 0.48,
+      "menu": 0.91,
+      "allergenSource": 0.25,
+      "extraction": 0.91,
+      "rationale": "Official menu is accessible and complete, but provides no allergen matrix, complete ingredients document, negatives, may-contain, or cross-contact statement."
+    },
+    "identity": {
+      "verdict": "mismatch",
+      "scope": "Barnside Diner official domain and location",
+      "confidence": 0.98,
+      "sourceEvidenceIds": [
+        "E-home",
+        "E-menu",
+        "E-directory"
+      ],
+      "notes": "Official pages identify 6306 Little River Turnpike, Alexandria, VA 22312, not arlington-falls-church."
+    },
+    "sources": [
+      {
+        "evidenceId": "E-home",
+        "url": "https://orderbarnsidediner.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Barnside Diner | Order Online",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Official page identifies Barnside Diner at 6306 Little River Turnpike, Alexandria, VA 22312 and links to Menu and SimpleMenu.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "E-menu",
+        "url": "https://orderbarnsidediner.com/menu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Barnside Diner | Our Menu",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Official 16-section HTML menu enumerates 137 products including all 134 frozen items plus Iced Tea, Milk, and Juice; no allergen declaration or cross-contact language.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "E-directory",
+        "url": "https://www.restaurantji.com/va/alexandria/barnside-diner-/",
+        "authorityTier": "third_party",
+        "purpose": "identity",
+        "title": "Barnside Diner, Alexandria",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Independent listing identifies 6306 Little River Turnpike, Alexandria, VA 22312.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://orderbarnsidediner.com/",
+        "notes": "Identity and official navigation reviewed."
+      },
+      {
+        "kind": "linked_source",
+        "status": "error",
+        "url": "https://order.simplemenu.com/store/1297",
+        "notes": "Restaurant-linked ordering provider found but unavailable in verifier session; authority not promoted."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "not_found",
+        "url": null,
+        "notes": "Complete restaurant-issued menu was enumerated."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": "https://orderbarnsidediner.com/menu",
+        "notes": "No restaurant-issued allergen or ingredients document located."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No material official archive located."
+      },
+      {
+        "kind": "third_party",
+        "status": "accessible",
+        "url": "https://www.restaurantji.com/va/alexandria/barnside-diner-/",
+        "notes": "Identity corroboration only."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "inaccessible_source",
+        "triggered": true,
+        "verdict": "rejected",
+        "sourceEvidenceIds": [
+          "E-home",
+          "E-menu"
+        ],
+        "notes": "Luna access failure was not reproduced."
+      },
+      {
+        "gateId": "scope_incomplete",
+        "triggered": true,
+        "verdict": "rejected",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "notes": "One fully enumerated current official menu surface."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "notes": "137 current products versus 134 frozen and metadata count 82."
+      },
+      {
+        "gateId": "baseline_only",
+        "triggered": true,
+        "verdict": "rejected",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "notes": "All frozen products appear after normalization."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "notes": "Typography variants require normalization."
+      },
+      {
+        "gateId": "validation_warnings",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "notes": "Luna omitted accessible evidence, surface, and catalog."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "notes": "Allergen-source evidence remains incomplete."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "notes": "Material scout omission confirmed."
+      }
+    ],
+    "surfaceChecks": [],
+    "currentProductCheckGroups": [],
+    "additionalMenuSurfaces": [
+      {
+        "surfaceId": "official-menu",
+        "title": "Barnside Diner Menu",
+        "service": null,
+        "url": "https://orderbarnsidediner.com/menu",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "html",
+        "accessStatus": "accessible",
+        "fullyEnumerated": true,
+        "scopeStatus": "complete",
+        "current": true,
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "currentProductKeys": [],
+        "notes": "New complete official menu surface; allergen arrays remain incomplete and no cross-contact conclusion is supported."
+      }
+    ],
+    "additionalCurrentProducts": [],
+    "reconciliationSummary": {
+      "reconciledItemCount": 134,
+      "counts": {
+        "normalized_match/mismatch": 134
+      }
+    },
+    "findings": [
+      {
+        "findingId": "F-001",
+        "severity": "high",
+        "kind": "identity",
+        "summary": "Official and third-party sources place this restaurant in Alexandria, not Arlington/Falls Church.",
+        "sourceEvidenceIds": [
+          "E-home",
+          "E-menu",
+          "E-directory"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "F-002",
+        "severity": "high",
+        "kind": "menu",
+        "summary": "Luna missed accessible official menu and 137 current products; 134 map to frozen rows and Iced Tea, Milk, and Juice are extras.",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "F-003",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "Frozen official-ingredients labels are unsupported by an official allergen or complete-ingredients source; menu permits narrow positives only, never complete arrays, negatives, may-contain, or cross-contact conclusions.",
+        "sourceEvidenceIds": [
+          "E-menu"
+        ],
+        "affectedAuditItemKeys": []
+      }
+    ],
+    "summary": "Discrepancy found: accessible official menu was omitted by Luna; identity location mismatches and allergen evidence is incomplete.",
+    "coordinatorNotes": [
+      "Read AGENTS.md, full verification plan, packet, prior result, job, and frozen rows.",
+      "No files, ledger, generated data, repairs, or terminal state were modified.",
+      "Scout had zero surfaces, current products, and presentations; therefore its verification arrays are empty."
+    ]
+  },
+  "affectedBaselineItems": [],
+  "sampleBaselineItems": [
+    {
+      "auditItemKey": "1:african-omelette",
+      "baseline": {
+        "itemId": "african-omelette",
+        "name": "African Omelette",
+        "category": "Omelettes",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "2:appetizer-sampler",
+      "baseline": {
+        "itemId": "appetizer-sampler",
+        "name": "Appetizer Sampler",
+        "category": "Appetizers",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "3:blt-sandwich",
+      "baseline": {
+        "itemId": "blt-sandwich",
+        "name": "B.L.T. Sandwich",
+        "category": "Sandwiches",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "4:bacon-and-cheese-omelette",
+      "baseline": {
+        "itemId": "bacon-and-cheese-omelette",
+        "name": "Bacon & Cheese Omelette",
+        "category": "Omelettes",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "5:bacon-cheeseburger",
+      "baseline": {
+        "itemId": "bacon-cheeseburger",
+        "name": "Bacon Cheeseburger",
+        "category": "Anytime Lunch",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "6:bacon-or-sausage",
+      "baseline": {
+        "itemId": "bacon-or-sausage",
+        "name": "Bacon or Sausage",
+        "category": "Side Orders",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "7:bacon-or-sausage-egg-and-cheese",
+      "baseline": {
+        "itemId": "bacon-or-sausage-egg-and-cheese",
+        "name": "Bacon or Sausage, Egg & Cheese",
+        "category": "Breakfast Sandwiches",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "8:bacon-philly-steak-and-cheese",
+      "baseline": {
+        "itemId": "bacon-philly-steak-and-cheese",
+        "name": "Bacon Philly Steak & Cheese",
+        "category": "Subs (12\")",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "9:bagel",
+      "baseline": {
+        "itemId": "bagel",
+        "name": "Bagel",
+        "category": "Side Orders",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "10:bagel-with-cream-cheese",
+      "baseline": {
+        "itemId": "bagel-with-cream-cheese",
+        "name": "Bagel With Cream Cheese",
+        "category": "Side Orders",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "11:banan-pecans-pancakes",
+      "baseline": {
+        "itemId": "banan-pecans-pancakes",
+        "name": "Banan Pecans Pancakes",
+        "category": "Pancakes",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "12:banana-pecans-french-toast",
+      "baseline": {
+        "itemId": "banana-pecans-french-toast",
+        "name": "Banana Pecans French Toast",
+        "category": "French Toast",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "13:banana-pecans-waffle",
+      "baseline": {
+        "itemId": "banana-pecans-waffle",
+        "name": "Banana Pecans Waffle",
+        "category": "Belgian Waffles",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "14:barnside-bacon-egg-cheese",
+      "baseline": {
+        "itemId": "barnside-bacon-egg-cheese",
+        "name": "Barnside Bacon Egg Cheese",
+        "category": "Breakfast Sandwiches",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "15:barnside-jumbo-burger",
+      "baseline": {
+        "itemId": "barnside-jumbo-burger",
+        "name": "Barnside Jumbo Burger",
+        "category": "Anytime Lunch",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "16:beef-gyro",
+      "baseline": {
+        "itemId": "beef-gyro",
+        "name": "Beef Gyro",
+        "category": "Sandwiches",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "17:biscuits-and-gravy",
+      "baseline": {
+        "itemId": "biscuits-and-gravy",
+        "name": "Biscuits & Gravy",
+        "category": "Country Specials",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "18:blueberry-french-toast",
+      "baseline": {
+        "itemId": "blueberry-french-toast",
+        "name": "Blueberry French Toast",
+        "category": "French Toast",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "19:blueberry-pancakes",
+      "baseline": {
+        "itemId": "blueberry-pancakes",
+        "name": "Blueberry Pancakes",
+        "category": "Pancakes",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "20:blueberry-waffle",
+      "baseline": {
+        "itemId": "blueberry-waffle",
+        "name": "Blueberry Waffle",
+        "category": "Belgian Waffles",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://orderbarnsidediner.com/menu"
+        ]
+      }
+    }
+  ],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-03-2026-07-16/jobs/osm-barnside-diner-260553700.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-03-2026-07-16/results/osm-barnside-diner-260553700.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/osm-barnside-diner-260553700.jsonl"
+  }
+}

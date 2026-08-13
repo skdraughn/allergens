@@ -1,0 +1,395 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811155751",
+  "restaurantId": "shilling-canning-company-dc",
+  "name": "Shilling Canning Company",
+  "locationId": "washington",
+  "packetValidation": {
+    "baselineItemCount": 22,
+    "baselineFingerprint": "8f657f3c950ff7bf3712dea7e0e41399c99f3aff967dfb4da710cb93023e3030",
+    "itemChecksPath": "data/restaurant-verification/item-checks/shilling-canning-company-dc.jsonl"
+  },
+  "identity": {
+    "name": "Shilling Canning Company",
+    "location": "360 Water Street SE, Washington, DC 20003",
+    "domain": "reid-shilling.squarespace.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "src-official-home",
+      "src-official-menu-page"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "src-official-home",
+      "url": "https://reid-shilling.squarespace.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage, identity, and location",
+      "retrievedAt": "2026-08-11T16:05:00.000Z"
+    },
+    {
+      "evidenceId": "src-official-menu-page",
+      "url": "https://reid-shilling.squarespace.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official menu page inspected; only dated 2019 menu images exposed",
+      "retrievedAt": "2026-08-11T16:05:00.000Z"
+    },
+    {
+      "evidenceId": "src-official-menu-image-2019",
+      "url": "https://images.squarespace-cdn.com/content/v1/53989176e4b03ea7cc92b96c/1577396268567-7PSNEH9N5WUZKSSZZFZX/12%3A26%3A19%2Bfood%2Band%2Bwine.png",
+      "authorityTier": "restaurant_issued",
+      "purpose": "dated December 26, 2019 food menu image; historical, not current",
+      "retrievedAt": "2026-08-11T16:05:00.000Z"
+    },
+    {
+      "evidenceId": "src-official-pdf-404",
+      "url": "https://shillingcanning.com/wp-content/uploads/2024/09/front-window-bar-menu-9.18.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official document URL inspected; unavailable",
+      "retrievedAt": "2026-08-11T16:05:00.000Z"
+    },
+    {
+      "evidenceId": "src-official-historical-pdf",
+      "url": "https://shillingcanning.com/wp-content/uploads/2024/08/Brunch-Menu-8.17.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "dated official brunch PDF; historical, not current",
+      "retrievedAt": "2026-08-11T16:05:00.000Z"
+    },
+    {
+      "evidenceId": "src-linked-vendor-search",
+      "url": "https://www.allmenus.com/dc/washington/767847-shilling-canning-company/menu/",
+      "authorityTier": "third_party",
+      "purpose": "archived third-party menu; no current official vendor identified",
+      "retrievedAt": "2026-08-11T16:05:00.000Z"
+    },
+    {
+      "evidenceId": "src-targeted-search",
+      "url": "https://www.google.com/search?q=site%3Ashillingcanning.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted web search audit; no current official matrix or current menu located",
+      "retrievedAt": "2026-08-11T16:05:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://reid-shilling.squarespace.com/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "Washington DC",
+      "servicePeriod": "homepage",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "src-official-home"
+      ]
+    },
+    {
+      "surfaceId": "official-menu-page",
+      "url": "https://reid-shilling.squarespace.com/menu",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "Washington DC",
+      "servicePeriod": "food, nonalcoholic, wine, cocktail, and brunch menu links",
+      "current": false,
+      "scopeStatus": "historical",
+      "sourceEvidenceIds": [
+        "src-official-menu-page",
+        "src-official-menu-image-2019"
+      ]
+    },
+    {
+      "surfaceId": "official-pdf-archive",
+      "url": "https://shillingcanning.com/wp-content/uploads/2024/08/Brunch-Menu-8.17.pdf",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "Washington DC",
+      "servicePeriod": "dated brunch",
+      "current": false,
+      "scopeStatus": "historical",
+      "sourceEvidenceIds": [
+        "src-official-historical-pdf"
+      ]
+    },
+    {
+      "surfaceId": "third-party-menu",
+      "url": "https://www.allmenus.com/dc/washington/767847-shilling-canning-company/menu/",
+      "authorityTier": "third_party",
+      "locationScope": "Washington DC",
+      "servicePeriod": "undated archived menu",
+      "current": false,
+      "scopeStatus": "historical",
+      "sourceEvidenceIds": [
+        "src-linked-vendor-search"
+      ]
+    }
+  ],
+  "currentProducts": [],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "https://reid-shilling.squarespace.com/ and /menu",
+        "locationInspected": "official homepage and official menu page",
+        "outcome": "menu page exposes only dated 2019 menu images; no current product catalog or allergen matrix",
+        "sourceEvidenceIds": [
+          "src-official-home",
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "official PDF/archive and document URLs",
+        "locationInspected": "official PDF/archive and document URLs",
+        "outcome": "no current allergen or ingredient matrix; discovered document unavailable or dated",
+        "sourceEvidenceIds": [
+          "src-official-pdf-404",
+          "src-official-historical-pdf"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "https://www.allmenus.com/dc/washington/767847-shilling-canning-company/menu/",
+        "locationInspected": "restaurant-linked ordering/menu surfaces",
+        "outcome": "archived third-party menu only; no current official linked vendor or allergen matrix",
+        "sourceEvidenceIds": [
+          "src-linked-vendor-search"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "Shilling Canning Company allergen allergy nutrition ingredients PDF menu",
+        "outcome": "no current official allergen matrix or current menu located",
+        "sourceEvidenceIds": [
+          "src-targeted-search"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [],
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:autumn-olive-pork-chop",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "2:braised-rabbit-and-buttermilk-dumplings",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "3:cheese-plate",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "4:chesapeake-rockfish",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "5:chicken-fried-beaver-creek-quail",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "6:chilled-lobster",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "7:crispy-blue-catfish",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "8:deviled-ham-deviled-eggs",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "9:ember-roasted-scallops",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "10:gnudi",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "11:grilled-kielbasa",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "12:oyster-chowder",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "13:oysters",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "14:preserved-garden-vegetables",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "15:roasted-amish-half-chicken",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "16:roasted-banana-squash",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "17:scallop-crudo",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "18:shellfish-platter",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "19:sourdough-flatbread",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "20:surryano-ham",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "21:sweet-potato",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      },
+      {
+        "auditItemKey": "22:thick-cut-fries",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "src-official-menu-page",
+          "src-official-menu-image-2019"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify",
+  "outcome": "verified",
+  "emptyCatalogReason": "closed_or_no_current_catalog"
+}

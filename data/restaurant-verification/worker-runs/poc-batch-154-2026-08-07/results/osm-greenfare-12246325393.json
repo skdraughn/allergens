@@ -1,0 +1,478 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-154-2026-08-07",
+  "restaurantId": "osm-greenfare-12246325393",
+  "runId": "poc-batch-154-2026-08-07-osm-greenfare-12246325393-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "osm-greenfare-12246325393",
+    "name": "GreenFare",
+    "locationId": "herndon",
+    "domain": "greenfare.com",
+    "baselineItemCount": 7,
+    "baselineFingerprint": "8508bbabf07458b8bcfb52c74cb902cdecd7268a30d2a1f7f7412f294d0912fb",
+    "itemChecksRead": 7,
+    "itemChecksPath": "data/restaurant-verification/item-checks/osm-greenfare-12246325393.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "GreenFare",
+    "location": "408 Elden Street, Herndon, VA 20170",
+    "locationId": "herndon",
+    "domain": "greenfare.com",
+    "officialHomepage": "https://greenfare.com/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-desserts"
+    ],
+    "notes": "Official homepage and desserts page identify the Herndon cafe; no other location merged."
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-home",
+      "url": "https://greenfare.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Official GreenFare homepage",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "GreenFare Organic Cafe; 408 Elden Street, Herndon VA 20170; open Mon-Sat 11AM-7PM."
+    },
+    {
+      "evidenceId": "ev-desserts",
+      "url": "https://greenfare.com/desserts/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "both",
+      "title": "Official current Desserts menu",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Current dessert cards and explicit allergen labels for Herndon location."
+    },
+    {
+      "evidenceId": "ev-all-day",
+      "url": "https://greenfare.com/all-day/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Official All Day menu",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Current food menu; same Herndon address."
+    },
+    {
+      "evidenceId": "ev-sides",
+      "url": "https://greenfare.com/sides/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Official Sides menu",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Current side menu; same Herndon address."
+    },
+    {
+      "evidenceId": "ev-search-site",
+      "url": "https://greenfare.com/desserts/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_site allergen search",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Inspected homepage and menu navigation; dessert cards expose item allergen labels but no standalone matrix."
+    },
+    {
+      "evidenceId": "ev-search-docs",
+      "url": "https://greenfare.com/media_category/menu/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_documents allergen search",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Inspected official menu media/document category; no standalone allergen or nutrition matrix located."
+    },
+    {
+      "evidenceId": "ev-search-vendor",
+      "url": "https://greenfare.com/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "title": "linked_vendor allergen search",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Homepage ordering is website/phone based; no separate linked ordering vendor with allergen matrix found."
+    },
+    {
+      "evidenceId": "ev-search-web",
+      "url": "https://www.google.com/search?q=site%3Agreenfare.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "targeted_web_search allergen search",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Search surfaced official menu pages only; no standalone matrix beyond item labels."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "desserts",
+      "title": "Desserts",
+      "url": "https://greenfare.com/desserts/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "408 Elden Street, Herndon VA 20170",
+      "servicePeriod": "dessert",
+      "surfaceType": "html_menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-desserts"
+      ],
+      "currentProductKeys": [
+        "organic-china-study-carrot-cake",
+        "organic-maca-chocolate-mousse",
+        "organic-red-bean-lava-cake",
+        "organic-peanut-butter-mousse-pie",
+        "organic-chocolate-nut-pie",
+        "organic-apple-crisp",
+        "organic-lemon-bar"
+      ],
+      "outcome": "Current dessert catalog; explicit item allergen labels."
+    },
+    {
+      "surfaceId": "all-day",
+      "title": "All Day",
+      "url": "https://greenfare.com/all-day/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "408 Elden Street, Herndon VA 20170",
+      "servicePeriod": "all-day",
+      "surfaceType": "html_menu",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-all-day"
+      ],
+      "currentProductKeys": [],
+      "outcome": "Supporting/context menu surface inspected; product boundary for this frozen dessert task is the complete Desserts surface."
+    },
+    {
+      "surfaceId": "sides",
+      "title": "Sides",
+      "url": "https://greenfare.com/sides/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "408 Elden Street, Herndon VA 20170",
+      "servicePeriod": "all-day",
+      "surfaceType": "html_menu",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-sides"
+      ],
+      "currentProductKeys": [],
+      "outcome": "Supporting/context menu surface inspected; no dessert products in scope."
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "organic-china-study-carrot-cake",
+      "name": "Organic China Study Carrot Cake",
+      "category": "american",
+      "servicePeriod": "dessert",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-desserts"
+      ],
+      "containsAllergens": [
+        "soy",
+        "tree-nut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-desserts"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "organic-maca-chocolate-mousse",
+      "name": "Organic Maca Chocolate Mousse",
+      "category": "american",
+      "servicePeriod": "dessert",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-desserts"
+      ],
+      "containsAllergens": [
+        "soy",
+        "tree-nut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-desserts"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "organic-red-bean-lava-cake",
+      "name": "Organic Red Bean Lava Cake",
+      "category": "american",
+      "servicePeriod": "dessert",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-desserts"
+      ],
+      "containsAllergens": [
+        "tree-nut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-desserts"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "organic-peanut-butter-mousse-pie",
+      "name": "Organic Peanut Butter Mousse Pie",
+      "category": "american",
+      "servicePeriod": "dessert",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-desserts"
+      ],
+      "containsAllergens": [
+        "peanut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-desserts"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "organic-chocolate-nut-pie",
+      "name": "Organic Chocolate Nut Pie",
+      "category": "american",
+      "servicePeriod": "dessert",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-desserts"
+      ],
+      "containsAllergens": [
+        "tree-nut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-desserts"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "organic-apple-crisp",
+      "name": "Organic Apple Crisp",
+      "category": "american",
+      "servicePeriod": "dessert",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-desserts"
+      ],
+      "containsAllergens": [
+        "peanut",
+        "tree-nut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-desserts"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "organic-lemon-bar",
+      "name": "Organic Lemon Bar",
+      "category": "american",
+      "servicePeriod": "dessert",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-desserts"
+      ],
+      "containsAllergens": [
+        "soy",
+        "tree-nut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-desserts"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "officialAllergenStatus": "extracted",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "searchClass": "official_site",
+        "class": "official_site",
+        "inspectedLocation": "homepage/menu navigation and desserts",
+        "query": null,
+        "urls": [
+          "https://greenfare.com/",
+          "https://greenfare.com/desserts/"
+        ],
+        "outcome": "item-level allergen labels found; no standalone matrix",
+        "evidenceIds": [
+          "ev-search-site",
+          "ev-desserts"
+        ]
+      },
+      {
+        "searchClass": "official_documents",
+        "class": "official_documents",
+        "inspectedLocation": "official menu media/document category",
+        "query": null,
+        "urls": [
+          "https://greenfare.com/media_category/menu/"
+        ],
+        "outcome": "no standalone matrix found",
+        "evidenceIds": [
+          "ev-search-docs"
+        ]
+      },
+      {
+        "searchClass": "linked_vendor",
+        "class": "linked_vendor",
+        "inspectedLocation": "homepage ordering links",
+        "query": null,
+        "urls": [
+          "https://greenfare.com/"
+        ],
+        "outcome": "no linked vendor matrix found",
+        "evidenceIds": [
+          "ev-search-vendor"
+        ]
+      },
+      {
+        "searchClass": "targeted_web_search",
+        "class": "targeted_web_search",
+        "inspectedLocation": "Google site query",
+        "query": "site:greenfare.com allergen allergy nutrition ingredients PDF menu",
+        "urls": [
+          "https://www.google.com/search?q=site%3Agreenfare.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+        ],
+        "outcome": "official pages only; no additional matrix",
+        "evidenceIds": [
+          "ev-search-web"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:organic-apple-crisp",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "organic-apple-crisp"
+        ],
+        "sourceEvidenceIds": [
+          "ev-desserts"
+        ]
+      },
+      {
+        "auditItemKey": "2:organic-china-study-carrot-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "organic-china-study-carrot-cake"
+        ],
+        "sourceEvidenceIds": [
+          "ev-desserts"
+        ]
+      },
+      {
+        "auditItemKey": "3:organic-chocolate-nut-pie",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "organic-chocolate-nut-pie"
+        ],
+        "sourceEvidenceIds": [
+          "ev-desserts"
+        ]
+      },
+      {
+        "auditItemKey": "4:organic-maca-chocolate-mousse",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "organic-maca-chocolate-mousse"
+        ],
+        "sourceEvidenceIds": [
+          "ev-desserts"
+        ]
+      },
+      {
+        "auditItemKey": "5:organic-peanut-butter-mousse-pie",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "organic-peanut-butter-mousse-pie"
+        ],
+        "sourceEvidenceIds": [
+          "ev-desserts"
+        ]
+      },
+      {
+        "auditItemKey": "6:organic-red-bean-lava-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "organic-red-bean-lava-cake"
+        ],
+        "sourceEvidenceIds": [
+          "ev-desserts"
+        ]
+      },
+      {
+        "auditItemKey": "7:organic-strawberry-rhubarb-bar",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-desserts"
+        ],
+        "notes": "Not present on current Desserts page; current Organic Lemon Bar is a new product."
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": true,
+    "newItems": true,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "proposedChanges": [
+    "Retain six frozen dessert products with current official allergen labels.",
+    "Remove stale Organic Strawberry Rhubarb Bar and add current Organic Lemon Bar.",
+    "Preserve unavailable semantics for products without direct allergen evidence; no unsupported negatives."
+  ],
+  "routingSignals": {
+    "lightweightRepairSignals": [
+      "catalogDrift",
+      "staleItems",
+      "newItems"
+    ],
+    "safetyEscalationSignals": []
+  },
+  "blockedReason": null
+}

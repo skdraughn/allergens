@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811181957",
+  "restaurantId": "ramen-menri-bethesda-dc-metro",
+  "packetValidation": {
+    "baselineItemCount": 45,
+    "baselineFingerprint": "6b58f56b0ef7bce9aeec45686c952bb14f5ee5ba9ec5679f62837a1378bd1e49",
+    "itemCheckCount": 45,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "Ramen Menri Bethesda",
+    "locationId": "bethesda-md",
+    "address": "7345 Wisconsin Ave unit B, Bethesda, MD 20814",
+    "domain": "ramenmenri.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "e-home",
+      "e-menu",
+      "e-toast"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "e-home",
+      "url": "https://www.ramenmenri.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and contact/location identity",
+      "retrievedAt": "2026-08-11T18:25:00Z"
+    },
+    {
+      "evidenceId": "e-menu",
+      "url": "https://www.ramenmenri.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current official food, beverage, dessert and allergen-warning menu",
+      "retrievedAt": "2026-08-11T18:25:00Z"
+    },
+    {
+      "evidenceId": "e-toast",
+      "url": "https://order.toasttab.com/online/ramen-menri",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current linked ordering menu and location",
+      "retrievedAt": "2026-08-11T18:25:00Z"
+    },
+    {
+      "evidenceId": "e-search",
+      "url": "https://www.google.com/search?q=site%3Aramenmenri.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted web search audit",
+      "retrievedAt": "2026-08-11T18:25:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://www.ramenmenri.com/",
+      "authority": "Ramen MENRI",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "bethesda-md",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; identity and address confirmed",
+      "sourceEvidenceIds": [
+        "e-home"
+      ]
+    },
+    {
+      "surfaceId": "official-menu",
+      "url": "https://www.ramenmenri.com/menu",
+      "authority": "Ramen MENRI",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "bethesda-md",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; food, nonalcoholic beverages, desserts and merchandise enumerated; alcohol excluded",
+      "sourceEvidenceIds": [
+        "e-menu"
+      ]
+    },
+    {
+      "surfaceId": "toast-ordering",
+      "url": "https://order.toasttab.com/online/ramen-menri",
+      "authority": "Toast linked by restaurant",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "bethesda-md",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; current orderable menu, specials, lunch sets and merchandise; alcohol excluded",
+      "sourceEvidenceIds": [
+        "e-toast"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "ramen-menri-current-catalog",
+      "name": "Ramen MENRI current food and nonalcoholic product catalog",
+      "sourceEvidenceIds": [
+        "e-menu",
+        "e-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "productCount": 45,
+      "boundary": "Complete current POC boundary represented by the 45 frozen food/nonalcoholic audit products and current menu surfaces; alcoholic beer, sake and other alcohol-only offerings excluded. Toast specials/out-of-stock entries are retained as menu-surface observations but not asserted as additional frozen products."
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "ramenmenri.com home, menu, about, contact and navigation",
+        "outcome": "No allergen matrix or complete ingredient grid found. Official menu states kitchen is not allergen-free.",
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-menu"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "official PDF, nutrition, ingredient, FAQ, image, sitemap and downloadable-document surfaces",
+        "outcome": "No current official allergen or nutrition document found.",
+        "sourceEvidenceIds": [
+          "e-menu"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Toast Ramen MENRI ordering menu and item pages",
+        "outcome": "Current item descriptions and menu categories inspected; no complete allergen matrix or cross-contact matrix found.",
+        "sourceEvidenceIds": [
+          "e-toast"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "queryOrLocation": "site:ramenmenri.com allergen allergy nutrition ingredients PDF menu",
+        "outcome": "No authoritative allergen matrix located.",
+        "sourceEvidenceIds": [
+          "e-search",
+          "e-menu"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "expectedCount": 45,
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:ajitama",
+          "2:bok-choy-2-pc",
+          "3:chicken-chashu-3-pc",
+          "4:chili-nibo-oil-fish",
+          "5:cold-kake-shoyu",
+          "6:crispy-chicken-salad",
+          "7:dashi-shio-ramen",
+          "8:dashi-shoyu-ramen",
+          "9:edamame",
+          "10:gekikara-miso-ramen",
+          "11:gekikara-tonkotsu",
+          "12:hiyashi-dashi-shoyu-cold",
+          "13:hiyashi-yuzu-shio-cold",
+          "14:kids-ramen",
+          "15:kimino-yuzu-sparkling",
+          "16:mazesoba",
+          "17:menma-4-pcs",
+          "18:menri-47-cap",
+          "19:menri-ouchi-salad",
+          "20:menri-caesar-salad",
+          "21:menri-dashi-shio",
+          "22:menri-dashi-shoyu",
+          "23:menri-logo-sticker",
+          "24:menri-miso-ramen",
+          "25:menri-shiny-sticker",
+          "26:menri-sticker-set",
+          "27:menri-tonkotsu",
+          "28:menri-truffle-shoyu",
+          "29:menri-yuzu-shio",
+          "30:mini-chashu-don",
+          "31:nori",
+          "32:ontama",
+          "33:pork-butt-chashu-2-pc",
+          "34:pork-gyoza",
+          "35:seasoned-ground-chicken",
+          "36:shishito-peppers",
+          "37:spice-bomb",
+          "38:tan-tan-men",
+          "39:tori-kara-age",
+          "40:umakara-miso-ramen",
+          "41:umakara-miso-tsukemen",
+          "42:vegan-mazesoba",
+          "43:vegan-tan-tan-men",
+          "44:white-rice",
+          "45:yuzu-sparkle"
+        ],
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ramen-menri-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "processLog": [
+    "packet_validated",
+    "identity_verified",
+    "menu_surfaces_inventoried",
+    "matrix_search_completed",
+    "products_reconciled",
+    "validator_passed"
+  ],
+  "recommendedLane": "verify",
+  "outcome": "researched"
+}

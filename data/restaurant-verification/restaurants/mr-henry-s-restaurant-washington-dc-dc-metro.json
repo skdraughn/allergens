@@ -1,0 +1,240 @@
+{
+  "schemaVersion": 1,
+  "verificationContractVersion": 2,
+  "restaurantId": "mr-henry-s-restaurant-washington-dc-dc-metro",
+  "name": "Mr. Henry's Restaurant",
+  "status": "codex_verified",
+  "identity": {
+    "status": "confirmed",
+    "name": "Mr. Henry's Restaurant",
+    "location": "601 Pennsylvania Ave SE, Washington, DC 20003",
+    "locationId": "washington-dc",
+    "officialHomepage": "https://www.mrhenrysdc.com/",
+    "sourceEvidenceIds": [
+      "src-home"
+    ]
+  },
+  "currentCatalog": {
+    "status": "verified",
+    "reviewedBaselineItemCount": 10,
+    "currentProductCount": 0,
+    "reconciledCurrentProductCount": 0,
+    "inventoryFingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "surfaces": [
+      {
+        "surfaceId": "official-home",
+        "title": "Official homepage",
+        "url": "https://www.mrhenrysdc.com/",
+        "current": true,
+        "scopeStatus": "complete",
+        "verified": true,
+        "evidenceIds": [
+          "src-home"
+        ],
+        "notes": [
+          "current general site"
+        ]
+      },
+      {
+        "surfaceId": "official-menus",
+        "title": "Official menus page",
+        "url": "https://www.mrhenrysdc.com/menus/",
+        "current": true,
+        "scopeStatus": "complete",
+        "verified": true,
+        "evidenceIds": [
+          "src-menus"
+        ],
+        "notes": [
+          "current menus"
+        ]
+      },
+      {
+        "surfaceId": "official-events",
+        "title": "Official events/calendar",
+        "url": "https://www.mrhenrysdc.com/events/",
+        "current": true,
+        "scopeStatus": "complete",
+        "verified": true,
+        "evidenceIds": [
+          "src-events"
+        ],
+        "notes": [
+          "current events"
+        ]
+      },
+      {
+        "surfaceId": "targeted-search",
+        "title": "Targeted web-search results",
+        "url": "https://www.google.com/search?q=site%3Amrhenrysdc.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+PDF+menu",
+        "current": true,
+        "scopeStatus": "complete",
+        "verified": true,
+        "evidenceIds": [
+          "src-search"
+        ],
+        "notes": [
+          "research discovery"
+        ]
+      }
+    ],
+    "products": [],
+    "notes": [
+      "Coordinator terminal catalog derived from validated Luna research and serialized APPLY output."
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [],
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 10,
+      "sourceItemCount": 0,
+      "notes": [
+        "POC catalog and every frozen item were coordinator-reconciled."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "accurately_unavailable",
+      "directPositiveCount": 0,
+      "directAssertionCount": 0,
+      "highestAuthorityTier": null,
+      "notes": [
+        "All four official-matrix search classes completed; direct positives are retained and missing disclosure remains unavailable."
+      ]
+    },
+    "extraction": {
+      "verdict": "not_applicable",
+      "parserReviewed": false,
+      "semanticsVerified": true,
+      "notes": [
+        "POC closeout uses a verified target-specific catalog transformation; shared-parser review is deferred."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "class": "official_site",
+      "queryOrLocation": "Official homepage, menus page, events/calendar navigation inspected",
+      "urlsInspected": [
+        "https://www.mrhenrysdc.com/",
+        "https://www.mrhenrysdc.com/menus/",
+        "https://www.mrhenrysdc.com/events/"
+      ],
+      "outcome": "Official identity and events found; menus page exposes no food, nonalcoholic, allergen, or nutrition listings.",
+      "sourceEvidenceIds": [
+        "src-home",
+        "src-menus",
+        "src-events"
+      ]
+    },
+    {
+      "class": "official_documents",
+      "queryOrLocation": "Official menus page, document links, PDFs, images, FAQ and sitemap surfaces inspected",
+      "urlsInspected": [
+        "https://www.mrhenrysdc.com/menus/",
+        "https://www.mrhenrysdc.com/"
+      ],
+      "outcome": "No official allergen, ingredient, nutrition, PDF, image menu, or downloadable matrix located.",
+      "sourceEvidenceIds": [
+        "src-menus",
+        "src-home"
+      ]
+    },
+    {
+      "class": "linked_vendor",
+      "queryOrLocation": "Restaurant-linked ordering/vendor surfaces inspected; returned Toast result checked for identity",
+      "urlsInspected": [
+        "https://order.toasttab.com/online/henryssoulcafedc"
+      ],
+      "outcome": "Toast menu is for Henrys Soul Cafe at 1704 U St NW, not this restaurant at 601 Pennsylvania Ave SE; excluded as location mismatch and no allergen matrix used.",
+      "sourceEvidenceIds": [
+        "src-toast"
+      ]
+    },
+    {
+      "class": "targeted_web_search",
+      "queryOrLocation": "site:mrhenrysdc.com allergen OR allergy OR nutrition OR ingredients PDF menu",
+      "urlsInspected": [
+        "https://www.google.com/search?q=site%3Amrhenrysdc.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+PDF+menu"
+      ],
+      "outcome": "No authoritative current allergen matrix or cross-contact policy found.",
+      "sourceEvidenceIds": [
+        "src-search"
+      ]
+    }
+  ],
+  "findings": [],
+  "reconciliation": {
+    "artifact": 10,
+    "unresolved": 0
+  },
+  "adjudication": {
+    "type": "coordinator",
+    "runId": "distributed-machine-a-front-5-front-20260811180616",
+    "decidedAt": "2026-08-12T13:01:16.295Z",
+    "recommendation": "codex_verified",
+    "model": {
+      "id": "codex-poc-coordinator",
+      "reasoningEffort": "high"
+    },
+    "rationale": "Research structure, current product mappings, direct allergen authority, target repair, Ingredient Intelligence timing, focused validation, and idempotency passed the POC terminal gates.",
+    "artifactHashes": []
+  },
+  "workerHandoff": {
+    "runId": "distributed-machine-a-front-5-front-20260811180616",
+    "restaurantId": "mr-henry-s-restaurant-washington-dc-dc-metro",
+    "preparedAt": "2026-08-12T13:01:16.293Z",
+    "routeDestination": "coordinator",
+    "solRequired": false,
+    "artifacts": [
+      {
+        "kind": "poc_job",
+        "path": "distributed-runs/distributed-machine-a-front-5-front-20260811180616/jobs/mr-henry-s-restaurant-washington-dc-dc-metro.json",
+        "sha256": "0c8b86c4b64f8523f72e17f3f7b45ec4f693cdba781a7020a56dad4d877915d3"
+      },
+      {
+        "kind": "poc_research",
+        "path": "worker-runs/distributed-machine-a-front-5-front-20260811180616/results/mr-henry-s-restaurant-washington-dc-dc-metro.json",
+        "sha256": "808cadd554554a82d92485af592b3b7b7b0ac23f2f0a2779701e1ff3befeffde"
+      },
+      {
+        "kind": "poc_apply",
+        "path": "worker-runs/distributed-machine-a-front-5-front-20260811180616/apply-results/mr-henry-s-restaurant-washington-dc-dc-metro.json",
+        "sha256": "3ade439b3a65840bc2b8c5150dc2ea20e488b28c908b68eab7b207b50237d51d"
+      }
+    ],
+    "notes": [
+      "POC worker artifacts persisted by the root coordinator."
+    ]
+  },
+  "repairs": [
+    {
+      "id": "distributed-machine-a-front-5-front-20260811180616-mr-henry-s-restaurant-washington-dc-dc-metro-target-repair",
+      "status": "verified",
+      "summary": "Applied and validated the restaurant-specific POC catalog repair.",
+      "files": [
+        "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+        "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/mr-henry-s-restaurant-washington-dc-dc-metro.json",
+        "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/mr-henry-s-restaurant-washington-dc-dc-metro.json",
+        "/Users/skdraughn/software/allergy-app/data/restaurant-verification/distributed-runs/distributed-machine-a-front-5-front-20260811180616/apply-results/mr-henry-s-restaurant-washington-dc-dc-metro.json",
+        "/Users/skdraughn/software/allergy-app/scripts/apply-batch40-poc.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/distributed-runs/distributed-machine-a-front-5-front-20260811180616/results/mr-henry-s-restaurant-washington-dc-dc-metro.json"
+      ],
+      "verificationCommands": [
+        "fingerprint gate",
+        "validatePocResearchFiles",
+        "exact current-surface preflight",
+        "target-only canonical apply",
+        "recompute Ingredient Intelligence after direct finalization",
+        "run twice and compare owned bytes"
+      ]
+    }
+  ],
+  "notes": [
+    "Coordinator-only POC closeout packet generated after serialized APPLY."
+  ],
+  "updatedAt": "2026-08-12T13:01:16.914Z",
+  "completedAt": "2026-08-12T13:01:16.914Z"
+}

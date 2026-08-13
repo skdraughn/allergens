@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-002-2026-07-16",
+  "restaurantId": "osm-b-nh-cu-n-th-ng-long-4828125262",
+  "changedPaths": [
+    "src/data/generated/restaurants.generated.json",
+    "src/data/generated/restaurants.summary.generated.json",
+    "data/restaurant-verification/restaurants/osm-b-nh-cu-n-th-ng-long-4828125262.json",
+    "data/restaurant-verification/evidence/osm-b-nh-cu-n-th-ng-long-4828125262.json",
+    "data/restaurant-verification/worker-runs/poc-batch-002-2026-07-16/apply-results/osm-b-nh-cu-n-th-ng-long-4828125262.json"
+  ],
+  "commands": [
+    "node scripts/recompute-ingredient-intelligence.mjs --input src/data/generated/restaurants.generated.json --output src/data/generated/restaurants.generated.json --restaurants osm-b-nh-cu-n-th-ng-long-4828125262",
+    "node scripts/build-mobile-restaurant-summary.mjs src/data/generated/restaurants.generated.json src/data/generated/restaurants.summary.generated.json",
+    "repeat recompute and summary publish; generated repository SHA-256 unchanged"
+  ],
+  "exitCodes": [
+    0,
+    0,
+    0
+  ],
+  "beforeFingerprint": "ff6ef257a2dcf25afecdddd312d0e11ba484e54619ad9686cf3237b42913ddd6",
+  "afterFingerprint": "ff6ef257a2dcf25afecdddd312d0e11ba484e54619ad9686cf3237b42913ddd6",
+  "secondRunDiff": "none",
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "generatedItemCount": 38,
+    "publishedItemCount": 38,
+    "currentProductCount": 38,
+    "reconciledFrozenKeyCount": 37,
+    "solReviewedKeyCount": 3,
+    "solMappings": {
+      "26:com-tam-bi-suon-cha": "square-product-435BPT6AJHJBIARX7AD36YZA",
+      "29:mi-quang": "square-product-LXEZKLVFUJOEHJQQUE7B5W7B",
+      "33:pho-tai-bo-vien": "square-product-GZMHMH7FUZWD3XZ4X6AN67AG"
+    },
+    "uniqueGeneratedProductCount": 38,
+    "frozenFingerprintRechecked": "ff6ef257a2dcf25afecdddd312d0e11ba484e54619ad9686cf3237b42913ddd6"
+  },
+  "remainingIssues": [
+    "Official allergen matrix unavailable.",
+    "Unsupported allergen negatives, may-contain values, and cross-contact disclosures remain unavailable.",
+    "Restaurant remains repair_in_progress; ledger not edited."
+  ]
+}

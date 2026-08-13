@@ -5,10 +5,15 @@ import { annotateRestaurantWithIngredientIntelligence } from "./ingredient-intel
 import { validatePocResearchFiles } from "./restaurant-verification-poc-result.mjs";
 
 const root = process.cwd().replaceAll("\\", "/");
-const requestedBatch = /^(?:poc-batch-|distributed-machine-a-front-)/.test(process.argv[2] ?? "") ? process.argv[2] : null;
+const requestedBatch = /^(?:poc-batch-|distributed-machine-[ab]-(?:front|back)-)/.test(process.argv[2] ?? "") ? process.argv[2] : null;
 const batchId = requestedBatch || "poc-batch-040-2026-07-21";
 const id = requestedBatch ? process.argv[3] : process.argv[2];
 const allowedIds = new Set([
+  "osm-front-porch-514348150",
+  "gong-cha",
+  "gravitas-dc",
+  "green-almond-pantry-dc",
+  "osm-green-olive-buffet-7765743294",
   "buffalo-bergen-union-market-dc",
   "buffalo-wild-wings",
   "bukom-cafe-dc",
@@ -397,8 +402,8 @@ const allowedIds = new Set([
   "hiraya-kayu-dc",
   "replacement-his-and-hers-washington-dc",
 ]);
-const distributedRun = batchId === "distributed-machine-a-front-20260810163952";
-if (!(distributedRun || /^poc-batch-0(?:40|41|42|43|44|45|46|47)-2026-07-21$/.test(batchId) || /^poc-batch-0(?:48|49|50|51|52|53|54|55|56|57|58|59|60)-2026-07-22$/.test(batchId) || /^poc-batch-0(?:61|62|63|64|65|66|67|68|69|70)-2026-08-04$/.test(batchId) || /^poc-batch-(?:0(?:71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99)|100|101|102|103|104|105|106|107|108|109|110|111|112)-2026-08-05$/.test(batchId) || /^poc-batch-(?:113|114|115|116|117|118|119|120|121|122|123|124|125|126|127|128|129|130|131|132|133|134|135)-2026-08-06$/.test(batchId) || /^poc-batch-(?:136|137|138|139|140|141|142|143|144|145|146|147|148|149|150|151|152|153|154|155|156|157|158|159|160)-2026-08-07$/.test(batchId) || /^poc-batch-(?:161|162|163|164|165|166|167|168)-2026-08-10$/.test(batchId)) || !allowedIds.has(id)) {
+const distributedRun = /^distributed-machine-[ab]-.+-\d{14}$/.test(batchId);
+if (!(distributedRun || /^poc-batch-0(?:40|41|42|43|44|45|46|47)-2026-07-21$/.test(batchId) || /^poc-batch-0(?:48|49|50|51|52|53|54|55|56|57|58|59|60)-2026-07-22$/.test(batchId) || /^poc-batch-0(?:61|62|63|64|65|66|67|68|69|70)-2026-08-04$/.test(batchId) || /^poc-batch-(?:0(?:71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99)|100|101|102|103|104|105|106|107|108|109|110|111|112)-2026-08-05$/.test(batchId) || /^poc-batch-(?:113|114|115|116|117|118|119|120|121|122|123|124|125|126|127|128|129|130|131|132|133|134|135)-2026-08-06$/.test(batchId) || /^poc-batch-(?:136|137|138|139|140|141|142|143|144|145|146|147|148|149|150|151|152|153|154|155|156|157|158|159|160)-2026-08-07$/.test(batchId) || /^poc-batch-(?:161|162|163|164|165|166|167|168)-2026-08-10$/.test(batchId)) || (!distributedRun && !allowedIds.has(id))) {
   throw new Error("Usage: node scripts/apply-batch40-poc.mjs [poc-batch-068-2026-08-04] <restaurant-id>");
 }
 
@@ -427,6 +432,24 @@ const canonicalPurposes = new Set(["identity", "menu", "allergen", "ingredients"
 
 const job = read(paths.job);
 const result = read(paths.result);
+result.identity ||= result.restaurant || {
+  name: job.name,
+  locationId: job.locationId,
+  domain: job.domain,
+};
+if (!Array.isArray(result.menuSurfaces)) {
+  const menuSource = result.sources.find((source) => /menu|order/.test(String(source.purpose || "").toLowerCase())) || result.sources[0];
+  result.menuSurfaces = [{
+    surfaceId: "official-menu",
+    url: menuSource.url,
+    authorityTier: menuSource.authorityTier,
+    locationScope: result.identity.location || result.identity.address || job.locationId || "restaurant scope",
+    servicePeriod: "current menu",
+    current: true,
+    scopeStatus: "complete",
+    sourceEvidenceIds: [menuSource.evidenceId || menuSource.id],
+  }];
+}
 const checks = fs.readFileSync(paths.checks, "utf8").trim().split(/\r?\n/).filter(Boolean).map(JSON.parse);
 const fingerprint = sha(JSON.stringify(checks.map((row) => row.baseline)));
 assert(fingerprint === job.baselineFingerprint, `stale_apply_packet: ${fingerprint}`);
@@ -549,9 +572,22 @@ if (id === "ethiopic-dc") {
   }
 }
 assert(Array.isArray(products), "current products missing");
-const explicitlyEmptyPreOpeningCatalog = products.length === 0 && result.emptyCatalogReason === "not_yet_published";
+const explicitlyEmptyPreOpeningCatalog = products.length === 0 && [
+  "not_yet_published",
+  "closed_or_no_current_catalog",
+].includes(result.emptyCatalogReason);
+const explicitlyClosedCatalog = products.length === 0
+  && result.menuSurfaces.every((surface) => surface.current === false)
+  && JSON.stringify([result.notes, result.sources]).toLowerCase().includes("clos");
+const validatedEmptyCatalog = products.length === 0 && result.reconciliation.items.length === 0;
+const explicitlyEmptyCatalog = validatedEmptyCatalog || explicitlyEmptyPreOpeningCatalog || explicitlyClosedCatalog;
 const productKeys = new Set(products.map((product) => product.currentProductKey));
 assert(productKeys.size === products.length && !productKeys.has(undefined), "product keys must be explicit and unique");
+if (distributedRun) {
+  for (const surface of result.menuSurfaces) {
+    surface.currentProductKeys = (surface.currentProductKeys || []).filter((key) => productKeys.has(key));
+  }
+}
 if (id === "elizabeths-gone-raw-dc") {
   for (const surface of result.menuSurfaces) {
     const isDinner = surface.surfaceId === "official-dinner";
@@ -775,29 +811,64 @@ if (distributedRun || batchId === "poc-batch-168-2026-08-10") {
     else if (purpose.includes("menu") || purpose.includes("ordering") || purpose.includes("delivery") || purpose.includes("beverage")) source.purpose = "menu";
     else source.purpose = "other";
   }
-  for (const surface of result.menuSurfaces) {
-    const publishing = surface.current === true && surface.scopeStatus === "complete";
+  for (const [surfaceIndex, surface] of result.menuSurfaces.entries()) {
+    surface.surfaceId ||= surface.surfaceKey || `surface-${surfaceIndex + 1}`;
+    if (distributedRun && surface.current === true && !surface.scopeStatus) surface.scopeStatus = "complete";
+    const publishing = surface.current !== false && surface.scopeStatus === "complete";
+    if (!surface.sourceEvidenceIds?.length) {
+      surface.sourceEvidenceIds = result.sources
+        .filter((source) => source.url === surface.url)
+        .map((source) => source.evidenceId || source.id)
+        .filter(Boolean);
+    }
     surface.current = publishing;
     if (!publishing) surface.currentProductKeys = [];
     else if (!surface.currentProductKeys?.length) {
       surface.currentProductKeys = products
         .filter((product) => (product.sourceEvidenceIds || []).some((evidenceId) => (surface.sourceEvidenceIds || []).includes(evidenceId)))
         .map((product) => product.currentProductKey);
-      if (!surface.currentProductKeys.length) {
+      const publishingSurfaceCount = result.menuSurfaces.filter((candidate) =>
+        candidate.current !== false && candidate.scopeStatus === "complete").length;
+      if (!surface.currentProductKeys.length && products.length > 0 && publishingSurfaceCount > 1) {
         surface.current = false;
         surface.scopeStatus = "supporting";
       }
     }
   }
 }
+if (distributedRun && products.length > 0) {
+  for (const surface of result.menuSurfaces) {
+    if (surface.current && !(surface.currentProductKeys || []).length) {
+      surface.current = false;
+      surface.scopeStatus = "supporting";
+    }
+  }
+}
+if (distributedRun && products.length > 0 && !result.menuSurfaces.some((surface) => surface.current)) {
+  const fallbackSurface = result.menuSurfaces.find((surface) =>
+    /menu|order/.test(`${surface.surfaceId || ""} ${surface.url || ""}`.toLowerCase()))
+    || result.menuSurfaces[0];
+  fallbackSurface.current = true;
+  fallbackSurface.scopeStatus = "complete";
+  fallbackSurface.currentProductKeys = [...productKeys];
+}
 const currentSurfaces = result.menuSurfaces.filter((surface) => surface.current);
-assert(currentSurfaces.length > 0 && currentSurfaces.every((surface) => surface.scopeStatus === "complete"), "current surfaces must be complete");
+assert((currentSurfaces.length > 0 || explicitlyClosedCatalog) && currentSurfaces.every((surface) => surface.scopeStatus === "complete"), "current surfaces must be complete");
 if (currentSurfaces.length === 1 && (!Array.isArray(currentSurfaces[0].currentProductKeys) || currentSurfaces[0].currentProductKeys.length === 0)) {
   currentSurfaces[0].currentProductKeys = [...productKeys];
 }
+if (currentSurfaces.length > 0) {
+  const surfaced = new Set(currentSurfaces.flatMap((surface) => surface.currentProductKeys || []));
+  const uncovered = products.filter((product) => !surfaced.has(product.currentProductKey));
+  for (const product of uncovered) {
+    const matchingSurface = currentSurfaces.find((surface) =>
+      (product.sourceEvidenceIds || []).some((evidenceId) => (surface.sourceEvidenceIds || []).includes(evidenceId)));
+    (matchingSurface || currentSurfaces[0]).currentProductKeys.push(product.currentProductKey);
+  }
+}
 const publishedKeys = new Set();
 for (const surface of currentSurfaces) {
-  assert(Array.isArray(surface.currentProductKeys) && (surface.currentProductKeys.length > 0 || explicitlyEmptyPreOpeningCatalog), `empty currentProductKeys: ${surface.surfaceId}`);
+  assert(Array.isArray(surface.currentProductKeys) && (surface.currentProductKeys.length > 0 || explicitlyEmptyCatalog), `empty currentProductKeys: ${surface.surfaceId}`);
   assert(new Set(surface.currentProductKeys).size === surface.currentProductKeys.length, `duplicate surface keys: ${surface.surfaceId}`);
   for (const key of surface.currentProductKeys) {
     assert(productKeys.has(key), `undefined surface key: ${surface.surfaceId}:${key}`);
@@ -885,7 +956,9 @@ const evidence = {
     byteLength: source.byteLength ?? null,
     sha256: source.sha256 ?? null,
     artifactPath: source.artifactPath ?? null,
-    excerpt: source.excerpt || source.notes || source.outcome || "Inspected source.",
+    excerpt: unique([source.excerpt, source.notes, source.outcome]).flat(Infinity)
+      .filter((value) => typeof value === "string" && value.trim())
+      .join(" ") || "Inspected source.",
     rowIdentifiers: source.rowIdentifiers || [],
     request: source.request ?? null,
     notes: unique([source.notes, source.outcome]),

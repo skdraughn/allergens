@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-020-2026-07-17",
+  "restaurantId": "osm-big-tony-s-pizzeria-dive-11767597986",
+  "validation": {
+    "valid": true,
+    "currentProductCount": 38,
+    "evidenceSourceCount": 3,
+    "evidencePreflightValid": true,
+    "assertions": [
+      "baseline fingerprint matches job",
+      "38 current products published",
+      "39 frozen keys reconciled exactly once: 33 exact, 2 normalized, 1 equivalent presentation, 3 artifact, 0 unresolved",
+      "direct containsAllergens and mayContainAllergens aggregate to zero",
+      "matrix search is accurately_unavailable after all four required searches",
+      "exact Arlington identity and current official menu boundary",
+      "Ingredient Intelligence runs after direct catalog finalization",
+      "canonical evidence has excerpt, hash, artifact, and row identifier",
+      "second run is byte-identical"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-big-tony-s-pizzeria-dive-11767597986.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-big-tony-s-pizzeria-dive-11767597986.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/osm-big-tony-s-pizzeria-dive-11767597986.jsonl",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-big-tonys-pizzeria-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-020-2026-07-17/apply-results/osm-big-tony-s-pizzeria-dive-11767597986.json"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "target canonical catalog repair",
+    "recompute Ingredient Intelligence after direct catalog finalization",
+    "target closeout preflight"
+  ],
+  "secondRunDiff": "none"
+}

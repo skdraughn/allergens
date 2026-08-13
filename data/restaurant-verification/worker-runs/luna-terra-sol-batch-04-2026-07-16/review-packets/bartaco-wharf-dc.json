@@ -1,0 +1,1899 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-batch-04-2026-07-16",
+  "restaurant": {
+    "restaurantId": "bartaco-wharf-dc",
+    "name": "bartaco The Wharf",
+    "domain": "bartaco.com",
+    "locationId": "wharf-dc",
+    "baselineItemCount": 107,
+    "baselineItemFingerprint": "fdc4158db34f657fc3e0ad873c0667d4ca85bbdd46585bc73c468c92298d4b90",
+    "officialItemCount": 107,
+    "officialAllergenStatus": "extracted",
+    "sourceFamily": "generic-website",
+    "parserProfile": "everybite-widget",
+    "guideUrl": "https://bartaco.com/nutrition/",
+    "sourceUrls": [
+      "https://bartaco.com/location/the-wharf/",
+      "https://bartaco.com/food/",
+      "https://order.bartaco.com/menu/bartaco-the-wharf",
+      "https://bartaco.com/nutrition/",
+      "https://order.bartaco.com/api/vendors/bartaco-the-wharf",
+      "https://bartaco.com/category/food/",
+      "https://bartaco.com/category/food/page/2/",
+      "https://bartaco.com/summer-menu-drop/",
+      "https://bartaco.com/locations/"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found.",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "validationWarnings": [
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "multi_service",
+      "pdf_or_image",
+      "scope_incomplete",
+      "count_drift",
+      "non_exact_reconciliation",
+      "cross_contact",
+      "parser_or_repair_finding",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 107,
+      "reconciledItemCount": 107,
+      "uniqueReconciledItemCount": 107,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 6,
+      "activeMenuSurfaceCount": 5,
+      "accessibleMenuSurfaceCount": 3,
+      "serviceCount": 5,
+      "pdfImageSurfaceCount": 1,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 0,
+      "incompleteSurfaceCount": 0,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 0,
+      "currentOnlyCount": 0,
+      "baselineOnlyCount": 0,
+      "countDrift": true,
+      "duplicatePresentationCount": 0,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 0,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 107,
+      "allergenMismatchItemCount": 0,
+      "crossContactCount": 2,
+      "parserRepairFindingCount": 1,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 0,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "medium",
+      "overall": 0.7,
+      "menu": 0.92,
+      "allergenSource": 0.35,
+      "extraction": 0.72,
+      "rationale": "The official Wharf page and current restaurant-issued PDF enumerate a materially different current catalog from the frozen 107 rows. The official nutrition page directs users to an interactive EveryBite filter, but accessible evidence does not yield a complete current item-level allergen matrix, negatives, or cross-contact determinations."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "bartaco The Wharf, 645 Wharf Street SW, Washington, DC; the official location page states pickup, delivery, and dine-in.",
+      "confidence": 0.99,
+      "sourceEvidenceIds": [
+        "terra-location-menu",
+        "terra-current-menu-pdf"
+      ],
+      "notes": "The location and menu scope are verified from restaurant-issued sources."
+    },
+    "sources": [
+      {
+        "evidenceId": "terra-location-menu",
+        "url": "https://bartaco.com/location/the-wharf/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "bartaco The Wharf official location and menu",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "The Wharf, Washington DC, 645 Wharf Street SW; the page enumerates food, drinks, kids, takeout, taco packs, and family packs, including current item names and ingredient descriptions.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "official-wharf-location-menu"
+      },
+      {
+        "evidenceId": "terra-current-menu-pdf",
+        "url": "https://bartaco.com/media/web_BTMenu_7002_trifold_CTF_CTD_FT2_2026_06_17_gluten.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "bartaco current menu PDF",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "The PDF identifies gluten and pistachio labels and instructs guests to ask their server about potential cross-contamination with allergens; it lists the current food, rice-bowl, dessert, and kid-menu catalog.",
+        "stableRowId": "page-1",
+        "contentHash": null,
+        "artifactSuggested": "current-official-menu-pdf"
+      },
+      {
+        "evidenceId": "terra-nutrition",
+        "url": "https://bartaco.com/nutrition/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "allergen",
+        "title": "bartaco Nutrition + Allergy Information",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "The restaurant instructs users to select allergen filters and says items free from selected allergens receive a green-circle tag; it links to EveryBite and directs questions to a local manager.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "official-nutrition-page"
+      },
+      {
+        "evidenceId": "terra-ordering",
+        "url": "https://order.bartaco.com/menu/bartaco-the-wharf",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "bartaco at the Wharf ordering menu",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Location-specific linked ordering page was reachable but only exposed a loading shell to static retrieval.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "linked-ordering-shell"
+      },
+      {
+        "evidenceId": "terra-allergy-sheet-2023",
+        "url": "https://bartaco.com/media/BT-Allergy-Sheet-07-2023.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "allergen",
+        "title": "bartaco allergy sheet (July 2023)",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Older restaurant-issued allergen reference identified by the scout; it is temporally superseded by the current 2026 menu and was not used to establish current complete arrays or negatives.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "historical-allergy-sheet"
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://bartaco.com/location/the-wharf/",
+        "notes": "Re-opened; restaurant-issued location page fully exposes the primary static menu, kid menu, drinks, takeout, and location identity."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://bartaco.com/nutrition/",
+        "notes": "Re-opened; restaurant-issued wrapper links to EveryBite but does not expose a current static item-by-item allergen matrix."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://order.bartaco.com/menu/bartaco-the-wharf",
+        "notes": "Re-opened; linked-vendor page was reachable but static retrieval returned only a loading shell, so it cannot support catalog negatives."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": "https://bartaco.com/media/web_BTMenu_7002_trifold_CTF_CTD_FT2_2026_06_17_gluten.pdf",
+        "notes": "Re-opened current restaurant-issued PDF; it provides the strongest corroborating static food/kids catalog and global cross-contact language."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": "https://bartaco.com/locations/",
+        "notes": "No separate archived current Wharf-specific allergen matrix located."
+      },
+      {
+        "kind": "third_party",
+        "status": "not_found",
+        "url": null,
+        "notes": "No third-party source was needed for the positive menu discrepancy; none was used for allergen conclusions."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "multi_service",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-location-menu",
+          "terra-current-menu-pdf"
+        ],
+        "notes": "Food, drinks, kids, takeout, and ordering presentations are separate menu services."
+      },
+      {
+        "gateId": "pdf_or_image",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-current-menu-pdf"
+        ],
+        "notes": "A current restaurant-issued PDF is a material menu surface."
+      },
+      {
+        "gateId": "scope_incomplete",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-nutrition",
+          "terra-ordering"
+        ],
+        "notes": "The official allergen interface and linked ordering catalog are not statically complete; they cannot support allergen negatives, complete arrays, or item-level cross-contact conclusions."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-location-menu",
+          "terra-current-menu-pdf"
+        ],
+        "notes": "Luna recorded zero current products despite the official sources enumerating a substantial catalog and several frozen rows being absent or renamed."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-location-menu",
+          "terra-current-menu-pdf"
+        ],
+        "notes": "Numerous frozen names require variants or are not on the current static menu; duplicate frozen rice-bowl rows also remain."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-current-menu-pdf"
+        ],
+        "notes": "The current PDF says to ask a server about potential cross-contamination; this is a global prompt, not an item-specific may-contain array."
+      },
+      {
+        "gateId": "parser_or_repair_finding",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-location-menu",
+          "terra-nutrition"
+        ],
+        "notes": "The frozen catalog's 107 extracted rows, duplicate products, and official interactive-only allergen presentation require source/parser review."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-nutrition",
+          "terra-ordering"
+        ],
+        "notes": "Current complete allergen arrays and complete ordering scope are not independently extractable from accessible static evidence."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-location-menu",
+          "terra-current-menu-pdf",
+          "terra-nutrition"
+        ],
+        "notes": "Independent review confirms Luna's substantive menu drift and allergen-completeness concerns, while rejecting Luna's zero-current-product catalog as incomplete."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "surface-location-food",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-location-menu"
+        ],
+        "notes": "Verified as a complete restaurant-issued static food presentation on the Wharf page."
+      },
+      {
+        "surfaceId": "surface-location-drinks-kids-takeout",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-location-menu"
+        ],
+        "notes": "Verified as restaurant-issued drinks, kids, and takeout presentations on the Wharf page."
+      },
+      {
+        "surfaceId": "surface-menu-pdf",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-current-menu-pdf"
+        ],
+        "notes": "Verified as a current restaurant-issued PDF. It is a distinct presentation and includes global warning semantics."
+      },
+      {
+        "surfaceId": "surface-ordering",
+        "verdict": "unverifiable",
+        "sourceEvidenceIds": [
+          "terra-ordering"
+        ],
+        "notes": "The linked-vendor page was reachable but static retrieval exposed only a loading shell; Luna's partial/non-enumerated characterization is retained."
+      },
+      {
+        "surfaceId": "surface-nutrition",
+        "verdict": "unverifiable",
+        "sourceEvidenceIds": [
+          "terra-nutrition"
+        ],
+        "notes": "The official page confirms an interactive allergen filter but not complete static item-by-item disclosures."
+      },
+      {
+        "surfaceId": "surface-allergy-sheet",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-allergy-sheet-2023",
+          "terra-current-menu-pdf"
+        ],
+        "notes": "The historical restaurant-issued allergen sheet remains a separate superseded surface; it cannot establish current full arrays, negatives, or current cross-contact semantics."
+      }
+    ],
+    "currentProductCheckGroups": [],
+    "additionalMenuSurfaces": [
+      {
+        "surfaceId": "surface-location-takeout-packs",
+        "title": "Official Wharf taco packs, family packs, and drinks-to-go",
+        "service": "takeout",
+        "url": "https://bartaco.com/location/the-wharf/",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "html",
+        "accessStatus": "accessible",
+        "fullyEnumerated": true,
+        "scopeStatus": "complete",
+        "current": true,
+        "sourceEvidenceIds": [
+          "terra-location-menu"
+        ],
+        "currentProductKeys": [
+          "takeout-taco-packs",
+          "takeout-small-family-pack",
+          "takeout-large-family-pack",
+          "takeout-roasted-chicken-dinner",
+          "takeout-bartaco-margarita-kit",
+          "takeout-paloma-fresca-for-2"
+        ],
+        "notes": "Luna mentioned takeout inside a combined surface but failed to enumerate its concrete current presentations."
+      }
+    ],
+    "additionalCurrentProducts": [
+      {
+        "currentProductKey": "tacos-enoki-mushroom",
+        "name": "enoki mushroom",
+        "category": "tacos",
+        "surfaceIds": [
+          "surface-location-food",
+          "surface-menu-pdf"
+        ],
+        "presentationIds": [
+          "location-food-enoki-mushroom",
+          "pdf-enoki-mushroom"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "16:tacos-mushroom-taco"
+        ],
+        "sourceEvidenceIds": [
+          "terra-location-menu",
+          "terra-current-menu-pdf"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-location-menu",
+          "terra-current-menu-pdf"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Current name/recipe differs from the frozen mushroom rows; PDF marks it GL, which is an explicit gluten positive but does not establish a complete array."
+      },
+      {
+        "currentProductKey": "not-tacos-taco-teaser",
+        "name": "taco teaser",
+        "category": "not tacos",
+        "surfaceIds": [
+          "surface-location-food",
+          "surface-menu-pdf"
+        ],
+        "presentationIds": [
+          "location-food-taco-teaser",
+          "pdf-taco-teaser"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-location-menu",
+          "terra-current-menu-pdf"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "terra-nutrition"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current product missed by Luna; no complete item-level allergen disclosure was accessible."
+      },
+      {
+        "currentProductKey": "not-tacos-cotija-corn-dip",
+        "name": "cotija corn dip",
+        "category": "not tacos",
+        "surfaceIds": [
+          "surface-location-food",
+          "surface-menu-pdf"
+        ],
+        "presentationIds": [
+          "location-food-cotija-corn-dip",
+          "pdf-cotija-corn-dip"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "43:not-tacos-street-corn-dip"
+        ],
+        "sourceEvidenceIds": [
+          "terra-location-menu",
+          "terra-current-menu-pdf"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-location-menu"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Named cotija cheese is narrow milk-positive ingredient evidence only; not a complete array."
+      },
+      {
+        "currentProductKey": "rice-bowls-chicken-black-bean",
+        "name": "chicken + black bean",
+        "category": "rice bowls",
+        "surfaceIds": [
+          "surface-location-food",
+          "surface-menu-pdf"
+        ],
+        "presentationIds": [
+          "location-rice-chicken-black-bean",
+          "pdf-rice-chicken-black-bean"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "44:rice-bowls-spiced-chicken-verde-bowl",
+          "50:rice-bowls-chicken-verde-rice-bowl",
+          "51:rice-bowls-chicken-verde-rice-bowl-duplicate"
+        ],
+        "sourceEvidenceIds": [
+          "terra-location-menu",
+          "terra-current-menu-pdf"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "terra-nutrition"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Current named rice bowl was omitted from Luna's zero-product catalog."
+      },
+      {
+        "currentProductKey": "drinks-mezcal-margarita",
+        "name": "mezcal margarita",
+        "category": "cocktails",
+        "surfaceIds": [
+          "surface-location-drinks-kids-takeout"
+        ],
+        "presentationIds": [
+          "location-cocktails-mezcal-margarita"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-location-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "terra-nutrition"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current product missed by Luna."
+      },
+      {
+        "currentProductKey": "drinks-watermelon-mint-margarita",
+        "name": "watermelon mint margarita",
+        "category": "cocktails",
+        "surfaceIds": [
+          "surface-location-drinks-kids-takeout"
+        ],
+        "presentationIds": [
+          "location-cocktails-watermelon-mint-margarita"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-location-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "terra-nutrition"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current product missed by Luna."
+      },
+      {
+        "currentProductKey": "drinks-pineapple-pisco-punch",
+        "name": "pineapple pisco punch",
+        "category": "cocktails",
+        "surfaceIds": [
+          "surface-location-drinks-kids-takeout"
+        ],
+        "presentationIds": [
+          "location-cocktails-pineapple-pisco-punch"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-location-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "terra-nutrition"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current product missed by Luna."
+      },
+      {
+        "currentProductKey": "drinks-pomegranate-limonada",
+        "name": "pomegranate limonada",
+        "category": "spirit-free sips",
+        "surfaceIds": [
+          "surface-location-drinks-kids-takeout"
+        ],
+        "presentationIds": [
+          "location-spirit-free-pomegranate-limonada"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-location-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "terra-nutrition"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current product missed by Luna."
+      },
+      {
+        "currentProductKey": "drinks-grapefruit-ginger",
+        "name": "grapefruit ginger",
+        "category": "spirit-free sips",
+        "surfaceIds": [
+          "surface-location-drinks-kids-takeout"
+        ],
+        "presentationIds": [
+          "location-spirit-free-grapefruit-ginger"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "90:cocktails-grapefruit-basil-zero-proof"
+        ],
+        "sourceEvidenceIds": [
+          "terra-location-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "terra-nutrition"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "The current drink differs from the frozen grapefruit-basil name."
+      },
+      {
+        "currentProductKey": "kids-fruit-bowl",
+        "name": "fruit bowl",
+        "category": "kids",
+        "surfaceIds": [
+          "surface-location-drinks-kids-takeout",
+          "surface-menu-pdf"
+        ],
+        "presentationIds": [
+          "location-kids-fruit-bowl",
+          "pdf-kids-fruit-bowl"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-location-menu",
+          "terra-current-menu-pdf"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "terra-nutrition"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current product missed by Luna."
+      },
+      {
+        "currentProductKey": "kids-corn-wheels",
+        "name": "corn wheels",
+        "category": "kids",
+        "surfaceIds": [
+          "surface-location-drinks-kids-takeout",
+          "surface-menu-pdf"
+        ],
+        "presentationIds": [
+          "location-kids-corn-wheels",
+          "pdf-kids-corn-wheels"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "68:kid-s-menu-kids-corn"
+        ],
+        "sourceEvidenceIds": [
+          "terra-location-menu",
+          "terra-current-menu-pdf"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-current-menu-pdf"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "PDF describes an optional cheese presentation, so it cannot support an unconditional milk array."
+      },
+      {
+        "currentProductKey": "takeout-yucatan-shrimp-taco-pack",
+        "name": "yucatán shrimp taco pack filling",
+        "category": "takeout",
+        "surfaceIds": [
+          "surface-location-takeout-packs"
+        ],
+        "presentationIds": [
+          "location-takeout-yucatan-shrimp"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-location-menu"
+        ],
+        "containsAllergens": [
+          "shellfish"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-location-menu"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Named shrimp supports only a narrow shellfish positive; recipe and cross-contact status remain unavailable."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 107,
+      "counts": {
+        "exact_match/accurately_unavailable": 58,
+        "variant_match/accurately_unavailable": 22,
+        "missing_from_source/accurately_unavailable": 27
+      }
+    },
+    "findings": [
+      {
+        "findingId": "terra-current-catalog-omitted",
+        "severity": "critical",
+        "kind": "scope",
+        "summary": "Luna reported zero current products despite the official Wharf menu and current PDF enumerating current food, drinks, kids, takeout packs, and configurable presentations. Its product catalog is incomplete and cannot support the claimed complete baseline reconciliation.",
+        "sourceEvidenceIds": [
+          "terra-location-menu",
+          "terra-current-menu-pdf"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "terra-menu-drift-confirmed",
+        "severity": "high",
+        "kind": "menu",
+        "summary": "The frozen catalog includes removed seasonal/happy-hour products, renamed products, and duplicate rice-bowl rows. The current static menu also includes products absent from the frozen catalog, including enoki mushroom, taco teaser, cotija corn dip, chicken + black bean, current cocktails, fruit bowl, and takeout-specific presentations.",
+        "sourceEvidenceIds": [
+          "terra-location-menu",
+          "terra-current-menu-pdf"
+        ],
+        "affectedAuditItemKeys": [
+          "4:tacos-mushroom-w-queso-fresco",
+          "24:not-tacos-street-corn-fritters",
+          "39:not-tacos-caesar-slaw",
+          "40:not-tacos-chicken-soup",
+          "44:rice-bowls-spiced-chicken-verde-bowl",
+          "46:rice-bowls-ahi-tuna-bowl",
+          "48:rice-bowls-roasted-duck-bowl",
+          "51:rice-bowls-chicken-verde-rice-bowl-duplicate",
+          "55:rice-bowls-pork-belly-rice-bowl-duplicate",
+          "100:happy-hour-chicken-croqueta",
+          "101:happy-hour-chicken-samosa",
+          "102:happy-hour-chorizo-pintxo",
+          "103:happy-hour-coco-melon-marg",
+          "104:happy-hour-coconut-mojito",
+          "105:happy-hour-crispy-chicken-flauta",
+          "106:happy-hour-shrimp-pork-smash-dumpling",
+          "107:happy-hour-tuna-tartare-crispy-rice"
+        ]
+      },
+      {
+        "findingId": "terra-allergen-evidence-incomplete",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "The restaurant-issued nutrition page supplies an interactive EveryBite filtering workflow, not a fully accessible static current matrix. The current PDF's gluten/pistachio labels and named ingredients support only narrow positives; neither source supports complete contains arrays, allergen negatives, or item-specific may-contain arrays.",
+        "sourceEvidenceIds": [
+          "terra-nutrition",
+          "terra-current-menu-pdf",
+          "terra-location-menu"
+        ],
+        "affectedAuditItemKeys": [
+          "1:tacos-baja-fish",
+          "4:tacos-mushroom-w-queso-fresco",
+          "5:tacos-falafel",
+          "6:tacos-tuna-tatako",
+          "7:tacos-crispy-oyster",
+          "9:tacos-sesame-ribeye",
+          "14:tacos-crispy-shrimp-taco",
+          "17:tacos-pistachio-cauliflower",
+          "23:not-tacos-ceviche",
+          "25:not-tacos-tuna-poke",
+          "28:not-tacos-kale-caesar",
+          "31:not-tacos-esquites-corn-off-the-cob",
+          "32:not-tacos-street-corn",
+          "35:not-tacos-kimchi",
+          "42:not-tacos-red-chorizo-arayes",
+          "43:not-tacos-street-corn-dip",
+          "49:rice-bowls-ahi-tuna-crispy-rice-bowl",
+          "52:rice-bowls-korean-bbq-rice-bowl",
+          "53:rice-bowls-med-cauliflower-bowl",
+          "54:rice-bowls-pistachio-cauliflower-rice-bowl",
+          "56:desserts-churros",
+          "57:desserts-key-lime-pie",
+          "58:desserts-tres-leches",
+          "59:desserts-vanilla-gelato",
+          "60:desserts-chocolate-gelato",
+          "61:desserts-coconut-gelato",
+          "62:desserts-mint-chip-gelato",
+          "64:kid-s-menu-chicken-taco-w-cheese",
+          "65:kid-s-menu-steak-taco-w-cheese",
+          "66:kid-s-menu-kids-fish-taco",
+          "68:kid-s-menu-kids-corn",
+          "69:kid-s-menu-oaxaca-cheese-snack",
+          "71:kid-s-menu-steamed-broccoli",
+          "72:kid-s-menu-quesadilla"
+        ]
+      },
+      {
+        "findingId": "terra-cross-contact-global-only",
+        "severity": "medium",
+        "kind": "cross_contact",
+        "summary": "The current official PDF tells guests to ask a server about potential cross-contamination with allergens. This global instruction must not be converted into item-level may-contain arrays or used to clear item-level cross-contact status.",
+        "sourceEvidenceIds": [
+          "terra-current-menu-pdf"
+        ],
+        "affectedAuditItemKeys": []
+      }
+    ],
+    "summary": "Independent verification confirms restaurant identity and the six scout surfaces, but rejects Luna's zero-product current catalog. The current restaurant-issued static menu shows material catalog drift, current products Luna omitted, a linked-vendor ordering surface that is not statically enumerable, and an interactive official allergen source that cannot support complete current arrays, negatives, or item-specific cross-contact conclusions.",
+    "coordinatorNotes": [
+      "Do not terminalize from this Terra result. Route to Sol for the confirmed deterministic gates and reconcile the complete current catalog before any repair or ingestion.",
+      "The historical 2023 allergy sheet remains restaurant-issued but superseded; do not use it to assert current negatives or promote an inaccessible EveryBite response into complete restaurant-issued arrays."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "1:tacos-baja-fish",
+      "baseline": {
+        "itemId": "tacos-baja-fish",
+        "name": "baja fish",
+        "category": "TACOS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "fish",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "4:tacos-mushroom-w-queso-fresco",
+      "baseline": {
+        "itemId": "tacos-mushroom-w-queso-fresco",
+        "name": "mushroom w/ queso fresco",
+        "category": "TACOS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "5:tacos-falafel",
+      "baseline": {
+        "itemId": "tacos-falafel",
+        "name": "falafel",
+        "category": "TACOS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "6:tacos-tuna-tatako",
+      "baseline": {
+        "itemId": "tacos-tuna-tatako",
+        "name": "tuna tatako",
+        "category": "TACOS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "fish",
+          "sesame",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "7:tacos-crispy-oyster",
+      "baseline": {
+        "itemId": "tacos-crispy-oyster",
+        "name": "crispy oyster",
+        "category": "TACOS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "fish",
+          "milk",
+          "shellfish",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "9:tacos-sesame-ribeye",
+      "baseline": {
+        "itemId": "tacos-sesame-ribeye",
+        "name": "sesame ribeye",
+        "category": "TACOS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "fish",
+          "sesame",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "14:tacos-crispy-shrimp-taco",
+      "baseline": {
+        "itemId": "tacos-crispy-shrimp-taco",
+        "name": "Crispy Shrimp Taco",
+        "category": "TACOS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "gluten",
+          "milk",
+          "shellfish",
+          "soy",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "17:tacos-pistachio-cauliflower",
+      "baseline": {
+        "itemId": "tacos-pistachio-cauliflower",
+        "name": "pistachio cauliflower",
+        "category": "TACOS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "sesame",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "23:not-tacos-ceviche",
+      "baseline": {
+        "itemId": "not-tacos-ceviche",
+        "name": "ceviche",
+        "category": "NOT TACOS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "24:not-tacos-street-corn-fritters",
+      "baseline": {
+        "itemId": "not-tacos-street-corn-fritters",
+        "name": "street corn fritters",
+        "category": "NOT TACOS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "milk",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "25:not-tacos-tuna-poke",
+      "baseline": {
+        "itemId": "not-tacos-tuna-poke",
+        "name": "tuna poke",
+        "category": "NOT TACOS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "fish",
+          "sesame",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "28:not-tacos-kale-caesar",
+      "baseline": {
+        "itemId": "not-tacos-kale-caesar",
+        "name": "kale caesar",
+        "category": "NOT TACOS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "fish",
+          "milk",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "31:not-tacos-esquites-corn-off-the-cob",
+      "baseline": {
+        "itemId": "not-tacos-esquites-corn-off-the-cob",
+        "name": "esquites (corn off the cob)",
+        "category": "NOT TACOS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "milk",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "32:not-tacos-street-corn",
+      "baseline": {
+        "itemId": "not-tacos-street-corn",
+        "name": "street corn",
+        "category": "NOT TACOS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "milk",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "35:not-tacos-kimchi",
+      "baseline": {
+        "itemId": "not-tacos-kimchi",
+        "name": "kimchi",
+        "category": "NOT TACOS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "39:not-tacos-caesar-slaw",
+      "baseline": {
+        "itemId": "not-tacos-caesar-slaw",
+        "name": "Caesar Slaw",
+        "category": "NOT TACOS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "fish",
+          "milk",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "40:not-tacos-chicken-soup",
+      "baseline": {
+        "itemId": "not-tacos-chicken-soup",
+        "name": "Chicken Soup",
+        "category": "NOT TACOS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "42:not-tacos-red-chorizo-arayes",
+      "baseline": {
+        "itemId": "not-tacos-red-chorizo-arayes",
+        "name": "Red Chorizo Arayes",
+        "category": "NOT TACOS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "sesame",
+          "soy",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "43:not-tacos-street-corn-dip",
+      "baseline": {
+        "itemId": "not-tacos-street-corn-dip",
+        "name": "Street Corn Dip",
+        "category": "NOT TACOS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "44:rice-bowls-spiced-chicken-verde-bowl",
+      "baseline": {
+        "itemId": "rice-bowls-spiced-chicken-verde-bowl",
+        "name": "spiced chicken verde bowl",
+        "category": "RICE BOWLS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "46:rice-bowls-ahi-tuna-bowl",
+      "baseline": {
+        "itemId": "rice-bowls-ahi-tuna-bowl",
+        "name": "ahi tuna bowl",
+        "category": "RICE BOWLS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "fish",
+          "sesame",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "48:rice-bowls-roasted-duck-bowl",
+      "baseline": {
+        "itemId": "rice-bowls-roasted-duck-bowl",
+        "name": "roasted duck bowl",
+        "category": "RICE BOWLS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "49:rice-bowls-ahi-tuna-crispy-rice-bowl",
+      "baseline": {
+        "itemId": "rice-bowls-ahi-tuna-crispy-rice-bowl",
+        "name": "Ahi Tuna + Crispy Rice Bowl",
+        "category": "RICE BOWLS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "fish",
+          "sesame",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "51:rice-bowls-chicken-verde-rice-bowl-duplicate",
+      "baseline": {
+        "itemId": "rice-bowls-chicken-verde-rice-bowl-duplicate",
+        "name": "Chicken Verde Rice Bowl - Duplicate",
+        "category": "RICE BOWLS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "52:rice-bowls-korean-bbq-rice-bowl",
+      "baseline": {
+        "itemId": "rice-bowls-korean-bbq-rice-bowl",
+        "name": "Korean BBQ Rice Bowl",
+        "category": "RICE BOWLS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "fish",
+          "sesame",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "53:rice-bowls-med-cauliflower-bowl",
+      "baseline": {
+        "itemId": "rice-bowls-med-cauliflower-bowl",
+        "name": "Med. Cauliflower Bowl",
+        "category": "RICE BOWLS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "sesame",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "54:rice-bowls-pistachio-cauliflower-rice-bowl",
+      "baseline": {
+        "itemId": "rice-bowls-pistachio-cauliflower-rice-bowl",
+        "name": "pistachio cauliflower rice bowl",
+        "category": "RICE BOWLS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "sesame",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "55:rice-bowls-pork-belly-rice-bowl-duplicate",
+      "baseline": {
+        "itemId": "rice-bowls-pork-belly-rice-bowl-duplicate",
+        "name": "Pork Belly Rice Bowl - Duplicate",
+        "category": "RICE BOWLS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "56:desserts-churros",
+      "baseline": {
+        "itemId": "desserts-churros",
+        "name": "churros",
+        "category": "DESSERTS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "57:desserts-key-lime-pie",
+      "baseline": {
+        "itemId": "desserts-key-lime-pie",
+        "name": "key lime pie",
+        "category": "DESSERTS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "gluten",
+          "milk",
+          "soy",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "58:desserts-tres-leches",
+      "baseline": {
+        "itemId": "desserts-tres-leches",
+        "name": "tres leches",
+        "category": "DESSERTS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "gluten",
+          "milk",
+          "tree-nut",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "59:desserts-vanilla-gelato",
+      "baseline": {
+        "itemId": "desserts-vanilla-gelato",
+        "name": "vanilla gelato",
+        "category": "DESSERTS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "60:desserts-chocolate-gelato",
+      "baseline": {
+        "itemId": "desserts-chocolate-gelato",
+        "name": "chocolate gelato",
+        "category": "DESSERTS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "61:desserts-coconut-gelato",
+      "baseline": {
+        "itemId": "desserts-coconut-gelato",
+        "name": "coconut gelato",
+        "category": "DESSERTS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "62:desserts-mint-chip-gelato",
+      "baseline": {
+        "itemId": "desserts-mint-chip-gelato",
+        "name": "mint chip gelato",
+        "category": "DESSERTS",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "64:kid-s-menu-chicken-taco-w-cheese",
+      "baseline": {
+        "itemId": "kid-s-menu-chicken-taco-w-cheese",
+        "name": "chicken taco (w/ cheese)",
+        "category": "KID'S MENU",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "65:kid-s-menu-steak-taco-w-cheese",
+      "baseline": {
+        "itemId": "kid-s-menu-steak-taco-w-cheese",
+        "name": "steak taco (w/ cheese)",
+        "category": "KID'S MENU",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "sesame",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "66:kid-s-menu-kids-fish-taco",
+      "baseline": {
+        "itemId": "kid-s-menu-kids-fish-taco",
+        "name": "kids fish taco",
+        "category": "KID'S MENU",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "68:kid-s-menu-kids-corn",
+      "baseline": {
+        "itemId": "kid-s-menu-kids-corn",
+        "name": "kids corn",
+        "category": "KID'S MENU",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "69:kid-s-menu-oaxaca-cheese-snack",
+      "baseline": {
+        "itemId": "kid-s-menu-oaxaca-cheese-snack",
+        "name": "oaxaca cheese snack",
+        "category": "KID'S MENU",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "71:kid-s-menu-steamed-broccoli",
+      "baseline": {
+        "itemId": "kid-s-menu-steamed-broccoli",
+        "name": "steamed broccoli",
+        "category": "KID'S MENU",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "72:kid-s-menu-quesadilla",
+      "baseline": {
+        "itemId": "kid-s-menu-quesadilla",
+        "name": "quesadilla",
+        "category": "KID'S MENU",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "soy",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "100:happy-hour-chicken-croqueta",
+      "baseline": {
+        "itemId": "happy-hour-chicken-croqueta",
+        "name": "Chicken Croqueta",
+        "category": "HAPPY HOUR",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "101:happy-hour-chicken-samosa",
+      "baseline": {
+        "itemId": "happy-hour-chicken-samosa",
+        "name": "Chicken Samosa",
+        "category": "HAPPY HOUR",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "102:happy-hour-chorizo-pintxo",
+      "baseline": {
+        "itemId": "happy-hour-chorizo-pintxo",
+        "name": "Chorizo Pintxo",
+        "category": "HAPPY HOUR",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "103:happy-hour-coco-melon-marg",
+      "baseline": {
+        "itemId": "happy-hour-coco-melon-marg",
+        "name": "Coco Melon Marg",
+        "category": "HAPPY HOUR",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "104:happy-hour-coconut-mojito",
+      "baseline": {
+        "itemId": "happy-hour-coconut-mojito",
+        "name": "Coconut Mojito",
+        "category": "HAPPY HOUR",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "105:happy-hour-crispy-chicken-flauta",
+      "baseline": {
+        "itemId": "happy-hour-crispy-chicken-flauta",
+        "name": "Crispy Chicken Flauta",
+        "category": "HAPPY HOUR",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "106:happy-hour-shrimp-pork-smash-dumpling",
+      "baseline": {
+        "itemId": "happy-hour-shrimp-pork-smash-dumpling",
+        "name": "Shrimp + Pork Smash Dumpling",
+        "category": "HAPPY HOUR",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "fish",
+          "gluten",
+          "milk",
+          "sesame",
+          "shellfish",
+          "soy",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "107:happy-hour-tuna-tartare-crispy-rice",
+      "baseline": {
+        "itemId": "happy-hour-tuna-tartare-crispy-rice",
+        "name": "Tuna Tartare + Crispy Rice",
+        "category": "HAPPY HOUR",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "fish",
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-widget",
+        "sourceType": "official-allergen-widget",
+        "sourceUrls": [
+          "https://bartaco.com/nutrition/",
+          "https://app.everybite.com/widget/4facc5a0"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-04-2026-07-16/jobs/bartaco-wharf-dc.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-04-2026-07-16/results/bartaco-wharf-dc.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/bartaco-wharf-dc.jsonl"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-034-2026-07-21",
+  "restaurantId": "boqueria-penn-quarter-dc",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "8d2f6e41bd9264b8bb7d04746deee753d665be5d206fd4613ee99a3f25f35e82",
+    "currentProductCount": 211,
+    "reconciliationRows": 212,
+    "normalizedMatchCount": 212,
+    "directPositiveProducts": 60,
+    "directAllergenAssertions": 122,
+    "mayContainCount": 0,
+    "matrixStatus": "found",
+    "matrixSearchCount": 4,
+    "ingredientIntelligence": "recomputed_after_direct_finalization",
+    "preflight": {
+      "publishingSurfaceKeys": 211,
+      "dossierProductKeys": 211,
+      "evidenceSourceIds": 7,
+      "itemCheckKeys": 212,
+      "directClaimEquality": true
+    }
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/boqueria-penn-quarter-dc.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/boqueria-penn-quarter-dc.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/boqueria-penn-quarter-dc.jsonl",
+    "scripts/apply-boqueria-penn-quarter-dc-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-034-2026-07-21/apply-results/boqueria-penn-quarter-dc.json"
+  ],
+  "artifactHashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "6b1fe2273ea682e9aa6958c9c0ffa4a837d9ff0b871771460d656ef107d63ac9",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/boqueria-penn-quarter-dc.json": "10f63060b104a521f9d97a6eab2edc4ef161ebbf016cf0866647ebc57b5f8814",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/boqueria-penn-quarter-dc.json": "ba62ad1abfe71eef21f1d813aeb25f73647e7a2de082d756ee36f8d61db81d1d",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/boqueria-penn-quarter-dc.jsonl": "f5f4ae15a74d7662744acd58ffd4af71906e8d0b60bda8fdd0033a697763b36c"
+  },
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "validatePocResearchFiles",
+    "official closeout preflight key/direct-claim equality",
+    "annotateRestaurantWithIngredientIntelligence after direct finalization",
+    "run apply twice and compare owned artifact bytes"
+  ],
+  "secondRunDiff": "none",
+  "counts": {
+    "publishedProducts": 211,
+    "normalizedMatches": 212,
+    "directPositiveProducts": 60,
+    "directAllergenAssertions": 122,
+    "mayContain": 0,
+    "matrixSearches": 4
+  }
+}

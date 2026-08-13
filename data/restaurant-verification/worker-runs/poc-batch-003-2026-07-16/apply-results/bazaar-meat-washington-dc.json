@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-003-2026-07-16",
+  "restaurantId": "bazaar-meat-washington-dc",
+  "changedPaths": [
+    "src/data/generated/restaurants.generated.json",
+    "data/restaurant-verification/restaurants/bazaar-meat-washington-dc.json",
+    "data/restaurant-verification/evidence/bazaar-meat-washington-dc.json",
+    "data/restaurant-verification/worker-runs/poc-batch-003-2026-07-16/apply-results/bazaar-meat-washington-dc.json"
+  ],
+  "commands": [
+    "target publication: merge binding review catalog and annotate Ingredient Intelligence",
+    "focused target readback: 110 products, DC source/location, alcohol exclusion, nonalcoholic inclusion, direct evidence references",
+    "mechanical evidence normalization: rename all four source evidenceId fields to ledger-required id fields",
+    "mechanical evidence contract correction: add retrievedAt to all four canonical sources while preserving currentAsOf",
+    "mechanical evidence content correction: add reviewed-page excerpts to all four canonical sources",
+    "focused validation: required evidence fields, retrievedAt, captured-content gate, unique ids, and resolution of all dossier, current-product, and surface evidence references",
+    "repeat identical evidence content correction and compare evidence output"
+  ],
+  "secondRunDiff": "none",
+  "validation": {
+    "valid": true,
+    "currentProductCount": 110,
+    "sourceCount": 4,
+    "uniqueNonemptySourceIds": true,
+    "allSourcesHaveRequiredFields": true,
+    "allSourcesHaveRetrievedAt": true,
+    "allSourcesHaveCapturedContent": true,
+    "allEvidenceReferencesResolve": true,
+    "unresolvedEvidenceReferences": [],
+    "completeDefinitions": true,
+    "dcLocationSource": true,
+    "alcoholicCatalogRows": 0,
+    "explicitNonalcoholicRows": 5,
+    "directEvidenceReferencesValid": true,
+    "errors": []
+  }
+}

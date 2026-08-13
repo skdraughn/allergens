@@ -5,6 +5,7 @@ import {
   DynamoDBDocumentClient,
 } from "@aws-sdk/lib-dynamodb";
 import { readFile } from "node:fs/promises";
+import { gzipSync } from "node:zlib";
 
 import { buildRestaurantSearchIndexRows } from "./restaurant-search-index.mjs";
 
@@ -55,7 +56,12 @@ export async function publishFinalLaunchPortfolio(rawArgs = process.argv.slice(2
     restaurantCount: repository.restaurantCount,
     restaurantSearchIndexCount: currentIndexRows.length,
     refreshScope: "final-launch-portfolio",
-    selectionSummary: report.summary,
+    selectionSummary: {
+      ...(report.summary ?? {}),
+      restaurantCount: repository.restaurantCount,
+      itemCount: repository.itemCount,
+      sourceReportPath: reportPath,
+    },
     snapshotVersion: repository.snapshotVersion,
   };
 
@@ -134,11 +140,13 @@ async function readJsonFromS3(s3, bucket, key) {
 }
 
 async function putJson(s3, bucket, key, body) {
+  const json = `${JSON.stringify(body)}\n`;
   await s3.send(
     new PutObjectCommand({
-      Body: `${JSON.stringify(body, null, 2)}\n`,
+      Body: gzipSync(json, { level: 9 }),
       Bucket: bucket,
       ContentType: "application/json",
+      ContentEncoding: "gzip",
       Key: key,
     }),
   );

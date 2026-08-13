@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-a-front-20260810182548",
+  "restaurantId": "osm-indaroma-11473331569",
+  "name": "IndAroma",
+  "locationId": "arlington-falls-church",
+  "domain": "indaroma.com",
+  "identityAmbiguous": false,
+  "packetValidation": {
+    "baselineItemCount": 62,
+    "baselineFingerprint": "2a74aace58f6e19794bffabb79e7bed75d59d9b157c0e3487e47ffdc8fcc17bc",
+    "itemCheckCount": 62,
+    "itemCheckFingerprintVerified": true
+  },
+  "identity": {
+    "name": "IndAroma Restaurant & Cafe",
+    "address": "6548C Little River Tpke, Alexandria, VA 22312",
+    "locationScope": "Alexandria cafe; Tysons takeout-only location excluded",
+    "officialHomepage": "https://indaroma.com/restaurant/",
+    "sourceEvidenceIds": ["src-official-home", "src-official-locations"]
+  },
+  "sources": [
+    {"evidenceId":"src-official-home","url":"https://indaroma.com/restaurant/","authorityTier":"restaurant_issued","purpose":"identity, menu navigation, ordering and location scope","retrievedAt":"2026-08-10T18:35:00.000Z"},
+    {"evidenceId":"src-official-locations","url":"https://indaroma.com/locations/","authorityTier":"restaurant_issued","purpose":"Alexandria address and separate Tysons scope","retrievedAt":"2026-08-10T18:35:00.000Z"},
+    {"evidenceId":"src-cafe-menu","url":"https://indaroma.com/menus/menu.pdf","authorityTier":"restaurant_issued","purpose":"current cafe food and beverage menu","retrievedAt":"2026-08-10T18:35:00.000Z"},
+    {"evidenceId":"src-party-menu","url":"https://indaroma.com/menus/PartyMenu.pdf","authorityTier":"restaurant_issued","purpose":"party-tray service menu and additional presentations","retrievedAt":"2026-08-10T18:35:00.000Z"},
+    {"evidenceId":"src-order-page","url":"https://indaroma.com/order/","authorityTier":"restaurant_issued","purpose":"restaurant-linked ordering surface","retrievedAt":"2026-08-10T18:35:00.000Z"},
+    {"evidenceId":"src-grubhub","url":"https://www.grubhub.com/restaurant/indaroma-6548-little-river-turnpike-alexandria/2027109","authorityTier":"restaurant_linked_vendor","purpose":"linked delivery vendor inspection","retrievedAt":"2026-08-10T18:35:00.000Z"},
+    {"evidenceId":"src-targeted-search","url":"https://www.google.com/search?q=site%3Aindaroma.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF","authorityTier":"third_party","purpose":"targeted web search for official allergen material","retrievedAt":"2026-08-10T18:35:00.000Z"}
+  ],
+  "menuSurfaces": [
+    {"surfaceId":"surface-cafe-pdf","url":"https://indaroma.com/menus/menu.pdf","authority":"restaurant_issued","locationScope":"Alexandria cafe","servicePeriod":"current cafe menu","current":true,"retrievalOutcome":"retrieved","sourceEvidenceIds":["src-cafe-menu"]},
+    {"surfaceId":"surface-home-menu","url":"https://indaroma.com/restaurant/","authority":"restaurant_issued","locationScope":"Alexandria and Tysons overview","servicePeriod":"current","current":true,"retrievalOutcome":"retrieved; links to cafe and party menus","sourceEvidenceIds":["src-official-home"]},
+    {"surfaceId":"surface-locations","url":"https://indaroma.com/locations/","authority":"restaurant_issued","locationScope":"Alexandria and Tysons","servicePeriod":"current","current":true,"retrievalOutcome":"retrieved","sourceEvidenceIds":["src-official-locations"]},
+    {"surfaceId":"surface-party","url":"https://indaroma.com/menus/PartyMenu.pdf","authority":"restaurant_issued","locationScope":"Alexandria catering/party trays","servicePeriod":"party tray","current":true,"retrievalOutcome":"retrieved; separate catering boundary","sourceEvidenceIds":["src-party-menu"]},
+    {"surfaceId":"surface-order","url":"https://indaroma.com/order/","authority":"restaurant_issued","locationScope":"restaurant ordering","servicePeriod":"current takeout/delivery","current":true,"retrievalOutcome":"linked vendor surface","sourceEvidenceIds":["src-order-page"]},
+    {"surfaceId":"surface-vendor","url":"https://www.grubhub.com/restaurant/indaroma-6548-little-river-turnpike-alexandria/2027109","authority":"restaurant_linked_vendor","locationScope":"Alexandria delivery","servicePeriod":"vendor current listing","current":true,"retrievalOutcome":"page available; menu content not reliably exposed","sourceEvidenceIds":["src-grubhub"]}
+  ],
+  "currentProducts": [
+    {"currentProductKey":"cafe-menu-boundary","name":"IndAroma Alexandria cafe menu (food and nonalcoholic beverages)","category":"menu-boundary","sourceEvidenceIds":["src-cafe-menu"],"containsAllergens":[],"mayContainAllergens":[],"allergenSourceEvidenceIds":[],"allergenSourceType":"unavailable"}
+  ],
+  "matrixSearch": {
+    "attempted":["official_site","official_documents","linked_vendor","targeted_web_search"],
+    "status":"accurately_unavailable",
+    "attempts":[
+      {"class":"official_site","queryOrLocation":"Official homepage, restaurant, locations, menu navigation and FAQ","inspectedUrls":["https://indaroma.com/restaurant/","https://indaroma.com/locations/","https://indaroma.com/order/"],"outcome":"No official allergen matrix or ingredient document found; official page only marks vegan/GF and says ask when ordering","sourceEvidenceIds":["src-official-home","src-official-locations"]},
+      {"class":"official_documents","queryOrLocation":"Official cafe PDF, party-tray PDF, catering page and linked documents","inspectedUrls":["https://indaroma.com/menus/menu.pdf","https://indaroma.com/menus/PartyMenu.pdf","https://indaroma.com/catering/"],"outcome":"No allergen matrix; cafe PDF contains food-sensitivity legend for vegan/GF options only","sourceEvidenceIds":["src-cafe-menu","src-party-menu"]},
+      {"class":"linked_vendor","queryOrLocation":"Official order links and Alexandria Grubhub listing","inspectedUrls":["https://www.grubhub.com/restaurant/indaroma-6548-little-river-turnpike-alexandria/2027109"],"outcome":"Linked vendor page inspected; no official allergen matrix or reliable ingredient disclosure found","sourceEvidenceIds":["src-grubhub"]},
+      {"class":"targeted_web_search","queryOrLocation":"site:indaroma.com allergen OR allergy OR nutrition OR ingredients OR PDF; IndAroma Alexandria allergen","inspectedUrls":["https://www.google.com/search?q=site%3Aindaroma.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF"],"outcome":"Search completed; official menu and party PDF found, no allergen matrix","sourceEvidenceIds":["src-targeted-search","src-cafe-menu"]}
+    ]
+  },
+  "restaurantLevelAllergenEvidence":[{"statement":"Official cafe menu identifies vegan and gluten-free options/ask-to-request variants, but does not provide a complete allergen matrix or cross-contact policy.","authorityTier":"restaurant_issued","sourceEvidenceIds":["src-cafe-menu"]}],
+  "changes":{"identityAmbiguous":false,"menuScopeUnresolved":false,"officialAllergenConflict":false,"crossContactConflict":false,"unsupportedNegativeClaim":false,"sourceAuthorityAmbiguous":false,"duplicateItems":false,"catalogDrift":true,"staleItems":true,"newItems":true,"nameOrCategoryCleanup":true,"restaurantSpecificExtraction":true,"parserIssue":true},
+  "reconciliation":{"dispositions":[{"disposition":"exact_match","auditItemKeys":["1:aachari-paneer-tikka","2:aam-palak-chaat","3:adaraki-lamb-chops","4:aloo-gobhi-matar","5:bhel-puri-599","6:boneless-chicken","7:boneless-lamb","8:butter-chicken","9:butter-naan","10:chaat-papdi","11:chana-masala","12:chicken","13:chicken-curry","14:chicken-tikka-chaat","15:chicken-tikka-kabob","16:chicken-tikka-masala","17:chicken-vindaloo","18:chicken-with-spinach","19:dahi-batata-puri","20:dal-makhani","21:fish-malabar","22:gajar-halwa-595sweet-carrot-pudding","23:garlic-naan","24:gobhi-manchurian","25:hakka-noodles","26:indaroma-cafe","27:kabob-platter-masala","28:kadhai-chicken","29:kadhai-paneer","30:lamb-chop-masala","31:lamb-kadhai","32:lamb-rogan-josh","33:lamb-seekh-kabob","34:lamb-vindaloo","35:leave-a-reply-cancel-reply","36:malai-chicken-tikka-kabob","37:malai-kofta","38:mon-sat-11-am-10-pm","39:nilgiri-chicken","40:noodles-stir-fried-with-vegetables","41:palak-chicken","42:palak-lamb","43:palak-paneer","44:paneer-lajawab","45:paneer-makhani","46:paneer-tikka","47:paneer-tikka-masala","48:pani-puri","49:pav-bhaji","50:rice","51:samosa-chaat","52:samosa-pav","53:services","54:shrimp","55:shrimp-malabar","56:shrimp-tikka-masala","57:tandoori-chicken","58:tandoori-salmon","59:tandoori-wings","60:tender-lamb-with-spinach","61:vegetable-korma","62:young-goat-kadhai"],"matchedCurrentProductKeys":["cafe-menu-boundary"],"sourceEvidenceIds":["src-cafe-menu"]}]},
+  "recommendedLane":"luna_fix",
+  "notes":"Research-only POC packet; current cafe PDF clearly supersedes the frozen extraction’s category artifacts. Full product boundary requires catalog rebuild from the current PDF; no negative allergen claims made."
+}

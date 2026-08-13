@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-a-front-20260810195148",
+  "restaurantId": "jont-dc",
+  "packetValidation": {
+    "restaurantId": "jont-dc",
+    "name": "Jont",
+    "locationId": null,
+    "domain": "jontdc.com",
+    "baselineItemCount": 0,
+    "baselineFingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "itemChecksPath": "data/restaurant-verification/item-checks/jont-dc.jsonl"
+  },
+  "identity": {
+    "status": "confirmed",
+    "name": "Jônt",
+    "location": "1904 14th St NW, Washington, DC 20009",
+    "locationId": null,
+    "domain": "jontdc.com",
+    "officialHomepage": "https://www.jontdc.com/",
+    "sourceEvidenceIds": ["JONT-E1", "JONT-E2", "JONT-E3"]
+  },
+  "sources": [
+    {"evidenceId":"JONT-E1","url":"https://www.jontdc.com/","authorityTier":"restaurant_issued","purpose":"official homepage and navigation inspected","retrievedAt":"2026-08-10T20:05:00.000Z"},
+    {"evidenceId":"JONT-E2","url":"https://www.jontdc.com/location/jont/","authorityTier":"restaurant_issued","purpose":"official location identity","retrievedAt":"2026-08-10T20:05:00.000Z"},
+    {"evidenceId":"JONT-E3","url":"https://www.jontdc.com/faq/","authorityTier":"restaurant_issued","purpose":"official address, service, dietary and allergy policy","retrievedAt":"2026-08-10T20:05:00.000Z"},
+    {"evidenceId":"JONT-E4","url":"https://www.jontdc.com/menu/","authorityTier":"restaurant_issued","purpose":"official current menu surface and dietary warning","retrievedAt":"2026-08-10T20:05:00.000Z"},
+    {"evidenceId":"JONT-E5","url":"https://media-cdn.getbento.com/accounts/b7afc34a90a360e516fe2f25122db225/media/MISsstjbTSjBmmmnB8DQ_5.29.25%20SITE.pdf","authorityTier":"restaurant_issued","purpose":"official linked beverage PDF; nonalcoholic, tea and coffee surfaces inspected; dated menu retained as source reference","retrievedAt":"2026-08-10T20:05:00.000Z"},
+    {"evidenceId":"JONT-E6","url":"https://www.opentable.com/r/jont-washington","authorityTier":"restaurant_linked_vendor","purpose":"official site-linked reservation/vendor surface and current tasting experience checked","retrievedAt":"2026-08-10T20:05:00.000Z"},
+    {"evidenceId":"JONT-E7","url":"https://www.google.com/search?q=site%3Ajontdc.com+allergen+allergy+nutrition+ingredients+PDF+menu","authorityTier":"third_party","purpose":"targeted web search for official allergen material","retrievedAt":"2026-08-10T20:05:00.000Z"}
+  ],
+  "menuSurfaces": [
+    {"surfaceId":"jont-official-menu","title":"Official menu page","url":"https://www.jontdc.com/menu/","current":true,"scopeStatus":"complete","servicePeriod":"dinner","locationScope":"Washington DC","sourceEvidenceIds":["JONT-E4"],"currentProductKeys":["chefs-tasting-menu","nonalcoholic-beverage-selection","tea-coffee-selection"]},
+    {"surfaceId":"jont-beverage-pdf","title":"Official beverage menu PDF","url":"https://media-cdn.getbento.com/accounts/b7afc34a90a360e516fe2f25122db225/media/MISsstjbTSjBmmmnB8DQ_5.29.25%20SITE.pdf","current":true,"scopeStatus":"complete","servicePeriod":"dinner","locationScope":"Washington DC","sourceEvidenceIds":["JONT-E5"],"currentProductKeys":["nonalcoholic-beverage-selection","tea-coffee-selection"]},
+    {"surfaceId":"jont-reservations","title":"Linked OpenTable reservation experience","url":"https://www.opentable.com/r/jont-washington","current":true,"scopeStatus":"complete","servicePeriod":"dinner","locationScope":"Washington DC","sourceEvidenceIds":["JONT-E6"],"currentProductKeys":["chefs-tasting-menu"]}
+  ],
+  "currentProducts": [
+    {"currentProductKey":"chefs-tasting-menu","name":"Chef's Tasting Menu","category":"Food tasting menu","sourceEvidenceIds":["JONT-E4","JONT-E6"],"containsAllergens":["soy","milk"],"mayContainAllergens":[],"allergenSourceEvidenceIds":["JONT-E4"],"allergenSourceType":"restaurant_ingredients","allergenAuthorityTier":"restaurant_issued"},
+    {"currentProductKey":"nonalcoholic-beverage-selection","name":"Non-Alcoholic Beverage Selection","category":"Nonalcoholic beverages","sourceEvidenceIds":["JONT-E4","JONT-E5"],"containsAllergens":[],"mayContainAllergens":[],"allergenSourceEvidenceIds":[],"allergenSourceType":"unavailable"},
+    {"currentProductKey":"tea-coffee-selection","name":"Tea and Coffee","category":"Nonalcoholic beverages","sourceEvidenceIds":["JONT-E5"],"containsAllergens":[],"mayContainAllergens":[],"allergenSourceEvidenceIds":[],"allergenSourceType":"unavailable"}
+  ],
+  "restaurantLevelAllergenEvidence": [
+    {"evidenceId":"JONT-E4","statement":"Due to the prevalence of soy products, mushrooms, cooked allium, butter, and cooked alcohol, Jônt cannot adjust for these ingredients entirely; dietary restrictions should be noted in advance and it cannot accommodate a vegan or Celiac-safe experience.","authorityTier":"restaurant_issued","scope":"food program","interpretation":"Direct restaurant-issued ingredient and cross-contact limitation; does not establish a complete item-level matrix or absence of allergens."},
+    {"evidenceId":"JONT-E3","statement":"The restaurant requests dietary restrictions seven days in advance and asks guests with severe allergies to contact it first.","authorityTier":"restaurant_issued","scope":"restaurant","interpretation":"Direct service and safety warning; not a product-specific allergen matrix."}
+  ],
+  "matrixSearch":{"attempted":["official_site","official_documents","linked_vendor","targeted_web_search"],"status":"accurately_unavailable","attempts":[
+    {"class":"official_site","queryOrLocation":"Official homepage navigation, menu, FAQ, location, retail, events and reservation links","inspectedUrls":["https://www.jontdc.com/","https://www.jontdc.com/menu/","https://www.jontdc.com/faq/","https://www.jontdc.com/location/jont/"],"outcome":"No complete official allergen, nutrition or ingredient matrix found; menu page contains direct dietary limitation language.","sourceEvidenceIds":["JONT-E1","JONT-E3","JONT-E4"]},
+    {"class":"official_documents","queryOrLocation":"Official menu images, linked BentoBox PDF and downloadable document surfaces","inspectedUrls":["https://www.jontdc.com/menu/","https://media-cdn.getbento.com/accounts/b7afc34a90a360e516fe2f25122db225/media/MISsstjbTSjBmmmnB8DQ_5.29.25%20SITE.pdf"],"outcome":"Official beverage PDF and menu materials found; no complete allergen matrix.","sourceEvidenceIds":["JONT-E4","JONT-E5"]},
+    {"class":"linked_vendor","queryOrLocation":"Official site's linked OpenTable reservation/vendor surface","inspectedUrls":["https://www.opentable.com/r/jont-washington"],"outcome":"Current tasting-menu experience inspected; no allergen matrix.","sourceEvidenceIds":["JONT-E6"]},
+    {"class":"targeted_web_search","queryOrLocation":"site:jontdc.com allergen allergy nutrition ingredients PDF menu","inspectedUrls":["https://www.google.com/search?q=site%3Ajontdc.com+allergen+allergy+nutrition+ingredients+PDF+menu"],"outcome":"No official complete allergen matrix located; official menu and FAQ dietary warnings corroborated.","sourceEvidenceIds":["JONT-E7","JONT-E3","JONT-E4"]}
+  ]},
+  "reconciliation":{"items":[]},
+  "changes":{"identityAmbiguous":false,"menuScopeUnresolved":false,"officialAllergenConflict":false,"crossContactConflict":false,"unsupportedNegativeClaim":false,"sourceAuthorityAmbiguous":false,"duplicateItems":false,"catalogDrift":false,"staleItems":false,"newItems":false,"nameOrCategoryCleanup":false,"restaurantSpecificExtraction":false,"parserIssue":false},
+  "recommendedLane":"verify"
+}

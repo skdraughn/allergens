@@ -1,7 +1,11 @@
 import type { LucideIcon } from "lucide-react-native";
 import type { ReactNode } from "react";
 import { StyleSheet, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import type { SharedValue } from "react-native-reanimated";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 import { spacing } from "@/constants/theme";
 
@@ -16,36 +20,56 @@ type ModalScreenProps = {
   onActionPress: () => void;
   headerContent?: ReactNode;
   actionPosition?: "left" | "right";
+  actionGlassVisibilityProgress?: SharedValue<number>;
+  includeBottomInset?: boolean;
 };
 
 export function ModalScreen({
   actionIcon,
+  actionGlassVisibilityProgress,
   actionLabel,
   actionPosition = "right",
   children,
   headerContent,
+  includeBottomInset = true,
   onActionPress,
 }: ModalScreenProps) {
+  const insets = useSafeAreaInsets();
   const actionButton = (
-    <ModalIconButton Icon={actionIcon} label={actionLabel} onPress={onActionPress} />
+    <ModalIconButton
+      glassVisibilityProgress={actionGlassVisibilityProgress}
+      Icon={actionIcon}
+      label={actionLabel}
+      onPress={onActionPress}
+    />
   );
 
   return (
     <ScreenBackground>
-      <SafeAreaView style={styles.safeArea}>
+      <SafeAreaView edges={["top", "left", "right"]} style={styles.screen}>
         <View style={styles.nav}>
           {actionPosition === "left" ? actionButton : null}
           {headerContent ? <View style={styles.headerContent}>{headerContent}</View> : <View />}
           {actionPosition === "right" ? actionButton : <View style={styles.spacer} />}
         </View>
-        {children}
-        <SnackbarViewport />
+        <View
+          style={[
+            styles.content,
+            includeBottomInset && { paddingBottom: insets.bottom },
+          ]}
+        >
+          {children}
+        </View>
+        <SnackbarViewport insideSafeArea />
       </SafeAreaView>
     </ScreenBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  content: {
+    flex: 1,
+  },
   headerContent: {
     flex: 1,
     paddingRight: spacing.two,
@@ -59,7 +83,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.three,
     paddingTop: spacing.four,
   },
-  safeArea: {
+  screen: {
     flex: 1,
   },
   spacer: {

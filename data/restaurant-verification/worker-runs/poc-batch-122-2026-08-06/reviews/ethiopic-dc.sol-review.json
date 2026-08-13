@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-122-2026-08-06",
+  "restaurantId": "ethiopic-dc",
+  "reviewType": "scheduled_one_in_20_audit",
+  "model": { "id": "gpt-5.6-sol", "reasoningEffort": "medium", "role": "sol_reviewer" },
+  "reviewedKeys": ["1:asa-tib", "2:awaze-tibs", "3:azifa", "4:beef-and-chicken-wot-sampler", "5:chocolate-souffle", "6:creme-brulee", "7:dinich-wot", "8:doro-aletcha-wot", "9:doro-key-wot", "10:ethiopic-signature-bozena-shiro", "11:ethiopic-signature-kitfo", "12:ethiopic-signature-shiro", "13:ethiopic-signature-tibs", "14:fosolia", "15:gomen", "16:honey-nut-baklava", "17:key-sir", "18:kik-aletcha", "19:minchet-abish-aletcha-wot", "20:miser-wot", "21:sega-key-wot", "22:shimbra-asa-wot", "23:sorbet", "24:tikile-gomen", "25:vegetarian-sampler-for-one", "26:vegetarian-sampler-for-two", "27:yebeg-alethcha-wot"],
+  "evidence": [
+    { "evidenceId": "official-current-menu", "url": "https://www.ethiopicrestaurant.com/menus/", "authorityTier": "restaurant_issued", "retrievedAt": "2026-08-06", "finding": "Live menu has 29 unique products; Timatim and Butcha were omitted from the 27-product result." },
+    { "evidenceId": "sampler-presentations", "url": "https://www.ethiopicrestaurant.com/menus/", "authorityTier": "restaurant_issued", "retrievedAt": "2026-08-06", "finding": "Vegetarian samplers have separate base and with-fish presentations; fish was assigned universally." },
+    { "evidenceId": "official-documents-search", "artifact": "data/restaurant-verification/worker-runs/poc-batch-122-2026-08-06/results/ethiopic-dc.json", "finding": "The official_documents attempt lacked an inspected document/sitemap or complete domain-qualified query." }
+  ],
+  "resolution": {
+    "binding": true,
+    "outcome": "audit_failed_material_safety_error",
+    "items": [
+      { "currentProductKey": "timatim", "resolution": "missing_current_product", "requiredAction": "Add current official product without inferring allergen absence." },
+      { "currentProductKey": "butcha", "resolution": "missing_current_product", "requiredAction": "Add current official product without inferring allergen absence." },
+      { "currentProductKey": "vegetarian-sampler-for-one", "resolution": "presentation_scope_conflict", "requiredAction": "Separate base and with-fish semantics." },
+      { "currentProductKey": "vegetarian-sampler-for-two", "resolution": "presentation_scope_conflict", "requiredAction": "Separate base and with-fish semantics." }
+    ],
+    "surfaceResolutions": [{ "surfaceId": "official-menus", "resolution": "incomplete", "missingCurrentProductKeys": ["timatim", "butcha"] }],
+    "safetySourceAuthorityConflictRemains": true
+  },
+  "remainingSolSignals": ["menu_scope_incomplete", "official_documents_search_incomplete", "direct_positive_presentation_scope_conflict", "linked_vendor_membership_authority_unsubstantiated"],
+  "validation": {
+    "valid": false,
+    "errors": ["Two current products omitted.", "Sampler fish positives were scoped universally.", "Official-documents search was not credible."],
+    "identityConfirmed": true,
+    "locationConfirmed": true,
+    "officialUniqueProductNameCount": 29,
+    "resultCurrentProductCount": 27,
+    "missingCurrentProductKeys": ["timatim", "butcha"],
+    "directPositivePresentationScopeConflictCount": 2,
+    "requiredMatrixSearchClassCount": 4,
+    "credibleMatrixSearchClassCount": 3,
+    "officialMatrixSearchComplete": false,
+    "unsupportedAllergenNegativeClaimCount": 0,
+    "materialSafetyError": true,
+    "frozenItemCount": 27,
+    "reconciledFrozenItemCount": 27,
+    "reconciliationKeySetValid": true,
+    "codexVerifiedClaimed": false
+  },
+  "coordinatorRecommendation": "Repair the identified defects, repeat this narrow audit, and recheck the prior 20 fast-path completions against the failed rules before resuming."
+}

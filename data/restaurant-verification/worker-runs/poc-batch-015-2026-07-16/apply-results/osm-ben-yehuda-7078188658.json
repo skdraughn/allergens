@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-015-2026-07-16",
+  "restaurantId": "osm-ben-yehuda-7078188658",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "c45476d4266efd4c26a4d86dd8ee5d07e778fe6ceb255c1aa46a4c76c94469bf",
+    "currentProductCount": 29,
+    "directSourceTypeCounts": {
+      "restaurant_ingredients": 14,
+      "unavailable": 15
+    },
+    "reconciliation": {
+      "artifact": 7,
+      "stale": 2,
+      "unresolved": 0
+    },
+    "assertions": [
+      "stale fingerprint gate passed",
+      "validatePocResearchResult passed before canonical mutation",
+      "29 complete current nonalcoholic products published",
+      "DoorDash remains supporting/current false",
+      "direct positives are exact restaurant-issued descriptions",
+      "Ingredient Intelligence applied after direct catalog finalization",
+      "canonical evidence IDs resolve",
+      "second run is byte-identical"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-015-2026-07-16/results/osm-ben-yehuda-7078188658.json",
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-ben-yehuda-7078188658.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-ben-yehuda-7078188658.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/osm-ben-yehuda-7078188658.jsonl"
+  ],
+  "commands": [
+    "node scripts/restaurant-verification-poc-result.mjs (strengthened preflight)",
+    "node scripts/apply-ben-yehuda-poc.mjs (twice)",
+    "sha256 comparison of owned artifacts"
+  ],
+  "secondRunDiff": "none",
+  "counts": {
+    "publishedProducts": 29,
+    "directRestaurantIngredients": 14,
+    "directUnavailable": 15,
+    "mayContainProducts": 0,
+    "wheatOrGlutenProducts": 0,
+    "evidenceSources": 4,
+    "matrixSearches": 4,
+    "currentCompleteSurfaces": 3,
+    "artifactRows": 7,
+    "staleRows": 2,
+    "unresolved": 0
+  },
+  "artifactHashes": {
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-015-2026-07-16/results/osm-ben-yehuda-7078188658.json": "e72260bf45e2a705377de3afee29b0ebe9768822e795e70306eb40e47d46893d",
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "67d0cc31eccc94e516113d54c393a35192e4542ced670356fd001c662d076cf8",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-ben-yehuda-7078188658.json": "90543a632bca2cd8df6f59f74d2a170d77ff66d71d7a1b09a42b150b9586f99c",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-ben-yehuda-7078188658.json": "2b1974705a692f5109d84bd010e5602382ddd7af9fda082d57b263e61c86ff71",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/osm-ben-yehuda-7078188658.jsonl": "c8a308dfc7e5b4f6f5eec6d0b94856b8a698afac5d3d63b80810d4774d5ddc5d"
+  }
+}

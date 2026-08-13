@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-027-2026-07-20",
+  "restaurantId": "bluestone-lane-west-end-dc",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "f43926de4689d206c4f18b9acf3be05cf9e8d680bb71ef9bda7fb3b4aef6e541",
+    "assertions": [
+      "fingerprint gate passed",
+      "validated result accepted",
+      "55 products published",
+      "42 restaurant-issued explicit-label products and 13 unavailable",
+      "zero mayContain",
+      "53 terminal checks",
+      "Ingredient Intelligence recomputed after direct finalization",
+      "second run is byte-identical"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.summary.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/bluestone-lane-west-end-dc.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/bluestone-lane-west-end-dc.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/bluestone-lane-west-end-dc.jsonl",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-bluestone-lane-west-end-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-027-2026-07-20/apply-results/bluestone-lane-west-end-dc.json"
+  ],
+  "hashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "aa2fa5fb80b54c8bf33db9e85bf9e35fa727ea53aa9568dcbb0e926da4b32f6e",
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.summary.generated.json": "a543c6cc0c50719c1085c8b30874ad0e584a4c1c003405566220ed292d905c76",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/bluestone-lane-west-end-dc.json": "a540b329d01f58ec065e29b8c365087f2fe37b77df1feae1fdb98bd282fed932",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/bluestone-lane-west-end-dc.json": "057ee7462c630a1d7f3dd27160d709d9fb6c1a7027eedf6b00c0e0e6fa14d30e",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/bluestone-lane-west-end-dc.jsonl": "1e1c084661baf28b62338fd6b7b251a1b82ee527be708501c9805cae3f28d79f"
+  },
+  "counts": {
+    "publishedProducts": 55,
+    "directRestaurantIssued": 42,
+    "directUnavailable": 13,
+    "mayContainProducts": 0,
+    "reconciledChecks": 53,
+    "matrixSearches": 4,
+    "evidenceSources": 5
+  },
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "validatePocResearchFiles",
+    "write target artifacts with relative evidence paths",
+    "recompute Ingredient Intelligence after direct catalog finalization",
+    "node scripts/apply-bluestone-lane-west-end-poc.mjs (twice)",
+    "compare owned-file hashes"
+  ],
+  "secondRunDiff": "none"
+}

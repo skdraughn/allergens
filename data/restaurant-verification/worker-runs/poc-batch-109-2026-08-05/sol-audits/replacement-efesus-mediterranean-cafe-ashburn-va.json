@@ -1,0 +1,81 @@
+{
+  "restaurantId": "replacement-efesus-mediterranean-cafe-ashburn-va",
+  "runId": "poc-batch-109-2026-08-05-replacement-efesus-mediterranean-cafe-ashburn-va-sol-audit",
+  "auditType": "scheduled_one_in_20_fast_path_audit",
+  "decision": "safety_conflict",
+  "reviewedChecks": [
+    {
+      "check": "identity_location",
+      "status": "pass",
+      "evidenceRefs": [
+        "result.identity",
+        "result.sources[ev-home]",
+        "https://efesuscafe.com/ lines 100-108"
+      ]
+    },
+    {
+      "check": "current_menu_scope",
+      "status": "fail",
+      "evidenceRefs": [
+        "result.menuSurfaces[official-food-menu].currentProductKeys",
+        "result.currentProducts",
+        "https://efesuscafe.com/food-menu lines 0-357",
+        "https://efesuscafe.com/ lines 30-54"
+      ]
+    },
+    {
+      "check": "four_official_allergen_searches",
+      "status": "fail",
+      "evidenceRefs": [
+        "result.matrixSearch.attempts[official_site]",
+        "result.matrixSearch.attempts[official_documents]",
+        "result.matrixSearch.attempts[linked_vendor]",
+        "result.matrixSearch.attempts[targeted_web_search]"
+      ]
+    },
+    {
+      "check": "source_authority_and_direct_positive_preservation",
+      "status": "fail",
+      "evidenceRefs": [
+        "data/restaurant-verification/item-checks/replacement-efesus-mediterranean-cafe-ashburn-va.jsonl",
+        "result.currentProducts",
+        "result.proposedChanges.summary",
+        "https://efesuscafe.com/food-menu lines 7-344"
+      ]
+    },
+    {
+      "check": "unsupported_negative_allergen_claims",
+      "status": "pass",
+      "evidenceRefs": [
+        "result.currentProducts[*].allergenSourceType",
+        "result.currentProducts[*].containsAllergens",
+        "result.currentProducts[*].mayContainAllergens"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "severity": "material_safety_error",
+      "rule": "current_menu_scope",
+      "finding": "The official food menu contains 54 genuine products. The result reports 61 current products and its purportedly complete official-food-menu surface reports 56 keys: it incorrectly promotes five homepage/party marketing headings and three menu descriptions to products, and it omits the genuine Homemade Bread item. The marketing text is visible on the homepage at lines 30-54, while the menu identifies Homemade Bread at lines 304-307 and shows the three descriptions beneath Kofte, Side Vegetable, and Efesus Chicken at lines 147-155, 200-202, and 298-300."
+    },
+    {
+      "severity": "blocking_evidence_gap",
+      "rule": "required_official_allergen_search",
+      "finding": "All four class names are present, but only official_site and linked_vendor have class-appropriate cited surfaces. official_documents claims document, PDF, image, and sitemap inspection while citing only ev-food-menu; targeted_web_search has an empty evidenceIds array and its sole recorded URL shows only the allergen query despite claiming the broader required term set. The accurately_unavailable conclusion is therefore not adequately evidenced."
+    },
+    {
+      "severity": "material_safety_error",
+      "rule": "direct_positive_preservation_and_source_authority",
+      "finding": "The frozen item checks contain 28 official-ingredients positive records tied to the restaurant-issued food-menu URLs, but every result product is changed to allergenSourceType unavailable with empty positive arrays and no allergen evidence IDs. This contradicts result.proposedChanges.summary, which says direct baseline positives will be preserved, and would discard existing positive safety signals rather than adjudicating their authority item by item."
+    },
+    {
+      "severity": "none",
+      "rule": "unsupported_negative_claims",
+      "finding": "Empty allergen arrays are paired with allergenSourceType unavailable, so the result does not present them as supported absence claims. No unsupported negative claim was found."
+    }
+  ],
+  "rationale": "Binding audit failure. The coordinator should keep this restaurant nonterminal, pause new claims under the sampled-failure rule, and issue a focused repair limited to the menu boundary, the two inadequately evidenced search classes, and item-level preservation or explicit authority adjudication of the 28 frozen direct positives. Do not mark codex_verified until the repaired packet contains the 54 genuine current products, includes Homemade Bread, excludes the eight artifacts, and passes the four-search and direct-evidence gates.",
+  "reviewedAt": "2026-08-05T22:21:18Z",
+  "model": "gpt-5.6-sol"
+}

@@ -1,0 +1,289 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260810220728",
+  "restaurantId": "the-royal-dc",
+  "packetValidation": {
+    "baselineItemCount": 34,
+    "baselineFingerprint": "f714415114134f5c73bb40ddb3bfa2b682700e6d786586ffa5987c95289e242d",
+    "itemCheckCount": 34,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "The Royal",
+    "locationId": "ledroit-park-dc",
+    "address": "501 Florida Avenue NW, Washington, D.C. 20001",
+    "domain": "theroyaldc.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "official-home",
+      "official-about",
+      "toast-menu"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "official-home",
+      "url": "https://www.theroyaldc.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and current food/drink navigation",
+      "retrievedAt": "2026-08-10T22:20:00Z"
+    },
+    {
+      "evidenceId": "official-menu",
+      "url": "https://www.theroyaldc.com/menu-2",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current official food, drinks, coffee and happy-hour menu",
+      "retrievedAt": "2026-08-10T22:20:00Z"
+    },
+    {
+      "evidenceId": "official-about",
+      "url": "https://www.theroyaldc.com/about",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official address, hours and location identity",
+      "retrievedAt": "2026-08-10T22:20:00Z"
+    },
+    {
+      "evidenceId": "toast-menu",
+      "url": "https://www.toasttab.com/local/order/the-royal-501-florida-ave-nw",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "linked current ordering menu and location confirmation",
+      "retrievedAt": "2026-08-10T22:20:00Z"
+    },
+    {
+      "evidenceId": "targeted-search",
+      "url": "https://www.google.com/search?q=site%3Atheroyaldc.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted official-domain allergen and menu search",
+      "retrievedAt": "2026-08-10T22:20:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-homepage",
+      "url": "https://www.theroyaldc.com/",
+      "authority": "The Royal",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "ledroit-park-dc",
+      "servicePeriod": "current all-day",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "official-home"
+      ]
+    },
+    {
+      "surfaceId": "official-menu-2",
+      "url": "https://www.theroyaldc.com/menu-2",
+      "authority": "The Royal",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "ledroit-park-dc",
+      "servicePeriod": "morning, lunch, afternoon/evening, dessert, happy hour and drinks",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; alcohol excluded from product boundary",
+      "sourceEvidenceIds": [
+        "official-menu"
+      ]
+    },
+    {
+      "surfaceId": "linked-toast",
+      "url": "https://www.toasttab.com/local/order/the-royal-501-florida-ave-nw",
+      "authority": "Toast linked by restaurant/menu search",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "ledroit-park-dc",
+      "servicePeriod": "current ordering",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "toast-menu"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "royal-current-food-nonalcoholic-catalog",
+      "name": "The Royal current food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "productCount": 34,
+      "boundary": "34 frozen current food/nonalcoholic product presentations represented by the official menu and linked ordering surface; cocktails, wine, beer and spirits excluded"
+    },
+    {
+      "currentProductKey": "guava-pastry",
+      "name": "Guava Pastry",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "productCount": 1,
+      "boundary": "Current nonalcoholic food product listed on the official menu and linked ordering surface; not present in the frozen 34-item baseline"
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "theroyaldc.com homepage, food/drink navigation and menu-2",
+        "urls": [
+          "https://www.theroyaldc.com/",
+          "https://www.theroyaldc.com/menu-2"
+        ],
+        "outcome": "official current menu inspected; no complete allergen matrix",
+        "sourceEvidenceIds": [
+          "official-home",
+          "official-menu"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "theroyaldc.com PDF, nutrition, allergen, ingredients, FAQ, image and sitemap/document surfaces",
+        "urls": [
+          "https://www.theroyaldc.com/menu-2"
+        ],
+        "outcome": "no official allergen or nutrition document/matrix located; menu contains direct dietary and cross-contact legend only",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Toast linked ordering menu for The Royal, 501 Florida Ave NW",
+        "urls": [
+          "https://www.toasttab.com/local/order/the-royal-501-florida-ave-nw"
+        ],
+        "outcome": "current linked menu inspected; no complete allergen matrix or cross-contact policy located",
+        "sourceEvidenceIds": [
+          "toast-menu"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "site:theroyaldc.com allergen allergy nutrition ingredients PDF menu",
+        "queryOrLocation": "Google targeted official-domain searches for allergen, allergy, nutrition, ingredients, PDF and menu",
+        "urls": [
+          "https://www.google.com/search?q=site%3Atheroyaldc.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+        ],
+        "outcome": "no authoritative complete allergen matrix located",
+        "sourceEvidenceIds": [
+          "targeted-search",
+          "official-menu"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "evidenceId": "royal-dietary-legend",
+      "statement": "Official menu defines GF as Gluten Free; GFF as Gluten Free Friendly (Cross Contamination); SF as Contains Shellfish; SFC as Shellfish Cross Contamination; DF as Dairy Free; VG as Vegetarian; V as Vegan; N as Contains Nuts.",
+      "sourceEvidenceIds": [
+        "official-menu"
+      ],
+      "authorityTier": "restaurant_issued",
+      "scope": "items carrying the corresponding menu label"
+    },
+    {
+      "evidenceId": "royal-direct-shellfish",
+      "statement": "Official menu directly labels Seafood Cazuela and Crab Masa Beignets SF (contains shellfish), and labels multiple items SFC (shellfish cross contamination).",
+      "sourceEvidenceIds": [
+        "official-menu"
+      ],
+      "authorityTier": "restaurant_issued",
+      "scope": "named menu items"
+    },
+    {
+      "evidenceId": "royal-direct-nut",
+      "statement": "Official menu directly labels Citrus Kale Salad N (contains nuts).",
+      "sourceEvidenceIds": [
+        "official-menu"
+      ],
+      "authorityTier": "restaurant_issued",
+      "scope": "Citrus Kale Salad"
+    }
+  ],
+  "reconciliation": {
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:2-eggs-and-potatoes-vg",
+          "2:ajiaco-gf",
+          "3:arepa-ranchera",
+          "4:arepitas-de-choclo-vg",
+          "5:avocado-egg-and-cheese-vg",
+          "6:beef-arepa-gf",
+          "7:bird-dog-s",
+          "8:burger-sfc",
+          "9:calentado-gf",
+          "10:carrot-cake-vg",
+          "11:cheese-arepa",
+          "12:chorizo-and-egg-arepa-gf",
+          "13:citrus-kale-salad",
+          "14:crab-masa-beignets-sf",
+          "15:crispy-brussels-sprouts",
+          "16:crispy-pork-belly",
+          "17:daily-rotating-pastries",
+          "18:egg-arepa",
+          "19:fried-chicken-sandwich",
+          "20:grilled-avocado",
+          "21:grilled-chicken-sandwich",
+          "22:hearts-of-palm-arepa",
+          "23:house-biscuit-vg",
+          "24:house-fries",
+          "25:lox-tartine",
+          "26:masa-gnocchi",
+          "27:pan-seared-rockfish-gf",
+          "28:parillada-for-two-gff-df-sfc",
+          "29:pork-empanadas",
+          "30:royal-bowl",
+          "31:sausage-egg-and-cheese",
+          "32:seafood-cazuela-sf",
+          "33:south-american-steak-frites",
+          "34:yogurt-vg"
+        ],
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "royal-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify",
+  "outcome": "researched"
+}

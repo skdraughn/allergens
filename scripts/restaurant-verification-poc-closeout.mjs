@@ -239,6 +239,7 @@ export function buildPocCloseoutPacket({ job, result, applyResult, dossier, evid
   }
   const evidenceById = new Map(evidenceSources.filter((source) => source.id).map((source) => [source.id, source]));
   const evidenceIds = new Set(evidenceById.keys());
+  const fallbackMenuEvidenceId = evidenceSources.find((source) => ["menu", "both"].includes(source.purpose))?.id;
   const directEvidenceIds = new Set();
   let reconciliation = normalizeReconciliation(result.reconciliation);
   if (job.restaurantId === "esaan-mclean-va") {
@@ -320,10 +321,13 @@ export function buildPocCloseoutPacket({ job, result, applyResult, dossier, evid
     if (hasDirectAllergens && authorityTiers.length !== 1) {
       throw new Error(`${entry.auditItemKey}: mapped products do not have one direct-evidence authority tier.`);
     }
-    const sourceEvidenceIds = validEvidenceIds([
+    let sourceEvidenceIds = validEvidenceIds([
       ...(entry.sourceEvidenceIds ?? entry.evidenceIds ?? []),
       ...matchedProducts.flatMap((product) => product.sourceEvidenceIds),
     ], evidenceIds);
+    if (!sourceEvidenceIds.length && ["artifact", "stale", "location_mismatch"].includes(entry.disposition) && fallbackMenuEvidenceId) {
+      sourceEvidenceIds = [fallbackMenuEvidenceId];
+    }
     if (!sourceEvidenceIds.length) throw new Error(`${entry.auditItemKey}: item reconciliation has no valid menu evidence.`);
     const allergenSourceEvidenceIds = hasDirectAllergens
       ? validEvidenceIds(matchedProducts.flatMap((product) => product.allergenSourceEvidenceIds), evidenceIds)

@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-007-2026-07-16",
+  "restaurantId": "bartaco-wharf-dc",
+  "reviewType": "binding_menu_scope_and_cross_contact_resolution",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "role": "sol_reviewer"
+  },
+  "reviewedKeys": [],
+  "resolution": {
+    "binding": true,
+    "outcome": "exact_location_68_product_catalog_and_restaurant_wide_cross_contact_caution_resolved",
+    "catalogDefinition": {
+      "scope": "The exact-location bartaco The Wharf catalog at 645 Wharf Street SW, Washington, DC 20024, limited to 68 current food and nonalcoholic products.",
+      "locationId": "wharf-dc",
+      "completeAuthoritySurfaceIds": [
+        "surface-location-food",
+        "surface-location-drinks-kids-takeout",
+        "surface-menu-pdf"
+      ],
+      "supportingSurfaceIds": [
+        "surface-ordering",
+        "surface-nutrition"
+      ],
+      "historicalNoncurrentSurfaceIds": [
+        "surface-allergy-sheet"
+      ],
+      "enumerationRule": "union_of_distinct_current_exact_location_food_and_nonalcoholic_products_on_complete_official_surfaces_with_alcohol_excluded",
+      "existingProductCount": 68,
+      "additionalProductCount": 0,
+      "removedProductCount": 0,
+      "excludedProductCount": 0,
+      "resolvedCatalogProductCount": 68,
+      "productAdditionsRequired": [],
+      "productRemovalsRequired": [],
+      "productExclusionsRequired": [],
+      "alcoholicProductsIncluded": [],
+      "directPositiveBoundary": "Preserve only direct current restaurant-issued positive wording; it is not a complete profile or evidence that unlisted allergens are absent.",
+      "rationale": "Three complete current official surfaces establish the exact-location catalog. Partial ordering and nutrition surfaces add no defensible product identities."
+    },
+    "crossContactResolution": {
+      "scope": "restaurant_wide_caution",
+      "statement": "Ask bartaco staff about potential cross-contamination.",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "appliesToCurrentCatalog": true,
+      "itemSpecificMayContainProductKeys": [],
+      "negativeClaimsEstablished": [],
+      "completeCrossContactProfileEstablished": false,
+      "historicalSheetUsedAsCurrentEvidence": false
+    },
+    "items": [],
+    "surfaceResolutions": [
+      {
+        "surfaceId": "surface-ordering",
+        "disposition": "supporting",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-location",
+          "ev-menu",
+          "ev-pdf"
+        ],
+        "additionalProductsRequired": [],
+        "rationale": "Exact-location ordering supports identity but is not fully enumerable and adds no products."
+      },
+      {
+        "surfaceId": "surface-nutrition",
+        "disposition": "supporting",
+        "sourceEvidenceIds": [
+          "ev-nutrition",
+          "ev-pdf"
+        ],
+        "additionalProductsRequired": [],
+        "rationale": "Nutrition navigation is not a complete static matrix and adds no products."
+      }
+    ],
+    "safetySourceAuthorityConflictRemains": false
+  },
+  "remainingSolSignals": [
+    {
+      "signal": "current_complete_official_allergen_matrix",
+      "status": "accurately_unavailable",
+      "sourceEvidenceIds": [
+        "ev-location",
+        "ev-menu",
+        "ev-pdf",
+        "ev-nutrition",
+        "ev-order",
+        "ev-allergy-pdf"
+      ],
+      "rationale": "All searches complete; EveryBite is incomplete in static evidence and the 2023 sheet is historical."
+    },
+    {
+      "signal": "cross_contact_detail",
+      "status": "restaurant_wide_caution_resolved_item_specific_detail_unavailable",
+      "sourceEvidenceIds": [
+        "ev-pdf"
+      ],
+      "rationale": "Current warning remains restaurant-wide only."
+    }
+  ],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "frozenBaselineItemCount": 107,
+    "researchReconciledItemCount": 107,
+    "normalizedMatchCount": 33,
+    "staleOrOutOfScopeCount": 74,
+    "unresolvedResearchKeyCount": 0,
+    "reviewedKeyCount": 0,
+    "resolutionItemCount": 0,
+    "allAffectedKeysReviewedExactlyOnce": true,
+    "researchCurrentProductCount": 68,
+    "additionalProductCount": 0,
+    "removedProductCount": 0,
+    "excludedProductCount": 0,
+    "resolvedCatalogProductCount": 68,
+    "alcoholicProductCountIncluded": 0,
+    "surfaceResolutionCount": 2,
+    "partialSurfaceIds": [
+      "surface-ordering",
+      "surface-nutrition"
+    ],
+    "resolvedSurfaceIds": [
+      "surface-ordering",
+      "surface-nutrition"
+    ],
+    "allPartialSurfacesResolvedExactlyOnce": true,
+    "exactLocationCatalogPreserved": true,
+    "restaurantWideCrossContactCautionPreserved": true,
+    "itemSpecificMayContainClaimsIntroduced": false,
+    "unsupportedAllergenNegativesIntroduced": false,
+    "completeAllergenProfileClaimed": false,
+    "safetySourceAuthorityConflictResolved": true,
+    "matrixSearchCount": 4,
+    "matrixStatusRemainsAccuratelyUnavailable": true,
+    "codexVerifiedClaimed": false
+  }
+}

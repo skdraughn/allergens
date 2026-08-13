@@ -482,7 +482,7 @@ const pageHtml = String.raw`<!doctype html>
               <p class="copy">\${escapeHtml(formatDate(request.createdAt))} by \${escapeHtml(request.createdBy || "anonymous")}</p>
             </div>
             \${address ? \`<div><p class="label">Address</p><p class="copy">\${escapeHtml(address)}</p></div>\` : ""}
-            \${request.notes ? \`<div><p class="label">Notes / Menu Info</p><p class="copy">\${escapeHtml(request.notes)}</p></div>\` : ""}
+            \${request.notes ? \`<div><p class="label">Notes</p><p class="copy">\${escapeHtml(request.notes)}</p></div>\` : ""}
             <div class="links">
               \${request.website ? \`<a href="\${escapeAttr(request.website)}" target="_blank" rel="noreferrer">Website</a>\` : ""}
               \${mapsUrl ? \`<a href="\${escapeAttr(mapsUrl)}" target="_blank" rel="noreferrer">Map</a>\` : ""}

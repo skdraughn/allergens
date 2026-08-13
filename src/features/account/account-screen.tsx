@@ -1,6 +1,6 @@
 import { Redirect, useLocalSearchParams, useRouter } from "expo-router";
 import {
-  Bell,
+  ChevronLeft,
   ChevronRight,
   ClipboardList,
   Clock3,
@@ -17,6 +17,7 @@ import {
 import type { ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 import {
+  Alert,
   Image,
   Linking,
   Modal,
@@ -28,6 +29,10 @@ import {
   TextInput,
   View,
 } from "react-native";
+import {
+  KeyboardAwareScrollView,
+  KeyboardStickyView,
+} from "react-native-keyboard-controller";
 import Animated, {
   Easing as ReanimatedEasing,
   Extrapolation,
@@ -39,9 +44,12 @@ import Animated, {
 import { getCurrentUser, signIn, signOut, signUp, type AuthUser } from "aws-amplify/auth";
 
 import { AllergyIconChips } from "@/components/allergy-icon-chips";
+import { AnimatedContentSwap } from "@/components/animated-content-swap";
 import { AuthActionButton, AuthActionIconBadge } from "@/components/auth-action-button";
 import { AuthProviderLogo } from "@/components/auth-provider-logo";
+import { CommunityReviewCard } from "@/components/community-review-card";
 import { ModalScreen } from "@/components/modal-screen";
+import { PrimaryButton } from "@/components/primary-button";
 import { SereneLoader } from "@/components/serene-loader";
 import { useSnackbar } from "@/components/snackbar-provider";
 import { colors, spacing } from "@/constants/theme";
@@ -56,22 +64,26 @@ import {
   fetchMyAllergyReviews,
   fetchMyMenuItemReports,
   fetchMyRestaurantRequests,
+  updateRestaurantRequest,
+  type CreateRestaurantRequestInput,
   type CommunityStatus,
   type MenuItemReportSummary,
   type MyAllergyReviewSummary,
   type RestaurantRequestSummary,
 } from "@/features/community/community-service";
 import { AllergyProfileManagerModal } from "@/features/profile/allergy-profile-manager-modal";
+import { deleteMyAccount } from "@/features/account/account-deletion-service";
 import { useAllergyProfile } from "@/features/profile/allergy-profile-context";
 import { useRestaurantData } from "@/features/restaurants/restaurant-data-context";
 import { isAmplifyConfigured } from "@/lib/amplify";
 import type { Restaurant } from "@/data/restaurants";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type AuthMode = "options" | "password";
 type PasswordIntent = "sign-in" | "create";
 type LoadingProvider = "apple" | "google" | "password" | "sign-out" | null;
 
-const safePlateIcon = require("../../../assets/icon.png");
+const mySafeMenuIcon = require("../../../assets/icon.png");
 
 type CreateAccountContentProps = {
   authMode: AuthMode;
@@ -97,6 +109,7 @@ export function AccountScreen() {
   const { returnTo } = useLocalSearchParams<{ returnTo?: string }>();
   const {
     onboardingComplete,
+    clearAccountData,
     profiles,
     selectedAllergyIds,
     selectedProfileIds,
@@ -109,6 +122,7 @@ export function AccountScreen() {
   const [password, setPassword] = useState("");
   const [loadingProvider, setLoadingProvider] = useState<LoadingProvider>(null);
   const [isPasswordFieldFocused, setIsPasswordFieldFocused] = useState(false);
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
   const closeAccount = () => {
     if (returnTo === "home") {
       router.replace("/home");
@@ -254,6 +268,44 @@ export function AccountScreen() {
     }
   }
 
+  function confirmAccountDeletion() {
+    if (isDeletingAccount) {
+      return;
+    }
+
+    Alert.alert(
+      "Delete your account?",
+      "This permanently deletes your account, allergy profiles, restaurant requests, reports, reviews, and blocked-user list. This cannot be undone.",
+      [
+        { style: "cancel", text: "Cancel" },
+        {
+          style: "destructive",
+          text: "Delete Account",
+          onPress: () => void handleAccountDeletion(),
+        },
+      ],
+    );
+  }
+
+  async function handleAccountDeletion() {
+    setIsDeletingAccount(true);
+    try {
+      await deleteMyAccount();
+      await Promise.allSettled([signOutFromNativeSocialProviders(), signOut()]);
+      setCurrentUser(null);
+      await clearAccountData();
+      router.replace("/onboarding");
+    } catch (nextError) {
+      showSnackbar({
+        message: nextError instanceof Error ? nextError.message : "Your account could not be deleted.",
+        title: "Deletion Failed",
+        tone: "error",
+      });
+    } finally {
+      setIsDeletingAccount(false);
+    }
+  }
+
   return (
     <ModalScreen actionIcon={X} actionLabel="Close account" onActionPress={closeAccount}>
       <ScrollView
@@ -268,6 +320,8 @@ export function AccountScreen() {
             selectedAllergyIds={selectedAllergyIds}
             selectedProfileIds={selectedProfileIds}
             isSigningOut={loadingProvider === "sign-out"}
+            isDeletingAccount={isDeletingAccount}
+            onDeleteAccount={confirmAccountDeletion}
             onSignOut={handleSignOut}
           />
         ) : currentUser === undefined ? (
@@ -392,13 +446,15 @@ function AuthOptions({
           provider="apple"
         />
       ) : null}
-      <AuthProviderButton
-        disabled={Boolean(loadingProvider && loadingProvider !== "google")}
-        label="Continue with Google"
-        loading={loadingProvider === "google"}
-        onPress={onGoogle}
-        provider="google"
-      />
+      {Platform.OS !== "ios" ? (
+        <AuthProviderButton
+          disabled={Boolean(loadingProvider && loadingProvider !== "google")}
+          label="Continue with Google"
+          loading={loadingProvider === "google"}
+          onPress={onGoogle}
+          provider="google"
+        />
+      ) : null}
       <AuthActionButton
         label="Continue with password"
         leading={
@@ -537,14 +593,18 @@ function Field({
 
 function SignedInAccount({
   accountLabel,
+  isDeletingAccount,
   isSigningOut,
+  onDeleteAccount,
   onSignOut,
   profiles,
   selectedAllergyIds,
   selectedProfileIds,
 }: {
   accountLabel: string;
+  isDeletingAccount: boolean;
   isSigningOut: boolean;
+  onDeleteAccount: () => void;
   onSignOut: () => void;
   selectedAllergyIds: string[];
   selectedProfileIds: string[];
@@ -555,7 +615,7 @@ function SignedInAccount({
   };
 
   const openSupport = () => {
-    void Linking.openURL("mailto:truflag@dnatechgroup.com?subject=Allergy%20App%20Support");
+    void Linking.openURL("mailto:mysafeplate@dnatechgroup.com?subject=MySafeMenu%20Support");
   };
   const [profileManagerOpen, setProfileManagerOpen] = useState(false);
   const [requestsOpen, setRequestsOpen] = useState(false);
@@ -621,16 +681,10 @@ function SignedInAccount({
           sublabel="Allergy reviews you've left"
         />
         <SettingsRow
-          Icon={Bell}
-          label="Notification Settings"
-          onPress={() => undefined}
-          sublabel="Coming soon"
-        />
-        <SettingsRow
           Icon={LifeBuoy}
           label="Contact Support"
           onPress={openSupport}
-          sublabel="truflag@dnatechgroup.com"
+          sublabel="mysafeplate@dnatechgroup.com"
         />
       </View>
 
@@ -638,17 +692,17 @@ function SignedInAccount({
         <SettingsRow
           Icon={FileText}
           label="Privacy Policy"
-          onPress={() => openUrl("https://hoopleapp.com/privacy")}
+          onPress={() => openUrl("https://www.mysafemenu.com/privacy")}
         />
         <SettingsRow
           Icon={FileText}
           label="Terms of Service"
-          onPress={() => openUrl("https://hoopleapp.com/terms")}
+          onPress={() => openUrl("https://www.mysafemenu.com/terms")}
         />
         <SettingsRow
           Icon={Trash2}
-          label="Delete Account"
-          onPress={() => openUrl("https://hoopleapp.com/delete-account")}
+          label={isDeletingAccount ? "Deleting Account..." : "Delete Account"}
+          onPress={onDeleteAccount}
           tone="danger"
         />
       </View>
@@ -676,7 +730,15 @@ function MyRequestsModal({
   onClose: () => void;
   visible: boolean;
 }) {
+  const insets = useSafeAreaInsets();
+  const { showSnackbar } = useSnackbar();
   const [requests, setRequests] = useState<RestaurantRequestSummary[]>([]);
+  const [editingRequest, setEditingRequest] =
+    useState<RestaurantRequestSummary | null>(null);
+  const [editDraft, setEditDraft] =
+    useState<CreateRestaurantRequestInput | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [editFooterHeight, setEditFooterHeight] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -704,49 +766,253 @@ function MyRequestsModal({
     };
   }, [visible]);
 
+  useEffect(() => {
+    if (!visible) {
+      setEditingRequest(null);
+      setEditDraft(null);
+    }
+  }, [visible]);
+
+  const beginEditing = (request: RestaurantRequestSummary) => {
+    if (request.status !== "pending") {
+      return;
+    }
+
+    setEditingRequest(request);
+    setEditDraft(requestSummaryToDraft(request));
+  };
+
+  const saveEdit = async () => {
+    if (!editingRequest || !editDraft?.name.trim() || saving) {
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const updated = await updateRestaurantRequest(editingRequest.id, editDraft);
+      setRequests((current) =>
+        current.map((request) =>
+          request.id === updated.id ? { ...request, ...updated } : request,
+        ),
+      );
+      setEditingRequest(null);
+      setEditDraft(null);
+      showSnackbar({
+        message: "Your restaurant request was updated.",
+        title: "Request Updated",
+        tone: "success",
+      });
+    } catch (error) {
+      showSnackbar({
+        message: error instanceof Error ? error.message : "Could not update your request.",
+        title: "Update Failed",
+        tone: "error",
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return (
     <Modal animationType="slide" onRequestClose={onClose} presentationStyle="pageSheet" visible={visible}>
-      <ModalScreen actionIcon={X} actionLabel="Close requests" onActionPress={onClose}>
-        <ScrollView contentContainerStyle={styles.requestsModalContent} showsVerticalScrollIndicator={false}>
-          <Text style={styles.title}>My Requests</Text>
-          <Text style={styles.subtitle}>Restaurants you’ve asked us to review.</Text>
+      <ModalScreen
+        actionIcon={editingRequest ? ChevronLeft : X}
+        actionLabel={editingRequest ? "Back to my requests" : "Close requests"}
+        actionPosition={editingRequest ? "left" : "right"}
+        includeBottomInset={false}
+        onActionPress={() => {
+          if (editingRequest) {
+            setEditingRequest(null);
+            setEditDraft(null);
+            return;
+          }
 
-          <View style={styles.requestsGroup}>
-            {loading ? (
-              <View style={styles.requestsEmpty}>
-                <SereneLoader size="small" />
-                <Text style={styles.requestsEmptyText}>Loading requests...</Text>
-              </View>
-            ) : requests.length ? (
-              <View style={styles.requestsList}>
-                {requests.map((request) => (
-                  <View key={request.id} style={styles.requestRow}>
-                    <View style={styles.requestTextWrap}>
-                      <Text numberOfLines={1} style={styles.requestName}>
-                        {request.name}
-                      </Text>
-                      <Text numberOfLines={1} style={styles.requestMeta}>
-                        {request.locationHint ||
-                          firstLine(request.displayAddress) ||
-                          request.website ||
-                          "No location added"}
-                      </Text>
-                    </View>
-                    <RequestStatusBadge status={request.status} />
+          onClose();
+        }}
+      >
+        <AnimatedContentSwap
+          primary={
+            <ScrollView
+              contentContainerStyle={styles.requestsModalContent}
+              showsVerticalScrollIndicator={false}
+            >
+              <Text style={styles.title}>My Requests</Text>
+              <Text style={styles.subtitle}>Restaurants you’ve asked us to review.</Text>
+
+              <View style={styles.requestsGroup}>
+                {loading ? (
+                  <View style={styles.requestsEmpty}>
+                    <SereneLoader size="small" />
+                    <Text style={styles.requestsEmptyText}>Loading requests...</Text>
                   </View>
-                ))}
+                ) : requests.length ? (
+                  <View style={styles.requestsList}>
+                    {requests.map((request) => (
+                      <Pressable
+                        accessibilityRole={request.status === "pending" ? "button" : undefined}
+                        disabled={request.status !== "pending"}
+                        key={request.id}
+                        onPress={() => beginEditing(request)}
+                        style={styles.requestRow}
+                      >
+                        <View style={styles.requestTextWrap}>
+                          <Text numberOfLines={1} style={styles.requestName}>
+                            {request.name}
+                          </Text>
+                          <Text numberOfLines={1} style={styles.requestMeta}>
+                            {request.locationHint ||
+                              firstLine(request.displayAddress) ||
+                              request.website ||
+                              "No location added"}
+                          </Text>
+                        </View>
+                        <RequestStatusBadge status={request.status} />
+                        {request.status === "pending" ? (
+                          <ChevronRight color={colors.muted} size={17} strokeWidth={2.4} />
+                        ) : null}
+                      </Pressable>
+                    ))}
+                  </View>
+                ) : (
+                  <View style={styles.requestsEmpty}>
+                    <Clock3 color={colors.muted} size={18} strokeWidth={2.35} />
+                    <Text style={styles.requestsEmptyText}>No restaurant requests yet.</Text>
+                  </View>
+                )}
               </View>
-            ) : (
-              <View style={styles.requestsEmpty}>
-                <Clock3 color={colors.muted} size={18} strokeWidth={2.35} />
-                <Text style={styles.requestsEmptyText}>No restaurant requests yet.</Text>
+            </ScrollView>
+          }
+          secondary={
+            editDraft ? (
+              <View style={styles.requestEditShell}>
+                <KeyboardAwareScrollView
+                  bottomOffset={Math.max(editFooterHeight + 4, 20)}
+                  contentContainerStyle={styles.requestsModalContent}
+                  keyboardDismissMode="interactive"
+                  keyboardShouldPersistTaps="handled"
+                >
+                  <Text style={styles.title}>Edit Request</Text>
+                  <Text style={styles.subtitle}>
+                    Update the details our review team should use.
+                  </Text>
+                  <RequestEditField
+                    label="Restaurant name"
+                    onChangeText={(name) =>
+                      setEditDraft((current) => current ? { ...current, name } : current)
+                    }
+                    placeholder="Restaurant name"
+                    value={editDraft.name}
+                  />
+                  <RequestEditField
+                    label="Location (optional)"
+                    onChangeText={(locationHint) =>
+                      setEditDraft((current) => current ? {
+                        ...current,
+                        addressLine1: "",
+                        addressLine2: "",
+                        city: "",
+                        country: "",
+                        displayAddress: "",
+                        locationHint,
+                        postalCode: "",
+                        region: "",
+                      } : current)
+                    }
+                    placeholder="City, state, or region"
+                    value={editDraft.locationHint}
+                  />
+                  <RequestEditField
+                    autoCapitalize="none"
+                    label="Website (optional)"
+                    onChangeText={(website) =>
+                      setEditDraft((current) => current ? { ...current, website } : current)
+                    }
+                    placeholder="https://..."
+                    value={editDraft.website}
+                  />
+                  <RequestEditField
+                    label="Notes (optional)"
+                    multiline
+                    onChangeText={(notes) =>
+                      setEditDraft((current) => current ? { ...current, notes } : current)
+                    }
+                    placeholder="Why should we add it?"
+                    value={editDraft.notes}
+                  />
+                </KeyboardAwareScrollView>
+                <KeyboardStickyView
+                  onLayout={(event) => setEditFooterHeight(event.nativeEvent.layout.height)}
+                  offset={{
+                    closed: 0,
+                    opened: Math.max(0, Math.max(insets.bottom, 12) - 6),
+                  }}
+                  style={[
+                    styles.requestEditFooter,
+                    { paddingBottom: Math.max(insets.bottom, 12) },
+                  ]}
+                >
+                  <PrimaryButton
+                    disabled={!editDraft.name.trim() || saving}
+                    label={saving ? "Saving..." : "Save changes"}
+                    loading={saving}
+                    onPress={saveEdit}
+                  />
+                </KeyboardStickyView>
               </View>
-            )}
-          </View>
-        </ScrollView>
+            ) : null
+          }
+          showSecondary={Boolean(editingRequest)}
+        />
       </ModalScreen>
     </Modal>
   );
+}
+
+function RequestEditField({
+  label,
+  multiline = false,
+  ...props
+}: {
+  autoCapitalize?: "none" | "sentences" | "words" | "characters";
+  label: string;
+  multiline?: boolean;
+  onChangeText: (value: string) => void;
+  placeholder: string;
+  value: string;
+}) {
+  return (
+    <View style={styles.requestEditField}>
+      <Text style={styles.requestEditLabel}>{label}</Text>
+      <TextInput
+        {...props}
+        multiline={multiline}
+        placeholderTextColor="#8E8E93"
+        style={[styles.requestEditInput, multiline && styles.requestEditMultiline]}
+      />
+    </View>
+  );
+}
+
+function requestSummaryToDraft(
+  request: RestaurantRequestSummary,
+): CreateRestaurantRequestInput {
+  return {
+    addressLine1: request.addressLine1 ?? "",
+    addressLine2: request.addressLine2 ?? "",
+    city: request.city ?? "",
+    country: request.country ?? "",
+    displayAddress: request.displayAddress ?? "",
+    googleMapsUri: request.googleMapsUri ?? "",
+    googlePlaceId: request.googlePlaceId ?? "",
+    lat: request.lat ?? undefined,
+    lng: request.lng ?? undefined,
+    locationHint: request.locationHint ?? "",
+    name: request.name,
+    notes: request.notes ?? "",
+    postalCode: request.postalCode ?? "",
+    region: request.region ?? "",
+    website: request.website ?? "",
+  };
 }
 
 function MyReportsModal({
@@ -848,6 +1114,9 @@ function MyReviewsModal({
   visible: boolean;
 }) {
   const [reviews, setReviews] = useState<MyAllergyReviewSummary[]>([]);
+  const [requestedRestaurantNames, setRequestedRestaurantNames] = useState<
+    Map<string, string>
+  >(new Map());
   const [loading, setLoading] = useState(true);
   const { restaurants } = useRestaurantData();
   const restaurantById = useMemo(() => createRestaurantLookup(restaurants), [restaurants]);
@@ -860,10 +1129,13 @@ function MyReviewsModal({
     let active = true;
 
     setLoading(true);
-    fetchMyAllergyReviews()
-      .then((nextReviews) => {
+    Promise.all([fetchMyAllergyReviews(), fetchMyRestaurantRequests()])
+      .then(([nextReviews, nextRequests]) => {
         if (active) {
           setReviews(nextReviews);
+          setRequestedRestaurantNames(
+            new Map(nextRequests.map((request) => [request.id, request.name])),
+          );
         }
       })
       .finally(() => {
@@ -892,27 +1164,17 @@ function MyReviewsModal({
               </View>
             ) : reviews.length ? (
               <View style={styles.requestsList}>
-                {reviews.map((review) => (
-                  <View key={review.id} style={styles.requestRow}>
-                    <View style={styles.requestTextWrap}>
-                      <View style={styles.reviewRowHeader}>
-                        <Text style={styles.reviewRatingText}>{review.rating}/5</Text>
-                        <HeartPulse color={colors.coral} size={15} strokeWidth={2.45} />
-                      </View>
-                      <Text numberOfLines={1} style={styles.requestName}>
-                        {review.menuItemName || "Restaurant allergy review"}
-                      </Text>
-                      <Text numberOfLines={1} style={styles.requestMeta}>
-                        {getRestaurantDisplayName(review.restaurantId, restaurantById.get(review.restaurantId))}
-                      </Text>
-                      {review.body ? (
-                        <Text numberOfLines={2} style={styles.requestDetail}>
-                          {review.body}
-                        </Text>
-                      ) : null}
-                    </View>
-                    <RequestStatusBadge status={review.communityStatus} />
-                  </View>
+                {reviews.map((review, index) => (
+                  <CommunityReviewCard
+                    key={review.id}
+                    last={index === reviews.length - 1}
+                    restaurantName={getMyReviewRestaurantName(
+                      review.restaurantId,
+                      restaurantById,
+                      requestedRestaurantNames,
+                    )}
+                    review={review}
+                  />
                 ))}
               </View>
             ) : (
@@ -964,6 +1226,21 @@ function createRestaurantLookup(restaurants: Restaurant[]) {
 
 function getRestaurantDisplayName(restaurantId: string, restaurant?: Restaurant) {
   return restaurant?.name ?? humanizeSlug(restaurantId) ?? restaurantId;
+}
+
+function getMyReviewRestaurantName(
+  restaurantId: string,
+  restaurantById: Map<string, Restaurant>,
+  requestedRestaurantNames: Map<string, string>,
+) {
+  if (restaurantId.startsWith("request:")) {
+    return (
+      requestedRestaurantNames.get(restaurantId.slice("request:".length)) ??
+      "Requested restaurant"
+    );
+  }
+
+  return getRestaurantDisplayName(restaurantId, restaurantById.get(restaurantId));
 }
 
 function getReportMenuItemName(report: MenuItemReportSummary, restaurant?: Restaurant) {
@@ -1065,12 +1342,12 @@ function AccountMark({ isCollapsed = false }: { isCollapsed?: boolean }) {
   return (
     <Animated.View style={[styles.heroWrap, wrapperStyle]}>
       <Animated.View style={markStyle}>
-        <View style={styles.safePlateLogoFrame}>
+        <View style={styles.mySafeMenuLogoFrame}>
           <Image
             accessibilityIgnoresInvertColors
             resizeMode="cover"
-            source={safePlateIcon}
-            style={styles.safePlateLogo}
+            source={mySafeMenuIcon}
+            style={styles.mySafeMenuLogo}
           />
         </View>
       </Animated.View>
@@ -1105,11 +1382,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%",
   },
-  safePlateLogo: {
+  mySafeMenuLogo: {
     height: "100%",
     width: "100%",
   },
-  safePlateLogoFrame: {
+  mySafeMenuLogoFrame: {
     borderCurve: "continuous",
     borderRadius: 30,
     boxShadow: "0 18px 38px rgba(0, 92, 214, 0.16)",
@@ -1259,6 +1536,40 @@ const styles = StyleSheet.create({
     color: colors.ink,
     fontSize: 15,
     fontWeight: "800",
+  },
+  requestEditField: {
+    gap: 8,
+    marginTop: spacing.two,
+  },
+  requestEditFooter: {
+    backgroundColor: colors.white,
+    borderColor: colors.line,
+    borderTopWidth: 1,
+    paddingHorizontal: spacing.three,
+    paddingTop: 12,
+  },
+  requestEditInput: {
+    backgroundColor: colors.white,
+    borderColor: colors.line,
+    borderRadius: 18,
+    borderWidth: 1,
+    color: colors.ink,
+    fontSize: 16,
+    minHeight: 52,
+    paddingHorizontal: spacing.two,
+    paddingVertical: 13,
+  },
+  requestEditLabel: {
+    color: colors.ink,
+    fontSize: 15,
+    fontWeight: "800",
+  },
+  requestEditMultiline: {
+    minHeight: 112,
+    textAlignVertical: "top",
+  },
+  requestEditShell: {
+    flex: 1,
   },
   requestRow: {
     alignItems: "center",

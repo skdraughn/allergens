@@ -1,0 +1,954 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-pilot-2026-07-15",
+  "restaurant": {
+    "restaurantId": "osm-bakeshop-11399205397",
+    "name": "Bakeshop",
+    "domain": "bakeshopva.com",
+    "locationId": "falls-church",
+    "baselineItemCount": 16,
+    "baselineItemFingerprint": "3fc1be2308d9db552b0e485a313ee2bbd426b04dfeb134815757b850fb620e1a",
+    "officialItemCount": 9,
+    "officialAllergenStatus": "not-found",
+    "sourceFamily": "generic-website",
+    "parserProfile": "generic-website",
+    "guideUrl": "https://www.bakeshopva.com/",
+    "sourceUrls": [
+      "https://www.bakeshopva.com/",
+      "https://www.bakeshopva.com/menu",
+      "https://static1.squarespace.com/static/616386c687b45a450e96aa9a/t/69b2f45cf91bbc4fc01f8b2c/1773335644760/General_Menu_Jan_2026.pdf",
+      "https://static1.squarespace.com/static/616386c687b45a450e96aa9a/t/69790b3cd75d962b68b3b067/1769540412257/JanuaryCakeMenu_2026.pdf"
+    ]
+  },
+  "effectiveOutcome": "low_confidence",
+  "routingReasons": [
+    "Terra marked the result low_confidence.",
+    "Terra must verify every scout product presentation exactly once.",
+    "Terra did not review deterministic risk gate: pdf_or_image",
+    "Terra did not review deterministic risk gate: scope_incomplete",
+    "Terra did not review deterministic risk gate: unresolved_surface",
+    "Terra did not review deterministic risk gate: current_only",
+    "Terra did not review deterministic risk gate: duplicate_presentations",
+    "Terra did not review deterministic risk gate: authority_ambiguity",
+    "Terra did not review deterministic risk gate: parser_or_repair_finding",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra reported a mismatched or unverifiable current product.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "validationWarnings": [
+    "Terra must verify every scout product presentation exactly once.",
+    "Terra did not review deterministic risk gate: pdf_or_image",
+    "Terra did not review deterministic risk gate: scope_incomplete",
+    "Terra did not review deterministic risk gate: unresolved_surface",
+    "Terra did not review deterministic risk gate: current_only",
+    "Terra did not review deterministic risk gate: duplicate_presentations",
+    "Terra did not review deterministic risk gate: authority_ambiguity",
+    "Terra did not review deterministic risk gate: parser_or_repair_finding",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra reported a mismatched or unverifiable current product.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "multi_service",
+      "pdf_or_image",
+      "scope_incomplete",
+      "unresolved_surface",
+      "count_drift",
+      "current_only",
+      "baseline_only",
+      "duplicate_presentations",
+      "authority_ambiguity",
+      "non_exact_reconciliation",
+      "allergen_mismatch",
+      "cross_contact",
+      "parser_or_repair_finding",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 16,
+      "reconciledItemCount": 16,
+      "uniqueReconciledItemCount": 16,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 6,
+      "activeMenuSurfaceCount": 5,
+      "accessibleMenuSurfaceCount": 4,
+      "serviceCount": 4,
+      "pdfImageSurfaceCount": 1,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 0,
+      "incompleteSurfaceCount": 2,
+      "unresolvedSurfaceCount": 1,
+      "currentProductCount": 4,
+      "currentOnlyCount": 1,
+      "baselineOnlyCount": 2,
+      "countDrift": true,
+      "duplicatePresentationCount": 1,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 3,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 16,
+      "allergenMismatchItemCount": 6,
+      "crossContactCount": 2,
+      "parserRepairFindingCount": 1,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 0,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "low_confidence",
+    "confidence": {
+      "level": "low",
+      "overall": 0.44,
+      "menu": 0.56,
+      "allergenSource": 0.31,
+      "extraction": 0.35,
+      "rationale": "Identity, official HTML surfaces, and the linked Falls Church Toast catalog were independently reopened. The current official full-menu document remained inaccessible, and current indexed Toast content exposes breakfast and sandwich categories absent from Luna's visible enumeration. No complete restaurant-issued allergen matrix or cross-contact disclosure was found."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Bakeshop Falls Church, 100 E. Fairfax St., Falls Church, VA 22046; pickup ordering is through the official linked Falls Church Toast catalog.",
+      "confidence": 0.98,
+      "sourceEvidenceIds": [
+        "terra-home",
+        "terra-order",
+        "terra-toast"
+      ],
+      "notes": "The official order page links Falls Church same-day pickup, and the linked Toast page identifies the same Falls Church address."
+    },
+    "sources": [
+      {
+        "evidenceId": "terra-home",
+        "url": "https://www.bakeshopva.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Bakeshop official homepage",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": "Official navigation includes Menu, Order, Cakes, and Locations; homepage copy includes “Down the street & out of this world” and a cake call to action.",
+        "stableRowId": "homepage lines 72-80",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-menu",
+        "url": "https://www.bakeshopva.com/menu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Bakeshop official menu hub",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": "The official hub identifies Arlington, Falls Church, and Vienna and links FULL MENU and CAKE MENU.",
+        "stableRowId": "menu lines 72-82",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-cakes",
+        "url": "https://www.bakeshopva.com/cakes",
+        "authorityTier": "restaurant_issued",
+        "purpose": "ingredients",
+        "title": "Bakeshop official cake catalog",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": "Named cake descriptions include cream-cheese icing, buttercream, Reese’s peanut butter/PB buttercream, cookie cakes, whipped-cream cakes, and flourless chocolate cake.",
+        "stableRowId": "cake catalog lines 80-195",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-order",
+        "url": "https://www.bakeshopva.com/order",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Bakeshop official order page",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": "Links Falls Church same-day pickup; cakes are available with advance notice for Arlington and Falls Church; delivery is through Arlington/UberEats.",
+        "stableRowId": "order page lines 73-100",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-toast",
+        "url": "https://order.toasttab.com/online/bakeshop-falls-church",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "ingredients",
+        "title": "Bakeshop Falls Church Toast pickup catalog",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": "The linked catalog identifies Bakeshop Falls Church at 100 E. Fairfax St. and shows pickup-only sweets and drinks. Product text names butter, buttercream, peanut butter/PB, pecans, almonds, milk, oatmilk, and pistachio on selected products.",
+        "stableRowId": "Toast lines 12-16, 36-155",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-toast-index",
+        "url": "https://order.toasttab.com/online/bakeshop-falls-church",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Bakeshop Falls Church Toast indexed catalog content",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": "A current indexed representation of the same linked catalog includes BREAKFAST and SANDWICHES: croissants, biscuits, scones, bacon/ham/egg/cheese sandwiches, and a New Yorker expressly marked as containing sesame.",
+        "stableRowId": "targeted search result for the linked Toast catalog",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-full-menu-pdf",
+        "url": "https://static1.squarespace.com/static/616386c687b45a450e96aa9a/t/6a46bad413aa3e3223557645/1783020261286/Menu_July2026",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Current official full-menu document",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": null,
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "pdf-review"
+      },
+      {
+        "evidenceId": "terra-legacy-cake-pdf",
+        "url": "https://static1.squarespace.com/static/616386c687b45a450e96aa9a/t/69790b3cd75d962b68b3b067/1769540412257/JanuaryCakeMenu_2026.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Frozen January 2026 cake PDF",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": null,
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "historical-pdf"
+      },
+      {
+        "evidenceId": "terra-cake-request-fc",
+        "url": "https://www.bakeshopva.com/cake-request-falls-church",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Falls Church cake request page",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": "Official Falls Church-specific cake-order form is linked from the Cake catalog/order path and is a current location-specific ordering presentation.",
+        "stableRowId": "cake-request page navigation/order form",
+        "contentHash": null,
+        "artifactSuggested": null
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://www.bakeshopva.com/",
+        "notes": "Official homepage reopened; identity/navigation confirmed."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://www.bakeshopva.com/menu",
+        "notes": "Official menu hub reopened; current full-menu and cake-menu links confirmed."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://www.bakeshopva.com/cakes",
+        "notes": "Official cake catalog reopened and enumerated."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://www.bakeshopva.com/order",
+        "notes": "Official order page reopened; Falls Church Toast path confirmed."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://order.toasttab.com/online/bakeshop-falls-church",
+        "notes": "Linked Falls Church pickup catalog reopened; visible sweets/drinks and current indexed breakfast/sandwich content reviewed."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": "https://order.toasttab.com/online/bakeshop-falls-church",
+        "notes": "Targeted results corroborated current Toast breakfast, sandwich, and drink content omitted from Luna's claimed complete enumeration."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No official archived allergen or cross-contact document located."
+      },
+      {
+        "kind": "third_party",
+        "status": "not_found",
+        "url": null,
+        "notes": "No third-party allergen source was used."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "structural_invalid",
+        "triggered": false,
+        "verdict": "rejected",
+        "sourceEvidenceIds": [
+          "terra-cakes",
+          "terra-toast"
+        ],
+        "notes": "All 16 frozen auditItemKeys are reconciled exactly once, and every scout surface/product/presentation is represented without an unknown scout presentation."
+      },
+      {
+        "gateId": "multi_service",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-order",
+          "terra-toast",
+          "terra-toast-index"
+        ],
+        "notes": "Cake ordering, pickup sweets, drinks, breakfast, sandwiches, and delivery information are in scope."
+      },
+      {
+        "gateId": "pdf_or_difficult_extraction",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-full-menu-pdf",
+          "terra-legacy-cake-pdf"
+        ],
+        "notes": "The current official full-menu document could not be reopened/extracted; the frozen cake PDF is historical and likewise unavailable here."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-cakes",
+          "terra-toast",
+          "terra-toast-index"
+        ],
+        "notes": "The live catalog contains many products beyond the 16 frozen rows, while much of the frozen set is page typography rather than sellable products."
+      },
+      {
+        "gateId": "baseline_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-full-menu-pdf",
+          "terra-toast-index"
+        ],
+        "notes": "Frozen Bacon/Ham and DAILYBREAD strings cannot be confirmed as standalone current products; the current official full-menu contents remain unresolved."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-home",
+          "terra-cakes",
+          "terra-toast"
+        ],
+        "notes": "Frozen slogans, headings, CTAs, and likely modifier/header strings are artifacts; remaining named products require normalized or variant reconciliation."
+      },
+      {
+        "gateId": "allergen_mismatch",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-cakes",
+          "terra-toast"
+        ],
+        "notes": "Frozen positive arrays are not reproduced by a current complete allergen source. Only narrow direct named-ingredient positives are supportable."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-home",
+          "terra-order",
+          "terra-cakes",
+          "terra-toast"
+        ],
+        "notes": "No reviewed source provides a restaurant-issued cross-contact, shared-equipment, or may-contain disclosure; no negative conclusion is supportable."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-full-menu-pdf",
+          "terra-toast-index"
+        ],
+        "notes": "Official full-menu extraction, complete current-surface coverage, and complete allergen coverage remain unresolved."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-full-menu-pdf",
+          "terra-toast"
+        ],
+        "notes": "Independent review confirms difficult extraction, count drift, artifact rows, and incomplete allergen disclosure; it also identifies omitted current Toast categories."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "official-menu-hub",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-menu"
+        ],
+        "notes": "Accessible official navigation hub; partial by design and points to the unresolved current full-menu document."
+      },
+      {
+        "surfaceId": "official-cakes",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-cakes"
+        ],
+        "notes": "Accessible current official named cake catalog; it is not a complete allergen source."
+      },
+      {
+        "surfaceId": "official-order",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-order"
+        ],
+        "notes": "Accessible official ordering information that confirms the linked Falls Church pickup path."
+      },
+      {
+        "surfaceId": "toast-falls-church",
+        "verdict": "mismatch",
+        "sourceEvidenceIds": [
+          "terra-toast",
+          "terra-toast-index"
+        ],
+        "notes": "The linked vendor surface is accessible, but Luna's claimed complete enumeration omitted currently indexed breakfast and sandwich content. Ingredient evidence remains linked-vendor and partial-positive-only."
+      },
+      {
+        "surfaceId": "official-full-menu-pdf",
+        "verdict": "unverifiable",
+        "sourceEvidenceIds": [
+          "terra-menu",
+          "terra-full-menu-pdf"
+        ],
+        "notes": "The official hub links it as current, but its contents could not be extracted/reopened. It cannot support absence, complete arrays, negatives, or cross-contact conclusions."
+      },
+      {
+        "surfaceId": "legacy-cake-pdf",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-legacy-cake-pdf",
+          "terra-cakes"
+        ],
+        "notes": "Historical frozen-source surface, superseded for current-catalog purposes by the accessible official cake HTML; no current-negative inference made."
+      }
+    ],
+    "currentProductCheckGroups": [
+      {
+        "currentProductKeys": [
+          "official-full-menu-catalog"
+        ],
+        "presentationIds": [
+          "official-full-menu-pdf"
+        ],
+        "verdict": "unverifiable",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "terra-full-menu-pdf"
+        ],
+        "sourceEvidenceIds": [
+          "terra-menu",
+          "terra-full-menu-pdf"
+        ],
+        "notes": "The official current catalog boundary is known, but document contents were unavailable. No product, complete-array, negative, or cross-contact conclusion can be drawn."
+      },
+      {
+        "currentProductKeys": [
+          "official-cake-catalog"
+        ],
+        "presentationIds": [
+          "official-cakes"
+        ],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "milk",
+          "peanut"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-cakes"
+        ],
+        "sourceEvidenceIds": [
+          "terra-cakes"
+        ],
+        "notes": "Official descriptions directly name cream-cheese icing/buttercream and Reese’s peanut-butter/PB products, supporting only narrow milk and peanut positives. No complete array or may-contain conclusion is supportable."
+      },
+      {
+        "currentProductKeys": [
+          "toast-falls-church-catalog"
+        ],
+        "presentationIds": [
+          "toast-falls-church"
+        ],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "milk",
+          "peanut",
+          "tree_nut"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast",
+          "terra-toast-index"
+        ],
+        "notes": "Toast directly names butter/buttercream, peanut butter/PB, pecans, almonds, and nuts on selected sweets. This remains linked-vendor partial-positive evidence, not restaurant-issued evidence or a complete array."
+      },
+      {
+        "currentProductKeys": [
+          "toast-falls-church-drinks"
+        ],
+        "presentationIds": [
+          "toast-falls-church"
+        ],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "milk",
+          "tree_nut"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast",
+          "terra-toast-index"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast",
+          "terra-toast-index"
+        ],
+        "notes": "The drinks catalog lists Horizon Organic Milk, milk drinks, and pistachio/almond options. These support only narrow linked-vendor milk/tree-nut positives."
+      }
+    ],
+    "additionalMenuSurfaces": [
+      {
+        "surfaceId": "official-cake-request-falls-church",
+        "title": "Falls Church cake request",
+        "service": "cake pickup",
+        "url": "https://www.bakeshopva.com/cake-request-falls-church",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "html",
+        "accessStatus": "accessible",
+        "fullyEnumerated": false,
+        "scopeStatus": "partial",
+        "current": true,
+        "sourceEvidenceIds": [
+          "terra-cake-request-fc",
+          "terra-order"
+        ],
+        "currentProductKeys": [
+          "official-cake-catalog"
+        ],
+        "notes": "Current official location-specific cake-order surface missed by Luna. It is additional to, rather than a scout presentation ID for, the official cake catalog."
+      }
+    ],
+    "additionalCurrentProducts": [
+      {
+        "currentProductKey": "toast-falls-church-breakfast-catalog",
+        "name": "Falls Church Toast breakfast catalog",
+        "category": "food",
+        "surfaceIds": [
+          "toast-falls-church"
+        ],
+        "presentationIds": [
+          "toast-falls-church"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-toast-index"
+        ],
+        "containsAllergens": [
+          "milk",
+          "tree_nut"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast-index"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Current indexed Toast content missed by Luna includes croissants, biscuits, scones, and almond/Nutella/cheddar products. Only narrow linked-vendor positives are supportable."
+      },
+      {
+        "currentProductKey": "toast-falls-church-sandwich-catalog",
+        "name": "Falls Church Toast sandwich catalog",
+        "category": "food",
+        "surfaceIds": [
+          "toast-falls-church"
+        ],
+        "presentationIds": [
+          "toast-falls-church"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-toast-index"
+        ],
+        "containsAllergens": [
+          "egg",
+          "milk",
+          "sesame"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast-index"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Current indexed Toast content missed by Luna includes bacon/ham/egg/cheese sandwiches and a New Yorker expressly marked as containing sesame. These are narrow linked-vendor positives, not a complete allergen array."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 16,
+      "counts": {
+        "artifact/not_applicable": 10,
+        "variant_match/accurately_unavailable": 2,
+        "exact_match/verified": 2,
+        "normalized_match/accurately_unavailable": 2
+      }
+    },
+    "findings": [
+      {
+        "findingId": "terra-toast-scope-omission",
+        "severity": "high",
+        "kind": "scope",
+        "summary": "Luna marked the linked Falls Church Toast catalog fully enumerated, but current indexed content for the same catalog includes omitted breakfast and sandwich categories and products.",
+        "sourceEvidenceIds": [
+          "terra-toast",
+          "terra-toast-index"
+        ],
+        "affectedAuditItemKeys": [
+          "2:baconham",
+          "5:dailybread"
+        ]
+      },
+      {
+        "findingId": "terra-incomplete-current-menu",
+        "severity": "high",
+        "kind": "extraction",
+        "summary": "The current official full-menu document remains inaccessible to this verification surface. It cannot support missing-product conclusions, complete allergen arrays, negatives, or cross-contact semantics.",
+        "sourceEvidenceIds": [
+          "terra-menu",
+          "terra-full-menu-pdf"
+        ],
+        "affectedAuditItemKeys": [
+          "2:baconham",
+          "5:dailybread"
+        ]
+      },
+      {
+        "findingId": "terra-allergen-positive-undercount",
+        "severity": "medium",
+        "kind": "allergen_source",
+        "summary": "Luna omitted narrow direct positives: official cake text supports milk and peanut at catalog level; linked Toast text supports milk, peanut, and tree nut for sweets and milk/tree nut for drinks. These remain partial-positive-only claims with their original authorities.",
+        "sourceEvidenceIds": [
+          "terra-cakes",
+          "terra-toast",
+          "terra-toast-index"
+        ],
+        "affectedAuditItemKeys": [
+          "8:gingersnap-cream-pie",
+          "11:oatmeal-cream-pie"
+        ]
+      },
+      {
+        "findingId": "terra-frozen-extraction-artifacts",
+        "severity": "high",
+        "kind": "extraction",
+        "summary": "The frozen item file contains slogans, CTA text, category headings, and likely modifier/header rows rather than 16 independently sellable products. Unavailable current PDF contents must not be used to infer product removal.",
+        "sourceEvidenceIds": [
+          "terra-home",
+          "terra-cakes",
+          "terra-full-menu-pdf"
+        ],
+        "affectedAuditItemKeys": [
+          "1:and-more",
+          "2:baconham",
+          "5:dailybread",
+          "6:down-the-street-and-out-of-this-world",
+          "7:get-a-cake",
+          "9:layercakes",
+          "10:morecakes",
+          "12:pies",
+          "15:whippedcreamcakes",
+          "16:xtremecakes"
+        ]
+      }
+    ],
+    "summary": "Independent verification confirms Bakeshop Falls Church identity and the official linked ordering path, but current catalog and allergen evidence remain incomplete. Luna's claimed complete Toast catalog omitted current indexed breakfast and sandwich content; the current official full-menu document is unresolved. All scout product groups use only their exact scout presentation IDs, every frozen key is reconciled once, and the only allergen claims retained are narrow direct positives with restaurant-issued or linked-vendor authority preserved.",
+    "coordinatorNotes": [
+      "Read-only Terra result only; no ledger, dossier, item-check, or generated data was changed.",
+      "Low confidence is explicit because complete official-menu extraction, complete current catalog coverage, complete allergen sourcing, and cross-contact semantics remain unresolved.",
+      "This result requires Sol adjudication because deterministic hard-risk gates remain confirmed."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "1:and-more",
+      "baseline": {
+        "itemId": "and-more",
+        "name": ". . . & MORE",
+        "category": "dessert;bakery;coffee_shop",
+        "variantGroup": "dessert;bakery;coffee_shop",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/616386c687b45a450e96aa9a/t/69790b3cd75d962b68b3b067/1769540412257/JanuaryCakeMenu_2026.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "2:baconham",
+      "baseline": {
+        "itemId": "baconham",
+        "name": "Bacon/Ham",
+        "category": "dessert;bakery;coffee_shop",
+        "variantGroup": "dessert;bakery;coffee_shop",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/616386c687b45a450e96aa9a/t/69b2f45cf91bbc4fc01f8b2c/1773335644760/General_Menu_Jan_2026.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "5:dailybread",
+      "baseline": {
+        "itemId": "dailybread",
+        "name": "DAILYBREAD",
+        "category": "dessert;bakery;coffee_shop",
+        "variantGroup": "dessert;bakery;coffee_shop",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/616386c687b45a450e96aa9a/t/69b2f45cf91bbc4fc01f8b2c/1773335644760/General_Menu_Jan_2026.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "6:down-the-street-and-out-of-this-world",
+      "baseline": {
+        "itemId": "down-the-street-and-out-of-this-world",
+        "name": "Down the street & out of this world",
+        "category": "Cakes",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bakeshopva.com/cakes"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "7:get-a-cake",
+      "baseline": {
+        "itemId": "get-a-cake",
+        "name": "GET A Cake",
+        "category": "dessert;bakery;coffee_shop",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bakeshopva.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "8:gingersnap-cream-pie",
+      "baseline": {
+        "itemId": "gingersnap-cream-pie",
+        "name": "Gingersnap Cream Pie",
+        "category": "dessert;bakery;coffee_shop",
+        "variantGroup": "dessert;bakery;coffee_shop",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/616386c687b45a450e96aa9a/t/69b2f45cf91bbc4fc01f8b2c/1773335644760/General_Menu_Jan_2026.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "9:layercakes",
+      "baseline": {
+        "itemId": "layercakes",
+        "name": "LAYERCAKES",
+        "category": "dessert;bakery;coffee_shop",
+        "variantGroup": "dessert;bakery;coffee_shop",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/616386c687b45a450e96aa9a/t/69790b3cd75d962b68b3b067/1769540412257/JanuaryCakeMenu_2026.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "10:morecakes",
+      "baseline": {
+        "itemId": "morecakes",
+        "name": "MORECAKES",
+        "category": "dessert;bakery;coffee_shop",
+        "variantGroup": "dessert;bakery;coffee_shop",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/616386c687b45a450e96aa9a/t/69b2f45cf91bbc4fc01f8b2c/1773335644760/General_Menu_Jan_2026.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "11:oatmeal-cream-pie",
+      "baseline": {
+        "itemId": "oatmeal-cream-pie",
+        "name": "Oatmeal Cream Pie",
+        "category": "dessert;bakery;coffee_shop",
+        "variantGroup": "dessert;bakery;coffee_shop",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/616386c687b45a450e96aa9a/t/69b2f45cf91bbc4fc01f8b2c/1773335644760/General_Menu_Jan_2026.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "12:pies",
+      "baseline": {
+        "itemId": "pies",
+        "name": "PIES",
+        "category": "dessert;bakery;coffee_shop",
+        "variantGroup": "dessert;bakery;coffee_shop",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/616386c687b45a450e96aa9a/t/69b2f45cf91bbc4fc01f8b2c/1773335644760/General_Menu_Jan_2026.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "15:whippedcreamcakes",
+      "baseline": {
+        "itemId": "whippedcreamcakes",
+        "name": "WHIPPEDCREAMCAKES",
+        "category": "dessert;bakery;coffee_shop",
+        "variantGroup": "dessert;bakery;coffee_shop",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/616386c687b45a450e96aa9a/t/69790b3cd75d962b68b3b067/1769540412257/JanuaryCakeMenu_2026.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "16:xtremecakes",
+      "baseline": {
+        "itemId": "xtremecakes",
+        "name": "XTREMECAKES",
+        "category": "dessert;bakery;coffee_shop",
+        "variantGroup": "dessert;bakery;coffee_shop",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/616386c687b45a450e96aa9a/t/69b2f45cf91bbc4fc01f8b2c/1773335644760/General_Menu_Jan_2026.pdf",
+          "https://static1.squarespace.com/static/616386c687b45a450e96aa9a/t/69790b3cd75d962b68b3b067/1769540412257/JanuaryCakeMenu_2026.pdf"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-pilot-2026-07-15/jobs/osm-bakeshop-11399205397.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-pilot-2026-07-15/results/osm-bakeshop-11399205397.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/osm-bakeshop-11399205397.jsonl"
+  }
+}

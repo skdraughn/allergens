@@ -1,18 +1,25 @@
 {
   "expo": {
-    "name": "allergy-app",
+    "name": "MySafeMenu",
     "slug": "allergy-app",
     "scheme": "allergyapp",
     "version": "1.0.0",
+    "runtimeVersion": {
+      "policy": "fingerprint"
+    },
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
-      "bundleIdentifier": "com.truflag.allergyapp",
+      "associatedDomains": [
+        "applinks:mysafemenu.com",
+        "applinks:www.mysafemenu.com"
+      ],
+      "bundleIdentifier": "com.cliqinvite.mysafemenu",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       },
-      "supportsTablet": true
+      "supportsTablet": false
     },
     "android": {
       "adaptiveIcon": {
@@ -30,9 +37,18 @@
       "expo-router",
       "expo-web-browser",
       [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#FFFFFF",
+          "image": "./assets/icon.png",
+          "imageWidth": 92,
+          "resizeMode": "contain"
+        }
+      ],
+      [
         "expo-location",
         {
-          "locationWhenInUsePermission": "Allow SafePlate to use your location to show nearby restaurants."
+          "locationWhenInUsePermission": "Allow MySafeMenu to use your location to show nearby restaurants."
         }
       ]
     ],
@@ -42,6 +58,17 @@
         "projectId": "ac82588c-534a-4d62-830c-fbd19cb5c77f"
       }
     },
-    "owner": "skdraughn"
+    "owner": "skdraughn",
+    "updates": {
+      "enabled": true,
+      "fallbackToCacheTimeout": 0,
+      "checkAutomatically": "NEVER",
+      "url": "https://bunfe5qbpb.execute-api.us-east-1.amazonaws.com/v1/updates",
+      "codeSigningCertificate": "./certs/expo-updates/certificate.pem",
+      "codeSigningMetadata": {
+        "keyid": "main",
+        "alg": "rsa-v1_5-sha256"
+      }
+    }
   }
 }

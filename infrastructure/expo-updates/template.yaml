@@ -1,0 +1,184 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Minimal self-hosted Expo Updates service for MySafeMenu
+
+Parameters:
+  LambdaCodeBucket:
+    Type: String
+  LambdaCodeKey:
+    Type: String
+
+Resources:
+  UpdatesBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      VersioningConfiguration:
+        Status: Enabled
+
+  UpdatesOriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub "${AWS::StackName}-oac"
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  UpdatesDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Comment: MySafeMenu immutable Expo update assets
+        Enabled: true
+        HttpVersion: http2and3
+        IPV6Enabled: true
+        Origins:
+          - Id: UpdatesBucketOrigin
+            DomainName: !GetAtt UpdatesBucket.RegionalDomainName
+            OriginAccessControlId: !GetAtt UpdatesOriginAccessControl.Id
+            S3OriginConfig: {}
+        DefaultCacheBehavior:
+          TargetOriginId: UpdatesBucketOrigin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods: [GET, HEAD, OPTIONS]
+          CachedMethods: [GET, HEAD, OPTIONS]
+          Compress: true
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+        PriceClass: PriceClass_100
+
+  UpdatesBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref UpdatesBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: CloudFrontReadOnly
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub "${UpdatesBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${UpdatesDistribution}"
+
+  ManifestFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: ReadExpoUpdates
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: s3:ListBucket
+                Resource: !GetAtt UpdatesBucket.Arn
+                Condition:
+                  StringLike:
+                    s3:prefix:
+                      - current/*
+              - Effect: Allow
+                Action: s3:GetObject
+                Resource:
+                  - !Sub "${UpdatesBucket.Arn}/current/*"
+                  - !Sub "${UpdatesBucket.Arn}/manifests/*"
+
+  ManifestFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Runtime: nodejs22.x
+      Handler: index.handler
+      Timeout: 10
+      MemorySize: 256
+      Role: !GetAtt ManifestFunctionRole.Arn
+      Environment:
+        Variables:
+          UPDATES_BUCKET: !Ref UpdatesBucket
+      Code:
+        S3Bucket: !Ref LambdaCodeBucket
+        S3Key: !Ref LambdaCodeKey
+
+  ManifestApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: !Sub "${AWS::StackName}-api"
+      ProtocolType: HTTP
+
+  ManifestIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref ManifestApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt ManifestFunction.Arn
+      PayloadFormatVersion: "2.0"
+
+  ManifestRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref ManifestApi
+      RouteKey: GET /v1/updates
+      Target: !Sub "integrations/${ManifestIntegration}"
+
+  ManifestStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref ManifestApi
+      StageName: "$default"
+      AutoDeploy: true
+
+  ManifestInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref ManifestFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${ManifestApi}/*/GET/v1/updates"
+
+  ManifestErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: MySafeMenu Expo manifest Lambda errors
+      Namespace: AWS/Lambda
+      MetricName: Errors
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref ManifestFunction
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 5
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+
+Outputs:
+  UpdatesBucketName:
+    Value: !Ref UpdatesBucket
+  AssetsBaseUrl:
+    Value: !Sub "https://${UpdatesDistribution.DomainName}"
+  ManifestUrl:
+    Value: !Sub "https://${ManifestApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/v1/updates"
+  DistributionId:
+    Value: !Ref UpdatesDistribution

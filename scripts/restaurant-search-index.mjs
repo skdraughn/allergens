@@ -49,8 +49,12 @@ export function buildRestaurantSearchIndexRows(repository) {
       continue;
     }
 
-    const locationId = restaurant.locationId ?? nationalLocationId;
+    const locationId =
+      typeof restaurant.locationId === "string" && restaurant.locationId.trim()
+        ? restaurant.locationId.trim()
+        : nationalLocationId;
     const meta = createRestaurantMeta(restaurant, locationId, generatedAt);
+    const lookup = createRestaurantLookup(meta);
     rows.push({
       pk: `META#${restaurant.id}#${locationId}`,
       sk: "METADATA",
@@ -60,14 +64,14 @@ export function buildRestaurantSearchIndexRows(repository) {
     rows.push({
       pk: "POPULAR#GLOBAL",
       sk: rankKey(restaurant.rank, restaurant.id, locationId),
-      ...meta,
+      ...lookup,
     });
 
     for (const token of searchTokensForRestaurant(restaurant)) {
       rows.push({
         pk: `TOKEN#${token}`,
         sk: rankKey(restaurant.rank, restaurant.id, locationId),
-        ...meta,
+        ...lookup,
         matchToken: token,
       });
     }
@@ -77,13 +81,21 @@ export function buildRestaurantSearchIndexRows(repository) {
       rows.push({
         pk: `GEO#${geohash}`,
         sk: rankKey(restaurant.rank, restaurant.id, locationId),
-        ...meta,
+        ...lookup,
         geohash,
       });
     }
   }
 
   return rows;
+}
+
+function createRestaurantLookup(meta) {
+  return {
+    locationId: meta.locationId,
+    rank: meta.rank,
+    restaurantId: meta.restaurantId,
+  };
 }
 
 export function normalizeSearchText(value) {
@@ -132,19 +144,46 @@ export function compatibilitySummaryForRestaurant(restaurant) {
   const directAllergenItemIndexes = Object.fromEntries(allergenIds.map((id) => [id, []]));
   const mayContainAllergenItemCounts = Object.fromEntries(allergenIds.map((id) => [id, 0]));
   const mayContainAllergenItemIndexes = Object.fromEntries(allergenIds.map((id) => [id, []]));
+  const inferredAllergenItemIndexes = Object.fromEntries(allergenIds.map((id) => [id, []]));
+  const ingredientIntelligenceItemIndexes = [];
+  const ingredientIntelligenceSafeAllergenItemIndexes = Object.fromEntries(
+    allergenIds.map((id) => [id, []]),
+  );
+  const unavailableAllergenItemIndexes = Object.fromEntries(allergenIds.map((id) => [id, []]));
   const unavailableItemIndexes = [];
   let unavailableCount = 0;
 
   for (const [index, item] of (restaurant.items ?? []).entries()) {
-    const unavailable =
-      item.allergenSourceType === "unavailable" ||
-      (!item.allergenSourceType &&
-        (item.allergens ?? []).length === 0 &&
-        (item.mayContain ?? []).length === 0);
+    const unavailableAllergenIds = allergenIds.filter(
+      (allergenId) => !isOfficialAllergenCovered(item, restaurant, allergenId),
+    );
+    const unavailable = unavailableAllergenIds.length === allergenIds.length;
 
-    if (unavailable) {
-      unavailableCount += 1;
-      unavailableItemIndexes.push(index);
+    for (const allergenId of unavailableAllergenIds) {
+      unavailableAllergenItemIndexes[allergenId].push(index);
+    }
+
+    if (unavailableAllergenIds.length > 0) {
+      if (unavailable) {
+        unavailableCount += 1;
+        unavailableItemIndexes.push(index);
+      }
+
+      if (isIngredientIntelligenceReviewed(item)) {
+        ingredientIntelligenceItemIndexes.push(index);
+
+        for (const signal of item.inferredAllergenSignals ?? []) {
+          if (signal?.id in inferredAllergenItemIndexes) {
+            inferredAllergenItemIndexes[signal.id].push(index);
+          }
+        }
+      }
+
+      for (const suppression of item.inferenceSuppressions ?? []) {
+        if (suppression?.id in ingredientIntelligenceSafeAllergenItemIndexes) {
+          ingredientIntelligenceSafeAllergenItemIndexes[suppression.id].push(index);
+        }
+      }
     }
 
     for (const allergen of uniqueStrings(item.allergens ?? [])) {
@@ -165,6 +204,10 @@ export function compatibilitySummaryForRestaurant(restaurant) {
   return {
     directAllergenItemCounts,
     directAllergenItemIndexes,
+    ...(ingredientIntelligenceItemIndexes.length > 0
+      ? { inferredAllergenItemIndexes, ingredientIntelligenceItemIndexes }
+      : {}),
+    ingredientIntelligenceSafeAllergenItemIndexes,
     mayContainAllergenItemCounts,
     mayContainAllergenItemIndexes,
     officialItemCount:
@@ -172,8 +215,44 @@ export function compatibilitySummaryForRestaurant(restaurant) {
       (restaurant.items ?? []).filter((item) => item.allergenSourceType !== "unavailable").length,
     totalItemCount: (restaurant.items ?? []).length,
     unavailableCount,
+    unavailableAllergenItemIndexes,
     unavailableItemIndexes,
   };
+}
+
+function isOfficialAllergenCovered(item, restaurant, allergenId) {
+  const profileId = item.officialAllergenProfileId;
+
+  if (!profileId) {
+    return Boolean(
+      item.allergenSourceType !== "unavailable" &&
+        (item.allergenSourceType ||
+          (item.allergens ?? []).length > 0 ||
+          (item.mayContain ?? []).length > 0),
+    );
+  }
+
+
+  if (item.allergenSourceType === "unavailable") {
+    return false;
+  }
+
+  const coveredIds = new Set(
+    restaurant.officialAllergenProfiles?.[profileId]?.coveredAllergenIds ?? [],
+  );
+
+  return (
+    coveredIds.has(allergenId) ||
+    (allergenId === "gluten" && coveredIds.has("wheat")) ||
+    (allergenId === "wheat" && coveredIds.has("gluten"))
+  );
+}
+
+function isIngredientIntelligenceReviewed(item) {
+  return Boolean(
+    (item.inferredIngredients ?? []).length > 0 ||
+      (item.inferredAllergenSignals ?? []).length > 0
+  );
 }
 
 export function encodeGeohash(latitude, longitude, precision = 6) {
@@ -218,7 +297,10 @@ function createRestaurantMeta(restaurant, locationId, generatedAt) {
   return {
     address: restaurant.address ?? null,
     category: restaurant.category ?? "Restaurant",
-    city: restaurant.city ?? restaurant.address?.city ?? null,
+    city: normalizeCityForRegion(
+      restaurant.city ?? restaurant.address?.city ?? null,
+      restaurant.region ?? restaurant.address?.region ?? null,
+    ),
     compatibilitySummary: compatibilitySummaryForRestaurant(restaurant),
     country: restaurant.country ?? restaurant.address?.country ?? null,
     coveragePercent: restaurant.coveragePercent ?? null,
@@ -251,6 +333,12 @@ function createRestaurantMeta(restaurant, locationId, generatedAt) {
     totalItemCount: (restaurant.items ?? []).length,
     type: restaurant.type ?? "chain",
   };
+}
+
+function normalizeCityForRegion(city, region) {
+  if (typeof city !== "string" || typeof region !== "string") return city;
+  const escapedRegion = region.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return city.replace(new RegExp(`,\\s*${escapedRegion}$`, "i"), "").trim();
 }
 
 function addPrefixes(tokens, value) {

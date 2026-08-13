@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-007-2026-07-16",
+  "restaurantId": "bbq-chicken",
+  "reviewType": "binding_chain_scope_and_source_authority_resolution",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "role": "sol_reviewer"
+  },
+  "reviewedKeys": [],
+  "resolution": {
+    "binding": true,
+    "outcome": "bounded_us_chain_level_catalog_resolved_without_store_identity_claim",
+    "identityResolution": {
+      "scopeType": "bounded_us_chain_level_brand_menu",
+      "locationId": null,
+      "storeIdentityClaimed": false,
+      "locationSpecificAvailabilityClaimed": false,
+      "rationale": "The official homepage and U.S. menu establish the brand. No location-specific ordering catalog is adopted because the job has no locationId."
+    },
+    "catalogDefinition": {
+      "scope": "A bounded U.S. chain-level POC catalog of the 24 food and nonalcoholic product identities explicitly enumerated on the current official U.S. menu M2.",
+      "authoritySurfaceIds": [
+        "M2"
+      ],
+      "supportingSurfaceIds": [
+        "M1"
+      ],
+      "excludedSurfaceIds": [
+        "M3",
+        "M4"
+      ],
+      "historicalNoncurrentSurfaceIds": [
+        "M5"
+      ],
+      "enumerationRule": "exact_distinct_food_and_nonalcoholic_product_identities_enumerated_on_current_restaurant_issued_us_menu_M2",
+      "completenessBoundary": "Complete only for the 24 identities publicly enumerated on M2; no store-specific availability claim is made.",
+      "existingProductCount": 24,
+      "additionalProductCount": 0,
+      "removedProductCount": 0,
+      "excludedProductCount": 0,
+      "resolvedCatalogProductCount": 24,
+      "productAdditionsRequired": [],
+      "productRemovalsRequired": [],
+      "productExclusionsRequired": [],
+      "allergenBoundary": "Retain only direct current restaurant-issued positive allergen evidence. Historical M5 cannot establish current positives or negatives; empty arrays do not prove absence and no may-contain or cross-contact conclusion is made.",
+      "rationale": "M2 is the highest-authority current enumerating surface. M1 supports identity only, and M3/M4 are incompatible location-specific catalogs."
+    },
+    "items": [],
+    "surfaceResolutions": [
+      {
+        "surfaceId": "M1",
+        "disposition": "supporting",
+        "sourceEvidenceIds": [
+          "S1"
+        ],
+        "additionalProductsRequired": [],
+        "rationale": "Official homepage supports identity and navigation but contributes no products."
+      },
+      {
+        "surfaceId": "M2",
+        "disposition": "complete",
+        "sourceEvidenceIds": [
+          "S2"
+        ],
+        "additionalProductsRequired": [],
+        "rationale": "Official U.S. menu is authoritative for the bounded 24-product catalog."
+      },
+      {
+        "surfaceId": "M3",
+        "disposition": "excluded",
+        "sourceEvidenceIds": [
+          "S4"
+        ],
+        "additionalProductsRequired": [],
+        "rationale": "North Quincy is an unselected location-specific catalog."
+      },
+      {
+        "surfaceId": "M4",
+        "disposition": "excluded",
+        "sourceEvidenceIds": [
+          "S5"
+        ],
+        "additionalProductsRequired": [],
+        "rationale": "Huntington Drive is an incompatible unselected location-specific catalog."
+      }
+    ],
+    "safetySourceAuthorityConflictRemains": false
+  },
+  "remainingSolSignals": [
+    {
+      "signal": "location_specific_availability",
+      "status": "accurately_unavailable_non_blocking_under_bounded_chain_scope",
+      "sourceEvidenceIds": [
+        "S2",
+        "S4",
+        "S5"
+      ],
+      "rationale": "No store is selected and no store-specific availability claim is made."
+    },
+    {
+      "signal": "current_official_allergen_matrix",
+      "status": "accurately_unavailable",
+      "sourceEvidenceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6"
+      ],
+      "rationale": "All four searches completed; M5/S3 is historical and noncurrent."
+    }
+  ],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "frozenBaselineItemCount": 44,
+    "researchReconciledItemCount": 44,
+    "unresolvedResearchKeyCount": 0,
+    "reviewedKeyCount": 0,
+    "resolutionItemCount": 0,
+    "allAffectedKeysReviewedExactlyOnce": true,
+    "researchCurrentProductCount": 24,
+    "additionalProductCount": 0,
+    "removedProductCount": 0,
+    "excludedProductCount": 0,
+    "resolvedCatalogProductCount": 24,
+    "surfaceResolutionCount": 4,
+    "partialSurfaceIds": [
+      "M1",
+      "M2",
+      "M3",
+      "M4"
+    ],
+    "resolvedSurfaceIds": [
+      "M1",
+      "M2",
+      "M3",
+      "M4"
+    ],
+    "allPartialSurfacesResolvedExactlyOnce": true,
+    "storeIdentityClaimed": false,
+    "incompatibleStoreOrRegionCatalogMixed": false,
+    "boundedChainLevelCatalogDeclared": true,
+    "sourceAuthorityAmbiguityResolved": true,
+    "directPositiveOnlyAllergenSemantics": true,
+    "unsupportedAllergenNegativesIntroduced": false,
+    "itemSpecificMayContainClaimsIntroduced": false,
+    "crossContactConclusionIntroduced": false,
+    "completeAllergenProfileClaimed": false,
+    "matrixSearchCount": 4,
+    "matrixStatusRemainsAccuratelyUnavailable": true,
+    "codexVerifiedClaimed": false
+  }
+}

@@ -1,0 +1,895 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-a-front-4-front-20260811165633",
+  "restaurantId": "mercy-me-washington-dc-dc-metro",
+  "packetValidation": {
+    "restaurantId": "mercy-me-washington-dc-dc-metro",
+    "name": "Mercy Me",
+    "locationId": "washington-dc",
+    "domain": "mercymedc.com",
+    "baselineItemCount": 24,
+    "baselineFingerprint": "64d632c6be990649a994a1db1b75595edb43da1be7bf4ce2897a7ff5a41cd38b",
+    "itemChecksPath": "data/restaurant-verification/item-checks/mercy-me-washington-dc-dc-metro.jsonl"
+  },
+  "identity": {
+    "status": "confirmed",
+    "name": "Mercy Me",
+    "location": "1143 New Hampshire Ave NW, Washington, DC 20037",
+    "locationId": "washington-dc",
+    "domain": "mercymedc.com",
+    "officialHomepage": "https://www.mercymedc.com/",
+    "sourceEvidenceIds": [
+      "MM-E1",
+      "MM-E2"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "MM-E1",
+      "url": "https://www.mercymedc.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and restaurant identity",
+      "retrievedAt": "2026-08-11T17:10:00.000Z"
+    },
+    {
+      "evidenceId": "MM-E2",
+      "url": "https://www.mercymedc.com/location/mercy-me/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official location and hours",
+      "retrievedAt": "2026-08-11T17:10:00.000Z"
+    },
+    {
+      "evidenceId": "MM-E3",
+      "url": "https://www.mercymedc.com/menu/dinner/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official current dinner menu surface and PDF link",
+      "retrievedAt": "2026-08-11T17:10:00.000Z"
+    },
+    {
+      "evidenceId": "MM-E4",
+      "url": "https://media-cdn.getbento.com/accounts/81c28acc9fc1d6ed6460a52032155039/media/UNPv4bPhTUSwV7JdCH8c_2026%20April%20Dinner%20Menu.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official April dinner menu and explicit ingredient/allergen claims retained in frozen baseline",
+      "retrievedAt": "2026-08-11T17:10:00.000Z"
+    },
+    {
+      "evidenceId": "MM-E5",
+      "url": "https://media-cdn.getbento.com/accounts/81c28acc9fc1d6ed6460a52032155039/media/7FGID6zQQQiaQ9bn3e8o_Dessert%202026%20Spring.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official dessert menu and explicit ingredient/allergen claims retained in frozen baseline",
+      "retrievedAt": "2026-08-11T17:10:00.000Z"
+    },
+    {
+      "evidenceId": "MM-E6",
+      "url": "https://www.opentable.com/r/mercy-me-washington",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "restaurant-linked current dinner menu and location confirmation",
+      "retrievedAt": "2026-08-11T17:10:00.000Z"
+    },
+    {
+      "evidenceId": "MM-E7",
+      "url": "https://www.mercymedc.com/order-online/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official order-online surface; no itemized menu exposed",
+      "retrievedAt": "2026-08-11T17:10:00.000Z"
+    },
+    {
+      "evidenceId": "MM-E8",
+      "url": "https://www.google.com/search?q=site%3Amercymedc.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted official-domain allergen search",
+      "retrievedAt": "2026-08-11T17:10:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-dinner",
+      "title": "Mercy Me official Dinner Menu",
+      "url": "https://www.mercymedc.com/menu/dinner/",
+      "current": true,
+      "scopeStatus": "complete",
+      "servicePeriod": "dinner",
+      "locationScope": "Mercy Me, Washington DC",
+      "sourceEvidenceIds": [
+        "MM-E3",
+        "MM-E4"
+      ]
+    },
+    {
+      "surfaceId": "opentable-dinner",
+      "title": "OpenTable current Mercy Me menu",
+      "url": "https://www.opentable.com/r/mercy-me-washington",
+      "current": true,
+      "scopeStatus": "complete",
+      "servicePeriod": "dinner; menu updated August 2026",
+      "locationScope": "1143 New Hampshire Ave NW, Washington, DC",
+      "sourceEvidenceIds": [
+        "MM-E6"
+      ]
+    },
+    {
+      "surfaceId": "official-order-online",
+      "title": "Mercy Me Order Online",
+      "url": "https://www.mercymedc.com/order-online/",
+      "current": false,
+      "scopeStatus": "supporting",
+      "servicePeriod": "pickup and delivery 5 PM-9:30 PM daily",
+      "locationScope": "Mercy Me Washington DC",
+      "sourceEvidenceIds": [
+        "MM-E7"
+      ],
+      "notes": "MM-E7 is a current restaurant-issued order-online surface for Mercy Me in Washington, DC, but the captured surface exposes no itemized menu and therefore supports ordering availability and the linked-surface search only. MM-E3 is the complete restaurant-issued current dinner surface and MM-E6 is a same-location restaurant-linked current dinner menu; together the captured result uses them to support the 24-product catalog. No evidence supports adding products or mappings from MM-E7, so this surface is non-catalog supporting evidence."
+    },
+    {
+      "surfaceId": "official-dessert",
+      "title": "Mercy Me Spring Dessert PDF",
+      "url": "https://media-cdn.getbento.com/accounts/81c28acc9fc1d6ed6460a52032155039/media/7FGID6zQQQiaQ9bn3e8o_Dessert%202026%20Spring.pdf",
+      "current": false,
+      "scopeStatus": "complete",
+      "servicePeriod": "dessert",
+      "locationScope": "Mercy Me Washington DC",
+      "sourceEvidenceIds": [
+        "MM-E5"
+      ]
+    }
+  ],
+  "currentProducts": {
+    "products": [
+      {
+        "currentProductKey": "americano",
+        "name": "Americano",
+        "category": "Beverages",
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": []
+      },
+      {
+        "currentProductKey": "anticuchos",
+        "name": "Anticuchos",
+        "category": "Snacks",
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E4"
+        ],
+        "containsAllergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "MM-E4"
+        ]
+      },
+      {
+        "currentProductKey": "beef-tataki",
+        "name": "Beef Tataki",
+        "category": "Snacks",
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ],
+        "containsAllergens": [
+          "egg",
+          "soy"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "MM-E4"
+        ]
+      },
+      {
+        "currentProductKey": "ceviche",
+        "name": "Ceviche",
+        "category": "Sorta Small",
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E6"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": []
+      },
+      {
+        "currentProductKey": "cod-croquettes",
+        "name": "Cod Croquettes",
+        "category": "Snacks",
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E4"
+        ],
+        "containsAllergens": [
+          "egg",
+          "fish",
+          "shellfish"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "MM-E4"
+        ]
+      },
+      {
+        "currentProductKey": "crispy-yuca",
+        "name": "Crispy Yuca",
+        "category": "Snacks",
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E6"
+        ],
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "MM-E4"
+        ]
+      },
+      {
+        "currentProductKey": "eggplant-milanesa",
+        "name": "Eggplant Milanesa",
+        "category": "Snacks",
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": []
+      },
+      {
+        "currentProductKey": "flan-de-cafe",
+        "name": "Flan de Café",
+        "category": "Dessert",
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E5"
+        ],
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "MM-E5"
+        ]
+      },
+      {
+        "currentProductKey": "gaucho-tiger-prawn",
+        "name": "Gaucho Tiger Prawn",
+        "category": "Asado",
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E6"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": []
+      },
+      {
+        "currentProductKey": "green-tea-and-organic-mint",
+        "name": "Green Tea and Organic Mint",
+        "category": "Nonalcoholic beverages",
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": []
+      },
+      {
+        "currentProductKey": "grilled-asparagus",
+        "name": "Grilled Asparagus",
+        "category": "Sides",
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": []
+      },
+      {
+        "currentProductKey": "grilled-wild-mushrooms",
+        "name": "Grilled Wild Mushrooms",
+        "category": "Sides",
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": []
+      },
+      {
+        "currentProductKey": "hamachi-tiradito",
+        "name": "Hamachi Tiradito",
+        "category": "Sorta Small",
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": []
+      },
+      {
+        "currentProductKey": "hearts-of-palm-salad",
+        "name": "Hearts of Palm Salad",
+        "category": "Sorta Small",
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E6",
+          "MM-E4"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "MM-E4"
+        ]
+      },
+      {
+        "currentProductKey": "lamb-chops",
+        "name": "Lamb Chops",
+        "category": "Asado",
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E6"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": []
+      },
+      {
+        "currentProductKey": "mousse-de-maracuja",
+        "name": "Mousse de Maracujá",
+        "category": "Dessert",
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E5"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "MM-E5"
+        ]
+      },
+      {
+        "currentProductKey": "nikkei-wings",
+        "name": "Nikkei Wings",
+        "category": "Snacks",
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": []
+      },
+      {
+        "currentProductKey": "oysters-4-ea",
+        "name": "Oysters 4 Ea",
+        "category": "Snacks",
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E4"
+        ],
+        "containsAllergens": [
+          "shellfish"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "MM-E4"
+        ]
+      },
+      {
+        "currentProductKey": "peruvian-chicken",
+        "name": "Peruvian Chicken",
+        "category": "Kinda Big",
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E6"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": []
+      },
+      {
+        "currentProductKey": "ravioli",
+        "name": "Ravioli",
+        "category": "Kinda Big",
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E6",
+          "MM-E4"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg",
+          "fish",
+          "shellfish"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "MM-E4"
+        ]
+      },
+      {
+        "currentProductKey": "rice-and-beans",
+        "name": "Rice & Beans",
+        "category": "Sides",
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E4"
+        ],
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "MM-E4"
+        ]
+      },
+      {
+        "currentProductKey": "roasted-broccolini",
+        "name": "Roasted Broccolini",
+        "category": "Sides",
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E4"
+        ],
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "MM-E4"
+        ]
+      },
+      {
+        "currentProductKey": "tealoose-tea-leaves",
+        "name": "Tea Loose Tea Leaves",
+        "category": "Nonalcoholic beverages",
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": []
+      },
+      {
+        "currentProductKey": "whole-branzino-2-lbs",
+        "name": "Whole Branzino 2 Lbs",
+        "category": "Asado",
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E4"
+        ],
+        "containsAllergens": [
+          "fish"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "MM-E4"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "Official homepage, menus navigation, dinner page, location, and order-online pages",
+        "urls": [
+          "https://www.mercymedc.com/",
+          "https://www.mercymedc.com/menu/dinner/",
+          "https://www.mercymedc.com/location/mercy-me/",
+          "https://www.mercymedc.com/order-online/"
+        ],
+        "outcome": "Official current food menu and ordering/navigation surfaces inspected; no allergen matrix or cross-contact statement found.",
+        "sourceEvidenceIds": [
+          "MM-E1",
+          "MM-E2",
+          "MM-E3",
+          "MM-E7"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "Official dinner and dessert PDFs plus linked document/download surfaces",
+        "urls": [
+          "https://media-cdn.getbento.com/accounts/81c28acc9fc1d6ed6460a52032155039/media/UNPv4bPhTUSwV7JdCH8c_2026%20April%20Dinner%20Menu.pdf",
+          "https://media-cdn.getbento.com/accounts/81c28acc9fc1d6ed6460a52032155039/media/7FGID6zQQQiaQ9bn3e8o_Dessert%202026%20Spring.pdf"
+        ],
+        "outcome": "Official menu documents inspected; no complete allergen matrix or cross-contact statement found. Explicit frozen direct positives retained.",
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E4",
+          "MM-E5"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Restaurant-linked OpenTable current Mercy Me listing and menu",
+        "urls": [
+          "https://www.opentable.com/r/mercy-me-washington"
+        ],
+        "outcome": "Current linked menu inspected; no allergen matrix or cross-contact statement found.",
+        "sourceEvidenceIds": [
+          "MM-E6"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "queryOrLocation": "site:mercymedc.com allergen allergy nutrition ingredients PDF menu; Mercy Me Washington DC allergen",
+        "urls": [
+          "https://www.google.com/search?q=site%3Amercymedc.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+        ],
+        "outcome": "No official allergen matrix located.",
+        "sourceEvidenceIds": [
+          "MM-E8"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "expectedCount": 24,
+    "reconciledCount": 24,
+    "duplicateKeys": [],
+    "missingKeys": [],
+    "items": [
+      {
+        "auditItemKey": "1:americano",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "americano"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ]
+      },
+      {
+        "auditItemKey": "2:anticuchos",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "anticuchos"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E4"
+        ]
+      },
+      {
+        "auditItemKey": "3:beef-tataki",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "beef-tataki"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E4"
+        ]
+      },
+      {
+        "auditItemKey": "4:ceviche",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ceviche"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ]
+      },
+      {
+        "auditItemKey": "5:cod-croquettes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "cod-croquettes"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E4"
+        ]
+      },
+      {
+        "auditItemKey": "6:crispy-yuca",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "crispy-yuca"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ]
+      },
+      {
+        "auditItemKey": "7:eggplant-milanesa",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "eggplant-milanesa"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ]
+      },
+      {
+        "auditItemKey": "8:flan-de-cafe",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "flan-de-cafe"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E5"
+        ]
+      },
+      {
+        "auditItemKey": "9:gaucho-tiger-prawn",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "gaucho-tiger-prawn"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ]
+      },
+      {
+        "auditItemKey": "10:green-tea-and-organic-mint",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "green-tea-and-organic-mint"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ]
+      },
+      {
+        "auditItemKey": "11:grilled-asparagus",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "grilled-asparagus"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ]
+      },
+      {
+        "auditItemKey": "12:grilled-wild-mushrooms",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "grilled-wild-mushrooms"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ]
+      },
+      {
+        "auditItemKey": "13:hamachi-tiradito",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "hamachi-tiradito"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ]
+      },
+      {
+        "auditItemKey": "14:hearts-of-palm-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "hearts-of-palm-salad"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E4"
+        ]
+      },
+      {
+        "auditItemKey": "15:lamb-chops",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lamb-chops"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ]
+      },
+      {
+        "auditItemKey": "16:mousse-de-maracuja",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mousse-de-maracuja"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E5"
+        ]
+      },
+      {
+        "auditItemKey": "17:nikkei-wings",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "nikkei-wings"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ]
+      },
+      {
+        "auditItemKey": "18:oysters-4-ea",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "oysters-4-ea"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ]
+      },
+      {
+        "auditItemKey": "19:peruvian-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "peruvian-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ]
+      },
+      {
+        "auditItemKey": "20:ravioli",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ravioli"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E4"
+        ]
+      },
+      {
+        "auditItemKey": "21:rice-and-beans",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rice-and-beans"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E4"
+        ]
+      },
+      {
+        "auditItemKey": "22:roasted-broccolini",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roasted-broccolini"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3",
+          "MM-E4"
+        ]
+      },
+      {
+        "auditItemKey": "23:tealoose-tea-leaves",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tealoose-tea-leaves"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ]
+      },
+      {
+        "auditItemKey": "24:whole-branzino-2-lbs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "whole-branzino-2-lbs"
+        ],
+        "sourceEvidenceIds": [
+          "MM-E3"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": true,
+    "newItems": true,
+    "nameOrCategoryCleanup": true,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "proposedChanges": {
+    "catalogRepair": "Retain the frozen products supported by current official or linked menu surfaces, remove stale frozen rows, and add current OpenTable menu products in coordinator APPLY.",
+    "allergenSemantics": "Preserve explicit official ingredient positives from the frozen menu PDFs; all other direct allergen fields remain unavailable. No absence or cross-contact claim is inferred.",
+    "crossContact": "No official cross-contact statement located."
+  },
+  "findings": [
+    {
+      "findingId": "MM-F1",
+      "type": "official-allergen-matrix-unavailable",
+      "severity": "info",
+      "sourceEvidenceIds": [
+        "MM-E3",
+        "MM-E4",
+        "MM-E5",
+        "MM-E6",
+        "MM-E8"
+      ],
+      "summary": "All four required official allergen searches completed; no complete current allergen matrix or cross-contact statement found."
+    }
+  ],
+  "recommendedLane": "luna_fix",
+  "solConflictPacket": {
+    "required": true,
+    "resolved": true,
+    "reviewType": "narrow_menu_scope_conflict_resolution",
+    "reviewedKeys": [],
+    "resolvedSurfaceIds": [
+      "official-order-online"
+    ],
+    "excludedProductKeys": [],
+    "remainingSolSignals": []
+  }
+}

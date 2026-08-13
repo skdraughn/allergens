@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-038-2026-07-21",
+  "restaurantId": "chain-bruster-s-ice-cream",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "7309ad9f049ab2a758151cfc5304a29181f1c01d728e75c89f0c2d32e6715319",
+    "currentProductCount": 36,
+    "exactMatchCount": 17,
+    "staleCount": 140,
+    "reconciliationCount": 157,
+    "directPositiveProductCount": 19,
+    "directAssertionCount": 40,
+    "directMayContainCount": 0,
+    "unavailableProductCount": 17,
+    "currentCompleteSurfaceCount": 1,
+    "currentSurfaceProductCount": 36,
+    "supportingSurfaceProductCount": 0,
+    "orphanProductCount": 0,
+    "undefinedSurfaceKeyCount": 0,
+    "matrixStatus": "found",
+    "matrixAuthority": "restaurant_issued",
+    "ingredientIntelligence": "recomputed_after_direct_catalog_finalization",
+    "dossierEvidenceItemCheckEquality": true
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/chain-bruster-s-ice-cream.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/chain-bruster-s-ice-cream.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/chain-bruster-s-ice-cream.jsonl",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-038-2026-07-21/apply-results/chain-bruster-s-ice-cream.json",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-chain-brusters-ice-cream-poc.mjs"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "validatePocResearchFiles",
+    "target catalog/dossier/evidence/item-check apply",
+    "recompute Ingredient Intelligence",
+    "exact official closeout preflight",
+    "run apply script twice and compare owned bytes"
+  ],
+  "secondRunDiff": "none"
+}

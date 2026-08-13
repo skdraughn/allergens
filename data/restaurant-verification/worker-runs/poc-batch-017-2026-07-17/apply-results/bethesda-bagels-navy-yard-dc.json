@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-017-2026-07-17",
+  "restaurantId": "bethesda-bagels-navy-yard-dc",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "0ac176ff8e4e6095136b07be8a4939594a1fa997a54f89e24d931a87d87e48e2",
+    "currentProductCount": 111,
+    "evidenceSourceCount": 5,
+    "reconciliation": {
+      "exact_match": 111
+    },
+    "assertions": [
+      "fingerprint gate passed",
+      "accepted corrected JOB/RESULT validated",
+      "direct aggregate preserved exactly",
+      "canonical evidence purposes and IDs resolve",
+      "Ingredient Intelligence recomputed after direct finalization",
+      "all 111 item-checks updated exactly once",
+      "Navy Yard location only",
+      "no ledger, manifest, parser, or other restaurant writes"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/bethesda-bagels-navy-yard-dc.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/bethesda-bagels-navy-yard-dc.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/bethesda-bagels-navy-yard-dc.jsonl",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-bethesda-bagels-navy-yard-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-017-2026-07-17/apply-results/bethesda-bagels-navy-yard-dc.json"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "validatePocResearchResult",
+    "node scripts/apply-bethesda-bagels-navy-yard-poc.mjs (twice)",
+    "sha256 comparison of owned artifacts"
+  ],
+  "secondRunDiff": "none",
+  "hashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "cb9560364184d8b8443466ec529ec7d5e42174827dd63a0d4773bf9d31e343ca",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/bethesda-bagels-navy-yard-dc.json": "4db8c801bb48013c8e3c4e11a02fd05b55f3706c6ec1537760e729638af4da36",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/bethesda-bagels-navy-yard-dc.json": "e82e09156ab17689b1c7bd83cb7f18377e1c88dee98fb6ee1418ca0a07256c2d",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/bethesda-bagels-navy-yard-dc.jsonl": "6201f314967304e14c11e747df4d4f2b4c2e2af8cb599ab459a02029989b47c6"
+  },
+  "counts": {
+    "publishedProducts": 111,
+    "exact_match": 111,
+    "unresolved": 0,
+    "egg": 15,
+    "milk": 39,
+    "fish": 7,
+    "peanut": 1,
+    "treeNut": 2,
+    "wheat": 0,
+    "gluten": 0,
+    "soy": 0,
+    "sesame": 0,
+    "mayContainProducts": 0,
+    "evidenceSources": 5,
+    "currentCompleteSurfaces": 4
+  }
+}

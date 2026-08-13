@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-020-2026-07-17",
+  "restaurantId": "bindaas-dc",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "7049de6d56398ac6faf69dc220a1913ddda9433fbad35602788954fe80003c81",
+    "currentProductCount": 99,
+    "evidenceSourceCount": 6,
+    "reconciliation": {
+      "exact_match": 99,
+      "unresolved": 0
+    },
+    "assertions": [
+      "fingerprint gate passed",
+      "99 current products published",
+      "99 exact_match and zero unresolved",
+      "direct and mayContain allergen aggregates are zero",
+      "matrix accurately_unavailable after all four searches",
+      "bounded DC catalog preserves distinct Penn Quarter and Foggy Bottom surfaces",
+      "baseline ingredient records without positive allergen evidence remain unavailable",
+      "Ingredient Intelligence runs after direct catalog finalization",
+      "canonical evidence has purpose, excerpt, hash, artifact, and row identifier",
+      "in-memory closeout packet validation passed",
+      "second run is byte-identical"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/bindaas-dc.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/bindaas-dc.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/bindaas-dc.jsonl",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-bindaas-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-020-2026-07-17/apply-results/bindaas-dc.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/artifacts/bindaas-dc/src-home.txt",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/artifacts/bindaas-dc/src-penn.txt",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/artifacts/bindaas-dc/src-foggy.txt",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/artifacts/bindaas-dc/src-toast-penn.txt",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/artifacts/bindaas-dc/src-toast-foggy.txt",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/artifacts/bindaas-dc/src-search.txt"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "validatePocResearchResult",
+    "node scripts/apply-bindaas-poc.mjs (twice)",
+    "sha256 comparison of owned artifacts"
+  ],
+  "secondRunDiff": "none",
+  "hashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "c36ec29e537dc6d770dbf5ad56eab0f56d60852c0457e4434a318be38deec7f3",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/bindaas-dc.json": "70ed700786986195000a43ae793c4c1b8952e65c5e851e93b4609482a65a6669",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/bindaas-dc.json": "9276c44e2ad1bcd0f60660ef82807405c0b6515215c0717abd23c24c958d50d4",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/bindaas-dc.jsonl": "dfee7bff27e25afd375c673f7f7faa809a08f8a91033a7803c9da718df368083"
+  },
+  "counts": {
+    "publishedProducts": 99,
+    "exact_match": 99,
+    "normalized_match": 0,
+    "artifact": 0,
+    "unresolved": 0,
+    "containsAllergensProducts": 0,
+    "mayContainProducts": 0,
+    "matrixStatus": "accurately_unavailable",
+    "matrixSearches": 4,
+    "currentCompleteSurfaces": 4,
+    "evidenceSources": 6
+  }
+}

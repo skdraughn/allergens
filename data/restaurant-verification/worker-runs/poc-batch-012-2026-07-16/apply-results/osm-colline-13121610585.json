@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-012-2026-07-16",
+  "restaurantId": "osm-colline-13121610585",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "54ffbb5f86b11a7b5d3bfcd19a764bea1d533b41c85c2d37651fa3b15a803f97",
+    "currentProductCount": 41,
+    "directSourceTypeCounts": {
+      "unavailable": 14,
+      "restaurant_ingredients": 26,
+      "restaurant_linked_vendor": 1
+    },
+    "directAuthorityCounts": {
+      "restaurant_ingredients": 26,
+      "restaurant_linked_vendor": 1,
+      "unavailable": 14
+    },
+    "containsAllergenCount": 27,
+    "mayContainCount": 0,
+    "wheatOrGlutenCount": 0,
+    "evidenceSourceCount": 10,
+    "reconciliation": {
+      "exact": 19,
+      "normalized": 2,
+      "equivalentPresentations": 18,
+      "artifact": 2,
+      "unresolved": 0
+    },
+    "assertions": [
+      "stale fingerprint gate passed",
+      "strengthened result validator passed before mutation",
+      "five current complete surfaces publish their 41-product union",
+      "official menu index is supporting only",
+      "direct source authority copied exactly; Kids Buttered Bucatini remains linked-vendor",
+      "zero wheat/gluten and zero mayContain",
+      "all 10 canonical evidence sources and E4-E7 official links retained",
+      "Ingredient Intelligence applied after direct catalog finalization",
+      "no closeout, ledger, manifest, Sol review, or unrelated writes",
+      "second run is byte-identical"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-colline-13121610585.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-colline-13121610585.json",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-bar-colline-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-012-2026-07-16/apply-results/osm-colline-13121610585.json"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "node scripts/restaurant-verification-poc-result.mjs (strengthened preflight)",
+    "node scripts/apply-bar-colline-poc.mjs (twice)",
+    "byte/hash comparison of all owned artifacts"
+  ],
+  "secondRunDiff": "none",
+  "artifactHashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "f81edc21ecc5fbdb8818d9c4c80678ad088c0de5d02c95fba5f4d37bfbf8a325",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-colline-13121610585.json": "7cf4ede91c1b948c8066094750fbdb9d7903c76ca45361ccbd653ba683538a92",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-colline-13121610585.json": "bc8f4c471c7aeac4ecf7057fbc878a8f66e083cdab8db37fa0766ff7f687ac57"
+  },
+  "counts": {
+    "publishedProducts": 41,
+    "directRestaurantIngredients": 26,
+    "directLinkedVendor": 1,
+    "directUnavailable": 14,
+    "mayContainProducts": 0,
+    "wheatOrGlutenProducts": 0,
+    "evidenceSources": 10,
+    "matrixSearches": 4,
+    "currentCompleteSurfaces": 5,
+    "surfaceProducts": {
+      "happyHour": 6,
+      "prixFixeLunch": 25,
+      "dinner": 27,
+      "dessert": 5,
+      "toastTakeaway": 20
+    },
+    "unionProducts": 41,
+    "exactMatches": 19,
+    "normalizedMatches": 2,
+    "equivalentPresentations": 18,
+    "artifactRows": 2,
+    "unresolved": 0
+  }
+}

@@ -1,0 +1,301 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811142236",
+  "restaurantId": "taco-bamba-springfield-dc-metro",
+  "name": "Taco Bamba Springfield",
+  "locationId": "springfield-va",
+  "domain": "tacobamba.com",
+  "outcome": "researched",
+  "recommendedLane": "verify",
+  "packetValidation": {
+    "baselineItemCount": 75,
+    "baselineFingerprint": "432bbb5222d99d3d00046393fbc30af74799e7c3fc621d0adbdb09e5f26800d8",
+    "itemCheckCount": 75,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "Taco Bamba Springfield",
+    "locationId": "springfield-va",
+    "address": "6691-A Backlick Rd, Springfield, VA 22150",
+    "domain": "tacobamba.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "official-location",
+      "toast-menu"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "official-location",
+      "url": "https://www.tacobamba.com/location/taco-bamba-taqueria-springfield/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official Springfield identity, address, hours, menu navigation and allergen-information page",
+      "retrievedAt": "2026-08-11T18:00:00Z"
+    },
+    {
+      "evidenceId": "official-menus",
+      "url": "https://www.tacobamba.com/menus/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official current menu navigation and food/nonalcoholic menu surfaces",
+      "retrievedAt": "2026-08-11T18:00:00Z"
+    },
+    {
+      "evidenceId": "toast-menu",
+      "url": "https://order.toasttab.com/online/taco-bamba-springfield",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current Springfield linked ordering menu and frozen product boundary",
+      "retrievedAt": "2026-08-11T18:00:00Z"
+    },
+    {
+      "evidenceId": "official-allergen-guide-other-location",
+      "url": "https://images.getbento.com/accounts/725d71b61931ff30de2b5e69f172c613/media/NO81ts9LSaUwp17eAYeD_NEW%20ALLERGENS%20GUIDE.xlsx%20-%20STERLING.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official allergen-guide search hit; explicitly Sterling location, excluded from Springfield claims",
+      "retrievedAt": "2026-08-11T18:00:00Z"
+    },
+    {
+      "evidenceId": "targeted-search",
+      "url": "https://www.google.com/search?q=site%3Atacobamba.com+Springfield+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted web-search audit for official allergen materials",
+      "retrievedAt": "2026-08-11T18:00:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-springfield-location",
+      "url": "https://www.tacobamba.com/location/taco-bamba-taqueria-springfield/",
+      "authority": "Taco Bamba",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "springfield-va",
+      "servicePeriod": "current; all-day breakfast, food, nonalcoholic and bar navigation",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "official-location"
+      ]
+    },
+    {
+      "surfaceId": "official-menu-index",
+      "url": "https://www.tacobamba.com/menus/",
+      "authority": "Taco Bamba",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "brand menu index; Springfield location confirmed separately",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; location-specific claims taken from Springfield page",
+      "sourceEvidenceIds": [
+        "official-menus",
+        "official-location"
+      ]
+    },
+    {
+      "surfaceId": "springfield-toast-ordering",
+      "url": "https://order.toasttab.com/online/taco-bamba-springfield",
+      "authority": "Toast linked by Taco Bamba",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "springfield-va",
+      "servicePeriod": "current ordering menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; food and nonalcoholic products included, alcohol-only products excluded",
+      "sourceEvidenceIds": [
+        "toast-menu"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "springfield-toast-food-nonalcoholic-catalog",
+      "name": "Springfield current food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "official-location",
+        "toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "productCount": 75,
+      "boundary": "75 frozen Springfield food/nonalcoholic products represented by the current linked ordering menu; alcohol-only bar products excluded"
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "query": "Inspect Taco Bamba official homepage, Springfield location and menu navigation for allergen, allergy, nutrition, ingredients",
+        "location": "tacobamba.com Springfield and menus pages",
+        "outcome": "completed; current Springfield menu surfaces found, no Springfield allergen matrix located",
+        "sourceEvidenceIds": [
+          "official-location",
+          "official-menus"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "query": "site:tacobamba.com allergen OR allergy OR nutrition OR ingredients PDF image sitemap",
+        "location": "official document and downloadable surfaces; Sterling guide hit checked for location scope",
+        "outcome": "completed; official allergen guide found for Sterling, not Springfield; no Springfield matrix found",
+        "sourceEvidenceIds": [
+          "official-allergen-guide-other-location",
+          "official-menus"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "query": "Springfield Taco Bamba Toast menu item allergen ingredients",
+        "location": "Toast Springfield ordering menu",
+        "outcome": "completed; current item descriptions/menu found, no complete Springfield allergen matrix or cross-contact policy",
+        "sourceEvidenceIds": [
+          "toast-menu"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "Taco Bamba Springfield allergen allergy nutrition ingredients PDF menu",
+        "location": "targeted web results and official-domain hits",
+        "outcome": "completed; no authoritative current Springfield allergen matrix found",
+        "sourceEvidenceIds": [
+          "targeted-search",
+          "official-allergen-guide-other-location"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "evidenceId": "official-location",
+      "statement": "Springfield page provides current menu descriptions and an allergen-information section; no complete Springfield matrix or explicit cross-contact policy was disclosed in the inspected material. The Sterling guide is location-mismatched and was not applied.",
+      "sourceEvidenceIds": [
+        "official-location",
+        "official-allergen-guide-other-location"
+      ],
+      "authorityTier": "restaurant_issued",
+      "crossContact": "No explicit Springfield kitchen cross-contact policy disclosed; do not infer absence."
+    }
+  ],
+  "reconciliation": {
+    "expectedCount": 75,
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:al-pastor-taco-spiced-pork-and-pineapple",
+          "2:arabe-taco-grilled-spiced-chicken",
+          "3:bec-empanada",
+          "4:bamba-ceviche",
+          "5:bamba-double-smashburger",
+          "6:bamba-fries",
+          "7:bamba-wings",
+          "8:barbacoa-taco-slow-roasted-spiced-beef",
+          "9:birria-taco-slow-roasted-lamb",
+          "10:breakfast-sope",
+          "11:calamari",
+          "12:cali-mist-torta",
+          "13:camaron-taco-baja-shrimp",
+          "14:carne-asada-taco-seared-beef",
+          "15:carne-picada-taco-chopped-brisket",
+          "16:carnitas-taco-roasted-pork",
+          "17:chicharron-taco-saucy-pork-nuggets",
+          "18:chilaquiles",
+          "19:chocolate-chip-churro-crunch-cookie",
+          "20:choriqueso",
+          "21:chorizo-taco-mexican-pork-sausage",
+          "22:churros",
+          "23:churros-strawberries-and-cream",
+          "24:clubber-lang-taco-bamba-buffalo-pork-chicharron",
+          "25:coco-loco-shrimp-taco-coconut-shrimp",
+          "26:copa-bamba-combo",
+          "27:cup-o-bamba",
+          "28:cup-o-meat",
+          "29:el-bacho-nacho",
+          "30:el-gringo-taco-spiced-ground-beef",
+          "31:enchiladas",
+          "32:enter-the-eggplant-taco",
+          "33:flautas",
+          "34:foo-luchador-taco-crispy-fish",
+          "35:grilled-guacamole-and-chips",
+          "36:happy-hour-food-taco-bamba",
+          "37:huevo-frito-taco",
+          "38:huevos-rancheros",
+          "39:lengua-taco-beef-tongue",
+          "40:mango-paraiso",
+          "41:mellow-mucho-quesadilla",
+          "42:migas-taco-soft-cheesy-scrambled-eggs",
+          "43:mulita-de-birria",
+          "44:og-breakfast-taco",
+          "45:pack-the-bowl",
+          "46:pescado-taco-baja-fish",
+          "47:pollo-al-carbon-taco-grilled-chicken",
+          "48:pork-bbq-empanada",
+          "49:queso-and-chips",
+          "50:ricky-bobby-taco-brisket-suadero",
+          "51:salsa-and-chips",
+          "52:salsa-flight-and-chips",
+          "53:seasonal-fresca",
+          "54:side-fries",
+          "55:side-mexican-street-corn",
+          "56:side-of-beans",
+          "57:side-of-rice",
+          "58:side-rice-and-beans",
+          "59:small-biggie-smashburger-taco",
+          "60:sopes",
+          "61:spicy-chicharrones",
+          "62:spicy-shroom-taco",
+          "63:taco-mundial-platter",
+          "64:tacos-tradicionales",
+          "65:the-jeffrey",
+          "66:the-other-fries",
+          "67:tinga-taco-chipotle-braised-chicken",
+          "68:torta-bamba",
+          "69:torta-cubana",
+          "70:torta-de-huevo",
+          "71:torta-tradicional",
+          "72:tortilla-soup",
+          "73:tradicional-quesadilla",
+          "74:uncle-junior-taco-pork-al-pastor",
+          "75:vic-fil-a-deluxe-taco-fried-chicken"
+        ],
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "springfield-toast-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "toast-menu"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "processLog": [
+    "packet_validated",
+    "identity_verified",
+    "menu_surfaces_inventoried",
+    "matrix_search_completed",
+    "products_reconciled",
+    "validator_passed"
+  ]
+}

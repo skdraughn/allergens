@@ -1,0 +1,934 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-091-2026-08-05",
+  "restaurantId": "replacement-dal-grano-mclean-va",
+  "runId": "poc-batch-091-2026-08-05-replacement-dal-grano-mclean-va-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "replacement-dal-grano-mclean-va",
+    "name": "Dal Grano",
+    "locationId": "mclean-va",
+    "domain": "dalgrano.com",
+    "baselineItemCount": 17,
+    "baselineFingerprint": "aba1a6f71fb8f193abc16ffd30eca40a8801486ea358aad3b3b3bd8f8fc02e44",
+    "itemChecksRead": 17,
+    "itemChecksPath": "data/restaurant-verification/item-checks/replacement-dal-grano-mclean-va.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Dal Grano",
+    "location": "1386 Chain Bridge Road, McLean, VA 22101",
+    "locationId": "mclean-va",
+    "domain": "dalgrano.com",
+    "officialHomepage": "https://dalgrano.com/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-contact",
+      "ev-menu"
+    ],
+    "notes": "Official site consistently identifies the single McLean location."
+  },
+  "sources": [
+    {
+      "id": "ev-home",
+      "url": "https://dalgrano.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Dal Grano official homepage",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Official Dal Grano homepage lists McLean restaurant and hours."
+    },
+    {
+      "id": "ev-contact",
+      "url": "https://dalgrano.com/contact",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Official contact page",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Address 1386 Chain Bridge Road McLean VA 22101."
+    },
+    {
+      "id": "ev-menu",
+      "url": "https://dalgrano.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Current HTML menu",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Current salads, pasta, sauces, desserts, soups, sandwiches, stuffed pasta, risotto and entrees."
+    },
+    {
+      "id": "ev-pdf24",
+      "url": "https://dalgrano.com/__static/a76948dc4f4599003fb4f60699b59dc5/2024-menu-pasta-color-backround%285%29.pdf?dl=1",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Official 2024 menu PDF",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Older downloadable menu; supporting historical surface."
+    },
+    {
+      "id": "ev-pdf22",
+      "url": "https://dalgrano.com/__static/bf30dc3431cf95ce87dd8054c471f777/2022-01-20dalgranomenu_final-salmon-22%284%29.pdf?dl=1",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Official 2022 menu PDF",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Historical PDF; not authoritative where current HTML differs."
+    },
+    {
+      "id": "ev-order",
+      "url": "https://dalgrano.com/dal-grano-online-order",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "title": "Official online ordering page",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Restaurant says order online/pickup and call for food allergies; no external delivery vendor."
+    },
+    {
+      "id": "ev-search-site",
+      "url": "https://dalgrano.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_site allergen search",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Inspected homepage, menu and navigation; no allergen matrix."
+    },
+    {
+      "id": "ev-search-docs",
+      "url": "https://dalgrano.com/__static/bf30dc3431cf95ce87dd8054c471f777/2022-01-20dalgranomenu_final-salmon-22%284%29.pdf?dl=1",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_documents allergen search",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Inspected linked PDFs (2022, 2024 and 2025 references); menus contain descriptions only, no matrix."
+    },
+    {
+      "id": "ev-search-vendor",
+      "url": "https://dalgrano.com/dal-grano-online-order",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "title": "linked_vendor allergen search",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Ordering page directs allergy orders to phone; no matrix exposed."
+    },
+    {
+      "id": "ev-search-web",
+      "url": "https://www.google.com/search?q=site%3Adalgrano.com+allergen+allergy+nutrition+ingredients+PDF",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "targeted_web_search allergen search",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Targeted search found official menus and Washington Post article, no official matrix."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-html-menu",
+      "title": "Current HTML menu",
+      "url": "https://dalgrano.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "McLean VA",
+      "servicePeriod": "current",
+      "surfaceType": "html_menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "currentProductKeys": [
+        "arugula",
+        "caprese-salad",
+        "classic-caesar",
+        "fresh-homemade-pasta",
+        "gnocchi-di-ricotta",
+        "butter-sauce",
+        "tomato-sauce",
+        "garlic-evoo-sauce",
+        "mozzarella-tomato-basil-sauce",
+        "puttanesca",
+        "creamy-parmesan-sauce",
+        "pesto-sauce",
+        "allamatriciana",
+        "bolognese",
+        "creamy-mushrooms",
+        "carbonara",
+        "meatballs-tomato",
+        "seafood-tomato",
+        "gelato",
+        "caprese-sandwich",
+        "chicken-parmigiana-sandwich",
+        "cubano",
+        "steak-cheese",
+        "meatball-sandwich",
+        "stuffed-pasta",
+        "lasagna",
+        "risotto-mushrooms",
+        "risotto-seafood",
+        "specialty-entrees"
+      ]
+    },
+    {
+      "surfaceId": "official-pdf-2024",
+      "title": "Official 2024 PDF",
+      "url": "https://dalgrano.com/__static/a76948dc4f4599003fb4f60699b59dc5/2024-menu-pasta-color-backround%285%29.pdf?dl=1",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "McLean VA",
+      "servicePeriod": "historical",
+      "surfaceType": "pdf_menu",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-pdf24"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "official-pdf-2022",
+      "title": "Official 2022 PDF",
+      "url": "https://dalgrano.com/__static/bf30dc3431cf95ce87dd8054c471f777/2022-01-20dalgranomenu_final-salmon-22%284%29.pdf?dl=1",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "McLean VA",
+      "servicePeriod": "historical",
+      "surfaceType": "pdf_menu",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-pdf22"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "official-order",
+      "title": "Online ordering",
+      "url": "https://dalgrano.com/dal-grano-online-order",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "McLean VA",
+      "servicePeriod": "current",
+      "surfaceType": "ordering_vendor",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-order"
+      ],
+      "currentProductKeys": []
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "arugula",
+      "name": "Arugula",
+      "category": "Salads",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "caprese-salad",
+      "name": "Caprese Salad",
+      "category": "Salads",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "classic-caesar",
+      "name": "Classic Caesar",
+      "category": "Salads",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "fresh-homemade-pasta",
+      "name": "Fresh Homemade Pasta",
+      "category": "Pasta",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": [
+        "Whole wheat and gluten-free pasta available; no claim of allergen-free preparation."
+      ]
+    },
+    {
+      "currentProductKey": "gnocchi-di-ricotta",
+      "name": "Gnocchi di Ricotta",
+      "category": "Pasta",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "butter-sauce",
+      "name": "Butter Sauce",
+      "category": "Sauces",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "tomato-sauce",
+      "name": "Fresh Homemade Tomato Sauce",
+      "category": "Sauces",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "garlic-evoo-sauce",
+      "name": "Garlic and Extra Virgin Olive Oil Sauce",
+      "category": "Sauces",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "mozzarella-tomato-basil-sauce",
+      "name": "Mozzarella, Cherry Tomatoes, and Basil Sauce",
+      "category": "Sauces",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "puttanesca",
+      "name": "Puttanesca",
+      "category": "Sauces",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "creamy-parmesan-sauce",
+      "name": "Creamy Parmesan Sauce",
+      "category": "Sauces",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "pesto-sauce",
+      "name": "Pesto Sauce",
+      "category": "Sauces",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "allamatriciana",
+      "name": "All’amatriciana",
+      "category": "Sauces",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "bolognese",
+      "name": "Traditional Bolognese Meat Sauce",
+      "category": "Sauces",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "creamy-mushrooms",
+      "name": "Creamy Mushrooms Sauce",
+      "category": "Sauces",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "carbonara",
+      "name": "Carbonara with Eggs, Guanciale and Pecorino Cheese",
+      "category": "Sauces",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "meatballs-tomato",
+      "name": "Meatballs with Tomato Sauce",
+      "category": "Sauces",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "seafood-tomato",
+      "name": "Seafood, Mussels, Squid, Shrimp, Cherry Tomatoes",
+      "category": "Sauces",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "gelato",
+      "name": "Homemade Dal Grano Gelato",
+      "category": "Desserts",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "caprese-sandwich",
+      "name": "Caprese Sandwich",
+      "category": "Sandwiches",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "chicken-parmigiana-sandwich",
+      "name": "Chicken Parmigiana",
+      "category": "Sandwiches",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "cubano",
+      "name": "Cubano",
+      "category": "Sandwiches",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "steak-cheese",
+      "name": "Dal Grano Steak and Cheese",
+      "category": "Sandwiches",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "meatball-sandwich",
+      "name": "Meatball",
+      "category": "Sandwiches",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "stuffed-pasta",
+      "name": "Stuffed Pasta",
+      "category": "Stuffed Pasta and Lasagna",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "lasagna",
+      "name": "Lasagna",
+      "category": "Stuffed Pasta and Lasagna",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "risotto-mushrooms",
+      "name": "Risotto with Mushrooms",
+      "category": "Risotto",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "risotto-seafood",
+      "name": "Risotto Seafood, Mussels, Squid, Shrimp",
+      "category": "Risotto",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    },
+    {
+      "currentProductKey": "specialty-entrees",
+      "name": "Specialty Entrees",
+      "category": "Entrees",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": []
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "query": "https://dalgrano.com/menu/",
+        "url": "https://dalgrano.com/menu/",
+        "outcome": "No official allergen matrix on current HTML site",
+        "evidenceIds": [
+          "ev-search-site"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "query": "dalgrano.com linked menu PDFs",
+        "url": "https://dalgrano.com/__static/bf30dc3431cf95ce87dd8054c471f777/2022-01-20dalgranomenu_final-salmon-22%284%29.pdf?dl=1",
+        "outcome": "2022/2024/2025 menu PDFs inspected; no matrix",
+        "evidenceIds": [
+          "ev-search-docs"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "query": "https://dalgrano.com/dal-grano-online-order",
+        "url": "https://dalgrano.com/dal-grano-online-order",
+        "outcome": "Ordering page directs allergy orders to phone; no matrix",
+        "evidenceIds": [
+          "ev-search-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "site:dalgrano.com allergen allergy nutrition ingredients PDF",
+        "url": "https://www.google.com/search?q=site%3Adalgrano.com+allergen+allergy+nutrition+ingredients+PDF",
+        "outcome": "No official matrix found",
+        "evidenceIds": [
+          "ev-search-web"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "frozenKeys": 17,
+    "staleCount": 1,
+    "normalizedMatchCount": 6,
+    "exactMatchCount": 10,
+    "equivalentPresentationCount": 0,
+    "artifactCount": 0,
+    "locationMismatchCount": 0,
+    "unresolvedCount": 0,
+    "items": [
+      {
+        "auditItemKey": "1:here",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-home"
+        ],
+        "notes": "Washington Post article link is not a menu product."
+      },
+      {
+        "auditItemKey": "2:campanelli-garlic-and-evoo",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "garlic-evoo-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "3:burrata-double-cream-mozzarella",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "caprese-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "4:fresh-homemade-pasta",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "fresh-homemade-pasta"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "5:our-homemade-pasta",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "fresh-homemade-pasta"
+        ],
+        "sourceEvidenceIds": [
+          "ev-home",
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "6:stuffed-pasta-lasagna",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "stuffed-pasta",
+          "lasagna"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "7:caprese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "caprese-salad",
+          "caprese-sandwich"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "8:creamy-mushrooms-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "creamy-mushrooms"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "9:creamy-parmesan-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "creamy-parmesan-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "10:meatball",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "meatball-sandwich"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "11:meatballs-with-tomato-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "meatballs-tomato"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "12:ravioli-lasagna-risotto",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "stuffed-pasta",
+          "lasagna",
+          "risotto-mushrooms",
+          "risotto-seafood"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "13:risotto",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "risotto-mushrooms",
+          "risotto-seafood"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "14:risotto-with-mushrooms",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "risotto-mushrooms"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "15:specialty-entrees",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "specialty-entrees"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "16:traditional-bolognese-meat-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "bolognese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      },
+      {
+        "auditItemKey": "17:whole-wheat-and-gluten-free-pasta-available",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "fresh-homemade-pasta"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu"
+        ]
+      }
+    ]
+  },
+  "findings": [],
+  "routingSignals": {
+    "lightweightRepairSignals": [
+      "Replace stale 2022/2024 PDF-derived allergen assertions with current HTML catalog; remove article artifact and normalize duplicate presentations."
+    ],
+    "safetyEscalationSignals": []
+  },
+  "proposedChanges": [
+    "Use current HTML menu as authoritative current boundary; retain older PDFs as historical supporting surfaces; mark official allergen data unavailable and preserve no inferred negatives."
+  ],
+  "blockedReason": null,
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 17,
+      "sourceItemCount": 28
+    },
+    "allergenSource": {
+      "verdict": "accurately_unavailable",
+      "directContainsCount": 0,
+      "directMayContainCount": 0
+    },
+    "extraction": {
+      "verdict": "verified",
+      "parserReviewed": false,
+      "semanticsVerified": true
+    }
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": true,
+    "newItems": true,
+    "nameOrCategoryCleanup": true,
+    "restaurantSpecificExtraction": true,
+    "parserIssue": false
+  }
+}

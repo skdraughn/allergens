@@ -1,0 +1,912 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811144943",
+  "restaurantId": "susheria-washington-dc-dc-metro",
+  "name": "Susheria",
+  "locationId": "washington-dc",
+  "domain": "susheriadc.com",
+  "outcome": "researched",
+  "recommendedLane": "verify",
+  "packetValidation": {
+    "baselineItemCount": 61,
+    "baselineFingerprint": "d88556df0ba9fc5994fd28d38a15aa927a7d0cd940a35773f7a54b31ef85eb1b",
+    "itemCheckCount": 61,
+    "restaurantIdMatches": true,
+    "locationMatches": true,
+    "fingerprintVerified": true
+  },
+  "sources": [
+    {
+      "evidenceId": "official-home",
+      "url": "https://susheriadc.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official identity and navigation",
+      "retrievedAt": "2026-08-11T15:00:00.000Z"
+    },
+    {
+      "evidenceId": "official-menu",
+      "url": "https://susheriadc.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current food menu and product boundary",
+      "retrievedAt": "2026-08-11T15:00:00.000Z"
+    },
+    {
+      "evidenceId": "official-drinks",
+      "url": "https://susheriadc.com/washington-georgetown-susheria-drink-menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current beverage surface; alcohol excluded from product boundary",
+      "retrievedAt": "2026-08-11T15:00:00.000Z"
+    },
+    {
+      "evidenceId": "toast-menu",
+      "url": "https://www.toasttab.com/local/order/susheria-3101-k-st-nw",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current linked ordering menu and allergy controls",
+      "retrievedAt": "2026-08-11T15:00:00.000Z"
+    },
+    {
+      "evidenceId": "targeted-search",
+      "url": "https://www.google.com/search?q=site%3Asusheriadc.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted official-domain allergen search",
+      "retrievedAt": "2026-08-11T15:00:00.000Z"
+    }
+  ],
+  "identity": {
+    "name": "Susheria",
+    "location": "3101 K St NW, Washington, DC 20007",
+    "domain": "susheriadc.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "official-home",
+      "official-menu",
+      "toast-menu"
+    ]
+  },
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "title": "Official homepage",
+      "url": "https://susheriadc.com/",
+      "authority": "restaurant_issued",
+      "locationScope": "washington-dc",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "official-home"
+      ]
+    },
+    {
+      "surfaceId": "official-food-menu",
+      "title": "Food Menu",
+      "url": "https://susheriadc.com/menu",
+      "authority": "restaurant_issued",
+      "locationScope": "3101 K St NW, Washington, DC 20007",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; alcohol excluded",
+      "sourceEvidenceIds": [
+        "official-menu"
+      ]
+    },
+    {
+      "surfaceId": "official-drink-menu",
+      "title": "Drink Menu",
+      "url": "https://susheriadc.com/washington-georgetown-susheria-drink-menu",
+      "authority": "restaurant_issued",
+      "locationScope": "3101 K St NW, Washington, DC 20007",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; alcoholic items excluded",
+      "sourceEvidenceIds": [
+        "official-drinks"
+      ]
+    },
+    {
+      "surfaceId": "toast-ordering",
+      "title": "Toast ordering menu",
+      "url": "https://www.toasttab.com/local/order/susheria-3101-k-st-nw",
+      "authority": "restaurant_linked_vendor",
+      "locationScope": "3101 K St NW, Washington, DC 20007",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; allergy controls present, no complete matrix",
+      "sourceEvidenceIds": [
+        "toast-menu"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "susheria-current-food-nonalcoholic-catalog",
+      "name": "Susheria current food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "official-drinks",
+        "toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "productCount": 61,
+      "boundary": "61 frozen current food/nonalcoholic products reconciled to official current menu surfaces; alcohol-only drink items excluded. Direct negatives are not asserted."
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "susheriadc.com homepage, menu navigation and food/drink pages",
+        "urls": [
+          "https://susheriadc.com/",
+          "https://susheriadc.com/menu",
+          "https://susheriadc.com/washington-georgetown-susheria-drink-menu"
+        ],
+        "outcome": "current official menu surfaces found; no complete allergen matrix",
+        "sourceEvidenceIds": [
+          "official-home",
+          "official-menu",
+          "official-drinks"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "susheriadc.com PDF, nutrition, ingredient, FAQ, sitemap, image and downloadable-document surfaces",
+        "urls": [
+          "https://susheriadc.com/menu"
+        ],
+        "outcome": "no official allergen, nutrition or ingredient matrix located",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Toast Susheria 3101 K St NW menu and item pages",
+        "urls": [
+          "https://www.toasttab.com/local/order/susheria-3101-k-st-nw"
+        ],
+        "outcome": "allergy-selection controls and item customization present; no complete matrix or cross-contact policy located",
+        "sourceEvidenceIds": [
+          "toast-menu"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "site:susheriadc.com allergen allergy nutrition ingredients PDF menu",
+        "queryOrLocation": "targeted official-domain web search",
+        "urls": [
+          "https://www.google.com/search?q=site%3Asusheriadc.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+        ],
+        "outcome": "no authoritative complete allergen matrix located",
+        "sourceEvidenceIds": [
+          "targeted-search"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "evidenceId": "toast-allergy-controls",
+      "statement": "Linked Toast ordering pages expose selectable allergy controls, but the inspected material does not define item-level positive/negative allergen results or a cross-contact guarantee.",
+      "authorityTier": "restaurant_linked_vendor",
+      "scope": "ordering surface",
+      "sourceEvidenceIds": [
+        "toast-menu"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "expectedCount": 61,
+    "items": [
+      {
+        "auditItemKey": "1:hamachi-poke",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "2:salmon-poke",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "3:special-poke",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "4:calamar-frito",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "5:edamame",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "6:miso-soup-v",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "7:spicy-edamame",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "8:spicy-salmon-squares",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "9:spicy-tuna-squares",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "10:kale-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "11:seaweed-v",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "12:lemongrass-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "13:napa-cabbage-and-pork",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "14:shrimp",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "15:calamari",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "16:ceviche-mercado",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "17:ceviche-mixto",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "18:edamame-gyozas-v",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "19:maguro-tataki",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "20:shrimp-gyozas",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "21:asparagus-and-avocado",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "22:salmon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "23:spicy-salmon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "24:spicy-tuna",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "25:torched-wagyu",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "26:unagi",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "27:premium",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "28:signature",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "29:la-morada",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "30:pisco-sour",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "31:un-atardecer",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "32:susheria",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "33:chu-toro",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "34:hamachi",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "35:maguro",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "36:o-toro",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "37:shiro-maguro",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "38:o-toro-caviar",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "39:uni",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "40:dragon-roll",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "41:hinode",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "42:inferno",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "43:king-of-spades",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "44:mate",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "45:selva",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "46:spider-roll",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "47:tenno-g",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "48:amazonico",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "49:buenos-aires",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "50:chicha-spicy",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "51:churrasco",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "52:sebastian",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "53:volcano",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "54:chicha-morada",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "55:fresco",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "56:latino-heat",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "57:sashimi",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "58:hamachi-yellowtail-g",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "59:tokushuna-maguro-g",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "60:wagyu-y-ponzu",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "61:impress-with-fusion",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "susheria-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "processLog": [
+    "packet_validated",
+    "identity_verified",
+    "menu_surfaces_inventoried",
+    "matrix_search_completed",
+    "products_reconciled",
+    "validator_passed"
+  ]
+}

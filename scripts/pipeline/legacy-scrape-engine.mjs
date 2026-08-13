@@ -13,7 +13,10 @@ import * as XLSX from "xlsx";
 installPdfJsGeometryPolyfills();
 
 import { addCoverageMetadata } from "../coverage-gate.mjs";
-import { getBrandAdapter, registerBrandAdapterSource } from "../restaurant-adapters.mjs";
+import {
+  getBrandAdapter,
+  registerBrandAdapterSource,
+} from "../restaurant-adapters.mjs";
 import {
   classifyDocumentLink,
   configuredUrlAuditForSource,
@@ -340,11 +343,43 @@ const allergenTerms = [
   },
   {
     id: "fish",
-    terms: ["fish", "finfish", "seafood", "cod", "pollock", "tuna", "salmon", "anchovy", "anchovies", "branzino", "hamachi", "yellowfin", "mackerel"],
+    terms: [
+      "fish",
+      "finfish",
+      "seafood",
+      "cod",
+      "pollock",
+      "tuna",
+      "salmon",
+      "anchovy",
+      "anchovies",
+      "branzino",
+      "hamachi",
+      "yellowfin",
+      "mackerel",
+    ],
   },
   {
     id: "shellfish",
-    terms: ["shellfish", "shrimp", "shrimps", "prawn", "prawns", "crab", "lobster", "crustacean", "clam", "oyster", "mussel", "mussels", "scallop", "scallops", "octopus", "calamari", "squid"],
+    terms: [
+      "shellfish",
+      "shrimp",
+      "shrimps",
+      "prawn",
+      "prawns",
+      "crab",
+      "lobster",
+      "crustacean",
+      "clam",
+      "oyster",
+      "mussel",
+      "mussels",
+      "scallop",
+      "scallops",
+      "octopus",
+      "calamari",
+      "squid",
+    ],
   },
   {
     id: "mustard",
@@ -523,8 +558,8 @@ const catalogArtifactNamePatterns = [
   /^dos\s+(?:xx|equis)$/i,
   /^private parties?(?:\s*&\s*catering|\s+and\s+catering)?$/i,
   /^top it off\b/i,
-    /^gluten-friendly yes$/i,
-    /^halal food$/i,
+  /^gluten-friendly yes$/i,
+  /^halal food$/i,
   /^ap pizza kit!?$/i,
   /^ice cream catering$/i,
   /^wheat\s*&\s*fruit beers$/i,
@@ -815,7 +850,8 @@ const itemSourcePriority = {
   "product-page": 4,
 };
 
-const wixRestaurantMenusAppDefinitionId = "b278a256-2757-4f19-9313-c05c783bec92";
+const wixRestaurantMenusAppDefinitionId =
+  "b278a256-2757-4f19-9313-c05c783bec92";
 const wixRestaurantDemoItemNames = [
   "bread & dips",
   "brownie",
@@ -862,20 +898,25 @@ export async function scrapeRestaurant(source) {
   const sourceResults = [];
   const seenUrls = new Set();
   const maxSourceFetches = Number(source.maxSourceFetches ?? 90);
-  const sourceProductPageLimit = Number(source.productPageLimit ?? productPageLimit);
-  const configuredSourceEntries = normalizeConfiguredSourceUrls(source);
-  const skippedConfiguredSourceEntries = configuredSourceEntries.filter((entry) =>
-    shouldSkipSourceEntryForLocation(source, entry),
+  const sourceProductPageLimit = Number(
+    source.productPageLimit ?? productPageLimit,
   );
-  const queue = source.id === "starbucks"
-    ? []
-    : configuredSourceEntries
-        .filter((entry) => !shouldSkipSourceEntryForLocation(source, entry))
-        .map((entry) => ({
-          discovered: false,
-          ...entry,
-        }));
-  const queuedUrls = new Set(queue.map((entry) => normalizeUrl(entry.url)).filter(Boolean));
+  const configuredSourceEntries = normalizeConfiguredSourceUrls(source);
+  const skippedConfiguredSourceEntries = configuredSourceEntries.filter(
+    (entry) => shouldSkipSourceEntryForLocation(source, entry),
+  );
+  const queue =
+    source.id === "starbucks"
+      ? []
+      : configuredSourceEntries
+          .filter((entry) => !shouldSkipSourceEntryForLocation(source, entry))
+          .map((entry) => ({
+            discovered: false,
+            ...entry,
+          }));
+  const queuedUrls = new Set(
+    queue.map((entry) => normalizeUrl(entry.url)).filter(Boolean),
+  );
 
   for (const entry of skippedConfiguredSourceEntries) {
     sourceResults.push(skippedConfiguredSourceManifest(source, entry));
@@ -922,11 +963,21 @@ export async function scrapeRestaurant(source) {
     }
 
     seenUrls.add(normalizedNextUrl);
-    const fetched = await fetchSource(next.url, source, next.kind, next.fetchOptions);
-    sourceResults.push(sourceManifestWithQueueMetadata(fetched.manifest, next, fetched.text));
+    const fetched = await fetchSource(
+      next.url,
+      source,
+      next.kind,
+      next.fetchOptions,
+    );
+    sourceResults.push(
+      sourceManifestWithQueueMetadata(fetched.manifest, next, fetched.text),
+    );
 
     if (!fetched.ok) {
-      for (const fallbackUrl of failedConfiguredMenuFallbackUrls(source, next)) {
+      for (const fallbackUrl of failedConfiguredMenuFallbackUrls(
+        source,
+        next,
+      )) {
         if (queue.length < 90) {
           enqueueSource({
             configured: false,
@@ -941,7 +992,15 @@ export async function scrapeRestaurant(source) {
     }
 
     if (fetched.contentKind === "pdf") {
-      records.push(...(await extractPdfItems(fetched.text, source, fetched.finalUrl, fetched.buffer, next.kind)));
+      records.push(
+        ...(await extractPdfItems(
+          fetched.text,
+          source,
+          fetched.finalUrl,
+          fetched.buffer,
+          next.kind,
+        )),
+      );
       continue;
     }
 
@@ -985,13 +1044,34 @@ export async function scrapeRestaurant(source) {
         }
       }
 
-      records.push(...extractJsonMenuFragmentItems(fetched.text, source, fetched.finalUrl, next.kind));
-      records.push(...extractOfficialApiItems(fetched.text, source, fetched.finalUrl, next.kind));
+      records.push(
+        ...extractJsonMenuFragmentItems(
+          fetched.text,
+          source,
+          fetched.finalUrl,
+          next.kind,
+        ),
+      );
+      records.push(
+        ...extractOfficialApiItems(
+          fetched.text,
+          source,
+          fetched.finalUrl,
+          next.kind,
+        ),
+      );
       continue;
     }
 
     if (fetched.contentKind === "text") {
-      records.push(...extractIMenuProScriptItems(fetched.text, source, fetched.finalUrl, next.kind));
+      records.push(
+        ...extractIMenuProScriptItems(
+          fetched.text,
+          source,
+          fetched.finalUrl,
+          next.kind,
+        ),
+      );
 
       for (const link of extractLunchboxNovaMenuApiLinksFromBundle(
         fetched.text,
@@ -1017,9 +1097,14 @@ export async function scrapeRestaurant(source) {
     }
 
     if (fetched.contentKind === "xml") {
-      records.push(...extractXmlItems(fetched.text, source, fetched.finalUrl, next.kind));
+      records.push(
+        ...extractXmlItems(fetched.text, source, fetched.finalUrl, next.kind),
+      );
 
-      const detailCandidates = extractProductLinksFromXmlSitemap(fetched.text, fetched.finalUrl)
+      const detailCandidates = extractProductLinksFromXmlSitemap(
+        fetched.text,
+        fetched.finalUrl,
+      )
         .filter((candidate) => isSameSite(candidate.url, fetched.finalUrl))
         .slice(0, sourceProductPageLimit);
 
@@ -1029,7 +1114,11 @@ export async function scrapeRestaurant(source) {
         }
 
         seenUrls.add(normalizeUrl(candidate.url));
-        const productPage = await fetchSource(candidate.url, source, sourceTypes.menu);
+        const productPage = await fetchSource(
+          candidate.url,
+          source,
+          sourceTypes.menu,
+        );
         sourceResults.push(
           sourceManifestWithQueueMetadata(productPage.manifest, {
             configured: false,
@@ -1056,12 +1145,24 @@ export async function scrapeRestaurant(source) {
     }
 
     if (fetched.contentKind === "xlsx") {
-      records.push(...extractSpreadsheetItems(fetched.buffer, source, fetched.finalUrl, next.kind));
+      records.push(
+        ...extractSpreadsheetItems(
+          fetched.buffer,
+          source,
+          fetched.finalUrl,
+          next.kind,
+        ),
+      );
       continue;
     }
 
     if (fetched.contentKind === "html") {
-      const htmlResult = extractHtmlItems(fetched.text, source, fetched.finalUrl, next.kind);
+      const htmlResult = extractHtmlItems(
+        fetched.text,
+        source,
+        fetched.finalUrl,
+        next.kind,
+      );
       records.push(
         ...(fetched.manifest.browserFetched
           ? htmlResult.items.map((item) => ({ ...item, browserFetched: true }))
@@ -1124,7 +1225,8 @@ export async function scrapeRestaurant(source) {
         );
         const hasSourceSpecificMenuLandingPage = relevantMenuPageLinks.some(
           (link) =>
-            isTopLevelDiscoveredMenuPage(link) && discoveredPageMatchesSourceLocation(source, link),
+            isTopLevelDiscoveredMenuPage(link) &&
+            discoveredPageMatchesSourceLocation(source, link),
         );
 
         for (const link of relevantMenuPageLinks) {
@@ -1148,15 +1250,18 @@ export async function scrapeRestaurant(source) {
         }
       }
 
-      const relevantLocationPageLinks = htmlResult.locationPageLinks.filter((link) =>
-        isDiscoveredPageRelevantToSource(source, link),
+      const relevantLocationPageLinks = htmlResult.locationPageLinks.filter(
+        (link) => isDiscoveredPageRelevantToSource(source, link),
       );
-      const hasSourceSpecificLocationPage = relevantLocationPageLinks.some((link) =>
-        discoveredPageMatchesSourceLocation(source, link),
+      const hasSourceSpecificLocationPage = relevantLocationPageLinks.some(
+        (link) => discoveredPageMatchesSourceLocation(source, link),
       );
 
       for (const link of relevantLocationPageLinks) {
-        if (hasSourceSpecificLocationPage && !discoveredPageMatchesSourceLocation(source, link)) {
+        if (
+          hasSourceSpecificLocationPage &&
+          !discoveredPageMatchesSourceLocation(source, link)
+        ) {
           continue;
         }
 
@@ -1171,11 +1276,14 @@ export async function scrapeRestaurant(source) {
         }
       }
 
-      const detailCandidates = htmlResult.items.length > 0
-        ? []
-        : htmlResult.productLinks
-            .filter((candidate) => isSameSite(candidate.url, fetched.finalUrl))
-            .slice(0, sourceProductPageLimit);
+      const detailCandidates =
+        htmlResult.items.length > 0
+          ? []
+          : htmlResult.productLinks
+              .filter((candidate) =>
+                isSameSite(candidate.url, fetched.finalUrl),
+              )
+              .slice(0, sourceProductPageLimit);
 
       for (const candidate of detailCandidates) {
         if (seenUrls.has(normalizeUrl(candidate.url))) {
@@ -1183,7 +1291,11 @@ export async function scrapeRestaurant(source) {
         }
 
         seenUrls.add(normalizeUrl(candidate.url));
-        const productPage = await fetchSource(candidate.url, source, sourceTypes.menu);
+        const productPage = await fetchSource(
+          candidate.url,
+          source,
+          sourceTypes.menu,
+        );
         sourceResults.push(
           sourceManifestWithQueueMetadata(productPage.manifest, {
             configured: false,
@@ -1213,13 +1325,17 @@ export async function scrapeRestaurant(source) {
   records.push(...supplemental.records);
   sourceResults.push(...supplemental.sources);
 
-  const productionRecords = preferHighConfidenceMenuRecords(filterMenuCatalogRecords(
-    officialOnlyRecordsForBrand(source, records),
-  )).filter((record) => !isProbablyStrictNonFoodMenuRecord(record, source));
+  const productionRecords = preferHighConfidenceMenuRecords(
+    filterMenuCatalogRecords(officialOnlyRecordsForBrand(source, records)),
+  ).filter((record) => !isProbablyStrictNonFoodMenuRecord(record, source));
   const adapter = getBrandAdapter(source.id);
   let items = mergeRecords(productionRecords)
-    .filter((item, _index, mergedItems) => keepFallbackCategoryArtifactItem(item, mergedItems, source.category))
-    .map((item, _index, mergedItems) => restoreOfficialVariantCategory(item, mergedItems))
+    .filter((item, _index, mergedItems) =>
+      keepFallbackCategoryArtifactItem(item, mergedItems, source.category),
+    )
+    .map((item, _index, mergedItems) =>
+      restoreOfficialVariantCategory(item, mergedItems),
+    )
     .map((item) => sanitizeMenuItemDisplayFields(item))
     .filter(
       (item) =>
@@ -1239,20 +1355,28 @@ export async function scrapeRestaurant(source) {
   if (
     officialItemCount > 0 &&
     source.allowUnavailableAllergenFallback !== true &&
-    !shouldKeepUnavailableItemsForPartialOfficialCoverage(items, officialItemCount)
+    !shouldKeepUnavailableItemsForPartialOfficialCoverage(
+      items,
+      officialItemCount,
+    )
   ) {
-    items = items.filter((item) => item.allergenSourceType !== allergenSourceTypes.unavailable);
+    items = items.filter(
+      (item) => item.allergenSourceType !== allergenSourceTypes.unavailable,
+    );
     officialItemCount = officialItemCountForRestaurant({ items });
   }
 
-	  const sourceStatus = {
-	    accommodationOnly: source.accommodationOnly === true || Boolean(source.allergyAccommodationPolicy),
-	    configuredUrlAudit: configuredUrlAuditForSource(source),
-	    discardedItemCount: Math.max(0, records.length - items.length),
-	    extractedFoodItemCount: items.length,
+  const sourceStatus = {
+    accommodationOnly:
+      source.accommodationOnly === true ||
+      Boolean(source.allergyAccommodationPolicy),
+    configuredUrlAudit: configuredUrlAuditForSource(source),
+    discardedItemCount: Math.max(0, records.length - items.length),
+    extractedFoodItemCount: items.length,
     ok: sourceResults.filter((entry) => entry.ok).length,
     failed: sourceResults.filter((entry) => !entry.ok).length,
-    nonFoodDocumentSuspected: configuredUrlAuditForSource(source).nonFoodDocumentSuspected,
+    nonFoodDocumentSuspected:
+      configuredUrlAuditForSource(source).nonFoodDocumentSuspected,
     total: sourceResults.length,
   };
   const officialAllergenStatus = officialStatusForSource({
@@ -1262,55 +1386,75 @@ export async function scrapeRestaurant(source) {
   });
 
   return {
-    restaurant: addCoverageMetadata({
-      id: source.id,
-      brandKey: adapter.brandKey,
-      rank: source.rank,
-      name: source.name,
-      category: source.category,
-      address: source.address,
-      addressLine1: source.addressLine1,
-	      addressLine2: source.addressLine2,
-	      allowUnavailableAllergenFallback: source.allowUnavailableAllergenFallback,
-	      allergyAccommodationPolicy: source.allergyAccommodationPolicy,
-	      city: source.city,
-      country: source.country,
-      displayAddress: source.displayAddress,
-      domain: source.domain,
-      expectedSmallMenu: source.expectedSmallMenu,
-      guideUrl:
-        configuredSourceEntries.find((entry) => entry.kind === sourceTypes.allergen)?.url ??
-        configuredSourceEntries.find((entry) => entry.kind === sourceTypes.menu)?.url,
-      guideLabel: configuredSourceEntries.some((entry) => entry.kind === sourceTypes.allergen)
-        ? "Official menu and allergen sources"
-        : "Official menu source",
-      lat: source.lat,
-      lng: source.lng,
-      locationId: source.locationId,
-      postalCode: source.postalCode,
-      region: source.region,
-      type: source.type,
-      updated: runDate.slice(0, 7),
-      sourceFamily: adapter.sourceFamily,
-      parserProfile: adapter.parserProfile,
-      sourceProfile: adapter.sourceProfile,
-      sourceStatus,
-      officialAllergenStatus,
-      officialAllergenRemediationBucket: remediationBucketForStatus(officialAllergenStatus, {
-        restaurant: { items },
-        source,
-      }),
-      allergenDataStatus: {
-        officialItemCount,
+    restaurant: addCoverageMetadata(
+      {
+        id: source.id,
+        brandKey: adapter.brandKey,
+        rank: source.rank,
+        name: source.name,
+        category: source.category,
+        address: source.address,
+        addressLine1: source.addressLine1,
+        addressLine2: source.addressLine2,
+        allowUnavailableAllergenFallback:
+          source.allowUnavailableAllergenFallback,
+        allergyAccommodationPolicy: source.allergyAccommodationPolicy,
+        city: source.city,
+        country: source.country,
+        displayAddress: source.displayAddress,
+        domain: source.domain,
+        expectedSmallMenu: source.expectedSmallMenu,
+        guideUrl:
+          configuredSourceEntries.find(
+            (entry) => entry.kind === sourceTypes.allergen,
+          )?.url ??
+          configuredSourceEntries.find(
+            (entry) => entry.kind === sourceTypes.menu,
+          )?.url,
+        guideLabel: configuredSourceEntries.some(
+          (entry) => entry.kind === sourceTypes.allergen,
+        )
+          ? "Official menu and allergen sources"
+          : "Official menu source",
+        lat: source.lat,
+        lng: source.lng,
+        locationId: source.locationId,
+        postalCode: source.postalCode,
+        region: source.region,
+        type: source.type,
+        updated: runDate.slice(0, 7),
+        sourceFamily: adapter.sourceFamily,
+        parserProfile: adapter.parserProfile,
+        sourceProfile: adapter.sourceProfile,
+        sourceStatus,
+        officialAllergenStatus,
+        officialAllergenRemediationBucket: remediationBucketForStatus(
+          officialAllergenStatus,
+          {
+            restaurant: { items },
+            source,
+          },
+        ),
+        allergenDataStatus: {
+          officialItemCount,
+        },
+        sourceUrls: publishableSourceUrls(
+          sourceResults.map((entry) => entry.finalUrl ?? entry.url),
+        ),
+        items,
       },
-      sourceUrls: publishableSourceUrls(sourceResults.map((entry) => entry.finalUrl ?? entry.url)),
-      items,
-    }, adapter, runDate),
+      adapter,
+      runDate,
+    ),
     sources: sourceResults,
   };
 }
 
-function sourceManifestWithQueueMetadata(manifest, queueEntry, contentText = "") {
+function sourceManifestWithQueueMetadata(
+  manifest,
+  queueEntry,
+  contentText = "",
+) {
   return {
     ...manifest,
     configured: queueEntry.configured === true,
@@ -1321,7 +1465,8 @@ function sourceManifestWithQueueMetadata(manifest, queueEntry, contentText = "")
       queueEntry,
     ),
     role: queueEntry.role ?? "unknown",
-    trust: queueEntry.trust ?? (queueEntry.configured ? "configured" : "discovered"),
+    trust:
+      queueEntry.trust ?? (queueEntry.configured ? "configured" : "discovered"),
     urlWarnings: queueEntry.warnings ?? [],
   };
 }
@@ -1363,21 +1508,28 @@ function shouldSkipSourceEntryForLocation(source, entry) {
     return false;
   }
 
-  return !sourceTokens.some((token) => locationScopeMatchesSourceToken(scope, token));
+  return !sourceTokens.some((token) =>
+    locationScopeMatchesSourceToken(scope, token),
+  );
 }
 
 function isLocationScopedMenuEntry(entry) {
   const role = entry?.role ?? "";
   const kind = entry?.kind ?? "";
 
-  if (["official-allergen", "official-nutrition"].includes(role) || kind === sourceTypes.allergen) {
+  if (
+    ["official-allergen", "official-nutrition"].includes(role) ||
+    kind === sourceTypes.allergen
+  ) {
     return false;
   }
 
   return (
     kind === sourceTypes.menu ||
     kind === sourceTypes.api ||
-    /(?:menu|food|order|toast|olo|vendor|api|third-party|special)/i.test(`${role} ${entry?.url ?? ""}`)
+    /(?:menu|food|order|toast|olo|vendor|api|third-party|special)/i.test(
+      `${role} ${entry?.url ?? ""}`,
+    )
   );
 }
 
@@ -1388,7 +1540,11 @@ function locationScopeMatchesSourceToken(scope, token) {
 
   const aliases = locationScopeAliases[token] ?? [];
 
-  return scope.includes(token) || token.includes(scope) || aliases.some((alias) => scope.includes(alias));
+  return (
+    scope.includes(token) ||
+    token.includes(scope) ||
+    aliases.some((alias) => scope.includes(alias))
+  );
 }
 
 const locationScopeAliases = {
@@ -1429,12 +1585,19 @@ function locationScopeFromSourceEntryUrl(url) {
 
   const markerIndexes = segments
     .map((segment, index) => ({ index, segment }))
-    .filter(({ segment }) => /^(?:online|order|vendors?|stores?|locations?|location|restaurants?)$/.test(segment));
+    .filter(({ segment }) =>
+      /^(?:online|order|vendors?|stores?|locations?|location|restaurants?)$/.test(
+        segment,
+      ),
+    );
 
   for (const { index } of markerIndexes) {
     const next = segments[index + 1] ?? "";
 
-    if (next && knownLocationScopeTokens.some((token) => next.includes(token))) {
+    if (
+      next &&
+      knownLocationScopeTokens.some((token) => next.includes(token))
+    ) {
       return next;
     }
   }
@@ -1450,14 +1613,26 @@ function locationScopeFromSourceEntryUrl(url) {
   return scopedSegment ?? "";
 }
 
-function officialAllergenContentSignalForSourceResult(contentText, manifest, queueEntry) {
+function officialAllergenContentSignalForSourceResult(
+  contentText,
+  manifest,
+  queueEntry,
+) {
   const roleText = `${queueEntry?.role ?? ""} ${queueEntry?.kind ?? ""}`;
 
-  if (!/\b(?:official[-_ ]?)?(?:allergens?|allergies|allergy|ingredients?|nutrition|dietary|sensitivity|sensitivities)\b/i.test(roleText)) {
+  if (
+    !/\b(?:official[-_ ]?)?(?:allergens?|allergies|allergy|ingredients?|nutrition|dietary|sensitivity|sensitivities)\b/i.test(
+      roleText,
+    )
+  ) {
     return null;
   }
 
-  if (/help\.milkbarstore\.com\/.*dietary-restrictions/i.test(queueEntry?.url ?? "")) {
+  if (
+    /help\.milkbarstore\.com\/.*dietary-restrictions/i.test(
+      queueEntry?.url ?? "",
+    )
+  ) {
     return false;
   }
 
@@ -1476,7 +1651,9 @@ function officialAllergenContentSignalForSourceResult(contentText, manifest, que
 
   const genericAllergenAdviceOnly =
     /\blet'?s talk about food allergies\b/i.test(text) ||
-    /\b(?:always read the label|read the label every time|allergen declaration statement)\b/i.test(text);
+    /\b(?:always read the label|read the label every time|allergen declaration statement)\b/i.test(
+      text,
+    );
   const hasExplicitItemAllergenCue =
     /\b(?:contains?|may contain)\b/i.test(text) ||
     /\b(?:cross[-\s]?contact|cross[-\s]?contaminat(?:ed|ion)?)\s+with\b.{0,80}\b(?:milk|egg|wheat|gluten|soy|sesame|peanuts?|tree nuts?|fish|shellfish)\b/i.test(
@@ -1548,13 +1725,18 @@ export function isAllowedSourceMenuName(source, name) {
     /^[A-Z0-9 %'’.-]*\b(?:BASIL|CANTALOUPE|GIN|LEMON|SOUK|SPRITZ|TONIC)\b[A-Z0-9 %'’.-]*[•·]?$/i,
   ];
 
-  if (alcoholMenuNamePatterns.some((pattern) => pattern.test(nameText)) && !hasSubstantialFoodLanguage(nameText)) {
+  if (
+    alcoholMenuNamePatterns.some((pattern) => pattern.test(nameText)) &&
+    !hasSubstantialFoodLanguage(nameText)
+  ) {
     return false;
   }
 
   if (
     source.includeNonAlcoholicBeverages === true &&
-    /\b(?:celsius|cola|gatorade|iced tea|lemonade|milk|root beer|soda|water)\b/i.test(nameText)
+    /\b(?:celsius|cola|gatorade|iced tea|lemonade|milk|root beer|soda|water)\b/i.test(
+      nameText,
+    )
   ) {
     return !excludedPatterns.some((pattern) => pattern.test(nameText));
   }
@@ -1686,7 +1868,7 @@ function isAllowedSourceMenuCategory(source, category) {
   const categoryText = cleanText(category);
   const excludedPatterns = source.excludedMenuCategoryPatterns ?? [];
   const genericExcludedPatterns = [
-  /^(?:0\s*%\s*booze|after\s*[-–—]?\s*dinner drinks?|beverages?|beer|bottles?|coffees?|coffee\s*&\s*tea|coffee\/tea|cooking guide|domestic|drinks?|happy hour|hot beverages?|low\s*&\s*no|n\/a offerings?|non[- ]alcoholic|sans spirits|signature cocktails|sodas?\s*\/\s*water|spirits?|store locator|stores?\s*\d*|teas?|zero proof|mocktails?|wine|wines?)$/i,
+    /^(?:0\s*%\s*booze|after\s*[-–—]?\s*dinner drinks?|beverages?|beer|bottles?|coffees?|coffee\s*&\s*tea|coffee\/tea|cooking guide|domestic|drinks?|happy hour|hot beverages?|low\s*&\s*no|n\/a offerings?|non[- ]alcoholic|sans spirits|signature cocktails|sodas?\s*\/\s*water|spirits?|store locator|stores?\s*\d*|teas?|zero proof|mocktails?|wine|wines?)$/i,
   ];
 
   if (!categoryText) {
@@ -1715,7 +1897,9 @@ function collapseSparseCategories(items, fallbackCategory) {
     counts.set(item.category, (counts.get(item.category) ?? 0) + 1);
   }
 
-  const singletonCount = [...counts.values()].filter((count) => count === 1).length;
+  const singletonCount = [...counts.values()].filter(
+    (count) => count === 1,
+  ).length;
   const categoryCount = counts.size;
 
   if (categoryCount < 5 || singletonCount / categoryCount < 0.75) {
@@ -1731,7 +1915,11 @@ function collapseSparseCategories(items, fallbackCategory) {
 function keepFallbackCategoryArtifactItem(item, allItems, fallbackCategory) {
   const fallbackKey = similarityKey(fallbackCategory);
 
-  if (!fallbackKey || similarityKey(item?.category) !== fallbackKey || allItems.length < 15) {
+  if (
+    !fallbackKey ||
+    similarityKey(item?.category) !== fallbackKey ||
+    allItems.length < 15
+  ) {
     return true;
   }
 
@@ -1750,11 +1938,18 @@ function keepFallbackCategoryArtifactItem(item, allItems, fallbackCategory) {
     return false;
   }
 
-  if (/\b\d{1,3}(?:[a-z]|[A-Z][a-z])/.test(name) && !/\(\s*\d{1,3}\s*oz\s*\)/i.test(name)) {
+  if (
+    /\b\d{1,3}(?:[a-z]|[A-Z][a-z])/.test(name) &&
+    !/\(\s*\d{1,3}\s*oz\s*\)/i.test(name)
+  ) {
     return false;
   }
 
-  if (/^(?:from the griddle|house-baked pastries|freshly fruit\s*&\s*berries|buttermilk biscuits\b)/i.test(name)) {
+  if (
+    /^(?:from the griddle|house-baked pastries|freshly fruit\s*&\s*berries|buttermilk biscuits\b)/i.test(
+      name,
+    )
+  ) {
     return false;
   }
 
@@ -1778,7 +1973,11 @@ function restoreOfficialVariantCategory(item, mergedItems) {
     return item;
   }
 
-  const itemNameKeys = new Set(mergedItems.map((candidate) => similarityKey(candidate.name)).filter(Boolean));
+  const itemNameKeys = new Set(
+    mergedItems
+      .map((candidate) => similarityKey(candidate.name))
+      .filter(Boolean),
+  );
 
   if (!itemNameKeys.has(similarityKey(item.category))) {
     return item;
@@ -1790,16 +1989,26 @@ function restoreOfficialVariantCategory(item, mergedItems) {
   };
 }
 
-function shouldKeepUnavailableItemsForPartialOfficialCoverage(items, officialItemCount) {
-  if (items.length < 10 || officialItemCount >= Math.max(10, Math.ceil(items.length * 0.5))) {
+function shouldKeepUnavailableItemsForPartialOfficialCoverage(
+  items,
+  officialItemCount,
+) {
+  if (
+    items.length < 10 ||
+    officialItemCount >= Math.max(10, Math.ceil(items.length * 0.5))
+  ) {
     return false;
   }
 
   const highQualityStructuredCount = items.filter((item) =>
-    ["next-flight-products", "square-online-api", "json-structured"].includes(item.sourceType),
+    ["next-flight-products", "square-online-api", "json-structured"].includes(
+      item.sourceType,
+    ),
   ).length;
 
-  return highQualityStructuredCount >= Math.max(10, Math.ceil(items.length * 0.6));
+  return (
+    highQualityStructuredCount >= Math.max(10, Math.ceil(items.length * 0.6))
+  );
 }
 
 function sharedOfficialAllergenProfileRecords(source, records) {
@@ -1817,9 +2026,12 @@ function sharedOfficialAllergenProfileRecords(source, records) {
   const officialAllergenRecords = records.filter(
     (record) =>
       record.allergenSourceType === allergenSourceTypes.officialAllergenMenu &&
-      ["embedded-flavor-nutrition", "html-allergen-matrix", "official-api", "pdf-matrix"].includes(
-        record.sourceKind,
-      ),
+      [
+        "embedded-flavor-nutrition",
+        "html-allergen-matrix",
+        "official-api",
+        "pdf-matrix",
+      ].includes(record.sourceKind),
   );
 
   if (officialAllergenRecords.length < 10) {
@@ -1829,27 +2041,37 @@ function sharedOfficialAllergenProfileRecords(source, records) {
   const allFoodRecordCount = filterMenuCatalogRecords(records).length;
   const minimumCoverage = Math.max(10, Math.ceil(allFoodRecordCount * 0.25));
 
-  return officialAllergenRecords.length >= minimumCoverage || officialAllergenRecords.length >= 40
+  return officialAllergenRecords.length >= minimumCoverage ||
+    officialAllergenRecords.length >= 40
     ? officialAllergenRecords
     : [];
 }
 
 function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
   const source =
-    typeof sourceOrRestaurantId === "string" ? { id: sourceOrRestaurantId } : sourceOrRestaurantId;
+    typeof sourceOrRestaurantId === "string"
+      ? { id: sourceOrRestaurantId }
+      : sourceOrRestaurantId;
   const restaurantId = source.id;
-  const sharedOfficialAllergenRecords = sharedOfficialAllergenProfileRecords(source, records);
+  const sharedOfficialAllergenRecords = sharedOfficialAllergenProfileRecords(
+    source,
+    records,
+  );
 
   if (sharedOfficialAllergenRecords.length > 0) {
     if (source.profileMenuIsCanonical === true) {
-      const canonicalMenuRecords = records.filter((record) => record.sourceKind === "html-menu");
+      const canonicalMenuRecords = records.filter(
+        (record) => record.sourceKind === "html-menu",
+      );
 
       if (canonicalMenuRecords.length >= 4) {
         const canonicalNames = new Set(
-          canonicalMenuRecords.map((record) => similarityKey(record.name)).filter(Boolean),
+          canonicalMenuRecords
+            .map((record) => similarityKey(record.name))
+            .filter(Boolean),
         );
-        const matchingProfileRecords = sharedOfficialAllergenRecords.filter((record) =>
-          canonicalNames.has(similarityKey(record.name)),
+        const matchingProfileRecords = sharedOfficialAllergenRecords.filter(
+          (record) => canonicalNames.has(similarityKey(record.name)),
         );
         return [...canonicalMenuRecords, ...matchingProfileRecords];
       }
@@ -1858,24 +2080,32 @@ function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
     return supplementPreferredRecords(sharedOfficialAllergenRecords, records);
   }
 
-  const dominantOfficialAllergenRecords = dominantOfficialAllergenProfileRecords(records);
+  const dominantOfficialAllergenRecords =
+    dominantOfficialAllergenProfileRecords(records);
 
   if (dominantOfficialAllergenRecords.length > 0) {
     return dominantOfficialAllergenRecords;
   }
 
   if (isThompsonOrderingSource(source)) {
-    const htmlCardRecords = records.filter((record) => record.sourceKind === "html-card");
+    const htmlCardRecords = records.filter(
+      (record) => record.sourceKind === "html-card",
+    );
 
     if (htmlCardRecords.length >= 20) {
       return records.filter(
-        (record) => !["pdf-menu", "pdf-menu-grid", "pdf-nutrition-menu"].includes(record.sourceKind),
+        (record) =>
+          !["pdf-menu", "pdf-menu-grid", "pdf-nutrition-menu"].includes(
+            record.sourceKind,
+          ),
       );
     }
   }
 
   if (restaurantId === "dairy-queen") {
-    const tableRecords = records.filter((record) => record.sourceKind === "html-allergen-matrix");
+    const tableRecords = records.filter(
+      (record) => record.sourceKind === "html-allergen-matrix",
+    );
     return tableRecords.length > 0 ? tableRecords : records;
   }
 
@@ -1883,7 +2113,9 @@ function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
     const nutritionRecords = recordsWithNutrition(records);
     return nutritionRecords.length > 0
       ? supplementPreferredRecords(nutritionRecords, records)
-      : records.filter((record) => record.sourceKind === "html-allergen-matrix");
+      : records.filter(
+          (record) => record.sourceKind === "html-allergen-matrix",
+        );
   }
 
   if (restaurantId === "nothing-bundt-cakes") {
@@ -1894,18 +2126,30 @@ function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
   }
 
   if (restaurantId === "chipotle") {
-    const apiRecords = records.filter((record) => record.sourceKind === "official-api");
-    return apiRecords.length > 0 ? supplementPreferredRecords(apiRecords, records) : records;
+    const apiRecords = records.filter(
+      (record) => record.sourceKind === "official-api",
+    );
+    return apiRecords.length > 0
+      ? supplementPreferredRecords(apiRecords, records)
+      : records;
   }
 
   if (restaurantId === "subway") {
-    const pdfRecords = records.filter((record) => record.sourceKind === "pdf-matrix");
-    return pdfRecords.length > 0 ? supplementPreferredRecords(pdfRecords, records) : records;
+    const pdfRecords = records.filter(
+      (record) => record.sourceKind === "pdf-matrix",
+    );
+    return pdfRecords.length > 0
+      ? supplementPreferredRecords(pdfRecords, records)
+      : records;
   }
 
   if (restaurantId === "panda-express") {
-    const pdfRecords = records.filter((record) => record.sourceKind === "pdf-matrix");
-    return pdfRecords.length > 0 ? supplementPreferredRecords(pdfRecords, records) : records;
+    const pdfRecords = records.filter(
+      (record) => record.sourceKind === "pdf-matrix",
+    );
+    return pdfRecords.length > 0
+      ? supplementPreferredRecords(pdfRecords, records)
+      : records;
   }
 
   if (restaurantId === "zaxbys") {
@@ -1915,8 +2159,12 @@ function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
       return supplementPreferredRecords(nutritionRecords, records);
     }
 
-    const pdfRecords = records.filter((record) => record.sourceKind === "pdf-matrix");
-    return pdfRecords.length > 0 ? supplementPreferredRecords(pdfRecords, records) : records;
+    const pdfRecords = records.filter(
+      (record) => record.sourceKind === "pdf-matrix",
+    );
+    return pdfRecords.length > 0
+      ? supplementPreferredRecords(pdfRecords, records)
+      : records;
   }
 
   if (restaurantId === "starbucks") {
@@ -1924,85 +2172,139 @@ function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
   }
 
   if (restaurantId === "dunkin") {
-    const pdfRecords = records.filter((record) => record.sourceKind === "pdf-matrix");
+    const pdfRecords = records.filter(
+      (record) => record.sourceKind === "pdf-matrix",
+    );
     return pdfRecords.length > 0
       ? recordsWithNutrition(supplementPreferredRecords(pdfRecords, records))
       : records;
   }
 
   if (restaurantId === "panera") {
-    const pdfRecords = records.filter((record) => record.sourceKind === "pdf-matrix");
+    const pdfRecords = records.filter(
+      (record) => record.sourceKind === "pdf-matrix",
+    );
     return pdfRecords.length > 0
       ? recordsWithNutrition(supplementPreferredRecords(pdfRecords, records))
       : records;
   }
 
   if (restaurantId === "arbys") {
-    const pdfRecords = records.filter((record) => record.sourceKind === "pdf-matrix");
-    return pdfRecords.length > 0 ? supplementPreferredRecords(pdfRecords, records) : records;
+    const pdfRecords = records.filter(
+      (record) => record.sourceKind === "pdf-matrix",
+    );
+    return pdfRecords.length > 0
+      ? supplementPreferredRecords(pdfRecords, records)
+      : records;
   }
 
   if (restaurantId === "dominos") {
-    const allergenRecords = records.filter((record) => record.sourceKind === "official-api");
-    const supplemented = allergenRecords.length > 0
-      ? supplementPreferredRecords(allergenRecords, records)
-      : records;
+    const allergenRecords = records.filter(
+      (record) => record.sourceKind === "official-api",
+    );
+    const supplemented =
+      allergenRecords.length > 0
+        ? supplementPreferredRecords(allergenRecords, records)
+        : records;
     return supplemented.filter(
-      (record) => record.nutritionFacts && Object.keys(record.nutritionFacts).length > 0,
+      (record) =>
+        record.nutritionFacts && Object.keys(record.nutritionFacts).length > 0,
     );
   }
 
   if (restaurantId === "papa-johns") {
-    const nutritionRecords = records.filter((record) => record.sourceKind === "html-nutrition");
-    return nutritionRecords.length > 0 ? supplementPreferredRecords(nutritionRecords, records) : records;
+    const nutritionRecords = records.filter(
+      (record) => record.sourceKind === "html-nutrition",
+    );
+    return nutritionRecords.length > 0
+      ? supplementPreferredRecords(nutritionRecords, records)
+      : records;
   }
 
   if (restaurantId === "shake-shack") {
-    const pdfRecords = records.filter((record) => record.sourceKind === "pdf-matrix");
-    const supplemented = pdfRecords.length > 0 ? supplementPreferredRecords(pdfRecords, records) : records;
+    const pdfRecords = records.filter(
+      (record) => record.sourceKind === "pdf-matrix",
+    );
+    const supplemented =
+      pdfRecords.length > 0
+        ? supplementPreferredRecords(pdfRecords, records)
+        : records;
     return supplemented.filter(
-      (record) => record.nutritionFacts && Object.keys(record.nutritionFacts).length > 0,
+      (record) =>
+        record.nutritionFacts && Object.keys(record.nutritionFacts).length > 0,
     );
   }
 
   if (restaurantId === "little-caesars") {
-    const pdfRecords = records.filter((record) => record.sourceKind === "pdf-matrix");
-    return pdfRecords.length > 0 ? supplementPreferredRecords(pdfRecords, records) : records;
+    const pdfRecords = records.filter(
+      (record) => record.sourceKind === "pdf-matrix",
+    );
+    return pdfRecords.length > 0
+      ? supplementPreferredRecords(pdfRecords, records)
+      : records;
   }
 
   if (restaurantId === "wingstop") {
-    const nutritionRecords = records.filter((record) => record.sourceKind === "pdf-nutrition");
-    const allergenRecords = records.filter((record) => record.sourceKind === "pdf-matrix");
-    const preferredRecords = allergenRecords.length > 0 ? allergenRecords : nutritionRecords;
-    return preferredRecords.length > 0 ? supplementPreferredRecords(preferredRecords, records) : records;
+    const nutritionRecords = records.filter(
+      (record) => record.sourceKind === "pdf-nutrition",
+    );
+    const allergenRecords = records.filter(
+      (record) => record.sourceKind === "pdf-matrix",
+    );
+    const preferredRecords =
+      allergenRecords.length > 0 ? allergenRecords : nutritionRecords;
+    return preferredRecords.length > 0
+      ? supplementPreferredRecords(preferredRecords, records)
+      : records;
   }
 
   if (restaurantId === "sonic") {
-    const pdfRecords = records.filter((record) => record.sourceKind === "pdf-matrix");
+    const pdfRecords = records.filter(
+      (record) => record.sourceKind === "pdf-matrix",
+    );
     return pdfRecords.length > 0
       ? supplementPreferredRecords(pdfRecords, records)
       : records;
   }
 
   if (restaurantId === "jack-in-the-box") {
-    const nutritionRecords = records.filter((record) => record.sourceKind === "pdf-nutrition");
-    return nutritionRecords.length > 0 ? supplementPreferredRecords(nutritionRecords, records) : records;
+    const nutritionRecords = records.filter(
+      (record) => record.sourceKind === "pdf-nutrition",
+    );
+    return nutritionRecords.length > 0
+      ? supplementPreferredRecords(nutritionRecords, records)
+      : records;
   }
 
   if (
-    ["olive-garden", "longhorn-steakhouse", "outback-steakhouse", "dennys", "ihop"].includes(
-      restaurantId,
-    )
+    [
+      "olive-garden",
+      "longhorn-steakhouse",
+      "outback-steakhouse",
+      "dennys",
+      "ihop",
+    ].includes(restaurantId)
   ) {
-    if (["olive-garden", "longhorn-steakhouse", "outback-steakhouse", "dennys"].includes(restaurantId)) {
+    if (
+      [
+        "olive-garden",
+        "longhorn-steakhouse",
+        "outback-steakhouse",
+        "dennys",
+      ].includes(restaurantId)
+    ) {
       const nutritionRecords = recordsWithNutrition(records);
       return nutritionRecords.length > 0
         ? supplementPreferredRecords(nutritionRecords, records)
         : records;
     }
 
-    const pdfRecords = records.filter((record) => record.sourceKind === "pdf-matrix");
-    return pdfRecords.length > 0 ? supplementPreferredRecords(pdfRecords, records) : records;
+    const pdfRecords = records.filter(
+      (record) => record.sourceKind === "pdf-matrix",
+    );
+    return pdfRecords.length > 0
+      ? supplementPreferredRecords(pdfRecords, records)
+      : records;
   }
 
   if (restaurantId === "first-watch") {
@@ -2012,29 +2314,48 @@ function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
       return supplementPreferredRecords(nutritionRecords, records);
     }
 
-    const pdfRecords = records.filter((record) => record.sourceKind === "pdf-matrix");
-    return pdfRecords.length > 0 ? supplementPreferredRecords(pdfRecords, records) : records;
+    const pdfRecords = records.filter(
+      (record) => record.sourceKind === "pdf-matrix",
+    );
+    return pdfRecords.length > 0
+      ? supplementPreferredRecords(pdfRecords, records)
+      : records;
   }
 
   if (restaurantId === "waffle-house") {
-    const pdfRecords = records.filter((record) => record.sourceKind === "pdf-matrix");
-    return pdfRecords.length > 0 ? supplementPreferredRecords(pdfRecords, records) : records;
+    const pdfRecords = records.filter(
+      (record) => record.sourceKind === "pdf-matrix",
+    );
+    return pdfRecords.length > 0
+      ? supplementPreferredRecords(pdfRecords, records)
+      : records;
   }
 
   if (
-    ["buffalo-wild-wings", "red-lobster", "yard-house", "cheddars", "bjs-restaurant"].includes(
-      restaurantId,
-    )
+    [
+      "buffalo-wild-wings",
+      "red-lobster",
+      "yard-house",
+      "cheddars",
+      "bjs-restaurant",
+    ].includes(restaurantId)
   ) {
-    const pdfRecords = records.filter((record) => record.sourceKind === "pdf-matrix");
+    const pdfRecords = records.filter(
+      (record) => record.sourceKind === "pdf-matrix",
+    );
     const nutritionRecords = recordsWithNutrition(records);
 
     if (restaurantId === "buffalo-wild-wings" && nutritionRecords.length > 0) {
       return supplementPreferredRecords(nutritionRecords, records);
     }
 
-    const supplemented = pdfRecords.length > 0 ? supplementPreferredRecords(pdfRecords, records) : records;
-    return ["red-lobster", "yard-house", "cheddars", "bjs-restaurant"].includes(restaurantId)
+    const supplemented =
+      pdfRecords.length > 0
+        ? supplementPreferredRecords(pdfRecords, records)
+        : records;
+    return ["red-lobster", "yard-house", "cheddars", "bjs-restaurant"].includes(
+      restaurantId,
+    )
       ? recordsWithNutrition(supplemented)
       : supplemented;
   }
@@ -2044,7 +2365,9 @@ function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
       ["html-allergen-matrix", "html-card"].includes(record.sourceKind),
     );
     return officialRecords.length > 0
-      ? recordsWithNutrition(supplementPreferredRecords(officialRecords, records))
+      ? recordsWithNutrition(
+          supplementPreferredRecords(officialRecords, records),
+        )
       : records;
   }
 
@@ -2088,17 +2411,23 @@ function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
   }
 
   if (restaurantId === "mcdonalds") {
-    const apiRecords = records.filter((record) => record.sourceKind === "official-api");
+    const apiRecords = records.filter(
+      (record) => record.sourceKind === "official-api",
+    );
     return apiRecords.length > 0 ? recordsWithNutrition(apiRecords) : records;
   }
 
   if (restaurantId === "whataburger") {
-    const apiRecords = records.filter((record) => record.sourceKind === "official-api");
+    const apiRecords = records.filter(
+      (record) => record.sourceKind === "official-api",
+    );
     return apiRecords.length > 0 ? recordsWithNutrition(apiRecords) : records;
   }
 
   if (restaurantId === "jersey-mikes") {
-    const apiRecords = records.filter((record) => record.sourceKind === "official-api");
+    const apiRecords = records.filter(
+      (record) => record.sourceKind === "official-api",
+    );
     return apiRecords.length > 0 ? recordsWithNutrition(apiRecords) : records;
   }
 
@@ -2123,7 +2452,9 @@ function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
       "whataburger",
     ].includes(restaurantId)
   ) {
-    const apiRecords = records.filter((record) => record.sourceKind === "official-api");
+    const apiRecords = records.filter(
+      (record) => record.sourceKind === "official-api",
+    );
     return apiRecords.length > 0
       ? restaurantId === "burger-king"
         ? recordsWithNutrition(apiRecords)
@@ -2138,9 +2469,12 @@ function dominantOfficialAllergenProfileRecords(records) {
   const officialAllergenRecords = records.filter(
     (record) =>
       record.allergenSourceType === allergenSourceTypes.officialAllergenMenu &&
-      ["embedded-flavor-nutrition", "html-allergen-matrix", "official-api", "pdf-matrix"].includes(
-        record.sourceKind,
-      ),
+      [
+        "embedded-flavor-nutrition",
+        "html-allergen-matrix",
+        "official-api",
+        "pdf-matrix",
+      ].includes(record.sourceKind),
   );
 
   if (officialAllergenRecords.length < 40) {
@@ -2149,7 +2483,10 @@ function dominantOfficialAllergenProfileRecords(records) {
 
   const foodRecordCount = filterMenuCatalogRecords(records).length;
 
-  if (foodRecordCount === 0 || officialAllergenRecords.length / foodRecordCount < 0.75) {
+  if (
+    foodRecordCount === 0 ||
+    officialAllergenRecords.length / foodRecordCount < 0.75
+  ) {
     return [];
   }
 
@@ -2163,12 +2500,17 @@ function isThompsonOrderingSource(source) {
     ...(source?.apiUrls ?? []),
     source?.sourceUrl,
     source?.domain,
-  ].some((value) => /(?:^|\/\/|\.)(?:order\.)?thompsonrestaurants\.com\b/i.test(String(value ?? "")));
+  ].some((value) =>
+    /(?:^|\/\/|\.)(?:order\.)?thompsonrestaurants\.com\b/i.test(
+      String(value ?? ""),
+    ),
+  );
 }
 
 function recordsWithNutrition(records) {
   return records.filter(
-    (record) => record.nutritionFacts && Object.keys(record.nutritionFacts).length > 0,
+    (record) =>
+      record.nutritionFacts && Object.keys(record.nutritionFacts).length > 0,
   );
 }
 
@@ -2184,9 +2526,16 @@ function supplementPreferredRecords(preferredRecords, allRecords) {
 
     const existing = supplementalByName.get(key) ?? {};
     supplementalByName.set(key, {
-      ingredientsText: pickBestDescription(existing.ingredientsText, record.ingredientsText),
-      nutritionFacts: existing.nutritionFacts ?? normalizeNutritionFacts(record.nutritionFacts),
-      sourceUrls: uniqueStrings([...(existing.sourceUrls ?? []), record.sourceUrl].filter(Boolean)),
+      ingredientsText: pickBestDescription(
+        existing.ingredientsText,
+        record.ingredientsText,
+      ),
+      nutritionFacts:
+        existing.nutritionFacts ??
+        normalizeNutritionFacts(record.nutritionFacts),
+      sourceUrls: uniqueStrings(
+        [...(existing.sourceUrls ?? []), record.sourceUrl].filter(Boolean),
+      ),
     });
   }
 
@@ -2199,9 +2548,17 @@ function supplementPreferredRecords(preferredRecords, allRecords) {
 
     return {
       ...record,
-      ingredientsText: pickBestDescription(record.ingredientsText, supplement.ingredientsText),
-      nutritionFacts: normalizeNutritionFacts(record.nutritionFacts) ?? supplement.nutritionFacts,
-      sourceUrls: uniqueStrings([...(record.sourceUrls ?? []), ...(supplement.sourceUrls ?? [])]),
+      ingredientsText: pickBestDescription(
+        record.ingredientsText,
+        supplement.ingredientsText,
+      ),
+      nutritionFacts:
+        normalizeNutritionFacts(record.nutritionFacts) ??
+        supplement.nutritionFacts,
+      sourceUrls: uniqueStrings([
+        ...(record.sourceUrls ?? []),
+        ...(supplement.sourceUrls ?? []),
+      ]),
     };
   });
 }
@@ -2248,38 +2605,50 @@ const supplementalSourceProfiles = [
     sourceConfigs: [
       {
         id: "culvers",
-        menuUrl: "https://nix-vue-inm.s3.amazonaws.com/restaurant/culvers/data/menu-latest.json.gz",
-        sourceLabel: "Official Culver's Nutritionix nutrition and allergen guide.",
+        menuUrl:
+          "https://nix-vue-inm.s3.amazonaws.com/restaurant/culvers/data/menu-latest.json.gz",
+        sourceLabel:
+          "Official Culver's Nutritionix nutrition and allergen guide.",
       },
       {
         id: "taco-bell",
-        menuUrl: "https://nix-vue-inm.s3.amazonaws.com/restaurant/taco-bell/data/menu-latest.json.gz",
-        sourceLabel: "Official Taco Bell Nutritionix nutrition and allergen guide.",
+        menuUrl:
+          "https://nix-vue-inm.s3.amazonaws.com/restaurant/taco-bell/data/menu-latest.json.gz",
+        sourceLabel:
+          "Official Taco Bell Nutritionix nutrition and allergen guide.",
       },
       {
         id: "applebees",
-        menuUrl: "https://nix-vue-inm.s3.amazonaws.com/restaurant/applebees/data/menu-latest.json.gz",
-        sourceLabel: "Official Applebee's Nutritionix nutrition and allergen guide.",
+        menuUrl:
+          "https://nix-vue-inm.s3.amazonaws.com/restaurant/applebees/data/menu-latest.json.gz",
+        sourceLabel:
+          "Official Applebee's Nutritionix nutrition and allergen guide.",
       },
       {
         id: "ihop",
-        menuUrl: "https://nix-vue-inm.s3.amazonaws.com/restaurant/ihop/data/menu-latest.json.gz",
+        menuUrl:
+          "https://nix-vue-inm.s3.amazonaws.com/restaurant/ihop/data/menu-latest.json.gz",
         sourceLabel: "Official IHOP Nutritionix nutrition and allergen guide.",
       },
       {
         id: "pizza-hut",
-        menuUrl: "https://nix-vue-inm.s3.amazonaws.com/restaurant/pizza-hut/data/menu-latest.json.gz",
-        sourceLabel: "Official Pizza Hut Nutritionix nutrition and allergen guide.",
+        menuUrl:
+          "https://nix-vue-inm.s3.amazonaws.com/restaurant/pizza-hut/data/menu-latest.json.gz",
+        sourceLabel:
+          "Official Pizza Hut Nutritionix nutrition and allergen guide.",
       },
       {
         id: "kfc",
-        menuUrl: "https://nix-vue-inm.s3.amazonaws.com/restaurant/kfc/data/menu-latest.json.gz",
+        menuUrl:
+          "https://nix-vue-inm.s3.amazonaws.com/restaurant/kfc/data/menu-latest.json.gz",
         sourceLabel: "Official KFC Nutritionix nutrition and allergen guide.",
       },
       {
         id: "jimmy-johns",
-        menuUrl: "https://nix-vue-inm.s3.amazonaws.com/restaurant/jimmy-johns/data/menu-latest.json.gz",
-        sourceLabel: "Official Jimmy John's Nutritionix nutrition and allergen guide.",
+        menuUrl:
+          "https://nix-vue-inm.s3.amazonaws.com/restaurant/jimmy-johns/data/menu-latest.json.gz",
+        sourceLabel:
+          "Official Jimmy John's Nutritionix nutrition and allergen guide.",
       },
     ],
     fetch: (source, config) => fetchNutritionixOfficialRecords(source, config),
@@ -2296,7 +2665,8 @@ const supplementalSourceProfiles = [
       const menu = await fetchChurchsOfficialMenuRecords(source);
       const nutrition = await fetchNutritionixSpecialDietsRecords(source, {
         baseUrl: "https://www.nutritionix.com/churchs-chicken/menu/premium",
-        sourceLabel: "Church's Texas Chicken Nutritionix online nutrition guide.",
+        sourceLabel:
+          "Church's Texas Chicken Nutritionix online nutrition guide.",
       });
 
       return {
@@ -2310,7 +2680,8 @@ const supplementalSourceProfiles = [
     sourceConfigs: [
       {
         id: "ruths-chris",
-        menuUrl: "https://www.nutritionix.com/ruths-chris-steak-house/nutrition-calculator",
+        menuUrl:
+          "https://www.nutritionix.com/ruths-chris-steak-house/nutrition-calculator",
         sourceLabel: "Official Ruth's Chris Nutritionix nutrition menu.",
       },
     ],
@@ -2321,13 +2692,15 @@ const supplementalSourceProfiles = [
     sourceConfigs: [
       {
         id: "burger-king",
-        endpoint: "https://kjfd81ul.apicdn.sanity.io/v1/graphql/prod_bk_us/default",
+        endpoint:
+          "https://kjfd81ul.apicdn.sanity.io/v1/graphql/prod_bk_us/default",
         rootField: "allItems",
         sourceLabel: "Official Burger King Sanity menu item allergen data.",
       },
       {
         id: "popeyes",
-        endpoint: "https://czqk28jt.apicdn.sanity.io/v1/graphql/prod_plk_us/gen3",
+        endpoint:
+          "https://czqk28jt.apicdn.sanity.io/v1/graphql/prod_plk_us/gen3",
         rootField: "allItem",
         sourceLabel: "Official Popeyes Sanity menu item allergen data.",
       },
@@ -2349,38 +2722,51 @@ const supplementalSourceProfiles = [
     sourceConfigs: [
       {
         id: "cheesecake-factory",
-        baseUrl: "https://www.nutritionix.com/the-cheesecake-factory/menu/special-diets/premium",
-        sourceLabel: "Official The Cheesecake Factory Nutritionix online allergen guide.",
+        baseUrl:
+          "https://www.nutritionix.com/the-cheesecake-factory/menu/special-diets/premium",
+        sourceLabel:
+          "Official The Cheesecake Factory Nutritionix online allergen guide.",
       },
       {
         id: "chilis",
-        baseUrl: "https://www.nutritionix.com/chilis/menu/special-diets/premium",
+        baseUrl:
+          "https://www.nutritionix.com/chilis/menu/special-diets/premium",
         sourceLabel: "Official Chili's Nutritionix online allergen guide.",
       },
       {
         id: "texas-roadhouse",
-        baseUrl: "https://www.nutritionix.com/texas-roadhouse/menu/special-diets/premium",
-        sourceLabel: "Official Texas Roadhouse Nutritionix online allergen guide.",
+        baseUrl:
+          "https://www.nutritionix.com/texas-roadhouse/menu/special-diets/premium",
+        sourceLabel:
+          "Official Texas Roadhouse Nutritionix online allergen guide.",
       },
       {
         id: "firehouse-subs",
-        baseUrl: "https://www.nutritionix.com/firehouse-subs/menu/special-diets/premium",
-        sourceLabel: "Official Firehouse Subs Nutritionix online allergen guide.",
+        baseUrl:
+          "https://www.nutritionix.com/firehouse-subs/menu/special-diets/premium",
+        sourceLabel:
+          "Official Firehouse Subs Nutritionix online allergen guide.",
       },
       {
         id: "marcos-pizza",
-        baseUrl: "https://www.nutritionix.com/marcos-pizza/menu/special-diets/premium",
-        sourceLabel: "Official Marco's Pizza Nutritionix online allergen guide.",
+        baseUrl:
+          "https://www.nutritionix.com/marcos-pizza/menu/special-diets/premium",
+        sourceLabel:
+          "Official Marco's Pizza Nutritionix online allergen guide.",
       },
       {
         id: "mcalisters-deli",
-        baseUrl: "https://www.nutritionix.com/mcalisters-deli/menu/special-diets/premium",
-        sourceLabel: "Official McAlister's Deli Nutritionix online allergen guide.",
+        baseUrl:
+          "https://www.nutritionix.com/mcalisters-deli/menu/special-diets/premium",
+        sourceLabel:
+          "Official McAlister's Deli Nutritionix online allergen guide.",
       },
       {
         id: "golden-corral",
-        baseUrl: "https://www.nutritionix.com/golden-corral/nutrition-calculator",
-        sourceLabel: "Official Golden Corral Nutritionix online allergen guide.",
+        baseUrl:
+          "https://www.nutritionix.com/golden-corral/nutrition-calculator",
+        sourceLabel:
+          "Official Golden Corral Nutritionix online allergen guide.",
       },
       {
         id: "bojangles",
@@ -2399,7 +2785,8 @@ const supplementalSourceProfiles = [
       },
       {
         id: "crumbl",
-        baseUrl: "https://www.nutritionix.com/crumbl-cookies/nutrition-calculator",
+        baseUrl:
+          "https://www.nutritionix.com/crumbl-cookies/nutrition-calculator",
         sourceLabel: "Crumbl Nutritionix online allergen guide.",
       },
       {
@@ -2423,7 +2810,8 @@ const supplementalSourceProfiles = [
         sourceLabel: "Nothing Bundt Cakes Nutritionix online nutrition guide.",
       },
     ],
-    fetch: (source, config) => fetchNutritionixSpecialDietsRecords(source, config),
+    fetch: (source, config) =>
+      fetchNutritionixSpecialDietsRecords(source, config),
   },
   {
     id: "tim-hortons-nutritionix-with-known-good-fallback",
@@ -2440,7 +2828,8 @@ const supplementalSourceProfiles = [
 
       const fallback = await fetchKnownGoodNutritionFixtureRecords(source, {
         filename: "tim-hortons-official-nutrition-snapshot.json",
-        sourceLabel: "Previous known-good Tim Hortons Nutritionix online nutrition guide.",
+        sourceLabel:
+          "Previous known-good Tim Hortons Nutritionix online nutrition guide.",
       });
 
       return {
@@ -2496,7 +2885,8 @@ const supplementalSourceProfiles = [
       {
         filename: "maydan-official-pdf-menu.json",
         sourceId: "maydan-dc",
-        sourceLabel: "Reviewed official Maydan PDF menu with official menu allergen symbols.",
+        sourceLabel:
+          "Reviewed official Maydan PDF menu with official menu allergen symbols.",
       },
       {
         filename: "fountain-inn-official-pdf-menu.json",
@@ -2611,7 +3001,8 @@ const supplementalSourceProfiles = [
       {
         filename: "kathmandu-dc-reviewed-opening-menu.json",
         sourceId: "kathmandu-tapas-cocktails-dc",
-        sourceLabel: "Reviewed Kathmandu Tapas & Cocktails public opening menu evidence.",
+        sourceLabel:
+          "Reviewed Kathmandu Tapas & Cocktails public opening menu evidence.",
       },
       {
         filename: "maison-bar-a-vins-official-pdf-menu.json",
@@ -2646,7 +3037,8 @@ const supplementalSourceProfiles = [
       {
         filename: "luzmary-bolivian-official-specialties-menu.json",
         sourceId: "luzmary-bolivian-falls-church-va",
-        sourceLabel: "Reviewed official Luzmary's Bolivian Restaurant specialties list.",
+        sourceLabel:
+          "Reviewed official Luzmary's Bolivian Restaurant specialties list.",
       },
       {
         filename: "georgetown-seafood-official-pdf-menu.json",
@@ -2686,12 +3078,14 @@ const supplementalSourceProfiles = [
       {
         filename: "the-auld-shebeen-reviewed-public-menu.json",
         sourceId: "the-auld-shebeen-fairfax-va-dc-metro",
-        sourceLabel: "Reviewed The Auld Shebeen official and public menu evidence.",
+        sourceLabel:
+          "Reviewed The Auld Shebeen official and public menu evidence.",
       },
       {
         filename: "ashburn-biryani-grill-reviewed-delivery-menu.json",
         sourceId: "ashburn-biryani-grill-ashburn-va-dc-metro",
-        sourceLabel: "Reviewed Ashburn Biryani Grill public delivery menu evidence.",
+        sourceLabel:
+          "Reviewed Ashburn Biryani Grill public delivery menu evidence.",
       },
       {
         filename: "bobby-mckeys-reviewed-menu-shell.json",
@@ -2701,7 +3095,8 @@ const supplementalSourceProfiles = [
       {
         filename: "klobys-smokehouse-reviewed-delivery-menu.json",
         sourceId: "kloby-s-smokehouse-and-whiskey-bar-laurel-md-dc-metro",
-        sourceLabel: "Reviewed Kloby's Smokehouse public delivery menu evidence.",
+        sourceLabel:
+          "Reviewed Kloby's Smokehouse public delivery menu evidence.",
       },
       {
         filename: "looneys-pub-college-park-reviewed-pdf-menu.json",
@@ -2721,7 +3116,8 @@ const supplementalSourceProfiles = [
       {
         filename: "lao-sze-chuan-north-bethesda-reviewed-delivery-menu.json",
         sourceId: "lao-sze-chuan-north-bethesda-md",
-        sourceLabel: "Reviewed Lao Sze Chuan North Bethesda public ordering menu evidence.",
+        sourceLabel:
+          "Reviewed Lao Sze Chuan North Bethesda public ordering menu evidence.",
       },
       {
         filename: "urban-butcher-reviewed-allmenus-menu.json",
@@ -2729,7 +3125,8 @@ const supplementalSourceProfiles = [
         sourceLabel: "Reviewed Urban Butcher public menu evidence.",
       },
     ],
-    fetch: (source, config) => fetchReviewedOfficialMenuFixtureRecords(source, config),
+    fetch: (source, config) =>
+      fetchReviewedOfficialMenuFixtureRecords(source, config),
   },
 ];
 
@@ -2768,7 +3165,9 @@ function supplementalSourceProfileConfig(profile, source) {
 }
 
 async function fetchConfiguredNutritionixRecords(source) {
-  const configs = Array.isArray(source.nutritionix) ? source.nutritionix : [source.nutritionix];
+  const configs = Array.isArray(source.nutritionix)
+    ? source.nutritionix
+    : [source.nutritionix];
   const combined = { records: [], sources: [] };
 
   for (const config of configs) {
@@ -2777,7 +3176,8 @@ async function fetchConfiguredNutritionixRecords(source) {
     }
 
     const sourceLabel =
-      cleanText(config.sourceLabel) ?? `${source.name} Nutritionix online nutrition guide.`;
+      cleanText(config.sourceLabel) ??
+      `${source.name} Nutritionix online nutrition guide.`;
     let result = { records: [], sources: [] };
 
     if (config.type === "official-json") {
@@ -2809,7 +3209,10 @@ async function fetchConfiguredNutritionixRecords(source) {
   return combined;
 }
 
-async function fetchNutritionixCalculatorJsonRecords(source, { pageUrl, sourceLabel }) {
+async function fetchNutritionixCalculatorJsonRecords(
+  source,
+  { pageUrl, sourceLabel },
+) {
   const page = await fetchSource(pageUrl, source, sourceTypes.api);
   const sources = [page.manifest];
 
@@ -2844,13 +3247,19 @@ async function fetchNutritionixCalculatorJsonRecords(source, { pageUrl, sourceLa
     records: Object.entries(items)
       .map(([id, item]) => {
         const allergenResult = nutritionixCalculatorAllergens(item);
-        const ingredientsText = nutritionixCalculatorIngredientsText(defaultIngredients[id]);
-        const evidenceText = nutritionixCalculatorAllergenEvidenceText(item?.name, allergenResult);
+        const ingredientsText = nutritionixCalculatorIngredientsText(
+          defaultIngredients[id],
+        );
+        const evidenceText = nutritionixCalculatorAllergenEvidenceText(
+          item?.name,
+          allergenResult,
+        );
 
         return createRecord({
           allergenSourceType: allergenSourceTypes.officialAllergenMenu,
           allergens: allergenResult.allergens,
-          category: cleanText(categories?.[item?.category_id]?.name) ?? source.category,
+          category:
+            cleanText(categories?.[item?.category_id]?.name) ?? source.category,
           description: sourceLabel,
           evidenceText: evidenceText ?? sourceLabel,
           imageUrl: null,
@@ -2910,7 +3319,7 @@ function extractNutritionixCalculatorInitUrl(html) {
     ? match[1]
         .replace(/&amp;/g, "&")
         .replace(/&#x2F;/gi, "/")
-        .replace(/&quot;/g, "\"")
+        .replace(/&quot;/g, '"')
     : null;
 }
 
@@ -2941,8 +3350,8 @@ function nutritionixCalculatorAllergens(item = {}) {
     ["allergen_contains_Soy", "soy"],
     ["allergen_contains_Sesame", "sesame"],
   ]);
-	    const direct = [];
-	    const mayContain = [];
+  const direct = [];
+  const mayContain = [];
 
   for (const [field, allergen] of fieldMap) {
     const value = Number(item?.[field]);
@@ -2960,7 +3369,10 @@ function nutritionixCalculatorAllergens(item = {}) {
   };
 }
 
-async function fetchNutritionixSpecialDietsRecords(source, { baseUrl, sourceLabel }) {
+async function fetchNutritionixSpecialDietsRecords(
+  source,
+  { baseUrl, sourceLabel },
+) {
   const allergenTags = [
     ["egg", "allergen_contains_eggs"],
     ["fish", "allergen_contains_fish"],
@@ -2982,7 +3394,12 @@ async function fetchNutritionixSpecialDietsRecords(source, { baseUrl, sourceLabe
     return { records: [], sources };
   }
 
-  const baselineItems = nutritionixBaselineItems(baseline.text, source, baseline.finalUrl, sourceLabel);
+  const baselineItems = nutritionixBaselineItems(
+    baseline.text,
+    source,
+    baseline.finalUrl,
+    sourceLabel,
+  );
 
   if (baselineItems.length === 0) {
     return { records: [], sources };
@@ -2997,14 +3414,24 @@ async function fetchNutritionixSpecialDietsRecords(source, { baseUrl, sourceLabe
 
   const baselineNames = new Set(recordsByName.keys());
   const baselineComparisonNames = new Set(
-    Array.from(baselineNames).map((name) => normalizeNutritionixFilterName(name)),
+    Array.from(baselineNames).map((name) =>
+      normalizeNutritionixFilterName(name),
+    ),
   );
   const allergenFilterCandidates = [];
-  const supportsSpecialDietFilters = !/\/nutrition-calculator\/?$/i.test(new URL(baseUrl).pathname);
+  const supportsSpecialDietFilters = !/\/nutrition-calculator\/?$/i.test(
+    new URL(baseUrl).pathname,
+  );
 
-  for (const [allergen, tag] of supportsSpecialDietFilters ? allergenTags : []) {
+  for (const [allergen, tag] of supportsSpecialDietFilters
+    ? allergenTags
+    : []) {
     const containsUrl = nutritionixSpecialDietsUrl(baseUrl, tag, "2");
-    const fetched = await fetchSourceWithRetry(containsUrl, source, sourceTypes.api);
+    const fetched = await fetchSourceWithRetry(
+      containsUrl,
+      source,
+      sourceTypes.api,
+    );
     sources.push(fetched.manifest);
 
     if (!fetched.ok || fetched.contentKind !== "html") {
@@ -3014,10 +3441,17 @@ async function fetchNutritionixSpecialDietsRecords(source, { baseUrl, sourceLabe
     const filteredItems = extractNutritionixSpecialDietsItems(fetched.text);
     const filteredNames = new Set(filteredItems.map((item) => item.name));
     const normalizedFilteredNames = new Set(
-      Array.from(filteredNames).map((name) => normalizeNutritionixFilterName(name)),
+      Array.from(filteredNames).map((name) =>
+        normalizeNutritionixFilterName(name),
+      ),
     );
 
-    if (nutritionixFilterMatchesBaseline(normalizedFilteredNames, baselineComparisonNames)) {
+    if (
+      nutritionixFilterMatchesBaseline(
+        normalizedFilteredNames,
+        baselineComparisonNames,
+      )
+    ) {
       continue;
     }
 
@@ -3025,8 +3459,10 @@ async function fetchNutritionixSpecialDietsRecords(source, { baseUrl, sourceLabe
       allergen,
       coverageRatio:
         baselineComparisonNames.size > 0
-          ? normalizedSetOverlap(normalizedFilteredNames, baselineComparisonNames) /
-            baselineComparisonNames.size
+          ? normalizedSetOverlap(
+              normalizedFilteredNames,
+              baselineComparisonNames,
+            ) / baselineComparisonNames.size
           : 0,
       items: filteredItems,
       normalizedNames: normalizedFilteredNames,
@@ -3097,10 +3533,14 @@ function nutritionixBaselineItems(html, source, url, sourceLabel) {
 
 function nutritionixFilterMatchesBaseline(filteredNames, baselineNames) {
   if (filteredNames.size !== baselineNames.size) {
-    const overlapCount = Array.from(filteredNames).filter((name) => baselineNames.has(name)).length;
+    const overlapCount = Array.from(filteredNames).filter((name) =>
+      baselineNames.has(name),
+    ).length;
     const largerSize = Math.max(filteredNames.size, baselineNames.size);
-    const baselineCoverage = baselineNames.size > 0 ? overlapCount / baselineNames.size : 0;
-    const filteredCoverage = filteredNames.size > 0 ? overlapCount / filteredNames.size : 0;
+    const baselineCoverage =
+      baselineNames.size > 0 ? overlapCount / baselineNames.size : 0;
+    const filteredCoverage =
+      filteredNames.size > 0 ? overlapCount / filteredNames.size : 0;
 
     return (
       (largerSize > 0 && overlapCount / largerSize >= 0.9) ||
@@ -3122,13 +3562,18 @@ function nutritionixFilterCandidatesLookSmeared(candidates, baselineNames) {
     return false;
   }
 
-  const broadCandidates = candidates.filter((candidate) => candidate.coverageRatio >= 0.45);
+  const broadCandidates = candidates.filter(
+    (candidate) => candidate.coverageRatio >= 0.45,
+  );
 
   if (broadCandidates.length < 4) {
     return false;
   }
 
-  if (broadCandidates.length >= 7 && median(broadCandidates.map((candidate) => candidate.coverageRatio)) >= 0.55) {
+  if (
+    broadCandidates.length >= 7 &&
+    median(broadCandidates.map((candidate) => candidate.coverageRatio)) >= 0.55
+  ) {
     return true;
   }
 
@@ -3136,7 +3581,10 @@ function nutritionixFilterCandidatesLookSmeared(candidates, baselineNames) {
   for (let i = 0; i < broadCandidates.length; i += 1) {
     for (let j = i + 1; j < broadCandidates.length; j += 1) {
       pairwiseSimilarities.push(
-        normalizedSetJaccard(broadCandidates[i].normalizedNames, broadCandidates[j].normalizedNames),
+        normalizedSetJaccard(
+          broadCandidates[i].normalizedNames,
+          broadCandidates[j].normalizedNames,
+        ),
       );
     }
   }
@@ -3195,7 +3643,10 @@ async function fetchSourceWithRetry(url, source, kind, attempts = 3) {
     const result = await fetchSource(url, source, kind);
     lastResult = result;
 
-    if (result.ok || ![429, 500, 502, 503, 504, "error"].includes(result.manifest.status)) {
+    if (
+      result.ok ||
+      ![429, 500, 502, 503, 504, "error"].includes(result.manifest.status)
+    ) {
       return result;
     }
 
@@ -3232,10 +3683,18 @@ function extractNutritionixSpecialDietsItems(html) {
     const name = cleanText(
       link.attr("title") ||
         link.text() ||
-        element.find("td").first().text().replace(/\[more info\]/gi, ""),
+        element
+          .find("td")
+          .first()
+          .text()
+          .replace(/\[more info\]/gi, ""),
     );
 
-    if (!name || /^no results found$/i.test(name) || !isProbablyMenuItemName(name)) {
+    if (
+      !name ||
+      /^no results found$/i.test(name) ||
+      !isProbablyMenuItemName(name)
+    ) {
       return;
     }
 
@@ -3264,9 +3723,14 @@ async function fetchRedRobinOfficialWidgetRecords(source) {
   };
 
   try {
-    const company = await fetchJsonApiSource(`${apiBaseUrl}/company`, source, sourceTypes.api, {
-      extraHeaders: widgetHeaders,
-    });
+    const company = await fetchJsonApiSource(
+      `${apiBaseUrl}/company`,
+      source,
+      sourceTypes.api,
+      {
+        extraHeaders: widgetHeaders,
+      },
+    );
     sources.push(company.manifest);
 
     const companyId = company.json?.data?._id;
@@ -3281,12 +3745,20 @@ async function fetchRedRobinOfficialWidgetRecords(source) {
       "location-id": locationId,
       "x-comp-id": companyId,
     };
-    const preferences = await fetchJsonApiSource(`${apiBaseUrl}/preferences`, source, sourceTypes.api, {
-      extraHeaders: headers,
-    });
+    const preferences = await fetchJsonApiSource(
+      `${apiBaseUrl}/preferences`,
+      source,
+      sourceTypes.api,
+      {
+        extraHeaders: headers,
+      },
+    );
     sources.push(preferences.manifest);
     const allergyNameById = new Map(
-      (preferences.json?.data?.allergies ?? []).map((allergy) => [allergy._id, allergy.name]),
+      (preferences.json?.data?.allergies ?? []).map((allergy) => [
+        allergy._id,
+        allergy.name,
+      ]),
     );
 
     const categories = await fetchJsonApiSource(
@@ -3312,7 +3784,11 @@ async function fetchRedRobinOfficialWidgetRecords(source) {
       });
       params.set(
         "userPreferences",
-        JSON.stringify({ allergies: [], crossContactStatus: false, lifestyleChoices: [] }),
+        JSON.stringify({
+          allergies: [],
+          crossContactStatus: false,
+          lifestyleChoices: [],
+        }),
       );
 
       const categoryItems = await fetchJsonApiSource(
@@ -3323,7 +3799,10 @@ async function fetchRedRobinOfficialWidgetRecords(source) {
       );
       sources.push(categoryItems.manifest);
       const listItemById = new Map(
-        asArray(categoryItems.json?.data?.menuItems).map((item) => [item?._id, item]),
+        asArray(categoryItems.json?.data?.menuItems).map((item) => [
+          item?._id,
+          item,
+        ]),
       );
 
       for (const item of categoryItems.json?.data?.menuItems ?? []) {
@@ -3361,7 +3840,10 @@ async function fetchRedRobinOfficialWidgetRecords(source) {
     sources.push({
       contentKind: "error",
       durationMs: Date.now() - startedAt,
-      error: error instanceof Error ? error.message : "Unknown Red Robin widget error",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Unknown Red Robin widget error",
       finalUrl: widgetUrl,
       kind: sourceTypes.api,
       ok: false,
@@ -3374,7 +3856,13 @@ async function fetchRedRobinOfficialWidgetRecords(source) {
   return { records, sources };
 }
 
-function createRedRobinWidgetRecord({ allergyNameById, categoryName, item, listItem, sourceUrl }) {
+function createRedRobinWidgetRecord({
+  allergyNameById,
+  categoryName,
+  item,
+  listItem,
+  sourceUrl,
+}) {
   const allergens = [];
   const mayContain = [];
 
@@ -3407,7 +3895,9 @@ function createRedRobinWidgetRecord({ allergyNameById, categoryName, item, listI
     (item.ingredients ?? [])
       .flatMap((ingredient) => [
         ingredient.ingredientText,
-        ...(Array.isArray(ingredient.rawMaterials) ? ingredient.rawMaterials : []),
+        ...(Array.isArray(ingredient.rawMaterials)
+          ? ingredient.rawMaterials
+          : []),
       ])
       .filter(Boolean),
   );
@@ -3416,7 +3906,8 @@ function createRedRobinWidgetRecord({ allergyNameById, categoryName, item, listI
     allergenSourceType: allergenSourceTypes.officialAllergenMenu,
     allergens,
     category: categoryName,
-    description: "Official Red Robin interactive allergen and nutrition widget.",
+    description:
+      "Official Red Robin interactive allergen and nutrition widget.",
     imageUrl: item.imageUrl ?? null,
     ingredientsText: ingredientTexts.join("; "),
     isConfigurable: (item.choices ?? []).length > 0,
@@ -3430,7 +3921,9 @@ function createRedRobinWidgetRecord({ allergyNameById, categoryName, item, listI
 
 function redRobinNutritionFacts(item) {
   const facts = {};
-  const calorieText = cleanText(item?.caloriesInfo ?? item?.calorieInfo ?? item?.minmaxCaloriesRange);
+  const calorieText = cleanText(
+    item?.caloriesInfo ?? item?.calorieInfo ?? item?.minmaxCaloriesRange,
+  );
   const calories = parseNutritionNumber(calorieText);
 
   if (calories !== null) {
@@ -3772,7 +4265,9 @@ async function fetchMcdonaldsOfficialNutritionRecords(source) {
   const records = [];
 
   for (const category of productData.categoryList) {
-    const productIds = Array.isArray(category.productId) ? category.productId : [];
+    const productIds = Array.isArray(category.productId)
+      ? category.productId
+      : [];
 
     if (productIds.length === 0) {
       continue;
@@ -3785,7 +4280,11 @@ async function fetchMcdonaldsOfficialNutritionRecords(source) {
       nutrient_req: "Y",
       item: productIds.map((id) => `${id}()-`).join(""),
     });
-    const fetched = await fetchSource(`${endpoint}?${params.toString()}`, source, sourceTypes.api);
+    const fetched = await fetchSource(
+      `${endpoint}?${params.toString()}`,
+      source,
+      sourceTypes.api,
+    );
     sources.push(fetched.manifest);
 
     if (!fetched.ok || fetched.contentKind !== "json") {
@@ -3796,7 +4295,9 @@ async function fetchMcdonaldsOfficialNutritionRecords(source) {
     const items = asArray(parsed?.items?.item);
 
     for (const item of items) {
-      const name = cleanText(item?.item_name ?? item?.item_marketing_name ?? item?.short_name);
+      const name = cleanText(
+        item?.item_name ?? item?.item_marketing_name ?? item?.short_name,
+      );
 
       if (!name || !isProbablyMenuItemName(name)) {
         continue;
@@ -3805,14 +4306,18 @@ async function fetchMcdonaldsOfficialNutritionRecords(source) {
       const allergenText = [
         item.item_allergen,
         item.item_additional_allergen,
-        ...asArray(item.components?.component).map((componentItem) => componentItem.product_allergen),
+        ...asArray(item.components?.component).map(
+          (componentItem) => componentItem.product_allergen,
+        ),
       ]
         .map((value) => (typeof value === "string" ? value : ""))
         .join(" ");
       const ingredientText = [
         item.item_ingredient_statement,
         item.item_additional_text_ingredient_statement,
-        ...asArray(item.components?.component).map((componentItem) => componentItem.ingredient_statement),
+        ...asArray(item.components?.component).map(
+          (componentItem) => componentItem.ingredient_statement,
+        ),
       ]
         .map((value) => (typeof value === "string" ? value : ""))
         .join(" ");
@@ -3829,10 +4334,16 @@ async function fetchMcdonaldsOfficialNutritionRecords(source) {
             ...findDeclaredAllergensOnly(ingredientText),
           ]),
           category: categoryName,
-          description: "Official McDonald's nutrition calculator API.",
+          description:
+            item.item_marketing_description ??
+            item.item_description ??
+            item.description ??
+            null,
           imageUrl: mcdonaldsImageUrl(item),
           ingredientsText: ingredientText,
-          mayContain: findMayContainAllergens(`${allergenText} ${ingredientText}`),
+          mayContain: findMayContainAllergens(
+            `${allergenText} ${ingredientText}`,
+          ),
           name,
           nutritionFacts: nutritionFactsFromObject(item),
           sourceKind: "official-api",
@@ -3894,7 +4405,9 @@ async function fetchJerseyMikesOfficialNutritionRecords(source) {
 
       const parsed = parseJsonLoose(fetched.text);
       const allergenResult = jerseyMikesAllergens(parsed?.product_ingredients);
-      const ingredientsText = jerseyMikesIngredientsText(parsed?.product_ingredients);
+      const ingredientsText = jerseyMikesIngredientsText(
+        parsed?.product_ingredients,
+      );
       const sizeName = cleanText(size.name);
       const name = sizeName ? `${product.name} (${sizeName})` : product.name;
 
@@ -3903,13 +4416,19 @@ async function fetchJerseyMikesOfficialNutritionRecords(source) {
           allergenSourceType: allergenSourceTypes.officialAllergenMenu,
           allergens: allergenResult.allergens,
           category: cleanText(category.name) ?? source.category,
-          description: "Official Jersey Mike's nutrition and allergen API.",
+          description:
+            parsed?.description ??
+            parsed?.product_description ??
+            product.description ??
+            null,
           imageUrl: jerseyMikesImageUrl(size.image ?? product.default_image),
           ingredientsText,
           isConfigurable: true,
           mayContain: allergenResult.mayContain,
           name,
-          nutritionFacts: nutritionFactsFromJerseyMikesIngredients(parsed?.product_ingredients),
+          nutritionFacts: nutritionFactsFromJerseyMikesIngredients(
+            parsed?.product_ingredients,
+          ),
           sourceKind: "official-api",
           sourceUrl: fetched.finalUrl,
           variantGroup: product.id,
@@ -3989,7 +4508,10 @@ function nutritionFactsFromJerseyMikesIngredients(ingredients) {
   }
 
   const roundedFacts = Object.fromEntries(
-    Object.entries(facts).map(([label, value]) => [label, roundNutritionValue(value)]),
+    Object.entries(facts).map(([label, value]) => [
+      label,
+      roundNutritionValue(value),
+    ]),
   );
 
   return normalizeNutritionFacts(roundedFacts);
@@ -4002,7 +4524,9 @@ function roundNutritionValue(value) {
 }
 
 function jerseyMikesImageUrl(image) {
-  return image ? `https://subs.jerseymikes.com/media/static/bedrock/lg/${image}.webp` : null;
+  return image
+    ? `https://subs.jerseymikes.com/media/static/bedrock/lg/${image}.webp`
+    : null;
 }
 
 async function fetchChurchsOfficialMenuRecords(source) {
@@ -4042,7 +4566,10 @@ async function fetchChurchsOfficialMenuRecords(source) {
         detail?.ok && detail.contentKind === "json"
           ? { ...item, ...parseJsonLoose(detail.text) }
           : item;
-      const disclosure = getOfficialFoodDisclosure(detailItem, sourceTypes.menu);
+      const disclosure = getOfficialFoodDisclosure(
+        detailItem,
+        sourceTypes.menu,
+      );
 
       records.push(
         createRecord({
@@ -4052,7 +4579,10 @@ async function fetchChurchsOfficialMenuRecords(source) {
           description:
             cleanText(detailItem?.description) ??
             "Official Church's Texas Chicken mobile menu item.",
-          imageUrl: absolutizeUrl(detailItem?.image ?? detailItem?.thumbnailImage, menu.finalUrl),
+          imageUrl: absolutizeUrl(
+            detailItem?.image ?? detailItem?.thumbnailImage,
+            menu.finalUrl,
+          ),
           ingredientsText: disclosure.ingredientsText,
           isConfigurable: !detailItem?.supportsQuickAdd,
           mayContain: disclosure.mayContain,
@@ -4078,7 +4608,12 @@ async function fetchNutritionixGridRecords(source, { menuUrl, sourceLabel }) {
   }
 
   return {
-    records: extractNutritionixGridItems(fetched.text, source, fetched.finalUrl, sourceLabel),
+    records: extractNutritionixGridItems(
+      fetched.text,
+      source,
+      fetched.finalUrl,
+      sourceLabel,
+    ),
     sources,
   };
 }
@@ -4088,10 +4623,13 @@ function extractNutritionixGridItems(html, source, url, sourceLabel) {
   const headers = $("#inmGrid thead th")
     .toArray()
     .map((header) =>
-      cleanText($(header).find(".tblHeader span").first().text() || $(header).text())
-        ?.replace(/\s*Sort by\s+.*$/i, ""),
+      cleanText(
+        $(header).find(".tblHeader span").first().text() || $(header).text(),
+      )?.replace(/\s*Sort by\s+.*$/i, ""),
     )
-    .map((header, index) => header ?? (index === 0 ? "Item" : `Value ${index}`));
+    .map(
+      (header, index) => header ?? (index === 0 ? "Item" : `Value ${index}`),
+    );
   const records = [];
   let currentCategory = source.category;
 
@@ -4099,7 +4637,8 @@ function extractNutritionixGridItems(html, source, url, sourceLabel) {
     const element = $(row);
 
     if (element.hasClass("subCategory")) {
-      currentCategory = cleanText(element.find("h3").first().text()) ?? source.category;
+      currentCategory =
+        cleanText(element.find("h3").first().text()) ?? source.category;
       return;
     }
 
@@ -4107,22 +4646,35 @@ function extractNutritionixGridItems(html, source, url, sourceLabel) {
     const name = cleanText(
       link.attr("title") ||
         link.text() ||
-        element.find("td").first().text().replace(/\[more info\]/gi, ""),
+        element
+          .find("td")
+          .first()
+          .text()
+          .replace(/\[more info\]/gi, ""),
     );
 
-    if (!name || /^no results found$/i.test(name) || !isProbablyMenuItemName(name)) {
+    if (
+      !name ||
+      /^no results found$/i.test(name) ||
+      !isProbablyMenuItemName(name)
+    ) {
       return;
     }
 
     const nutritionFacts = {};
 
-    const cells = element.find("td.col").length > 0
-      ? element.find("td.col")
-      : element.find("td").slice(1);
+    const cells =
+      element.find("td.col").length > 0
+        ? element.find("td.col")
+        : element.find("td").slice(1);
 
     cells.each((cellIndex, cell) => {
-      const header = normalizeNutritionHeader(headers[cellIndex + 1]) ?? headers[cellIndex + 1] ?? `Value ${cellIndex + 1}`;
-      const value = cleanText($(cell).attr("title")) ?? cleanText($(cell).text());
+      const header =
+        normalizeNutritionHeader(headers[cellIndex + 1]) ??
+        headers[cellIndex + 1] ??
+        `Value ${cellIndex + 1}`;
+      const value =
+        cleanText($(cell).attr("title")) ?? cleanText($(cell).text());
 
       if (value) {
         nutritionFacts[header] = value;
@@ -4154,7 +4706,9 @@ function isProbablyNutritionixGridFoodOrFoodAdjacentRecord(record) {
   const category = cleanText(record?.category) ?? "";
   const text = `${name} ${category}`;
   const categorySuggestsDrinksOnly =
-    /\b(?:beverage|cocktails?|drink|swizzle|wine|beer|spirits?)\b/i.test(category);
+    /\b(?:beverage|cocktails?|drink|swizzle|wine|beer|spirits?)\b/i.test(
+      category,
+    );
   const nameSuggestsAlcoholOnly =
     /\b(?:bloody mary|cosmo|cosmopolitan|gin|manhattan|margarita|martini|mezcal|mojito|negroni|rum|sangria|spritz|tequila|vodka|whisk(?:e)?y|wine)\b/i.test(
       name,
@@ -4167,7 +4721,10 @@ function isProbablyNutritionixGridFoodOrFoodAdjacentRecord(record) {
   return hasFoodLanguage(text);
 }
 
-async function fetchNutritionixOfficialRecords(source, { menuUrl, sourceLabel }) {
+async function fetchNutritionixOfficialRecords(
+  source,
+  { menuUrl, sourceLabel },
+) {
   const fetched = await fetchSource(menuUrl, source, sourceTypes.api);
   const sources = [fetched.manifest];
 
@@ -4178,7 +4735,10 @@ async function fetchNutritionixOfficialRecords(source, { menuUrl, sourceLabel })
   const parsed = parseJsonLoose(fetched.text);
   const items = Object.values(parsed?.items ?? {});
   const categoryById = new Map(
-    (parsed?.categories ?? []).map((category) => [category.id, cleanText(category.name)]),
+    (parsed?.categories ?? []).map((category) => [
+      category.id,
+      cleanText(category.name),
+    ]),
   );
 
   return {
@@ -4197,9 +4757,11 @@ async function fetchNutritionixOfficialRecords(source, { menuUrl, sourceLabel })
           allergens: allergenResult.allergens,
           category: categoryById.get(item.categoryId) ?? source.category,
           description: sourceLabel,
-          imageUrl: item.imageUrl ?? item.largeImageUrl ?? item.smallImageUrl ?? null,
+          imageUrl:
+            item.imageUrl ?? item.largeImageUrl ?? item.smallImageUrl ?? null,
           ingredientsText,
-          isConfigurable: Array.isArray(item.modifiers) && item.modifiers.length > 0,
+          isConfigurable:
+            Array.isArray(item.modifiers) && item.modifiers.length > 0,
           mayContain: allergenResult.mayContain,
           name: item.name,
           nutritionFacts: nutritionFactsFromObject(item),
@@ -4247,7 +4809,10 @@ function nutritionixAllergens(allergens = {}) {
   };
 }
 
-async function fetchRbiSanityOfficialRecords(source, { endpoint, rootField, sourceLabel }) {
+async function fetchRbiSanityOfficialRecords(
+  source,
+  { endpoint, rootField, sourceLabel },
+) {
   const publicMenu = await fetchRbiSanityPublicMenuEntries(source, endpoint);
   const query = `query {
     ${rootField}(limit: 2500) {
@@ -4299,7 +4864,9 @@ async function fetchRbiSanityOfficialRecords(source, { endpoint, rootField, sour
       productHierarchy { L1 L2 L3 L4 L5 }
     }
   }`;
-  const fetched = await fetchJsonPostSource(endpoint, source, sourceTypes.api, { query });
+  const fetched = await fetchJsonPostSource(endpoint, source, sourceTypes.api, {
+    query,
+  });
   const sources = [...publicMenu.sources, fetched.manifest];
 
   if (!fetched.ok || fetched.contentKind !== "json") {
@@ -4345,10 +4912,13 @@ async function fetchRbiSanityOfficialRecords(source, { endpoint, rootField, sour
           allergens: allergenResult.allergens,
           category: titleCase(category),
           description: sourceLabel,
-          imageUrl: item?.image?.asset?.url ?? item?.images?.app?.asset?.url ?? null,
+          imageUrl:
+            item?.image?.asset?.url ?? item?.images?.app?.asset?.url ?? null,
           mayContain: allergenResult.mayContain,
           name,
-          nutritionFacts: nutritionFactsFromRbiNutrition(item.nutritionWithModifiers ?? item.nutrition),
+          nutritionFacts: nutritionFactsFromRbiNutrition(
+            item.nutritionWithModifiers ?? item.nutrition,
+          ),
           sourceKind: "official-api",
           sourceUrl: endpoint,
           variantGroup: item._id,
@@ -4401,7 +4971,9 @@ async function fetchRbiSanityPublicMenuEntries(source, endpoint) {
       }
     }
   }`;
-  const fetched = await fetchJsonPostSource(endpoint, source, sourceTypes.api, { query });
+  const fetched = await fetchJsonPostSource(endpoint, source, sourceTypes.api, {
+    query,
+  });
   const sources = [fetched.manifest];
 
   if (!fetched.ok || fetched.contentKind !== "json") {
@@ -4430,7 +5002,8 @@ function collectRbiPublicMenuEntry(entries, node, category) {
       return;
     }
 
-    const nextCategory = cleanText(node?.name?.en ?? node?.internalName) ?? category;
+    const nextCategory =
+      cleanText(node?.name?.en ?? node?.internalName) ?? category;
 
     for (const option of asArray(node.options)) {
       collectRbiPublicMenuEntry(entries, option, nextCategory);
@@ -4546,7 +5119,12 @@ async function fetchWhataburgerOfficialMenuRecords(source) {
   }
 
   const parsed = parseJsonLoose(fetched.text);
-  const ingredientById = new Map(asArray(parsed.ingredients).map((ingredient) => [ingredient.id, ingredient]));
+  const ingredientById = new Map(
+    asArray(parsed.ingredients).map((ingredient) => [
+      ingredient.id,
+      ingredient,
+    ]),
+  );
   const modifierGroupById = new Map(
     asArray(parsed.modifierGroups).map((group) => [group.id, group]),
   );
@@ -4569,16 +5147,25 @@ async function fetchWhataburgerOfficialMenuRecords(source) {
           cleanText(recipe.longDescription) ??
           whataburgerIngredientsText(ingredientRefs, ingredientById);
         const allergens = ingredientRefs.flatMap((ref) =>
-          asArray(ingredientById.get(ref.ingredientId)?.allergens).map((allergen) => allergen?.slug ?? allergen?.name),
+          asArray(ingredientById.get(ref.ingredientId)?.allergens).map(
+            (allergen) => allergen?.slug ?? allergen?.name,
+          ),
         );
-        const nutritionFacts = nutritionFactsFromWhataburgerIngredients(ingredientRefs, ingredientById);
+        const nutritionFacts = nutritionFactsFromWhataburgerIngredients(
+          ingredientRefs,
+          ingredientById,
+        );
 
         records.push(
           createRecord({
             allergenSourceType: allergenSourceTypes.officialAllergenMenu,
             allergens: normalizeProviderAllergens(allergens),
             category: cleanText(category.name) ?? source.category,
-            description: "Official Whataburger menu API ingredient allergen data.",
+            description:
+              recipe.description ??
+              recipe.shortDescription ??
+              recipe.longDescription ??
+              null,
             imageUrl: whataburgerImageUrl(recipe.imageUrl),
             ingredientsText,
             isConfigurable: asArray(recipe.recipeModifiers).length > 0,
@@ -4604,7 +5191,8 @@ function whataburgerDefaultModifierIngredients(recipe, modifierGroupById) {
     const group = modifierGroupById.get(recipeModifier.modifierGroupId);
     const modifier = asArray(group?.modifiers).find(
       (candidate) =>
-        candidate.id === recipeModifier.defaultModifierId || candidate.isDefaultSelected,
+        candidate.id === recipeModifier.defaultModifierId ||
+        candidate.isDefaultSelected,
     );
 
     ingredientRefs.push(...asArray(modifier?.ingredients));
@@ -4617,9 +5205,10 @@ function whataburgerIngredientsText(ingredientRefs, ingredientById) {
   const names = uniqueStrings(
     ingredientRefs
       .map((ref) => ingredientById.get(ref.ingredientId))
-      .map((ingredient) =>
-        cleanText(ingredient?.name ?? ingredient?.displayName) ??
-        titleCase(String(ingredient?.slug ?? "").replace(/-/g, " ")),
+      .map(
+        (ingredient) =>
+          cleanText(ingredient?.name ?? ingredient?.displayName) ??
+          titleCase(String(ingredient?.slug ?? "").replace(/-/g, " ")),
       )
       .filter((name) => !/\b(?:calories?|allergen placeholder)\b/i.test(name))
       .filter(Boolean),
@@ -4628,7 +5217,10 @@ function whataburgerIngredientsText(ingredientRefs, ingredientById) {
   return names.length > 0 ? names.join(", ") : null;
 }
 
-function nutritionFactsFromWhataburgerIngredients(ingredientRefs, ingredientById) {
+function nutritionFactsFromWhataburgerIngredients(
+  ingredientRefs,
+  ingredientById,
+) {
   const fieldLabels = new Map([
     ["calories", "Calories"],
     ["caloriesFromFat", "Calories from Fat"],
@@ -4650,7 +5242,9 @@ function nutritionFactsFromWhataburgerIngredients(ingredientRefs, ingredientById
   for (const ref of ingredientRefs) {
     const ingredient = ingredientById.get(ref.ingredientId);
     const nutrition = ingredient?.nutritionInfo;
-    const multiplier = Number.isFinite(Number(ref.multiplier)) ? Number(ref.multiplier) : 1;
+    const multiplier = Number.isFinite(Number(ref.multiplier))
+      ? Number(ref.multiplier)
+      : 1;
 
     if (!nutrition || typeof nutrition !== "object") {
       continue;
@@ -4667,7 +5261,10 @@ function nutritionFactsFromWhataburgerIngredients(ingredientRefs, ingredientById
 
   return normalizeNutritionFacts(
     Object.fromEntries(
-      Object.entries(facts).map(([label, value]) => [label, roundNutritionValue(value)]),
+      Object.entries(facts).map(([label, value]) => [
+        label,
+        roundNutritionValue(value),
+      ]),
     ),
   );
 }
@@ -4705,12 +5302,17 @@ async function fetchWendysOfficialNutritionRecords(source) {
     return { records: [], sources };
   }
 
-  const salesById = new Map(menu.salesItems.map((item) => [item.salesItemId, item]));
+  const salesById = new Map(
+    menu.salesItems.map((item) => [item.salesItemId, item]),
+  );
   const categoryByMenuItemId = new Map();
 
   for (const subMenu of menu.subMenus ?? []) {
     for (const menuItemId of subMenu.menuItems ?? []) {
-      categoryByMenuItemId.set(menuItemId, cleanText(subMenu.displayName ?? subMenu.name));
+      categoryByMenuItemId.set(
+        menuItemId,
+        cleanText(subMenu.displayName ?? subMenu.name),
+      );
     }
   }
 
@@ -4740,7 +5342,11 @@ async function fetchWendysOfficialNutritionRecords(source) {
     for (const { fetched, item, nutrition, salesItem } of batchResults) {
       sources.push(fetched.manifest);
 
-      if (!fetched.ok || nutrition?.serviceStatus !== "SUCCESS" || !nutrition.data) {
+      if (
+        !fetched.ok ||
+        nutrition?.serviceStatus !== "SUCCESS" ||
+        !nutrition.data
+      ) {
         continue;
       }
 
@@ -4752,8 +5358,8 @@ async function fetchWendysOfficialNutritionRecords(source) {
             categoryByMenuItemId.get(item.menuItemId) ??
             cleanText(salesItem.categoryName) ??
             source.category,
-          description: "Official Wendy's menu and nutrition API.",
-          imageUrl: null,
+          description: item.description ?? salesItem.description ?? null,
+          imageUrl: wendysImageUrl(item.baseImageName ?? salesItem.productId),
           ingredientsText: stringifySelectedFields(nutrition.data, [
             "ingredients",
             "ingredientStatement",
@@ -4772,15 +5378,33 @@ async function fetchWendysOfficialNutritionRecords(source) {
   return { records, sources };
 }
 
+export function wendysImageUrl(imageId) {
+  const cleaned = cleanText(imageId);
+
+  return cleaned
+    ? `https://app.wendys.com/unified/assets/menu/pg-cropped/${encodeURIComponent(cleaned)}_small_US_en.png`
+    : null;
+}
+
 async function fetchStarbucksOfficialNutritionRecords(source) {
   const menuUrl = "https://www.starbucks.com/apiproxy/v1/ordering/menu";
   const appMenuUrl = "https://app.starbucks.com/apiproxy/v1/ordering/menu";
   const sources = [];
-  let fetchedMenu = await fetchStarbucksOfficialSourceWithRetry(menuUrl, source, sourceTypes.api, 2);
+  let fetchedMenu = await fetchStarbucksOfficialSourceWithRetry(
+    menuUrl,
+    source,
+    sourceTypes.api,
+    2,
+  );
   sources.push(fetchedMenu.manifest);
 
   if (!fetchedMenu.ok) {
-    fetchedMenu = await fetchStarbucksOfficialSourceWithRetry(appMenuUrl, source, sourceTypes.api, 2);
+    fetchedMenu = await fetchStarbucksOfficialSourceWithRetry(
+      appMenuUrl,
+      source,
+      sourceTypes.api,
+      2,
+    );
     sources.push(fetchedMenu.manifest);
   }
 
@@ -4814,11 +5438,19 @@ async function fetchStarbucksOfficialNutritionRecords(source) {
   }
 
   const records = [];
-  const uniqueProducts = uniqueBy(products, (product) => starbucksProductKey(product));
-  const liveProducts = browserSnapshot.products.length > 0 || fetchedMenu?.ok ? uniqueProducts : [];
+  const uniqueProducts = uniqueBy(products, (product) =>
+    starbucksProductKey(product),
+  );
+  const liveProducts =
+    browserSnapshot.products.length > 0 || fetchedMenu?.ok
+      ? uniqueProducts
+      : [];
 
   if (detailByKey.size === 0 && liveProducts.length > 0) {
-    const directDetails = await fetchStarbucksDirectDetails(liveProducts, source);
+    const directDetails = await fetchStarbucksDirectDetails(
+      liveProducts,
+      source,
+    );
     detailByKey = directDetails.detailByKey;
     sources.push(...directDetails.sources);
   }
@@ -4859,7 +5491,12 @@ async function fetchStarbucksOfficialNutritionRecords(source) {
       continue;
     }
 
-      const fetched = await fetchStarbucksOfficialSourceWithRetry(url, source, sourceTypes.allergen, 2);
+    const fetched = await fetchStarbucksOfficialSourceWithRetry(
+      url,
+      source,
+      sourceTypes.allergen,
+      2,
+    );
     sources.push(fetched.manifest);
 
     if (!fetched.ok || fetched.contentKind !== "html") {
@@ -4905,7 +5542,9 @@ async function fetchStarbucksOfficialBrowserSnapshot(source) {
     const page = await browser.newPage({ userAgent: browserUserAgent });
 
     page.on("response", async (response) => {
-      if (response.url() !== "https://www.starbucks.com/apiproxy/v1/ordering/menu") {
+      if (
+        response.url() !== "https://www.starbucks.com/apiproxy/v1/ordering/menu"
+      ) {
         return;
       }
 
@@ -4936,11 +5575,13 @@ async function fetchStarbucksOfficialBrowserSnapshot(source) {
       await page.waitForTimeout(500);
     }
 
-    const products = uniqueBy(
-      extractStarbucksProducts(menuJson),
-      (product) => starbucksProductKey(product),
+    const products = uniqueBy(extractStarbucksProducts(menuJson), (product) =>
+      starbucksProductKey(product),
     );
-    const menuBuffer = Buffer.from(JSON.stringify(menuJson ?? {}, null, 2), "utf8");
+    const menuBuffer = Buffer.from(
+      JSON.stringify(menuJson ?? {}, null, 2),
+      "utf8",
+    );
     const menuHash = sha256(menuBuffer);
     const menuRawPath = writeRaw
       ? await writeRawSource(source.id, `${menuHash}.json`, menuBuffer)
@@ -4951,13 +5592,17 @@ async function fetchStarbucksOfficialBrowserSnapshot(source) {
       contentKind: "json",
       contentType: menuResponseMeta?.contentType ?? "application/json",
       durationMs: Date.now() - startedAt,
-      finalUrl: menuResponseMeta?.finalUrl ?? "https://www.starbucks.com/apiproxy/v1/ordering/menu",
+      finalUrl:
+        menuResponseMeta?.finalUrl ??
+        "https://www.starbucks.com/apiproxy/v1/ordering/menu",
       hash: menuHash,
       kind: sourceTypes.api,
       ok: products.length > 0,
       rawPath: menuRawPath ? path.relative(projectRoot, menuRawPath) : null,
       restaurantId: source.id,
-      status: menuResponseMeta?.status ?? (products.length > 0 ? 200 : "browser-error"),
+      status:
+        menuResponseMeta?.status ??
+        (products.length > 0 ? 200 : "browser-error"),
       url: "https://www.starbucks.com/apiproxy/v1/ordering/menu",
     };
 
@@ -5006,7 +5651,10 @@ async function fetchStarbucksOfficialBrowserSnapshot(source) {
             });
           } catch (error) {
             results.push({
-              error: error instanceof Error ? error.message : "Unknown Starbucks detail fetch error",
+              error:
+                error instanceof Error
+                  ? error.message
+                  : "Unknown Starbucks detail fetch error",
               key: request.key,
               ok: false,
               status: "error",
@@ -5028,7 +5676,9 @@ async function fetchStarbucksOfficialBrowserSnapshot(source) {
       }
 
       const parsed = parseJsonLoose(response.text);
-      const productDetail = Array.isArray(parsed?.products) ? parsed.products[0] : null;
+      const productDetail = Array.isArray(parsed?.products)
+        ? parsed.products[0]
+        : null;
       const detail = parseStarbucksProductDetail(productDetail);
 
       if (detail) {
@@ -5056,18 +5706,24 @@ async function fetchStarbucksOfficialBrowserSnapshot(source) {
     const okDetails = detailResponses.filter((response) => response.ok).length;
     const detailsManifest = {
       browserFetched: true,
-      bytes: detailResponses.reduce((sum, response) => sum + Buffer.byteLength(response.text ?? ""), 0),
+      bytes: detailResponses.reduce(
+        (sum, response) => sum + Buffer.byteLength(response.text ?? ""),
+        0,
+      ),
       contentKind: "json",
       contentType: "application/json",
       detailCount: detailResponses.length,
       durationMs: Date.now() - detailStartedAt,
-      finalUrl: "https://www.starbucks.com/apiproxy/v1/ordering/{productNumber}/{formCode}",
+      finalUrl:
+        "https://www.starbucks.com/apiproxy/v1/ordering/{productNumber}/{formCode}",
       hash: detailsHash,
       kind: sourceTypes.allergen,
       ok: okDetails === detailRequests.length,
       okDetailCount: okDetails,
       parsedDetailCount: detailByKey.size,
-      rawPath: detailsRawPath ? path.relative(projectRoot, detailsRawPath) : null,
+      rawPath: detailsRawPath
+        ? path.relative(projectRoot, detailsRawPath)
+        : null,
       restaurantId: source.id,
       status: okDetails === detailRequests.length ? 200 : "partial",
       url: "https://www.starbucks.com/apiproxy/v1/ordering/{productNumber}/{formCode}",
@@ -5087,7 +5743,10 @@ async function fetchStarbucksOfficialBrowserSnapshot(source) {
           browserFetched: true,
           contentKind: "error",
           durationMs: Date.now() - startedAt,
-          error: error instanceof Error ? error.message : "Unknown Starbucks browser fetch error",
+          error:
+            error instanceof Error
+              ? error.message
+              : "Unknown Starbucks browser fetch error",
           finalUrl: menuUrl,
           kind: sourceTypes.api,
           ok: false,
@@ -5113,7 +5772,9 @@ function failedConfiguredMenuFallbackUrls(source, entry) {
     return [];
   }
 
-  const normalizedDomain = domain.replace(/^https?:\/\//i, "").replace(/\/.*$/, "");
+  const normalizedDomain = domain
+    .replace(/^https?:\/\//i, "")
+    .replace(/\/.*$/, "");
 
   if (!normalizedDomain || !normalizedDomain.includes(".")) {
     return [];
@@ -5133,11 +5794,15 @@ async function fetchStarbucksKnownGoodNutritionRecords(source) {
   );
   const fixture = await readJsonIfExists(fixturePath);
   const records = asArray(fixture?.items)
-    .filter((item) => item?.nutritionFacts && Object.keys(item.nutritionFacts).length > 0)
+    .filter(
+      (item) =>
+        item?.nutritionFacts && Object.keys(item.nutritionFacts).length > 0,
+    )
     .map((item) =>
       createRecord({
         allergenSourceType:
-          item.allergenSourceType ?? allergenSourceTypes.officialProductAllergenSection,
+          item.allergenSourceType ??
+          allergenSourceTypes.officialProductAllergenSection,
         allergens: item.allergens ?? [],
         category: item.category ?? source.category,
         description:
@@ -5150,7 +5815,9 @@ async function fetchStarbucksKnownGoodNutritionRecords(source) {
         name: item.name,
         nutritionFacts: item.nutritionFacts,
         sourceKind: "official-api",
-        sourceUrl: item.sourceUrls?.[0] ?? "data/fixtures/starbucks-official-nutrition-snapshot.json",
+        sourceUrl:
+          item.sourceUrls?.[0] ??
+          "data/fixtures/starbucks-official-nutrition-snapshot.json",
         variantGroup: item.variantGroup ?? item.category ?? source.category,
       }),
     );
@@ -5172,16 +5839,26 @@ async function fetchStarbucksKnownGoodNutritionRecords(source) {
   };
 }
 
-async function fetchKnownGoodNutritionFixtureRecords(source, { filename, sourceLabel }) {
-  const fixture = await readJsonIfExists(path.join(projectRoot, "data/fixtures", filename));
+async function fetchKnownGoodNutritionFixtureRecords(
+  source,
+  { filename, sourceLabel },
+) {
+  const fixture = await readJsonIfExists(
+    path.join(projectRoot, "data/fixtures", filename),
+  );
   const records = asArray(fixture?.items)
-    .filter((item) => item?.nutritionFacts && Object.keys(item.nutritionFacts).length > 0)
+    .filter(
+      (item) =>
+        item?.nutritionFacts && Object.keys(item.nutritionFacts).length > 0,
+    )
     .map((item) =>
       createRecord({
-        allergenSourceType: item.allergenSourceType ?? allergenSourceTypes.unavailable,
+        allergenSourceType:
+          item.allergenSourceType ?? allergenSourceTypes.unavailable,
         allergens: item.allergens ?? [],
         category: item.category ?? source.category,
-        description: cleanText(item.description) ?? sourceLabel,
+          description:
+            item.description ?? item.longDescription ?? sourceLabel,
         imageUrl: item.imageUrl ?? null,
         ingredientsText: item.ingredientsText,
         mayContain: item.mayContain ?? [],
@@ -5210,7 +5887,10 @@ async function fetchKnownGoodNutritionFixtureRecords(source, { filename, sourceL
   };
 }
 
-async function fetchSupabaseMenuCategoryRecords(source, { apiUrl, anonKey, sourceLabel }) {
+async function fetchSupabaseMenuCategoryRecords(
+  source,
+  { apiUrl, anonKey, sourceLabel },
+) {
   const headers = {
     accept: "application/json",
     apikey: anonKey,
@@ -5245,7 +5925,8 @@ async function fetchSupabaseMenuCategoryRecords(source, { apiUrl, anonKey, sourc
   const records = asArray(categories).flatMap((category) => {
     const categoryName = cleanText(category?.name);
     const menuType = cleanText(category?.menu_type);
-    const categoryLabel = [menuType, categoryName].filter(Boolean).join(" - ") || source.category;
+    const categoryLabel =
+      [menuType, categoryName].filter(Boolean).join(" - ") || source.category;
 
     if (isSupabaseMenuBeverageCategory(categoryName, menuType)) {
       return [];
@@ -5259,7 +5940,9 @@ async function fetchSupabaseMenuCategoryRecords(source, { apiUrl, anonKey, sourc
           return null;
         }
 
-        const description = cleanText([item?.description, item?.price].filter(Boolean).join(" "));
+        const description = cleanText(
+          [item?.description, item?.price].filter(Boolean).join(" "),
+        );
         return createRecord({
           allergenSourceType: allergenSourceTypes.unavailable,
           allergens: [],
@@ -5297,15 +5980,21 @@ async function fetchSupabaseMenuCategoryRecords(source, { apiUrl, anonKey, sourc
 
 function isSupabaseMenuBeverageCategory(categoryName, menuType) {
   const text = `${categoryName ?? ""} ${menuType ?? ""}`;
-  return /^(?:drinks?|beverages?|bar|beer|wine|cocktails?|mocktails?)$/i.test(
-    String(categoryName ?? "").trim(),
-  ) || /\b(?:beverage|beer|wine|cocktail|mocktail|drinks?)\b/i.test(text);
+  return (
+    /^(?:drinks?|beverages?|bar|beer|wine|cocktails?|mocktails?)$/i.test(
+      String(categoryName ?? "").trim(),
+    ) || /\b(?:beverage|beer|wine|cocktail|mocktail|drinks?)\b/i.test(text)
+  );
 }
 
 function isSupabaseMenuBeverageItem(name, categoryName, menuType) {
   const text = `${name ?? ""} ${categoryName ?? ""} ${menuType ?? ""}`;
 
-  if (/\b(?:draft beers?|bottled beers?|wine|cocktails?|mocktails?|sangria|mimosa|martini|spritz)\b/i.test(text)) {
+  if (
+    /\b(?:draft beers?|bottled beers?|wine|cocktails?|mocktails?|sangria|mimosa|martini|spritz)\b/i.test(
+      text,
+    )
+  ) {
     return true;
   }
 
@@ -5359,7 +6048,9 @@ async function fetchMenufyCategoryApiRecords(source, { apiUrl, sourceLabel }) {
         const price = Number.isFinite(Number(item?.itemPrice))
           ? `$${Number(item.itemPrice).toFixed(2)}`
           : null;
-        const description = cleanText([item?.description, price].filter(Boolean).join(" "));
+        const description = cleanText(
+          [item?.description, price].filter(Boolean).join(" "),
+        );
 
         return createRecord({
           allergenSourceType: allergenSourceTypes.unavailable,
@@ -5404,11 +6095,18 @@ function isMenufyBeverageCategory(categoryName) {
 
 function isMenufyBeverageItem(name, categoryName) {
   const text = `${name ?? ""} ${categoryName ?? ""}`;
-  return /\b(?:beverage|beer|wine|cocktail|mocktail|soda|tea|coffee|lemonade)\b/i.test(text);
+  return /\b(?:beverage|beer|wine|cocktail|mocktail|soda|tea|coffee|lemonade)\b/i.test(
+    text,
+  );
 }
 
-async function fetchReviewedOfficialMenuFixtureRecords(source, { filename, sourceLabel }) {
-  const fixture = await readJsonIfExists(path.join(projectRoot, "data/fixtures", filename));
+async function fetchReviewedOfficialMenuFixtureRecords(
+  source,
+  { filename, sourceLabel },
+) {
+  const fixture = await readJsonIfExists(
+    path.join(projectRoot, "data/fixtures", filename),
+  );
   const sourceUrls = asArray(fixture?.sourceUrls).filter(Boolean);
   const records = asArray(fixture?.items)
     .map((item) => {
@@ -5421,7 +6119,8 @@ async function fetchReviewedOfficialMenuFixtureRecords(source, { filename, sourc
       return createRecord({
         allergenSourceType:
           item.allergenSourceType ??
-          (asArray(item.allergens).length > 0 || asArray(item.mayContain).length > 0
+          (asArray(item.allergens).length > 0 ||
+          asArray(item.mayContain).length > 0
             ? allergenSourceTypes.officialProductAllergenSection
             : allergenSourceTypes.unavailable),
         allergens: asArray(item.allergens),
@@ -5431,8 +6130,12 @@ async function fetchReviewedOfficialMenuFixtureRecords(source, { filename, sourc
         ingredientsText: null,
         mayContain: asArray(item.mayContain),
         name,
-        sourceKind: item.sourceKind ?? fixture?.sourceKind ?? "reviewed-official-image-menu",
-        sourceUrl: item.sourceUrl ?? sourceUrls[0] ?? `data/fixtures/${filename}`,
+        sourceKind:
+          item.sourceKind ??
+          fixture?.sourceKind ??
+          "reviewed-official-image-menu",
+        sourceUrl:
+          item.sourceUrl ?? sourceUrls[0] ?? `data/fixtures/${filename}`,
         variantGroup: cleanText(item.category) ?? source.category,
       });
     })
@@ -5477,12 +6180,20 @@ async function fetchStarbucksDirectDetails(products, source) {
 
     const urls = uniqueStrings([
       primaryUrl,
-      primaryUrl.replace("https://www.starbucks.com/", "https://app.starbucks.com/"),
+      primaryUrl.replace(
+        "https://www.starbucks.com/",
+        "https://app.starbucks.com/",
+      ),
     ]);
     let parsedDetail = null;
 
     for (const url of urls) {
-      const fetched = await fetchStarbucksOfficialSourceWithRetry(url, source, sourceTypes.api, 2);
+      const fetched = await fetchStarbucksOfficialSourceWithRetry(
+        url,
+        source,
+        sourceTypes.api,
+        2,
+      );
       sources.push(fetched.manifest);
 
       if (!fetched.ok || fetched.contentKind !== "json") {
@@ -5491,10 +6202,15 @@ async function fetchStarbucksDirectDetails(products, source) {
       }
 
       const parsed = parseJsonLoose(fetched.text);
-      const productDetail = Array.isArray(parsed?.products) ? parsed.products[0] : null;
+      const productDetail = Array.isArray(parsed?.products)
+        ? parsed.products[0]
+        : null;
       parsedDetail = parseStarbucksProductDetail(productDetail);
 
-      if (parsedDetail?.nutritionFacts && Object.keys(parsedDetail.nutritionFacts).length > 0) {
+      if (
+        parsedDetail?.nutritionFacts &&
+        Object.keys(parsedDetail.nutritionFacts).length > 0
+      ) {
         consecutiveFailures = 0;
         break;
       }
@@ -5502,7 +6218,10 @@ async function fetchStarbucksDirectDetails(products, source) {
       consecutiveFailures += 1;
     }
 
-    if (parsedDetail?.nutritionFacts && Object.keys(parsedDetail.nutritionFacts).length > 0) {
+    if (
+      parsedDetail?.nutritionFacts &&
+      Object.keys(parsedDetail.nutritionFacts).length > 0
+    ) {
       detailByKey.set(key, parsedDetail);
     }
 
@@ -5518,7 +6237,9 @@ function starbucksProductKey(product) {
   const productNumber = product?.productNumber;
   const formCode = cleanText(product?.formCode);
 
-  return productNumber && formCode ? `${productNumber}:${formCode.toLowerCase()}` : null;
+  return productNumber && formCode
+    ? `${productNumber}:${formCode.toLowerCase()}`
+    : null;
 }
 
 function starbucksDetailApiUrl(product) {
@@ -5549,12 +6270,12 @@ function parseStarbucksProductDetail(product) {
 
   const sizes = Array.isArray(product.sizes) ? product.sizes : [];
   const allergenTexts = uniqueStrings(
-    sizes
-      .map((size) => cleanText(size?.allergens?.text))
-      .filter(Boolean),
+    sizes.map((size) => cleanText(size?.allergens?.text)).filter(Boolean),
   );
   const ingredientTexts = uniqueStrings(
-    sizes.flatMap((size) => flattenStarbucksIngredients(size?.ingredients)).filter(Boolean),
+    sizes
+      .flatMap((size) => flattenStarbucksIngredients(size?.ingredients))
+      .filter(Boolean),
   );
   const defaultSize = sizes.find((size) => size?.default) ?? sizes[0];
 
@@ -5563,7 +6284,9 @@ function parseStarbucksProductDetail(product) {
     description: cleanText(product.description),
     imageURL: product.imageURL ?? null,
     ingredientsText: ingredientTexts.join(", "),
-    nutritionFacts: nutritionFactsFromStarbucksNutrition(defaultSize?.nutrition),
+    nutritionFacts: nutritionFactsFromStarbucksNutrition(
+      defaultSize?.nutrition,
+    ),
     productType: product.productType ?? null,
   };
 }
@@ -5591,13 +6314,21 @@ function flattenStarbucksIngredients(ingredients) {
   return names;
 }
 
-async function fetchStarbucksOfficialSource(url, source, kind, requestTimeoutMs = timeoutMs) {
+async function fetchStarbucksOfficialSource(
+  url,
+  source,
+  kind,
+  requestTimeoutMs = timeoutMs,
+) {
   const startedAt = Date.now();
 
   try {
     const response = await fetchWithTimeout(url, {
       extraHeaders: {
-        Accept: kind === sourceTypes.api ? "application/json" : "text/html,application/xhtml+xml",
+        Accept:
+          kind === sourceTypes.api
+            ? "application/json"
+            : "text/html,application/xhtml+xml",
         "Accept-Language": "en-US",
         Referer: "https://www.starbucks.com/menu",
       },
@@ -5609,7 +6340,11 @@ async function fetchStarbucksOfficialSource(url, source, kind, requestTimeoutMs 
     const contentKind = detectContentKind(url, contentType, buffer);
     const hash = sha256(buffer);
     const rawPath = writeRaw
-      ? await writeRawSource(source.id, `${hash}.${extensionFor(url, contentType)}`, buffer)
+      ? await writeRawSource(
+          source.id,
+          `${hash}.${extensionFor(url, contentType)}`,
+          buffer,
+        )
       : null;
 
     return {
@@ -5639,7 +6374,10 @@ async function fetchStarbucksOfficialSource(url, source, kind, requestTimeoutMs 
       manifest: {
         contentKind: "error",
         durationMs: Date.now() - startedAt,
-        error: error instanceof Error ? error.message : "Unknown Starbucks fetch error",
+        error:
+          error instanceof Error
+            ? error.message
+            : "Unknown Starbucks fetch error",
         finalUrl: url,
         kind,
         ok: false,
@@ -5653,13 +6391,21 @@ async function fetchStarbucksOfficialSource(url, source, kind, requestTimeoutMs 
   }
 }
 
-async function fetchStarbucksOfficialSourceWithRetry(url, source, kind, attempts = 3) {
+async function fetchStarbucksOfficialSourceWithRetry(
+  url,
+  source,
+  kind,
+  attempts = 3,
+) {
   let last = null;
 
   for (let attempt = 0; attempt < attempts; attempt += 1) {
     last = await fetchStarbucksOfficialSource(url, source, kind, 5000);
 
-    if (last.ok || ![403, 429, 500, 502, 503, 504, "error"].includes(last.manifest.status)) {
+    if (
+      last.ok ||
+      ![403, 429, 500, 502, 503, 504, "error"].includes(last.manifest.status)
+    ) {
       return last;
     }
 
@@ -5678,11 +6424,16 @@ function extractStarbucksProducts(parsed) {
     }
 
     const nextCategory =
-      typeof node.name === "string" && Array.isArray(node.products) ? node.name : category;
+      typeof node.name === "string" && Array.isArray(node.products)
+        ? node.name
+        : category;
 
     if (Array.isArray(node.products)) {
       for (const product of node.products) {
-        products.push({ ...product, category: nextCategory ?? product.category });
+        products.push({
+          ...product,
+          category: nextCategory ?? product.category,
+        });
       }
     }
 
@@ -5698,7 +6449,9 @@ function extractStarbucksProducts(parsed) {
   }
 
   walk(parsed);
-  return products.filter((product) => product?.name && (product.uri || product.sourceUrl));
+  return products.filter(
+    (product) => product?.name && (product.uri || product.sourceUrl),
+  );
 }
 
 function starbucksNutritionUrl(product) {
@@ -5720,7 +6473,9 @@ function parseStarbucksNutritionPage(html) {
       cleanText($("meta[name='description']").attr("content")) ??
       cleanText($("meta[property='og:description']").attr("content")),
     ingredientsText: extractBetween(text, "Ingredients", "Allergens"),
-    name: cleanText($("h1").first().text()) ?? cleanText($("meta[property='og:title']").attr("content")),
+    name:
+      cleanText($("h1").first().text()) ??
+      cleanText($("meta[property='og:title']").attr("content")),
   };
 }
 
@@ -5733,9 +6488,8 @@ function starbucksRecordFromProduct(product, source, sourceUrl) {
     return null;
   }
 
-  const hasUnavailableAllergenText = /see ingredient statement|package for allergens/i.test(
-    allergensText ?? "",
-  );
+  const hasUnavailableAllergenText =
+    /see ingredient statement|package for allergens/i.test(allergensText ?? "");
   const directAllergens =
     allergensText && !hasUnavailableAllergenText
       ? normalizeProviderAllergens(allergensText.split(/\s*,\s*/))
@@ -5744,7 +6498,8 @@ function starbucksRecordFromProduct(product, source, sourceUrl) {
     directAllergens.length === 0 && ingredientsText
       ? findAllergensInDeclaredFoodText(ingredientsText)
       : [];
-  const allergens = directAllergens.length > 0 ? directAllergens : ingredientAllergens;
+  const allergens =
+    directAllergens.length > 0 ? directAllergens : ingredientAllergens;
   const allergenSourceType =
     directAllergens.length > 0
       ? allergenSourceTypes.officialProductAllergenSection
@@ -5763,7 +6518,9 @@ function starbucksRecordFromProduct(product, source, sourceUrl) {
         : "Official Starbucks product nutrition ingredient statement."),
     imageUrl: product.imageURL ?? product.imageUrl ?? null,
     ingredientsText,
-    mayContain: findMayContainAllergens(`${allergensText ?? ""} ${ingredientsText ?? ""}`),
+    mayContain: findMayContainAllergens(
+      `${allergensText ?? ""} ${ingredientsText ?? ""}`,
+    ),
     name,
     nutritionFacts: product.nutritionFacts ?? nutritionFactsFromObject(product),
     sourceKind: "official-api",
@@ -5778,7 +6535,11 @@ function nutritionFactsFromStarbucksNutrition(nutrition) {
   }
 
   const facts = {};
-  const topLevelFacts = [nutrition.servingSize, nutrition.calories, nutrition.caloriesFromFat];
+  const topLevelFacts = [
+    nutrition.servingSize,
+    nutrition.calories,
+    nutrition.caloriesFromFat,
+  ];
 
   for (const fact of topLevelFacts) {
     const label = normalizeNutritionLabel(fact?.displayName);
@@ -5838,14 +6599,20 @@ function wendysNutritionAllergens(data) {
 
 export async function fetchSource(url, restaurant, kind, requestOptions = {}) {
   const startedAt = Date.now();
-  const normalizedRequestOptions = normalizeFetchSourceRequestOptions(requestOptions);
+  const normalizedRequestOptions =
+    normalizeFetchSourceRequestOptions(requestOptions);
 
   try {
     if (
       (restaurant.useBrowserFetch && shouldUseBrowserForUrl(url)) ||
       (restaurant.forceBrowserFetch && shouldUseBrowserForUrl(url))
     ) {
-      const curlResult = await fetchSourceWithCurl(url, restaurant, kind, startedAt);
+      const curlResult = await fetchSourceWithCurl(
+        url,
+        restaurant,
+        kind,
+        startedAt,
+      );
 
       if (
         shouldUseCurlResultBeforeBrowser(curlResult) &&
@@ -5923,12 +6690,20 @@ export async function fetchSource(url, restaurant, kind, requestOptions = {}) {
       });
     }
 
-    if (!result.ok && shouldRetryWithTlsClient(restaurant, url, result.manifest)) {
+    if (
+      !result.ok &&
+      shouldRetryWithTlsClient(restaurant, url, result.manifest)
+    ) {
       return fetchSourceWithTlsClient(url, restaurant, kind, startedAt);
     }
 
     if (!result.ok && shouldRetryWithCurl(result)) {
-      const curlResult = await fetchSourceWithCurl(url, restaurant, kind, startedAt);
+      const curlResult = await fetchSourceWithCurl(
+        url,
+        restaurant,
+        kind,
+        startedAt,
+      );
 
       if (shouldUseCurlResultBeforeBrowser(curlResult)) {
         return curlResult;
@@ -5985,8 +6760,17 @@ function normalizeFetchSourceRequestOptions(requestOptions = {}) {
     return { extraHeaders: {} };
   }
 
-  const optionKeys = new Set(["body", "extraHeaders", "headers", "method", "skipGoogleDriveDownload", "timeoutMs"]);
-  const looksLikeFullOptions = Object.keys(requestOptions).some((key) => optionKeys.has(key));
+  const optionKeys = new Set([
+    "body",
+    "extraHeaders",
+    "headers",
+    "method",
+    "skipGoogleDriveDownload",
+    "timeoutMs",
+  ]);
+  const looksLikeFullOptions = Object.keys(requestOptions).some((key) =>
+    optionKeys.has(key),
+  );
 
   if (!looksLikeFullOptions) {
     return { extraHeaders: requestOptions };
@@ -6014,11 +6798,13 @@ function shouldRetryWithTlsClient(restaurant, url, manifest = null) {
 
 function shouldRetryWithBrowser(restaurant, manifest) {
   return (
-    (restaurant.useBrowserFetch && shouldUseBrowserForUrl(manifest?.url ?? "")) ||
+    (restaurant.useBrowserFetch &&
+      shouldUseBrowserForUrl(manifest?.url ?? "")) ||
     isCloudflareChallengeManifest(manifest) ||
     (isToastTabUrl(manifest?.url) && [403, 429].includes(manifest.status)) ||
     (isOrderOnlineUrl(manifest?.url) && [403, 429].includes(manifest.status)) ||
-    (browserFetchRestaurantIds.has(restaurant.id) && [403, 429, 502].includes(manifest.status))
+    (browserFetchRestaurantIds.has(restaurant.id) &&
+      [403, 429, 502].includes(manifest.status))
   );
 }
 
@@ -6044,7 +6830,9 @@ function shouldRetryClientRenderedHtmlWithBrowser(result) {
     return false;
   }
 
-  return isJavaScriptOnlyShellHtml(result) || isEmptyNextExportShellHtml(result);
+  return (
+    isJavaScriptOnlyShellHtml(result) || isEmptyNextExportShellHtml(result)
+  );
 }
 
 function isCloudflareChallengeManifest(manifest) {
@@ -6119,7 +6907,9 @@ function stripHtmlForShellCheck(html) {
 }
 
 function shouldUseBrowserForUrl(url) {
-  return !/\.(?:pdf|zip|gz|csv|xlsx?|docx?|png|jpe?g|webp|gif|svg)(?:[?#]|$)/i.test(url ?? "");
+  return !/\.(?:pdf|zip|gz|csv|xlsx?|docx?|png|jpe?g|webp|gif|svg)(?:[?#]|$)/i.test(
+    url ?? "",
+  );
 }
 
 function isToastTabUrl(url) {
@@ -6138,11 +6928,18 @@ function isOrderOnlineUrl(url) {
   }
 }
 
-async function fetchSourceWithTlsClient(url, restaurant, kind, startedAt, originalError = null) {
+async function fetchSourceWithTlsClient(
+  url,
+  restaurant,
+  kind,
+  startedAt,
+  originalError = null,
+) {
   let session;
-  const referer = restaurant.id === "qdoba"
-    ? "https://www.qdoba.com/nutrition-allergens"
-    : "https://www.zaxbys.com/menu/";
+  const referer =
+    restaurant.id === "qdoba"
+      ? "https://www.qdoba.com/nutrition-allergens"
+      : "https://www.zaxbys.com/menu/";
 
   try {
     const { ClientIdentifier, Session, destroyTLS, initTLS } =
@@ -6159,7 +6956,8 @@ async function fetchSourceWithTlsClient(url, restaurant, kind, startedAt, origin
         Accept: "application/pdf,text/html,*/*",
         "Accept-Language": "en-US,en;q=0.9",
         Referer: referer,
-        "Sec-CH-UA": '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+        "Sec-CH-UA":
+          '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
         "Sec-CH-UA-Mobile": "?0",
         "Sec-CH-UA-Platform": '"Windows"',
         "User-Agent":
@@ -6171,7 +6969,8 @@ async function fetchSourceWithTlsClient(url, restaurant, kind, startedAt, origin
       ? responseBody.slice(responseBody.indexOf(",") + 1)
       : responseBody;
     const buffer = Buffer.from(base64Body, "base64");
-    const contentType = firstHeaderValue(response.headers, "Content-Type") ?? "";
+    const contentType =
+      firstHeaderValue(response.headers, "Content-Type") ?? "";
     const hash = sha256(buffer);
     const ext = extensionFor(url, contentType);
     const rawPath = writeRaw
@@ -6198,7 +6997,8 @@ async function fetchSourceWithTlsClient(url, restaurant, kind, startedAt, origin
         hash,
         kind,
         ok: response.ok,
-        originalError: originalError instanceof Error ? originalError.message : null,
+        originalError:
+          originalError instanceof Error ? originalError.message : null,
         rawPath: rawPath ? path.relative(projectRoot, rawPath) : null,
         restaurantId: restaurant.id,
         status: response.status,
@@ -6215,11 +7015,15 @@ async function fetchSourceWithTlsClient(url, restaurant, kind, startedAt, origin
       manifest: {
         contentKind: "error",
         durationMs: Date.now() - startedAt,
-        error: error instanceof Error ? error.message : "Unknown TLS client fetch error",
+        error:
+          error instanceof Error
+            ? error.message
+            : "Unknown TLS client fetch error",
         finalUrl: url,
         kind,
         ok: false,
-        originalError: originalError instanceof Error ? originalError.message : null,
+        originalError:
+          originalError instanceof Error ? originalError.message : null,
         restaurantId: restaurant.id,
         status: "error",
         tlsClientFetched: true,
@@ -6240,7 +7044,13 @@ async function fetchSourceWithTlsClient(url, restaurant, kind, startedAt, origin
   }
 }
 
-async function fetchSourceWithCurl(url, restaurant, kind, startedAt, originalError = null) {
+async function fetchSourceWithCurl(
+  url,
+  restaurant,
+  kind,
+  startedAt,
+  originalError = null,
+) {
   const metaMarker = "\n__ALLERGY_APP_CURL_META__";
 
   try {
@@ -6271,7 +7081,10 @@ async function fetchSourceWithCurl(url, restaurant, kind, startedAt, originalErr
     }
 
     const body = stdout.subarray(0, markerIndex);
-    const meta = stdout.subarray(markerIndex + marker.length).toString("utf8").split("\t");
+    const meta = stdout
+      .subarray(markerIndex + marker.length)
+      .toString("utf8")
+      .split("\t");
     const status = Number(meta[0]) || "error";
     const finalUrl = meta[1] || url;
     const contentType = meta[2] || "";
@@ -6303,7 +7116,8 @@ async function fetchSourceWithCurl(url, restaurant, kind, startedAt, originalErr
         hash,
         kind,
         ok: status >= 200 && status < 400,
-        originalError: originalError instanceof Error ? originalError.message : null,
+        originalError:
+          originalError instanceof Error ? originalError.message : null,
         rawPath: rawPath ? path.relative(projectRoot, rawPath) : null,
         restaurantId: restaurant.id,
         status,
@@ -6320,11 +7134,13 @@ async function fetchSourceWithCurl(url, restaurant, kind, startedAt, originalErr
         contentKind: "error",
         curlFetched: true,
         durationMs: Date.now() - startedAt,
-        error: error instanceof Error ? error.message : "Unknown curl fetch error",
+        error:
+          error instanceof Error ? error.message : "Unknown curl fetch error",
         finalUrl: url,
         kind,
         ok: false,
-        originalError: originalError instanceof Error ? originalError.message : null,
+        originalError:
+          originalError instanceof Error ? originalError.message : null,
         restaurantId: restaurant.id,
         status: "error",
         url,
@@ -6345,7 +7161,13 @@ function firstHeaderValue(headers, name) {
   return direct ?? "";
 }
 
-async function fetchSourceWithBrowser(url, restaurant, kind, startedAt, originalError = null) {
+async function fetchSourceWithBrowser(
+  url,
+  restaurant,
+  kind,
+  startedAt,
+  originalError = null,
+) {
   let browser;
 
   try {
@@ -6360,9 +7182,13 @@ async function fetchSourceWithBrowser(url, restaurant, kind, startedAt, original
     const pdfResponseBodies = [];
     page.on("response", async (browserResponse) => {
       const responseUrl = browserResponse.url();
-      const responseContentType = browserResponse.headers()["content-type"] ?? "";
+      const responseContentType =
+        browserResponse.headers()["content-type"] ?? "";
 
-      if (!/pdf/i.test(responseContentType) && !/\.pdf(?:[?#]|$)|\/allergen(?:[?#]|$)/i.test(responseUrl)) {
+      if (
+        !/pdf/i.test(responseContentType) &&
+        !/\.pdf(?:[?#]|$)|\/allergen(?:[?#]|$)/i.test(responseUrl)
+      ) {
         return;
       }
 
@@ -6400,12 +7226,14 @@ async function fetchSourceWithBrowser(url, restaurant, kind, startedAt, original
     const capturedPdf = pdfResponseBodies[0] ?? null;
     const buffer =
       capturedPdf?.body ??
-      (responseBody.subarray(0, 4).toString() === "%PDF" ? responseBody : pageHtml);
+      (responseBody.subarray(0, 4).toString() === "%PDF"
+        ? responseBody
+        : pageHtml);
     const contentType =
       capturedPdf?.contentType ??
       (buffer.subarray(0, 4).toString() === "%PDF"
         ? "application/pdf"
-        : response?.headers()["content-type"] ?? "text/html");
+        : (response?.headers()["content-type"] ?? "text/html"));
     const finalUrl =
       capturedPdf?.url && !capturedPdf.url.startsWith("chrome-extension://")
         ? capturedPdf.url
@@ -6439,7 +7267,8 @@ async function fetchSourceWithBrowser(url, restaurant, kind, startedAt, original
         hash,
         kind,
         ok: Boolean(response?.ok()),
-        originalError: originalError instanceof Error ? originalError.message : null,
+        originalError:
+          originalError instanceof Error ? originalError.message : null,
         rawPath: rawPath ? path.relative(projectRoot, rawPath) : null,
         restaurantId: restaurant.id,
         status: response?.status() ?? "browser-error",
@@ -6456,11 +7285,15 @@ async function fetchSourceWithBrowser(url, restaurant, kind, startedAt, original
         browserFetched: true,
         contentKind: "error",
         durationMs: Date.now() - startedAt,
-        error: error instanceof Error ? error.message : "Unknown browser fetch error",
+        error:
+          error instanceof Error
+            ? error.message
+            : "Unknown browser fetch error",
         finalUrl: url,
         kind,
         ok: false,
-        originalError: originalError instanceof Error ? originalError.message : null,
+        originalError:
+          originalError instanceof Error ? originalError.message : null,
         restaurantId: restaurant.id,
         status: "error",
         url,
@@ -6555,7 +7388,10 @@ async function fetchJsonApiSource(url, restaurant, kind, options = {}) {
 
   try {
     const response = await fetchWithTimeout(url, {
-      extraHeaders: { accept: "application/json", ...(options.extraHeaders ?? {}) },
+      extraHeaders: {
+        accept: "application/json",
+        ...(options.extraHeaders ?? {}),
+      },
       method: options.method ?? "GET",
     });
     const text = await response.text();
@@ -6612,7 +7448,10 @@ async function fetchJsonApiSource(url, restaurant, kind, options = {}) {
 
 async function fetchWithTimeout(url, options = {}) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), options.timeoutMs ?? timeoutMs);
+  const timer = setTimeout(
+    () => controller.abort(),
+    options.timeoutMs ?? timeoutMs,
+  );
 
   try {
     return await fetch(url, {
@@ -6668,14 +7507,24 @@ async function readPdfTables(buffer) {
   }
 }
 
-export function extractHtmlItems(html, restaurant, url, kind = sourceTypes.menu) {
+export function extractHtmlItems(
+  html,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   const $ = cheerio.load(html);
   const baseUrl = url;
   const adapter = getBrandAdapter(restaurant.id);
   const records = [];
   const productLinks = [];
   const apiLinks = extractApiLinks($, baseUrl, restaurant);
-  const brandProfile = extractHtmlDocumentSchemaProfile($, restaurant, baseUrl, kind);
+  const brandProfile = extractHtmlDocumentSchemaProfile(
+    $,
+    restaurant,
+    baseUrl,
+    kind,
+  );
 
   if (kind === sourceTypes.menu && isDardenPlatformUrl(baseUrl)) {
     return {
@@ -6703,12 +7552,29 @@ export function extractHtmlItems(html, restaurant, url, kind = sourceTypes.menu)
   records.push(...(brandProfile?.items ?? []));
 
   if (!brandProfile?.exclusive) {
-    records.push(...extractHtmlAllergenMatrixItems($, restaurant, baseUrl, kind));
-    records.push(...extractOfficialNarrativeAllergenHtmlItems($, restaurant, baseUrl, kind));
-    records.push(...extractImageFilenameMenuItems($, restaurant, baseUrl, kind));
-    records.push(...extractContainsDisclosureLineItems($, restaurant, baseUrl, kind));
-    records.push(...extractSectionTitleMenuItemBlockItems($, restaurant, baseUrl, kind));
-    records.push(...extractDefinitionListMenuItems($, restaurant, baseUrl, kind));
+    records.push(
+      ...extractHtmlAllergenMatrixItems($, restaurant, baseUrl, kind),
+    );
+    records.push(
+      ...extractOfficialNarrativeAllergenHtmlItems(
+        $,
+        restaurant,
+        baseUrl,
+        kind,
+      ),
+    );
+    records.push(
+      ...extractImageFilenameMenuItems($, restaurant, baseUrl, kind),
+    );
+    records.push(
+      ...extractContainsDisclosureLineItems($, restaurant, baseUrl, kind),
+    );
+    records.push(
+      ...extractSectionTitleMenuItemBlockItems($, restaurant, baseUrl, kind),
+    );
+    records.push(
+      ...extractDefinitionListMenuItems($, restaurant, baseUrl, kind),
+    );
   }
 
   if (isThirdPartyMarketplaceUrl(baseUrl)) {
@@ -6727,12 +7593,16 @@ export function extractHtmlItems(html, restaurant, url, kind = sourceTypes.menu)
     kind === sourceTypes.menu &&
     jsonRecords
       .filter((record) => isProbablyMenuCatalogRecord(record))
-      .filter((record) => isAllowedSourceMenuCategory(restaurant, record.category))
-      .filter((record) => isAllowedSourceMenuName(restaurant, record.name)).length >= 4;
+      .filter((record) =>
+        isAllowedSourceMenuCategory(restaurant, record.category),
+      )
+      .filter((record) => isAllowedSourceMenuName(restaurant, record.name))
+      .length >= 4;
 
   if (
     !brandProfile?.exclusive &&
-    ((adapter.allowGenericDomMenu && !hasStructuredMenuRecords) || kind === sourceTypes.allergen)
+    ((adapter.allowGenericDomMenu && !hasStructuredMenuRecords) ||
+      kind === sourceTypes.allergen)
   ) {
     const domResult = extractDomMenuItems($, restaurant, baseUrl, kind);
     records.push(...domResult.items);
@@ -6753,12 +7623,24 @@ export function extractHtmlItems(html, restaurant, url, kind = sourceTypes.menu)
     ],
     officialPageLinks: extractOfficialPageLinks($, baseUrl),
     items: records,
-    productLinks: uniqueBy(productLinks, (link) => normalizeUrl(link.url)).slice(0, 150),
+    productLinks: uniqueBy(productLinks, (link) =>
+      normalizeUrl(link.url),
+    ).slice(0, 150),
   };
 }
 
-export function extractJsonMenuFragmentItems(text, restaurant, url, kind = sourceTypes.menu) {
-  const spotAppsRecords = extractSpotAppsNuxtMenuItems(text, restaurant, url, kind);
+export function extractJsonMenuFragmentItems(
+  text,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
+  const spotAppsRecords = extractSpotAppsNuxtMenuItems(
+    text,
+    restaurant,
+    url,
+    kind,
+  );
   const parsed = parseJsonLoose(text);
 
   if (!parsed || typeof parsed !== "object") {
@@ -6767,25 +7649,49 @@ export function extractJsonMenuFragmentItems(text, restaurant, url, kind = sourc
 
   const records = [...spotAppsRecords];
   records.push(...extractMenuSifuJsonItems(parsed, restaurant, url, kind));
-  records.push(...extractHeartlandInitialDataItems(parsed, restaurant, url, kind));
+  records.push(
+    ...extractHeartlandInitialDataItems(parsed, restaurant, url, kind),
+  );
   records.push(...extractWixRestaurantMenuItems(parsed, restaurant, url, kind));
-  records.push(...extractDardenPlatformMenuItems(parsed, restaurant, url, kind));
+  records.push(
+    ...extractDardenPlatformMenuItems(parsed, restaurant, url, kind),
+  );
 
   if (
     /\/api\/menu\b/i.test(url) &&
     records.some((record) => record.sourceKind === "darden-platform-api")
   ) {
-    return uniqueBy(records, (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`);
+    return uniqueBy(
+      records,
+      (record) =>
+        `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+    );
   }
 
   if (/_api\/restaurants-menus-item\/v1\/items/i.test(url)) {
-    return uniqueBy(records, (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`);
+    return uniqueBy(
+      records,
+      (record) =>
+        `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+    );
   }
 
-  records.push(...extractRecordsFromObject(parsed, restaurant, url, "json-structured", kind));
+  records.push(
+    ...extractRecordsFromObject(
+      parsed,
+      restaurant,
+      url,
+      "json-structured",
+      kind,
+    ),
+  );
 
   if (kind !== sourceTypes.menu) {
-    return uniqueBy(records, (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`);
+    return uniqueBy(
+      records,
+      (record) =>
+        `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+    );
   }
 
   const stack = [parsed];
@@ -6793,8 +7699,13 @@ export function extractJsonMenuFragmentItems(text, restaurant, url, kind = sourc
   while (stack.length > 0) {
     const value = stack.pop();
 
-    if (typeof value === "string" && /class=["'][^"']*single_product/i.test(value)) {
-      records.push(...extractHtmlItems(value, restaurant, url, sourceTypes.menu).items);
+    if (
+      typeof value === "string" &&
+      /class=["'][^"']*single_product/i.test(value)
+    ) {
+      records.push(
+        ...extractHtmlItems(value, restaurant, url, sourceTypes.menu).items,
+      );
       continue;
     }
 
@@ -6808,16 +7719,29 @@ export function extractJsonMenuFragmentItems(text, restaurant, url, kind = sourc
     }
   }
 
-  return uniqueBy(records, (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`);
+  return uniqueBy(
+    records,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+  );
 }
 
-export function extractIMenuProScriptItems(text, restaurant, url, kind = sourceTypes.menu) {
-  if (kind === sourceTypes.allergen || !/imenupro\[[\s\S]*?\]\[['"]html['"]\]/i.test(text)) {
+export function extractIMenuProScriptItems(
+  text,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
+  if (
+    kind === sourceTypes.allergen ||
+    !/imenupro\[[\s\S]*?\]\[['"]html['"]\]/i.test(text)
+  ) {
     return [];
   }
 
   const records = [];
-  const htmlAssignments = /imenupro\[[^\]]+\]\[['"]html['"]\]\s*=\s*'([\s\S]*?)';/g;
+  const htmlAssignments =
+    /imenupro\[[^\]]+\]\[['"]html['"]\]\s*=\s*'([\s\S]*?)';/g;
   let match;
 
   while ((match = htmlAssignments.exec(text))) {
@@ -6827,9 +7751,18 @@ export function extractIMenuProScriptItems(text, restaurant, url, kind = sourceT
     $(".imp-food-item").each((_index, element) => {
       const $element = $(element);
       const name = cleanText($element.find(".imp-name").first().text());
-      const description = cleanText($element.find(".imp-description").first().text());
+      const description = cleanText(
+        $element.find(".imp-description").first().text(),
+      );
       const category =
-        cleanText($element.parent().prevAll(".imp-heading").first().find(".imp-normal-heading").text()) ??
+        cleanText(
+          $element
+            .parent()
+            .prevAll(".imp-heading")
+            .first()
+            .find(".imp-normal-heading")
+            .text(),
+        ) ??
         cleanText($element.parent().prevAll(".imp-heading").first().text()) ??
         restaurant.category;
 
@@ -6841,7 +7774,9 @@ export function extractIMenuProScriptItems(text, restaurant, url, kind = sourceT
         return;
       }
 
-      const officialAllergens = iMenuProAllergensFromMarkers(`${name} ${description ?? ""}`);
+      const officialAllergens = iMenuProAllergensFromMarkers(
+        `${name} ${description ?? ""}`,
+      );
 
       records.push(
         createRecord({
@@ -6852,7 +7787,10 @@ export function extractIMenuProScriptItems(text, restaurant, url, kind = sourceT
           allergens: officialAllergens,
           category,
           description,
-          evidenceText: officialAllergens.length > 0 ? `${name} ${description ?? ""}` : null,
+          evidenceText:
+            officialAllergens.length > 0
+              ? `${name} ${description ?? ""}`
+              : null,
           imageUrl: null,
           ingredientsText: null,
           mayContain: [],
@@ -6865,7 +7803,11 @@ export function extractIMenuProScriptItems(text, restaurant, url, kind = sourceT
     });
   }
 
-  return uniqueBy(records, (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`);
+  return uniqueBy(
+    records,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+  );
 }
 
 function decodeIMenuProHtml(value) {
@@ -6892,7 +7834,12 @@ function iMenuProAllergensFromMarkers(value) {
   return uniqueStrings(allergens);
 }
 
-function extractWixRestaurantMenuApiLinksFromAccessTokens(text, restaurant, url, queueEntry = null) {
+function extractWixRestaurantMenuApiLinksFromAccessTokens(
+  text,
+  restaurant,
+  url,
+  queueEntry = null,
+) {
   if (
     queueEntry?.role !== "wix-restaurant-menu-access-tokens" ||
     !/_api\/v1\/access-tokens/i.test(url)
@@ -6933,7 +7880,12 @@ function extractWixRestaurantMenuApiLinksFromAccessTokens(text, restaurant, url,
   ];
 }
 
-function extractWixRestaurantMenuItems(parsed, restaurant, url, kind = sourceTypes.menu) {
+function extractWixRestaurantMenuItems(
+  parsed,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (
     kind === sourceTypes.allergen ||
     !/_api\/restaurants-menus-item\/v1\/items/i.test(url) ||
@@ -6943,7 +7895,9 @@ function extractWixRestaurantMenuItems(parsed, restaurant, url, kind = sourceTyp
   }
 
   const visibleItems = parsed.items.filter((item) => item?.visible !== false);
-  const catalogItems = visibleItems.filter((item) => !isWixRestaurantDemoItem(item));
+  const catalogItems = visibleItems.filter(
+    (item) => !isWixRestaurantDemoItem(item),
+  );
 
   const records = [];
 
@@ -6955,7 +7909,9 @@ function extractWixRestaurantMenuItems(parsed, restaurant, url, kind = sourceTyp
     if (
       !name ||
       !isProbablyMenuItemName(name) ||
-      (!description && !imageUrl && !hasFoodLanguage(`${name} ${restaurant.category ?? ""}`))
+      (!description &&
+        !imageUrl &&
+        !hasFoodLanguage(`${name} ${restaurant.category ?? ""}`))
     ) {
       continue;
     }
@@ -6976,7 +7932,11 @@ function extractWixRestaurantMenuItems(parsed, restaurant, url, kind = sourceTyp
     );
   }
 
-  return uniqueBy(records, (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`);
+  return uniqueBy(
+    records,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+  );
 }
 
 function isLikelyWixRestaurantDemoCatalog(items) {
@@ -6985,13 +7945,17 @@ function isLikelyWixRestaurantDemoCatalog(items) {
       .map((item) => normalizeMenuName(pickString(item?.name) ?? ""))
       .filter(Boolean),
   );
-  const demoHits = wixRestaurantDemoItemNames.filter((name) => names.has(name)).length;
+  const demoHits = wixRestaurantDemoItemNames.filter((name) =>
+    names.has(name),
+  ).length;
 
   return demoHits >= 5 || (items.length > 0 && demoHits / items.length >= 0.4);
 }
 
 function isWixRestaurantDemoItem(item) {
-  return wixRestaurantDemoItemNameSet.has(normalizeMenuName(pickString(item?.name) ?? ""));
+  return wixRestaurantDemoItemNameSet.has(
+    normalizeMenuName(pickString(item?.name) ?? ""),
+  );
 }
 
 function dropWixRestaurantDemoCatalogItems(items, sourceResults) {
@@ -7010,7 +7974,12 @@ function dropWixRestaurantDemoCatalogItems(items, sourceResults) {
   return filteredItems.length >= 4 ? filteredItems : [];
 }
 
-function extractMenuSifuJsonItems(parsed, restaurant, url, kind = sourceTypes.menu) {
+function extractMenuSifuJsonItems(
+  parsed,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen || !Array.isArray(parsed?.menuCategories)) {
     return [];
   }
@@ -7061,11 +8030,23 @@ function extractMenuSifuJsonItems(parsed, restaurant, url, kind = sourceTypes.me
     }
   }
 
-  return uniqueBy(records, (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`);
+  return uniqueBy(
+    records,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+  );
 }
 
-function extractHeartlandInitialDataItems(parsed, restaurant, url, kind = sourceTypes.menu) {
-  if (kind === sourceTypes.allergen || !/online\.hrpos\.heartland\.us\/initial_data/i.test(url)) {
+function extractHeartlandInitialDataItems(
+  parsed,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
+  if (
+    kind === sourceTypes.allergen ||
+    !/online\.hrpos\.heartland\.us\/initial_data/i.test(url)
+  ) {
     return [];
   }
 
@@ -7084,10 +8065,18 @@ function extractHeartlandInitialDataItems(parsed, restaurant, url, kind = source
   const itemsById = objectMapById(setup.setupMenuItems, "itemId");
   const sectionItems = setup.setupSectionItems ?? {};
   const groupSections = setup.setupGroupSections ?? {};
-  const menuGroups = groups.filter((group) => /^menu$/i.test(pickString(group?.defaultName) ?? ""));
-  const groupsToRead = menuGroups.length > 0
-    ? menuGroups
-    : groups.filter((group) => !/catering|school|bar|drinks?|beverages?|cocktails?|wine|beer/i.test(pickString(group?.defaultName) ?? ""));
+  const menuGroups = groups.filter((group) =>
+    /^menu$/i.test(pickString(group?.defaultName) ?? ""),
+  );
+  const groupsToRead =
+    menuGroups.length > 0
+      ? menuGroups
+      : groups.filter(
+          (group) =>
+            !/catering|school|bar|drinks?|beverages?|cocktails?|wine|beer/i.test(
+              pickString(group?.defaultName) ?? "",
+            ),
+        );
   const records = [];
 
   for (const group of groupsToRead) {
@@ -7096,7 +8085,10 @@ function extractHeartlandInitialDataItems(parsed, restaurant, url, kind = source
 
     for (const sectionId of sectionIds) {
       const section = sectionsById.get(String(sectionId));
-      const sectionName = pickString(section?.defaultName) ?? pickString(section?.name) ?? restaurant.category;
+      const sectionName =
+        pickString(section?.defaultName) ??
+        pickString(section?.name) ??
+        restaurant.category;
 
       if (isProbablyNonFoodHeartlandSection(sectionName)) {
         continue;
@@ -7105,7 +8097,12 @@ function extractHeartlandInitialDataItems(parsed, restaurant, url, kind = source
       for (const itemId of asArray(sectionItems[String(sectionId)])) {
         const item = itemsById.get(String(itemId));
 
-        if (!item || item.isAlcohol === true || item.giftCard === true || item.nonRevenue === true) {
+        if (
+          !item ||
+          item.isAlcohol === true ||
+          item.giftCard === true ||
+          item.nonRevenue === true
+        ) {
           continue;
         }
 
@@ -7113,7 +8110,9 @@ function extractHeartlandInitialDataItems(parsed, restaurant, url, kind = source
           pickString(item.defaultName) ??
           pickString(item.defaultShortName) ??
           pickString(item.name);
-        const description = pickString(item.defaultItemDescription) ?? pickString(item.description);
+        const description =
+          pickString(item.defaultItemDescription) ??
+          pickString(item.description);
         const imageUrl = pickImage(item.imageUrl) ?? pickImage(item.thumbUrl);
         const itemCategory = pickString(item.categoryName);
 
@@ -7121,7 +8120,9 @@ function extractHeartlandInitialDataItems(parsed, restaurant, url, kind = source
           !name ||
           !isProbablyMenuItemName(name) ||
           isProbablyNonFoodHeartlandSection(itemCategory) ||
-          (!description && !imageUrl && !hasFoodLanguage(`${name} ${sectionName}`))
+          (!description &&
+            !imageUrl &&
+            !hasFoodLanguage(`${name} ${sectionName}`))
         ) {
           continue;
         }
@@ -7145,7 +8146,11 @@ function extractHeartlandInitialDataItems(parsed, restaurant, url, kind = source
     }
   }
 
-  return uniqueBy(records, (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`);
+  return uniqueBy(
+    records,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+  );
 }
 
 function isProbablyNonFoodHeartlandSection(text) {
@@ -7154,7 +8159,12 @@ function isProbablyNonFoodHeartlandSection(text) {
   );
 }
 
-function extractDardenPlatformMenuItems(parsed, restaurant, url, kind = sourceTypes.menu) {
+function extractDardenPlatformMenuItems(
+  parsed,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen || !/\/api\/menu\b/i.test(url)) {
     return [];
   }
@@ -7179,31 +8189,41 @@ function extractDardenPlatformMenuItems(parsed, restaurant, url, kind = sourceTy
         continue;
       }
 
-      const sectionDescription = pickString(section?.description) ?? pickString(rootCategory?.description);
+      const sectionDescription =
+        pickString(section?.description) ??
+        pickString(rootCategory?.description);
 
       for (const product of asArray(section?.products)) {
         if (!product || typeof product !== "object") {
           continue;
         }
 
-        const name = pickString(product.displayName) ?? pickString(product.name) ?? pickString(product.title);
-        const description = cleanText(product.longDescription ?? product.description) ?? sectionDescription;
-        const imageUrl =
-          absolutizeUrl(
-            pickImage(product.media) ??
-              pickImage(product.image) ??
-              pickImage(product.mobileAppLargeImage) ??
-              pickImage(product.largeImageUrl) ??
-              pickImage(product.smallImageUrl),
-            url,
-          );
+        const name =
+          pickString(product.displayName) ??
+          pickString(product.name) ??
+          pickString(product.title);
+        const description =
+          cleanText(product.longDescription ?? product.description) ??
+          sectionDescription;
+        const imageUrl = absolutizeUrl(
+          pickImage(product.media) ??
+            pickImage(product.image) ??
+            pickImage(product.mobileAppLargeImage) ??
+            pickImage(product.largeImageUrl) ??
+            pickImage(product.smallImageUrl),
+          url,
+        );
 
         if (
           !name ||
           !isProbablyMenuItemName(name) ||
           product?.configs?.isBeverageItem === true ||
-          isProbablyNonFoodDardenPlatformSection(pickString(product?.categoryName)) ||
-          (!description && !imageUrl && !hasFoodLanguage(`${name} ${sectionName}`))
+          isProbablyNonFoodDardenPlatformSection(
+            pickString(product?.categoryName),
+          ) ||
+          (!description &&
+            !imageUrl &&
+            !hasFoodLanguage(`${name} ${sectionName}`))
         ) {
           continue;
         }
@@ -7227,7 +8247,11 @@ function extractDardenPlatformMenuItems(parsed, restaurant, url, kind = sourceTy
     }
   }
 
-  return uniqueBy(records, (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`);
+  return uniqueBy(
+    records,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+  );
 }
 
 function dardenPlatformSections(rootCategory) {
@@ -7287,13 +8311,26 @@ function stringifyId(value) {
   return null;
 }
 
-function extractSpotAppsNuxtMenuItems(text, restaurant, url, kind = sourceTypes.menu) {
-  if (kind === sourceTypes.allergen || !/tmt\.spotapps\.co|window\.__NUXT__|food_menu_items/i.test(`${url} ${text}`)) {
+function extractSpotAppsNuxtMenuItems(
+  text,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
+  if (
+    kind === sourceTypes.allergen ||
+    !/tmt\.spotapps\.co|window\.__NUXT__|food_menu_items/i.test(
+      `${url} ${text}`,
+    )
+  ) {
     return [];
   }
 
   const parsed = parseSpotAppsNuxtPayload(text);
-  const menus = parsed?.data?.flatMap((entry) => (Array.isArray(entry?.menus) ? entry.menus : [])) ?? [];
+  const menus =
+    parsed?.data?.flatMap((entry) =>
+      Array.isArray(entry?.menus) ? entry.menus : [],
+    ) ?? [];
 
   if (menus.length === 0) {
     return [];
@@ -7310,7 +8347,8 @@ function extractSpotAppsNuxtMenuItems(text, restaurant, url, kind = sourceTypes.
     }
 
     for (const section of menu?.food_menu_sections ?? []) {
-      const sectionName = pickString(section?.name) ?? menuName ?? restaurant.category;
+      const sectionName =
+        pickString(section?.name) ?? menuName ?? restaurant.category;
       const sectionDescription = pickString(section?.description);
 
       for (const item of section?.food_menu_items ?? []) {
@@ -7319,7 +8357,10 @@ function extractSpotAppsNuxtMenuItems(text, restaurant, url, kind = sourceTypes.
         }
 
         const name = pickString(item.name);
-        const description = pickBestDescription(item.description, sectionDescription);
+        const description = pickBestDescription(
+          item.description,
+          sectionDescription,
+        );
         const imageUrl = pickImage(item.images);
 
         if (
@@ -7349,7 +8390,11 @@ function extractSpotAppsNuxtMenuItems(text, restaurant, url, kind = sourceTypes.
     }
   }
 
-  return uniqueBy(records, (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`);
+  return uniqueBy(
+    records,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+  );
 }
 
 function parseSpotAppsNuxtPayload(text) {
@@ -7363,7 +8408,10 @@ function parseSpotAppsNuxtPayload(text) {
   const expressionStart = markerIndex + "window.__NUXT__=".length;
   const scriptEnd = source.indexOf("</script>", expressionStart);
   const expressionEnd = scriptEnd >= 0 ? scriptEnd : source.length;
-  const expression = source.slice(expressionStart, expressionEnd).replace(/;\s*$/, "").trim();
+  const expression = source
+    .slice(expressionStart, expressionEnd)
+    .replace(/;\s*$/, "")
+    .trim();
 
   if (!expression.startsWith("(") || !expression.includes("food_menu_items")) {
     return null;
@@ -7380,7 +8428,12 @@ function parseSpotAppsNuxtPayload(text) {
   }
 }
 
-function extractImageFilenameMenuItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractImageFilenameMenuItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen || !isMenuishPage($, url)) {
     return [];
   }
@@ -7392,16 +8445,19 @@ function extractImageFilenameMenuItems($, restaurant, url, kind = sourceTypes.me
     restaurant.category;
   const urls = [];
 
-  $("meta[property='og:image'], meta[name='twitter:image']").each((_index, element) => {
-    const href = absolutizeUrl($(element).attr("content"), url);
+  $("meta[property='og:image'], meta[name='twitter:image']").each(
+    (_index, element) => {
+      const href = absolutizeUrl($(element).attr("content"), url);
 
-    if (href) {
-      urls.push(href);
-    }
-  });
+      if (href) {
+        urls.push(href);
+      }
+    },
+  );
 
   $("img[src], source[srcset]").each((_index, element) => {
-    const src = $(element).attr("src") ?? firstSrcsetUrl($(element).attr("srcset"));
+    const src =
+      $(element).attr("src") ?? firstSrcsetUrl($(element).attr("srcset"));
     const href = absolutizeUrl(src, url);
 
     if (href) {
@@ -7415,7 +8471,9 @@ function extractImageFilenameMenuItems($, restaurant, url, kind = sourceTypes.me
         imageUrl,
         name: menuNameFromImageUrl(imageUrl),
       }))
-      .filter((candidate) => candidate.name && isProbablyMenuItemName(candidate.name))
+      .filter(
+        (candidate) => candidate.name && isProbablyMenuItemName(candidate.name),
+      )
       .filter((candidate) => hasFoodLanguage(candidate.name)),
     (candidate) => similarityKey(candidate.name),
   );
@@ -7448,7 +8506,11 @@ function isMenuishPage($, url) {
 }
 
 function firstSrcsetUrl(srcset) {
-  return cleanText(srcset)?.split(/\s*,\s*/)[0]?.split(/\s+/)[0] ?? null;
+  return (
+    cleanText(srcset)
+      ?.split(/\s*,\s*/)[0]
+      ?.split(/\s+/)[0] ?? null
+  );
 }
 
 function menuNameFromImageUrl(imageUrl) {
@@ -7464,7 +8526,10 @@ function menuNameFromImageUrl(imageUrl) {
     .split("/")
     .pop()
     ?.replace(/\.(?:jpe?g|png|webp|gif)(?:$|[?#].*)/i, "")
-    .replace(/(?:_orig|_original|_large|_medium|_small|_thumb|_thumbnail)$/i, "")
+    .replace(
+      /(?:_orig|_original|_large|_medium|_small|_thumb|_thumbnail)$/i,
+      "",
+    )
     .replace(/(?:-\d+x\d+|_\d+x\d+)$/i, "")
     .replace(/^[a-z]?\d{1,4}[-_\s]+/i, "")
     .replace(/[-_]+/g, " ")
@@ -7507,7 +8572,9 @@ function extractPapaJohnsNutritionItems($, restaurant, url) {
 
   $("[data-ingredient] > section").each((_index, section) => {
     const $section = $(section);
-    const name = cleanText($section.find("header h5.h3, header h5, header h3").first().text());
+    const name = cleanText(
+      $section.find("header h5.h3, header h5, header h3").first().text(),
+    );
 
     if (!name || !isProbablyMenuItemName(name)) {
       return;
@@ -7519,7 +8586,9 @@ function extractPapaJohnsNutritionItems($, restaurant, url) {
       .first();
     const nutritionTable = $section
       .find("table[aria-label*='Nutritional Facts' i], table")
-      .filter((_tableIndex, table) => /Total Calories|Total Fat|Sodium/i.test($(table).text()))
+      .filter((_tableIndex, table) =>
+        /Total Calories|Total Fat|Sodium/i.test($(table).text()),
+      )
       .last();
     const sizes = tableColumnHeaders($, nutritionTable);
 
@@ -7528,7 +8597,11 @@ function extractPapaJohnsNutritionItems($, restaurant, url) {
     }
 
     const servingSizes = papaJohnsServingSizes($, servingTable, sizes.length);
-    const nutritionBySize = papaJohnsNutritionBySize($, nutritionTable, sizes.length);
+    const nutritionBySize = papaJohnsNutritionBySize(
+      $,
+      nutritionTable,
+      sizes.length,
+    );
 
     for (let index = 0; index < sizes.length; index += 1) {
       const nutritionFacts = normalizeNutritionFacts({
@@ -7541,10 +8614,11 @@ function extractPapaJohnsNutritionItems($, restaurant, url) {
       }
 
       const size = cleanText(sizes[index]);
-      const names = uniqueStrings([
-        name,
-        size && sizes.length > 1 ? `${name} ${size}` : null,
-      ].filter(Boolean));
+      const names = uniqueStrings(
+        [name, size && sizes.length > 1 ? `${name} ${size}` : null].filter(
+          Boolean,
+        ),
+      );
 
       for (const recordName of names) {
         records.push(
@@ -7584,7 +8658,11 @@ function extractPapaJohnsAllergenGuideItems($, restaurant, url) {
         index,
       }));
 
-    if (allergenColumns.filter((column) => column.index > 0 && column.allergens.length > 0).length < 6) {
+    if (
+      allergenColumns.filter(
+        (column) => column.index > 0 && column.allergens.length > 0,
+      ).length < 6
+    ) {
       return;
     }
 
@@ -7594,7 +8672,9 @@ function extractPapaJohnsAllergenGuideItems($, restaurant, url) {
       const $row = $(row);
       const $cells = $row.find("th,td");
       const firstCellText = cleanText($cells.first().text());
-      const categoryText = cleanText($cells.first().find("h2,h3,h4").first().text()) ?? firstCellText;
+      const categoryText =
+        cleanText($cells.first().find("h2,h3,h4").first().text()) ??
+        firstCellText;
 
       if ($cells.first().find("h2,h3,h4").length > 0 && categoryText) {
         currentCategory = categoryText;
@@ -7638,15 +8718,18 @@ function extractPapaJohnsAllergenGuideItems($, restaurant, url) {
     });
   });
 
-  return uniqueBy(records, (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`);
+  return uniqueBy(
+    records,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+  );
 }
 
 function papaJohnsAllergenCellIsPositive($, cell) {
   const $cell = $(cell);
-  const markerText = [
-    $cell.text(),
-    $cell.attr("aria-label"),
-  ].filter(Boolean).join(" ");
+  const markerText = [$cell.text(), $cell.attr("aria-label")]
+    .filter(Boolean)
+    .join(" ");
 
   return /✔|✓|contains\b/i.test(markerText);
 }
@@ -7657,9 +8740,15 @@ function extractInNOutNutritionHtmlItems($, restaurant, url) {
   $(".nutrition-header").each((_index, header) => {
     const $header = $(header);
     const $panel = $header.next(".js-accordion__panel");
-    const rawHeaderName = cleanText($header.clone().children().remove().end().text());
-    const name = cleanText($panel.find("header h2").first().text()) ?? rawHeaderName;
-    const nutritionFacts = nutritionFactsFromDefinitionList($, $panel.children("dl").first());
+    const rawHeaderName = cleanText(
+      $header.clone().children().remove().end().text(),
+    );
+    const name =
+      cleanText($panel.find("header h2").first().text()) ?? rawHeaderName;
+    const nutritionFacts = nutritionFactsFromDefinitionList(
+      $,
+      $panel.children("dl").first(),
+    );
     const ingredientsText = cleanText(
       $panel
         .find(".ingredients p")
@@ -7678,7 +8767,10 @@ function extractInNOutNutritionHtmlItems($, restaurant, url) {
         allergens: findDeclaredAllergensOnly(ingredientsText ?? ""),
         category: inNOutCategoryForItem(name),
         description: "Official In-N-Out nutrition information page.",
-        imageUrl: absolutizeUrl($panel.find("header img").first().attr("src"), url),
+        imageUrl: absolutizeUrl(
+          $panel.find("header img").first().attr("src"),
+          url,
+        ),
         ingredientsText,
         mayContain: [],
         name,
@@ -7730,9 +8822,20 @@ function extractNothingBundtCakesNutritionItems($, restaurant, url) {
     const $table = $(table);
     const headers = $table
       .find("thead th")
-      .map((_index, header) => normalizeNutritionHeader($(header).text()) ?? cleanText($(header).text()))
+      .map(
+        (_index, header) =>
+          normalizeNutritionHeader($(header).text()) ??
+          cleanText($(header).text()),
+      )
       .get();
-    const category = cleanText($table.closest(".table-container").prevAll(".table-cat-sto").first().text()) ?? "Cake Flavors";
+    const category =
+      cleanText(
+        $table
+          .closest(".table-container")
+          .prevAll(".table-cat-sto")
+          .first()
+          .text(),
+      ) ?? "Cake Flavors";
 
     $table.find("tbody tr").each((_rowIndex, row) => {
       const cells = $(row)
@@ -7741,7 +8844,11 @@ function extractNothingBundtCakesNutritionItems($, restaurant, url) {
         .get();
       const name = cells[0];
 
-      if (!name || !isProbablyMenuItemName(name) || /not available/i.test(cells.join(" "))) {
+      if (
+        !name ||
+        !isProbablyMenuItemName(name) ||
+        /not available/i.test(cells.join(" "))
+      ) {
         return;
       }
 
@@ -7787,13 +8894,21 @@ function extractFirstWatchNutritionHtmlItems($, restaurant, url) {
 
   $(".nutrition-main-table-row").each((_sectionIndex, section) => {
     const $section = $(section);
-    const category = cleanText($section.find(".nutrition-content-headline").first().text()) ?? restaurant.category;
+    const category =
+      cleanText($section.find(".nutrition-content-headline").first().text()) ??
+      restaurant.category;
     const headers = $section
       .find(".nutrition-details-table thead th")
-      .map((_index, header) => normalizeNutritionHeader($(header).text()) ?? cleanText($(header).text()))
+      .map(
+        (_index, header) =>
+          normalizeNutritionHeader($(header).text()) ??
+          cleanText($(header).text()),
+      )
       .get()
       .filter((header) => header && !/^menu item$/i.test(header));
-    const detailRows = $section.find(".nutrition-details-table tbody tr").toArray();
+    const detailRows = $section
+      .find(".nutrition-details-table tbody tr")
+      .toArray();
 
     for (let index = 0; index < detailRows.length; index += 2) {
       const nutritionCells = $(detailRows[index])
@@ -7823,13 +8938,19 @@ function extractFirstWatchNutritionHtmlItems($, restaurant, url) {
         continue;
       }
 
-      const declaredAllergenText = allergenText.replace(/^Allergens for .*?:/i, "");
+      const declaredAllergenText = allergenText.replace(
+        /^Allergens for .*?:/i,
+        "",
+      );
       records.push(
         createRecord({
           allergenSourceType: allergenSourceTypes.officialAllergenMenu,
-          allergens: normalizeProviderAllergens(declaredAllergenText.split(/\s*,\s*/)),
+          allergens: normalizeProviderAllergens(
+            declaredAllergenText.split(/\s*,\s*/),
+          ),
           category,
-          description: "Official First Watch nutrition and allergen information page.",
+          description:
+            "Official First Watch nutrition and allergen information page.",
           imageUrl: null,
           mayContain: [],
           name,
@@ -7857,7 +8978,10 @@ function tableColumnHeaders($, table) {
     return headers;
   }
 
-  const firstDataCellCount = $(table).find("tbody tr").first().find("td").length;
+  const firstDataCellCount = $(table)
+    .find("tbody tr")
+    .first()
+    .find("td").length;
   return Array.from({ length: firstDataCellCount }, (_value, index) =>
     firstDataCellCount === 1 ? "Default" : `Option ${index + 1}`,
   );
@@ -7986,7 +9110,10 @@ function extractPfChangsAllergenItems($, restaurant, url) {
       index,
     }));
 
-    if (allergenColumns.slice(1).filter((column) => column.allergens.length > 0).length < 6) {
+    if (
+      allergenColumns.slice(1).filter((column) => column.allergens.length > 0)
+        .length < 6
+    ) {
       return;
     }
 
@@ -8049,7 +9176,8 @@ function extractPfChangsAllergenItems($, restaurant, url) {
 function extractNothingBundtCakesIngredientItems($, restaurant, url) {
   const text = cleanText($("body").text()) ?? "";
   const records = [];
-  const pattern = /([A-Z][A-Za-z0-9 '&®™.-]{2,80})›\s*INGREDIENTS:\s*([\s\S]*?)(?=(?:[A-Z][A-Za-z0-9 '&®™.-]{2,80})›\s*INGREDIENTS:|$)/g;
+  const pattern =
+    /([A-Z][A-Za-z0-9 '&®™.-]{2,80})›\s*INGREDIENTS:\s*([\s\S]*?)(?=(?:[A-Z][A-Za-z0-9 '&®™.-]{2,80})›\s*INGREDIENTS:|$)/g;
   let match;
 
   while ((match = pattern.exec(text))) {
@@ -8060,8 +9188,11 @@ function extractNothingBundtCakesIngredientItems($, restaurant, url) {
       continue;
     }
 
-    const containsText = ingredientsText.match(/\bCONTAINS:\s*([^.]*)/i)?.[1] ?? "";
-    const mayContainText = ingredientsText.match(/\bMAY CONTAIN(?: TRACES OF)?:\s*([^.]*)/i)?.[1] ?? "";
+    const containsText =
+      ingredientsText.match(/\bCONTAINS:\s*([^.]*)/i)?.[1] ?? "";
+    const mayContainText =
+      ingredientsText.match(/\bMAY CONTAIN(?: TRACES OF)?:\s*([^.]*)/i)?.[1] ??
+      "";
 
     records.push(
       createRecord({
@@ -8094,7 +9225,9 @@ function extractJenisIngredientItems($, restaurant, url) {
 
   $(".faq-accordion__section, faq-accordion").each((_, element) => {
     const $element = $(element);
-    const name = cleanText($element.find(".faq-accordion__title").first().text());
+    const name = cleanText(
+      $element.find(".faq-accordion__title").first().text(),
+    );
     const ingredientsText = cleanText(
       $element
         .find(".faq-accordion__text")
@@ -8115,13 +9248,12 @@ function extractJenisIngredientItems($, restaurant, url) {
       ingredientsText.match(
         /\bContains:\s*([\s\S]*?)(?=\b(?:GLUTEN FREE|VEGAN|DAIRY FREE)\b|$)/i,
       )?.[1] ?? "";
-    const allergens =
-      /\bnone\b/i.test(containsText)
-        ? []
-        : uniqueStrings([
-            ...findAllergensInText(containsText),
-            ...findDeclaredAllergensOnly(containsText),
-          ]);
+    const allergens = /\bnone\b/i.test(containsText)
+      ? []
+      : uniqueStrings([
+          ...findAllergensInText(containsText),
+          ...findDeclaredAllergensOnly(containsText),
+        ]);
 
     records.push(
       createRecord({
@@ -8159,12 +9291,16 @@ function extractFreddysAllergenItems($, restaurant, url) {
   const nutritionByName = new Map();
 
   $("article.node--type-nutrition-info").each((_articleIndex, article) => {
-    const category = cleanText($(article).find("h2 span").first().text()) ?? restaurant.category;
+    const category =
+      cleanText($(article).find("h2 span").first().text()) ??
+      restaurant.category;
 
     $(article)
       .find(".paragraph--type--nutrition-items")
       .each((_itemIndex, item) => {
-        const name = cleanText($(item).find(".field-item__field-menu-item").first().text());
+        const name = cleanText(
+          $(item).find(".field-item__field-menu-item").first().text(),
+        );
 
         if (!name || !isProbablyMenuItemName(name)) {
           return;
@@ -8172,7 +9308,11 @@ function extractFreddysAllergenItems($, restaurant, url) {
 
         const facts = {
           Calories: freddysNutritionValue($, item, "calories"),
-          "Calories from Fat": freddysNutritionValue($, item, "calories-from-fat"),
+          "Calories from Fat": freddysNutritionValue(
+            $,
+            item,
+            "calories-from-fat",
+          ),
           Cholesterol: freddysNutritionValue($, item, "cholesterol"),
           Sodium: freddysNutritionValue($, item, "sodium"),
           "Trans Fat": freddysNutritionValue($, item, "trans-fat"),
@@ -8184,7 +9324,10 @@ function extractFreddysAllergenItems($, restaurant, url) {
           Protein: freddysNutritionValue($, item, "protein"),
         };
 
-        nutritionByName.set(normalizeMenuName(name), normalizeNutritionFacts(facts));
+        nutritionByName.set(
+          normalizeMenuName(name),
+          normalizeNutritionFacts(facts),
+        );
       });
 
     $(article)
@@ -8192,7 +9335,9 @@ function extractFreddysAllergenItems($, restaurant, url) {
       .each((_itemIndex, item) => {
         const rowText = cleanText($(item).text()) ?? "";
         const firstAllergenIndex = rowText.search(/\bPeanuts\b/);
-        const name = cleanText(firstAllergenIndex > 0 ? rowText.slice(0, firstAllergenIndex) : "");
+        const name = cleanText(
+          firstAllergenIndex > 0 ? rowText.slice(0, firstAllergenIndex) : "",
+        );
 
         if (!name || !isProbablyMenuItemName(name)) {
           return;
@@ -8210,8 +9355,13 @@ function extractFreddysAllergenItems($, restaurant, url) {
             continue;
           }
 
-          const end = nextLabel ? rowText.indexOf(nextLabel, start + label.length) : rowText.length;
-          const status = rowText.slice(start + label.length, end > start ? end : rowText.length);
+          const end = nextLabel
+            ? rowText.indexOf(nextLabel, start + label.length)
+            : rowText.length;
+          const status = rowText.slice(
+            start + label.length,
+            end > start ? end : rowText.length,
+          );
 
           if (/Allergen Exists/i.test(status)) {
             allergens.push(...mapped);
@@ -8225,7 +9375,8 @@ function extractFreddysAllergenItems($, restaurant, url) {
             allergenSourceType: allergenSourceTypes.officialAllergenMenu,
             allergens,
             category,
-            description: "Official Freddy's nutritional and allergen info table.",
+            description:
+              "Official Freddy's nutritional and allergen info table.",
             imageUrl: null,
             mayContain,
             name,
@@ -8242,7 +9393,9 @@ function extractFreddysAllergenItems($, restaurant, url) {
 }
 
 function freddysNutritionValue($, item, field) {
-  const text = cleanText($(item).find(`.field-item__field-${field}`).first().text());
+  const text = cleanText(
+    $(item).find(`.field-item__field-${field}`).first().text(),
+  );
   return parseNutritionNumber(text) ?? text ?? null;
 }
 
@@ -8256,16 +9409,22 @@ function extractDairyQueenAllergenItems($, restaurant, url) {
       .find("th,td")
       .map((_index, cell) => cleanText($(cell).text()) ?? "")
       .get();
-    const itemIndex = headers.findIndex((header) => /^menu item$/i.test(header));
-    const allergenIndex = headers.findIndex((header) => /^allergens$/i.test(header));
+    const itemIndex = headers.findIndex((header) =>
+      /^menu item$/i.test(header),
+    );
+    const allergenIndex = headers.findIndex((header) =>
+      /^allergens$/i.test(header),
+    );
 
     if (itemIndex < 0 || allergenIndex < 0) {
       return;
     }
 
     const category =
-      cleanText($(table).prevAll("h3").first().text())?.replace(/\s*\(See table footer for legend\)$/i, "") ??
-      restaurant.category;
+      cleanText($(table).prevAll("h3").first().text())?.replace(
+        /\s*\(See table footer for legend\)$/i,
+        "",
+      ) ?? restaurant.category;
 
     $(table)
       .find("tr")
@@ -8281,14 +9440,17 @@ function extractDairyQueenAllergenItems($, restaurant, url) {
           return;
         }
 
-        const { allergens, mayContain } = dairyQueenAllergenCodes(cells[allergenIndex] ?? "");
+        const { allergens, mayContain } = dairyQueenAllergenCodes(
+          cells[allergenIndex] ?? "",
+        );
 
         records.push(
           createRecord({
             allergenSourceType: allergenSourceTypes.officialAllergenMenu,
             allergens,
             category,
-            description: "Official Dairy Queen nutrition facts and allergy information table.",
+            description:
+              "Official Dairy Queen nutrition facts and allergy information table.",
             imageUrl: null,
             mayContain,
             name,
@@ -8343,10 +9505,17 @@ function dairyQueenAllergenCodes(value) {
 }
 
 function extractXmlItems(text, restaurant, url, kind = sourceTypes.api) {
-  return extractXmlDocumentSchemaProfileItems(text, restaurant, url, kind) ?? [];
+  return (
+    extractXmlDocumentSchemaProfileItems(text, restaurant, url, kind) ?? []
+  );
 }
 
-export function extractSpreadsheetItems(buffer, restaurant, url, kind = sourceTypes.allergen) {
+export function extractSpreadsheetItems(
+  buffer,
+  restaurant,
+  url,
+  kind = sourceTypes.allergen,
+) {
   if (!buffer || (kind !== sourceTypes.allergen && kind !== sourceTypes.menu)) {
     return [];
   }
@@ -8363,8 +9532,14 @@ export function extractSpreadsheetItems(buffer, restaurant, url, kind = sourceTy
 
   for (const sheetName of workbook.SheetNames ?? []) {
     const worksheet = workbook.Sheets[sheetName];
-    const rows = XLSX.utils.sheet_to_json(worksheet, { blankrows: false, defval: null, header: 1 });
-    records.push(...extractSpreadsheetMatrixRows(rows, restaurant, url, sheetName));
+    const rows = XLSX.utils.sheet_to_json(worksheet, {
+      blankrows: false,
+      defval: null,
+      header: 1,
+    });
+    records.push(
+      ...extractSpreadsheetMatrixRows(rows, restaurant, url, sheetName),
+    );
   }
 
   return records;
@@ -8388,7 +9563,11 @@ function extractSpreadsheetMatrixRows(rows, restaurant, url, sheetName) {
   const allergenColumns = new Map();
   const nutritionColumns = new Map();
 
-  for (let index = 1; index < Math.max(labelRow.length, allergenRow.length); index += 1) {
+  for (
+    let index = 1;
+    index < Math.max(labelRow.length, allergenRow.length);
+    index += 1
+  ) {
     const allergenId = normalizeProviderAllergens([allergenRow[index]]).at(0);
 
     if (allergenId) {
@@ -8418,8 +9597,8 @@ function extractSpreadsheetMatrixRows(rows, restaurant, url, sheetName) {
       continue;
     }
 
-    const hasNutritionValue = Array.from(nutritionColumns.keys()).some((index) =>
-      isSpreadsheetMarkedValue(cells[index]),
+    const hasNutritionValue = Array.from(nutritionColumns.keys()).some(
+      (index) => isSpreadsheetMarkedValue(cells[index]),
     );
     const allergens = [];
 
@@ -8511,7 +9690,11 @@ function extractProductLinksFromXmlSitemap(text, url) {
 
     const name = menuNameFromProductUrl(href);
 
-    if (!name || !isProbablyMenuItemName(name) || isDominosIngredientOnlyName(name)) {
+    if (
+      !name ||
+      !isProbablyMenuItemName(name) ||
+      isDominosIngredientOnlyName(name)
+    ) {
       return;
     }
 
@@ -8559,7 +9742,11 @@ function extractDominosAllergenXmlItems(text, restaurant, url) {
     const $item = $(element);
     const name = cleanText($item.attr("title"));
 
-    if (!name || !isProbablyMenuItemName(name) || isDominosIngredientOnlyName(name)) {
+    if (
+      !name ||
+      !isProbablyMenuItemName(name) ||
+      isDominosIngredientOnlyName(name)
+    ) {
       return;
     }
 
@@ -8595,47 +9782,49 @@ function extractDominosAllergenXmlItems(text, restaurant, url) {
 }
 
 function isDominosIngredientOnlyName(name) {
-  return /^(?:PHASE OIL\s*\(BUTTER FLAVORED OIL\))$/i.test(String(name ?? "").trim());
+  return /^(?:PHASE OIL\s*\(BUTTER FLAVORED OIL\))$/i.test(
+    String(name ?? "").trim(),
+  );
 }
 
 function extractDominosNutritionXmlItems(text, restaurant, url) {
   const $ = cheerio.load(text, { xmlMode: true });
   const records = [];
 
-  $("item, crust, sauce, cheese, topping, specialty").each((_index, element) => {
-    const $item = $(element);
-    const rawName =
-      $item.attr("type") ??
-      $item.attr("name");
-    const name = cleanText(rawName);
+  $("item, crust, sauce, cheese, topping, specialty").each(
+    (_index, element) => {
+      const $item = $(element);
+      const rawName = $item.attr("type") ?? $item.attr("name");
+      const name = cleanText(rawName);
 
-    if (!name || !isProbablyMenuItemName(name)) {
-      return;
-    }
+      if (!name || !isProbablyMenuItemName(name)) {
+        return;
+      }
 
-    const nutritionFacts = nutritionFactsFromDominosAttributes($item);
+      const nutritionFacts = nutritionFactsFromDominosAttributes($item);
 
-    if (!nutritionFacts) {
-      return;
-    }
+      if (!nutritionFacts) {
+        return;
+      }
 
-    for (const alias of dominosNutritionAliases(name, element.tagName)) {
-      records.push(
-        createRecord({
-          allergenSourceType: allergenSourceTypes.unavailable,
-          allergens: [],
-          category: restaurant.category,
-          description: "Official Domino's Cal-O-Meter nutrition XML.",
-          imageUrl: null,
-          mayContain: [],
-          name: alias,
-          nutritionFacts,
-          sourceKind: "api-nutrition",
-          sourceUrl: url,
-        }),
-      );
-    }
-  });
+      for (const alias of dominosNutritionAliases(name, element.tagName)) {
+        records.push(
+          createRecord({
+            allergenSourceType: allergenSourceTypes.unavailable,
+            allergens: [],
+            category: restaurant.category,
+            description: "Official Domino's Cal-O-Meter nutrition XML.",
+            imageUrl: null,
+            mayContain: [],
+            name: alias,
+            nutritionFacts,
+            sourceKind: "api-nutrition",
+            sourceUrl: url,
+          }),
+        );
+      }
+    },
+  );
 
   return records;
 }
@@ -8647,9 +9836,15 @@ function dominosNutritionAliases(name, tagName) {
 
   const aliasMap = new Map([
     ["5-Cheese Mac & Cheese Dish", ["5-CHEESE MAC & CHEESE", "5-CHEESE DIP"]],
-    ["Bacon & Jalapeno Stuffed Cheesy Bread", ["BACON & JALAPENO STUFFED CHEESY BREAD"]],
+    [
+      "Bacon & Jalapeno Stuffed Cheesy Bread",
+      ["BACON & JALAPENO STUFFED CHEESY BREAD"],
+    ],
     ["Bacon Cheddar Hoagie", ["BACON CHEDDAR HOAGIE"]],
-    ["Balsamic Vinaigrette Dressing", ["BALSAMIC DRESSING", "FAT-FREE RASPBERRY DRESSING"]],
+    [
+      "Balsamic Vinaigrette Dressing",
+      ["BALSAMIC DRESSING", "FAT-FREE RASPBERRY DRESSING"],
+    ],
     ["Blue Cheese Dipping Cup", ["BLUE CHEESE DIPPING CUPS"]],
     ["BBQ Chicken Topping", ["BBQ CHICKEN WITH SAUCE"]],
     ["Buffalo Chicken", ["BUFFALO CHICKEN SANDWICH"]],
@@ -8663,7 +9858,10 @@ function dominosNutritionAliases(name, tagName) {
     ["1/2 bread bowl", ["BREAD BOWL"]],
     ["Garlic Bread Bites", ["GARLIC BREAD BITES"]],
     ["Garlic Dipping Cup", ["GARLIC DIPPING SAUCE"]],
-    ["Garlic Oil Blend", ["GARLIC OIL BLEND", "PHASE OIL (BUTTER FLAVORED OIL)"]],
+    [
+      "Garlic Oil Blend",
+      ["GARLIC OIL BLEND", "PHASE OIL (BUTTER FLAVORED OIL)"],
+    ],
     ["Garlic Parmesan White Sauce", ["GARLIC PARMESAN SAUCE (WHITE SAUCE)"]],
     ["Garlic Parmesan Wings", ["GARLIC PARMESAN CHICKEN WINGS"]],
     ["Hand Tossed", ["HAND TOSSED CRUST"]],
@@ -8672,42 +9870,82 @@ function dominosNutritionAliases(name, tagName) {
     ["Honey BBQ Sauce", ["HONEY BBQ SAUCE", "WING SAUCE, HONEY BBQ"]],
     ["Honey BBQ Wings", ["HONEY BBQ CHICKEN WINGS"]],
     ["Hot Buffalo Dipping Cup", ["HOT BUFFALO DIPPING CUP"]],
-    ["Hot Buffalo Sauce", ["WING SAUCE, HOT BUFFALO", "WING SAUCE, MILD BUFFALO"]],
+    [
+      "Hot Buffalo Sauce",
+      ["WING SAUCE, HOT BUFFALO", "WING SAUCE, MILD BUFFALO"],
+    ],
     ["Hot Buffalo Wings", ["HOT BUFFALO CHICKEN WINGS"]],
     ["Italian", ["ITALIAN SANDWICH"]],
     ["Italian Sausage Marinara", ["ITALIAN SAUSAGE MARINARA PASTA"]],
     ["Kraft Catalina Dressing", ["KRAFT CATALINA SALAD DRESSING"]],
     ["Lite Balsamic with Olive Oil  Dressing", ["BALSAMIC DRESSING"]],
-    ["Marinara Dipping Cup", ["MARINARA DIPPING SAUCE", "CHEESEY MARINARA DIP"]],
+    [
+      "Marinara Dipping Cup",
+      ["MARINARA DIPPING SAUCE", "CHEESEY MARINARA DIP"],
+    ],
     ["Melty 3-Cheese Loaded Tots", ["LOADED TOTS - MELTY 3-CHEESE"]],
     ["Mild Buffalo Wings", ["MILD BUFFALO CHICKEN WINGS"]],
     ["New York Style", ["NEW YORK STYLE CRUST"]],
     ["Parmesan", ["PARMESAN CHEESE (GRATED)", "PARMESAN CHEESE (PACKET)"]],
     ["Parmesan Bread Bites", ["PARMESAN BREAD BITES"]],
-    ["Philly Cheese Steak", ["PHILLY CHEESE STEAK PIZZA", "PHILLY CHEESE STEAK SANDWICH"]],
+    [
+      "Philly Cheese Steak",
+      ["PHILLY CHEESE STEAK PIZZA", "PHILLY CHEESE STEAK SANDWICH"],
+    ],
     ["Philly Cheese Steak Loaded Tots", ["LOADED TOTS - PHILLY CHEESE STEAK"]],
-    ["Plain Wings, No sauce", ["PLAIN CHICKEN WINGS", "PLAIN CHICKEN WINGS (NO SAUCE)"]],
+    [
+      "Plain Wings, No sauce",
+      ["PLAIN CHICKEN WINGS", "PLAIN CHICKEN WINGS (NO SAUCE)"],
+    ],
     ["Premium Chicken", ["PREMIUM GRILLED CHICKEN"]],
-    ["Ranch Dipping Cup", ["BUTTERMILK RANCH SAUCE", "RANCH DIPPING CUP", "RANCH DIPPING CUPS"]],
+    [
+      "Ranch Dipping Cup",
+      ["BUTTERMILK RANCH SAUCE", "RANCH DIPPING CUP", "RANCH DIPPING CUPS"],
+    ],
     ["Ranch Dressing", ["RANCH DRESSING"]],
     ["Regular Cheese", ["CHEESE (PIZZA)"]],
-    ["Robust Inspired Tomato Sauce", [
-      "HEARTY MARINARA SAUCE",
-      "PIZZA SAUCE",
-      "PIZZA SAUCE (ROBUST INSPIRED TOMATO SAUCE)",
-      "ROBUST INSPIRED TOMATO SAUCE",
-    ]],
+    [
+      "Robust Inspired Tomato Sauce",
+      [
+        "HEARTY MARINARA SAUCE",
+        "PIZZA SAUCE",
+        "PIZZA SAUCE (ROBUST INSPIRED TOMATO SAUCE)",
+        "ROBUST INSPIRED TOMATO SAUCE",
+      ],
+    ],
     ["Salad, Chicken Caesar", ["CHICKEN CAESAR SALAD"]],
     ["Salad, Classic Garden", ["CLASSIC GARDEN SALAD"]],
-    ["Spinach & Feta Stuffed Cheesy Bread", ["SPINACH & FETA STUFFED CHEESY BREAD"]],
+    [
+      "Spinach & Feta Stuffed Cheesy Bread",
+      ["SPINACH & FETA STUFFED CHEESY BREAD"],
+    ],
     ["Stuffed Cheesy Bread", ["STUFFED CHEESY BREAD"]],
     ["Sweet Icing Dipping Cup", ["SWEET ICING DIPPING CUP"]],
-    ["Sweet Mango Habanero Chicken Wings", ["SWEET MANGO HABANERO CHICKEN WINGS"]],
+    [
+      "Sweet Mango Habanero Chicken Wings",
+      ["SWEET MANGO HABANERO CHICKEN WINGS"],
+    ],
     ["Shredded Parmesan Asiago", ["PARMESAN-ASIAGO CHEESE"]],
-    ["Shredded Provolone Cheese", ["PROVOLONE CHEESE (SHREDDED)", "PROVOLONE CHEESE (SLICED)"]],
-    ["Spicy Buffalo 5-Cheese Mac & Cheese Dish", ["SPICY BUFFALO 5-CHEESE MAC & CHEESE"]],
-    ["Sweet & Spicy Chicken Habanero", ["SWEET & SPICY CHICKEN HABANERO SANDWICH"]],
-    ["Sweet Mango Habanero Dipping Cup", ["SWEET MANGO HABANERO", "SWEET MANGO HABANERO DIPPING CUP", "SWEET MANGO HABANERO SAUCE DIPPING CUP"]],
+    [
+      "Shredded Provolone Cheese",
+      ["PROVOLONE CHEESE (SHREDDED)", "PROVOLONE CHEESE (SLICED)"],
+    ],
+    [
+      "Spicy Buffalo 5-Cheese Mac & Cheese Dish",
+      ["SPICY BUFFALO 5-CHEESE MAC & CHEESE"],
+    ],
+    [
+      "Sweet & Spicy Chicken Habanero",
+      ["SWEET & SPICY CHICKEN HABANERO SANDWICH"],
+    ],
+    [
+      "Sweet Mango Habanero Dipping Cup",
+      [
+        "SWEET MANGO HABANERO",
+        "SWEET MANGO HABANERO DIPPING CUP",
+        "SWEET MANGO HABANERO SAUCE DIPPING CUP",
+      ],
+    ],
   ]);
 
   if (tagName === "crust") {
@@ -8759,7 +9997,9 @@ async function extractDominosNutritionGuidePdfItems(buffer, restaurant, url) {
     const parsed = parseDominosNutritionGuideRow(parts);
 
     if (parsed) {
-      records.push(...createDominosNutritionGuideRecords(parsed, restaurant, url));
+      records.push(
+        ...createDominosNutritionGuideRecords(parsed, restaurant, url),
+      );
       pending = null;
       continue;
     }
@@ -8793,7 +10033,9 @@ async function extractDominosNutritionGuidePdfItems(buffer, restaurant, url) {
 }
 
 function parseDominosNutritionGuideRow(parts) {
-  const lastNumericIndex = parts.findLastIndex((part) => isNutritionValueToken(part));
+  const lastNumericIndex = parts.findLastIndex((part) =>
+    isNutritionValueToken(part),
+  );
 
   if (lastNumericIndex < 0) {
     return null;
@@ -8830,7 +10072,13 @@ function parseDominosNutritionGuideRow(parts) {
 }
 
 function parseDominosNutritionGuidePendingRow(parts) {
-  if (parts.some((part) => /^(serving size|weight \(g\)|calories|ingredient nutrition|domino's nutrition guide)$/i.test(part))) {
+  if (
+    parts.some((part) =>
+      /^(serving size|weight \(g\)|calories|ingredient nutrition|domino's nutrition guide)$/i.test(
+        part,
+      ),
+    )
+  ) {
     return null;
   }
 
@@ -8849,27 +10097,29 @@ function parseDominosNutritionGuidePendingRow(parts) {
 }
 
 function createDominosNutritionGuideRecords(parsed, restaurant, url) {
-  const nutritionFacts = nutritionFactsFromDominosGuideValues(parsed.servingSize, parsed.values);
+  const nutritionFacts = nutritionFactsFromDominosGuideValues(
+    parsed.servingSize,
+    parsed.values,
+  );
 
   if (!nutritionFacts) {
     return [];
   }
 
-  return dominosNutritionAliases(parsed.name, "pdf")
-    .map((alias) =>
-      createRecord({
-        allergenSourceType: allergenSourceTypes.unavailable,
-        allergens: [],
-        category: restaurant.category,
-        description: "Official Domino's Nutrition Guide PDF.",
-        imageUrl: null,
-        mayContain: [],
-        name: alias,
-        nutritionFacts,
-        sourceKind: "pdf-nutrition",
-        sourceUrl: url,
-      }),
-    );
+  return dominosNutritionAliases(parsed.name, "pdf").map((alias) =>
+    createRecord({
+      allergenSourceType: allergenSourceTypes.unavailable,
+      allergens: [],
+      category: restaurant.category,
+      description: "Official Domino's Nutrition Guide PDF.",
+      imageUrl: null,
+      mayContain: [],
+      name: alias,
+      nutritionFacts,
+      sourceKind: "pdf-nutrition",
+      sourceUrl: url,
+    }),
+  );
 }
 
 function nutritionFactsFromDominosGuideValues(servingSize, values) {
@@ -8904,8 +10154,10 @@ function extractChickFilAAllergenItems($, restaurant, url) {
     .text()
     .trim();
   const parsed = parseJsonLoose(text);
-  const sections = parsed?.state?.["nutrition-allergens-table-store"]?.tableData?.allergens;
-  const nutritionSections = parsed?.state?.["nutrition-allergens-table-store"]?.tableData?.nutrition;
+  const sections =
+    parsed?.state?.["nutrition-allergens-table-store"]?.tableData?.allergens;
+  const nutritionSections =
+    parsed?.state?.["nutrition-allergens-table-store"]?.tableData?.nutrition;
 
   if (!Array.isArray(sections)) {
     return [];
@@ -8964,7 +10216,12 @@ function extractChickFilAAllergenItems($, restaurant, url) {
   return records;
 }
 
-export function extractOfficialApiItems(text, restaurant, url, kind = sourceTypes.api) {
+export function extractOfficialApiItems(
+  text,
+  restaurant,
+  url,
+  kind = sourceTypes.api,
+) {
   if (/\/api\/menu\b/i.test(url) && isDardenPlatformUrl(url)) {
     return [];
   }
@@ -8975,7 +10232,11 @@ export function extractOfficialApiItems(text, restaurant, url, kind = sourceType
     return [];
   }
 
-  const profileRecords = extractOfficialApiDocumentSchemaProfileItems(parsed, restaurant, url);
+  const profileRecords = extractOfficialApiDocumentSchemaProfileItems(
+    parsed,
+    restaurant,
+    url,
+  );
 
   if (profileRecords) {
     return profileRecords;
@@ -8990,7 +10251,12 @@ export function extractOfficialApiItems(text, restaurant, url, kind = sourceType
 function extractOfficialApiDocumentSchemaProfileItems(parsed, restaurant, url) {
   const adapter = getBrandAdapter(restaurant.id);
   const profile = officialApiDocumentSchemaProfiles.find((candidate) =>
-    documentSchemaProfileMatches(candidate, { adapter, contentKind: "json", restaurant, url }),
+    documentSchemaProfileMatches(candidate, {
+      adapter,
+      contentKind: "json",
+      restaurant,
+      url,
+    }),
   );
 
   return profile ? profile.extract({ parsed, restaurant, url }) : null;
@@ -9038,22 +10304,26 @@ const officialApiDocumentSchemaProfiles = [
     id: "square-online-products-api",
     contentKind: "json",
     outputType: "menu",
-    urlPattern: /\/app\/store\/api\/v\d+\/editor\/users\/[^/?#]+\/sites\/[^/?#]+\/products/i,
-    extract: ({ parsed, restaurant, url }) => extractSquareOnlineProductItems(parsed, restaurant, url),
+    urlPattern:
+      /\/app\/store\/api\/v\d+\/editor\/users\/[^/?#]+\/sites\/[^/?#]+\/products/i,
+    extract: ({ parsed, restaurant, url }) =>
+      extractSquareOnlineProductItems(parsed, restaurant, url),
   },
   {
     id: "olo-vendor-menu-api",
     contentKind: "json",
     outputType: "menu",
     urlPattern: /\/api\/vendors\/[^/?#]+/i,
-    extract: ({ parsed, restaurant, url }) => extractOloVendorMenuItems(parsed, restaurant, url),
+    extract: ({ parsed, restaurant, url }) =>
+      extractOloVendorMenuItems(parsed, restaurant, url),
   },
   {
     id: "lunchbox-nova-menu-api",
     contentKind: "json",
     outputType: "menu",
     urlPattern: /\/api\/v\d+\/stores\/[^/?#]+\/menus/i,
-    extract: ({ parsed, restaurant, url }) => extractLunchboxNovaMenuItems(parsed, restaurant, url),
+    extract: ({ parsed, restaurant, url }) =>
+      extractLunchboxNovaMenuItems(parsed, restaurant, url),
   },
   {
     id: "chipotle-nutrition-api",
@@ -9061,7 +10331,8 @@ const officialApiDocumentSchemaProfiles = [
     contentKind: "json",
     outputType: "official-nutrition",
     urlPattern: /\/menu-metadata\/nutrition/i,
-    extract: ({ parsed, restaurant, url }) => extractChipotleNutritionApiItems(parsed, restaurant, url),
+    extract: ({ parsed, restaurant, url }) =>
+      extractChipotleNutritionApiItems(parsed, restaurant, url),
   },
 ];
 
@@ -9168,7 +10439,11 @@ function extractLunchboxNovaMenuItems(parsed, restaurant, url) {
     }
   }
 
-  return uniqueBy(records, (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`);
+  return uniqueBy(
+    records,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+  );
 }
 
 function lunchboxNovaAllergensForItem(item) {
@@ -9205,7 +10480,10 @@ function lunchboxNovaAllergenIdsForClass(value) {
     [/contains.*soy|soy.*contains/i, ["soy"]],
     [/contains.*sesame|sesame.*contains/i, ["sesame"]],
     [/contains.*(?:peanut|peanuts)|(?:peanut|peanuts).*contains/i, ["peanut"]],
-    [/contains.*(?:tree_nut|tree nuts?|nuts?)|(?:tree_nut|tree nuts?|nuts?).*contains/i, ["tree-nut"]],
+    [
+      /contains.*(?:tree_nut|tree nuts?|nuts?)|(?:tree_nut|tree nuts?|nuts?).*contains/i,
+      ["tree-nut"],
+    ],
     [/contains.*fish|fish.*contains/i, ["fish"]],
     [/contains.*shellfish|shellfish.*contains/i, ["shellfish"]],
   ];
@@ -9252,7 +10530,9 @@ function isSquareOnlineFoodProduct(product) {
     .filter(Boolean)
     .join(" ");
 
-  return !/\b(?:gift\s*card|merch|shirt|hoodie|hat|mug|sticker)\b/i.test(haystack);
+  return !/\b(?:gift\s*card|merch|shirt|hoodie|hat|mug|sticker)\b/i.test(
+    haystack,
+  );
 }
 
 function squareOnlineProductCategory(product, restaurant) {
@@ -9309,7 +10589,11 @@ function extractChipotleNutritionApiItems(parsed, restaurant, url) {
     const names = chipotleNamesForNutritionId(id, nameById);
     const nutritionFacts = nutritionFactsFromChipotleApiItem(item);
 
-    if (names.length === 0 || !nutritionFacts || Object.keys(nutritionFacts).length === 0) {
+    if (
+      names.length === 0 ||
+      !nutritionFacts ||
+      Object.keys(nutritionFacts).length === 0
+    ) {
       continue;
     }
 
@@ -9319,7 +10603,8 @@ function extractChipotleNutritionApiItems(parsed, restaurant, url) {
           allergenSourceType: allergenSourceTypes.unavailable,
           allergens: [],
           category: restaurant.category,
-          description: "Official Chipotle nutrition calculator API.",
+          description:
+            item?.description ?? item?.longDescription ?? null,
           imageUrl: absolutizeUrl(item?.thumbnailUrl, url),
           mayContain: [],
           name,
@@ -9342,18 +10627,27 @@ function extractOloVendorMenuItems(parsed, restaurant, url) {
     return [];
   }
 
-  const categoryById = new Map(categories.map((category) => [String(category.id), category]));
+  const categoryById = new Map(
+    categories.map((category) => [String(category.id), category]),
+  );
   const records = [];
 
   for (const product of products) {
     const name = pickString(product?.name);
 
-    if (!name || !isProbablyMenuItemName(name) || product?.isDisabled === true) {
+    if (
+      !name ||
+      !isProbablyMenuItemName(name) ||
+      product?.isDisabled === true
+    ) {
       continue;
     }
 
     const category = categoryById.get(String(product.category));
-    const description = pickString(product.description) ?? pickString(product.shortDescription) ?? null;
+    const description =
+      pickString(product.description) ??
+      pickString(product.shortDescription) ??
+      null;
 
     if (
       /^catering$/i.test(pickString(category?.name) ?? "") &&
@@ -9393,9 +10687,12 @@ function extractOloVendorMenuItems(parsed, restaurant, url) {
 }
 
 function oloProductImageUrl(product, url) {
-  const image = asArray(product?.images).find((candidate) =>
-    /mobile-webapp-menu|responsive|customize/i.test(candidate?.groupName ?? ""),
-  ) ?? asArray(product?.images)[0];
+  const image =
+    asArray(product?.images).find((candidate) =>
+      /mobile-webapp-menu|responsive|customize/i.test(
+        candidate?.groupName ?? "",
+      ),
+    ) ?? asArray(product?.images)[0];
 
   return absolutizeUrl(pickString(image?.filename) ?? pickImage(image), url);
 }
@@ -9451,9 +10748,16 @@ function extractProviderAllergenRecords(parsed, restaurant, url) {
 
   return nodes
     .map((node) => {
-      const name = pickString(node?.name) ?? pickString(node?.title) ?? pickString(node?.displayName);
+      const name =
+        pickString(node?.name) ??
+        pickString(node?.title) ??
+        pickString(node?.displayName);
 
-      if (!name || !isProbablyMenuItemName(name) || !Array.isArray(node?.allergens)) {
+      if (
+        !name ||
+        !isProbablyMenuItemName(name) ||
+        !Array.isArray(node?.allergens)
+      ) {
         return null;
       }
 
@@ -9513,7 +10817,10 @@ function extractHtmlAllergenMatrixItems($, restaurant, url, kind) {
         ) &&
         htmlAllergenMatrixHeaderAllergens(firstCell).length === 0;
 
-      return allergenColumnCount >= 3 && (firstCellLooksLikeItemHeader || firstCellLooksLikeCategory);
+      return (
+        allergenColumnCount >= 3 &&
+        (firstCellLooksLikeItemHeader || firstCellLooksLikeCategory)
+      );
     });
 
     if (!header) {
@@ -9525,9 +10832,11 @@ function extractHtmlAllergenMatrixItems($, restaurant, url, kind) {
       allergens: htmlAllergenMatrixHeaderAllergens(cell),
       index,
     }));
-    let currentCategory = /^(?:item|menu item|product|name|flavor|food)$/i.test(header[0] ?? "")
+    let currentCategory = /^(?:item|menu item|product|name|flavor|food)$/i.test(
+      header[0] ?? "",
+    )
       ? restaurant.category
-      : cleanText(header[0]) ?? restaurant.category;
+      : (cleanText(header[0]) ?? restaurant.category);
 
     for (const cells of rows.slice(headerIndex + 1)) {
       const name = cleanText(cells[0]);
@@ -9568,14 +10877,14 @@ function extractHtmlAllergenMatrixItems($, restaurant, url, kind) {
 
       records.push(
         createRecord({
-	          allergenSourceType: allergenSourceTypes.officialAllergenMenu,
-	          allergens: direct,
-	          category: currentCategory,
-	          description: "Official allergen matrix.",
-	          evidenceText: allergenMatrixEvidenceText(name, direct, mayContain),
-	          imageUrl: null,
-	          mayContain,
-	          name,
+          allergenSourceType: allergenSourceTypes.officialAllergenMenu,
+          allergens: direct,
+          category: currentCategory,
+          description: "Official allergen matrix.",
+          evidenceText: allergenMatrixEvidenceText(name, direct, mayContain),
+          imageUrl: null,
+          mayContain,
+          name,
           sourceKind: "html-allergen-matrix",
           sourceUrl: url,
         }),
@@ -9593,15 +10902,32 @@ function extractHtmlAllergenMatrixItems($, restaurant, url, kind) {
 function extractClassGridHtmlAllergenMatrixItems($, restaurant, url) {
   const records = [];
 
-  $(".alergia-grid, .allergy-grid, [class*='allergia-grid'], [class*='alergia-grid']").each((_gridIndex, grid) => {
+  $(
+    ".alergia-grid, .allergy-grid, [class*='allergia-grid'], [class*='alergia-grid']",
+  ).each((_gridIndex, grid) => {
     const $grid = $(grid);
-    const $header = $grid.find(".alergia-grid__row--header, .allergy-grid__row--header, [class*='grid__row--header']").first();
+    const $header = $grid
+      .find(
+        ".alergia-grid__row--header, .allergy-grid__row--header, [class*='grid__row--header']",
+      )
+      .first();
     const category =
-      normalizeGenericMatrixCategory($header.find(".alergia-grid__item-name, .allergy-grid__item-name, [class*='grid__item-name']").first().text()) ??
-      normalizeGenericMatrixCategory($grid.closest("section,article,div").find("h1,h2,h3").first().text()) ??
+      normalizeGenericMatrixCategory(
+        $header
+          .find(
+            ".alergia-grid__item-name, .allergy-grid__item-name, [class*='grid__item-name']",
+          )
+          .first()
+          .text(),
+      ) ??
+      normalizeGenericMatrixCategory(
+        $grid.closest("section,article,div").find("h1,h2,h3").first().text(),
+      ) ??
       restaurant.category;
     const headers = $header
-      .find(".alergia-grid__cell--header-label, .allergy-grid__cell--header-label, [class*='header-label']")
+      .find(
+        ".alergia-grid__cell--header-label, .allergy-grid__cell--header-label, [class*='header-label']",
+      )
       .toArray()
       .map((node, index) => ({
         allergens: htmlAllergenMatrixHeaderAllergens($(node).text()),
@@ -9619,7 +10945,12 @@ function extractClassGridHtmlAllergenMatrixItems($, restaurant, url) {
       .each((_rowIndex, row) => {
         const $row = $(row);
         const name = cleanText(
-          $row.find(".alergia-grid__item-name, .allergy-grid__item-name, [class*='grid__item-name']").first().text(),
+          $row
+            .find(
+              ".alergia-grid__item-name, .allergy-grid__item-name, [class*='grid__item-name']",
+            )
+            .first()
+            .text(),
         );
 
         if (!name || !isProbablyMenuItemName(name)) {
@@ -9627,26 +10958,34 @@ function extractClassGridHtmlAllergenMatrixItems($, restaurant, url) {
         }
 
         const cells = $row
-          .find(".alergia-grid__cell, .allergy-grid__cell, [class*='grid__cell']")
+          .find(
+            ".alergia-grid__cell, .allergy-grid__cell, [class*='grid__cell']",
+          )
           .toArray()
           .filter((node) => isAllergenGridCellElement($(node).attr("class")));
         const direct = [];
 
         for (const header of headers) {
           const $cell = $(cells[header.index]);
-          const cellText = cleanText(
-            [
-              $cell.text(),
-              $cell.attr("aria-label"),
-              $cell.attr("data-label"),
-              $cell.find("img[alt]").toArray().map((node) => $(node).attr("alt")).join(" "),
-            ]
-              .filter(Boolean)
-              .join(" "),
-          ) ?? "";
+          const cellText =
+            cleanText(
+              [
+                $cell.text(),
+                $cell.attr("aria-label"),
+                $cell.attr("data-label"),
+                $cell
+                  .find("img[alt]")
+                  .toArray()
+                  .map((node) => $(node).attr("alt"))
+                  .join(" "),
+              ]
+                .filter(Boolean)
+                .join(" "),
+            ) ?? "";
 
           if (
-            $cell.find("img,svg,.fa-check,.fas.fa-check,[class*='check']").length > 0 ||
+            $cell.find("img,svg,.fa-check,.fas.fa-check,[class*='check']")
+              .length > 0 ||
             htmlAllergenMatrixCellIsDirectMarker(cellText) ||
             normalizeProviderAllergens([cellText]).length > 0
           ) {
@@ -9660,14 +10999,14 @@ function extractClassGridHtmlAllergenMatrixItems($, restaurant, url) {
 
         records.push(
           createRecord({
-	            allergenSourceType: allergenSourceTypes.officialAllergenMenu,
-	            allergens: uniqueStrings(direct),
-	            category,
-	            description: "Official allergen matrix.",
-	            evidenceText: allergenMatrixEvidenceText(name, direct),
-	            imageUrl: null,
-	            mayContain: [],
-	            name,
+            allergenSourceType: allergenSourceTypes.officialAllergenMenu,
+            allergens: uniqueStrings(direct),
+            category,
+            description: "Official allergen matrix.",
+            evidenceText: allergenMatrixEvidenceText(name, direct),
+            imageUrl: null,
+            mayContain: [],
+            name,
             sourceKind: "class-grid-allergen-matrix",
             sourceUrl: url,
           }),
@@ -9677,12 +11016,15 @@ function extractClassGridHtmlAllergenMatrixItems($, restaurant, url) {
 
   return uniqueBy(
     records,
-    (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
   );
 }
 
 function isAllergenGridCellElement(className) {
-  return /(?:^|\s)(?:alergia|allergy)-grid__cell(?:\s|$)/i.test(String(className ?? ""));
+  return /(?:^|\s)(?:alergia|allergy)-grid__cell(?:\s|$)/i.test(
+    String(className ?? ""),
+  );
 }
 
 function extractSvgAllergenMatrixItems($, restaurant, url) {
@@ -9690,9 +11032,16 @@ function extractSvgAllergenMatrixItems($, restaurant, url) {
 
   $("svg").each((_svgIndex, svg) => {
     const $svg = $(svg);
-    const svgLabel = cleanText(
-      [$svg.attr("aria-label"), $svg.attr("role"), $svg.find("title").first().text()].filter(Boolean).join(" "),
-    ) ?? "";
+    const svgLabel =
+      cleanText(
+        [
+          $svg.attr("aria-label"),
+          $svg.attr("role"),
+          $svg.find("title").first().text(),
+        ]
+          .filter(Boolean)
+          .join(" "),
+      ) ?? "";
     const textNodes = $svg
       .find("text")
       .toArray()
@@ -9706,11 +11055,19 @@ function extractSvgAllergenMatrixItems($, restaurant, url) {
           y: point?.y,
         };
       })
-      .filter((node) => node.text && Number.isFinite(node.x) && Number.isFinite(node.y));
+      .filter(
+        (node) =>
+          node.text && Number.isFinite(node.x) && Number.isFinite(node.y),
+      );
 
     if (
       textNodes.length < 5 ||
-      !/(?:allergen|allergy|allergies)/i.test(`${svgLabel} ${textNodes.map((node) => node.text).slice(0, 12).join(" ")}`)
+      !/(?:allergen|allergy|allergies)/i.test(
+        `${svgLabel} ${textNodes
+          .map((node) => node.text)
+          .slice(0, 12)
+          .join(" ")}`,
+      )
     ) {
       return;
     }
@@ -9735,7 +11092,9 @@ function extractSvgAllergenMatrixItems($, restaurant, url) {
         const point = svgPathInitialPoint($(node).attr("d"));
         const fill = String($(node).attr("fill") ?? "").toLowerCase();
 
-        return point && isSvgAllergenCheckPath(fill, $(node).attr("d")) ? point : null;
+        return point && isSvgAllergenCheckPath(fill, $(node).attr("d"))
+          ? point
+          : null;
       })
       .filter(Boolean);
 
@@ -9750,7 +11109,8 @@ function extractSvgAllergenMatrixItems($, restaurant, url) {
 
     for (const node of rowNodes) {
       if (isSvgAllergenMatrixSection(node.text)) {
-        currentCategory = normalizeGenericMatrixCategory(node.text) ?? node.text;
+        currentCategory =
+          normalizeGenericMatrixCategory(node.text) ?? node.text;
         continue;
       }
 
@@ -9775,14 +11135,14 @@ function extractSvgAllergenMatrixItems($, restaurant, url) {
 
       records.push(
         createRecord({
-	          allergenSourceType: allergenSourceTypes.officialAllergenMenu,
-	          allergens: uniqueStrings(direct),
-	          category: currentCategory,
-	          description: "Official allergen matrix.",
-	          evidenceText: allergenMatrixEvidenceText(node.text, direct),
-	          imageUrl: null,
-	          mayContain: [],
-	          name: node.text,
+          allergenSourceType: allergenSourceTypes.officialAllergenMenu,
+          allergens: uniqueStrings(direct),
+          category: currentCategory,
+          description: "Official allergen matrix.",
+          evidenceText: allergenMatrixEvidenceText(node.text, direct),
+          imageUrl: null,
+          mayContain: [],
+          name: node.text,
           sourceKind: "svg-allergen-matrix",
           sourceUrl: url,
         }),
@@ -9792,18 +11152,23 @@ function extractSvgAllergenMatrixItems($, restaurant, url) {
 
   return uniqueBy(
     records,
-    (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
   );
 }
 
 function svgTranslatePoint(value) {
-  const match = String(value ?? "").match(/translate\(\s*(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)\s*\)/i);
+  const match = String(value ?? "").match(
+    /translate\(\s*(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)\s*\)/i,
+  );
 
   return match ? { x: Number(match[1]), y: Number(match[2]) } : null;
 }
 
 function svgPathInitialPoint(value) {
-  const match = String(value ?? "").match(/[mM]\s*(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)/);
+  const match = String(value ?? "").match(
+    /[mM]\s*(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)/,
+  );
 
   return match ? { x: Number(match[1]), y: Number(match[2]) } : null;
 }
@@ -9811,7 +11176,15 @@ function svgPathInitialPoint(value) {
 function isSvgAllergenCheckPath(fill, d) {
   return (
     fill &&
-    !["none", "#fcb525", "#f0f1f1", "#ffffff", "#fff", "#000000", "#000"].includes(fill) &&
+    ![
+      "none",
+      "#fcb525",
+      "#f0f1f1",
+      "#ffffff",
+      "#fff",
+      "#000000",
+      "#000",
+    ].includes(fill) &&
     /\d/.test(String(d ?? ""))
   );
 }
@@ -9828,11 +11201,14 @@ function isSvgAllergenMatrixSection(text) {
 }
 
 function closestSvgAllergenHeader(mark, headers) {
-  const closest = headers.reduce((best, header) => {
-    const distance = Math.abs(header.x - mark.x);
+  const closest = headers.reduce(
+    (best, header) => {
+      const distance = Math.abs(header.x - mark.x);
 
-    return distance < best.distance ? { distance, header } : best;
-  }, { distance: Number.POSITIVE_INFINITY, header: null });
+      return distance < best.distance ? { distance, header } : best;
+    },
+    { distance: Number.POSITIVE_INFINITY, header: null },
+  );
 
   return closest.distance <= 70 ? closest.header : null;
 }
@@ -9840,85 +11216,110 @@ function closestSvgAllergenHeader(mark, headers) {
 function extractDivHtmlAllergenMatrixItems($, restaurant, url) {
   const records = [];
 
-  $(".flex-block-header, [class*='flex-block-header']").each((_headerIndex, header) => {
-    const $header = $(header);
-    const rawCategory = cleanText(
-      $header
-        .find(".allergey-chart---dish-header, .allergy-chart---dish-header, [class*='dish-header']")
-        .first()
-        .text(),
-    );
-    const currentCategory = normalizeGenericMatrixCategory(rawCategory) ?? rawCategory ?? restaurant.category;
-    const columns = $header
-      .find(".allergy-chart---allergen-header, [class*='allergen-header']")
-      .toArray()
-      .map((node, index) => ({
-        allergens: htmlAllergenMatrixHeaderAllergens($(node).text()),
-        index,
-      }))
-      .filter((column) => column.allergens.length > 0);
-
-    if (columns.length < 2) {
-      return;
-    }
-
-    const $list = $header.nextAll(".w-dyn-list, [class*='w-dyn-list']").first();
-    const $items = $list.find(".collection-item-allergy-chart, [class*='collection-item-allergy-chart']");
-
-    $items.each((_itemIndex, item) => {
-      const $item = $(item);
-      const name = cleanText($item.find(".allergey-chart---dish, .allergy-chart---dish").first().text());
-
-      if (!name || !isProbablyMenuItemName(name)) {
-        return;
-      }
-
-      const cells = $item
-        .find(".allergy-chart---allergen")
-        .toArray()
-        .map((node) => cleanText($(node).text()) ?? "");
-      const direct = [];
-
-      for (const column of columns) {
-        const cell = cells[column.index] ?? "";
-
-        if (htmlAllergenMatrixCellIsDirectMarker(cell) || normalizeProviderAllergens([cell]).length > 0) {
-          direct.push(...column.allergens);
-        }
-      }
-
-      if (direct.length === 0) {
-        return;
-      }
-
-      const details = cleanText($item.find(".text-block-37").first().text());
-
-      records.push(
-        createRecord({
-          allergenSourceType: allergenSourceTypes.officialAllergenMenu,
-	          allergens: uniqueStrings(direct),
-	          category: currentCategory,
-	          description: details
-	            ? `Official allergen matrix. ${details}`
-	            : "Official allergen matrix.",
-	          evidenceText: allergenMatrixEvidenceText(name, direct, [], details),
-	          imageUrl: null,
-	          mayContain: [],
-	          name,
-          sourceKind: "html-allergen-matrix",
-          sourceUrl: url,
-        }),
+  $(".flex-block-header, [class*='flex-block-header']").each(
+    (_headerIndex, header) => {
+      const $header = $(header);
+      const rawCategory = cleanText(
+        $header
+          .find(
+            ".allergey-chart---dish-header, .allergy-chart---dish-header, [class*='dish-header']",
+          )
+          .first()
+          .text(),
       );
-    });
-  });
+      const currentCategory =
+        normalizeGenericMatrixCategory(rawCategory) ??
+        rawCategory ??
+        restaurant.category;
+      const columns = $header
+        .find(".allergy-chart---allergen-header, [class*='allergen-header']")
+        .toArray()
+        .map((node, index) => ({
+          allergens: htmlAllergenMatrixHeaderAllergens($(node).text()),
+          index,
+        }))
+        .filter((column) => column.allergens.length > 0);
+
+      if (columns.length < 2) {
+        return;
+      }
+
+      const $list = $header
+        .nextAll(".w-dyn-list, [class*='w-dyn-list']")
+        .first();
+      const $items = $list.find(
+        ".collection-item-allergy-chart, [class*='collection-item-allergy-chart']",
+      );
+
+      $items.each((_itemIndex, item) => {
+        const $item = $(item);
+        const name = cleanText(
+          $item
+            .find(".allergey-chart---dish, .allergy-chart---dish")
+            .first()
+            .text(),
+        );
+
+        if (!name || !isProbablyMenuItemName(name)) {
+          return;
+        }
+
+        const cells = $item
+          .find(".allergy-chart---allergen")
+          .toArray()
+          .map((node) => cleanText($(node).text()) ?? "");
+        const direct = [];
+
+        for (const column of columns) {
+          const cell = cells[column.index] ?? "";
+
+          if (
+            htmlAllergenMatrixCellIsDirectMarker(cell) ||
+            normalizeProviderAllergens([cell]).length > 0
+          ) {
+            direct.push(...column.allergens);
+          }
+        }
+
+        if (direct.length === 0) {
+          return;
+        }
+
+        const details = cleanText($item.find(".text-block-37").first().text());
+
+        records.push(
+          createRecord({
+            allergenSourceType: allergenSourceTypes.officialAllergenMenu,
+            allergens: uniqueStrings(direct),
+            category: currentCategory,
+            description: details
+              ? `Official allergen matrix. ${details}`
+              : "Official allergen matrix.",
+            evidenceText: allergenMatrixEvidenceText(name, direct, [], details),
+            imageUrl: null,
+            mayContain: [],
+            name,
+            sourceKind: "html-allergen-matrix",
+            sourceUrl: url,
+          }),
+        );
+      });
+    },
+  );
 
   return uniqueBy(
     records,
-    (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
   );
 }
 
-function allergenMatrixEvidenceText(name, directAllergens, mayContainAllergens = [], detailText = null) {
+function allergenMatrixEvidenceText(
+  name,
+  directAllergens,
+  mayContainAllergens = [],
+  detailText = null,
+) {
   const direct = uniqueStrings(directAllergens ?? []);
   const mayContain = uniqueStrings(mayContainAllergens ?? []);
   const parts = [];
@@ -9945,8 +11346,15 @@ function htmlAllergenMatrixCellText($, cell) {
     $cell.text(),
     $cell.attr("aria-label"),
     $cell.attr("data-label"),
-    $cell.find("[aria-label]").toArray().map((node) => $(node).attr("aria-label")).join(" "),
-    $cell.find(".fa-check,.fas.fa-check,.icon-check,[class*='check']").length > 0 ? "checked" : "",
+    $cell
+      .find("[aria-label]")
+      .toArray()
+      .map((node) => $(node).attr("aria-label"))
+      .join(" "),
+    $cell.find(".fa-check,.fas.fa-check,.icon-check,[class*='check']").length >
+    0
+      ? "checked"
+      : "",
   ];
 
   return cleanText(parts.filter(Boolean).join(" ")) ?? "";
@@ -9959,7 +11367,10 @@ function htmlAllergenMatrixHeaderAllergens(cell) {
     return [];
   }
 
-  return uniqueStrings([...normalizeProviderAllergens([normalized]), ...findAllergensInText(normalized)]);
+  return uniqueStrings([
+    ...normalizeProviderAllergens([normalized]),
+    ...findAllergensInText(normalized),
+  ]);
 }
 
 function htmlAllergenMatrixCellIsDirectMarker(cell) {
@@ -9969,7 +11380,10 @@ function htmlAllergenMatrixCellIsDirectMarker(cell) {
     return false;
   }
 
-  return /^(?:x|yes|y|checked|contains)$/i.test(normalized) || /✔|✓|●|check|contains/i.test(normalized);
+  return (
+    /^(?:x|yes|y|checked|contains)$/i.test(normalized) ||
+    /✔|✓|●|check|contains/i.test(normalized)
+  );
 }
 
 function extractAndPizzaAllergenGuideItems($, restaurant, url) {
@@ -9979,12 +11393,13 @@ function extractAndPizzaAllergenGuideItems($, restaurant, url) {
     const tableModule = $(table).closest(".dipi_table_maker");
     const headingModule = tableModule.prevAll(".et_pb_text").first();
     const heading = cleanText(
-      (headingModule.find("h1,h2,h3,h4").first().text() || headingModule.text())?.replace(
-        /^\/\//,
-        "",
-      ),
+      (
+        headingModule.find("h1,h2,h3,h4").first().text() || headingModule.text()
+      )?.replace(/^\/\//, ""),
     );
-    const currentCategory = heading ? titleCase(heading.replace(/^\/\//, "")) : null;
+    const currentCategory = heading
+      ? titleCase(heading.replace(/^\/\//, ""))
+      : null;
 
     if (!currentCategory) {
       return;
@@ -10007,14 +11422,20 @@ function extractAndPizzaAllergenGuideItems($, restaurant, url) {
     }
 
     const allergenColumns = header.map((cell, index) => ({
-      allergens: cell.replace(/animal product/gi, "").trim() ? findAllergensInText(cell) : [],
+      allergens: cell.replace(/animal product/gi, "").trim()
+        ? findAllergensInText(cell)
+        : [],
       index,
     }));
 
     for (const cells of rows.slice(rows.indexOf(header) + 1)) {
       const rawName = cleanText(cells[0]?.replace(/^ingredient\b/i, ""));
 
-      if (!rawName || /^ingredient$/i.test(rawName) || !isProbablyMenuItemName(rawName)) {
+      if (
+        !rawName ||
+        /^ingredient$/i.test(rawName) ||
+        !isProbablyMenuItemName(rawName)
+      ) {
         continue;
       }
 
@@ -10059,9 +11480,15 @@ function andPizzaAllergenCanonicalRow(name, category) {
   const aliases = new Map([
     ["high protein salad", ["Protein Salad", "Salads"]],
     ["stuff crust add on traditional dough only", ["Stuffed Crust", "Pies"]],
-    ["mango passionfruit canned soda", ["&SODA Mango Passion Fruit", "Beverages"]],
+    [
+      "mango passionfruit canned soda",
+      ["&SODA Mango Passion Fruit", "Beverages"],
+    ],
     ["dark cherry cola canned soda", ["&SODA Dark Cherry Cola", "Beverages"]],
-    ["gingerberry lemonade canned soda", ["&SODA Ginger Berry Lemonade", "Beverages"]],
+    [
+      "gingerberry lemonade canned soda",
+      ["&SODA Ginger Berry Lemonade", "Beverages"],
+    ],
     ["sweet root beer canned soda", ["&SODA Sweet Root Beer", "Beverages"]],
     ["classic tomato", ["Tomato Sauce on the Side", "Side Sauces & Drizzles"]],
     ["spicy tomato", ["Spicy Tomato on the Side", "Side Sauces & Drizzles"]],
@@ -10073,7 +11500,10 @@ function andPizzaAllergenCanonicalRow(name, category) {
     ["balsamic fig", ["Fig Balsamic on the Side", "Side Sauces & Drizzles"]],
     ["ranch", ["Ranch on the Side", "Side Sauces & Drizzles"]],
   ]);
-  const key = normalizeMenuName(name)?.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const key = normalizeMenuName(name)
+    ?.toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
   const alias = aliases.get(key);
 
   return alias ? { name: alias[0], category: alias[1] } : { name, category };
@@ -10104,10 +11534,18 @@ function extractAndPizzaMenuItems($, restaurant, url) {
     $(row)
       .find(".dipi_price_list_item_wrapper")
       .each((_itemIndex, item) => {
-        const name = cleanText($(item).find(".dipi_price_list_title").first().text());
-        const description = cleanText($(item).find(".dipi_price_list_content").first().text());
+        const name = cleanText(
+          $(item).find(".dipi_price_list_title").first().text(),
+        );
+        const description = cleanText(
+          $(item).find(".dipi_price_list_content").first().text(),
+        );
 
-        if (!name || (!isProbablyMenuItemName(name) && !/^@me don[’']t sub me$/i.test(name))) {
+        if (
+          !name ||
+          (!isProbablyMenuItemName(name) &&
+            !/^@me don[’']t sub me$/i.test(name))
+        ) {
           return;
         }
 
@@ -10135,23 +11573,35 @@ function extractJsonItemsFromHtml($, restaurant, url, kind = sourceTypes.menu) {
 
   records.push(...extractPopmenuApolloStateItems($, restaurant, url, kind));
 
-  $("script[type='application/ld+json'], script#__NEXT_DATA__, script[type='application/json']").each(
-    (_index, element) => {
-      const text = $(element).contents().text().trim();
-      const parsed = parseJsonLoose(text);
+  $(
+    "script[type='application/ld+json'], script#__NEXT_DATA__, script[type='application/json']",
+  ).each((_index, element) => {
+    const text = $(element).contents().text().trim();
+    const parsed = parseJsonLoose(text);
 
-      if (parsed) {
-        records.push(...extractRecordsFromObject(parsed, restaurant, url, "json-structured", kind));
-      }
-    },
-  );
+    if (parsed) {
+      records.push(
+        ...extractRecordsFromObject(
+          parsed,
+          restaurant,
+          url,
+          "json-structured",
+          kind,
+        ),
+      );
+    }
+  });
 
   $("script").each((_index, element) => {
     const text = $(element).contents().text();
-    records.push(...extractEmbeddedFlavorNutritionItems(text, restaurant, url, kind));
+    records.push(
+      ...extractEmbeddedFlavorNutritionItems(text, restaurant, url, kind),
+    );
     records.push(...extractSpotAppsNuxtMenuItems(text, restaurant, url, kind));
     records.push(...extractNextFlightProductItems(text, restaurant, url, kind));
-    records.push(...extractShopifyCollectionViewItems(text, restaurant, url, kind));
+    records.push(
+      ...extractShopifyCollectionViewItems(text, restaurant, url, kind),
+    );
 
     const jsonParsePattern = /JSON\.parse\("((?:\\.|[^"\\])*)"\)/g;
     let match;
@@ -10161,7 +11611,15 @@ function extractJsonItemsFromHtml($, restaurant, url, kind = sourceTypes.menu) {
       const parsed = parseJsonLoose(decodeHtml(decoded));
 
       if (parsed) {
-        records.push(...extractRecordsFromObject(parsed, restaurant, url, "json-structured", kind));
+        records.push(
+          ...extractRecordsFromObject(
+            parsed,
+            restaurant,
+            url,
+            "json-structured",
+            kind,
+          ),
+        );
       }
     }
   });
@@ -10169,8 +11627,16 @@ function extractJsonItemsFromHtml($, restaurant, url, kind = sourceTypes.menu) {
   return records;
 }
 
-function extractEmbeddedFlavorNutritionItems(scriptText, restaurant, url, kind = sourceTypes.menu) {
-  if (kind !== sourceTypes.allergen || !/\bflavors\s*:\s*\{[\s\S]*?\bResult\b/.test(scriptText)) {
+function extractEmbeddedFlavorNutritionItems(
+  scriptText,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
+  if (
+    kind !== sourceTypes.allergen ||
+    !/\bflavors\s*:\s*\{[\s\S]*?\bResult\b/.test(scriptText)
+  ) {
     return [];
   }
 
@@ -10189,18 +11655,26 @@ function extractEmbeddedFlavorNutritionItems(scriptText, restaurant, url, kind =
   }
 
   const parsed = parseJsonLoose(scriptText.slice(objectStart, objectEnd + 1));
-  const flavors = asArray(parsed?.Result).filter((flavor) => flavor && typeof flavor === "object");
+  const flavors = asArray(parsed?.Result).filter(
+    (flavor) => flavor && typeof flavor === "object",
+  );
 
   return uniqueBy(
     flavors
       .map((flavor) => {
-        const name = cleanText(pickString(flavor.FlavorName) ?? pickString(flavor.name));
-        const description = cleanText(
-          pickString(flavor.Description) ?? pickString(flavor.description) ?? pickString(flavor.body),
+        const name = cleanText(
+          pickString(flavor.FlavorName) ?? pickString(flavor.name),
         );
-        const containsText = description?.match(/\bCONTAINS:\s*([^.]*)/i)?.[1] ?? "";
+        const description = cleanText(
+          pickString(flavor.Description) ??
+            pickString(flavor.description) ??
+            pickString(flavor.body),
+        );
+        const containsText =
+          description?.match(/\bCONTAINS:\s*([^.]*)/i)?.[1] ?? "";
         const mayContainText =
-          description?.match(/\bMAY CONTAIN(?: TRACES OF)?:\s*([^.]*)/i)?.[1] ?? "";
+          description?.match(/\bMAY CONTAIN(?: TRACES OF)?:\s*([^.]*)/i)?.[1] ??
+          "";
         const direct = uniqueStrings([
           ...findAllergensInText(containsText),
           ...findDeclaredAllergensOnly(containsText),
@@ -10210,14 +11684,19 @@ function extractEmbeddedFlavorNutritionItems(scriptText, restaurant, url, kind =
           ...findAllergensInText(mayContainText),
         ]);
 
-        if (!name || !isProbablyMenuItemName(name) || (direct.length === 0 && mayContain.length === 0)) {
+        if (
+          !name ||
+          !isProbablyMenuItemName(name) ||
+          (direct.length === 0 && mayContain.length === 0)
+        ) {
           return null;
         }
 
         return createRecord({
           allergenSourceType: allergenSourceTypes.officialAllergenMenu,
           allergens: direct,
-          category: cleanText(pickString(flavor.ColdTreatType)) ?? restaurant.category,
+          category:
+            cleanText(pickString(flavor.ColdTreatType)) ?? restaurant.category,
           description: "Official embedded nutrition and allergen data.",
           evidenceText: description,
           imageUrl: pickImage(flavor.websiteimageUrl),
@@ -10230,11 +11709,17 @@ function extractEmbeddedFlavorNutritionItems(scriptText, restaurant, url, kind =
         });
       })
       .filter(Boolean),
-    (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
   );
 }
 
-function extractPopmenuApolloStateItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractPopmenuApolloStateItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen) {
     return [];
   }
@@ -10262,7 +11747,9 @@ function extractPopmenuApolloStateItems($, restaurant, url, kind = sourceTypes.m
       return;
     }
 
-    const parsed = parseJsonLoose(sanitizePopmenuObjectLiteral(text.slice(start, end + 1)));
+    const parsed = parseJsonLoose(
+      sanitizePopmenuObjectLiteral(text.slice(start, end + 1)),
+    );
 
     if (!parsed) {
       return;
@@ -10309,8 +11796,12 @@ function recordsFromPopmenuApolloState(state, restaurant, url) {
     }
 
     const menu = popmenuEntityForRef(state, item.menu);
-    const section = popmenuEntityForRef(state, item.section) ?? popmenuEntityForRef(state, item.menuSection);
-    const dish = popmenuEntityForRef(state, item.dishable) ?? popmenuEntityForRef(state, item.dish);
+    const section =
+      popmenuEntityForRef(state, item.section) ??
+      popmenuEntityForRef(state, item.menuSection);
+    const dish =
+      popmenuEntityForRef(state, item.dishable) ??
+      popmenuEntityForRef(state, item.dish);
     const name = pickString(item.name) ?? pickString(dish?.name);
     const description =
       pickString(item.description) ??
@@ -10337,7 +11828,10 @@ function recordsFromPopmenuApolloState(state, restaurant, url) {
       createRecord({
         allergenSourceType: allergenSourceTypes.unavailable,
         allergens: [],
-        category: pickString(section?.name) ?? pickString(menu?.name) ?? restaurant.category,
+        category:
+          pickString(section?.name) ??
+          pickString(menu?.name) ??
+          restaurant.category,
         description,
         imageUrl,
         mayContain: [],
@@ -10357,7 +11851,12 @@ function popmenuEntityForRef(state, ref) {
   return key ? state[key] : null;
 }
 
-function extractNextFlightProductItems(text, restaurant, url, kind = sourceTypes.menu) {
+function extractNextFlightProductItems(
+  text,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen || !text.includes("self.__next_f.push")) {
     return [];
   }
@@ -10413,7 +11912,9 @@ function extractNextFlightProductItems(text, restaurant, url, kind = sourceTypes
           pickString(product.shortDescription) ??
           null;
         const sourceUrl = absolutizeUrl(
-          pickString(product.seoUrl) ? `/menu/${pickString(product.seoUrl)}` : null,
+          pickString(product.seoUrl)
+            ? `/menu/${pickString(product.seoUrl)}`
+            : null,
           url,
         );
         const category =
@@ -10459,29 +11960,53 @@ function extractNextFlightProductItems(text, restaurant, url, kind = sourceTypes
       }
     }
 
-    records.push(...extractNextFlightMenuPageItemListRecords(payload, restaurant, url, kind));
+    records.push(
+      ...extractNextFlightMenuPageItemListRecords(
+        payload,
+        restaurant,
+        url,
+        kind,
+      ),
+    );
   }
 
   return records;
 }
 
-function extractNextFlightMenuPageItemListRecords(payload, restaurant, url, kind = sourceTypes.menu) {
+function extractNextFlightMenuPageItemListRecords(
+  payload,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   const records = [];
 
-  if (!payload.includes("MenuPageItemList") || !payload.includes("MenuPageItem")) {
+  if (
+    !payload.includes("MenuPageItemList") ||
+    !payload.includes("MenuPageItem")
+  ) {
     return records;
   }
 
   for (const categories of extractNamedJsonArrays(payload, "itemLists")) {
-    records.push(...recordsFromMenuPageItemLists(categories, restaurant, url, kind));
+    records.push(
+      ...recordsFromMenuPageItemLists(categories, restaurant, url, kind),
+    );
   }
 
   for (const categories of extractNamedJsonArrays(payload, "itemListsList")) {
-    records.push(...recordsFromMenuPageItemLists(categories, restaurant, url, kind));
+    records.push(
+      ...recordsFromMenuPageItemLists(categories, restaurant, url, kind),
+    );
   }
 
-  for (const category of extractTypenameJsonObjects(payload, "MenuPageItemList")) {
-    records.push(...recordsFromMenuPageItemLists([category], restaurant, url, kind));
+  for (const category of extractTypenameJsonObjects(
+    payload,
+    "MenuPageItemList",
+  )) {
+    records.push(
+      ...recordsFromMenuPageItemLists([category], restaurant, url, kind),
+    );
   }
 
   return records;
@@ -10494,13 +12019,19 @@ function recordsFromMenuPageItemLists(categories, restaurant, url, kind) {
     const categoryName = pickString(category?.name) ?? restaurant.category;
 
     for (const item of asArray(category?.items)) {
-      if (pickString(item?.__typename) && pickString(item.__typename) !== "MenuPageItem") {
+      if (
+        pickString(item?.__typename) &&
+        pickString(item.__typename) !== "MenuPageItem"
+      ) {
         continue;
       }
 
       const name = pickString(item?.name);
       const description = pickString(item?.description) ?? null;
-      const imageUrl = absolutizeUrl(pickString(item?.imageUrl) ?? pickImage(item?.image), url);
+      const imageUrl = absolutizeUrl(
+        pickString(item?.imageUrl) ?? pickImage(item?.image),
+        url,
+      );
 
       if (
         !name ||
@@ -10606,7 +12137,10 @@ function extractNamedJsonArrays(text, key) {
 
 function extractNamedJsonValues(text, key, openChar, closeChar) {
   const values = [];
-  const pattern = new RegExp(`"${escapeRegExp(key)}"\\s*:\\s*\\${openChar}`, "g");
+  const pattern = new RegExp(
+    `"${escapeRegExp(key)}"\\s*:\\s*\\${openChar}`,
+    "g",
+  );
   let match;
 
   while ((match = pattern.exec(text))) {
@@ -10630,7 +12164,9 @@ function extractNamedJsonValues(text, key, openChar, closeChar) {
 }
 
 function firstMappedCategory(categoryValue, categoryMap) {
-  const categoryIds = Array.isArray(categoryValue) ? categoryValue : [categoryValue];
+  const categoryIds = Array.isArray(categoryValue)
+    ? categoryValue
+    : [categoryValue];
 
   for (const categoryId of categoryIds) {
     const category = categoryMap.get(pickString(categoryId));
@@ -10643,7 +12179,12 @@ function firstMappedCategory(categoryValue, categoryMap) {
   return null;
 }
 
-function extractShopifyCollectionViewItems(text, restaurant, url, kind = sourceTypes.menu) {
+function extractShopifyCollectionViewItems(
+  text,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen || !text.includes("collectionView")) {
     return [];
   }
@@ -10660,7 +12201,8 @@ function extractShopifyCollectionViewItems(text, restaurant, url, kind = sourceT
     return [];
   }
 
-  const arrayStart = itemsStart + itemArrayStartMatch.index + itemArrayStartMatch[0].length - 1;
+  const arrayStart =
+    itemsStart + itemArrayStartMatch.index + itemArrayStartMatch[0].length - 1;
   const arrayEnd = findMatchingBracket(text, arrayStart, "[", "]");
 
   if (arrayEnd < 0) {
@@ -10672,11 +12214,14 @@ function extractShopifyCollectionViewItems(text, restaurant, url, kind = sourceT
   const records = [];
 
   for (const objectText of itemObjects) {
-    const name = cleanMenuName(readJavaScriptObjectStringField(objectText, "name"));
+    const name = cleanMenuName(
+      readJavaScriptObjectStringField(objectText, "name"),
+    );
     const handle = readJavaScriptObjectStringField(objectText, "handle");
     const imagePath = readJavaScriptObjectStringField(objectText, "src");
     const category =
-      readJavaScriptObjectStringField(objectText, "category") ?? restaurant.category;
+      readJavaScriptObjectStringField(objectText, "category") ??
+      restaurant.category;
 
     if (!name || !isProbablyMenuItemName(name)) {
       continue;
@@ -10700,7 +12245,12 @@ function extractShopifyCollectionViewItems(text, restaurant, url, kind = sourceT
   return records;
 }
 
-function extractLeyeItemWrapMenuItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractLeyeItemWrapMenuItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen || !isLeyeMenuHtml($)) {
     return [];
   }
@@ -10712,10 +12262,16 @@ function extractLeyeItemWrapMenuItems($, restaurant, url, kind = sourceTypes.men
     const nameNode = item.find(".item-name").first().clone();
     nameNode.find("button, img, svg").remove();
     const name = cleanMenuName(nameNode.text());
-    const description = cleanMenuDescription(item.find(".item-desc").first().text());
+    const description = cleanMenuDescription(
+      item.find(".item-desc").first().text(),
+    );
     const category = leyeCategoryForItem($, item) ?? restaurant.category;
     const imageUrl = absolutizeUrl(
-      item.closest("div, article, section").find("figure img, img").first().attr("src"),
+      item
+        .closest("div, article, section")
+        .find("figure img, img")
+        .first()
+        .attr("src"),
       url,
     );
 
@@ -10853,7 +12409,9 @@ function splitTopLevelObjectLiterals(text) {
 }
 
 function readJavaScriptObjectStringField(objectText, fieldName) {
-  const pattern = new RegExp(`${escapeRegExp(fieldName)}\\s*:\\s*"((?:\\\\.|[^"\\\\])*)"`);
+  const pattern = new RegExp(
+    `${escapeRegExp(fieldName)}\\s*:\\s*"((?:\\\\.|[^"\\\\])*)"`,
+  );
   const match = pattern.exec(objectText);
 
   return match ? cleanText(decodeJavaScriptString(match[1])) : null;
@@ -10902,10 +12460,16 @@ function extractRecordsFromObject(
     const schemaTypes = schemaTypesForNode(node);
     const isSchemaMenuItem =
       current.forceMenuItem || schemaTypes.some((type) => type === "menuitem");
-    const isSchemaMenuSection = schemaTypes.some((type) => /^(?:menusection|offercatalog)$/i.test(type));
-    const schemaSectionName = isSchemaMenuSection ? pickString(node.name) ?? pickString(node.title) : null;
+    const isSchemaMenuSection = schemaTypes.some((type) =>
+      /^(?:menusection|offercatalog)$/i.test(type),
+    );
+    const schemaSectionName = isSchemaMenuSection
+      ? (pickString(node.name) ?? pickString(node.title))
+      : null;
     const schemaSectionCategory =
-      schemaSectionName && !/^(?:main\s+)?menu$/i.test(schemaSectionName) ? schemaSectionName : null;
+      schemaSectionName && !/^(?:main\s+)?menu$/i.test(schemaSectionName)
+        ? schemaSectionName
+        : null;
     const nextCategory =
       schemaSectionCategory ??
       pickString(node.category) ??
@@ -10952,8 +12516,19 @@ function extractRecordsFromObject(
     if (
       name &&
       isProbablyMenuItemName(name) &&
-      shouldEmitStructuredJsonRecord({ isSchemaMenuItem, node, schemaTypes, sourceKind }) &&
-      !isRestaurantStructuredMetadataRecord(name, description, restaurant, url, sourceKind) &&
+      shouldEmitStructuredJsonRecord({
+        isSchemaMenuItem,
+        node,
+        schemaTypes,
+        sourceKind,
+      }) &&
+      !isRestaurantStructuredMetadataRecord(
+        name,
+        description,
+        restaurant,
+        url,
+        sourceKind,
+      ) &&
       hasStructuredRecordSubstance({
         description,
         disclosure,
@@ -10967,7 +12542,10 @@ function extractRecordsFromObject(
         createRecord({
           allergenSourceType: disclosure.allergenSourceType,
           allergens: disclosure.directAllergens,
-          category: cleanText(nextCategory) ?? inferCategoryFromUrl(href ?? url) ?? restaurant.category,
+          category:
+            cleanText(nextCategory) ??
+            inferCategoryFromUrl(href ?? url) ??
+            restaurant.category,
           description,
           imageUrl,
           ingredientsText: disclosure.ingredientsText,
@@ -10986,7 +12564,8 @@ function extractRecordsFromObject(
       }
 
       stack.push({
-        forceMenuItem: current.forceMenuItem || /^(?:hasMenuItem|itemOffered)$/i.test(key),
+        forceMenuItem:
+          current.forceMenuItem || /^(?:hasMenuItem|itemOffered)$/i.test(key),
         inheritedCategory: nextCategory,
         value: child,
       });
@@ -11004,7 +12583,12 @@ function hasStructuredRecordSubstance({
   isSchemaMenuItem,
   sourceKind,
 }) {
-  if (description || imageUrl || disclosure.directAllergens.length > 0 || isSchemaMenuItem) {
+  if (
+    description ||
+    imageUrl ||
+    disclosure.directAllergens.length > 0 ||
+    isSchemaMenuItem
+  ) {
     return true;
   }
 
@@ -11021,7 +12605,12 @@ function schemaTypesForNode(node) {
     .map((value) => value.toLowerCase().replace(/^schema:/, ""));
 }
 
-function shouldEmitStructuredJsonRecord({ isSchemaMenuItem, node, schemaTypes, sourceKind }) {
+function shouldEmitStructuredJsonRecord({
+  isSchemaMenuItem,
+  node,
+  schemaTypes,
+  sourceKind,
+}) {
   if (sourceKind !== "json-structured") {
     return true;
   }
@@ -11064,7 +12653,12 @@ function extractDomMenuItems($, restaurant, url, kind = sourceTypes.menu) {
   items.push(...extractEmbeddedUserItemsMenuItems($, restaurant, url, kind));
   items.push(...extractYextMenuItems($, restaurant, url, kind));
   items.push(...extractWixGalleryMenuItems($, restaurant, url, kind));
-  const wixRichTextItems = extractWixRichTextMenuItems($, restaurant, url, kind);
+  const wixRichTextItems = extractWixRichTextMenuItems(
+    $,
+    restaurant,
+    url,
+    kind,
+  );
 
   if (wixRichTextItems.length >= 8) {
     return {
@@ -11094,7 +12688,12 @@ function extractDomMenuItems($, restaurant, url, kind = sourceTypes.menu) {
   }
 
   items.push(...webflowCmsItems);
-  const squarespaceMenuBlockItems = extractSquarespaceMenuBlockItems($, restaurant, url, kind);
+  const squarespaceMenuBlockItems = extractSquarespaceMenuBlockItems(
+    $,
+    restaurant,
+    url,
+    kind,
+  );
 
   if (squarespaceMenuBlockItems.length >= 10) {
     return {
@@ -11115,7 +12714,12 @@ function extractDomMenuItems($, restaurant, url, kind = sourceTypes.menu) {
   }
 
   items.push(...menuListItems);
-  const laravelMenuProductItems = extractLaravelMenuProductItems($, restaurant, url, kind);
+  const laravelMenuProductItems = extractLaravelMenuProductItems(
+    $,
+    restaurant,
+    url,
+    kind,
+  );
 
   if (laravelMenuProductItems.length >= 10) {
     return {
@@ -11125,7 +12729,12 @@ function extractDomMenuItems($, restaurant, url, kind = sourceTypes.menu) {
   }
 
   items.push(...laravelMenuProductItems);
-  const elementorMenuHeadingItems = extractElementorMenuHeadingItems($, restaurant, url, kind);
+  const elementorMenuHeadingItems = extractElementorMenuHeadingItems(
+    $,
+    restaurant,
+    url,
+    kind,
+  );
 
   if (elementorMenuHeadingItems.length >= 8) {
     return {
@@ -11139,7 +12748,12 @@ function extractDomMenuItems($, restaurant, url, kind = sourceTypes.menu) {
   items.push(...extractSequentialParagraphMenuItems($, restaurant, url, kind));
   items.push(...extractInlineParagraphMenuItems($, restaurant, url, kind));
   items.push(...extractParagraphMenuLineItems($, restaurant, url, kind));
-  const simpleItemCardItems = extractSimpleItemCardMenuItems($, restaurant, url, kind);
+  const simpleItemCardItems = extractSimpleItemCardMenuItems(
+    $,
+    restaurant,
+    url,
+    kind,
+  );
 
   if (simpleItemCardItems.length >= 10) {
     return {
@@ -11149,7 +12763,12 @@ function extractDomMenuItems($, restaurant, url, kind = sourceTypes.menu) {
   }
 
   items.push(...simpleItemCardItems);
-  const sequentialPricedTextItems = extractSequentialPricedTextMenuItems($, restaurant, url, kind);
+  const sequentialPricedTextItems = extractSequentialPricedTextMenuItems(
+    $,
+    restaurant,
+    url,
+    kind,
+  );
 
   if (sequentialPricedTextItems.length >= 10) {
     return {
@@ -11163,7 +12782,12 @@ function extractDomMenuItems($, restaurant, url, kind = sourceTypes.menu) {
   items.push(...extractClassicMenuBlockItems($, restaurant, url, kind));
   items.push(...extractFoodMenuPanelItems($, restaurant, url, kind));
   items.push(...extractSectionedImageMenuItems($, restaurant, url, kind));
-  const weeblyCompactMenuItems = extractWeeblyCompactMenuItems($, restaurant, url, kind);
+  const weeblyCompactMenuItems = extractWeeblyCompactMenuItems(
+    $,
+    restaurant,
+    url,
+    kind,
+  );
 
   if (weeblyCompactMenuItems.length >= 10) {
     return {
@@ -11191,12 +12815,19 @@ function extractDomMenuItems($, restaurant, url, kind = sourceTypes.menu) {
     }
 
     const rawHref =
-      $element.find("a[href]").first().attr("href") ?? $element.closest("a[href]").attr("href");
-    const link = discardNonNavigableHref(rawHref) ? absolutizeUrl(rawHref, url) : null;
+      $element.find("a[href]").first().attr("href") ??
+      $element.closest("a[href]").attr("href");
+    const link = discardNonNavigableHref(rawHref)
+      ? absolutizeUrl(rawHref, url)
+      : null;
     const modalText = getLinkedDisclosureText($, $element);
     const description =
-      cleanText($element.find("[class*='description'], [class*='copy'], p").first().text()) ??
-      modalText;
+      cleanText(
+        $element
+          .find("[class*='description'], [class*='copy'], p")
+          .first()
+          .text(),
+      ) ?? modalText;
     const imageUrl = absolutizeUrl(
       $element.find("img").first().attr("src") ??
         $element.find("img").first().attr("data-src") ??
@@ -11205,7 +12836,9 @@ function extractDomMenuItems($, restaurant, url, kind = sourceTypes.menu) {
     );
     const disclosure = getScopedDomDisclosure($element, kind);
     const textDisclosure = disclosureFromMenuText(
-      cleanText([cleanText($element.text()), modalText].filter(Boolean).join(" ")),
+      cleanText(
+        [cleanText($element.text()), modalText].filter(Boolean).join(" "),
+      ),
       kind,
     );
 
@@ -11222,12 +12855,21 @@ function extractDomMenuItems($, restaurant, url, kind = sourceTypes.menu) {
         disclosure.allergenSourceType !== allergenSourceTypes.unavailable
           ? disclosure.allergenSourceType
           : textDisclosure.allergenSourceType,
-      allergens: uniqueStrings([...disclosure.directAllergens, ...textDisclosure.directAllergens]),
+      allergens: uniqueStrings([
+        ...disclosure.directAllergens,
+        ...textDisclosure.directAllergens,
+      ]),
       category: inferCategoryFromUrl(link ?? url) ?? restaurant.category,
       description,
       imageUrl,
-      ingredientsText: disclosure.ingredientsText ?? textDisclosure.ingredientsText ?? modalText,
-      mayContain: uniqueStrings([...disclosure.mayContain, ...textDisclosure.mayContain]),
+      ingredientsText:
+        disclosure.ingredientsText ??
+        textDisclosure.ingredientsText ??
+        modalText,
+      mayContain: uniqueStrings([
+        ...disclosure.mayContain,
+        ...textDisclosure.mayContain,
+      ]),
       name,
       sourceKind: "html-card",
       sourceUrl: link ?? url,
@@ -11242,10 +12884,16 @@ function extractDomMenuItems($, restaurant, url, kind = sourceTypes.menu) {
 
   $("a[href]").each((_index, element) => {
     const $element = $(element);
-    const name = cleanText($element.text()) ?? cleanText($element.attr("aria-label"));
+    const name =
+      cleanText($element.text()) ?? cleanText($element.attr("aria-label"));
     const href = absolutizeUrl($element.attr("href"), url);
 
-    if (!href || !name || !isLikelyProductHref(href) || !isProbablyMenuItemName(name)) {
+    if (
+      !href ||
+      !name ||
+      !isLikelyProductHref(href) ||
+      !isProbablyMenuItemName(name)
+    ) {
       return;
     }
 
@@ -11277,7 +12925,12 @@ function extractDomMenuItems($, restaurant, url, kind = sourceTypes.menu) {
   };
 }
 
-function extractSimpleItemCardMenuItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractSimpleItemCardMenuItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen) {
     return [];
   }
@@ -11303,10 +12956,14 @@ function extractSimpleItemCardMenuItems($, restaurant, url, kind = sourceTypes.m
       return;
     }
 
-    const description = cleanMenuDescription($item.find(".item-desc").first().text());
+    const description = cleanMenuDescription(
+      $item.find(".item-desc").first().text(),
+    );
     const rowText = cleanText($item.text()) ?? "";
     const category =
-      simpleItemCardCategory($, $item) ?? inferCategoryFromUrl(url) ?? restaurant.category;
+      simpleItemCardCategory($, $item) ??
+      inferCategoryFromUrl(url) ??
+      restaurant.category;
 
     if (!isAllowedSourceMenuCategory(restaurant, category)) {
       return;
@@ -11329,7 +12986,10 @@ function extractSimpleItemCardMenuItems($, restaurant, url, kind = sourceTypes.m
           disclosure.allergenSourceType !== allergenSourceTypes.unavailable
             ? disclosure.allergenSourceType
             : scopedDisclosure.allergenSourceType,
-        allergens: uniqueStrings([...disclosure.directAllergens, ...scopedDisclosure.directAllergens]),
+        allergens: uniqueStrings([
+          ...disclosure.directAllergens,
+          ...scopedDisclosure.directAllergens,
+        ]),
         category,
         description,
         imageUrl: absolutizeUrl(
@@ -11338,8 +12998,14 @@ function extractSimpleItemCardMenuItems($, restaurant, url, kind = sourceTypes.m
             $item.find("source").first().attr("srcset")?.split(" ")[0],
           url,
         ),
-        ingredientsText: scopedDisclosure.ingredientsText ?? disclosure.ingredientsText ?? description,
-        mayContain: uniqueStrings([...disclosure.mayContain, ...scopedDisclosure.mayContain]),
+        ingredientsText:
+          scopedDisclosure.ingredientsText ??
+          disclosure.ingredientsText ??
+          description,
+        mayContain: uniqueStrings([
+          ...disclosure.mayContain,
+          ...scopedDisclosure.mayContain,
+        ]),
         name,
         sourceKind: "simple-item-card",
         sourceUrl: url,
@@ -11348,36 +13014,60 @@ function extractSimpleItemCardMenuItems($, restaurant, url, kind = sourceTypes.m
     );
   });
 
-  return uniqueBy(records, (record) =>
-    `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+  return uniqueBy(
+    records,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
   );
 }
 
 function simpleItemCardCategory($, $item) {
   const category =
-    cleanText($item.closest(".cat-section, [class*='category'], section").find(".cat-heading, [class*='cat-heading'], h2, h3").first().text()) ??
-    cleanText($item.prevAll(".sub-heading, [class*='sub-heading'], h3, h4").first().text()) ??
+    cleanText(
+      $item
+        .closest(".cat-section, [class*='category'], section")
+        .find(".cat-heading, [class*='cat-heading'], h2, h3")
+        .first()
+        .text(),
+    ) ??
+    cleanText(
+      $item
+        .prevAll(".sub-heading, [class*='sub-heading'], h3, h4")
+        .first()
+        .text(),
+    ) ??
     nearestPreviousCategory($, $item);
 
   return category ? titleCase(category.replace(/^\*+|\*+$/g, "").trim()) : null;
 }
 
-function extractSequentialPricedTextMenuItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractSequentialPricedTextMenuItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen) {
     return [];
   }
 
-  const $scope = $("main, [role='main'], .main-content, .site-content, body").first().clone();
+  const $scope = $("main, [role='main'], .main-content, .site-content, body")
+    .first()
+    .clone();
 
   if ($scope.length === 0) {
     return [];
   }
 
   $scope
-    .find("script, style, noscript, template, svg, nav, header, footer, form, aside")
+    .find(
+      "script, style, noscript, template, svg, nav, header, footer, form, aside",
+    )
     .remove();
   $scope.find("br").replaceWith("\n");
-  $scope.find("p, div, section, article, li, h1, h2, h3, h4, h5, h6, td, th").append("\n");
+  $scope
+    .find("p, div, section, article, li, h1, h2, h3, h4, h5, h6, td, th")
+    .append("\n");
 
   const text = $scope.text();
   const standalonePriceLines = text
@@ -11400,13 +13090,19 @@ function extractSequentialPricedTextMenuItems($, restaurant, url, kind = sourceT
     .filter((record) => isAllowedSourceMenuName(restaurant, record.name));
 }
 
-function extractSectionTitleMenuItemBlockItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractSectionTitleMenuItemBlockItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen) {
     return [];
   }
 
   const records = [];
-  const headingSelector = "h1.section-title, h2.section-title, h3.section-title, h4.section-title, [class~='section-title']";
+  const headingSelector =
+    "h1.section-title, h2.section-title, h3.section-title, h4.section-title, [class~='section-title']";
 
   $(headingSelector).each((_headingIndex, heading) => {
     const $heading = $(heading);
@@ -11443,11 +13139,15 @@ function extractSectionTitleMenuItemBlockItems($, restaurant, url, kind = source
         continue;
       }
 
-      const $textContainer = $item.find(".menu-item-text, [class*='menu-item-text']").first();
+      const $textContainer = $item
+        .find(".menu-item-text, [class*='menu-item-text']")
+        .first();
       const $nameScope = $textContainer.length > 0 ? $textContainer : $item;
       const name = cleanMenuName(
         $nameScope
-          .find(".menu-item-title, [class*='menu-item-title'], [class*='item-title'], strong, b, h3, h4, h5")
+          .find(
+            ".menu-item-title, [class*='menu-item-title'], [class*='item-title'], strong, b, h3, h4, h5",
+          )
           .first()
           .text(),
       );
@@ -11460,7 +13160,9 @@ function extractSectionTitleMenuItemBlockItems($, restaurant, url, kind = source
         continue;
       }
 
-      const $descriptionScope = ($textContainer.length > 0 ? $textContainer : $item).clone();
+      const $descriptionScope = (
+        $textContainer.length > 0 ? $textContainer : $item
+      ).clone();
       $descriptionScope
         .find(
           ".menu-item-title, [class*='menu-item-title'], [class*='item-title'], .menu-item-price, [class*='price'], strong, b, h3, h4, h5, button, img, svg",
@@ -11487,7 +13189,10 @@ function extractSectionTitleMenuItemBlockItems($, restaurant, url, kind = source
             disclosure.allergenSourceType !== allergenSourceTypes.unavailable
               ? disclosure.allergenSourceType
               : scopedDisclosure.allergenSourceType,
-          allergens: uniqueStrings([...disclosure.directAllergens, ...scopedDisclosure.directAllergens]),
+          allergens: uniqueStrings([
+            ...disclosure.directAllergens,
+            ...scopedDisclosure.directAllergens,
+          ]),
           category: titleCase(category),
           description,
           imageUrl: absolutizeUrl(
@@ -11497,7 +13202,10 @@ function extractSectionTitleMenuItemBlockItems($, restaurant, url, kind = source
             url,
           ),
           ingredientsText: scopedDisclosure.ingredientsText ?? description,
-          mayContain: uniqueStrings([...disclosure.mayContain, ...scopedDisclosure.mayContain]),
+          mayContain: uniqueStrings([
+            ...disclosure.mayContain,
+            ...scopedDisclosure.mayContain,
+          ]),
           name,
           sourceKind: "html-section-title-menu-item",
           sourceUrl: url,
@@ -11507,14 +13215,21 @@ function extractSectionTitleMenuItemBlockItems($, restaurant, url, kind = source
     }
   });
 
-  const filtered = uniqueBy(records, (record) =>
-    `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+  const filtered = uniqueBy(
+    records,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
   );
 
   return filtered.length >= 4 ? filtered : [];
 }
 
-function extractDefinitionListMenuItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractDefinitionListMenuItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen) {
     return [];
   }
@@ -11593,14 +13308,21 @@ function extractDefinitionListMenuItems($, restaurant, url, kind = sourceTypes.m
     });
   });
 
-  const filtered = uniqueBy(records, (record) =>
-    `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+  const filtered = uniqueBy(
+    records,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
   );
 
   return filtered.length >= 4 ? filtered : [];
 }
 
-function extractMenuListBlockItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractMenuListBlockItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen) {
     return [];
   }
@@ -11623,7 +13345,9 @@ function extractMenuListBlockItems($, restaurant, url, kind = sourceTypes.menu) 
       .find(".menu-list-title, [class*='menu-list-title']")
       .first()
       .clone();
-    $titleNode.find(".menu-list-price, [class*='price'], svg, img, button").remove();
+    $titleNode
+      .find(".menu-list-price, [class*='price'], svg, img, button")
+      .remove();
     const directName = cleanMenuName($titleNode.text());
     const rowCandidates = directName
       ? [{ $item: $list, name: directName }]
@@ -11633,11 +13357,15 @@ function extractMenuListBlockItems($, restaurant, url, kind = sourceTypes.menu) 
           .map((item) => {
             const $item = $(item);
             const $nameNode = $item
-              .find(".menu-item-subtitle, [class*='menu-item-subtitle'], h3, h4, h5")
+              .find(
+                ".menu-item-subtitle, [class*='menu-item-subtitle'], h3, h4, h5",
+              )
               .first()
               .clone();
 
-            $nameNode.find(".menu-list-price, [class*='price'], svg, img, button").remove();
+            $nameNode
+              .find(".menu-list-price, [class*='price'], svg, img, button")
+              .remove();
             return { $item, name: cleanMenuName($nameNode.text()) };
           });
 
@@ -11647,14 +13375,18 @@ function extractMenuListBlockItems($, restaurant, url, kind = sourceTypes.menu) 
       }
 
       const $detailsNode = $item
-        .find(".menu-item-details, [class*='menu-item-details'], [class*='description'], p")
+        .find(
+          ".menu-item-details, [class*='menu-item-details'], [class*='description'], p",
+        )
         .filter((_index, element) => {
           const text = cleanText($(element).text());
           return text && text !== name && text !== cleanText($titleNode.text());
         })
         .first()
         .clone();
-      $detailsNode.find(".menu-list-price, [class*='price'], svg, img, button").remove();
+      $detailsNode
+        .find(".menu-list-price, [class*='price'], svg, img, button")
+        .remove();
       const description = cleanMenuDescription($detailsNode.text());
       const imageUrl = absolutizeUrl(
         $item.find("img").first().attr("src") ??
@@ -11702,7 +13434,10 @@ function isProbablyMenuListBlockArtifact(name, description, category) {
   const foodTerms =
     /\b(?:chicken|shrimp|fish|egg|cheese|beans?|rice|taco|burrito|sandwich|salad|bowl|soup|fries|chips|cake|cookie|muffin|bread|pasta|pizza|queso|guacamole|salsa|steak|pork|beef|salmon|avocado|tortilla|corn)\b/i;
 
-  if (/\bopen daily:\s*\d/i.test(nameText) || /\breservations?$/i.test(nameText)) {
+  if (
+    /\bopen daily:\s*\d/i.test(nameText) ||
+    /\breservations?$/i.test(nameText)
+  ) {
     return true;
   }
 
@@ -11726,12 +13461,17 @@ function isProbablyMenuListBlockArtifact(name, description, category) {
     return true;
   }
 
-  if (/^\s*ros\S*\s*\/\s*[a-z][a-z\s.-]*$/i.test(descriptionText) && !foodTerms.test(nameText)) {
+  if (
+    /^\s*ros\S*\s*\/\s*[a-z][a-z\s.-]*$/i.test(descriptionText) &&
+    !foodTerms.test(nameText)
+  ) {
     return true;
   }
 
   if (
-    /\b(?:beverage|drink|soft drinks?|soda|juice|tea|coffee)\b/i.test(categoryText) &&
+    /\b(?:beverage|drink|soft drinks?|soda|juice|tea|coffee)\b/i.test(
+      categoryText,
+    ) &&
     !foodTerms.test(text)
   ) {
     return true;
@@ -11740,7 +13480,12 @@ function isProbablyMenuListBlockArtifact(name, description, category) {
   return false;
 }
 
-function extractLaravelMenuProductItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractLaravelMenuProductItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen) {
     return [];
   }
@@ -11750,7 +13495,10 @@ function extractLaravelMenuProductItems($, restaurant, url, kind = sourceTypes.m
   $(".single_product").each((_index, element) => {
     const $product = $(element);
     const name = cleanMenuName(
-      $product.find(".menu_product_info h5, .title h5, h5, h4, h3").first().text(),
+      $product
+        .find(".menu_product_info h5, .title h5, h5, h4, h3")
+        .first()
+        .text(),
     );
 
     if (!name || !isProbablyMenuItemName(name)) {
@@ -11778,7 +13526,9 @@ function extractLaravelMenuProductItems($, restaurant, url, kind = sourceTypes.m
       url,
     );
     const category =
-      laravelMenuProductCategory($, $product) ?? inferCategoryFromUrl(url) ?? restaurant.category;
+      laravelMenuProductCategory($, $product) ??
+      inferCategoryFromUrl(url) ??
+      restaurant.category;
 
     if (!description && !imageUrl && !price && !hasFoodLanguage(name)) {
       return;
@@ -11806,17 +13556,30 @@ function extractLaravelMenuProductItems($, restaurant, url, kind = sourceTypes.m
 
 function laravelMenuProductCategory($, $product) {
   const paneId = $product.closest(".tab-pane, [id]").first().attr("id");
-  const tabText = paneId ? cleanText($(`[href="#${cssEscape(paneId)}"], #${cssEscape(paneId)}-tab`).first().text()) : null;
+  const tabText = paneId
+    ? cleanText(
+        $(`[href="#${cssEscape(paneId)}"], #${cssEscape(paneId)}-tab`)
+          .first()
+          .text(),
+      )
+    : null;
 
   return tabText && isProbablyCategoryName(tabText) ? titleCase(tabText) : null;
 }
 
-function extractElementorMenuHeadingItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractElementorMenuHeadingItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen || $(".elementor").length === 0) {
     return [];
   }
 
-  const scope = $("main, [role='main'], .main-content, .site-content, article").first();
+  const scope = $(
+    "main, [role='main'], .main-content, .site-content, article",
+  ).first();
   const $scope = scope.length > 0 ? scope : $("body");
   const records = [];
   let currentCategory = restaurant.category;
@@ -11857,7 +13620,11 @@ function extractElementorMenuHeadingItems($, restaurant, url, kind = sourceTypes
       return;
     }
 
-    if (!description && !hasFoodLanguage(name) && !isLikelyStandaloneDishHeading(name)) {
+    if (
+      !description &&
+      !hasFoodLanguage(name) &&
+      !isLikelyStandaloneDishHeading(name)
+    ) {
       return;
     }
 
@@ -11870,8 +13637,16 @@ function extractElementorMenuHeadingItems($, restaurant, url, kind = sourceTypes
         category: currentCategory,
         description,
         imageUrl: absolutizeUrl(
-          $heading.closest(".elementor-element, .e-con, section, article").find("img").first().attr("src") ??
-            $heading.closest(".elementor-element, .e-con, section, article").find("img").first().attr("data-src"),
+          $heading
+            .closest(".elementor-element, .e-con, section, article")
+            .find("img")
+            .first()
+            .attr("src") ??
+            $heading
+              .closest(".elementor-element, .e-con, section, article")
+              .find("img")
+              .first()
+              .attr("data-src"),
           url,
         ),
         ingredientsText: disclosure.ingredientsText ?? description,
@@ -11901,7 +13676,9 @@ function elementorHeadingDescription($, $heading) {
         text &&
         text.length <= 180 &&
         !isElementorMenuHeadingCategory(text) &&
-        !/^(?:order catering|call to place your order|facebook|instagram|youtube)$/i.test(text)
+        !/^(?:order catering|call to place your order|facebook|instagram|youtube)$/i.test(
+          text,
+        )
       ) {
         pieces.push(text);
       }
@@ -11919,7 +13696,11 @@ function isElementorMenuHeadingCategory(text) {
 function isElementorMenuHeadingArtifact(name, description, category) {
   const text = `${name ?? ""} ${description ?? ""}`;
 
-  if (/^(?:country club|chinola|jugos naturales|mango|tamarindo)$/i.test(name ?? "")) {
+  if (
+    /^(?:country club|chinola|jugos naturales|mango|tamarindo)$/i.test(
+      name ?? "",
+    )
+  ) {
     return true;
   }
 
@@ -11927,7 +13708,11 @@ function isElementorMenuHeadingArtifact(name, description, category) {
     return true;
   }
 
-  if (/\b(?:tropical drinks?|pop soda|passion fruit drink|tamarind drink|mango drink)\b/i.test(text)) {
+  if (
+    /\b(?:tropical drinks?|pop soda|passion fruit drink|tamarind drink|mango drink)\b/i.test(
+      text,
+    )
+  ) {
     return true;
   }
 
@@ -11940,7 +13725,12 @@ function isLikelyStandaloneDishHeading(name) {
   );
 }
 
-function extractWebflowCmsMenuItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractWebflowCmsMenuItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen) {
     return [];
   }
@@ -11989,7 +13779,9 @@ function extractWebflowCmsMenuItems($, restaurant, url, kind = sourceTypes.menu)
     }
 
     const category =
-      nearestPreviousCategory($, $item) ?? inferCategoryFromUrl(url) ?? restaurant.category;
+      nearestPreviousCategory($, $item) ??
+      inferCategoryFromUrl(url) ??
+      restaurant.category;
     const disclosure = getScopedDomDisclosure($item, kind);
 
     records.push(
@@ -12012,17 +13804,27 @@ function extractWebflowCmsMenuItems($, restaurant, url, kind = sourceTypes.menu)
   return records;
 }
 
-function extractSectionedImageMenuItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractSectionedImageMenuItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen) {
     return [];
   }
 
   const records = [];
-  const scope = $("main, [role='main'], .main-content, .site-content, body").first();
+  const scope = $(
+    "main, [role='main'], .main-content, .site-content, body",
+  ).first();
   const $scope = scope.length > 0 ? scope : $("body");
 
-  $scope.find("img[class*='item-image'], img[class*='menu-image'], img[class*='product-image']").each(
-    (_index, element) => {
+  $scope
+    .find(
+      "img[class*='item-image'], img[class*='menu-image'], img[class*='product-image']",
+    )
+    .each((_index, element) => {
       const $image = $(element);
 
       if ($image.parents("nav, header, footer, form").length > 0) {
@@ -12030,12 +13832,17 @@ function extractSectionedImageMenuItems($, restaurant, url, kind = sourceTypes.m
       }
 
       const $card = $image
-        .closest("[class*='grid-item'], [class*='menu-item'], [class*='product-item'], article, li")
+        .closest(
+          "[class*='grid-item'], [class*='menu-item'], [class*='product-item'], article, li",
+        )
         .first();
       const $source = $card.length > 0 ? $card : $image.parent();
       const name =
         cleanText(
-          $source.find("h2, h3, h4, h5, [class*='item-name'], [class*='subheading']").first().text(),
+          $source
+            .find("h2, h3, h4, h5, [class*='item-name'], [class*='subheading']")
+            .first()
+            .text(),
         ) ?? cleanMenuName($image.attr("alt"));
 
       if (!name || !isProbablyMenuItemName(name)) {
@@ -12043,10 +13850,14 @@ function extractSectionedImageMenuItems($, restaurant, url, kind = sourceTypes.m
       }
 
       const category =
-        nearestPreviousCategory($, $source) ?? inferCategoryFromUrl(url) ?? restaurant.category;
+        nearestPreviousCategory($, $source) ??
+        inferCategoryFromUrl(url) ??
+        restaurant.category;
       const description = sectionedImageMenuDescription($, $source, name);
       const imageUrl = absolutizeUrl(
-        $image.attr("src") ?? $image.attr("data-src") ?? $image.attr("srcset")?.split(" ")[0],
+        $image.attr("src") ??
+          $image.attr("data-src") ??
+          $image.attr("srcset")?.split(" ")[0],
         url,
       );
 
@@ -12071,14 +13882,22 @@ function extractSectionedImageMenuItems($, restaurant, url, kind = sourceTypes.m
           variantGroup: category,
         }),
       );
-    },
-  );
+    });
 
   return records;
 }
 
-function extractWeeblyCompactMenuItems($, restaurant, url, kind = sourceTypes.menu) {
-  if (kind === sourceTypes.allergen || !isWeeblyPage($) || /bar-?menu|cocktails?/i.test(decodeUrlText(url))) {
+function extractWeeblyCompactMenuItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
+  if (
+    kind === sourceTypes.allergen ||
+    !isWeeblyPage($) ||
+    /bar-?menu|cocktails?/i.test(decodeUrlText(url))
+  ) {
     return [];
   }
 
@@ -12107,9 +13926,17 @@ function extractWeeblyCompactMenuItems($, restaurant, url, kind = sourceTypes.me
 
       if (line.strong) {
         const pricedLine = parseGenericPdfMenuPricedLine(line.text);
-        const name = pricedLine?.name ?? (currentCategory === "Cheese Selection" ? cleanMenuName(line.text) : null);
+        const name =
+          pricedLine?.name ??
+          (currentCategory === "Cheese Selection"
+            ? cleanMenuName(line.text)
+            : null);
 
-        if (name && isProbablyMenuItemName(name) && !isGenericPdfMenuNonFoodName(name, null)) {
+        if (
+          name &&
+          isProbablyMenuItemName(name) &&
+          !isGenericPdfMenuNonFoodName(name, null)
+        ) {
           flushPending();
           pending = {
             category: currentCategory,
@@ -12134,7 +13961,9 @@ function extractWeeblyCompactMenuItems($, restaurant, url, kind = sourceTypes.me
       }
 
       const name = cleanMenuName(pending.name);
-      const description = cleanMenuDescription(pending.descriptionLines.join(" "));
+      const description = cleanMenuDescription(
+        pending.descriptionLines.join(" "),
+      );
 
       if (
         name &&
@@ -12167,7 +13996,8 @@ function extractWeeblyCompactMenuItems($, restaurant, url, kind = sourceTypes.me
 
   return uniqueBy(
     records.filter((record) => isProbablyMenuCatalogRecord(record)),
-    (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
   );
 }
 
@@ -12265,7 +14095,9 @@ function nearestPreviousCategory($, $element) {
       return titleCase(heading);
     }
 
-    const parentHeading = cleanText($cursor.parent().prevAll("h1, h2, h3").first().text());
+    const parentHeading = cleanText(
+      $cursor.parent().prevAll("h1, h2, h3").first().text(),
+    );
 
     if (parentHeading && isProbablyCategoryName(parentHeading)) {
       return titleCase(parentHeading);
@@ -12301,74 +14133,92 @@ function sectionedImageMenuDescription($, $card, name) {
   return description && description !== name ? description : null;
 }
 
-function extractSquarespaceMenuBlockItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractSquarespaceMenuBlockItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen || !isSquarespacePage($)) {
     return [];
   }
 
   const records = [];
 
-  $(".sqs-block-menu .menu-section, .menu-wrapper .menu-section").each((_sectionIndex, section) => {
-    const $section = $(section);
+  $(".sqs-block-menu .menu-section, .menu-wrapper .menu-section").each(
+    (_sectionIndex, section) => {
+      const $section = $(section);
 
-    if ($section.parents("nav, header, footer, form").length > 0) {
-      return;
-    }
-
-    const category =
-      cleanText($section.find(".menu-section-title").first().text()) ??
-      nearestPreviousCategory($, $section) ??
-      inferCategoryFromUrl(url) ??
-      restaurant.category;
-
-    $section.find(".menu-item").each((_itemIndex, item) => {
-      const $item = $(item);
-      const name = cleanMenuName($item.find(".menu-item-title").first().text());
-      const description = cleanMenuDescription(
-        $item.find(".menu-item-description").first().text(),
-      );
-
-      if (!name || !isProbablyMenuItemName(name)) {
+      if ($section.parents("nav, header, footer, form").length > 0) {
         return;
       }
 
-      if (!description && !hasFoodLanguage(name)) {
-        return;
-      }
+      const category =
+        cleanText($section.find(".menu-section-title").first().text()) ??
+        nearestPreviousCategory($, $section) ??
+        inferCategoryFromUrl(url) ??
+        restaurant.category;
 
-      if (isProbablyMenuListBlockArtifact(name, description, category)) {
-        return;
-      }
+      $section.find(".menu-item").each((_itemIndex, item) => {
+        const $item = $(item);
+        const name = cleanMenuName(
+          $item.find(".menu-item-title").first().text(),
+        );
+        const description = cleanMenuDescription(
+          $item.find(".menu-item-description").first().text(),
+        );
 
-      const disclosure = disclosureFromMenuText(description ?? "", kind);
+        if (!name || !isProbablyMenuItemName(name)) {
+          return;
+        }
 
-      records.push(
-        createRecord({
-          allergenSourceType: disclosure.allergenSourceType,
-          allergens: disclosure.directAllergens,
-          category,
-          description,
-          imageUrl: absolutizeUrl(
-            $item.find("img").first().attr("src") ??
-              $item.find("img").first().attr("data-src") ??
-              $item.find("source").first().attr("srcset")?.split(" ")[0],
-            url,
-          ),
-          ingredientsText: disclosure.ingredientsText ?? description,
-          mayContain: disclosure.mayContain,
-          name,
-          sourceKind: "squarespace-menu-block",
-          sourceUrl: url,
-          variantGroup: category,
-        }),
-      );
-    });
-  });
+        if (!description && !hasFoodLanguage(name)) {
+          return;
+        }
 
-  return uniqueBy(records, (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`);
+        if (isProbablyMenuListBlockArtifact(name, description, category)) {
+          return;
+        }
+
+        const disclosure = disclosureFromMenuText(description ?? "", kind);
+
+        records.push(
+          createRecord({
+            allergenSourceType: disclosure.allergenSourceType,
+            allergens: disclosure.directAllergens,
+            category,
+            description,
+            imageUrl: absolutizeUrl(
+              $item.find("img").first().attr("src") ??
+                $item.find("img").first().attr("data-src") ??
+                $item.find("source").first().attr("srcset")?.split(" ")[0],
+              url,
+            ),
+            ingredientsText: disclosure.ingredientsText ?? description,
+            mayContain: disclosure.mayContain,
+            name,
+            sourceKind: "squarespace-menu-block",
+            sourceUrl: url,
+            variantGroup: category,
+          }),
+        );
+      });
+    },
+  );
+
+  return uniqueBy(
+    records,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+  );
 }
 
-function extractSquarespaceTextBlockMenuItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractSquarespaceTextBlockMenuItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen || !isSquarespacePage($)) {
     return [];
   }
@@ -12434,35 +14284,67 @@ function splitSquarespaceMenuTextBlock(text) {
 function isSquarespaceMenuTextName(name, restaurant) {
   const cleaned = cleanMenuName(name);
 
-  if (!cleaned || cleaned.length < 4 || cleaned.length > 70 || !isProbablyMenuItemName(cleaned)) {
-    return false;
-  }
-
-  if (/^(?:drinks?|desserts?|salads?\s*&\s*sides?|wing flavor|dipping sauce|vegan|vegetarian|chicken|meat|specialty|single combo|double combo|by the slice|wiseguy\s*pies?|wiseguypies|oven roasted wings)$/i.test(cleaned)) {
-    return false;
-  }
-
-  if (/^(?:careers?|contact|donations?|order online|rewards?|privacy policy|terms of service)$/i.test(cleaned)) {
+  if (
+    !cleaned ||
+    cleaned.length < 4 ||
+    cleaned.length > 70 ||
+    !isProbablyMenuItemName(cleaned)
+  ) {
     return false;
   }
 
   if (
-    /^(?:\d+(?:\.\d{1,2})?|[$]?\d+(?:\.\d{1,2})?(?:\s*[-–]\s*[$]?\d+(?:\.\d{1,2})?)?)$/.test(cleaned) ||
+    /^(?:drinks?|desserts?|salads?\s*&\s*sides?|wing flavor|dipping sauce|vegan|vegetarian|chicken|meat|specialty|single combo|double combo|by the slice|wiseguy\s*pies?|wiseguypies|oven roasted wings)$/i.test(
+      cleaned,
+    )
+  ) {
+    return false;
+  }
+
+  if (
+    /^(?:careers?|contact|donations?|order online|rewards?|privacy policy|terms of service)$/i.test(
+      cleaned,
+    )
+  ) {
+    return false;
+  }
+
+  if (
+    /^(?:\d+(?:\.\d{1,2})?|[$]?\d+(?:\.\d{1,2})?(?:\s*[-–]\s*[$]?\d+(?:\.\d{1,2})?)?)$/.test(
+      cleaned,
+    ) ||
     /\d+\.\d{2}.*\d+\.\d{2}/.test(cleaned) ||
-    /^[\d\s().·-]*(?:pc|pcs|regular|raspberry|extra|marinara|sauce)[\d\s().·-]*$/i.test(cleaned) ||
+    /^[\d\s().·-]*(?:pc|pcs|regular|raspberry|extra|marinara|sauce)[\d\s().·-]*$/i.test(
+      cleaned,
+    ) ||
     /^\d+\s*(?:pc|pcs)\s*\d/i.test(cleaned)
   ) {
     return false;
   }
 
-  if (/\b(?:fountain soda|bottled soda|cane sugar soda|soda|beer|wine|cocktail)\b/i.test(cleaned)) {
+  if (
+    /\b(?:fountain soda|bottled soda|cane sugar soda|soda|beer|wine|cocktail)\b/i.test(
+      cleaned,
+    )
+  ) {
     return false;
   }
 
-  return hasFoodLanguage(cleaned) || /pizza|pepperoni|margherita|supreme|buffalo|truffle|paneer|bianca|stromboli|roller|knot|cookie|cheesecake|ranch|blue cheese/i.test(cleaned) || /pizza/i.test(restaurant.category ?? "");
+  return (
+    hasFoodLanguage(cleaned) ||
+    /pizza|pepperoni|margherita|supreme|buffalo|truffle|paneer|bianca|stromboli|roller|knot|cookie|cheesecake|ranch|blue cheese/i.test(
+      cleaned,
+    ) ||
+    /pizza/i.test(restaurant.category ?? "")
+  );
 }
 
-function extractEmbeddedUserItemsMenuItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractEmbeddedUserItemsMenuItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen) {
     return [];
   }
@@ -12472,7 +14354,9 @@ function extractEmbeddedUserItemsMenuItems($, restaurant, url, kind = sourceType
   $("[data-current-context]").each((_index, element) => {
     const rawContext = $(element).attr("data-current-context");
     const context = parseJsonLoose(decodeHtml(rawContext ?? ""));
-    const userItems = Array.isArray(context?.userItems) ? context.userItems : [];
+    const userItems = Array.isArray(context?.userItems)
+      ? context.userItems
+      : [];
 
     for (const userItem of userItems) {
       const name = cleanMenuName(userItem?.title);
@@ -12516,8 +14400,12 @@ function extractYextMenuItems($, restaurant, url, kind = sourceTypes.menu) {
 
   $(".yext-menu-item-details").each((_index, element) => {
     const $element = $(element);
-    const name = cleanMenuName($element.find(".yext-menu-item-name").first().text());
-    const rawDescription = cleanText($element.find(".yext-menu-item-desc").first().html());
+    const name = cleanMenuName(
+      $element.find(".yext-menu-item-name").first().text(),
+    );
+    const rawDescription = cleanText(
+      $element.find(".yext-menu-item-desc").first().html(),
+    );
     const description = cleanMenuDescription(rawDescription);
 
     if (!name || !isProbablyMenuItemName(name)) {
@@ -12575,7 +14463,12 @@ function extractYextMenuItems($, restaurant, url, kind = sourceTypes.menu) {
   return records;
 }
 
-function extractWixGalleryMenuItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractWixGalleryMenuItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen) {
     return [];
   }
@@ -12584,7 +14477,9 @@ function extractWixGalleryMenuItems($, restaurant, url, kind = sourceTypes.menu)
 
   $("[data-hook='item-link-wrapper']").each((_index, element) => {
     const $element = $(element);
-    const name = cleanMenuName($element.find("[data-hook='item-title']").first().text());
+    const name = cleanMenuName(
+      $element.find("[data-hook='item-title']").first().text(),
+    );
     const description = cleanMenuDescription(
       $element.find("[data-hook='item-description']").first().html(),
     );
@@ -12631,7 +14526,12 @@ function extractWixGalleryMenuItems($, restaurant, url, kind = sourceTypes.menu)
   return records;
 }
 
-function extractWixRichTextMenuItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractWixRichTextMenuItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen || !isWixPage($)) {
     return [];
   }
@@ -12639,57 +14539,62 @@ function extractWixRichTextMenuItems($, restaurant, url, kind = sourceTypes.menu
   const records = [];
   let currentCategory = null;
 
-  $(".wixui-rich-text, [data-testid='richTextElement']").each((_index, element) => {
-    const $element = $(element);
-    const heading = cleanText(
-      $element
-        .children("h1, h2, h3, h4")
-        .first()
-        .text(),
-    );
-
-    if (heading && isWixRichTextMenuCategory(heading)) {
-      currentCategory = heading;
-      return;
-    }
-
-    const itemNames = $element
-      .children("p")
-      .toArray()
-      .map((paragraph) => cleanMenuName($(paragraph).text()))
-      .filter((name) => isWixRichTextMenuItemName(name, currentCategory));
-
-    if (!currentCategory || itemNames.length === 0) {
-      return;
-    }
-
-    for (const name of itemNames) {
-      const disclosure = disclosureFromMenuText(name, kind);
-
-      records.push(
-        createRecord({
-          allergenSourceType: disclosure.allergenSourceType,
-          allergens: disclosure.directAllergens,
-          category: currentCategory,
-          description: null,
-          imageUrl: null,
-          ingredientsText: disclosure.ingredientsText,
-          mayContain: disclosure.mayContain,
-          name,
-          sourceKind: "html-wix-rich-text-menu",
-          sourceUrl: url,
-          variantGroup: currentCategory,
-        }),
+  $(".wixui-rich-text, [data-testid='richTextElement']").each(
+    (_index, element) => {
+      const $element = $(element);
+      const heading = cleanText(
+        $element.children("h1, h2, h3, h4").first().text(),
       );
-    }
-  });
 
-  return uniqueBy(records, (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`);
+      if (heading && isWixRichTextMenuCategory(heading)) {
+        currentCategory = heading;
+        return;
+      }
+
+      const itemNames = $element
+        .children("p")
+        .toArray()
+        .map((paragraph) => cleanMenuName($(paragraph).text()))
+        .filter((name) => isWixRichTextMenuItemName(name, currentCategory));
+
+      if (!currentCategory || itemNames.length === 0) {
+        return;
+      }
+
+      for (const name of itemNames) {
+        const disclosure = disclosureFromMenuText(name, kind);
+
+        records.push(
+          createRecord({
+            allergenSourceType: disclosure.allergenSourceType,
+            allergens: disclosure.directAllergens,
+            category: currentCategory,
+            description: null,
+            imageUrl: null,
+            ingredientsText: disclosure.ingredientsText,
+            mayContain: disclosure.mayContain,
+            name,
+            sourceKind: "html-wix-rich-text-menu",
+            sourceUrl: url,
+            variantGroup: currentCategory,
+          }),
+        );
+      }
+    },
+  );
+
+  return uniqueBy(
+    records,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+  );
 }
 
 function isWixPage($) {
   return (
-    /Wix\.com Website Builder/i.test($("meta[name='generator']").attr("content") ?? "") ||
+    /Wix\.com Website Builder/i.test(
+      $("meta[name='generator']").attr("content") ?? "",
+    ) ||
     $("html").html()?.includes("wixui-rich-text") ||
     $("html").html()?.includes("wixArtifactId:com.wixpress.restaurants")
   );
@@ -12702,7 +14607,11 @@ function isWixRichTextMenuCategory(text) {
     return false;
   }
 
-  if (/^(?:menu|dinner special|lunch special|happy hour|subscribe|thanks|hungry|call ahead)$/i.test(cleaned)) {
+  if (
+    /^(?:menu|dinner special|lunch special|happy hour|subscribe|thanks|hungry|call ahead)$/i.test(
+      cleaned,
+    )
+  ) {
     return false;
   }
 
@@ -12723,7 +14632,11 @@ function isWixRichTextMenuItemName(name, category) {
     return false;
   }
 
-  if (/^(?:mon|tue|wed|thu|fri|sat|sun|tel|email|we'?re open|all rights reserved)\b/i.test(name)) {
+  if (
+    /^(?:mon|tue|wed|thu|fri|sat|sun|tel|email|we'?re open|all rights reserved)\b/i.test(
+      name,
+    )
+  ) {
     return false;
   }
 
@@ -12735,18 +14648,28 @@ function isWixRichTextMenuItemName(name, category) {
   );
 }
 
-function extractSequentialParagraphMenuItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractSequentialParagraphMenuItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen) {
     return [];
   }
 
-  const scope = $("main, [role='main'], .main-content, .site-content, article, body").first();
+  const scope = $(
+    "main, [role='main'], .main-content, .site-content, article, body",
+  ).first();
   const $scope = scope.length > 0 ? scope : $("body");
   const records = [];
   let currentCategory = restaurant.category;
   const paragraphs = $scope
     .find("p")
-    .filter((_index, element) => $(element).parents("nav, header, footer, form").length === 0)
+    .filter(
+      (_index, element) =>
+        $(element).parents("nav, header, footer, form").length === 0,
+    )
     .map((_index, element) => ({ element, text: cleanText($(element).text()) }))
     .get()
     .filter((entry) => entry.text);
@@ -12768,7 +14691,12 @@ function extractSequentialParagraphMenuItems($, restaurant, url, kind = sourceTy
     const name = cleanMenuName(current.text);
     const description = summarizePricedMenuDescription(next.text);
 
-    if (!name || !description || name === description || !isProbablyMenuItemName(name)) {
+    if (
+      !name ||
+      !description ||
+      name === description ||
+      !isProbablyMenuItemName(name)
+    ) {
       continue;
     }
 
@@ -12825,14 +14753,27 @@ function isSequentialMenuName(nameText, descriptionText) {
 
 function summarizePricedMenuDescription(text) {
   return cleanText(text)
-    ?.replace(/\s*\|\s*\$?\d{1,4}(?:\.\d{2})?(?:\s*\/\s*\$?\d{1,4}(?:\.\d{2})?)*\s*$/i, "")
-    .replace(/\s+\$?\d{1,4}(?:\.\d{2})?(?:\s*\/\s*\$?\d{1,4}(?:\.\d{2})?)*\s*$/i, "")
+    ?.replace(
+      /\s*\|\s*\$?\d{1,4}(?:\.\d{2})?(?:\s*\/\s*\$?\d{1,4}(?:\.\d{2})?)*\s*$/i,
+      "",
+    )
+    .replace(
+      /\s+\$?\d{1,4}(?:\.\d{2})?(?:\s*\/\s*\$?\d{1,4}(?:\.\d{2})?)*\s*$/i,
+      "",
+    )
     .replace(/\s+/g, " ")
     .trim();
 }
 
-function extractContainsDisclosureLineItems($, restaurant, url, kind = sourceTypes.menu) {
-  const scope = $("main, [role='main'], .main-content, .site-content, article").first();
+function extractContainsDisclosureLineItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
+  const scope = $(
+    "main, [role='main'], .main-content, .site-content, article",
+  ).first();
   const $scope = scope.length > 0 ? scope : $("body");
   const records = [];
   let currentCategory = restaurant.category;
@@ -12845,7 +14786,15 @@ function extractContainsDisclosureLineItems($, restaurant, url, kind = sourceTyp
     .text()
     .replace(/\)\s+/g, ")\n");
 
-  records.push(...extractInlineContainsDisclosureItemsFromText(text, restaurant, url, kind, currentCategory));
+  records.push(
+    ...extractInlineContainsDisclosureItemsFromText(
+      text,
+      restaurant,
+      url,
+      kind,
+      currentCategory,
+    ),
+  );
 
   for (const rawLine of text?.split(/\n|\r| {2,}/) ?? []) {
     const line = cleanText(rawLine);
@@ -12856,12 +14805,17 @@ function extractContainsDisclosureLineItems($, restaurant, url, kind = sourceTyp
 
     const heading = line.replace(/:$/, "");
 
-    if (!/\bcontains?\b/i.test(line) && isLikelyDisclosureCategoryName(heading)) {
+    if (
+      !/\bcontains?\b/i.test(line) &&
+      isLikelyDisclosureCategoryName(heading)
+    ) {
       currentCategory = titleCase(heading);
       continue;
     }
 
-    const match = line.match(/^(.{2,120}?)\s*\((contains?\s+[^)]+)\)\s*(?:[-–—]\s*[A-Z]{1,4})?$/i);
+    const match = line.match(
+      /^(.{2,120}?)\s*\((contains?\s+[^)]+)\)\s*(?:[-–—]\s*[A-Z]{1,4})?$/i,
+    );
 
     if (!match) {
       continue;
@@ -12896,10 +14850,19 @@ function extractContainsDisclosureLineItems($, restaurant, url, kind = sourceTyp
     );
   }
 
-  return uniqueBy(records, (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`);
+  return uniqueBy(
+    records,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+  );
 }
 
-function extractOfficialNarrativeAllergenHtmlItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractOfficialNarrativeAllergenHtmlItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind !== sourceTypes.allergen) {
     return [];
   }
@@ -12918,7 +14881,9 @@ function extractOfficialNarrativeAllergenHtmlItems($, restaurant, url, kind = so
     return records;
   }
 
-  for (const match of text.matchAll(/(?:^|[.;]\s+|:\s+)([A-Z][A-Za-z0-9&'’/ -]{2,80}?)\s+contains?\s+([^.;]{1,140})/g)) {
+  for (const match of text.matchAll(
+    /(?:^|[.;]\s+|:\s+)([A-Z][A-Za-z0-9&'’/ -]{2,80}?)\s+contains?\s+([^.;]{1,140})/g,
+  )) {
     const name = cleanMenuName(match[1]);
     const disclosureText = cleanText(`Contains ${match[2]}`);
     const allergens = findDeclaredAllergensOnly(disclosureText);
@@ -12945,7 +14910,9 @@ function extractOfficialNarrativeAllergenHtmlItems($, restaurant, url, kind = so
     );
   }
 
-  for (const match of text.matchAll(/([A-Z][A-Za-z0-9&'’/ -]{2,80}?)\b[^.;]{0,160}\bmay contain\s+([^.;]{1,120})/g)) {
+  for (const match of text.matchAll(
+    /([A-Z][A-Za-z0-9&'’/ -]{2,80}?)\b[^.;]{0,160}\bmay contain\s+([^.;]{1,120})/g,
+  )) {
     const name = cleanMenuName(match[1]);
     const mayContain = findAllergensInText(match[2]);
 
@@ -12971,7 +14938,9 @@ function extractOfficialNarrativeAllergenHtmlItems($, restaurant, url, kind = so
     );
   }
 
-  const soyCategoryMatch = text.match(/\bSoy\s*\/\s*Soybean Oil:[^.]*?\bincluding(?: but not limited to)?\s+([^.;]+)/i);
+  const soyCategoryMatch = text.match(
+    /\bSoy\s*\/\s*Soybean Oil:[^.]*?\bincluding(?: but not limited to)?\s+([^.;]+)/i,
+  );
 
   if (soyCategoryMatch) {
     for (const name of splitNarrativeItemList(soyCategoryMatch[1])) {
@@ -12980,7 +14949,8 @@ function extractOfficialNarrativeAllergenHtmlItems($, restaurant, url, kind = so
           allergenSourceType: allergenSourceTypes.officialAllergenMenu,
           allergens: ["soy"],
           category: restaurant.category,
-          description: "Official allergen page lists soy or soybean oil in this menu group.",
+          description:
+            "Official allergen page lists soy or soybean oil in this menu group.",
           evidenceText: cleanText(soyCategoryMatch[0]),
           imageUrl: null,
           ingredientsText: null,
@@ -12994,7 +14964,9 @@ function extractOfficialNarrativeAllergenHtmlItems($, restaurant, url, kind = so
     }
   }
 
-  const glutenFriedMatch = text.match(/\bfried menu items that contain gluten\s*\(([^)]+)\)/i);
+  const glutenFriedMatch = text.match(
+    /\bfried menu items that contain gluten\s*\(([^)]+)\)/i,
+  );
 
   if (glutenFriedMatch) {
     for (const name of splitNarrativeItemList(glutenFriedMatch[1])) {
@@ -13003,7 +14975,8 @@ function extractOfficialNarrativeAllergenHtmlItems($, restaurant, url, kind = so
           allergenSourceType: allergenSourceTypes.officialAllergenMenu,
           allergens: ["wheat", "gluten"],
           category: restaurant.category,
-          description: "Official allergen page lists this fried item group as containing gluten.",
+          description:
+            "Official allergen page lists this fried item group as containing gluten.",
           evidenceText: cleanText(glutenFriedMatch[0]),
           imageUrl: null,
           ingredientsText: null,
@@ -13043,8 +15016,11 @@ function extractOfficialNarrativeAllergenHtmlItems($, restaurant, url, kind = so
   }
 
   return uniqueBy(
-    records.filter((record) => record.name && isProbablyMenuItemName(record.name)),
-    (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+    records.filter(
+      (record) => record.name && isProbablyMenuItemName(record.name),
+    ),
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
   );
 }
 
@@ -13054,7 +15030,10 @@ function splitNarrativeItemList(value) {
       .replace(/\bour\b/gi, "")
       .split(/\s*,\s*|\s+and\s+|\s*\/\s*/)
       .map((item) => cleanMenuName(item))
-      .filter((item) => item && item.length >= 3 && !/^(?:items?|menu|various)$/i.test(item)),
+      .filter(
+        (item) =>
+          item && item.length >= 3 && !/^(?:items?|menu|various)$/i.test(item),
+      ),
   );
 }
 
@@ -13092,7 +15071,13 @@ function extractNamedIngredientStatements(text) {
   return statements;
 }
 
-function extractInlineContainsDisclosureItemsFromText(text, restaurant, url, kind, fallbackCategory) {
+function extractInlineContainsDisclosureItemsFromText(
+  text,
+  restaurant,
+  url,
+  kind,
+  fallbackCategory,
+) {
   const flattened = cleanText(text);
   const records = [];
 
@@ -13141,8 +15126,12 @@ function extractInlineContainsDisclosureItemsFromText(text, restaurant, url, kin
 
 function menuItemNameBeforeContainsDisclosure(text) {
   const candidates = [
-    ...String(text ?? "").matchAll(/(?:^|[.!?]\s+|\s{2,})([A-Z][A-Za-z0-9&'’" -]{2,80}?)\s+\d{1,3}(?:\.\d{2})?(?=\s)/g),
-    ...String(text ?? "").matchAll(/([A-Z][A-Za-z0-9&'’" -]{2,80}?)\s+\d{1,3}(?:\.\d{2})?(?=\s)/g),
+    ...String(text ?? "").matchAll(
+      /(?:^|[.!?]\s+|\s{2,})([A-Z][A-Za-z0-9&'’" -]{2,80}?)\s+\d{1,3}(?:\.\d{2})?(?=\s)/g,
+    ),
+    ...String(text ?? "").matchAll(
+      /([A-Z][A-Za-z0-9&'’" -]{2,80}?)\s+\d{1,3}(?:\.\d{2})?(?=\s)/g,
+    ),
   ];
   const last = candidates.at(-1)?.[1];
   const name = cleanMenuName(last);
@@ -13172,9 +15161,18 @@ function isLikelyDisclosureCategoryName(name) {
 
 function getLinkedDisclosureText($, $element) {
   const modalId = cleanText(
-    $element.find("[data-reveal-id], [data-modal], [data-target]").first().attr("data-reveal-id") ??
-      $element.find("[data-reveal-id], [data-modal], [data-target]").first().attr("data-modal") ??
-      $element.find("[data-reveal-id], [data-modal], [data-target]").first().attr("data-target") ??
+    $element
+      .find("[data-reveal-id], [data-modal], [data-target]")
+      .first()
+      .attr("data-reveal-id") ??
+      $element
+        .find("[data-reveal-id], [data-modal], [data-target]")
+        .first()
+        .attr("data-modal") ??
+      $element
+        .find("[data-reveal-id], [data-modal], [data-target]")
+        .first()
+        .attr("data-target") ??
       $element.attr("data-reveal-id") ??
       $element.attr("data-modal") ??
       $element.attr("data-target"),
@@ -13205,11 +15203,16 @@ function getLinkedDisclosureText($, $element) {
     ),
   ].filter(Boolean);
 
-  return candidates.filter(isUsefulDisclosureText).reduce(pickBestDescription, null);
+  return candidates
+    .filter(isUsefulDisclosureText)
+    .reduce(pickBestDescription, null);
 }
 
 function cssEscape(value) {
-  return String(value).replace(/([ !"#$%&'()*+,./:;<=>?@[\\\]^`{|}~])/g, "\\$1");
+  return String(value).replace(
+    /([ !"#$%&'()*+,./:;<=>?@[\\\]^`{|}~])/g,
+    "\\$1",
+  );
 }
 
 function isUsefulDisclosureText(text) {
@@ -13224,12 +15227,19 @@ function isUsefulDisclosureText(text) {
   );
 }
 
-function extractInlineParagraphMenuItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractInlineParagraphMenuItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen) {
     return [];
   }
 
-  const scope = $("main, [role='main'], .main-content, .site-content, article").first();
+  const scope = $(
+    "main, [role='main'], .main-content, .site-content, article",
+  ).first();
   const $scope = scope.length > 0 ? scope : $("body");
   const records = [];
   let currentCategory = restaurant.category;
@@ -13352,10 +15362,19 @@ function parseInlineParagraphMenuItem($, $element) {
 
 function cleanInlineMenuItemName(value) {
   const cleaned = cleanMenuName(value)
-    ?.replace(/\s*\|\s*\$?\d{1,4}(?:\.\d{2})?(?:\s*(?:additional|per person|pp|\/).*)?$/i, "")
-    ?.replace(/\s*\$?\d{1,4}(?:\.\d{2})?(?:\s*(?:additional|per person|pp|\/).*)?$/i, "")
+    ?.replace(
+      /\s*\|\s*\$?\d{1,4}(?:\.\d{2})?(?:\s*(?:additional|per person|pp|\/).*)?$/i,
+      "",
+    )
+    ?.replace(
+      /\s*\$?\d{1,4}(?:\.\d{2})?(?:\s*(?:additional|per person|pp|\/).*)?$/i,
+      "",
+    )
     .replace(/\s*[~+^*]+$/g, "")
-    .replace(/\s*\((?:gf|df|v|v\+|cn|sf)(?:,\s*(?:gf|df|v|v\+|cn|sf))*\)\s*$/i, "")
+    .replace(
+      /\s*\((?:gf|df|v|v\+|cn|sf)(?:,\s*(?:gf|df|v|v\+|cn|sf))*\)\s*$/i,
+      "",
+    )
     .replace(/\s+/g, " ")
     .trim();
 
@@ -13372,76 +15391,111 @@ function isGenericInlineMenuNonItem(text) {
   );
 }
 
-function extractClassicMenuBlockItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractClassicMenuBlockItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen) {
     return [];
   }
 
   const records = [];
 
-  $(".menu_block, [class*='menu-block'], [class*='menuBlock']").each((_blockIndex, block) => {
-    const $block = $(block);
+  $(".menu_block, [class*='menu-block'], [class*='menuBlock']").each(
+    (_blockIndex, block) => {
+      const $block = $(block);
 
-    if ($block.parents("nav, header, footer, form").length > 0) {
-      return;
-    }
-
-    const category = cleanText(
-      $block.find("h1, h2, h3, [class*='section-title'], [class*='category']").first().text(),
-    );
-    const fallbackDescription = cleanText($block.children("p").first().text());
-
-    $block.find(".item-inner, [class*='item-inner'], [class*='menu-row']").each((_rowIndex, row) => {
-      const $row = $(row);
-      const name = cleanMenuName(
-        $row
-          .find(".menu-item, [class*='menu-item-name'], [class*='item-name']")
-          .first()
-          .text(),
-      );
-
-      if (!name || !isProbablyMenuItemName(name)) {
+      if ($block.parents("nav, header, footer, form").length > 0) {
         return;
       }
 
-      const rowText = cleanText($row.text());
-      const description = cleanText(
-        $row
-          .find("[class*='description'], [class*='desc'], p")
+      const category = cleanText(
+        $block
+          .find("h1, h2, h3, [class*='section-title'], [class*='category']")
           .first()
           .text(),
       );
-      const disclosure = disclosureFromMenuText(rowText, kind);
-      const scopedDisclosure = getScopedDomDisclosure($row, kind);
-
-      records.push(
-        createRecord({
-          allergenSourceType:
-            disclosure.allergenSourceType !== allergenSourceTypes.unavailable
-              ? disclosure.allergenSourceType
-              : scopedDisclosure.allergenSourceType,
-          allergens: uniqueStrings([...disclosure.directAllergens, ...scopedDisclosure.directAllergens]),
-          category: category && isProbablyCategoryName(category) ? titleCase(category) : restaurant.category,
-          description: description ?? fallbackDescription,
-          imageUrl: absolutizeUrl(
-            $row.find("img").first().attr("src") ?? $row.find("img").first().attr("data-src"),
-            url,
-          ),
-          ingredientsText: scopedDisclosure.ingredientsText,
-          mayContain: uniqueStrings([...disclosure.mayContain, ...scopedDisclosure.mayContain]),
-          name,
-          sourceKind: "html-card",
-          sourceUrl: url,
-          variantGroup: category && isProbablyCategoryName(category) ? titleCase(category) : null,
-        }),
+      const fallbackDescription = cleanText(
+        $block.children("p").first().text(),
       );
-    });
-  });
+
+      $block
+        .find(".item-inner, [class*='item-inner'], [class*='menu-row']")
+        .each((_rowIndex, row) => {
+          const $row = $(row);
+          const name = cleanMenuName(
+            $row
+              .find(
+                ".menu-item, [class*='menu-item-name'], [class*='item-name']",
+              )
+              .first()
+              .text(),
+          );
+
+          if (!name || !isProbablyMenuItemName(name)) {
+            return;
+          }
+
+          const rowText = cleanText($row.text());
+          const description = cleanText(
+            $row
+              .find("[class*='description'], [class*='desc'], p")
+              .first()
+              .text(),
+          );
+          const disclosure = disclosureFromMenuText(rowText, kind);
+          const scopedDisclosure = getScopedDomDisclosure($row, kind);
+
+          records.push(
+            createRecord({
+              allergenSourceType:
+                disclosure.allergenSourceType !==
+                allergenSourceTypes.unavailable
+                  ? disclosure.allergenSourceType
+                  : scopedDisclosure.allergenSourceType,
+              allergens: uniqueStrings([
+                ...disclosure.directAllergens,
+                ...scopedDisclosure.directAllergens,
+              ]),
+              category:
+                category && isProbablyCategoryName(category)
+                  ? titleCase(category)
+                  : restaurant.category,
+              description: description ?? fallbackDescription,
+              imageUrl: absolutizeUrl(
+                $row.find("img").first().attr("src") ??
+                  $row.find("img").first().attr("data-src"),
+                url,
+              ),
+              ingredientsText: scopedDisclosure.ingredientsText,
+              mayContain: uniqueStrings([
+                ...disclosure.mayContain,
+                ...scopedDisclosure.mayContain,
+              ]),
+              name,
+              sourceKind: "html-card",
+              sourceUrl: url,
+              variantGroup:
+                category && isProbablyCategoryName(category)
+                  ? titleCase(category)
+                  : null,
+            }),
+          );
+        });
+    },
+  );
 
   return records;
 }
 
-function extractFoodMenuPanelItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractFoodMenuPanelItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   const records = [];
 
   $(
@@ -13455,8 +15509,12 @@ function extractFoodMenuPanelItems($, restaurant, url, kind = sourceTypes.menu) 
 
     const name = cleanMenuName(
       $element
-        .find(".fdm-item-title, [class*='item-title'], [class*='ItemTitle'], h3, h4")
-        .add($element.find(".food-item-title h3, .list-column__headline").first())
+        .find(
+          ".fdm-item-title, [class*='item-title'], [class*='ItemTitle'], h3, h4",
+        )
+        .add(
+          $element.find(".food-item-title h3, .list-column__headline").first(),
+        )
         .first()
         .text(),
     );
@@ -13473,8 +15531,12 @@ function extractFoodMenuPanelItems($, restaurant, url, kind = sourceTypes.menu) 
 
     const category = cleanText(
       $element
-        .closest(".fdm-section, [class*='menu-section'], [class*='MenuSection'], .module, section")
-        .find(".fdm-section-header h2, .fdm-section-header h3, .fdm-section-title, h2, h3, h4, h5")
+        .closest(
+          ".fdm-section, [class*='menu-section'], [class*='MenuSection'], .module, section",
+        )
+        .find(
+          ".fdm-section-header h2, .fdm-section-header h3, .fdm-section-title, h2, h3, h4, h5",
+        )
         .first()
         .text(),
     );
@@ -13487,8 +15549,14 @@ function extractFoodMenuPanelItems($, restaurant, url, kind = sourceTypes.menu) 
           disclosure.allergenSourceType !== allergenSourceTypes.unavailable
             ? disclosure.allergenSourceType
             : scopedDisclosure.allergenSourceType,
-        allergens: uniqueStrings([...disclosure.directAllergens, ...scopedDisclosure.directAllergens]),
-        category: category && isProbablyCategoryName(category) ? titleCase(category) : restaurant.category,
+        allergens: uniqueStrings([
+          ...disclosure.directAllergens,
+          ...scopedDisclosure.directAllergens,
+        ]),
+        category:
+          category && isProbablyCategoryName(category)
+            ? titleCase(category)
+            : restaurant.category,
         description,
         imageUrl: absolutizeUrl(
           $element.find("img").first().attr("src") ??
@@ -13496,11 +15564,17 @@ function extractFoodMenuPanelItems($, restaurant, url, kind = sourceTypes.menu) 
           url,
         ),
         ingredientsText: scopedDisclosure.ingredientsText,
-        mayContain: uniqueStrings([...disclosure.mayContain, ...scopedDisclosure.mayContain]),
+        mayContain: uniqueStrings([
+          ...disclosure.mayContain,
+          ...scopedDisclosure.mayContain,
+        ]),
         name,
         sourceKind: "html-card",
         sourceUrl: url,
-        variantGroup: category && isProbablyCategoryName(category) ? titleCase(category) : null,
+        variantGroup:
+          category && isProbablyCategoryName(category)
+            ? titleCase(category)
+            : null,
       }),
     );
   });
@@ -13525,7 +15599,9 @@ function cleanFoodMenuPanelDescription($, $element, name) {
     .remove();
   const explicitDescription = cleanText(
     $element
-      .find(".food-item-description, .list-column__description, [class*='description'], [class*='desc']")
+      .find(
+        ".food-item-description, .list-column__description, [class*='description'], [class*='desc']",
+      )
       .first()
       .text(),
   );
@@ -13559,7 +15635,8 @@ function disclosureFromMenuText(text, kind) {
     directAllergens.push(...findAllergensInText(match[1]));
   }
 
-  for (const match of text?.matchAll(/\bPossible Allergy:\s*([^.;|]+)/gi) ?? []) {
+  for (const match of text?.matchAll(/\bPossible Allergy:\s*([^.;|]+)/gi) ??
+    []) {
     mayContain.push(...findAllergensInText(match[1]));
   }
 
@@ -13592,7 +15669,9 @@ function extractHeadingMenuItems($, restaurant, url, kind = sourceTypes.menu) {
     return [];
   }
 
-  const scope = $("main, [role='main'], .main-content, .site-content, article").first();
+  const scope = $(
+    "main, [role='main'], .main-content, .site-content, article",
+  ).first();
   const $scope = scope.length > 0 ? scope : $("body");
   const records = [];
 
@@ -13619,7 +15698,9 @@ function extractHeadingMenuItems($, restaurant, url, kind = sourceTypes.menu) {
       return;
     }
 
-    const previousCategory = cleanText($element.prevAll("h1, h2, h3").first().text());
+    const previousCategory = cleanText(
+      $element.prevAll("h1, h2, h3").first().text(),
+    );
     const category =
       previousCategory && isProbablyCategoryName(previousCategory)
         ? titleCase(previousCategory)
@@ -13650,12 +15731,19 @@ function extractHeadingMenuItems($, restaurant, url, kind = sourceTypes.menu) {
   return records;
 }
 
-function extractParagraphMenuLineItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractParagraphMenuLineItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen) {
     return [];
   }
 
-  const scope = $("main, [role='main'], .main-content, .site-content, article").first();
+  const scope = $(
+    "main, [role='main'], .main-content, .site-content, article",
+  ).first();
   const $scope = scope.length > 0 ? scope : $("body");
   const records = [];
   let currentCategory = restaurant.category;
@@ -13722,7 +15810,10 @@ function parseParagraphMenuLine(text) {
   }
 
   const body = cleanText(
-    cleaned.replace(/\s*\$?\d{1,3}(?:\.\d{2})?(?:\s*\/\s*\$?\d{1,3}(?:\.\d{2})?)?\s*$/i, ""),
+    cleaned.replace(
+      /\s*\$?\d{1,3}(?:\.\d{2})?(?:\s*\/\s*\$?\d{1,3}(?:\.\d{2})?)?\s*$/i,
+      "",
+    ),
   );
 
   if (!body) {
@@ -13738,7 +15829,10 @@ function parseParagraphMenuLine(text) {
     };
   }
 
-  const dashParts = body.split(/\s+[–—-]\s+/).map(cleanText).filter(Boolean);
+  const dashParts = body
+    .split(/\s+[–—-]\s+/)
+    .map(cleanText)
+    .filter(Boolean);
 
   if (dashParts.length >= 2) {
     return {
@@ -13767,7 +15861,8 @@ function headingOwnsParagraphMenuRows($, $element) {
 
     if (
       $sibling.is("p") &&
-      (parseParagraphMenuLine($sibling.text()) || parseInlineParagraphMenuItem($, $sibling))
+      (parseParagraphMenuLine($sibling.text()) ||
+        parseInlineParagraphMenuItem($, $sibling))
     ) {
       pricedRows += 1;
     }
@@ -13807,10 +15902,17 @@ function getHeadingMenuDescription($, $element) {
     return null;
   }
 
-  return description.length > 360 ? `${description.slice(0, 357).trim()}...` : description;
+  return description.length > 360
+    ? `${description.slice(0, 357).trim()}...`
+    : description;
 }
 
-function extractStructuredListMenuItems($, restaurant, url, kind = sourceTypes.menu) {
+function extractStructuredListMenuItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
   if (kind === sourceTypes.allergen) {
     return [];
   }
@@ -13927,7 +16029,9 @@ function parseStructuredListMenuItem($, $element) {
   const fullText = cleanText($element.text());
   const description = cleanText(
     explicitDescription ??
-      (fullText && fullText !== name ? fullText.replace(name, "").trim() : null),
+      (fullText && fullText !== name
+        ? fullText.replace(name, "").trim()
+        : null),
   );
 
   return {
@@ -13946,7 +16050,9 @@ export function extractProductPageItem(html, restaurant, url, fallbackName) {
     cleanText($("meta[name='description']").attr("content")) ??
     cleanText($("meta[property='og:description']").attr("content")) ??
     cleanText(
-      $("[class*='description'], [class*='Description'], [class*='details'], main p")
+      $(
+        "[class*='description'], [class*='Description'], [class*='details'], main p",
+      )
         .first()
         .text(),
     );
@@ -13964,8 +16070,16 @@ export function extractProductPageItem(html, restaurant, url, fallbackName) {
     .filter(Boolean)
     .join(" ");
   const ingredientsText = extractProductPageIngredientsText($, html);
-  const disclosureText = [allergenText, ingredientsText].map(cleanText).filter(Boolean).join(" ");
-  const structuredRecords = extractJsonItemsFromHtml($, restaurant, url, sourceTypes.allergen);
+  const disclosureText = [allergenText, ingredientsText]
+    .map(cleanText)
+    .filter(Boolean)
+    .join(" ");
+  const structuredRecords = extractJsonItemsFromHtml(
+    $,
+    restaurant,
+    url,
+    sourceTypes.allergen,
+  );
   const matchingStructured = structuredRecords.find(
     (record) => similarityKey(record.name) === similarityKey(title),
   );
@@ -13983,13 +16097,18 @@ export function extractProductPageItem(html, restaurant, url, fallbackName) {
     allergenSourceType:
       disclosureText ||
       (matchingStructured?.allergenSourceType &&
-        matchingStructured.allergenSourceType !== allergenSourceTypes.unavailable)
+        matchingStructured.allergenSourceType !==
+          allergenSourceTypes.unavailable)
         ? allergenSourceTypes.officialProductAllergenSection
         : allergenSourceTypes.unavailable,
-    category: inferCategoryFromUrl(url) ?? matchingStructured?.category ?? restaurant.category,
+    category:
+      inferCategoryFromUrl(url) ??
+      matchingStructured?.category ??
+      restaurant.category,
     description: description ?? matchingStructured?.description ?? null,
     imageUrl: imageUrl ?? matchingStructured?.imageUrl ?? null,
-    ingredientsText: matchingStructured?.ingredientsText ?? ingredientsText ?? null,
+    ingredientsText:
+      matchingStructured?.ingredientsText ?? ingredientsText ?? null,
     mayContain: uniqueStrings([
       ...(matchingStructured?.mayContain ?? []),
       ...findProductPageMayContainAllergens(disclosureText),
@@ -14003,11 +16122,15 @@ export function extractProductPageItem(html, restaurant, url, fallbackName) {
 function extractProductPageIngredientsText($, html) {
   const candidates = [];
 
-  for (const match of String(html).matchAll(/(?:^|[,{]\s*)"?ingredients"?\s*:\s*"((?:\\.|[^"\\]){20,6000})"/gi)) {
+  for (const match of String(html).matchAll(
+    /(?:^|[,{]\s*)"?ingredients"?\s*:\s*"((?:\\.|[^"\\]){20,6000})"/gi,
+  )) {
     candidates.push(decodeJavaScriptString(match[1]));
   }
 
-  for (const match of String(html).matchAll(/(?:^|[,{]\s*)"?full_ingredients"?\s*:\s*"((?:\\.|[^"\\]){20,6000})"/gi)) {
+  for (const match of String(html).matchAll(
+    /(?:^|[,{]\s*)"?full_ingredients"?\s*:\s*"((?:\\.|[^"\\]){20,6000})"/gi,
+  )) {
     candidates.push(decodeJavaScriptString(match[1]));
   }
 
@@ -14025,9 +16148,13 @@ function extractProductPageIngredientsText($, html) {
     candidates
       .map((candidate) => cleanText(candidate))
       .filter(Boolean)
-      .filter((candidate) => !isPollutedProductPageIngredientCandidate(candidate))
+      .filter(
+        (candidate) => !isPollutedProductPageIngredientCandidate(candidate),
+      )
       .filter((candidate) =>
-        /\b(?:ingredients?|contains|may contain|facility|process(?:es|ed)?)\b/i.test(candidate),
+        /\b(?:ingredients?|contains|may contain|facility|process(?:es|ed)?)\b/i.test(
+          candidate,
+        ),
       ),
   );
 
@@ -14036,12 +16163,11 @@ function extractProductPageIngredientsText($, html) {
   }
 
   return compactProductPageIngredientsText(
-    cleaned
-      .sort((left, right) => {
-        const leftHasContains = /\bcontains\b/i.test(left) ? 1 : 0;
-        const rightHasContains = /\bcontains\b/i.test(right) ? 1 : 0;
-        return rightHasContains - leftHasContains || right.length - left.length;
-      })[0],
+    cleaned.sort((left, right) => {
+      const leftHasContains = /\bcontains\b/i.test(left) ? 1 : 0;
+      const rightHasContains = /\bcontains\b/i.test(right) ? 1 : 0;
+      return rightHasContains - leftHasContains || right.length - left.length;
+    })[0],
   );
 }
 
@@ -14067,9 +16193,14 @@ function compactProductPageIngredientsText(text) {
   const facilityMatch = cleaned.match(
     /\b(?:facility|kitchen)\s+that\s+(?:also\s+)?process(?:es|ed)?\s*:?\s*[\s\S]{0,300}?(?=\bIngredients?\s*:|\b(?:Product & Storage Details|Storage Instructions|Serving Instructions)\b|[.;]|$)/i,
   )?.[0];
-  const suffix = uniqueStrings([containsMatch, facilityMatch].map(cleanText).filter(Boolean)).join(" ");
+  const suffix = uniqueStrings(
+    [containsMatch, facilityMatch].map(cleanText).filter(Boolean),
+  ).join(" ");
 
-  return cleanText(`${cleaned.slice(0, 900).trim()}... ${suffix}`) ?? cleaned.slice(0, 1200);
+  return (
+    cleanText(`${cleaned.slice(0, 900).trim()}... ${suffix}`) ??
+    cleaned.slice(0, 1200)
+  );
 }
 
 function findProductPageDeclaredAllergens(text) {
@@ -14110,8 +16241,19 @@ function findProductPageMayContainAllergens(text) {
   ]);
 }
 
-async function extractPdfItems(text, restaurant, url, buffer, kind = sourceTypes.menu) {
-  const brandRecords = await extractBrandPdfItems(text, restaurant, url, buffer);
+async function extractPdfItems(
+  text,
+  restaurant,
+  url,
+  buffer,
+  kind = sourceTypes.menu,
+) {
+  const brandRecords = await extractBrandPdfItems(
+    text,
+    restaurant,
+    url,
+    buffer,
+  );
 
   if (brandRecords.length > 0) {
     return brandRecords;
@@ -14125,13 +16267,21 @@ async function extractPdfItems(text, restaurant, url, buffer, kind = sourceTypes
     kind === sourceTypes.allergen || isOfficialAllergenDocumentUrl(url);
 
   if (officialAllergenDocument && buffer) {
-    const tableMatrixRecords = await extractGenericPdfTableAllergenMatrixRows(buffer, restaurant, url);
+    const tableMatrixRecords = await extractGenericPdfTableAllergenMatrixRows(
+      buffer,
+      restaurant,
+      url,
+    );
 
     if (tableMatrixRecords.length > 0) {
       return tableMatrixRecords;
     }
 
-    const matrixRecords = await extractGenericPdfMenuMatrixRows(buffer, restaurant, url);
+    const matrixRecords = await extractGenericPdfMenuMatrixRows(
+      buffer,
+      restaurant,
+      url,
+    );
 
     if (matrixRecords.length > 0) {
       return matrixRecords;
@@ -14139,7 +16289,10 @@ async function extractPdfItems(text, restaurant, url, buffer, kind = sourceTypes
   }
 
   if (!officialAllergenDocument) {
-    if (getBrandAdapter(restaurant.id).allowGenericDomMenu && restaurant.allowUnavailableAllergenFallback === true) {
+    if (
+      getBrandAdapter(restaurant.id).allowGenericDomMenu &&
+      restaurant.allowUnavailableAllergenFallback === true
+    ) {
       return mergePdfMenuRecords(
         extractGenericPdfMenuItems(text, restaurant, url),
         await extractGenericPdfCompactGridItems(buffer, restaurant, url),
@@ -14176,8 +16329,11 @@ async function extractPdfItems(text, restaurant, url, buffer, kind = sourceTypes
       name = tabParts[0];
       detail = tabParts.slice(1).join(" ");
     } else {
-      const containsIndex = cleanLine.search(/\b(?:contains|may contain|allergens?)\b/i);
-      const prefix = containsIndex > 3 ? cleanLine.slice(0, containsIndex).trim() : "";
+      const containsIndex = cleanLine.search(
+        /\b(?:contains|may contain|allergens?)\b/i,
+      );
+      const prefix =
+        containsIndex > 3 ? cleanLine.slice(0, containsIndex).trim() : "";
       const splitMatch = prefix.match(/^(.{2,90}?)(?:\s{2,}| - |: )/);
       name = splitMatch?.[1] ?? null;
       detail = cleanLine;
@@ -14190,16 +16346,19 @@ async function extractPdfItems(text, restaurant, url, buffer, kind = sourceTypes
     const direct = findAllergensInDeclaredFoodText(detail);
     const mayContain = findMayContainAllergens(detail);
 
-    if (direct.length === 0 && mayContain.length === 0 && !/\bingredients?\b/i.test(detail)) {
+    if (
+      direct.length === 0 &&
+      mayContain.length === 0 &&
+      !/\bingredients?\b/i.test(detail)
+    ) {
       continue;
     }
 
     records.push(
       createRecord({
-        allergenSourceType:
-          /\ballergens?\b/i.test(detail)
-            ? allergenSourceTypes.officialAllergenMenu
-            : allergenSourceTypes.officialIngredients,
+        allergenSourceType: /\ballergens?\b/i.test(detail)
+          ? allergenSourceTypes.officialAllergenMenu
+          : allergenSourceTypes.officialIngredients,
         allergens: direct,
         category: currentCategory,
         description: summarizeIngredientText(detail),
@@ -14219,7 +16378,10 @@ async function extractPdfItems(text, restaurant, url, buffer, kind = sourceTypes
 
   const adapter = getBrandAdapter(restaurant.id);
 
-  if (adapter.allowGenericDomMenu && restaurant.allowUnavailableAllergenFallback === true) {
+  if (
+    adapter.allowGenericDomMenu &&
+    restaurant.allowUnavailableAllergenFallback === true
+  ) {
     const menuRecords = mergePdfMenuRecords(
       extractGenericPdfMenuItems(text, restaurant, url),
       await extractGenericPdfCompactGridItems(buffer, restaurant, url),
@@ -14236,7 +16398,8 @@ async function extractPdfItems(text, restaurant, url, buffer, kind = sourceTypes
 function mergePdfMenuRecords(...groups) {
   return uniqueBy(
     groups.flat().filter((record) => isProbablyMenuCatalogRecord(record)),
-    (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
   );
 }
 
@@ -14262,7 +16425,10 @@ function extractGenericPdfMenuItems(text, restaurant, url) {
 
     if (nutritionRow) {
       const parentName = pending?.name;
-      const name = genericPdfNutritionDisplayName(nutritionRow.name, parentName);
+      const name = genericPdfNutritionDisplayName(
+        nutritionRow.name,
+        parentName,
+      );
 
       if (
         name &&
@@ -14303,8 +16469,13 @@ function extractGenericPdfMenuItems(text, restaurant, url) {
     const pricedLine = parseGenericPdfMenuPricedLine(line);
 
     if (pricedLine) {
-      if (pending && shouldAttachPricedLineToGenericPdfPending(pending, pricedLine)) {
-        pending.descriptionLines.push(pricedLine.description ?? pricedLine.name);
+      if (
+        pending &&
+        shouldAttachPricedLineToGenericPdfPending(pending, pricedLine)
+      ) {
+        pending.descriptionLines.push(
+          pricedLine.description ?? pricedLine.name,
+        );
         pending.price = pricedLine.price;
         continue;
       }
@@ -14312,7 +16483,9 @@ function extractGenericPdfMenuItems(text, restaurant, url) {
       flushPending();
       pending = {
         category: currentCategory,
-        descriptionLines: pricedLine.description ? [pricedLine.description] : [],
+        descriptionLines: pricedLine.description
+          ? [pricedLine.description]
+          : [],
         name: pricedLine.name,
         price: pricedLine.price,
       };
@@ -14357,7 +16530,8 @@ function extractGenericPdfMenuItems(text, restaurant, url) {
 
   return uniqueBy(
     records.filter((record) => isProbablyMenuCatalogRecord(record)),
-    (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
   );
 
   function flushPending() {
@@ -14365,7 +16539,9 @@ function extractGenericPdfMenuItems(text, restaurant, url) {
       return;
     }
 
-    const description = summarizeIngredientText(pending.descriptionLines.join(" "));
+    const description = summarizeIngredientText(
+      pending.descriptionLines.join(" "),
+    );
     const name = cleanMenuName(pending.name);
     const officialDocument = isOfficialAllergenDocumentUrl(url);
     const disclosure = disclosureFromMenuText(
@@ -14434,7 +16610,9 @@ async function extractGenericPdfCompactGridItems(buffer, restaurant, url) {
 
     if (
       activeGrid &&
-      (activeGrid.pageNumber !== row.pageNumber || activeGrid.y - row.y > 130 || isGenericPdfMenuCategoryLine(rowText))
+      (activeGrid.pageNumber !== row.pageNumber ||
+        activeGrid.y - row.y > 130 ||
+        isGenericPdfMenuCategoryLine(rowText))
     ) {
       activeGrid = null;
     }
@@ -14470,7 +16648,8 @@ async function extractGenericPdfCompactGridItems(buffer, restaurant, url) {
 
   return uniqueBy(
     records.filter((record) => isProbablyMenuCatalogRecord(record)),
-    (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
   );
 }
 
@@ -14485,9 +16664,19 @@ function compactPdfGridCategory(row) {
     return null;
   }
 
-  const category = cleanText(row.items.slice(0, -1).map((item) => item.str).join(" "));
+  const category = cleanText(
+    row.items
+      .slice(0, -1)
+      .map((item) => item.str)
+      .join(" "),
+  );
 
-  if (!category || !/^(?:sides?(?:\s+(?:and|&)\s+stuff)?|stuff|extras?|add-?ons?|sauces?)$/i.test(category)) {
+  if (
+    !category ||
+    !/^(?:sides?(?:\s+(?:and|&)\s+stuff)?|stuff|extras?|add-?ons?|sauces?)$/i.test(
+      category,
+    )
+  ) {
     return null;
   }
 
@@ -14497,19 +16686,33 @@ function compactPdfGridCategory(row) {
 function isCompactPdfGridItemName(name) {
   const cleaned = cleanMenuName(name);
 
-  if (!cleaned || !isProbablyMenuItemName(cleaned) || isGenericPdfMenuNonFoodName(cleaned, null)) {
+  if (
+    !cleaned ||
+    !isProbablyMenuItemName(cleaned) ||
+    isGenericPdfMenuNonFoodName(cleaned, null)
+  ) {
     return false;
   }
 
-  if (isGenericPdfMenuCategoryLine(cleaned) || isGenericPdfMenuArtifactLine(cleaned)) {
+  if (
+    isGenericPdfMenuCategoryLine(cleaned) ||
+    isGenericPdfMenuArtifactLine(cleaned)
+  ) {
     return false;
   }
 
-  if (/^(?:drinks?|sauces?|coming to a city near you!?|@|i\s+|#)/i.test(cleaned)) {
+  if (
+    /^(?:drinks?|sauces?|coming to a city near you!?|@|i\s+|#)/i.test(cleaned)
+  ) {
     return false;
   }
 
-  return hasFoodLanguage(cleaned) || /\b(?:chips?|fries|hummus|pita|tabouli|tahini|salad|falafel)\b/i.test(cleaned);
+  return (
+    hasFoodLanguage(cleaned) ||
+    /\b(?:chips?|fries|hummus|pita|tabouli|tahini|salad|falafel)\b/i.test(
+      cleaned,
+    )
+  );
 }
 
 function parseGenericPdfNutritionTableLine(line) {
@@ -14522,7 +16725,11 @@ function parseGenericPdfNutritionTableLine(line) {
   const tokens = cleaned.split(/\s+/);
   const values = [];
 
-  while (tokens.length > 0 && values.length < 11 && isGenericPdfNutritionNumber(tokens.at(-1))) {
+  while (
+    tokens.length > 0 &&
+    values.length < 11 &&
+    isGenericPdfNutritionNumber(tokens.at(-1))
+  ) {
     values.unshift(tokens.pop());
   }
 
@@ -14536,7 +16743,9 @@ function parseGenericPdfNutritionTableLine(line) {
     return null;
   }
 
-  const name = cleanGenericPdfNutritionName(tokens.slice(0, servingStart).join(" "));
+  const name = cleanGenericPdfNutritionName(
+    tokens.slice(0, servingStart).join(" "),
+  );
   const servingSize = cleanText(tokens.slice(servingStart).join(" "));
 
   if (!name || !servingSize || !isProbablyMenuItemName(name)) {
@@ -14576,7 +16785,10 @@ function genericPdfServingSizeStartIndex(tokens) {
       return index - 1;
     }
 
-    if (/^(?:dinner|lunch|plate|order|each|salad|bowl|cup)$/i.test(value) && previous === "1") {
+    if (
+      /^(?:dinner|lunch|plate|order|each|salad|bowl|cup)$/i.test(value) &&
+      previous === "1"
+    ) {
       return index - 1;
     }
   }
@@ -14650,11 +16862,19 @@ function hasGenericPdfMenuItemEvidence(pending, name, description) {
   const descriptionLineCount = pending?.descriptionLines?.length ?? 0;
   const haystack = `${name ?? ""} ${description ?? ""}`;
 
-  if (descriptionLineCount > 0 && descriptionLineCount <= 4 && hasFoodLanguage(haystack)) {
+  if (
+    descriptionLineCount > 0 &&
+    descriptionLineCount <= 4 &&
+    hasFoodLanguage(haystack)
+  ) {
     return true;
   }
 
-  return descriptionLineCount > 1 && descriptionLineCount <= 3 && hasFoodLanguage(name ?? "");
+  return (
+    descriptionLineCount > 1 &&
+    descriptionLineCount <= 3 &&
+    hasFoodLanguage(name ?? "")
+  );
 }
 
 function isOfficialAllergenDocumentUrl(url) {
@@ -14684,9 +16904,11 @@ function parseGenericPdfMenuPricedLine(line) {
   const inlineDisclosureMatch = cleaned?.match(
     /^(.{2,120}?)\s+\$?(\d{1,3})(?:\.\d{2})?(?:\s*\/\s*\$?\d{1,3}(?:\.\d{2})?)?\s+((?:ALLERGENS?|CONTAINS?|MAY CONTAIN):?.+)$/i,
   );
-  const match = inlineDisclosureMatch ?? cleaned?.match(
-    /^(.{2,120}?)\s+\$?(\d{1,3})(?:\.\d{2})?(?:\s*\/\s*\$?\d{1,3}(?:\.\d{2})?)?$/,
-  );
+  const match =
+    inlineDisclosureMatch ??
+    cleaned?.match(
+      /^(.{2,120}?)\s+\$?(\d{1,3})(?:\.\d{2})?(?:\s*\/\s*\$?\d{1,3}(?:\.\d{2})?)?$/,
+    );
 
   if (!match) {
     return null;
@@ -14694,12 +16916,18 @@ function parseGenericPdfMenuPricedLine(line) {
 
   const name = cleanMenuName(match[1]);
 
-  if (!name || isGenericPdfMenuCategoryLine(name) || isGenericPdfMenuNonFoodName(name, null)) {
+  if (
+    !name ||
+    isGenericPdfMenuCategoryLine(name) ||
+    isGenericPdfMenuNonFoodName(name, null)
+  ) {
     return null;
   }
 
   return {
-    description: inlineDisclosureMatch ? cleanText(inlineDisclosureMatch[3]) : null,
+    description: inlineDisclosureMatch
+      ? cleanText(inlineDisclosureMatch[3])
+      : null,
     name,
     price: Number(match[2]),
   };
@@ -14754,7 +16982,10 @@ function isGenericPdfMenuDescriptionLine(line) {
     return false;
   }
 
-  if (isGenericPdfMenuArtifactLine(cleaned) || isGenericPdfMenuCategoryLine(cleaned)) {
+  if (
+    isGenericPdfMenuArtifactLine(cleaned) ||
+    isGenericPdfMenuCategoryLine(cleaned)
+  ) {
     return false;
   }
 
@@ -14838,7 +17069,11 @@ function isMostlyUppercase(value) {
   return upper / letters.length >= 0.7;
 }
 
-async function extractGenericPdfTableAllergenMatrixRows(buffer, restaurant, url) {
+async function extractGenericPdfTableAllergenMatrixRows(
+  buffer,
+  restaurant,
+  url,
+) {
   const tables = await readPdfTables(buffer);
   const records = [];
   let currentCategory = restaurant.category;
@@ -14865,7 +17100,8 @@ async function extractGenericPdfTableAllergenMatrixRows(buffer, restaurant, url)
       const headerColumns = genericPdfTableAllergenColumns(cells);
 
       if (headerColumns.length >= 3) {
-        currentCategory = normalizeGenericMatrixCategory(cells[0]) ?? currentCategory;
+        currentCategory =
+          normalizeGenericMatrixCategory(cells[0]) ?? currentCategory;
         currentColumns = headerColumns;
         continue;
       }
@@ -14915,8 +17151,11 @@ async function extractGenericPdfTableAllergenMatrixRows(buffer, restaurant, url)
   }
 
   const officialRows = uniqueBy(
-    records.filter((record) => record.name && isProbablyMenuItemName(record.name)),
-    (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+    records.filter(
+      (record) => record.name && isProbablyMenuItemName(record.name),
+    ),
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
   );
 
   return officialRows.length >= 5 ? officialRows : [];
@@ -14971,7 +17210,8 @@ async function extractGenericPdfMenuMatrixRows(buffer, restaurant, url) {
       continue;
     }
 
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const pageTitleCategory = genericMatrixCategoryFromTitle(rowText);
 
     if (pageTitleCategory) {
@@ -14980,7 +17220,9 @@ async function extractGenericPdfMenuMatrixRows(buffer, restaurant, url) {
       continue;
     }
 
-    const leftItems = row.items.filter((item) => item.x < pageColumns.firstX - 12);
+    const leftItems = row.items.filter(
+      (item) => item.x < pageColumns.firstX - 12,
+    );
     const leftText = cleanText(leftItems.map((item) => item.str).join(" "));
 
     if (genericPdfAllergenColumnsFromRow(row).length > 0) {
@@ -15010,8 +17252,12 @@ async function extractGenericPdfMenuMatrixRows(buffer, restaurant, url) {
         `${previousCandidate.name} ${matrixName}`,
       );
       previousCandidate.yValues.push(row.y);
-      previousCandidate.details.push(...genericMatrixCellDetails(row, pageColumns));
-      previousCandidate.allergens.push(...genericMatrixCellAllergens(row, pageColumns));
+      previousCandidate.details.push(
+        ...genericMatrixCellDetails(row, pageColumns),
+      );
+      previousCandidate.allergens.push(
+        ...genericMatrixCellAllergens(row, pageColumns),
+      );
       continue;
     }
 
@@ -15022,7 +17268,8 @@ async function extractGenericPdfMenuMatrixRows(buffer, restaurant, url) {
 
     const candidate = {
       allergens: genericMatrixCellAllergens(row, pageColumns),
-      category: currentCategoryByPage.get(row.pageNumber) ?? restaurant.category,
+      category:
+        currentCategoryByPage.get(row.pageNumber) ?? restaurant.category,
       details: genericMatrixCellDetails(row, pageColumns),
       name: matrixName,
       pageNumber: row.pageNumber,
@@ -15058,7 +17305,8 @@ async function extractGenericPdfMenuMatrixRows(buffer, restaurant, url) {
         });
       })
       .filter((record) => record.name && isProbablyMenuItemName(record.name)),
-    (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
   );
 }
 
@@ -15120,7 +17368,9 @@ function mergeGenericMatrixColumns(existing, incoming) {
 
   for (const column of incoming) {
     const current = merged.find(
-      (entry) => entry.allergen === column.allergen && Math.abs(entry.x - column.x) <= 12,
+      (entry) =>
+        entry.allergen === column.allergen &&
+        Math.abs(entry.x - column.x) <= 12,
     );
 
     if (!current) {
@@ -15151,11 +17401,14 @@ function genericMatrixHeaderAllergens(value) {
   if (/^(?:MILK|LECHE)$/.test(text)) return ["milk"];
   if (/^(?:EGG|EGGS|HUEVOS)$/.test(text)) return ["egg"];
   if (/^(?:FISH|PESCADO)$/.test(text)) return ["fish"];
-  if (/^(?:SHELLFISH|CRUSTACEAN SHELLFISH|MOLLUSCAN SHELLFISH)$/.test(text)) return ["shellfish"];
-  if (/^(?:TREE NUTS|TREE NUT|FRUTOS SECOS|NUTS)$/.test(text)) return ["tree-nut"];
+  if (/^(?:SHELLFISH|CRUSTACEAN SHELLFISH|MOLLUSCAN SHELLFISH)$/.test(text))
+    return ["shellfish"];
+  if (/^(?:TREE NUTS|TREE NUT|FRUTOS SECOS|NUTS)$/.test(text))
+    return ["tree-nut"];
   if (/^(?:PEANUTS|PEANUT|MANI)$/.test(text)) return ["peanut"];
   if (/^(?:WHEAT|TRIGO)$/.test(text)) return ["wheat"];
-  if (/^(?:WHEAT GLUE?TEN|WHEAT GLUTEN)$/.test(text)) return ["wheat", "gluten"];
+  if (/^(?:WHEAT GLUE?TEN|WHEAT GLUTEN)$/.test(text))
+    return ["wheat", "gluten"];
   if (/^(?:SOY|SOYA)$/.test(text)) return ["soy"];
   if (/^(?:SESAME|SESAMO)$/.test(text)) return ["sesame"];
   if (/^GLUTEN$/.test(text)) return ["gluten"];
@@ -15165,7 +17418,10 @@ function genericMatrixHeaderAllergens(value) {
 
 function genericMatrixCellDetails(row, pageColumns) {
   return row.items
-    .filter((item) => item.x >= pageColumns.firstX - 2 && item.x <= pageColumns.lastX + 40)
+    .filter(
+      (item) =>
+        item.x >= pageColumns.firstX - 2 && item.x <= pageColumns.lastX + 40,
+    )
     .map((item) => cleanGenericMatrixCellText(item.str))
     .filter(Boolean)
     .filter((text) => !genericMatrixHeaderAllergen(text))
@@ -15271,7 +17527,11 @@ function normalizeGenericMatrixCategory(value) {
 
   const upper = text.toUpperCase();
 
-  if (/MENU ITEM|ALLERGEN|NUTRITION|DIETARY INFO/.test(upper) || /^[()]/.test(text) || /\)$/.test(text)) {
+  if (
+    /MENU ITEM|ALLERGEN|NUTRITION|DIETARY INFO/.test(upper) ||
+    /^[()]/.test(text) ||
+    /\)$/.test(text)
+  ) {
     return null;
   }
 
@@ -15292,8 +17552,14 @@ function cleanGenericMatrixItemName(value) {
   return cleanMenuName(value)
     ?.replace(/\s*[✔✓●].*$/g, "")
     ?.replace(/^\+\s*/, "")
-    ?.replace(/\s*\((?:used for|cannot be made|contains|with or without|Rosa Grande|Butter|Buttermilk|Cream|Cream Cheese|Sour|Soy|Oat|Corn|Walnuts?|Pesto|Tulkoff|Grey Poupon|Admiration Foods)[^)]*$/gi, "")
-    ?.replace(/\s*\((?:used for|contains|with or without|vegan!?)[^)]*\)?\s*/gi, " ")
+    ?.replace(
+      /\s*\((?:used for|cannot be made|contains|with or without|Rosa Grande|Butter|Buttermilk|Cream|Cream Cheese|Sour|Soy|Oat|Corn|Walnuts?|Pesto|Tulkoff|Grey Poupon|Admiration Foods)[^)]*$/gi,
+      "",
+    )
+    ?.replace(
+      /\s*\((?:used for|contains|with or without|vegan!?)[^)]*\)?\s*/gi,
+      " ",
+    )
     ?.replace(/\s*\((?:V|VG|GF|DF|CN|SF|VT|PB|HH|LW)\)\s*/gi, " ")
     .replace(/\b(?:V|VG|GF|DF|CN|SF|VT|PB|HH|LW)\b$/g, "")
     .replace(/\s+/g, " ")
@@ -15315,7 +17581,11 @@ function shouldJoinGenericMatrixName(previousName, nextName) {
     return true;
   }
 
-  if (/\b(?:bagel|bread|cookie|frosting|topping|sauce|salad|sandwich|wrap|bowl)$/i.test(nextName)) {
+  if (
+    /\b(?:bagel|bread|cookie|frosting|topping|sauce|salad|sandwich|wrap|bowl)$/i.test(
+      nextName,
+    )
+  ) {
     return previousName.split(/\s+/).length <= 3;
   }
 
@@ -15361,7 +17631,12 @@ function isGenericMatrixDietaryHeader(value) {
 }
 
 async function extractBrandPdfItems(text, restaurant, url, buffer) {
-  const profileRecords = await extractPdfDocumentSchemaProfileItems(text, restaurant, url, buffer);
+  const profileRecords = await extractPdfDocumentSchemaProfileItems(
+    text,
+    restaurant,
+    url,
+    buffer,
+  );
 
   if (profileRecords) {
     return profileRecords;
@@ -15395,7 +17670,12 @@ function shouldSkipGenericPdfFallbackForBrandDocument(text, restaurant, url) {
   return false;
 }
 
-async function extractPdfDocumentSchemaProfileItems(text, restaurant, url, buffer) {
+async function extractPdfDocumentSchemaProfileItems(
+  text,
+  restaurant,
+  url,
+  buffer,
+) {
   const adapter = getBrandAdapter(restaurant.id);
   const profile = documentSchemaProfiles.find((candidate) =>
     documentSchemaProfileMatches(candidate, {
@@ -15416,11 +17696,17 @@ function documentSchemaProfileMatches(profile, context) {
     return false;
   }
 
-  if (profile.brandKeys && !profile.brandKeys.includes(context.adapter.brandKey)) {
+  if (
+    profile.brandKeys &&
+    !profile.brandKeys.includes(context.adapter.brandKey)
+  ) {
     return false;
   }
 
-  if (profile.parserProfiles && !profile.parserProfiles.includes(context.adapter.parserProfile)) {
+  if (
+    profile.parserProfiles &&
+    !profile.parserProfiles.includes(context.adapter.parserProfile)
+  ) {
     return false;
   }
 
@@ -15450,7 +17736,8 @@ const documentSchemaProfiles = [
     contentKind: "html",
     outputType: "official-allergen",
     sourceKinds: [sourceTypes.allergen],
-    extract: ({ $, restaurant, url }) => extractPfChangsAllergenItems($, restaurant, url),
+    extract: ({ $, restaurant, url }) =>
+      extractPfChangsAllergenItems($, restaurant, url),
   },
   {
     id: "nothing-bundt-cakes-html-ingredients",
@@ -15475,7 +17762,8 @@ const documentSchemaProfiles = [
     outputType: "official-ingredients",
     sourceKinds: [sourceTypes.allergen],
     urlPattern: /\/pages\/ingredients/i,
-    extract: ({ $, restaurant, url }) => extractJenisIngredientItems($, restaurant, url),
+    extract: ({ $, restaurant, url }) =>
+      extractJenisIngredientItems($, restaurant, url),
   },
   {
     id: "first-watch-html-nutrition-allergens",
@@ -15483,7 +17771,8 @@ const documentSchemaProfiles = [
     contentKind: "html",
     outputType: "official-allergen",
     urlPattern: /\/nutrition-and-allergens/i,
-    extract: ({ $, restaurant, url }) => extractFirstWatchNutritionHtmlItems($, restaurant, url),
+    extract: ({ $, restaurant, url }) =>
+      extractFirstWatchNutritionHtmlItems($, restaurant, url),
   },
   {
     id: "chick-fil-a-html-allergen",
@@ -15491,7 +17780,8 @@ const documentSchemaProfiles = [
     contentKind: "html",
     outputType: "official-allergen",
     sourceKinds: [sourceTypes.allergen],
-    extract: ({ $, restaurant, url }) => extractChickFilAAllergenItems($, restaurant, url),
+    extract: ({ $, restaurant, url }) =>
+      extractChickFilAAllergenItems($, restaurant, url),
   },
   {
     id: "dairy-queen-html-allergen",
@@ -15499,7 +17789,8 @@ const documentSchemaProfiles = [
     contentKind: "html",
     outputType: "official-allergen",
     sourceKinds: [sourceTypes.allergen],
-    extract: ({ $, restaurant, url }) => extractDairyQueenAllergenItems($, restaurant, url),
+    extract: ({ $, restaurant, url }) =>
+      extractDairyQueenAllergenItems($, restaurant, url),
   },
   {
     id: "freddys-html-allergen",
@@ -15507,7 +17798,8 @@ const documentSchemaProfiles = [
     contentKind: "html",
     outputType: "official-allergen",
     sourceKinds: [sourceTypes.allergen],
-    extract: ({ $, restaurant, url }) => extractFreddysAllergenItems($, restaurant, url),
+    extract: ({ $, restaurant, url }) =>
+      extractFreddysAllergenItems($, restaurant, url),
   },
   {
     id: "andpizza-html-menu",
@@ -15517,7 +17809,8 @@ const documentSchemaProfiles = [
     outputType: "official-menu",
     sourceKinds: [sourceTypes.menu],
     urlPattern: /\/menu-listing\/?/i,
-    extract: ({ $, restaurant, url }) => extractAndPizzaMenuItems($, restaurant, url),
+    extract: ({ $, restaurant, url }) =>
+      extractAndPizzaMenuItems($, restaurant, url),
   },
   {
     id: "andpizza-html-allergen-guide",
@@ -15527,7 +17820,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     sourceKinds: [sourceTypes.allergen],
     urlPattern: /\/allergen-guide\/?/i,
-    extract: ({ $, restaurant, url }) => extractAndPizzaAllergenGuideItems($, restaurant, url),
+    extract: ({ $, restaurant, url }) =>
+      extractAndPizzaAllergenGuideItems($, restaurant, url),
   },
   {
     id: "in-n-out-html-nutrition",
@@ -15535,7 +17829,8 @@ const documentSchemaProfiles = [
     contentKind: "html",
     outputType: "official-nutrition",
     urlPattern: /\/menu\/nutrition-info/i,
-    extract: ({ $, restaurant, url }) => extractInNOutNutritionHtmlItems($, restaurant, url),
+    extract: ({ $, restaurant, url }) =>
+      extractInNOutNutritionHtmlItems($, restaurant, url),
   },
   {
     id: "papa-johns-html-nutrition",
@@ -15543,7 +17838,8 @@ const documentSchemaProfiles = [
     contentKind: "html",
     outputType: "official-nutrition",
     urlPattern: /\/company\/nutritional-details\//i,
-    extract: ({ $, restaurant, url }) => extractPapaJohnsNutritionItems($, restaurant, url),
+    extract: ({ $, restaurant, url }) =>
+      extractPapaJohnsNutritionItems($, restaurant, url),
   },
   {
     id: "papa-johns-html-allergen-guide",
@@ -15551,7 +17847,8 @@ const documentSchemaProfiles = [
     contentKind: "html",
     outputType: "official-allergen",
     urlPattern: /\/allergens\/papa-johns-allergen-guide\.html/i,
-    extract: ({ $, restaurant, url }) => extractPapaJohnsAllergenGuideItems($, restaurant, url),
+    extract: ({ $, restaurant, url }) =>
+      extractPapaJohnsAllergenGuideItems($, restaurant, url),
   },
   {
     id: "dominos-xml-allergen",
@@ -15559,7 +17856,8 @@ const documentSchemaProfiles = [
     contentKind: "xml",
     outputType: "official-allergen",
     sourceKinds: [sourceTypes.allergen],
-    extract: ({ restaurant, text, url }) => extractDominosAllergenXmlItems(text, restaurant, url),
+    extract: ({ restaurant, text, url }) =>
+      extractDominosAllergenXmlItems(text, restaurant, url),
   },
   {
     id: "dominos-xml-nutrition",
@@ -15567,7 +17865,8 @@ const documentSchemaProfiles = [
     contentKind: "xml",
     outputType: "official-nutrition",
     sourceKinds: [sourceTypes.api],
-    extract: ({ restaurant, text, url }) => extractDominosNutritionXmlItems(text, restaurant, url),
+    extract: ({ restaurant, text, url }) =>
+      extractDominosNutritionXmlItems(text, restaurant, url),
   },
   {
     id: "founding-farmers-pdf-menu",
@@ -15575,7 +17874,8 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "menu",
     parserProfiles: [sharedParserTypes.foundingFarmersPdfMenu],
-    extract: ({ restaurant, text, url }) => extractFoundingFarmersMenuPdfItems(text, restaurant, url),
+    extract: ({ restaurant, text, url }) =>
+      extractFoundingFarmersMenuPdfItems(text, restaurant, url),
   },
   {
     id: "mezeh-nutrition-allergen-pdf",
@@ -15584,7 +17884,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     urlPattern: /nutrition[_-]info[_-]and[_-]allergen|allergen\.pdf|sping2025/i,
-    extract: ({ buffer, restaurant, url }) => extractMezehAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractMezehAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "canva-fried-cross-contact-allergen-table-pdf",
@@ -15592,7 +17893,8 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "official-allergen",
     requiresBuffer: true,
-    textPattern: /ALLERGEN MENU \+ INGREDIENTS[\s\S]*ANYTHING FRIED WILL BE CONTAMINATED/i,
+    textPattern:
+      /ALLERGEN MENU \+ INGREDIENTS[\s\S]*ANYTHING FRIED WILL BE CONTAMINATED/i,
     extract: ({ buffer, restaurant, text, url }) =>
       extractChasinTailsAllergenPdfItems(buffer, restaurant, url, text),
   },
@@ -15602,8 +17904,10 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "official-allergen",
     requiresBuffer: true,
-    textPattern: /Top\s+9\s+Allergens[\s\S]*Y\s*=\s*YES\s+THE\s+ALLERGEN\s+IS\s+PRESENT/i,
-    extract: ({ buffer, restaurant, url }) => extractOsiTop9AllergenPdfItems(buffer, restaurant, url),
+    textPattern:
+      /Top\s+9\s+Allergens[\s\S]*Y\s*=\s*YES\s+THE\s+ALLERGEN\s+IS\s+PRESENT/i,
+    extract: ({ buffer, restaurant, url }) =>
+      extractOsiTop9AllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "nandos-nutrition-allergen-pdf",
@@ -15613,7 +17917,8 @@ const documentSchemaProfiles = [
     requiresBuffer: true,
     urlPattern: /Allergen[_-]?Guide|Allergen/i,
     textPattern: /Nando.?s[\s\S]*(?:Contains|May Contain):/i,
-    extract: ({ buffer, restaurant, url }) => extractNandosNutritionAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractNandosNutritionAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "rasa-allergy-chart-pdf",
@@ -15622,7 +17927,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     textPattern: /ALLERGY CHART[\s\S]*Dairy[\s\S]*Shellfish/i,
-    extract: ({ buffer, restaurant, url }) => extractRasaAllergyChartPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractRasaAllergyChartPdfItems(buffer, restaurant, url),
   },
   {
     id: "insomnia-cookies-nutrition-guide-pdf",
@@ -15631,7 +17937,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     textPattern: /Insomnia Cookies[\s\S]*(?:CONTAINS:|ALLERGENS:\s*CONTAINS)/i,
-    extract: ({ buffer, restaurant, url }) => extractInsomniaCookiesNutritionGuidePdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractInsomniaCookiesNutritionGuidePdfItems(buffer, restaurant, url),
   },
   {
     id: "bbq-chicken-allergy-list-pdf",
@@ -15640,7 +17947,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     textPattern: /Detailed Allergy List[\s\S]*POTENTIAL CROSS-CONTAMINANTS/i,
-    extract: ({ buffer, restaurant, url }) => extractBbqChickenAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractBbqChickenAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "dominos-nutrition-guide-pdf",
@@ -15648,7 +17956,8 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "official-nutrition",
     requiresBuffer: true,
-    extract: ({ buffer, restaurant, url }) => extractDominosNutritionGuidePdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractDominosNutritionGuidePdfItems(buffer, restaurant, url),
   },
   {
     id: "sonic-nutrition-brochure-pdf",
@@ -15657,7 +17966,8 @@ const documentSchemaProfiles = [
     outputType: "official-nutrition",
     requiresBuffer: true,
     urlPattern: /NutritionalBrochure/i,
-    extract: ({ buffer, restaurant, url }) => extractSonicNutritionPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractSonicNutritionPdfItems(buffer, restaurant, url),
   },
   {
     id: "sonic-allergen-guide-pdf",
@@ -15666,7 +17976,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     urlPattern: /NationalAllergenGuide/i,
-    extract: ({ buffer, restaurant, url }) => extractSonicAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractSonicAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "subway-nutrition-pdf",
@@ -15674,7 +17985,8 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "official-nutrition",
     match: ({ text, url }) => isSubwayNutritionPdf(text, url),
-    extract: ({ restaurant, text, url }) => extractSubwayNutritionPdfItems(text, restaurant, url),
+    extract: ({ restaurant, text, url }) =>
+      extractSubwayNutritionPdfItems(text, restaurant, url),
   },
   {
     id: "subway-ingredient-pdf-ignored",
@@ -15691,7 +18003,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     match: ({ text, url }) => isSubwayAllergenPdf(text, url),
-    extract: ({ buffer, restaurant, url }) => extractSubwayPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractSubwayPdfItems(buffer, restaurant, url),
   },
   {
     id: "panda-express-pdf",
@@ -15699,7 +18012,8 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "official-allergen",
     requiresBuffer: true,
-    extract: ({ buffer, restaurant, url }) => extractPandaExpressPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractPandaExpressPdfItems(buffer, restaurant, url),
   },
   {
     id: "five-guys-pdf",
@@ -15707,7 +18021,8 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "official-allergen",
     requiresBuffer: true,
-    extract: ({ buffer, restaurant, url }) => extractFiveGuysPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractFiveGuysPdfItems(buffer, restaurant, url),
   },
   {
     id: "zaxbys-pdf",
@@ -15715,7 +18030,8 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "official-allergen",
     requiresBuffer: true,
-    extract: ({ buffer, restaurant, url }) => extractZaxbysPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractZaxbysPdfItems(buffer, restaurant, url),
   },
   {
     id: "dunkin-allergy-ingredient-guide-pdf",
@@ -15723,7 +18039,8 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "official-ingredients",
     urlPattern: /allergy_ingredient_guide\.pdf/i,
-    extract: ({ restaurant, text, url }) => extractDunkinAllergyIngredientPdfItems(text, restaurant, url),
+    extract: ({ restaurant, text, url }) =>
+      extractDunkinAllergyIngredientPdfItems(text, restaurant, url),
   },
   {
     id: "dunkin-nutrition-pdf",
@@ -15732,7 +18049,8 @@ const documentSchemaProfiles = [
     outputType: "official-nutrition",
     requiresBuffer: true,
     urlPattern: /nutrition\.pdf/i,
-    extract: ({ buffer, restaurant, url }) => extractDunkinNutritionPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractDunkinNutritionPdfItems(buffer, restaurant, url),
   },
   {
     id: "chipotle-paper-menu-nutrition-pdf",
@@ -15740,7 +18058,8 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "official-nutrition",
     urlPattern: /Nutrition-Facts-Paper-Menu/i,
-    extract: ({ restaurant, text, url }) => extractChipotleNutritionPdfItems(text, restaurant, url),
+    extract: ({ restaurant, text, url }) =>
+      extractChipotleNutritionPdfItems(text, restaurant, url),
   },
   {
     id: "panera-allergen-guide-pdf",
@@ -15749,7 +18068,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     urlPattern: /allergen-guide/i,
-    extract: ({ buffer, restaurant, url }) => extractPaneraAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractPaneraAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "panera-nutrition-guide-pdf",
@@ -15758,7 +18078,8 @@ const documentSchemaProfiles = [
     outputType: "official-nutrition",
     requiresBuffer: true,
     urlPattern: /nutrition-guide/i,
-    extract: ({ buffer, restaurant, url }) => extractPaneraNutritionPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractPaneraNutritionPdfItems(buffer, restaurant, url),
   },
   {
     id: "arbys-allergen-nutrition-pdf",
@@ -15766,7 +18087,8 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "official-allergen",
     urlPattern: /Nutritional_and_Allergen/i,
-    extract: ({ restaurant, text, url }) => extractArbysAllergenPdfItems(text, restaurant, url),
+    extract: ({ restaurant, text, url }) =>
+      extractArbysAllergenPdfItems(text, restaurant, url),
   },
   {
     id: "arbys-ingredients-pdf",
@@ -15774,7 +18096,8 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "official-ingredients",
     urlPattern: /Menu_Items_and_Ingredients/i,
-    extract: ({ restaurant, text, url }) => extractArbysIngredientsPdfItems(text, restaurant, url),
+    extract: ({ restaurant, text, url }) =>
+      extractArbysIngredientsPdfItems(text, restaurant, url),
   },
   {
     id: "little-caesars-pdf",
@@ -15782,7 +18105,8 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "official-allergen",
     requiresBuffer: true,
-    extract: ({ buffer, restaurant, url }) => extractLittleCaesarsPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractLittleCaesarsPdfItems(buffer, restaurant, url),
   },
   {
     id: "wingstop-nutrition-guide-pdf",
@@ -15791,7 +18115,8 @@ const documentSchemaProfiles = [
     outputType: "official-nutrition",
     requiresBuffer: true,
     urlPattern: /NutritionalGuide/i,
-    extract: ({ buffer, restaurant, url }) => extractWingstopNutritionPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractWingstopNutritionPdfItems(buffer, restaurant, url),
   },
   {
     id: "wingstop-allergen-pdf",
@@ -15799,7 +18124,8 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "official-allergen",
     requiresBuffer: true,
-    extract: ({ buffer, restaurant, url }) => extractWingstopPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractWingstopPdfItems(buffer, restaurant, url),
   },
   {
     id: "darden-olive-garden-allergen-pdf",
@@ -15808,7 +18134,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     urlPattern: /allergen_guide/i,
-    extract: ({ buffer, restaurant, url }) => extractOliveGardenAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractOliveGardenAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "darden-olive-garden-nutrition-pdf",
@@ -15828,7 +18155,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     urlPattern: /longhorn_allergen_guide/i,
-    extract: ({ buffer, restaurant, url }) => extractLongHornAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractLongHornAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "darden-longhorn-nutrition-pdf",
@@ -15848,7 +18176,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     urlPattern: /Yard_House_Allergen_Guide/i,
-    extract: ({ buffer, restaurant, url }) => extractYardHouseAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractYardHouseAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "darden-yard-house-nutrition-pdf",
@@ -15857,7 +18186,8 @@ const documentSchemaProfiles = [
     outputType: "official-nutrition",
     requiresBuffer: true,
     urlPattern: /Nutrition_Dietary_Allergen_Guide/i,
-    extract: ({ buffer, restaurant, url }) => extractYardHouseNutritionPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractYardHouseNutritionPdfItems(buffer, restaurant, url),
   },
   {
     id: "darden-cheddars-allergen-pdf",
@@ -15866,7 +18196,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     urlPattern: /Cheddars_Allergen_Guide/i,
-    extract: ({ buffer, restaurant, url }) => extractCheddarsAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractCheddarsAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "darden-cheddars-nutrition-pdf",
@@ -15875,7 +18206,8 @@ const documentSchemaProfiles = [
     outputType: "official-nutrition",
     requiresBuffer: true,
     urlPattern: /Cheddars_Nutrition_Guide/i,
-    extract: ({ buffer, restaurant, url }) => extractCheddarsNutritionPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractCheddarsNutritionPdfItems(buffer, restaurant, url),
   },
   {
     id: "osi-outback-allergen-pdf",
@@ -15884,7 +18216,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     urlPattern: /Full-Allergens-Information/i,
-    extract: ({ buffer, restaurant, url }) => extractOutbackAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractOutbackAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "osi-outback-nutrition-pdf",
@@ -15903,7 +18236,8 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "official-nutrition",
     textPattern: /nutrition/i,
-    extract: ({ restaurant, text, url }) => extractCkeNutritionCodePdfItems(text, restaurant, url),
+    extract: ({ restaurant, text, url }) =>
+      extractCkeNutritionCodePdfItems(text, restaurant, url),
   },
   {
     id: "tropical-smoothie-nutrition-allergen-pdf",
@@ -15911,14 +18245,23 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "official-allergen",
     textPattern: /Contains egg[\s\S]*Contains sesame/i,
-    extract: ({ restaurant, text, url }) => extractTropicalSmoothieNutritionPdfItems(text, restaurant, url),
+    extract: ({ restaurant, text, url }) =>
+      extractTropicalSmoothieNutritionPdfItems(text, restaurant, url),
   },
   {
     id: "generic-trailing-nutrition-text-pdf",
-    brandKeys: ["crackerbarrel", "buffalowildwings", "dennys", "tropicalsmoothiecafe", "qdoba", "pfchangs"],
+    brandKeys: [
+      "crackerbarrel",
+      "buffalowildwings",
+      "dennys",
+      "tropicalsmoothiecafe",
+      "qdoba",
+      "pfchangs",
+    ],
     contentKind: "pdf",
     outputType: "official-nutrition",
-    urlPattern: /Nutrition|nutrition|nutrition-information|national-menu-nutrition/i,
+    urlPattern:
+      /Nutrition|nutrition|nutrition-information|national-menu-nutrition/i,
     extract: ({ restaurant, text, url }) =>
       extractTrailingNutritionTextPdfItems(text, restaurant, url, {
         description: `Official ${restaurant.name} nutrition PDF.`,
@@ -15942,7 +18285,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     urlPattern: /allergenguide/i,
-    extract: ({ buffer, restaurant, url }) => extractFirstWatchAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractFirstWatchAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "cracker-barrel-allergen-guide-pdf",
@@ -15951,7 +18295,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     urlPattern: /AllergenGuide\.pdf/i,
-    extract: ({ buffer, restaurant, url }) => extractCrackerBarrelAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractCrackerBarrelAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "buffalo-wild-wings-allergen-pdf",
@@ -15960,7 +18305,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     urlPattern: /BWW_Allergen/i,
-    extract: ({ buffer, restaurant, url }) => extractBuffaloWildWingsAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractBuffaloWildWingsAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "red-lobster-allergen-guide-pdf",
@@ -15969,7 +18315,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     urlPattern: /Allergen.*Guide/i,
-    extract: ({ buffer, restaurant, url }) => extractRedLobsterAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractRedLobsterAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "red-lobster-nutrition-pdf",
@@ -15978,7 +18325,8 @@ const documentSchemaProfiles = [
     outputType: "official-nutrition",
     requiresBuffer: true,
     urlPattern: /US_Nutrit/i,
-    extract: ({ buffer, restaurant, url }) => extractRedLobsterNutritionPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractRedLobsterNutritionPdfItems(buffer, restaurant, url),
   },
   {
     id: "dennys-allergen-guide-pdf",
@@ -15987,7 +18335,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     urlPattern: /AllergenGuide/i,
-    extract: ({ buffer, restaurant, url }) => extractDennysAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractDennysAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "waffle-house-menu-nutritionals-pdf",
@@ -15995,7 +18344,8 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "official-nutrition",
     urlPattern: /Menu-Nutritionals/i,
-    extract: ({ restaurant, text, url }) => extractWaffleHouseNutritionPdfItems(text, restaurant, url),
+    extract: ({ restaurant, text, url }) =>
+      extractWaffleHouseNutritionPdfItems(text, restaurant, url),
   },
   {
     id: "jack-in-the-box-nutrition-pdf",
@@ -16004,8 +18354,10 @@ const documentSchemaProfiles = [
     outputType: "official-nutrition",
     requiresBuffer: true,
     match: ({ text, url }) =>
-      /\b(?:nutrition|nutritional|Nutrition_Facts)\b/i.test(url) || /NUTRITION FACTS/i.test(text ?? ""),
-    extract: ({ buffer, restaurant, url }) => extractJackInTheBoxNutritionPdfItems(buffer, restaurant, url),
+      /\b(?:nutrition|nutritional|Nutrition_Facts)\b/i.test(url) ||
+      /NUTRITION FACTS/i.test(text ?? ""),
+    extract: ({ buffer, restaurant, url }) =>
+      extractJackInTheBoxNutritionPdfItems(buffer, restaurant, url),
   },
   {
     id: "jack-in-the-box-allergen-pdf",
@@ -16013,21 +18365,24 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "official-allergen",
     requiresBuffer: true,
-    extract: ({ buffer, restaurant, url }) => extractJackInTheBoxPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractJackInTheBoxPdfItems(buffer, restaurant, url),
   },
   {
     id: "raising-canes-pdf",
     brandKeys: ["raisingcanes"],
     contentKind: "pdf",
     outputType: "official-allergen",
-    extract: ({ restaurant, text, url }) => extractRaisingCanesPdfItems(text, restaurant, url),
+    extract: ({ restaurant, text, url }) =>
+      extractRaisingCanesPdfItems(text, restaurant, url),
   },
   {
     id: "in-n-out-pdf",
     brandKeys: ["in-n-out"],
     contentKind: "pdf",
     outputType: "official-allergen",
-    extract: ({ restaurant, text, url }) => extractInNOutPdfItems(text, restaurant, url),
+    extract: ({ restaurant, text, url }) =>
+      extractInNOutPdfItems(text, restaurant, url),
   },
   {
     id: "el-pollo-loco-nutrition-pdf",
@@ -16035,7 +18390,8 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "official-nutrition",
     requiresBuffer: true,
-    extract: ({ buffer, restaurant, url }) => extractElPolloLocoNutritionPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractElPolloLocoNutritionPdfItems(buffer, restaurant, url),
   },
   {
     id: "bjs-allergen-pdf",
@@ -16044,7 +18400,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     urlPattern: /GLUTEN_ALLERGEN/i,
-    extract: ({ buffer, restaurant, url }) => extractBjsAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractBjsAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "bjs-nutrition-pdf",
@@ -16053,7 +18410,8 @@ const documentSchemaProfiles = [
     outputType: "official-nutrition",
     requiresBuffer: true,
     urlPattern: /BJS_NUTRI/i,
-    extract: ({ buffer, restaurant, url }) => extractBjsNutritionPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractBjsNutritionPdfItems(buffer, restaurant, url),
   },
   {
     id: "qdoba-allergen-pdf",
@@ -16062,7 +18420,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     match: ({ url }) => !/nutrition-information/i.test(url),
-    extract: ({ buffer, restaurant, url }) => extractQdobaAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractQdobaAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "del-taco-nutrition-pdf",
@@ -16082,7 +18441,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     urlPattern: /allergens-\d{2}-\d{4}\.pdf/i,
-    extract: ({ buffer, restaurant, url }) => extractDelTacoAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractDelTacoAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "cava-allergen-pdf",
@@ -16091,7 +18451,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     urlPattern: /AllergReg\.pdf/i,
-    extract: ({ buffer, restaurant, url }) => extractCavaAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractCavaAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "auntie-annes-nutrition-pdf",
@@ -16100,7 +18461,8 @@ const documentSchemaProfiles = [
     outputType: "official-nutrition",
     requiresBuffer: true,
     urlPattern: /Nutrition-Guide/i,
-    extract: ({ buffer, restaurant, url }) => extractAuntieAnnesNutritionPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractAuntieAnnesNutritionPdfItems(buffer, restaurant, url),
   },
   {
     id: "auntie-annes-allergen-pdf",
@@ -16109,7 +18471,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     urlPattern: /Food-Allergens-and-Sensitivities-Chart\.pdf/i,
-    extract: ({ buffer, restaurant, url }) => extractAuntieAnnesAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractAuntieAnnesAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "tim-hortons-allergen-guide-pdf",
@@ -16118,7 +18481,8 @@ const documentSchemaProfiles = [
     outputType: "official-allergen",
     requiresBuffer: true,
     urlPattern: /Allergen-Guide/i,
-    extract: ({ buffer, restaurant, url }) => extractTimHortonsAllergenPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractTimHortonsAllergenPdfItems(buffer, restaurant, url),
   },
   {
     id: "dutch-bros-nutrition-pdf",
@@ -16127,7 +18491,8 @@ const documentSchemaProfiles = [
     outputType: "official-nutrition",
     requiresBuffer: true,
     urlPattern: /nutrition/i,
-    extract: ({ buffer, restaurant, url }) => extractDutchBrosNutritionPdfItems(buffer, restaurant, url),
+    extract: ({ buffer, restaurant, url }) =>
+      extractDutchBrosNutritionPdfItems(buffer, restaurant, url),
   },
   {
     id: "shake-shack-nutrition-allergen-pdf",
@@ -16135,19 +18500,29 @@ const documentSchemaProfiles = [
     contentKind: "pdf",
     outputType: "official-allergen",
     urlPattern: /Master.*Nut.*Allergen|document\/3481/i,
-    extract: ({ restaurant, text, url }) => extractShakeShackNutritionAllergenPdfItems(text, restaurant, url),
+    extract: ({ restaurant, text, url }) =>
+      extractShakeShackNutritionAllergenPdfItems(text, restaurant, url),
   },
 ];
 
 export const documentSchemaProfileMigrationReport = {
   migratedProfileIds: documentSchemaProfiles.map((profile) => profile.id),
-  officialApiProfileIds: officialApiDocumentSchemaProfiles.map((profile) => profile.id),
-  supplementalSourceProfileIds: supplementalSourceProfiles.map((profile) => profile.id),
+  officialApiProfileIds: officialApiDocumentSchemaProfiles.map(
+    (profile) => profile.id,
+  ),
+  supplementalSourceProfileIds: supplementalSourceProfiles.map(
+    (profile) => profile.id,
+  ),
   emptyPdfQuarantine: "extractLegacyRestaurantIdPdfItems",
   remainingRestaurantIdExtractorSurfaces: [],
 };
 
-async function extractLegacyRestaurantIdPdfItems(text, restaurant, url, buffer) {
+async function extractLegacyRestaurantIdPdfItems(
+  text,
+  restaurant,
+  url,
+  buffer,
+) {
   void text;
   void restaurant;
   void url;
@@ -16217,7 +18592,10 @@ function extractFoundingFarmersMenuPdfItems(text, restaurant, url) {
       continue;
     }
 
-    if (pending.descriptionLines.length < 5 && isFoundingFarmersDescriptionLine(line)) {
+    if (
+      pending.descriptionLines.length < 5 &&
+      isFoundingFarmersDescriptionLine(line)
+    ) {
       pending.descriptionLines.push(line);
     }
   }
@@ -16258,10 +18636,20 @@ function extractFoundingFarmersMenuPdfItems(text, restaurant, url) {
   }
 }
 
-async function extractCanvaFriedCrossContactAllergenTablePdfItems(buffer, restaurant, url, text) {
+async function extractCanvaFriedCrossContactAllergenTablePdfItems(
+  buffer,
+  restaurant,
+  url,
+  text,
+) {
   const tables = await readPdfTables(buffer);
 
-  return extractFriedCrossContactAllergenTableItems(tables, restaurant, url, text);
+  return extractFriedCrossContactAllergenTableItems(
+    tables,
+    restaurant,
+    url,
+    text,
+  );
 }
 
 export async function extractOsiTop9AllergenPdfItems(buffer, restaurant, url) {
@@ -16270,7 +18658,10 @@ export async function extractOsiTop9AllergenPdfItems(buffer, restaurant, url) {
   const rowsByPage = new Map();
 
   for (const row of rows) {
-    rowsByPage.set(row.pageNumber, [...(rowsByPage.get(row.pageNumber) ?? []), row]);
+    rowsByPage.set(row.pageNumber, [
+      ...(rowsByPage.get(row.pageNumber) ?? []),
+      row,
+    ]);
   }
 
   let currentCategory = restaurant.category;
@@ -16278,7 +18669,11 @@ export async function extractOsiTop9AllergenPdfItems(buffer, restaurant, url) {
   for (const pageRows of rowsByPage.values()) {
     const headerRow = pageRows.find((row) => {
       const text = row.items.map((item) => item.str).join(" ");
-      return /\bMenu Item Name\b/i.test(text) && /\bEggs\b/i.test(text) && /\bWheat\b/i.test(text);
+      return (
+        /\bMenu Item Name\b/i.test(text) &&
+        /\bEggs\b/i.test(text) &&
+        /\bWheat\b/i.test(text)
+      );
     });
 
     if (!headerRow) {
@@ -16300,14 +18695,22 @@ export async function extractOsiTop9AllergenPdfItems(buffer, restaurant, url) {
 
       const rowText = cleanText(row.items.map((item) => item.str).join(" "));
 
-      if (!rowText || /^Y\s*=\s*YES\b/i.test(rowText) || /^Created:/i.test(rowText)) {
+      if (
+        !rowText ||
+        /^Y\s*=\s*YES\b/i.test(rowText) ||
+        /^Created:/i.test(rowText)
+      ) {
         continue;
       }
 
-      const markerItems = row.items.filter((item) => /^Y$/i.test(item.str) && item.x >= columns[0].x - 24);
+      const markerItems = row.items.filter(
+        (item) => /^Y$/i.test(item.str) && item.x >= columns[0].x - 24,
+      );
       const name = cleanMenuName(
         row.items
-          .filter((item) => item.x < columns[0].x - 32 && !/^Y$/i.test(item.str))
+          .filter(
+            (item) => item.x < columns[0].x - 32 && !/^Y$/i.test(item.str),
+          )
           .map((item) => item.str)
           .join(" "),
       );
@@ -16372,8 +18775,11 @@ export async function extractOsiTop9AllergenPdfItems(buffer, restaurant, url) {
   }
 
   return uniqueBy(
-    records.filter((record) => record.name && isProbablyMenuItemName(record.name)),
-    (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+    records.filter(
+      (record) => record.name && isProbablyMenuItemName(record.name),
+    ),
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
   );
 }
 
@@ -16393,14 +18799,19 @@ function osiTop9HeaderColumns(headerRow) {
 
   for (const item of headerRow.items) {
     const text = cleanText(item.str);
-    const match = labelMap.find((candidate) => candidate.pattern.test(text ?? ""));
+    const match = labelMap.find((candidate) =>
+      candidate.pattern.test(text ?? ""),
+    );
 
     if (match) {
       columns.push({ allergen: match.allergen, x: item.x });
     }
   }
 
-  return uniqueBy(columns.sort((left, right) => left.x - right.x), (column) => column.allergen);
+  return uniqueBy(
+    columns.sort((left, right) => left.x - right.x),
+    (column) => column.allergen,
+  );
 }
 
 function nearestOsiTop9Column(x, columns) {
@@ -16435,19 +18846,29 @@ function normalizeOsiTop9Category(value) {
   return titleCase(text);
 }
 
-export async function extractNandosNutritionAllergenPdfItems(buffer, restaurant, url) {
+export async function extractNandosNutritionAllergenPdfItems(
+  buffer,
+  restaurant,
+  url,
+) {
   const rows = clusterPdfRowsByPageAndY(await readPdfPositionRows(buffer), 4);
   const records = [];
   const itemRows = rows
     .map((row) => {
-      const categoryText = cleanText(row.items.find((item) => item.x >= 30 && item.x < 95)?.str);
-      const nameText = cleanMenuName(row.items.find((item) => item.x >= 95 && item.x < 245)?.str);
+      const categoryText = cleanText(
+        row.items.find((item) => item.x >= 30 && item.x < 95)?.str,
+      );
+      const nameText = cleanMenuName(
+        row.items.find((item) => item.x >= 95 && item.x < 245)?.str,
+      );
 
       if (!categoryText || !nameText || !isGenericMatrixItemName(nameText)) {
         return null;
       }
 
-      if (/^(?:Category|Allergy Caution|Adults and youth)$/i.test(categoryText)) {
+      if (
+        /^(?:Category|Allergy Caution|Adults and youth)$/i.test(categoryText)
+      ) {
         return null;
       }
 
@@ -16491,9 +18912,13 @@ export async function extractNandosNutritionAllergenPdfItems(buffer, restaurant,
     );
     const directText = extractNandosDisclosure(allergenText, "contains");
     const mayText = extractNandosDisclosure(allergenText, "may");
-    const allergens = normalizeProviderAllergens(directText ? [directText] : []);
+    const allergens = normalizeProviderAllergens(
+      directText ? [directText] : [],
+    );
     const mayContain = uniqueStrings(
-      normalizeProviderAllergens(mayText ? [mayText] : []).filter((allergen) => !allergens.includes(allergen)),
+      normalizeProviderAllergens(mayText ? [mayText] : []).filter(
+        (allergen) => !allergens.includes(allergen),
+      ),
     );
 
     records.push(
@@ -16517,8 +18942,11 @@ export async function extractNandosNutritionAllergenPdfItems(buffer, restaurant,
   }
 
   return uniqueBy(
-    records.filter((record) => record.name && isProbablyMenuItemName(record.name)),
-    (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+    records.filter(
+      (record) => record.name && isProbablyMenuItemName(record.name),
+    ),
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
   );
 }
 
@@ -16556,7 +18984,10 @@ export async function extractRasaAllergyChartPdfItems(buffer, restaurant, url) {
   const rowsByPage = new Map();
 
   for (const row of rows) {
-    rowsByPage.set(row.pageNumber, [...(rowsByPage.get(row.pageNumber) ?? []), row]);
+    rowsByPage.set(row.pageNumber, [
+      ...(rowsByPage.get(row.pageNumber) ?? []),
+      row,
+    ]);
   }
 
   let currentCategory = restaurant.category;
@@ -16574,14 +19005,18 @@ export async function extractRasaAllergyChartPdfItems(buffer, restaurant, url) {
     const columns = rasaAllergyChartColumns(headerRow);
     const itemRows = pageRows
       .map((row) => {
-        const leftItems = row.items.filter((item) => item.x < 130 && !/^x$/i.test(item.str));
+        const leftItems = row.items.filter(
+          (item) => item.x < 130 && !/^x$/i.test(item.str),
+        );
         const name = cleanMenuName(leftItems.map((item) => item.str).join(" "));
 
         if (!name || /^ALLERGY CHART|Updated/i.test(name)) {
           return null;
         }
 
-        const hasMarkers = row.items.some((item) => /^x$/i.test(item.str) && item.x >= 130);
+        const hasMarkers = row.items.some(
+          (item) => /^x$/i.test(item.str) && item.x >= 130,
+        );
 
         if (!hasMarkers && isRasaAllergySectionHeading(name)) {
           currentCategory = titleCase(name.replace(/\s*\+\s*/g, " + "));
@@ -16605,14 +19040,23 @@ export async function extractRasaAllergyChartPdfItems(buffer, restaurant, url) {
       const itemRow = itemRows[index];
       const previous = itemRows[index - 1];
       const next = itemRows[index + 1];
-      const upperBound = previous ? (previous.row.y + itemRow.row.y) / 2 : itemRow.row.y + 16;
-      const lowerBound = next ? (itemRow.row.y + next.row.y) / 2 : itemRow.row.y - 16;
-      const bandRows = pageRows.filter((row) => row.y < upperBound && row.y > lowerBound);
+      const upperBound = previous
+        ? (previous.row.y + itemRow.row.y) / 2
+        : itemRow.row.y + 16;
+      const lowerBound = next
+        ? (itemRow.row.y + next.row.y) / 2
+        : itemRow.row.y - 16;
+      const bandRows = pageRows.filter(
+        (row) => row.y < upperBound && row.y > lowerBound,
+      );
       const allergens = uniqueStrings(
         bandRows
           .flatMap((row) => row.items)
           .filter((item) => /^x$/i.test(item.str))
-          .flatMap((item) => nearestRasaAllergyColumn(item.x, columns)?.allergens ?? [])
+          .flatMap(
+            (item) =>
+              nearestRasaAllergyColumn(item.x, columns)?.allergens ?? [],
+          )
           .filter(Boolean),
       );
 
@@ -16639,8 +19083,11 @@ export async function extractRasaAllergyChartPdfItems(buffer, restaurant, url) {
   }
 
   return uniqueBy(
-    records.filter((record) => record.name && isProbablyMenuItemName(record.name)),
-    (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+    records.filter(
+      (record) => record.name && isProbablyMenuItemName(record.name),
+    ),
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
   );
 }
 
@@ -16686,24 +19133,36 @@ function normalizeRasaAllergyName(value) {
   return cleanMenuName(value)?.replace(/\bSace\b/i, "Sauce") ?? value;
 }
 
-export async function extractInsomniaCookiesNutritionGuidePdfItems(buffer, restaurant, url) {
+export async function extractInsomniaCookiesNutritionGuidePdfItems(
+  buffer,
+  restaurant,
+  url,
+) {
   const rows = clusterPdfRowsByPageAndY(await readPdfPositionRows(buffer), 4);
   const rowsByPage = new Map();
   const records = [];
 
   for (const row of rows) {
-    rowsByPage.set(row.pageNumber, [...(rowsByPage.get(row.pageNumber) ?? []), row]);
+    rowsByPage.set(row.pageNumber, [
+      ...(rowsByPage.get(row.pageNumber) ?? []),
+      row,
+    ]);
   }
 
   for (const [pageNumber, pageRows] of rowsByPage) {
     const sortedRows = [...pageRows].sort((left, right) => right.y - left.y);
     const pageText = sortedRows.map(insomniaPdfRowText).join("\n");
 
-    if (!/\bINGREDIENTS?\b/i.test(pageText) || !/(?:\bCONTAINS:|\bALLERGENS:\s*CONTAINS\b)/i.test(pageText)) {
+    if (
+      !/\bINGREDIENTS?\b/i.test(pageText) ||
+      !/(?:\bCONTAINS:|\bALLERGENS:\s*CONTAINS\b)/i.test(pageText)
+    ) {
       continue;
     }
 
-    const ingredientRow = sortedRows.find((row) => /\bINGREDIENTS?\b/i.test(insomniaPdfRowText(row)));
+    const ingredientRow = sortedRows.find((row) =>
+      /\bINGREDIENTS?\b/i.test(insomniaPdfRowText(row)),
+    );
 
     if (!ingredientRow) {
       continue;
@@ -16733,7 +19192,11 @@ export async function extractInsomniaCookiesNutritionGuidePdfItems(buffer, resta
       createRecord({
         allergenSourceType: allergenSourceTypes.officialAllergenMenu,
         allergens,
-        category: insomniaCategoryForProduct(name, pageNumber, restaurant.category),
+        category: insomniaCategoryForProduct(
+          name,
+          pageNumber,
+          restaurant.category,
+        ),
         description: null,
         evidenceText: insomniaEvidenceText(name, allergens, mayContain),
         imageUrl: null,
@@ -16742,7 +19205,11 @@ export async function extractInsomniaCookiesNutritionGuidePdfItems(buffer, resta
         name,
         sourceKind: "pdf-matrix",
         sourceUrl: url,
-        variantGroup: insomniaCategoryForProduct(name, pageNumber, restaurant.category),
+        variantGroup: insomniaCategoryForProduct(
+          name,
+          pageNumber,
+          restaurant.category,
+        ),
       }),
     );
   }
@@ -16767,7 +19234,9 @@ function isInsomniaTitleLine(line) {
     return false;
   }
 
-  return !/\b(?:INGREDIENTS?|NUTRITION|FACTS|SERVING|CALORIES|TOTAL|FAT|SODIUM|CARBOHYDRATE|PROTEIN|CONTAINS|PRODUCT|SHARED|EQUIPMENT|PROCESSES|INSOMNIACOOKIES\.COM)\b/i.test(text);
+  return !/\b(?:INGREDIENTS?|NUTRITION|FACTS|SERVING|CALORIES|TOTAL|FAT|SODIUM|CARBOHYDRATE|PROTEIN|CONTAINS|PRODUCT|SHARED|EQUIPMENT|PROCESSES|INSOMNIACOOKIES\.COM)\b/i.test(
+    text,
+  );
 }
 
 function normalizeInsomniaProductName(value) {
@@ -16803,7 +19272,10 @@ function parseInsomniaDirectAllergens(pageText) {
       .replace(/\bAND\s*$/i, "")
       .replace(/\.$/, "");
 
-    if (segment && !/\b(?:GLUTEN-FREE|SHARED EQUIPMENT|PROCESSES)\b/i.test(segment)) {
+    if (
+      segment &&
+      !/\b(?:GLUTEN-FREE|SHARED EQUIPMENT|PROCESSES)\b/i.test(segment)
+    ) {
       directText.push(segment);
     }
   }
@@ -16817,7 +19289,9 @@ function parseInsomniaDirectAllergens(pageText) {
 
 function parseInsomniaMayContainAllergens(pageText, directAllergens) {
   const mayContainText = [];
-  const sharedMatch = pageText.match(/PRODUCT\s+HAS\s+BEEN\s+MANUFACTURED\s+ON\s+SHARED\s+EQUIPMENT[\s\S]{0,180}?\bPROCESSES\s+([^\n]+(?:\n[^\n]+)?)/i);
+  const sharedMatch = pageText.match(
+    /PRODUCT\s+HAS\s+BEEN\s+MANUFACTURED\s+ON\s+SHARED\s+EQUIPMENT[\s\S]{0,180}?\bPROCESSES\s+([^\n]+(?:\n[^\n]+)?)/i,
+  );
 
   if (sharedMatch) {
     mayContainText.push(sharedMatch[1]);
@@ -16830,11 +19304,17 @@ function parseInsomniaMayContainAllergens(pageText, directAllergens) {
     mayContainText.push("eggs, milk, wheat, soy, peanuts, tree nuts");
   }
 
-  if (/gluten\s*-?\s*free products are prepared in an\s+environment where there is a risk of gluten exposure/i.test(pageText)) {
+  if (
+    /gluten\s*-?\s*free products are prepared in an\s+environment where there is a risk of gluten exposure/i.test(
+      pageText,
+    )
+  ) {
     mayContainText.push("gluten");
   }
 
-  return normalizeProviderAllergens(mayContainText).filter((allergen) => !directAllergens.includes(allergen));
+  return normalizeProviderAllergens(mayContainText).filter(
+    (allergen) => !directAllergens.includes(allergen),
+  );
 }
 
 function insomniaCategoryForProduct(name, pageNumber, fallbackCategory) {
@@ -16842,7 +19322,12 @@ function insomniaCategoryForProduct(name, pageNumber, fallbackCategory) {
     return "Cones";
   }
 
-  if (pageNumber >= 31 || /\b(?:vanilla|caramellionaire|d['’]?ough|dreamweaver|minterstellar|tracks)\b/i.test(name)) {
+  if (
+    pageNumber >= 31 ||
+    /\b(?:vanilla|caramellionaire|d['’]?ough|dreamweaver|minterstellar|tracks)\b/i.test(
+      name,
+    )
+  ) {
     return "Ice Cream";
   }
 
@@ -16865,7 +19350,9 @@ function insomniaEvidenceText(name, allergens, mayContain) {
   }
 
   if (mayContain.length > 0) {
-    pieces.push(`${name} is prepared where ${mayContain.join(", ")} may be present.`);
+    pieces.push(
+      `${name} is prepared where ${mayContain.join(", ")} may be present.`,
+    );
   }
 
   return pieces.join(" ");
@@ -16892,14 +19379,21 @@ function mergeInsomniaOfficialRecords(records) {
       ...current,
       allergens: uniqueStrings([...current.allergens, ...record.allergens]),
       mayContain: uniqueStrings([...current.mayContain, ...record.mayContain]),
-      evidence: uniqueEvidence([...(current.evidence ?? []), ...(record.evidence ?? [])]),
+      evidence: uniqueEvidence([
+        ...(current.evidence ?? []),
+        ...(record.evidence ?? []),
+      ]),
     });
   }
 
   return Array.from(byName.values());
 }
 
-export async function extractBbqChickenAllergenPdfItems(buffer, restaurant, url) {
+export async function extractBbqChickenAllergenPdfItems(
+  buffer,
+  restaurant,
+  url,
+) {
   const rows = await readPdfPositionRows(buffer);
   const records = [];
   let currentCategory = restaurant.category;
@@ -16912,7 +19406,9 @@ export async function extractBbqChickenAllergenPdfItems(buffer, restaurant, url)
       return;
     }
 
-    records.push(...extractBbqChickenPageRows(pageRows, restaurant, url, currentCategory));
+    records.push(
+      ...extractBbqChickenPageRows(pageRows, restaurant, url, currentCategory),
+    );
     pageRows = [];
   }
 
@@ -16929,14 +19425,22 @@ export async function extractBbqChickenAllergenPdfItems(buffer, restaurant, url)
       continue;
     }
 
-    const category = row.items.find((item) => item.x < 80 && /^[A-Z][A-Z\s-]{3,}$/.test(item.str))?.str;
+    const category = row.items.find(
+      (item) => item.x < 80 && /^[A-Z][A-Z\s-]{3,}$/.test(item.str),
+    )?.str;
 
-    if (category && !/^(?:MENU ITEM|COMMON ALLERGENS|ALLERGENS)$/i.test(category)) {
+    if (
+      category &&
+      !/^(?:MENU ITEM|COMMON ALLERGENS|ALLERGENS)$/i.test(category)
+    ) {
       flushPageRows();
       currentCategory = titleCase(category);
     }
 
-    if (/\bMENU ITEM\b/i.test(rowText) && /\bPOTENTIAL CROSS-CONTAMINANTS\b/i.test(rowText)) {
+    if (
+      /\bMENU ITEM\b/i.test(rowText) &&
+      /\bPOTENTIAL CROSS-CONTAMINANTS\b/i.test(rowText)
+    ) {
       flushPageRows();
       inDetailedList = true;
       continue;
@@ -16959,12 +19463,20 @@ export async function extractBbqChickenAllergenPdfItems(buffer, restaurant, url)
   flushPageRows();
 
   return uniqueBy(
-    records.filter((record) => record.name && isProbablyMenuItemName(record.name)),
-    (record) => `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+    records.filter(
+      (record) => record.name && isProbablyMenuItemName(record.name),
+    ),
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
   );
 }
 
-export function extractBbqChickenPageRows(rows, restaurant, url, fallbackCategory) {
+export function extractBbqChickenPageRows(
+  rows,
+  restaurant,
+  url,
+  fallbackCategory,
+) {
   const records = [];
   const itemRows = rows
     .map((row) => {
@@ -16986,9 +19498,15 @@ export function extractBbqChickenPageRows(rows, restaurant, url, fallbackCategor
     const itemRow = itemRows[index];
     const previous = itemRows[index - 1];
     const next = itemRows[index + 1];
-    const upperBound = previous ? (previous.row.y + itemRow.row.y) / 2 : itemRow.row.y + 24;
-    const lowerBound = next ? (itemRow.row.y + next.row.y) / 2 : itemRow.row.y - 24;
-    const bandRows = rows.filter((row) => row.y < upperBound && row.y > lowerBound);
+    const upperBound = previous
+      ? (previous.row.y + itemRow.row.y) / 2
+      : itemRow.row.y + 24;
+    const lowerBound = next
+      ? (itemRow.row.y + next.row.y) / 2
+      : itemRow.row.y - 24;
+    const bandRows = rows.filter(
+      (row) => row.y < upperBound && row.y > lowerBound,
+    );
     const allergenText = cleanText(
       bandRows
         .flatMap((row) => row.items)
@@ -17004,7 +19522,11 @@ export function extractBbqChickenPageRows(rows, restaurant, url, fallbackCategor
         .join(" "),
     );
     const allergens = findAllergensInText(allergenText ?? "");
-    const mayContain = uniqueStrings(findAllergensInText(crossContactText ?? "").filter((allergen) => !allergens.includes(allergen)));
+    const mayContain = uniqueStrings(
+      findAllergensInText(crossContactText ?? "").filter(
+        (allergen) => !allergens.includes(allergen),
+      ),
+    );
 
     if (allergens.length === 0 && mayContain.length === 0) {
       continue;
@@ -17033,15 +19555,29 @@ export function extractBbqChickenPageRows(rows, restaurant, url, fallbackCategor
   return records;
 }
 
-async function extractChasinTailsAllergenPdfItems(buffer, restaurant, url, text) {
-  const friedCrossContactRecords = await extractCanvaFriedCrossContactAllergenTablePdfItems(
+async function extractChasinTailsAllergenPdfItems(
+  buffer,
+  restaurant,
+  url,
+  text,
+) {
+  const friedCrossContactRecords =
+    await extractCanvaFriedCrossContactAllergenTablePdfItems(
+      buffer,
+      restaurant,
+      url,
+      text,
+    );
+  const tableMatrixRecords = await extractGenericPdfTableAllergenMatrixRows(
     buffer,
     restaurant,
     url,
-    text,
   );
-  const tableMatrixRecords = await extractGenericPdfTableAllergenMatrixRows(buffer, restaurant, url);
-  const positionMatrixRecords = await extractGenericPdfMenuMatrixRows(buffer, restaurant, url);
+  const positionMatrixRecords = await extractGenericPdfMenuMatrixRows(
+    buffer,
+    restaurant,
+    url,
+  );
 
   return mergeRecords([
     ...tableMatrixRecords,
@@ -17050,8 +19586,17 @@ async function extractChasinTailsAllergenPdfItems(buffer, restaurant, url, text)
   ]);
 }
 
-export function extractFriedCrossContactAllergenTableItems(tables, restaurant, url, text = "") {
-  if (!/ANYTHING FRIED WILL BE CONTAMINATED[\s\S]*GLUTEN AND SHELLFISH/i.test(text)) {
+export function extractFriedCrossContactAllergenTableItems(
+  tables,
+  restaurant,
+  url,
+  text = "",
+) {
+  if (
+    !/ANYTHING FRIED WILL BE CONTAMINATED[\s\S]*GLUTEN AND SHELLFISH/i.test(
+      text,
+    )
+  ) {
     return [];
   }
 
@@ -17059,9 +19604,15 @@ export function extractFriedCrossContactAllergenTableItems(tables, restaurant, u
 
   for (const table of tables ?? []) {
     const category = cleanText(table?.[0]?.[0]);
-    const header = (table?.[1] ?? []).map((cell) => cleanText(cell)?.toUpperCase() ?? "");
+    const header = (table?.[1] ?? []).map(
+      (cell) => cleanText(cell)?.toUpperCase() ?? "",
+    );
 
-    if (!category || !header.includes("GLUTEN") || !header.includes("SHELLFISH")) {
+    if (
+      !category ||
+      !header.includes("GLUTEN") ||
+      !header.includes("SHELLFISH")
+    ) {
       continue;
     }
 
@@ -17069,7 +19620,11 @@ export function extractFriedCrossContactAllergenTableItems(tables, restaurant, u
       const rawName = cleanText(row?.[0]);
       const name = cleanMenuName(rawName?.replace(/\n+/g, " "));
 
-      if (!name || !isProbablyMenuItemName(name) || !isOfficialFriedCrossContactRow(name, category)) {
+      if (
+        !name ||
+        !isProbablyMenuItemName(name) ||
+        !isOfficialFriedCrossContactRow(name, category)
+      ) {
         continue;
       }
 
@@ -17102,7 +19657,9 @@ export function extractFriedCrossContactAllergenTableItems(tables, restaurant, u
 function isOfficialFriedCrossContactRow(name, category) {
   const text = `${category ?? ""} ${name ?? ""}`;
 
-  return /\b(?:crispy|fried|fries|hush\s+puppies|calamari|gator\s+bites)\b/i.test(text);
+  return /\b(?:crispy|fried|fries|hush\s+puppies|calamari|gator\s+bites)\b/i.test(
+    text,
+  );
 }
 
 function parseFoundingFarmersPricedLine(line) {
@@ -17178,7 +19735,9 @@ function isFoundingFarmersNameContinuation(line) {
 }
 
 function shouldPrefixFoundingFarmersItem(name) {
-  return /^&\b|^(?:Banana Toast|Waffles|Hot Chocolate|Chocolate|Medium Roast)$/i.test(name);
+  return /^&\b|^(?:Banana Toast|Waffles|Hot Chocolate|Chocolate|Medium Roast)$/i.test(
+    name,
+  );
 }
 
 function isFoundingFarmersHeading(line) {
@@ -17191,7 +19750,9 @@ function isFoundingFarmersNonMenuLine(line) {
   return (
     /^-- \d+ of \d+ --$/i.test(line) ||
     /^FF(?:DC|RS|T)\b/i.test(line) ||
-    /^(?:Reston|Tysons)\s+(?:Breakfast|Brunch|Lunch|Dinner|Dessert|First\s*Bake)/i.test(line) ||
+    /^(?:Reston|Tysons)\s+(?:Breakfast|Brunch|Lunch|Dinner|Dessert|First\s*Bake)/i.test(
+      line,
+    ) ||
     /^A 22% gratuity/i.test(line) ||
     /^DEAR GUESTS WITH ALLERGIES/i.test(line) ||
     /^our scratch kitchen/i.test(line) ||
@@ -17207,12 +19768,20 @@ function isFoundingFarmersNonMenuLine(line) {
 }
 
 function isFoundingFarmersNonItemName(name) {
-  return /^(?:\d+(?:\.\d+)?\s*(?:oz|pieces?|piece)?|1 for|add|choose|choice of|served with|serves|single or double|sub|dairy selection|sustainably|humanely|house-ground|all bread|we serve|from our|traceable|simple style|lemon butter|mojito spring onion|apricot mustard|vera cruz)$/i.test(
-    name,
-  ) || /^(?:founding farmers|lunch & dinner in dc)$/i.test(name);
+  return (
+    /^(?:\d+(?:\.\d+)?\s*(?:oz|pieces?|piece)?|1 for|add|choose|choice of|served with|serves|single or double|sub|dairy selection|sustainably|humanely|house-ground|all bread|we serve|from our|traceable|simple style|lemon butter|mojito spring onion|apricot mustard|vera cruz)$/i.test(
+      name,
+    ) || /^(?:founding farmers|lunch & dinner in dc)$/i.test(name)
+  );
 }
 
-function isRestaurantStructuredMetadataRecord(name, description, restaurant, url, sourceKind) {
+function isRestaurantStructuredMetadataRecord(
+  name,
+  description,
+  restaurant,
+  url,
+  sourceKind,
+) {
   if (sourceKind !== "json-structured") {
     return false;
   }
@@ -17222,14 +19791,20 @@ function isRestaurantStructuredMetadataRecord(name, description, restaurant, url
   }
 
   const normalizedName = normalizeStructuredRecordText(name);
-  const normalizedRestaurantName = normalizeStructuredRecordText(restaurant.name);
+  const normalizedRestaurantName = normalizeStructuredRecordText(
+    restaurant.name,
+  );
 
   if (
     normalizedName === normalizedRestaurantName ||
     normalizedName === `${normalizedRestaurantName} restaurants` ||
     normalizedName === `${normalizedRestaurantName} buffet restaurants` ||
-    /(?:^|\b)(?:allergen statement|nutrition and dietary options)$/i.test(cleanText(name) ?? "") ||
-    /\b(?:allergen statement|nutrition database|dietary options)\b/i.test(description ?? "")
+    /(?:^|\b)(?:allergen statement|nutrition and dietary options)$/i.test(
+      cleanText(name) ?? "",
+    ) ||
+    /\b(?:allergen statement|nutrition database|dietary options)\b/i.test(
+      description ?? "",
+    )
   ) {
     return true;
   }
@@ -17243,7 +19818,10 @@ function isRestaurantStructuredMetadataRecord(name, description, restaurant, url
     );
   }
 
-  return normalizeStructuredRecordText(name) === normalizeStructuredRecordText(restaurant.name);
+  return (
+    normalizeStructuredRecordText(name) ===
+    normalizeStructuredRecordText(restaurant.name)
+  );
 }
 
 function normalizeStructuredRecordText(value) {
@@ -17287,11 +19865,17 @@ function extractShakeShackNutritionAllergenPdfItems(text, restaurant, url) {
     const nutritionMatch = line.match(
       /^(.{2,120}?)\s+(?:Contains:\s+[A-Za-z, ]+?\s+)?(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)(?:\s|$)/i,
     );
-    const name = cleanShakeShackPdfName(containsMatch?.[1] ?? nutritionOnlyMatch?.[1]);
+    const name = cleanShakeShackPdfName(
+      containsMatch?.[1] ?? nutritionOnlyMatch?.[1],
+    );
     const allergenText = cleanText(containsMatch?.[2]);
     const allergens = allergenText ? findAllergensInText(allergenText) : [];
 
-    if (!name || !isProbablyMenuItemName(name) || isShakeShackPdfNoiseName(name)) {
+    if (
+      !name ||
+      !isProbablyMenuItemName(name) ||
+      isShakeShackPdfNoiseName(name)
+    ) {
       continue;
     }
     const categoryForItem = shakeShackCategoryForItem(name, currentCategory);
@@ -17305,7 +19889,9 @@ function extractShakeShackNutritionAllergenPdfItems(text, restaurant, url) {
         imageUrl: null,
         mayContain: [],
         name,
-        nutritionFacts: nutritionFactsFromOrderedValues(nutritionMatch?.slice(2)),
+        nutritionFacts: nutritionFactsFromOrderedValues(
+          nutritionMatch?.slice(2),
+        ),
         sourceKind: "pdf-matrix",
         sourceUrl: url,
         variantGroup: categoryForItem,
@@ -17330,11 +19916,19 @@ function isShakeShackPdfNoiseName(value) {
 }
 
 function shakeShackCategoryForItem(name, fallbackCategory) {
-  if (/^Add .*(?:Dressing|Croutons|Parmesan|Grilled Chicken|Balsamic|Ceaser|Caesar|Sweety Drop)/i.test(name)) {
+  if (
+    /^Add .*(?:Dressing|Croutons|Parmesan|Grilled Chicken|Balsamic|Ceaser|Caesar|Sweety Drop)/i.test(
+      name,
+    )
+  ) {
     return "Salads";
   }
 
-  if (/^Add .*(?:Sauce|Pickles|Slaw|Honey|Seasoning|Peppers|Jalapenos|Onions|Breadcrumbs|Tartar)/i.test(name)) {
+  if (
+    /^Add .*(?:Sauce|Pickles|Slaw|Honey|Seasoning|Peppers|Jalapenos|Onions|Breadcrumbs|Tartar)/i.test(
+      name,
+    )
+  ) {
     return "Extras";
   }
 
@@ -17342,7 +19936,11 @@ function shakeShackCategoryForItem(name, fallbackCategory) {
     return "Lettuce Wraps & Gluten Free Buns";
   }
 
-  if (/(?:Beer|Ale|IPA|Lager|Pilsner|Cocktail|Vodka|Rum|Gin|Tequila|Whiskey|Bourbon|Martini|Spritz|Mixer|Mai Tai|Shackarita|Red Bull|Club Soda|Tonic|Ginger Beer|Wine|Seltzer|Cider|Draft|Can \\(|Bottle\\))/i.test(name)) {
+  if (
+    /(?:Beer|Ale|IPA|Lager|Pilsner|Cocktail|Vodka|Rum|Gin|Tequila|Whiskey|Bourbon|Martini|Spritz|Mixer|Mai Tai|Shackarita|Red Bull|Club Soda|Tonic|Ginger Beer|Wine|Seltzer|Cider|Draft|Can \\(|Bottle\\))/i.test(
+      name,
+    )
+  ) {
     return "Beer, Wines, Cocktails & Non-Alcoholic Drinks";
   }
 
@@ -17381,13 +19979,16 @@ function shakeShackCategoryHeading(line) {
 async function extractDutchBrosNutritionPdfItems(buffer, restaurant, url) {
   const records = [];
   const pdfjsLib = await getPdfJsLib();
-  const document = await pdfjsLib.getDocument({ data: new Uint8Array(buffer) }).promise;
+  const document = await pdfjsLib.getDocument({ data: new Uint8Array(buffer) })
+    .promise;
   const lines = [];
 
   for (let pageNumber = 1; pageNumber <= document.numPages; pageNumber += 1) {
     const page = await document.getPage(pageNumber);
     const textContent = await page.getTextContent();
-    lines.push(...textContent.items.map((item) => cleanText(item.str)).filter(Boolean));
+    lines.push(
+      ...textContent.items.map((item) => cleanText(item.str)).filter(Boolean),
+    );
   }
 
   let currentCategory = restaurant.category;
@@ -17458,7 +20059,10 @@ function nutritionFactsFromDutchBrosValues(values) {
   ];
   return normalizeNutritionFacts(
     Object.fromEntries(
-      labels.map((label, index) => [label, parseNutritionNumber(values[index]) ?? values[index]]),
+      labels.map((label, index) => [
+        label,
+        parseNutritionNumber(values[index]) ?? values[index],
+      ]),
     ),
   );
 }
@@ -17470,11 +20074,15 @@ function isDutchBrosType(value) {
 }
 
 function isDutchBrosSize(value) {
-  return /^(?:Kids|Small|Medium|Large|Nitro|One Size|Single|Double|Regular)$/i.test(value ?? "");
+  return /^(?:Kids|Small|Medium|Large|Nitro|One Size|Single|Double|Regular)$/i.test(
+    value ?? "",
+  );
 }
 
 function dutchBrosCategoryHeading(line, nextLine) {
-  const normalized = cleanText(line)?.replace(/[™®]/g, "").trim();
+  const normalized = cleanText(line)
+    ?.replace(/[™®]/g, "")
+    .trim();
 
   if (
     normalized &&
@@ -17536,13 +20144,20 @@ function extractCkeNutritionCodePdfItems(text, restaurant, url) {
       continue;
     }
 
-    const codes = parts[allergenIndex].replace(/\s+/g, "").replace(/\+$/, "").split(",");
-    const allergens = codes.map((code) => codeMap.get(code.toUpperCase())).filter(Boolean);
+    const codes = parts[allergenIndex]
+      .replace(/\s+/g, "")
+      .replace(/\+$/, "")
+      .split(",");
+    const allergens = codes
+      .map((code) => codeMap.get(code.toUpperCase()))
+      .filter(Boolean);
     const mayContain =
       /\+/.test(parts[allergenIndex]) || /shakes? and malts/i.test(name)
         ? ["peanut", "tree-nut"]
         : [];
-    const nutritionFacts = nutritionFactsFromCkeValues(parts.slice(allergenIndex + 1));
+    const nutritionFacts = nutritionFactsFromCkeValues(
+      parts.slice(allergenIndex + 1),
+    );
 
     if (!nutritionFacts || Object.keys(nutritionFacts).length === 0) {
       continue;
@@ -17583,7 +20198,9 @@ function nutritionFactsFromCkeValues(values) {
     "Sugars",
     "Protein",
   ];
-  const numericValues = values.filter((value) => parseNutritionNumber(value) !== null).slice(0, 12);
+  const numericValues = values
+    .filter((value) => parseNutritionNumber(value) !== null)
+    .slice(0, 12);
 
   if (numericValues.length < 10) {
     return null;
@@ -17593,7 +20210,9 @@ function nutritionFactsFromCkeValues(values) {
     Object.fromEntries(
       labels.map((label, index) => [
         label,
-        index === 0 && numericValues[index] ? `${numericValues[index]} g` : numericValues[index],
+        index === 0 && numericValues[index]
+          ? `${numericValues[index]} g`
+          : numericValues[index],
       ]),
     ),
   );
@@ -17623,7 +20242,8 @@ async function extractElPolloLocoNutritionPdfItems(buffer, restaurant, url) {
   let currentCategory = restaurant.category;
 
   for (const row of rows) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const leftText = cleanText(
       row.items
         .filter((item) => item.x < 430)
@@ -17636,7 +20256,9 @@ async function extractElPolloLocoNutritionPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    const markers = row.items.filter((item) => /^X$/i.test(item.str) && item.x >= 430);
+    const markers = row.items.filter(
+      (item) => /^X$/i.test(item.str) && item.x >= 430,
+    );
 
     if (markers.length === 0 && isCategoryLine(name)) {
       currentCategory = titleCase(name);
@@ -17702,19 +20324,19 @@ function cleanElPolloLocoPdfName(value) {
   return cleanText(value)
     ?.replace(/\s+\*+$/, "")
     .replace(/\bTM\b/g, "")
-    .replace(
-      /(?:\s+-?(?:\d+(?:\.\d+)?|\.\d+)){4,}$/,
-      "",
-    )
+    .replace(/(?:\s+-?(?:\d+(?:\.\d+)?|\.\d+)){4,}$/, "")
     .replace(/\s+/g, " ")
     .trim();
 }
 
 function isElPolloLocoPdfNoise(rowText, name) {
-  return /^(?:Serving Size|Total Calories|Calories from Fat|Total Fat|Saturated Fat|Trans Fat|Cholesterol|Sodium|Total Carbohydrates|Dietary Fiber|Sugars|Protein|Egg|Fish|Milk|Peanut|Sesame|Shellfish|Soy|Tree Nuts|Wheat|NUTRITION GUIDE|All nutritional information|The allergen information|M\d+ \d{4})/i.test(
-    rowText,
-  ) || /^(?:FEATURED|PROTEIN-PACKED|FIRE-GRILLED CHICKEN|SIDES \(Small\) & SAUCES|TOSTADAS & SALADS|BURRITOS|QUESADILLAS|DESSERTS|DRINKS)$/i.test(
-    name,
+  return (
+    /^(?:Serving Size|Total Calories|Calories from Fat|Total Fat|Saturated Fat|Trans Fat|Cholesterol|Sodium|Total Carbohydrates|Dietary Fiber|Sugars|Protein|Egg|Fish|Milk|Peanut|Sesame|Shellfish|Soy|Tree Nuts|Wheat|NUTRITION GUIDE|All nutritional information|The allergen information|M\d+ \d{4})/i.test(
+      rowText,
+    ) ||
+    /^(?:FEATURED|PROTEIN-PACKED|FIRE-GRILLED CHICKEN|SIDES \(Small\) & SAUCES|TOSTADAS & SALADS|BURRITOS|QUESADILLAS|DESSERTS|DRINKS)$/i.test(
+      name,
+    )
   );
 }
 
@@ -17746,7 +20368,8 @@ async function extractBjsAllergenPdfItems(buffer, restaurant, url) {
   let lastBaseName = null;
 
   for (const row of rows) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const leftText = cleanText(
       row.items
         .filter((item) => item.x < 245)
@@ -17758,10 +20381,15 @@ async function extractBjsAllergenPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    const markers = row.items.filter((item) => /^•$/.test(item.str) && item.x >= 245);
+    const markers = row.items.filter(
+      (item) => /^•$/.test(item.str) && item.x >= 245,
+    );
 
     if (markers.length === 0) {
-      if (isCategoryLine(leftText) || /^[A-Z][A-Z\s&'/-]+(?: cont\.)?$/i.test(leftText)) {
+      if (
+        isCategoryLine(leftText) ||
+        /^[A-Z][A-Z\s&'/-]+(?: cont\.)?$/i.test(leftText)
+      ) {
         currentCategory = titleCase(leftText.replace(/\s+cont\.$/i, ""));
       } else if (!/^Choice\b/i.test(leftText)) {
         lastBaseName = leftText;
@@ -17769,7 +20397,11 @@ async function extractBjsAllergenPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    const name = cleanBjsPdfName(/^Choice\b/i.test(leftText) && lastBaseName ? `${lastBaseName} ${leftText}` : leftText);
+    const name = cleanBjsPdfName(
+      /^Choice\b/i.test(leftText) && lastBaseName
+        ? `${lastBaseName} ${leftText}`
+        : leftText,
+    );
 
     if (!name || !isProbablyMenuItemName(name)) {
       continue;
@@ -17788,7 +20420,8 @@ async function extractBjsAllergenPdfItems(buffer, restaurant, url) {
         allergenSourceType: allergenSourceTypes.officialAllergenMenu,
         allergens,
         category: currentCategory,
-        description: "Official BJ's Restaurant & Brewhouse allergen sensitivities PDF.",
+        description:
+          "Official BJ's Restaurant & Brewhouse allergen sensitivities PDF.",
         imageUrl: null,
         mayContain: [],
         name,
@@ -17810,9 +20443,11 @@ function cleanBjsPdfName(value) {
 }
 
 function isBjsPdfNoise(rowText, name) {
-  return /^(?:FOOD ALLERGEN|AND GLUTEN|MAY 20\d{2}|-- \d+ of \d+ --|GA_\d+|Sesame Seeds|Eggs|Peanuts|Shellfish|Sulfites|Wheat|Tree Nuts|Milk|Fish|Soy|Other Gluten|MSG|MSG Notice)/i.test(
-    rowText,
-  ) || /^This version is not currently offered/i.test(name);
+  return (
+    /^(?:FOOD ALLERGEN|AND GLUTEN|MAY 20\d{2}|-- \d+ of \d+ --|GA_\d+|Sesame Seeds|Eggs|Peanuts|Shellfish|Sulfites|Wheat|Tree Nuts|Milk|Fish|Soy|Other Gluten|MSG|MSG Notice)/i.test(
+      rowText,
+    ) || /^This version is not currently offered/i.test(name)
+  );
 }
 
 async function extractBjsNutritionPdfItems(buffer, restaurant, url) {
@@ -17822,7 +20457,8 @@ async function extractBjsNutritionPdfItems(buffer, restaurant, url) {
   let lastBaseName = null;
 
   for (const row of rows) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const leftText = cleanBjsPdfName(
       row.items
         .filter((item) => item.x < 220)
@@ -17835,8 +20471,14 @@ async function extractBjsNutritionPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    if (Object.keys(nutritionFacts ?? {}).length === 0 || parseNutritionNumber(nutritionFacts.Calories) === null) {
-      if (isCategoryLine(leftText) || /^[A-Z][A-Z\s&'/-]+(?: cont\.)?$/i.test(leftText)) {
+    if (
+      Object.keys(nutritionFacts ?? {}).length === 0 ||
+      parseNutritionNumber(nutritionFacts.Calories) === null
+    ) {
+      if (
+        isCategoryLine(leftText) ||
+        /^[A-Z][A-Z\s&'/-]+(?: cont\.)?$/i.test(leftText)
+      ) {
         currentCategory = titleCase(leftText.replace(/\s+cont\.$/i, ""));
       } else if (!/^Choice\b/i.test(leftText)) {
         lastBaseName = leftText;
@@ -17844,7 +20486,11 @@ async function extractBjsNutritionPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    const name = cleanBjsPdfName(/^Choice\b/i.test(leftText) && lastBaseName ? `${lastBaseName} ${leftText}` : leftText);
+    const name = cleanBjsPdfName(
+      /^Choice\b/i.test(leftText) && lastBaseName
+        ? `${lastBaseName} ${leftText}`
+        : leftText,
+    );
 
     if (!name || !isProbablyMenuItemName(name)) {
       continue;
@@ -17859,7 +20505,8 @@ async function extractBjsNutritionPdfItems(buffer, restaurant, url) {
         allergenSourceType: allergenSourceTypes.unavailable,
         allergens: [],
         category: currentCategory,
-        description: "Official BJ's Restaurant & Brewhouse nutrition guide PDF.",
+        description:
+          "Official BJ's Restaurant & Brewhouse nutrition guide PDF.",
         imageUrl: null,
         mayContain: [],
         name,
@@ -17876,7 +20523,9 @@ async function extractBjsNutritionPdfItems(buffer, restaurant, url) {
 
 function nutritionFactsFromBjsRow(items) {
   const valueAt = (targetX, tolerance = 15) =>
-    cleanText(items.find((item) => Math.abs(item.x - targetX) <= tolerance)?.str);
+    cleanText(
+      items.find((item) => Math.abs(item.x - targetX) <= tolerance)?.str,
+    );
 
   return normalizeNutritionFacts({
     Calories: valueAt(228),
@@ -17899,7 +20548,11 @@ function isBjsNutritionNoise(rowText) {
   );
 }
 
-export function extractTropicalSmoothieNutritionPdfItems(text, restaurant, url) {
+export function extractTropicalSmoothieNutritionPdfItems(
+  text,
+  restaurant,
+  url,
+) {
   const codeMap = new Map([
     ["1", "egg"],
     ["2", "fish"],
@@ -17949,13 +20602,19 @@ export function extractTropicalSmoothieNutritionPdfItems(text, restaurant, url) 
       continue;
     }
 
-    const category = tropicalSmoothieCategoryForName(parsed.name, currentCategory);
+    const category = tropicalSmoothieCategoryForName(
+      parsed.name,
+      currentCategory,
+    );
     records.push(
       createRecord({
         allergenSourceType: allergenSourceTypes.officialAllergenMenu,
-        allergens: uniqueStrings(parsed.codes.map((code) => codeMap.get(code)).filter(Boolean)),
+        allergens: uniqueStrings(
+          parsed.codes.map((code) => codeMap.get(code)).filter(Boolean),
+        ),
         category,
-        description: "Official Tropical Smoothie Cafe nutrition guide allergen footnotes.",
+        description:
+          "Official Tropical Smoothie Cafe nutrition guide allergen footnotes.",
         imageUrl: null,
         mayContain: [],
         name: parsed.name,
@@ -17970,7 +20629,9 @@ export function extractTropicalSmoothieNutritionPdfItems(text, restaurant, url) 
   const mergedRecords = records.map((record) => {
     const explicitAllergens =
       explicitAllergensByName.get(similarityKey(record.name)) ??
-      explicitAllergensByName.get(similarityKey(tropicalSmoothieBaseName(record.name)));
+      explicitAllergensByName.get(
+        similarityKey(tropicalSmoothieBaseName(record.name)),
+      );
 
     return explicitAllergens
       ? {
@@ -18001,18 +20662,25 @@ export function extractTropicalSmoothieNutritionPdfItems(text, restaurant, url) 
         allergenSourceType: allergenSourceTypes.officialAllergenMenu,
         allergens,
         category: tropicalSmoothieCategoryForName(name, restaurant.category),
-        description: "Official Tropical Smoothie Cafe nutrition guide allergen table.",
+        description:
+          "Official Tropical Smoothie Cafe nutrition guide allergen table.",
         imageUrl: null,
         mayContain: [],
         name,
         sourceKind: "pdf-matrix",
         sourceUrl: url,
-        variantGroup: tropicalSmoothieCategoryForName(name, restaurant.category),
+        variantGroup: tropicalSmoothieCategoryForName(
+          name,
+          restaurant.category,
+        ),
       }),
     );
   }
 
-  return uniqueBy(mergedRecords, (record) => `${record.category}:${record.name}`);
+  return uniqueBy(
+    mergedRecords,
+    (record) => `${record.category}:${record.name}`,
+  );
 }
 
 function isTropicalSmoothieNutritionCategoryLine(line) {
@@ -18040,7 +20708,9 @@ function tropicalSmoothieCategoryLabel(line) {
 
 function parseTropicalSmoothieNutritionRow(parts) {
   const nameAndCodes = parts[0];
-  const match = nameAndCodes.match(/^(.+?)(?:\s+((?:[1-9]|10)(?:\s+(?:[1-9]|10))*))?$/);
+  const match = nameAndCodes.match(
+    /^(.+?)(?:\s+((?:[1-9]|10)(?:\s+(?:[1-9]|10))*))?$/,
+  );
   const name = cleanText(match?.[1] ?? nameAndCodes);
   const codes = (match?.[2] ?? "").split(/\s+/).filter(Boolean);
   const values = parts.slice(1);
@@ -18055,11 +20725,18 @@ function parseTropicalSmoothieNutritionRow(parts) {
 function parseTropicalSmoothieExplicitAllergenRow(line) {
   const parts = line.split(/\t+/).map(cleanText).filter(Boolean);
 
-  if (parts.length < 4 || !/^allergens?$/i.test(parts[1]) && !/^(?:none|[a-z,\s-]+)$/i.test(parts[1])) {
+  if (
+    parts.length < 4 ||
+    (!/^allergens?$/i.test(parts[1]) &&
+      !/^(?:none|[a-z,\s-]+)$/i.test(parts[1]))
+  ) {
     return null;
   }
 
-  if (!/^(?:yes|no)$/i.test(parts.at(-1) ?? "") || !/^(?:yes|no)$/i.test(parts.at(-2) ?? "")) {
+  if (
+    !/^(?:yes|no)$/i.test(parts.at(-1) ?? "") ||
+    !/^(?:yes|no)$/i.test(parts.at(-2) ?? "")
+  ) {
     return null;
   }
 
@@ -18071,7 +20748,9 @@ function parseTropicalSmoothieExplicitAllergenRow(line) {
   }
 
   return {
-    allergens: /^none$/i.test(allergenText ?? "") ? [] : findAllergensInText(allergenText ?? ""),
+    allergens: /^none$/i.test(allergenText ?? "")
+      ? []
+      : findAllergensInText(allergenText ?? ""),
     name,
   };
 }
@@ -18133,7 +20812,10 @@ function tropicalSmoothieCategoryForName(name, fallbackCategory) {
 function tropicalSmoothieBaseName(name) {
   return cleanText(name)
     ?.replace(/^(?:12|24)\s+oz\s+/i, "")
-    .replace(/\s+(?:full turbinado|no turbinado|add half turbinado|add splenda)$/i, "")
+    .replace(
+      /\s+(?:full turbinado|no turbinado|add half turbinado|add splenda)$/i,
+      "",
+    )
     .trim();
 }
 
@@ -18154,7 +20836,8 @@ async function extractQdobaAllergenPdfItems(buffer, restaurant, url) {
   let currentCategory = restaurant.category;
 
   for (const row of rows) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const name = cleanQdobaPdfName(
       row.items
         .filter((item) => item.x < 155)
@@ -18166,7 +20849,9 @@ async function extractQdobaAllergenPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    const markers = row.items.filter((item) => /^[XΔ]$/i.test(item.str) && item.x >= 155);
+    const markers = row.items.filter(
+      (item) => /^[XΔ]$/i.test(item.str) && item.x >= 155,
+    );
 
     if (markers.length === 0 && isCategoryLine(name)) {
       currentCategory = titleCase(name);
@@ -18214,13 +20899,18 @@ async function extractQdobaAllergenPdfItems(buffer, restaurant, url) {
 }
 
 function cleanQdobaPdfName(value) {
-  return cleanText(value)?.replace(/\s+\*+$/g, "").replace(/\s+/g, " ").trim();
+  return cleanText(value)
+    ?.replace(/\s+\*+$/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function isQdobaPdfNoise(rowText, name) {
-  return /^(?:X Contains|Δ May contain|Wheat|Soy|Milk|Egg|Tree Nuts|Peanuts|Fish|Crustacean|\/Shellfish|Gluten|Vegan|ATTENTION VALUED|Foods prepared|and SHELLFISH|ALLERGEN INFORMATION|-- \d+ of \d+ --|\* Products|V- Vegan|Signature Builds|Kid's Meals)/i.test(
-    rowText,
-  ) || /^(?:Fountain Beverages|Bottled Beverages)$/i.test(name);
+  return (
+    /^(?:X Contains|Δ May contain|Wheat|Soy|Milk|Egg|Tree Nuts|Peanuts|Fish|Crustacean|\/Shellfish|Gluten|Vegan|ATTENTION VALUED|Foods prepared|and SHELLFISH|ALLERGEN INFORMATION|-- \d+ of \d+ --|\* Products|V- Vegan|Signature Builds|Kid's Meals)/i.test(
+      rowText,
+    ) || /^(?:Fountain Beverages|Bottled Beverages)$/i.test(name)
+  );
 }
 
 async function extractDelTacoAllergenPdfItems(buffer, restaurant, url) {
@@ -18242,7 +20932,8 @@ async function extractDelTacoAllergenPdfItems(buffer, restaurant, url) {
   let pendingName = null;
 
   for (const row of rows) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const leftText = cleanDelTacoPdfName(
       row.items
         .filter((item) => item.x < 265)
@@ -18254,12 +20945,17 @@ async function extractDelTacoAllergenPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    const markers = row.items.filter((item) => /^X$/i.test(item.str) && item.x >= 310);
+    const markers = row.items.filter(
+      (item) => /^X$/i.test(item.str) && item.x >= 310,
+    );
 
     const splitName = splitDelTacoLeadingCategory(leftText);
 
     if (markers.length === 0) {
-      if (isCategoryLine(leftText) || /^[A-Z0-9&'®\s-]{3,40}$/.test(leftText)) {
+      if (
+        isCategoryLine(leftText) ||
+        /^[A-Z0-9&'®\s-]{3,40}$/.test(leftText)
+      ) {
         currentCategory = titleCase(leftText);
         pendingName = null;
       } else if (isProbablyMenuItemName(leftText)) {
@@ -18273,7 +20969,9 @@ async function extractDelTacoAllergenPdfItems(buffer, restaurant, url) {
     }
 
     const itemName = splitName?.name ?? leftText;
-    const name = pendingName ? cleanDelTacoPdfName(`${pendingName} ${itemName}`) : itemName;
+    const name = pendingName
+      ? cleanDelTacoPdfName(`${pendingName} ${itemName}`)
+      : itemName;
     pendingName = null;
 
     if (!name || !isProbablyMenuItemName(name)) {
@@ -18304,13 +21002,19 @@ async function extractDelTacoAllergenPdfItems(buffer, restaurant, url) {
 }
 
 function cleanDelTacoPdfName(value) {
-  return cleanText(value)?.replace(/\*+$/g, "").replace(/^& NACHOS\s+/i, "").replace(/\s+/g, " ").trim();
+  return cleanText(value)
+    ?.replace(/\*+$/g, "")
+    .replace(/^& NACHOS\s+/i, "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function isDelTacoPdfNoise(rowText, name) {
-  return /^(?:DEL TACO MENU ITEMS|Vegetarian Vegan|SENSITIVITIES|CLAIMS|Menu Item Name|P5-2026|-- \d+ of \d+ --|©|Please be|DR PEPPER|INGREDIENTS|FOUNTAIN DRINKS)$/i.test(
-    rowText,
-  ) || /^P5-2026\b/i.test(name);
+  return (
+    /^(?:DEL TACO MENU ITEMS|Vegetarian Vegan|SENSITIVITIES|CLAIMS|Menu Item Name|P5-2026|-- \d+ of \d+ --|©|Please be|DR PEPPER|INGREDIENTS|FOUNTAIN DRINKS)$/i.test(
+      rowText,
+    ) || /^P5-2026\b/i.test(name)
+  );
 }
 
 function splitDelTacoLeadingCategory(name) {
@@ -18366,7 +21070,8 @@ async function extractCavaAllergenPdfItems(buffer, restaurant, url) {
   let currentCategory = restaurant.category;
 
   for (const row of rows.filter((entry) => entry.pageNumber <= 3)) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const parsed = parseCavaNutritionRow(row.items);
 
     if (!parsed) {
@@ -18397,7 +21102,8 @@ async function extractCavaAllergenPdfItems(buffer, restaurant, url) {
   }
 
   for (const row of rows.filter((entry) => entry.pageNumber >= 4)) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const name = cleanText(
       row.items
         .filter((item) => item.x < 165)
@@ -18409,7 +21115,10 @@ async function extractCavaAllergenPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    const markers = row.items.filter((item) => /^(?:Contains|•|x|X)$/i.test(item.str) && item.x >= 165 && item.x < 500);
+    const markers = row.items.filter(
+      (item) =>
+        /^(?:Contains|•|x|X)$/i.test(item.str) && item.x >= 165 && item.x < 500,
+    );
 
     if (markers.length === 0 && isCategoryLine(name)) {
       currentCategory = titleCase(name);
@@ -18473,7 +21182,11 @@ function parseCavaNutritionRow(items) {
 }
 
 function cavaNutritionCategory(rowText) {
-  if (/^(?:CURATED BOWLS|PITAS|GREENS\/GRAINS|TOPPINGS|DRESSINGS|DRINKS)$/i.test(rowText)) {
+  if (
+    /^(?:CURATED BOWLS|PITAS|GREENS\/GRAINS|TOPPINGS|DRESSINGS|DRINKS)$/i.test(
+      rowText,
+    )
+  ) {
     return titleCase(rowText);
   }
 
@@ -18497,9 +21210,14 @@ function nutritionFactsFromCavaValues(values) {
 }
 
 function isCavaPdfNoise(rowText, name) {
-  return /^(?:Recipe|Wheat|Shellfish|Contains|ALLERGEN|D I E T|Allergen Guide|While we|We cannot|including salmon|beverage information|-- \d+ of \d+ --)$/i.test(
-    rowText,
-  ) || /^(?:beverage information is calculated without ice\.|Contains Compliant Ingredients)$/i.test(name);
+  return (
+    /^(?:Recipe|Wheat|Shellfish|Contains|ALLERGEN|D I E T|Allergen Guide|While we|We cannot|including salmon|beverage information|-- \d+ of \d+ --)$/i.test(
+      rowText,
+    ) ||
+    /^(?:beverage information is calculated without ice\.|Contains Compliant Ingredients)$/i.test(
+      name,
+    )
+  );
 }
 
 async function extractYardHouseAllergenPdfItems(buffer, restaurant, url) {
@@ -18533,7 +21251,8 @@ async function extractYardHouseAllergenPdfItems(buffer, restaurant, url) {
   let currentCategory = restaurant.category;
 
   for (const row of rows) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const name = cleanYardHousePdfName(
       row.items
         .filter((item) => item.x < 280)
@@ -18545,7 +21264,9 @@ async function extractYardHouseAllergenPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    const markers = row.items.filter((item) => /^[Y●]$/i.test(item.str) && item.x >= 280);
+    const markers = row.items.filter(
+      (item) => /^[Y●]$/i.test(item.str) && item.x >= 280,
+    );
 
     if (markers.length === 0) {
       if (isCategoryLine(name) || /^[A-Z][A-Z\s&+'"-]+$/.test(name)) {
@@ -18629,9 +21350,14 @@ function cleanYardHouseCategoryName(value) {
 }
 
 function isYardHousePdfNoise(rowText, name) {
-  return /^(?:KEY TO|KEY TO THI S GUI DE|ALLERGEN GUIDE|Printed information|The information|current version|grill or fryer|If you have|COMMON ALLERGENS|PREPARATION|Fried|Soybean Oil|Grilled|Peanuts Tree Nuts|Menu items marked|Dairy|Page \d+ of \d+|-- \d+ of \d+ --)$/i.test(
-    rowText,
-  ) || /^(?:KEY TO THI S GUI DE|Peanuts|Tree Nuts|Soy|Eggs|Fish|Molluscs|Crustacean|Sesame|Dairy|Wheat|Gluten|served with pickles and choice of side|served lettuce wrapped|served on flour tortillas|served on corn tortillas)$/i.test(name);
+  return (
+    /^(?:KEY TO|KEY TO THI S GUI DE|ALLERGEN GUIDE|Printed information|The information|current version|grill or fryer|If you have|COMMON ALLERGENS|PREPARATION|Fried|Soybean Oil|Grilled|Peanuts Tree Nuts|Menu items marked|Dairy|Page \d+ of \d+|-- \d+ of \d+ --)$/i.test(
+      rowText,
+    ) ||
+    /^(?:KEY TO THI S GUI DE|Peanuts|Tree Nuts|Soy|Eggs|Fish|Molluscs|Crustacean|Sesame|Dairy|Wheat|Gluten|served with pickles and choice of side|served lettuce wrapped|served on flour tortillas|served on corn tortillas)$/i.test(
+      name,
+    )
+  );
 }
 
 async function extractYardHouseNutritionPdfItems(buffer, restaurant, url) {
@@ -18640,7 +21366,8 @@ async function extractYardHouseNutritionPdfItems(buffer, restaurant, url) {
   let currentCategory = restaurant.category;
 
   for (const row of rows.filter((entry) => entry.pageNumber >= 3)) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const name = cleanYardHousePdfName(
       row.items
         .filter((item) => item.x < 300)
@@ -18692,7 +21419,9 @@ async function extractYardHouseNutritionPdfItems(buffer, restaurant, url) {
 
 function nutritionFactsFromYardHouseRow(items) {
   const valueAt = (targetX, tolerance = 15) =>
-    cleanText(items.find((item) => Math.abs(item.x - targetX) <= tolerance)?.str);
+    cleanText(
+      items.find((item) => Math.abs(item.x - targetX) <= tolerance)?.str,
+    );
 
   return normalizeNutritionFacts({
     Calories: valueAt(322),
@@ -18734,7 +21463,8 @@ async function extractCheddarsAllergenPdfItems(buffer, restaurant, url) {
   let currentCategory = restaurant.category;
 
   for (const row of rows) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const name = cleanText(
       row.items
         .filter((item) => item.x < 545)
@@ -18746,7 +21476,9 @@ async function extractCheddarsAllergenPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    const markers = row.items.filter((item) => /^X$/i.test(item.str) && item.x >= 545);
+    const markers = row.items.filter(
+      (item) => /^X$/i.test(item.str) && item.x >= 545,
+    );
 
     if (markers.length === 0) {
       if (isCategoryLine(name) || /^[A-Z][A-Z\s&'/-]+$/.test(name)) {
@@ -18783,9 +21515,14 @@ async function extractCheddarsAllergenPdfItems(buffer, restaurant, url) {
 }
 
 function isCheddarsPdfNoise(rowText, name) {
-  return /^(?:X Menu Item|Includes all|Fried in Soybean|Oil Grilled|Peanuts|Tree Nuts|Molluscan|Crustacean|Shellfish|Food Allergen Guide|Printed information|The information|most current|cooked on|If you have|-- \d+ of \d+ --)$/i.test(
-    rowText,
-  ) || /^(?:Sides? not included|Side not included|dressing not included)$/i.test(name);
+  return (
+    /^(?:X Menu Item|Includes all|Fried in Soybean|Oil Grilled|Peanuts|Tree Nuts|Molluscan|Crustacean|Shellfish|Food Allergen Guide|Printed information|The information|most current|cooked on|If you have|-- \d+ of \d+ --)$/i.test(
+      rowText,
+    ) ||
+    /^(?:Sides? not included|Side not included|dressing not included)$/i.test(
+      name,
+    )
+  );
 }
 
 async function extractCheddarsNutritionPdfItems(buffer, restaurant, url) {
@@ -18795,7 +21532,8 @@ async function extractCheddarsNutritionPdfItems(buffer, restaurant, url) {
   let pendingPrefix = null;
 
   for (const row of rows) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const name = cleanText(
       row.items
         .filter((item) => item.x < 520)
@@ -18851,7 +21589,9 @@ async function extractCheddarsNutritionPdfItems(buffer, restaurant, url) {
 
 function nutritionFactsFromCheddarsRow(items) {
   const valueAt = (targetX, tolerance = 20) =>
-    cleanText(items.find((item) => Math.abs(item.x - targetX) <= tolerance)?.str);
+    cleanText(
+      items.find((item) => Math.abs(item.x - targetX) <= tolerance)?.str,
+    );
 
   return normalizeNutritionFacts({
     Calories: valueAt(539),
@@ -18890,7 +21630,8 @@ async function extractAuntieAnnesAllergenPdfItems(buffer, restaurant, url) {
   let currentCategory = restaurant.category;
 
   for (const row of rows) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const name = cleanAuntieAnnesPdfName(
       row.items
         .filter((item) => item.x < 300)
@@ -18902,7 +21643,9 @@ async function extractAuntieAnnesAllergenPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    const markers = row.items.filter((item) => /^X$/i.test(item.str) && item.x >= 300);
+    const markers = row.items.filter(
+      (item) => /^X$/i.test(item.str) && item.x >= 300,
+    );
     const categoryHeading = auntieAnnesCategoryHeading(name);
 
     if (markers.length === 0) {
@@ -18920,7 +21663,8 @@ async function extractAuntieAnnesAllergenPdfItems(buffer, restaurant, url) {
           allergenSourceType: allergenSourceTypes.officialAllergenMenu,
           allergens: [],
           category: currentCategory,
-          description: "Official Auntie Anne's allergen and sensitivities PDF matrix.",
+          description:
+            "Official Auntie Anne's allergen and sensitivities PDF matrix.",
           imageUrl: null,
           mayContain: [],
           name: titleCase(name),
@@ -18945,7 +21689,8 @@ async function extractAuntieAnnesAllergenPdfItems(buffer, restaurant, url) {
         allergenSourceType: allergenSourceTypes.officialAllergenMenu,
         allergens,
         category: currentCategory,
-        description: "Official Auntie Anne's allergen and sensitivities PDF matrix.",
+        description:
+          "Official Auntie Anne's allergen and sensitivities PDF matrix.",
         imageUrl: null,
         mayContain: [],
         name: titleCase(name),
@@ -18965,7 +21710,8 @@ async function extractAuntieAnnesNutritionPdfItems(buffer, restaurant, url) {
   let currentCategory = restaurant.category;
 
   for (const row of rows) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const category = auntieAnnesNutritionCategory(rowText);
 
     if (category) {
@@ -18988,7 +21734,10 @@ async function extractAuntieAnnesNutritionPdfItems(buffer, restaurant, url) {
         imageUrl: null,
         mayContain: [],
         name: parsed.name,
-        nutritionFacts: nutritionFactsFromAuntieAnnesValues(parsed.servingSize, parsed.values),
+        nutritionFacts: nutritionFactsFromAuntieAnnesValues(
+          parsed.servingSize,
+          parsed.values,
+        ),
         sourceKind: "pdf-nutrition",
         sourceUrl: url,
         variantGroup: currentCategory,
@@ -19014,9 +21763,13 @@ function parseAuntieAnnesNutritionRow(items) {
     return null;
   }
 
-  const prefix = items.slice(0, items.length - values.length).map((item) => item.str);
+  const prefix = items
+    .slice(0, items.length - values.length)
+    .map((item) => item.str);
   const servingIndex = prefix.findIndex((part) =>
-    /^(?:1 each|Approx|Small|Medium|Large|\d+(?:\.\d+)?\s*oz|1 cup|1 container)/i.test(part),
+    /^(?:1 each|Approx|Small|Medium|Large|\d+(?:\.\d+)?\s*oz|1 cup|1 container)/i.test(
+      part,
+    ),
   );
 
   if (servingIndex <= 0) {
@@ -19026,7 +21779,12 @@ function parseAuntieAnnesNutritionRow(items) {
   const name = cleanAuntieAnnesPdfName(prefix.slice(0, servingIndex).join(" "));
   const servingSize = cleanText(prefix.slice(servingIndex).join(" "));
 
-  if (!name || !servingSize || !isProbablyMenuItemName(name) || isAuntieAnnesPdfNoise(name, name)) {
+  if (
+    !name ||
+    !servingSize ||
+    !isProbablyMenuItemName(name) ||
+    isAuntieAnnesPdfNoise(name, name)
+  ) {
     return null;
   }
 
@@ -19034,7 +21792,11 @@ function parseAuntieAnnesNutritionRow(items) {
 }
 
 function auntieAnnesNutritionCategory(rowText) {
-  if (/^(?:PRETZELS|PRETZEL NUGGETS|PRETZEL DOGS|DIPS|BEVERAGES|CATERING|BREAKFAST)$/i.test(rowText)) {
+  if (
+    /^(?:PRETZELS|PRETZEL NUGGETS|PRETZEL DOGS|DIPS|BEVERAGES|CATERING|BREAKFAST)$/i.test(
+      rowText,
+    )
+  ) {
     return titleCase(rowText);
   }
 
@@ -19067,9 +21829,16 @@ function isAuntieAnnesPdfNoise(rowText, name) {
     return true;
   }
 
-  return /^(?:Food Allergens|Food Sensitivities|THIS CHART|Product|MILK|EGG|FISH|SHELL|TREE|FD&C|MONOSODIUM|GLUTAMATE|MSG|CORN|SULFITES|Please be advised|responsibility|condition or sensitivity|ingredient|questions related|Auntie Anne's LLC|Confidential|Revised|-- \d+ of \d+ --)$/i.test(
-    rowText,
-  ) || /^(?:Food Allergens|Confidential|Revised|Auntie Anne's LLC)$/i.test(name) || /^(?:MISCELLANEOUS|PRETZELS \(without butter\)|DIPS|BEVERAGES)$/i.test(name) === false && name.length < 3;
+  return (
+    /^(?:Food Allergens|Food Sensitivities|THIS CHART|Product|MILK|EGG|FISH|SHELL|TREE|FD&C|MONOSODIUM|GLUTAMATE|MSG|CORN|SULFITES|Please be advised|responsibility|condition or sensitivity|ingredient|questions related|Auntie Anne's LLC|Confidential|Revised|-- \d+ of \d+ --)$/i.test(
+      rowText,
+    ) ||
+    /^(?:Food Allergens|Confidential|Revised|Auntie Anne's LLC)$/i.test(name) ||
+    (/^(?:MISCELLANEOUS|PRETZELS \(without butter\)|DIPS|BEVERAGES)$/i.test(
+      name,
+    ) === false &&
+      name.length < 3)
+  );
 }
 
 function auntieAnnesCategoryHeading(name) {
@@ -19102,7 +21871,8 @@ async function extractTimHortonsAllergenPdfItems(buffer, restaurant, url) {
   let pendingRecord = null;
 
   for (const row of rows) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const leftText = cleanTimHortonsPdfName(
       row.items
         .filter((item) => item.x < 250)
@@ -19114,7 +21884,9 @@ async function extractTimHortonsAllergenPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    const markers = row.items.filter((item) => /^[xo]$/i.test(item.str) && item.x >= 250);
+    const markers = row.items.filter(
+      (item) => /^[xo]$/i.test(item.str) && item.x >= 250,
+    );
 
     if (markers.length === 0) {
       const categoryText = leftText || rowText;
@@ -19206,9 +21978,11 @@ function cleanTimHortonsPdfName(value) {
 }
 
 function isTimHortonsPdfNoise(rowText, name) {
-  return /^(?:Wheat &|Gluten|Menu Item|Milk|Egg|Soy|Peanuts|Tree Nuts|Sesame|Fish|Shellfish|x = Contains|o = May Contain|Page \d+ of \d+|-- \d+ of \d+ --|Tim Hortons USA|Allergen Information|Allergen Statement|Although precaution|This guide|Please consult|A blank field|To find out|Some of our|Beverages - Limited Time Only|Cold Beverages - Limited Time Only|©Tim Hortons)/i.test(
-    rowText,
-  ) || /^(?:Tim Hortons USA|Allergen Information|©Tim Hortons)/i.test(name);
+  return (
+    /^(?:Wheat &|Gluten|Menu Item|Milk|Egg|Soy|Peanuts|Tree Nuts|Sesame|Fish|Shellfish|x = Contains|o = May Contain|Page \d+ of \d+|-- \d+ of \d+ --|Tim Hortons USA|Allergen Information|Allergen Statement|Although precaution|This guide|Please consult|A blank field|To find out|Some of our|Beverages - Limited Time Only|Cold Beverages - Limited Time Only|©Tim Hortons)/i.test(
+      rowText,
+    ) || /^(?:Tim Hortons USA|Allergen Information|©Tim Hortons)/i.test(name)
+  );
 }
 
 function timHortonsCategoryHeading(value) {
@@ -19252,12 +22026,18 @@ function extractDunkinAllergyIngredientPdfItems(text, restaurant, url) {
   const records = [];
 
   for (const block of blocks) {
-    const name = extractDunkinPdfField(block, /^PRODUCT NAME\s+([\s\S]*?)\nCATEGORY\s+/);
+    const name = extractDunkinPdfField(
+      block,
+      /^PRODUCT NAME\s+([\s\S]*?)\nCATEGORY\s+/,
+    );
     const category = extractDunkinPdfField(
       block,
       /\nCATEGORY\s+([\s\S]*?)(?:\nFLAVOR\s+|\nINGREDIENTS\s+)/,
     );
-    const flavor = extractDunkinPdfField(block, /\nFLAVOR\s+([\s\S]*?)\nINGREDIENTS\s+/);
+    const flavor = extractDunkinPdfField(
+      block,
+      /\nFLAVOR\s+([\s\S]*?)\nINGREDIENTS\s+/,
+    );
     const ingredientsText = extractDunkinPdfField(
       block,
       /\nINGREDIENTS\s+([\s\S]*?)\nALLERGENS\b/,
@@ -19266,7 +22046,10 @@ function extractDunkinAllergyIngredientPdfItems(text, restaurant, url) {
       block,
       /\nALLERGENS\b\s*([\s\S]*?)(?:\nWARNING\b|$)/,
     );
-    const warningText = extractDunkinPdfField(block, /\nWARNING\b\s*([\s\S]*?)$/);
+    const warningText = extractDunkinPdfField(
+      block,
+      /\nWARNING\b\s*([\s\S]*?)$/,
+    );
 
     if (!name || !ingredientsText || !isProbablyMenuItemName(name)) {
       continue;
@@ -19305,7 +22088,9 @@ function normalizeDunkinAllergenList(text) {
     return [];
   }
 
-  return normalizeProviderAllergens(cleaned.split(/\s*,\s*|\s+&\s+|\s+and\s+/i));
+  return normalizeProviderAllergens(
+    cleaned.split(/\s*,\s*|\s+&\s+|\s+and\s+/i),
+  );
 }
 
 function normalizeDunkinMayContainList(text) {
@@ -19316,13 +22101,16 @@ function normalizeDunkinMayContainList(text) {
 
 async function extractDunkinNutritionPdfItems(buffer, restaurant, url) {
   const pdfjsLib = await getPdfJsLib();
-  const document = await pdfjsLib.getDocument({ data: new Uint8Array(buffer) }).promise;
+  const document = await pdfjsLib.getDocument({ data: new Uint8Array(buffer) })
+    .promise;
   const lines = [];
 
   for (let pageNumber = 1; pageNumber <= document.numPages; pageNumber += 1) {
     const page = await document.getPage(pageNumber);
     const textContent = await page.getTextContent();
-    lines.push(...textContent.items.map((item) => cleanText(item.str)).filter(Boolean));
+    lines.push(
+      ...textContent.items.map((item) => cleanText(item.str)).filter(Boolean),
+    );
   }
 
   const records = [];
@@ -19374,7 +22162,9 @@ function isDunkinNutritionCategory(line, nextLine) {
   return Boolean(
     line &&
       nextLine === "Serving Size" &&
-      !/^(?:Nutrition Guide|The information|Before placing|Limited Time Products)$/i.test(line),
+      !/^(?:Nutrition Guide|The information|Before placing|Limited Time Products)$/i.test(
+        line,
+      ),
   );
 }
 
@@ -19407,7 +22197,10 @@ function nutritionFactsFromDunkinValues(servingSize, values) {
 
 function extractChipotleNutritionPdfItems(text, restaurant, url) {
   const records = [];
-  const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+  const lines = text
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
 
   for (const line of lines) {
     const parts = line.split(/\t+/).map(cleanText).filter(Boolean);
@@ -19419,7 +22212,11 @@ function extractChipotleNutritionPdfItems(text, restaurant, url) {
     const name = normalizeChipotleNutritionName(parts[0]);
     const nutritionFacts = nutritionFactsFromChipotleParts(parts);
 
-    if (!name || Object.keys(nutritionFacts ?? {}).length === 0 || !isProbablyMenuItemName(name)) {
+    if (
+      !name ||
+      Object.keys(nutritionFacts ?? {}).length === 0 ||
+      !isProbablyMenuItemName(name)
+    ) {
       continue;
     }
 
@@ -19454,7 +22251,10 @@ function normalizeChipotleNutritionName(value) {
   }
 
   const cleaned = raw
-    ?.replace(/\s*\([^)]*(?:large|side|regular|topping\/side|entre[eé]|tacos|burrito)[^)]*\)\s*$/i, "")
+    ?.replace(
+      /\s*\([^)]*(?:large|side|regular|topping\/side|entre[eé]|tacos|burrito)[^)]*\)\s*$/i,
+      "",
+    )
     .trim();
   const aliases = new Map([
     ["Cheese", "Monterey Jack Cheese"],
@@ -19512,7 +22312,9 @@ async function extractPaneraAllergenPdfItems(buffer, restaurant, url) {
 
     if (
       !rowText ||
-      /^(Product|Wheat|Tree Nuts|sources\)|oil\)|Allergen Guide|EDITION|VALID FOR|Below is|NOTE:|To access|•|Page \d+)$/i.test(rowText)
+      /^(Product|Wheat|Tree Nuts|sources\)|oil\)|Allergen Guide|EDITION|VALID FOR|Below is|NOTE:|To access|•|Page \d+)$/i.test(
+        rowText,
+      )
     ) {
       continue;
     }
@@ -19532,7 +22334,9 @@ async function extractPaneraAllergenPdfItems(buffer, restaurant, url) {
         .join(" "),
     );
     const markerItems = row.items.filter((item) => item.x >= 270);
-    const hasMarkers = markerItems.some((item) => /^(yes|may contain|no major allergens present)$/i.test(item.str));
+    const hasMarkers = markerItems.some((item) =>
+      /^(yes|may contain|no major allergens present)$/i.test(item.str),
+    );
 
     if (!hasMarkers) {
       if (name && isProbablyMenuItemName(name)) {
@@ -19559,7 +22363,9 @@ async function extractPaneraAllergenPdfItems(buffer, restaurant, url) {
         continue;
       }
 
-      const matchedColumns = allergenColumns.filter((column) => Math.abs(marker.x - column.x) <= 18);
+      const matchedColumns = allergenColumns.filter(
+        (column) => Math.abs(marker.x - column.x) <= 18,
+      );
 
       if (/^may contain$/i.test(markerText)) {
         mayContain.push(...matchedColumns.map((column) => column.id));
@@ -19588,7 +22394,12 @@ async function extractPaneraAllergenPdfItems(buffer, restaurant, url) {
 }
 
 function paneraCategoryFromRow(items) {
-  const text = cleanText(items.filter((item) => item.x < 270).map((item) => item.str).join(" "));
+  const text = cleanText(
+    items
+      .filter((item) => item.x < 270)
+      .map((item) => item.str)
+      .join(" "),
+  );
   const categories = new Set([
     "Bagels & Spreads",
     "Breads",
@@ -19606,18 +22417,23 @@ function paneraCategoryFromRow(items) {
     "Kids",
   ]);
 
-  return text && categories.has(text) ? text.replace(/\s*-\s*Information.*$/i, "") : null;
+  return text && categories.has(text)
+    ? text.replace(/\s*-\s*Information.*$/i, "")
+    : null;
 }
 
 async function extractPaneraNutritionPdfItems(buffer, restaurant, url) {
   const pdfjsLib = await getPdfJsLib();
-  const document = await pdfjsLib.getDocument({ data: new Uint8Array(buffer) }).promise;
+  const document = await pdfjsLib.getDocument({ data: new Uint8Array(buffer) })
+    .promise;
   const lines = [];
 
   for (let pageNumber = 1; pageNumber <= document.numPages; pageNumber += 1) {
     const page = await document.getPage(pageNumber);
     const textContent = await page.getTextContent();
-    lines.push(...textContent.items.map((item) => cleanText(item.str)).filter(Boolean));
+    lines.push(
+      ...textContent.items.map((item) => cleanText(item.str)).filter(Boolean),
+    );
   }
 
   const records = [];
@@ -19646,7 +22462,10 @@ async function extractPaneraNutritionPdfItems(buffer, restaurant, url) {
         imageUrl: null,
         mayContain: [],
         name: parsedRow.name,
-        nutritionFacts: nutritionFactsFromPaneraValues(parsedRow.servingSize, parsedRow.values),
+        nutritionFacts: nutritionFactsFromPaneraValues(
+          parsedRow.servingSize,
+          parsedRow.values,
+        ),
         sourceKind: "pdf-matrix",
         sourceUrl: url,
         variantGroup: currentCategory,
@@ -19706,7 +22525,10 @@ function isPaneraServingSize(value) {
 }
 
 function isPaneraNutritionValue(value) {
-  return parseNutritionNumber(value) !== null || /^(?:N\/A|less than 1)$/i.test(value ?? "");
+  return (
+    parseNutritionNumber(value) !== null ||
+    /^(?:N\/A|less than 1)$/i.test(value ?? "")
+  );
 }
 
 function paneraNutritionValue(value) {
@@ -19774,10 +22596,7 @@ function extractArbysAllergenPdfItems(text, restaurant, url) {
     const combined = cleanText(`${pending} ${line}`) ?? line;
     pending = "";
     const label = cleanText(
-      combined.replace(
-        /\s+\d+(?:\.\d+)?\s+\d+(?:\.\d+)?[\s\S]*$/,
-        "",
-      ),
+      combined.replace(/\s+\d+(?:\.\d+)?\s+\d+(?:\.\d+)?[\s\S]*$/, ""),
     );
 
     if (!label || !isProbablyMenuItemName(label)) {
@@ -19799,11 +22618,15 @@ function extractArbysAllergenPdfItems(text, restaurant, url) {
     records.push(
       createRecord({
         allergenSourceType: allergenSourceTypes.officialAllergenMenu,
-        allergens: normalizeProviderAllergens(extractArbysDisclosure(label, "contains")),
+        allergens: normalizeProviderAllergens(
+          extractArbysDisclosure(label, "contains"),
+        ),
         category: currentCategory,
         description: "Official Arby's nutrition and allergen information PDF.",
         imageUrl: null,
-        mayContain: normalizeProviderAllergens(extractArbysDisclosure(label, "may")),
+        mayContain: normalizeProviderAllergens(
+          extractArbysDisclosure(label, "may"),
+        ),
         name,
         nutritionFacts: nutritionFactsFromArbysValues(nutritionTail.slice(1)),
         sourceKind: "pdf-matrix",
@@ -19850,7 +22673,9 @@ function extractArbysIngredientsPdfItems(text, restaurant, url) {
 
     if (isArbysCategoryLine(line)) {
       if (pending) {
-        records.push(createArbysIngredientRecord(pending, currentCategory, url));
+        records.push(
+          createArbysIngredientRecord(pending, currentCategory, url),
+        );
         pending = null;
       }
 
@@ -19862,7 +22687,9 @@ function extractArbysIngredientsPdfItems(text, restaurant, url) {
 
     if (startsNewItem) {
       if (pending) {
-        records.push(createArbysIngredientRecord(pending, currentCategory, url));
+        records.push(
+          createArbysIngredientRecord(pending, currentCategory, url),
+        );
       }
 
       const [rawName, ...detailParts] = line.split(":");
@@ -19920,7 +22747,9 @@ function extractArbysDisclosure(label, mode) {
 }
 
 function isArbysPdfNoiseLine(line) {
-  return /^(Serving Weight|Calories|Calories from Fat|Dietary Fiber|Fat - Total|Sugars|Saturated Fat|Protein|Trans Fat|Cholesterol|Sodium|Total Carbohydrate|Arby’s® Nutrition|Major food allergens|† Menu item|that contain major|Manufactured|• Menu item|Page \d+ of \d+)$/i.test(line);
+  return /^(Serving Weight|Calories|Calories from Fat|Dietary Fiber|Fat - Total|Sugars|Saturated Fat|Protein|Trans Fat|Cholesterol|Sodium|Total Carbohydrate|Arby’s® Nutrition|Major food allergens|† Menu item|that contain major|Manufactured|• Menu item|Page \d+ of \d+)$/i.test(
+    line,
+  );
 }
 
 function isArbysCategoryLine(line) {
@@ -19943,7 +22772,8 @@ async function extractWingstopPdfItems(buffer, restaurant, url) {
   let currentCategory = restaurant.category;
 
   for (const row of rows) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
 
     if (
       /\b(?:ALLERGEN|SENSITIVITY|DECLARATION|Wheat|Dairy|Egg|Soy|Fish|Shellfish|Mustard|Celery)\b/i.test(
@@ -19967,7 +22797,9 @@ async function extractWingstopPdfItems(buffer, restaurant, url) {
 
     const name = cleanText(
       row.items
-        .filter((item) => item.x >= 90 && item.x <= 245 && !/^x$/i.test(item.str))
+        .filter(
+          (item) => item.x >= 90 && item.x <= 245 && !/^x$/i.test(item.str),
+        )
         .map((item) => item.str)
         .join(" "),
     );
@@ -20076,7 +22908,10 @@ async function extractWingstopNutritionPdfItems(buffer, restaurant, url) {
           imageUrl: null,
           mayContain: [],
           name,
-          nutritionFacts: nutritionFactsFromWingstopValues(parsed.servingSize, parsed.values),
+          nutritionFacts: nutritionFactsFromWingstopValues(
+            parsed.servingSize,
+            parsed.values,
+          ),
           sourceKind: "pdf-nutrition",
           sourceUrl: url,
           variantGroup: currentCategory,
@@ -20160,7 +22995,11 @@ function nutritionFactsFromWingstopValues(servingSize, values) {
 }
 
 function wingstopMayContainAllergens(name) {
-  if (/\b(classic wings|boneless wings|chicken tenders|chicken sandwich|fries|fried corn)\b/i.test(name)) {
+  if (
+    /\b(classic wings|boneless wings|chicken tenders|chicken sandwich|fries|fried corn)\b/i.test(
+      name,
+    )
+  ) {
     return ["wheat", "gluten"];
   }
 
@@ -20194,12 +23033,16 @@ async function extractPandaExpressPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    const hasNutrition = row.items.some((item) => item.x >= 180 && item.x <= 585 && /^<?\d/.test(item.str));
+    const hasNutrition = row.items.some(
+      (item) => item.x >= 180 && item.x <= 585 && /^<?\d/.test(item.str),
+    );
 
     if (!hasNutrition) {
       if (
         /^[A-Z][A-Z0-9’'&\s*]+$/.test(name) &&
-        !/^(MENU ITEMS|NUTRITION|ALLERGEN|KID’S MEAL|KID'S MEAL|TM)$/i.test(name)
+        !/^(MENU ITEMS|NUTRITION|ALLERGEN|KID’S MEAL|KID'S MEAL|TM)$/i.test(
+          name,
+        )
       ) {
         currentCategory = titleCase(name.replace(/\*+$/, ""));
       }
@@ -20213,7 +23056,9 @@ async function extractPandaExpressPdfItems(buffer, restaurant, url) {
     const allergens = [];
 
     for (const marker of row.items.filter((item) => /^Y$/i.test(item.str))) {
-      const column = allergenColumns.find((entry) => Math.abs(entry.x - marker.x) <= 9);
+      const column = allergenColumns.find(
+        (entry) => Math.abs(entry.x - marker.x) <= 9,
+      );
 
       if (column) {
         allergens.push(column.id);
@@ -20225,7 +23070,8 @@ async function extractPandaExpressPdfItems(buffer, restaurant, url) {
         allergenSourceType: allergenSourceTypes.officialAllergenMenu,
         allergens,
         category: currentCategory,
-        description: "Official Panda Express nutrition and allergen information PDF.",
+        description:
+          "Official Panda Express nutrition and allergen information PDF.",
         imageUrl: null,
         mayContain: [],
         name: name.replace(/\*$/, ""),
@@ -20241,7 +23087,9 @@ async function extractPandaExpressPdfItems(buffer, restaurant, url) {
 
 function nutritionFactsFromPandaExpressRow(items) {
   const valueAt = (targetX, tolerance = 14) =>
-    cleanText(items.find((item) => Math.abs(item.x - targetX) <= tolerance)?.str);
+    cleanText(
+      items.find((item) => Math.abs(item.x - targetX) <= tolerance)?.str,
+    );
 
   return normalizeNutritionFacts({
     "Serving Size": valueAt(185, 18),
@@ -20294,7 +23142,12 @@ async function extractFiveGuysPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    const name = cleanText(row.items.filter((item) => item.x < 130).map((item) => item.str).join(" "));
+    const name = cleanText(
+      row.items
+        .filter((item) => item.x < 130)
+        .map((item) => item.str)
+        .join(" "),
+    );
 
     if (!name) {
       continue;
@@ -20333,7 +23186,8 @@ async function extractFiveGuysPdfItems(buffer, restaurant, url) {
         allergenSourceType: allergenSourceTypes.officialAllergenMenu,
         allergens,
         category: currentCategory,
-        description: "Official Five Guys nutrition and allergen information PDF.",
+        description:
+          "Official Five Guys nutrition and allergen information PDF.",
         imageUrl: null,
         mayContain: [],
         name: name.replace(/\s+\)$/g, ")"),
@@ -20349,7 +23203,9 @@ async function extractFiveGuysPdfItems(buffer, restaurant, url) {
 
 function nutritionFactsFromFiveGuysRow(items) {
   const valueAt = (targetX, tolerance = 12) =>
-    cleanText(items.find((item) => Math.abs(item.x - targetX) <= tolerance)?.str);
+    cleanText(
+      items.find((item) => Math.abs(item.x - targetX) <= tolerance)?.str,
+    );
 
   return normalizeNutritionFacts({
     "Serving Size": valueAt(137),
@@ -20381,17 +23237,15 @@ async function extractZaxbysPdfItems(buffer, restaurant, url) {
     { id: "fish", x: 515 },
     { id: "gluten", x: 575 },
   ];
-  const sectionLabels = new Set([
-    "2",
-    "WITH EACH SAUCE",
-    "(PROTEIN ONLY)",
-  ]);
+  const sectionLabels = new Set(["2", "WITH EACH SAUCE", "(PROTEIN ONLY)"]);
   const records = [];
   let currentCategory = restaurant.category;
 
   for (const row of rows.filter((entry) => entry.pageNumber === 2)) {
     const markerItems = row.items.filter((item) => /^[∙•.]$/.test(item.str));
-    const nameItems = row.items.filter((item) => item.x >= 60 && item.x < 265 && !sectionLabels.has(item.str));
+    const nameItems = row.items.filter(
+      (item) => item.x >= 60 && item.x < 265 && !sectionLabels.has(item.str),
+    );
     const joinedName = cleanText(nameItems.map((item) => item.str).join(" "));
     const rowText = cleanText(row.items.map((item) => item.str).join(" "));
 
@@ -20424,7 +23278,9 @@ async function extractZaxbysPdfItems(buffer, restaurant, url) {
     const allergens = [];
 
     for (const marker of markerItems) {
-      const column = allergenColumns.find((entry) => Math.abs(entry.x - marker.x) <= 8);
+      const column = allergenColumns.find(
+        (entry) => Math.abs(entry.x - marker.x) <= 8,
+      );
 
       if (column) {
         allergens.push(column.id);
@@ -20436,7 +23292,8 @@ async function extractZaxbysPdfItems(buffer, restaurant, url) {
         allergenSourceType: allergenSourceTypes.officialAllergenMenu,
         allergens,
         category: zaxbysCategoryForItem(joinedName, currentCategory),
-        description: "Official Zaxbys nutrition and allergen information guide PDF.",
+        description:
+          "Official Zaxbys nutrition and allergen information guide PDF.",
         imageUrl: null,
         mayContain: [],
         name: joinedName,
@@ -20466,7 +23323,10 @@ async function extractLittleCaesarsPdfItems(buffer, restaurant, url) {
   for (const row of rows) {
     const rowText = cleanText(row.items.map((item) => item.str).join(" "));
 
-    if (!rowText || /^(PRODUCT ALLERGEN INFORMATION|continued)$/i.test(rowText)) {
+    if (
+      !rowText ||
+      /^(PRODUCT ALLERGEN INFORMATION|continued)$/i.test(rowText)
+    ) {
       continue;
     }
 
@@ -20488,8 +23348,12 @@ async function extractLittleCaesarsPdfItems(buffer, restaurant, url) {
         .map((item) => item.str)
         .join(" "),
     );
-    const hasNutrition = row.items.some((item) => item.x >= 215 && item.x <= 490 && /^>?<?\d/.test(item.str));
-    const markers = row.items.filter((item) => /^a$/i.test(item.str) && item.x >= 495);
+    const hasNutrition = row.items.some(
+      (item) => item.x >= 215 && item.x <= 490 && /^>?<?\d/.test(item.str),
+    );
+    const markers = row.items.filter(
+      (item) => /^a$/i.test(item.str) && item.x >= 495,
+    );
 
     if (!name && !hasNutrition && markers.length > 0) {
       pendingName = null;
@@ -20514,7 +23378,9 @@ async function extractLittleCaesarsPdfItems(buffer, restaurant, url) {
     const allergens = [];
 
     for (const marker of markers.length > 0 ? markers : pendingMarkers) {
-      const column = allergenColumns.find((entry) => marker.x >= entry.min && marker.x <= entry.max);
+      const column = allergenColumns.find(
+        (entry) => marker.x >= entry.min && marker.x <= entry.max,
+      );
 
       if (column) {
         allergens.push(column.id);
@@ -20526,7 +23392,8 @@ async function extractLittleCaesarsPdfItems(buffer, restaurant, url) {
         allergenSourceType: allergenSourceTypes.officialAllergenMenu,
         allergens,
         category: littleCaesarsCategoryForItem(itemName, currentCategory),
-        description: "Official Little Caesars nutrition and allergen information PDF.",
+        description:
+          "Official Little Caesars nutrition and allergen information PDF.",
         imageUrl: null,
         mayContain: [],
         name: itemName,
@@ -20544,7 +23411,9 @@ async function extractLittleCaesarsPdfItems(buffer, restaurant, url) {
 
 function nutritionFactsFromLittleCaesarsRow(items) {
   const valueAt = (targetX, tolerance = 13) =>
-    cleanText(items.find((item) => Math.abs(item.x - targetX) <= tolerance)?.str);
+    cleanText(
+      items.find((item) => Math.abs(item.x - targetX) <= tolerance)?.str,
+    );
 
   return normalizeNutritionFacts({
     Calories: valueAt(226),
@@ -20562,7 +23431,9 @@ function nutritionFactsFromLittleCaesarsRow(items) {
 }
 
 function littleCaesarsCategoryFromRow(items) {
-  const text = cleanText(items.map((item) => item.str).join(" "))?.toUpperCase();
+  const text = cleanText(
+    items.map((item) => item.str).join(" "),
+  )?.toUpperCase();
 
   if (!text) {
     return null;
@@ -20588,11 +23459,19 @@ function littleCaesarsCategoryForItem(name, fallback) {
     return "Sauces";
   }
 
-  if (/topping|extra cheese|pepperoni|bacon|sausage|beef|peppers|olives|mushrooms|onions/i.test(name)) {
+  if (
+    /topping|extra cheese|pepperoni|bacon|sausage|beef|peppers|olives|mushrooms|onions/i.test(
+      name,
+    )
+  ) {
     return fallback === "Toppings" ? "Toppings" : fallback;
   }
 
-  if (/crazy bread|cheese bread|cookie|brownie|wings|packet|stuffed crust/i.test(name)) {
+  if (
+    /crazy bread|cheese bread|cookie|brownie|wings|packet|stuffed crust/i.test(
+      name,
+    )
+  ) {
     return "Sides";
   }
 
@@ -20637,7 +23516,7 @@ function zaxbysCategoryFromRow(values) {
     ["DRINKS", "Drinks"],
   ]);
 
-  return normalized ? categoryMap.get(normalized) ?? null : null;
+  return normalized ? (categoryMap.get(normalized) ?? null) : null;
 }
 
 async function extractJackInTheBoxPdfItems(buffer, restaurant, url) {
@@ -20691,7 +23570,11 @@ async function extractJackInTheBoxPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    if (/^(Allergens Reference Guide|8 Major Food Allergens:|-- \d+ of \d+ --)$/i.test(joined)) {
+    if (
+      /^(Allergens Reference Guide|8 Major Food Allergens:|-- \d+ of \d+ --)$/i.test(
+        joined,
+      )
+    ) {
       continue;
     }
 
@@ -20721,7 +23604,9 @@ async function extractJackInTheBoxPdfItems(buffer, restaurant, url) {
     const allergens = [];
 
     for (const marker of row.items.filter((item) => /^x$/i.test(item.str))) {
-      const column = allergenColumns.find((entry) => Math.abs(entry.x - marker.x) <= 8);
+      const column = allergenColumns.find(
+        (entry) => Math.abs(entry.x - marker.x) <= 8,
+      );
 
       if (column) {
         allergens.push(column.id);
@@ -20771,7 +23656,10 @@ async function extractJackInTheBoxNutritionPdfItems(buffer, restaurant, url) {
       createRecord({
         allergenSourceType: allergenSourceTypes.unavailable,
         allergens: [],
-        category: jackInTheBoxCategoryForNutritionItem(parsed.name, currentCategory),
+        category: jackInTheBoxCategoryForNutritionItem(
+          parsed.name,
+          currentCategory,
+        ),
         description: "Official Jack in the Box nutrition facts PDF.",
         imageUrl: null,
         mayContain: [],
@@ -20836,8 +23724,12 @@ function parseJackInTheBoxNutritionRow(parts) {
   if (
     !name ||
     !isProbablyMenuItemName(name) ||
-    /^(?:Product|Serving|Calories|Total|Sodium|Potassium|Protein|Vitamin|Nutrition Facts)$/i.test(name) ||
-    /\b(?:supplies|portioning|ingredient and nutrient information|serving size designation|salad dressing)\b/i.test(name)
+    /^(?:Product|Serving|Calories|Total|Sodium|Potassium|Protein|Vitamin|Nutrition Facts)$/i.test(
+      name,
+    ) ||
+    /\b(?:supplies|portioning|ingredient and nutrient information|serving size designation|salad dressing)\b/i.test(
+      name,
+    )
   ) {
     return null;
   }
@@ -20863,7 +23755,10 @@ function cleanJackInTheBoxNutritionName(parts) {
   }
 
   name = name
-    .replace(/\s+([®,™)])|([(])\s+/g, (_match, suffix, prefix) => suffix ?? prefix)
+    .replace(
+      /\s+([®,™)])|([(])\s+/g,
+      (_match, suffix, prefix) => suffix ?? prefix,
+    )
     .replace(/\s*'\s*s\b/g, "'s")
     .replace(/\s*,\s*/g, ", ")
     .replace(/\s+\.s\b/g, "'s")
@@ -20979,7 +23874,10 @@ async function readPdfPositionRows(buffer) {
   );
 }
 
-async function readPdfVectorMarks(buffer, classifyMark = classifySonicVectorMark) {
+async function readPdfVectorMarks(
+  buffer,
+  classifyMark = classifySonicVectorMark,
+) {
   const pdfjsLib = await getPdfJsLib();
   const { OPS } = pdfjsLib;
   const document = await pdfjsLib.getDocument({
@@ -21075,7 +23973,13 @@ function classifySonicVectorMark(box, fillColor) {
     return null;
   }
 
-  if (isClosePdfColor(fillColor, "#ee3350") && box.width >= 9 && box.width <= 18 && box.height >= 7 && box.height <= 16) {
+  if (
+    isClosePdfColor(fillColor, "#ee3350") &&
+    box.width >= 9 &&
+    box.width <= 18 &&
+    box.height >= 7 &&
+    box.height <= 16
+  ) {
     return {
       centerX: box.x + box.width / 2,
       centerY: box.y + box.height / 2,
@@ -21083,7 +23987,13 @@ function classifySonicVectorMark(box, fillColor) {
     };
   }
 
-  if (isClosePdfColor(fillColor, "#7c94b4") && box.width >= 2 && box.width <= 7 && box.height >= 2 && box.height <= 7) {
+  if (
+    isClosePdfColor(fillColor, "#7c94b4") &&
+    box.width >= 2 &&
+    box.width <= 7 &&
+    box.height >= 2 &&
+    box.height <= 7
+  ) {
     return {
       centerX: box.x + box.width / 2,
       centerY: box.y + box.height / 2,
@@ -21214,11 +24124,15 @@ function isClosePdfColor(actual, expected) {
   const actualRgb = hexToRgb(actual);
   const expectedRgb = hexToRgb(expected);
 
-  return actualRgb.every((channel, index) => Math.abs(channel - expectedRgb[index]) <= 8);
+  return actualRgb.every(
+    (channel, index) => Math.abs(channel - expectedRgb[index]) <= 8,
+  );
 }
 
 function hexToRgb(hex) {
-  return [1, 3, 5].map((index) => Number.parseInt(hex.slice(index, index + 2), 16));
+  return [1, 3, 5].map((index) =>
+    Number.parseInt(hex.slice(index, index + 2), 16),
+  );
 }
 
 function extractInNOutPdfItems(text, restaurant, url) {
@@ -21241,7 +24155,12 @@ function extractInNOutPdfItems(text, restaurant, url) {
     },
     { name: "Cheese", allergens: ["milk", "soy"], mayContain: [] },
     { name: "Spread", allergens: ["egg"], mayContain: [] },
-    { name: "Milk Beverage", allergens: ["milk"], mayContain: [], variantGroup: "Milk" },
+    {
+      name: "Milk Beverage",
+      allergens: ["milk"],
+      mayContain: [],
+      variantGroup: "Milk",
+    },
     {
       name: "Chocolate Shake",
       allergens: ["milk", "soy"],
@@ -21293,7 +24212,10 @@ function extractInNOutPdfItems(text, restaurant, url) {
 
 function extractRaisingCanesPdfItems(text, restaurant, url) {
   const records = [];
-  const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+  const lines = text
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
   let currentCategory = restaurant.category;
 
   for (const line of lines) {
@@ -21303,7 +24225,9 @@ function extractRaisingCanesPdfItems(text, restaurant, url) {
       continue;
     }
 
-    if (/^(INDIVIDUAL ITEMS|COMBINATION MEALS|DRINKS|CONDIMENTS)/i.test(cleanLine)) {
+    if (
+      /^(INDIVIDUAL ITEMS|COMBINATION MEALS|DRINKS|CONDIMENTS)/i.test(cleanLine)
+    ) {
       currentCategory = titleCase(cleanLine.replace(/\s*\[.*$/, ""));
       continue;
     }
@@ -21317,7 +24241,12 @@ function extractRaisingCanesPdfItems(text, restaurant, url) {
     const name = parts[0];
     const code = parts[parts.length - 1]?.replace(/\s+/g, "");
 
-    if (!name || !code || !isProbablyMenuItemName(name) || !/^(?:-|[ESFMNW*]+SS?[ESFMNW*]*)$/i.test(code)) {
+    if (
+      !name ||
+      !code ||
+      !isProbablyMenuItemName(name) ||
+      !/^(?:-|[ESFMNW*]+SS?[ESFMNW*]*)$/i.test(code)
+    ) {
       continue;
     }
 
@@ -21329,7 +24258,8 @@ function extractRaisingCanesPdfItems(text, restaurant, url) {
         allergenSourceType: allergenSourceTypes.officialAllergenMenu,
         allergens: direct,
         category: currentCategory,
-        description: "Official Raising Cane's nutritional and allergen information PDF.",
+        description:
+          "Official Raising Cane's nutritional and allergen information PDF.",
         imageUrl: null,
         mayContain,
         name,
@@ -21386,7 +24316,8 @@ async function extractOliveGardenAllergenPdfItems(buffer, restaurant, url) {
   let currentCategory = null;
 
   for (const row of rows) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const leftText = cleanFirstWatchPdfName(
       row.items
         .filter((item) => item.x < 215)
@@ -21403,7 +24334,11 @@ async function extractOliveGardenAllergenPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    if (!currentCategory || !isProbablyMenuItemName(leftText) || isOliveGardenPdfNonItem(rowText)) {
+    if (
+      !currentCategory ||
+      !isProbablyMenuItemName(leftText) ||
+      isOliveGardenPdfNonItem(rowText)
+    ) {
       continue;
     }
 
@@ -21460,9 +24395,14 @@ async function extractOliveGardenAllergenPdfItems(buffer, restaurant, url) {
 }
 
 function isOliveGardenPdfNonItem(text) {
-  return /^(?:KEY TO THIS GUIDE|PREPARATION|COMMON ALLERGENS|THE INFORMATION BELOW|BEFORE PLACING|Page \d+|US_\d+)/i.test(
-    text,
-  ) || /^\(|^● Menu item presents|\ballergens due to the cooking method\b/i.test(text);
+  return (
+    /^(?:KEY TO THIS GUIDE|PREPARATION|COMMON ALLERGENS|THE INFORMATION BELOW|BEFORE PLACING|Page \d+|US_\d+)/i.test(
+      text,
+    ) ||
+    /^\(|^● Menu item presents|\ballergens due to the cooking method\b/i.test(
+      text,
+    )
+  );
 }
 
 function closestOliveGardenAllergenColumn(x) {
@@ -21514,7 +24454,9 @@ async function extractLongHornAllergenPdfItems(buffer, restaurant, url) {
         continue;
       }
 
-      let cluster = clusters.find((candidate) => Math.abs(candidate.x - x) <= 2);
+      let cluster = clusters.find(
+        (candidate) => Math.abs(candidate.x - x) <= 2,
+      );
 
       if (!cluster) {
         cluster = { x, items: [] };
@@ -21545,7 +24487,11 @@ async function extractLongHornAllergenPdfItems(buffer, restaurant, url) {
         continue;
       }
 
-      if (!currentCategory || !isProbablyMenuItemName(name) || isLongHornPdfNonItem(name)) {
+      if (
+        !currentCategory ||
+        !isProbablyMenuItemName(name) ||
+        isLongHornPdfNonItem(name)
+      ) {
         continue;
       }
 
@@ -21565,7 +24511,10 @@ async function extractLongHornAllergenPdfItems(buffer, restaurant, url) {
           }
         }
 
-        if (/^M$/i.test(item.str) && closestLongHornAllergenColumn(item.y) === "gluten") {
+        if (
+          /^M$/i.test(item.str) &&
+          closestLongHornAllergenColumn(item.y) === "gluten"
+        ) {
           allergens.push("gluten");
           isConfigurable = true;
         }
@@ -21622,7 +24571,11 @@ function cleanLongHornPdfName(value) {
 }
 
 function isLongHornPdfCategory(name, markerItems) {
-  return markerItems.length === 0 && /^[A-Z][A-Z\s,&']+$/.test(name) && name.length >= 4;
+  return (
+    markerItems.length === 0 &&
+    /^[A-Z][A-Z\s,&']+$/.test(name) &&
+    name.length >= 4
+  );
 }
 
 function isLongHornPdfNonItem(name) {
@@ -21667,11 +24620,7 @@ async function extractOutbackAllergenPdfItems(buffer, restaurant, url) {
 
   for (const row of rows) {
     const nameItems = row.items.filter((item) => item.x >= 90 && item.x < 292);
-    const name = cleanText(
-      nameItems
-        .map((item) => item.str)
-        .join(" "),
-    );
+    const name = cleanText(nameItems.map((item) => item.str).join(" "));
 
     if (!name || isOutbackPdfNonItem(name)) {
       continue;
@@ -21744,7 +24693,11 @@ async function extractFirstWatchAllergenPdfItems(buffer, restaurant, url) {
     rows
       .filter((row) => {
         const text = row.items.map((item) => item.str).join(" ");
-        return /\bEgg\b/i.test(text) && /\bFish\b/i.test(text) && /\bMustard\b/i.test(text);
+        return (
+          /\bEgg\b/i.test(text) &&
+          /\bFish\b/i.test(text) &&
+          /\bMustard\b/i.test(text)
+        );
       })
       .map((row) => [row.pageNumber, row.y]),
   );
@@ -21758,7 +24711,8 @@ async function extractFirstWatchAllergenPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const leftText = cleanFirstWatchPdfName(
       row.items
         .filter((item) => item.x < 215)
@@ -21770,8 +24724,13 @@ async function extractFirstWatchAllergenPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    if (/^\d{4}\s+.+MENU$/i.test(rowText) || /^(?:2026\s+)?(?:SUMMER|FALL|WINTER|SPRING)/i.test(rowText)) {
-      currentCategory = titleCase(rowText.replace(/^2026\s+/i, "").replace(/\s+MENU$/i, " Menu"));
+    if (
+      /^\d{4}\s+.+MENU$/i.test(rowText) ||
+      /^(?:2026\s+)?(?:SUMMER|FALL|WINTER|SPRING)/i.test(rowText)
+    ) {
+      currentCategory = titleCase(
+        rowText.replace(/^2026\s+/i, "").replace(/\s+MENU$/i, " Menu"),
+      );
       continue;
     }
 
@@ -21817,7 +24776,10 @@ function isFirstWatchPdfItemName(name, rowText) {
     return false;
   }
 
-  if (/\d{2,}\s+\d+\s+\d+/.test(rowText) || /\b(?:Calories|Protein|Sodium|Carbohydrate)\b/i.test(rowText)) {
+  if (
+    /\d{2,}\s+\d+\s+\d+/.test(rowText) ||
+    /\b(?:Calories|Protein|Sodium|Carbohydrate)\b/i.test(rowText)
+  ) {
     return false;
   }
 
@@ -21863,7 +24825,8 @@ async function extractCrackerBarrelAllergenPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const name = cleanCrackerBarrelPdfName(
       row.items
         .filter((item) => item.x < 365)
@@ -21946,10 +24909,16 @@ function cleanCrackerBarrelPdfName(value) {
 }
 
 function isCrackerBarrelPdfNoise(rowText, name) {
-  return /^(?:Y - potential risk|X - Menu item|Our normal kitchen|Page \d+|\d+)$/i.test(rowText) ||
-    /^(?:Breakfast Menu|Lunch\/Dinner Menu|Preparation|Common Allergies)$/i.test(name) ||
+  return (
+    /^(?:Y - potential risk|X - Menu item|Our normal kitchen|Page \d+|\d+)$/i.test(
+      rowText,
+    ) ||
+    /^(?:Breakfast Menu|Lunch\/Dinner Menu|Preparation|Common Allergies)$/i.test(
+      name,
+    ) ||
     /^\*?with\s*$/i.test(name) ||
-    /^Choice of Three Sauces:/i.test(name);
+    /^Choice of Three Sauces:/i.test(name)
+  );
 }
 
 function crackerBarrelCategoryNames() {
@@ -21995,7 +24964,11 @@ function closestCrackerBarrelAllergenColumn(x) {
   return closest?.distance <= 16 ? closest.allergen : null;
 }
 
-async function extractBuffaloWildWingsAllergenPdfItems(buffer, restaurant, url) {
+async function extractBuffaloWildWingsAllergenPdfItems(
+  buffer,
+  restaurant,
+  url,
+) {
   const rows = await readPdfPositionRows(buffer);
   const records = [];
   let currentCategory = restaurant.category;
@@ -22005,10 +24978,13 @@ async function extractBuffaloWildWingsAllergenPdfItems(buffer, restaurant, url) 
       continue;
     }
 
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const leftItems = row.items.filter((item) => item.x < 170);
     const firstLeftText = cleanBuffaloWildWingsPdfName(leftItems[0]?.str);
-    const name = cleanBuffaloWildWingsPdfName(leftItems.map((item) => item.str).join(" "));
+    const name = cleanBuffaloWildWingsPdfName(
+      leftItems.map((item) => item.str).join(" "),
+    );
 
     if (!name || isBuffaloWildWingsPdfNoise(rowText, name)) {
       continue;
@@ -22027,7 +25003,9 @@ async function extractBuffaloWildWingsAllergenPdfItems(buffer, restaurant, url) 
       .filter((item) => /may contain/i.test(item.str))
       .map((item) => closestBuffaloWildWingsAllergenColumn(item.x))
       .filter(Boolean);
-    const hasFriedPrepMarker = row.items.some((item) => /^X$/i.test(item.str) && item.x < 220);
+    const hasFriedPrepMarker = row.items.some(
+      (item) => /^X$/i.test(item.str) && item.x < 220,
+    );
     const mayContain = uniqueStrings(
       explicitMayContain.length > 0 || hasFriedPrepMarker
         ? [
@@ -22042,7 +25020,8 @@ async function extractBuffaloWildWingsAllergenPdfItems(buffer, restaurant, url) 
         allergenSourceType: allergenSourceTypes.officialAllergenMenu,
         allergens: [],
         category: currentCategory,
-        description: "Buffalo Wild Wings menu item from the official allergen guide.",
+        description:
+          "Buffalo Wild Wings menu item from the official allergen guide.",
         evidenceText:
           "Official BWW allergen guide row parsed; direct marker glyphs are not text-extractable, so cross-contact review is retained.",
         imageUrl: null,
@@ -22066,10 +25045,13 @@ function cleanBuffaloWildWingsPdfName(value) {
 }
 
 function isBuffaloWildWingsPdfNoise(rowText, name) {
-  return /^(?:BUFFALO WILD WINGS|ALLERGEN & PREPARATION GUIDE|VALID|KEY:|PREPARATION|COMMON ALLERGENS|= Contains|Risk of cross-contamination|for all allergens|cooking method|FRIED|EGG|FISH|MILK|PEANUTS|SESAME|SHELLFISH|SOY|TREE NUTS|WHEAT|GLUTEN|©2026|PAGE \d+)/i.test(
-    rowText,
-  ) || /^(?:= Risk of cross-contamination|see Signature Sauces|at select locations|limited time|All dippers are listed|All sandwiches|All burgers|Protein substitutions|Choice of \d|Add Chili|Add Chicken|Add Guacamole|with orzo rice)$/i.test(
-    name,
+  return (
+    /^(?:BUFFALO WILD WINGS|ALLERGEN & PREPARATION GUIDE|VALID|KEY:|PREPARATION|COMMON ALLERGENS|= Contains|Risk of cross-contamination|for all allergens|cooking method|FRIED|EGG|FISH|MILK|PEANUTS|SESAME|SHELLFISH|SOY|TREE NUTS|WHEAT|GLUTEN|©2026|PAGE \d+)/i.test(
+      rowText,
+    ) ||
+    /^(?:= Risk of cross-contamination|see Signature Sauces|at select locations|limited time|All dippers are listed|All sandwiches|All burgers|Protein substitutions|Choice of \d|Add Chili|Add Chicken|Add Guacamole|with orzo rice)$/i.test(
+      name,
+    )
   );
 }
 
@@ -22103,7 +25085,8 @@ async function extractRedLobsterAllergenPdfItems(buffer, restaurant, url) {
   let currentCategory = restaurant.category;
 
   for (const row of rows) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const name = cleanRedLobsterPdfName(
       row.items
         .filter((item) => item.x < 390)
@@ -22117,9 +25100,15 @@ async function extractRedLobsterAllergenPdfItems(buffer, restaurant, url) {
 
     const yesItems = row.items.filter((item) => /^Yes$/i.test(item.str));
     const naItems = row.items.filter((item) => /^#N\/A$/i.test(item.str));
-    const prepRiskItems = row.items.filter((item) => /^[l•●]$/i.test(item.str) && item.x >= 390);
+    const prepRiskItems = row.items.filter(
+      (item) => /^[l•●]$/i.test(item.str) && item.x >= 390,
+    );
 
-    if (yesItems.length === 0 && prepRiskItems.length === 0 && naItems.length >= 5) {
+    if (
+      yesItems.length === 0 &&
+      prepRiskItems.length === 0 &&
+      naItems.length >= 5
+    ) {
       currentCategory = titleCase(name);
       continue;
     }
@@ -22131,7 +25120,8 @@ async function extractRedLobsterAllergenPdfItems(buffer, restaurant, url) {
     const allergens = yesItems
       .map((item) => closestRedLobsterAllergenColumn(item.x))
       .filter(Boolean);
-    const mayContain = prepRiskItems.length > 0 ? majorAllergensForCrossContact() : [];
+    const mayContain =
+      prepRiskItems.length > 0 ? majorAllergensForCrossContact() : [];
 
     records.push(
       createRecord({
@@ -22164,10 +25154,13 @@ function cleanRedLobsterPdfName(value) {
 }
 
 function isRedLobsterPdfNoise(rowText, name) {
-  return /^(?:Key to this Guide|PREPARATION|COMMON ALLERGENS|OTHER|Yes =|Blank =|•=|\*=|Risk of possible|Peanut|Tree Nut|Soy|Egg|Dairy|Wheat|Finfish|Molluscan|Crustacean|Gluten|Sulfites|ALLERGEN GUIDE|US RESTAURANTS|Information Valid|Because of|Soy Allergies|Unless noted|Page \d+|US Version)$/i.test(
-    rowText,
-  ) || /^(?:\*=Regional Item|•= Menu item|\d+\.\s*(?:CHOOSE|ADD ON)|with orzo rice|Blank\s*=\s*Specific allergen|of all allergens due to the cooking method|onions\s*\)|Key to this Guide)$/i.test(
-    name,
+  return (
+    /^(?:Key to this Guide|PREPARATION|COMMON ALLERGENS|OTHER|Yes =|Blank =|•=|\*=|Risk of possible|Peanut|Tree Nut|Soy|Egg|Dairy|Wheat|Finfish|Molluscan|Crustacean|Gluten|Sulfites|ALLERGEN GUIDE|US RESTAURANTS|Information Valid|Because of|Soy Allergies|Unless noted|Page \d+|US Version)$/i.test(
+      rowText,
+    ) ||
+    /^(?:\*=Regional Item|•= Menu item|\d+\.\s*(?:CHOOSE|ADD ON)|with orzo rice|Blank\s*=\s*Specific allergen|of all allergens due to the cooking method|onions\s*\)|Key to this Guide)$/i.test(
+      name,
+    )
   );
 }
 
@@ -22198,7 +25191,8 @@ async function extractRedLobsterNutritionPdfItems(buffer, restaurant, url) {
   let pendingPrefix = null;
 
   for (const row of rows) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const name = cleanRedLobsterPdfName(
       row.items
         .filter((item) => item.x < 285)
@@ -22255,7 +25249,9 @@ async function extractRedLobsterNutritionPdfItems(buffer, restaurant, url) {
 
 function nutritionFactsFromRedLobsterRow(items) {
   const valueAt = (targetX, tolerance = 14) =>
-    cleanText(items.find((item) => Math.abs(item.x - targetX) <= tolerance)?.str);
+    cleanText(
+      items.find((item) => Math.abs(item.x - targetX) <= tolerance)?.str,
+    );
 
   return normalizeNutritionFacts({
     Calories: valueAt(296),
@@ -22298,14 +25294,19 @@ function clusterPdfRowsByPageAndY(rows, tolerance) {
   const rowsByPage = new Map();
 
   for (const row of rows) {
-    rowsByPage.set(row.pageNumber, [...(rowsByPage.get(row.pageNumber) ?? []), row]);
+    rowsByPage.set(row.pageNumber, [
+      ...(rowsByPage.get(row.pageNumber) ?? []),
+      row,
+    ]);
   }
 
   for (const [pageNumber, pageRows] of rowsByPage) {
     const clusters = [];
 
     for (const row of pageRows.sort((left, right) => right.y - left.y)) {
-      let cluster = clusters.find((candidate) => Math.abs(candidate.y - row.y) <= tolerance);
+      let cluster = clusters.find(
+        (candidate) => Math.abs(candidate.y - row.y) <= tolerance,
+      );
 
       if (!cluster) {
         cluster = { items: [], pageNumber, y: row.y };
@@ -22331,7 +25332,10 @@ function extractWaffleHouseNutritionPdfItems(text, restaurant, url) {
   let currentCategory = restaurant.category;
 
   for (const line of lines) {
-    if (/^[A-Z][A-Z\s&'™-]{4,}$/.test(line) && !/\b(?:ALLERGENS|UPDATED|NAME)\b/i.test(line)) {
+    if (
+      /^[A-Z][A-Z\s&'™-]{4,}$/.test(line) &&
+      !/\b(?:ALLERGENS|UPDATED|NAME)\b/i.test(line)
+    ) {
       currentCategory = titleCase(line);
       continue;
     }
@@ -22456,15 +25460,22 @@ async function extractDennysAllergenPdfItems(buffer, restaurant, url) {
   ];
 
   for (const row of rows) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
 
-    if (/^(?:ALLERGENS|X - Contains|◊ - May contain|To designate|PLEASE NOTE|At Denny)/i.test(rowText)) {
+    if (
+      /^(?:ALLERGENS|X - Contains|◊ - May contain|To designate|PLEASE NOTE|At Denny)/i.test(
+        rowText,
+      )
+    ) {
       continue;
     }
 
     clusters.forEach((cluster, clusterIndex) => {
       const clusterItems = row.items.filter(
-        (item) => item.x >= cluster.startX && item.x < (clusters[clusterIndex + 1]?.startX ?? 1100),
+        (item) =>
+          item.x >= cluster.startX &&
+          item.x < (clusters[clusterIndex + 1]?.startX ?? 1100),
       );
       let name = cleanDennysPdfName(
         clusterItems
@@ -22482,7 +25493,9 @@ async function extractDennysAllergenPdfItems(buffer, restaurant, url) {
         return;
       }
 
-      const prefixedName = name.match(/^([A-Za-z][A-Za-z &/'-]{2,30}):\s+(.+)$/);
+      const prefixedName = name.match(
+        /^([A-Za-z][A-Za-z &/'-]{2,30}):\s+(.+)$/,
+      );
 
       if (prefixedName) {
         categories[clusterIndex] = titleCase(prefixedName[1]);
@@ -22535,9 +25548,7 @@ async function extractDennysAllergenPdfItems(buffer, restaurant, url) {
 }
 
 function cleanDennysPdfName(value) {
-  return cleanText(value)
-    ?.replace(/\s+/g, " ")
-    .trim();
+  return cleanText(value)?.replace(/\s+/g, " ").trim();
 }
 
 function isDennysPdfItemName(name) {
@@ -22545,10 +25556,14 @@ function isDennysPdfItemName(name) {
     return false;
   }
 
-  return !/^(?:•|A =|F =|SM =|CO$|X -|◊ -|\(|of any allergen|the following code|A\s+A|A\s+ALLE|key$)/i.test(name) &&
+  return (
+    !/^(?:•|A =|F =|SM =|CO$|X -|◊ -|\(|of any allergen|the following code|A\s+A|A\s+ALLE|key$)/i.test(
+      name,
+    ) &&
     !/\b(?:registered trademarks|encourage any guest|allergen guide provides|shared preparation|ingredient suppliers|contains beef|made in the traditional method)\b/i.test(
       name,
-    );
+    )
+  );
 }
 
 function closestDennysAllergenColumn(x, columns) {
@@ -22564,7 +25579,9 @@ async function extractSonicNutritionPdfItems(buffer, restaurant, url) {
   const records = [];
 
   for (const row of rows) {
-    const parts = row.items.map((item) => cleanSonicNutritionText(item.str)).filter(Boolean);
+    const parts = row.items
+      .map((item) => cleanSonicNutritionText(item.str))
+      .filter(Boolean);
     const parsed = parseSonicNutritionRow(parts);
 
     if (!parsed) {
@@ -22609,7 +25626,9 @@ function parseSonicNutritionRow(parts) {
     return null;
   }
 
-  const name = cleanSonicNutritionName(parts.slice(0, parts.length - values.length).join(" "));
+  const name = cleanSonicNutritionName(
+    parts.slice(0, parts.length - values.length).join(" "),
+  );
 
   if (!name || !isSonicNutritionItemName(name)) {
     return null;
@@ -22656,7 +25675,11 @@ function isSonicNutritionItemName(name) {
     return false;
   }
 
-  if (/^(?:TOTAL|CALORIES|BURGERS|MAKE IT YOURS|WACKY PACK|KIDS MEALS|CHICKEN|SANDWICHES|HOT DOGS|BREAKFAST|COFFEE|SNACKS|SIDES|SONIC BLAST|NUTRITIONAL|INFORMATION|SPRING|From indulgent|Products with|There may be)/i.test(name)) {
+  if (
+    /^(?:TOTAL|CALORIES|BURGERS|MAKE IT YOURS|WACKY PACK|KIDS MEALS|CHICKEN|SANDWICHES|HOT DOGS|BREAKFAST|COFFEE|SNACKS|SIDES|SONIC BLAST|NUTRITIONAL|INFORMATION|SPRING|From indulgent|Products with|There may be)/i.test(
+      name,
+    )
+  ) {
     return false;
   }
 
@@ -22691,7 +25714,8 @@ async function extractSonicAllergenPdfItems(buffer, restaurant, url) {
         .map((item) => item.str)
         .join(" "),
     );
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
 
     if (!leftText) {
       continue;
@@ -22707,7 +25731,11 @@ async function extractSonicAllergenPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    if (/^\(.+\)$/.test(leftText) && previousCandidate && previousCandidate.pageNumber === row.pageNumber) {
+    if (
+      /^\(.+\)$/.test(leftText) &&
+      previousCandidate &&
+      previousCandidate.pageNumber === row.pageNumber
+    ) {
       previousCandidate.name = `${previousCandidate.name} ${leftText}`;
       previousCandidate.yValues.push(row.y);
       continue;
@@ -22762,7 +25790,9 @@ async function extractSonicAllergenPdfItems(buffer, restaurant, url) {
 }
 
 function isSonicAllergenHeaderRow(text) {
-  return /\bMILK\b/i.test(text) && /\bEGG\b/i.test(text) && /\bGLUTEN\b/i.test(text);
+  return (
+    /\bMILK\b/i.test(text) && /\bEGG\b/i.test(text) && /\bGLUTEN\b/i.test(text)
+  );
 }
 
 function isSonicAllergenItemName(name) {
@@ -22770,7 +25800,11 @@ function isSonicAllergenItemName(name) {
     return false;
   }
 
-  if (/^(?:CONTAINS|MAY CONTAIN|Allergen|WARNING|Products with|This information|Ingredients in|Toast\.|gluten because|peanuts and|come in contact)/i.test(name)) {
+  if (
+    /^(?:CONTAINS|MAY CONTAIN|Allergen|WARNING|Products with|This information|Ingredients in|Toast\.|gluten because|peanuts and|come in contact)/i.test(
+      name,
+    )
+  ) {
     return false;
   }
 
@@ -22825,7 +25859,8 @@ async function extractMezehAllergenPdfItems(buffer, restaurant, url) {
   let currentCategory = restaurant.category;
 
   for (const row of rows.filter((entry) => entry.pageNumber >= 3)) {
-    const rowText = cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+    const rowText =
+      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
     const leftText = cleanMezehPdfText(
       row.items
         .filter((item) => item.x < 155)
@@ -22921,7 +25956,11 @@ function closestMezehAllergenColumn(x) {
 }
 
 function isMezehAllergenHeaderRow(text) {
-  return /\bNUTS\b/i.test(text) && /\bMILK\b/i.test(text) && /\bSHELLFISH\b/i.test(text);
+  return (
+    /\bNUTS\b/i.test(text) &&
+    /\bMILK\b/i.test(text) &&
+    /\bSHELLFISH\b/i.test(text)
+  );
 }
 
 function isMezehMenuItemName(value) {
@@ -22930,7 +25969,9 @@ function isMezehMenuItemName(value) {
     value.length >= 3 &&
     value.length <= 80 &&
     isProbablyMenuItemName(value) &&
-    !/^(?:allergen info|signature menu|build your own|\(|\)|contains|fits the diet)$/i.test(value)
+    !/^(?:allergen info|signature menu|build your own|\(|\)|contains|fits the diet)$/i.test(
+      value,
+    )
   );
 }
 
@@ -22988,11 +26029,16 @@ function cleanMezehPdfText(value) {
 }
 
 function isSubwayNutritionPdf(text, url) {
-  return /us-nutrition/i.test(url) || (/Nutrition Information/i.test(text) && /\bCalories\b/i.test(text));
+  return (
+    /us-nutrition/i.test(url) ||
+    (/Nutrition Information/i.test(text) && /\bCalories\b/i.test(text))
+  );
 }
 
 function isSubwayIngredientPdf(text, url) {
-  return /us-ingredients/i.test(url) || /\bINGREDIENT INFORMATION\b/i.test(text);
+  return (
+    /us-ingredients/i.test(url) || /\bINGREDIENT INFORMATION\b/i.test(text)
+  );
 }
 
 function isSubwayAllergenPdf(text, url) {
@@ -23003,7 +26049,9 @@ function isSubwayAllergenPdf(text, url) {
   return (
     /us-allergens|US_Allergen_chart/i.test(url) ||
     (/\b(?:Allergy|Allergen|Sensitivity) Information\b/i.test(text) &&
-      /\b(?:Egg|Fish|Milk|Peanuts?|Sesame|Shellfish|Soy|Tree Nuts?|Wheat|Gluten|Sulfites)\b/i.test(text))
+      /\b(?:Egg|Fish|Milk|Peanuts?|Sesame|Shellfish|Soy|Tree Nuts?|Wheat|Gluten|Sulfites)\b/i.test(
+        text,
+      ))
   );
 }
 
@@ -23133,23 +26181,35 @@ function subwayNutritionAliases(name) {
     ["Double Chocolate Cookie", ["Cookie, Double Chocolate"]],
     ["Egg Patty", ["Egg Omelet Patty (Regular)", "Eggs, Cage-Free"]],
     ["Cheese", ["Pizza, Cheese"]],
-    ["Grilled Chicken", ["Chicken, Grilled", "Chicken, Grilled (with Buffalo sauce)"]],
+    [
+      "Grilled Chicken",
+      ["Chicken, Grilled", "Chicken, Grilled (with Buffalo sauce)"],
+    ],
     ["Honey Mustard", ["Honey Mustard Sauce"]],
     ["Jalapeño Cheddar Bread", ["Jalapeno Cheddar"]],
     ["Loaded Baked Potato with Bacon", ["Loaded Baked Potato"]],
     ["Mayonnaise", ["Mayonnaise, Regular"]],
     ["Meatballs", ["Meatballs & Marinara"]],
-    ["Monterey Cheddar, Shredded", ["Monterey & Cheddar Cheese Blend, Shredded", "Monterey Cheddar"]],
+    [
+      "Monterey Cheddar, Shredded",
+      ["Monterey & Cheddar Cheese Blend, Shredded", "Monterey Cheddar"],
+    ],
     ["MVP Parmesan Vinaigrette", ["MVP Parmesan Vinaigrette®"]],
     ["Mustard, Yellow", ["Yellow Mustard"]],
-    ["Naturally Flavored Raspberry Cheesecake Cookie", ["Cookie, Naturally Flavored Raspberry Cheesecake"]],
+    [
+      "Naturally Flavored Raspberry Cheesecake Cookie",
+      ["Cookie, Naturally Flavored Raspberry Cheesecake"],
+    ],
     ["Oatmeal Raisin Cookie", ["Cookie, Oatmeal Raisin"]],
     ["Parmesan Grated", ["Parmesan Cheese"]],
     ["Pepper Jack", ["Pepperjack Cheese"]],
     ["Peppercorn Ranch", ["Peppercorn Ranch Sauce"]],
     ["Provolone", ["Provolone Cheese"]],
     ["Roasted Garlic Aioli", ["Roasted Garlic Aioli"]],
-    ["Sweet Onion Teriyaki", ["Sweet Onion Teriyaki Sauce (Contains Poppy Seeds)"]],
+    [
+      "Sweet Onion Teriyaki",
+      ["Sweet Onion Teriyaki Sauce (Contains Poppy Seeds)"],
+    ],
     ["Tuna", ["Tuna Salad"]],
     ["Veggie Patty", ["Veggie Patty"]],
     ["White Chip Macadamia Nut Cookie", ["Cookie, White Chip Macadamia Nut"]],
@@ -23188,7 +26248,8 @@ function nutritionFactsFromSubwayValues(values) {
 async function extractSubwayPdfItems(buffer, restaurant, url) {
   const records = [];
   const pdfjsLib = await getPdfJsLib();
-  const document = await pdfjsLib.getDocument({ data: new Uint8Array(buffer) }).promise;
+  const document = await pdfjsLib.getDocument({ data: new Uint8Array(buffer) })
+    .promise;
   let currentCategory = restaurant.category;
 
   try {
@@ -23201,7 +26262,12 @@ async function extractSubwayPdfItems(buffer, restaurant, url) {
         const nameParts = row
           .filter((item) => item.x < 205)
           .map((item) => item.str)
-          .filter((part) => !/^(-- \d+ of \d+ --|U\.S\. Allergy|November|This list|manufacturers|ingredient changes|include some|may come|chart\.|●=|¹|\*\*|2 The|\*Only)/i.test(part));
+          .filter(
+            (part) =>
+              !/^(-- \d+ of \d+ --|U\.S\. Allergy|November|This list|manufacturers|ingredient changes|include some|may come|chart\.|●=|¹|\*\*|2 The|\*Only)/i.test(
+                part,
+              ),
+          );
         const name = cleanText(nameParts.join(" "));
 
         if (!name) {
@@ -23215,7 +26281,9 @@ async function extractSubwayPdfItems(buffer, restaurant, url) {
 
         const direct = [];
         const mayContain = [];
-        const markers = row.filter((item) => /^(?:●|x|X|\*\*)$/.test(item.str.trim()));
+        const markers = row.filter((item) =>
+          /^(?:●|x|X|\*\*)$/.test(item.str.trim()),
+        );
 
         for (const marker of markers) {
           const allergens = closestSubwayAllergens(marker.x);
@@ -23231,7 +26299,10 @@ async function extractSubwayPdfItems(buffer, restaurant, url) {
           continue;
         }
 
-        if (!isProbablyMenuItemName(name) || !isProbablySubwayAllergenMatrixItemName(name, currentCategory)) {
+        if (
+          !isProbablyMenuItemName(name) ||
+          !isProbablySubwayAllergenMatrixItemName(name, currentCategory)
+        ) {
           continue;
         }
 
@@ -23242,7 +26313,8 @@ async function extractSubwayPdfItems(buffer, restaurant, url) {
             allergenSourceType: allergenSourceTypes.officialAllergenMenu,
             allergens: direct,
             category: currentCategory,
-            description: "Official Subway U.S. Allergy and Sensitivity Information matrix.",
+            description:
+              "Official Subway U.S. Allergy and Sensitivity Information matrix.",
             imageUrl: null,
             mayContain,
             name: itemName,
@@ -23267,7 +26339,9 @@ function isProbablySubwayAllergenMatrixItemName(name, category) {
   }
 
   if (
-    /^(?:as ingredients|food manufacturers|however|this list|vary)$/i.test(cleaned) ||
+    /^(?:as ingredients|food manufacturers|however|this list|vary)$/i.test(
+      cleaned,
+    ) ||
     /^[a-z]/.test(cleaned) ||
     /[,;:[\]]/.test(cleaned) ||
     /\b(?:acid|anti|ascorbic|calcium|cultured|dextrose|diglycerides|enzymes|fermented|flour|ingredient|ingredients|inhibitor|manufacturer|manufacturers|mold|nitrate|oil|paprika|pasteurized|potassium|provided|riboflavin|salt|silicon|skim|sodium|soybean|substitutions|thiamine|wheat flour|xanthan)\b/i.test(
@@ -23324,10 +26398,13 @@ function groupPdfTextRows(items) {
 }
 
 function closestSubwayAllergens(x) {
-  const closest = subwayPdfColumns.reduce((best, column) => {
-    const distance = Math.abs(column.x - x);
-    return distance < best.distance ? { column, distance } : best;
-  }, { column: null, distance: Number.POSITIVE_INFINITY });
+  const closest = subwayPdfColumns.reduce(
+    (best, column) => {
+      const distance = Math.abs(column.x - x);
+      return distance < best.distance ? { column, distance } : best;
+    },
+    { column: null, distance: Number.POSITIVE_INFINITY },
+  );
 
   return closest.column && closest.distance < 13 ? [closest.column.id] : [];
 }
@@ -23353,7 +26430,10 @@ function extractDocumentLinks($, url) {
       return;
     }
 
-    if (!/\.(pdf|xlsx?|csv)(?:[?#]|$)/i.test(href) && !directGoogleDriveDownloadUrl(href)) {
+    if (
+      !/\.(pdf|xlsx?|csv)(?:[?#]|$)/i.test(href) &&
+      !directGoogleDriveDownloadUrl(href)
+    ) {
       return;
     }
 
@@ -23367,16 +26447,21 @@ function extractDocumentLinks($, url) {
       $(element).attr("src") ??
       $(element).attr("data");
     const href = absolutizeUrl(source, url);
-    const label = cleanText(
-      [
-        $(element).attr("title"),
-        $(element).attr("aria-label"),
-        $(element).attr("alt"),
-        $(element).closest("article,section,div").find("h1,h2,h3").first().text(),
-      ]
-        .filter(Boolean)
-        .join(" "),
-    ) ?? "";
+    const label =
+      cleanText(
+        [
+          $(element).attr("title"),
+          $(element).attr("aria-label"),
+          $(element).attr("alt"),
+          $(element)
+            .closest("article,section,div")
+            .find("h1,h2,h3")
+            .first()
+            .text(),
+        ]
+          .filter(Boolean)
+          .join(" "),
+      ) ?? "";
 
     if (!href) {
       return;
@@ -23384,11 +26469,18 @@ function extractDocumentLinks($, url) {
 
     const haystack = `${href} ${label}`.toLowerCase();
 
-    if (!/(allergen|allergy|allergies|nutrition|ingredient|pdf|xlsx|xls|csv)/.test(haystack)) {
+    if (
+      !/(allergen|allergy|allergies|nutrition|ingredient|pdf|xlsx|xls|csv)/.test(
+        haystack,
+      )
+    ) {
       return;
     }
 
-    if (!/\.(pdf|xlsx?|csv)(?:[?#]|$)/i.test(href) && !/(allergen|allergies|allergy|nutrition|ingredient)/.test(haystack)) {
+    if (
+      !/\.(pdf|xlsx?|csv)(?:[?#]|$)/i.test(href) &&
+      !/(allergen|allergies|allergy|nutrition|ingredient)/.test(haystack)
+    ) {
       return;
     }
 
@@ -23401,7 +26493,11 @@ function extractDocumentLinks($, url) {
 function discoveredOfficialDocumentRole(link) {
   const haystack = `${link?.url ?? ""} ${link?.label ?? ""}`;
 
-  if (/\b(?:allergens?|allergies|allergy|ingredients?|dietary|sensitivity|sensitivities)\b/i.test(haystack)) {
+  if (
+    /\b(?:allergens?|allergies|allergy|ingredients?|dietary|sensitivity|sensitivities)\b/i.test(
+      haystack,
+    )
+  ) {
     return "official-allergen";
   }
 
@@ -23423,7 +26519,11 @@ function officialPageLinkRole(link) {
     return "official-nutrition";
   }
 
-  if (/\b(?:allergens?|allergies|allergy|dietary|sensitivity|sensitivities)\b/i.test(haystack)) {
+  if (
+    /\b(?:allergens?|allergies|allergy|dietary|sensitivity|sensitivities)\b/i.test(
+      haystack,
+    )
+  ) {
     return "official-allergen";
   }
 
@@ -23470,9 +26570,15 @@ function extractOfficialPageLinks($, url) {
     const rawHref = $(element).attr("href");
     const href = absolutizeUrl(rawHref, url);
     const text =
-      cleanText([$(element).text(), $(element).attr("aria-label"), $(element).attr("title")]
-        .filter(Boolean)
-        .join(" ")) ?? "";
+      cleanText(
+        [
+          $(element).text(),
+          $(element).attr("aria-label"),
+          $(element).attr("title"),
+        ]
+          .filter(Boolean)
+          .join(" "),
+      ) ?? "";
 
     if (!href || !isSameSite(href, url)) {
       return;
@@ -23488,15 +26594,25 @@ function extractOfficialPageLinks($, url) {
 
     const haystack = `${href} ${text}`;
 
-    if (!/\b(?:allergens?|allergies|allergy|ingredients?|nutrition|nutritional|calculator|dietary|sensitivity|sensitivities)\b/i.test(haystack)) {
+    if (
+      !/\b(?:allergens?|allergies|allergy|ingredients?|nutrition|nutritional|calculator|dietary|sensitivity|sensitivities)\b/i.test(
+        haystack,
+      )
+    ) {
       return;
     }
 
-    if (/\b(?:order|delivery|takeout|reservation|catering|careers?|jobs?|gift\s*card|privacy|terms|contact)\b/i.test(haystack)) {
+    if (
+      /\b(?:order|delivery|takeout|reservation|catering|careers?|jobs?|gift\s*card|privacy|terms|contact)\b/i.test(
+        haystack,
+      )
+    ) {
       return;
     }
 
-    if (isLikelyMenuItemDetailOfficialFalsePositive({ label: text, url: href })) {
+    if (
+      isLikelyMenuItemDetailOfficialFalsePositive({ label: text, url: href })
+    ) {
       return;
     }
 
@@ -23519,13 +26635,23 @@ function extractMenuPageLinks($, url) {
 
   $("a[href]").each((_index, element) => {
     const href = absolutizeUrl($(element).attr("href"), url);
-    const text = cleanText($(element).text()) ?? cleanText($(element).attr("aria-label")) ?? "";
+    const text =
+      cleanText($(element).text()) ??
+      cleanText($(element).attr("aria-label")) ??
+      "";
 
-    if (!href || (!isSameSite(href, url) && !isTrustedExternalMenuPageLink(href, text, url))) {
+    if (
+      !href ||
+      (!isSameSite(href, url) &&
+        !isTrustedExternalMenuPageLink(href, text, url))
+    ) {
       return;
     }
 
-    if (stripHashFromUrl(href) === current || /\.(?:pdf|xlsx?|csv|jpe?g|png|webp|gif|svg)(?:[?#]|$)/i.test(href)) {
+    if (
+      stripHashFromUrl(href) === current ||
+      /\.(?:pdf|xlsx?|csv|jpe?g|png|webp|gif|svg)(?:[?#]|$)/i.test(href)
+    ) {
       return;
     }
 
@@ -23566,7 +26692,9 @@ function extractMenuPageLinks($, url) {
     if (
       locationMenuMatch &&
       currentPathname !== "/" &&
-      !currentPathname.toLowerCase().includes(locationMenuMatch[1].toLowerCase())
+      !currentPathname
+        .toLowerCase()
+        .includes(locationMenuMatch[1].toLowerCase())
     ) {
       return;
     }
@@ -23611,7 +26739,11 @@ function isTrustedExternalMenuPageLink(href, label, sourceUrl) {
   const path = target.pathname;
   const haystack = `${href} ${label}`;
 
-  if (!/(?:^|\.)squarespace\.com$|^g\.snyit\.com$|^(?:drive|docs)\.google\.com$/i.test(host)) {
+  if (
+    !/(?:^|\.)squarespace\.com$|^g\.snyit\.com$|^(?:drive|docs)\.google\.com$/i.test(
+      host,
+    )
+  ) {
     return false;
   }
 
@@ -23632,7 +26764,9 @@ function isThirdPartyMarketplaceUrl(url) {
   try {
     const host = new URL(url).hostname.replace(/^www\./i, "");
 
-    return /^(?:grubhub|ubereats|doordash|seamless|postmates|slicelife)\.com$/i.test(host);
+    return /^(?:grubhub|ubereats|doordash|seamless|postmates|slicelife)\.com$/i.test(
+      host,
+    );
   } catch {
     return false;
   }
@@ -23660,7 +26794,10 @@ export function directGoogleDriveDownloadUrl(url) {
     return null;
   }
 
-  if (/\/uc$/i.test(parsed.pathname) && parsed.searchParams.get("export") === "download") {
+  if (
+    /\/uc$/i.test(parsed.pathname) &&
+    parsed.searchParams.get("export") === "download"
+  ) {
     return null;
   }
 
@@ -23682,7 +26819,10 @@ function extractCommonMenuPathLinks($, url) {
 
   const pathname = parsed.pathname.replace(/\/+$/g, "") || "/";
 
-  if (pathname !== "/" && !/^\/(?:home|welcome|locations?\/[^/]+)$/i.test(pathname)) {
+  if (
+    pathname !== "/" &&
+    !/^\/(?:home|welcome|locations?\/[^/]+)$/i.test(pathname)
+  ) {
     return [];
   }
 
@@ -23701,7 +26841,11 @@ function extractSinglePlatformMenuPageLinks($, url) {
 
   $("script[src], [data-location]").each((_index, element) => {
     const attrs = element.attribs ?? {};
-    snippets.push(Object.entries(attrs).map(([key, value]) => `${key}="${value}"`).join(" "));
+    snippets.push(
+      Object.entries(attrs)
+        .map(([key, value]) => `${key}="${value}"`)
+        .join(" "),
+    );
   });
 
   for (const rawSnippet of snippets) {
@@ -23716,7 +26860,8 @@ function extractSinglePlatformMenuPageLinks($, url) {
     const domainMatch = /menus\.(singleplatform\.[a-z.]+)\/widget/i.exec(text);
     const placesHost = `places.${domainMatch?.[1] ?? "singleplatform.com"}`;
     let match;
-    const locationPattern = /\bdata-location\s*=\s*["']([^"']+)["']|\blocation\s*[:=]\s*["']([a-z0-9_-]+)["']/gi;
+    const locationPattern =
+      /\bdata-location\s*=\s*["']([^"']+)["']|\blocation\s*[:=]\s*["']([a-z0-9_-]+)["']/gi;
 
     while ((match = locationPattern.exec(text))) {
       const locationId = cleanText(match[1] ?? match[2]);
@@ -23772,7 +26917,9 @@ function extractPopmenuMenuPageLinks($, restaurant, url) {
 
       const haystack = `${pathname} ${href}`;
       const isRootPage = currentPathname === "/" || currentPathname === "";
-      const isMenuLandingPage = /^\/(?:menu|[^/]+-menu)$/i.test(currentPathname);
+      const isMenuLandingPage = /^\/(?:menu|[^/]+-menu)$/i.test(
+        currentPathname,
+      );
       const isMenuSectionPage = /^\/menus\//i.test(currentPathname);
 
       if (isRootPage && pathname !== "/menu") {
@@ -23800,7 +26947,9 @@ function extractPopmenuMenuPageLinks($, restaurant, url) {
       }
 
       if (
-        /dc|washington/i.test(`${restaurant.city ?? ""} ${restaurant.region ?? ""} ${restaurant.locationId ?? ""} ${url}`) &&
+        /dc|washington/i.test(
+          `${restaurant.city ?? ""} ${restaurant.region ?? ""} ${restaurant.locationId ?? ""} ${url}`,
+        ) &&
         /\b(?:west[-\s]?palm|florida|palm[-\s]?beach)\b/i.test(haystack)
       ) {
         continue;
@@ -23835,7 +26984,9 @@ function extractToastOrderPageLinks($, url) {
     candidates.push($(element).attr("href"));
   });
 
-  $("[data-current-styles], [data-url], [data-href], [data-config], script").each((_index, element) => {
+  $(
+    "[data-current-styles], [data-url], [data-href], [data-config], script",
+  ).each((_index, element) => {
     const attrs = element.attribs ?? {};
 
     for (const value of Object.values(attrs)) {
@@ -23850,10 +27001,15 @@ function extractToastOrderPageLinks($, url) {
   for (const value of candidates) {
     const text = decodeHtml(String(value ?? "")).replace(/\\\//g, "/");
 
-    for (const match of text.matchAll(/https?:\/\/(?:order\.toasttab\.com\/online\/[A-Za-z0-9._~:/?#[@!$&'()*+,;=%-]+|www\.toasttab\.com\/local\/order\/[A-Za-z0-9._~:/?#[@!$&'()*+,;=%-]+|www\.toasttab\.com\/[A-Za-z0-9._~:/?#[@!$&'()*+,;=%-]+\/v3\/?)/gi)) {
+    for (const match of text.matchAll(
+      /https?:\/\/(?:order\.toasttab\.com\/online\/[A-Za-z0-9._~:/?#[@!$&'()*+,;=%-]+|www\.toasttab\.com\/local\/order\/[A-Za-z0-9._~:/?#[@!$&'()*+,;=%-]+|www\.toasttab\.com\/[A-Za-z0-9._~:/?#[@!$&'()*+,;=%-]+\/v3\/?)/gi,
+    )) {
       const href = absolutizeUrl(match[0].replace(/[),.;]+$/, ""), url);
 
-      if (!href || /(?:findcard|rewards|marketing-signup|gift|card|checkout)/i.test(href)) {
+      if (
+        !href ||
+        /(?:findcard|rewards|marketing-signup|gift|card|checkout)/i.test(href)
+      ) {
         continue;
       }
 
@@ -23977,7 +27133,10 @@ function isDiscoveredPageRelevantToSource(source, link) {
   const explicitLocation = locationTokenFromUrl(link?.url);
   const pathLocationScope = menuLocationScopeFromUrl(link?.url);
 
-  if (isFoundingFarmersSource(source) && !isFoundingFarmersDiscoveredPageRelevantToSource(source, link)) {
+  if (
+    isFoundingFarmersSource(source) &&
+    !isFoundingFarmersDiscoveredPageRelevantToSource(source, link)
+  ) {
     return false;
   }
 
@@ -24018,7 +27177,11 @@ function isFoundingFarmersDiscoveredPageRelevantToSource(source, link) {
   const slug = slugText(url);
   const locationId = slugText(source?.locationId ?? "");
 
-  if (/fishers|bakers|distillers|reston|tysons|fffb|ffd|ffbbq|allstores/i.test(slug)) {
+  if (
+    /fishers|bakers|distillers|reston|tysons|fffb|ffd|ffbbq|allstores/i.test(
+      slug,
+    )
+  ) {
     return false;
   }
 
@@ -24045,10 +27208,16 @@ function discoveredPageMatchesSourceLocation(source, link) {
   const explicitLocation = locationTokenFromUrl(link?.url);
 
   if (explicitLocation) {
-    return sourceTokens.length > 0 && sourceTokens.some((token) => explicitLocation.includes(token));
+    return (
+      sourceTokens.length > 0 &&
+      sourceTokens.some((token) => explicitLocation.includes(token))
+    );
   }
 
-  return sourceTokens.length > 0 && sourceTokens.some((token) => haystack.includes(token));
+  return (
+    sourceTokens.length > 0 &&
+    sourceTokens.some((token) => haystack.includes(token))
+  );
 }
 
 function locationTokenFromUrl(url) {
@@ -24064,7 +27233,11 @@ function isTopLevelDiscoveredMenuPage(link) {
   try {
     const pathname = new URL(link?.url ?? "").pathname.replace(/\/+$/g, "");
 
-    return /menu/i.test(pathname) && (!/^\/menus\//i.test(pathname) || Boolean(menuLocationScopeFromUrl(link?.url)));
+    return (
+      /menu/i.test(pathname) &&
+      (!/^\/menus\//i.test(pathname) ||
+        Boolean(menuLocationScopeFromUrl(link?.url)))
+    );
   } catch {
     return false;
   }
@@ -24092,7 +27265,10 @@ function menuLocationScopeFromUrl(url) {
       continue;
     }
 
-    if (/^(?:menus?|locations?-menus?|location-menus?)$/.test(segment) && isLocationScopedMenuSegment(next)) {
+    if (
+      /^(?:menus?|locations?-menus?|location-menus?)$/.test(segment) &&
+      isLocationScopedMenuSegment(next)
+    ) {
       return next;
     }
   }
@@ -24119,7 +27295,9 @@ function isLocationScopedMenuSegment(segment) {
 
   return (
     hasKnownStateSuffix(segment) ||
-    /\b(?:dc|md|va|ct|ny|nj|pa|de|fl|ca|co|ga|il|in|ma|mi|nc|nv|oh|tn|tx|wa)\b/.test(segment) ||
+    /\b(?:dc|md|va|ct|ny|nj|pa|de|fl|ca|co|ga|il|in|ma|mi|nc|nv|oh|tn|tx|wa)\b/.test(
+      segment,
+    ) ||
     /\b(?:alexandria|annandale|arlington|ashburn|bethesda|boston|brookfield|centreville|chantilly|chicago|college-park|columbus|dallas|denver|fairfax|falls-church|gaithersburg|glastonbury|herndon|hyattsville|indianapolis|kansas-city|laurel|las-vegas|manassas|mclean|miami|naples|nashville|national-harbor|north-arlington|palm-beach|reston|rockville|silver-spring|springfield|sterling|takoma-park|tysons|waldorf|washington|woodbridge)\b/.test(
       segment,
     )
@@ -24144,7 +27322,10 @@ function sourceLocationTokens(source) {
     source?.address?.displayAddress,
   ];
 
-  if (/^(?:washington|dc)$/i.test(`${source?.city ?? ""}`) || /^DC$/i.test(`${source?.region ?? ""}`)) {
+  if (
+    /^(?:washington|dc)$/i.test(`${source?.city ?? ""}`) ||
+    /^DC$/i.test(`${source?.region ?? ""}`)
+  ) {
     rawTokens.push("dc", "washington", "district of columbia");
   }
 
@@ -24153,7 +27334,11 @@ function sourceLocationTokens(source) {
       rawTokens
         .flatMap((value) => slugText(value).split("-"))
         .filter((token) => token.length >= 3 || token === "dc")
-        .concat(rawTokens.map(slugText).filter((token) => token.length >= 3 || token === "dc")),
+        .concat(
+          rawTokens
+            .map(slugText)
+            .filter((token) => token.length >= 3 || token === "dc"),
+        ),
     ),
   );
 }
@@ -24192,19 +27377,29 @@ function extractLocationPageLinks($, url) {
     currentPathname = "";
   }
 
-  if (/\/(?:locations?|menus?[^/]*|nutrition[^/]*|allergens?[^/]*|ingredients?[^/]*|loyalty|rewards?)(?:\/|$)/i.test(currentPathname)) {
+  if (
+    /\/(?:locations?|menus?[^/]*|nutrition[^/]*|allergens?[^/]*|ingredients?[^/]*|loyalty|rewards?)(?:\/|$)/i.test(
+      currentPathname,
+    )
+  ) {
     return [];
   }
 
   $("a[href]").each((_index, element) => {
     const href = absolutizeUrl($(element).attr("href"), url);
-    const text = cleanText($(element).text()) ?? cleanText($(element).attr("aria-label")) ?? "";
+    const text =
+      cleanText($(element).text()) ??
+      cleanText($(element).attr("aria-label")) ??
+      "";
 
     if (!href || !isSameSite(href, url)) {
       return;
     }
 
-    if (stripHashFromUrl(href) === current || /\.(?:pdf|xlsx?|csv|jpe?g|png|webp|gif|svg)(?:[?#]|$)/i.test(href)) {
+    if (
+      stripHashFromUrl(href) === current ||
+      /\.(?:pdf|xlsx?|csv|jpe?g|png|webp|gif|svg)(?:[?#]|$)/i.test(href)
+    ) {
       return;
     }
 
@@ -24222,7 +27417,11 @@ function extractLocationPageLinks($, url) {
 
     const haystack = `${href} ${text}`;
 
-    if (/\b(?:careers?|jobs?|gift\s*card|privacy|terms|contact|events?|catering|reservations?)\b/i.test(haystack)) {
+    if (
+      /\b(?:careers?|jobs?|gift\s*card|privacy|terms|contact|events?|catering|reservations?)\b/i.test(
+        haystack,
+      )
+    ) {
       return;
     }
 
@@ -24246,13 +27445,17 @@ function extractApiLinks($, url, restaurant = null) {
     const apiUrl = oloVendorApiUrlForMenuUrl(href);
 
     if (apiUrl) {
-      links.push({ label: cleanText($(element).text()) ?? "Olo vendor menu API", url: apiUrl });
+      links.push({
+        label: cleanText($(element).text()) ?? "Olo vendor menu API",
+        url: apiUrl,
+      });
     }
   });
 
   $("meta[property='mmd']").each((_index, element) => {
     const $element = $(element);
-    const baseUrl = $element.attr("data-baseUrl") ?? $element.attr("data-baseurl") ?? url;
+    const baseUrl =
+      $element.attr("data-baseUrl") ?? $element.attr("data-baseurl") ?? url;
 
     for (const attr of ["data-allergens", "data-ingredients"]) {
       const href = absolutizeUrl($element.attr(attr), baseUrl);
@@ -24326,14 +27529,20 @@ function extractLunchboxNovaBundleLinks($, url) {
   return uniqueBy(links, (link) => normalizeUrl(link.url)).slice(0, 4);
 }
 
-function extractLunchboxNovaMenuApiLinksFromBundle(text, _restaurant, url, queueEntry = null) {
+function extractLunchboxNovaMenuApiLinksFromBundle(
+  text,
+  _restaurant,
+  url,
+  queueEntry = null,
+) {
   if (queueEntry?.role !== "lunchbox-nova-app-bundle") {
     return [];
   }
 
   const baseUrl = lunchboxNovaApiBaseFromBundle(text);
   const apiKey = lunchboxNovaApiKeyFromBundle(text);
-  const storeId = queueEntry.storeId ?? lunchboxStoreIdFromUrl(queueEntry.referer ?? url);
+  const storeId =
+    queueEntry.storeId ?? lunchboxStoreIdFromUrl(queueEntry.referer ?? url);
 
   if (!baseUrl || !apiKey) {
     return [];
@@ -24375,7 +27584,12 @@ function extractLunchboxNovaMenuApiLinksFromBundle(text, _restaurant, url, queue
   ];
 }
 
-function extractLunchboxNovaMenuApiLinksFromStoreLookup(text, restaurant, url, queueEntry = null) {
+function extractLunchboxNovaMenuApiLinksFromStoreLookup(
+  text,
+  restaurant,
+  url,
+  queueEntry = null,
+) {
   if (queueEntry?.role !== "lunchbox-nova-store-lookup") {
     return [];
   }
@@ -24383,7 +27597,8 @@ function extractLunchboxNovaMenuApiLinksFromStoreLookup(text, restaurant, url, q
   const parsed = parseJsonLoose(text);
   const stores = Array.isArray(parsed) ? parsed : asArray(parsed?.data);
   const store = pickLunchboxNovaStore(stores, restaurant);
-  const apiKey = queueEntry.apiKey ?? queueEntry.fetchOptions?.extraHeaders?.["ND-API-Key"];
+  const apiKey =
+    queueEntry.apiKey ?? queueEntry.fetchOptions?.extraHeaders?.["ND-API-Key"];
 
   if (!store?.store_id || !apiKey) {
     return [];
@@ -24442,7 +27657,9 @@ function pickLunchboxNovaStore(stores, restaurant) {
           .filter(Boolean)
           .join(" "),
       );
-      const score = sourceTokens.filter((token) => token.length >= 3 && haystack.includes(token)).length;
+      const score = sourceTokens.filter(
+        (token) => token.length >= 3 && haystack.includes(token),
+      ).length;
 
       return { score, store };
     })
@@ -24468,7 +27685,9 @@ function lunchboxNovaSourceTokens(restaurant) {
         if (
           token &&
           token.length >= 3 &&
-          !/^(?:locations?|menus?|order|online|pickup|delivery|restaurant)$/.test(token)
+          !/^(?:locations?|menus?|order|online|pickup|delivery|restaurant)$/.test(
+            token,
+          )
         ) {
           tokens.add(token);
         }
@@ -24492,14 +27711,25 @@ function lunchboxNovaBaseUrlFromApiUrl(url) {
 }
 
 function lunchboxNovaApiBaseFromBundle(text) {
-  const matches = [...String(text ?? "").matchAll(/https:\/\/[a-z0-9.-]+\.novadine\.com\/api\/v\d+/gi)];
+  const matches = [
+    ...String(text ?? "").matchAll(
+      /https:\/\/[a-z0-9.-]+\.novadine\.com\/api\/v\d+/gi,
+    ),
+  ];
   return matches[0]?.[0] ?? null;
 }
 
 function lunchboxNovaApiKeyFromBundle(text) {
-  const candidates = [...String(text ?? "").matchAll(/["']([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})["']/gi)]
+  const candidates = [
+    ...String(text ?? "").matchAll(
+      /["']([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})["']/gi,
+    ),
+  ]
     .map((match) => match[1])
-    .filter((value) => value && !/^00000000-0000-0000-0000-000000000000$/i.test(value));
+    .filter(
+      (value) =>
+        value && !/^00000000-0000-0000-0000-000000000000$/i.test(value),
+    );
 
   return candidates[0] ?? null;
 }
@@ -24540,8 +27770,10 @@ function extractDardenPlatformApiLinks($, url) {
   for (const rawText of texts) {
     const text = decodeHtml(String(rawText ?? "").replace(/\\\//g, "/"));
     let match;
-    const locationPattern = /\/locations\/[^"'<>\s?#]+\/(\d{3,8})(?:[?#][^"'<>\s]*)?/gi;
-    const restaurantNumberPattern = /\brestaurantNum(?:ber)?["']?\s*[:=]\s*["']?(\d{3,8})\b/gi;
+    const locationPattern =
+      /\/locations\/[^"'<>\s?#]+\/(\d{3,8})(?:[?#][^"'<>\s]*)?/gi;
+    const restaurantNumberPattern =
+      /\brestaurantNum(?:ber)?["']?\s*[:=]\s*["']?(\d{3,8})\b/gi;
 
     while ((match = locationPattern.exec(text))) {
       restaurantNumbers.add(match[1]);
@@ -24651,8 +27883,10 @@ function extractHeartlandApiLinks($, url, restaurant = null) {
   for (const rawText of texts) {
     const text = decodeHtml(String(rawText ?? "").replace(/\\\//g, "/"));
     let match;
-    const heartlandHostPattern = /https?:\/\/([a-z0-9-]+)\.hrpos\.heartland\.us\/menu\b[^"'<>\s]*/gi;
-    const mobileBytesPattern = /["'`](?:https?:\/\/)?([a-z0-9-]+\.mobilebytes\.com)["'`]/gi;
+    const heartlandHostPattern =
+      /https?:\/\/([a-z0-9-]+)\.hrpos\.heartland\.us\/menu\b[^"'<>\s]*/gi;
+    const mobileBytesPattern =
+      /["'`](?:https?:\/\/)?([a-z0-9-]+\.mobilebytes\.com)["'`]/gi;
 
     while ((match = heartlandHostPattern.exec(text))) {
       domains.add(`${match[1]}.mobilebytes.com`);
@@ -24663,7 +27897,10 @@ function extractHeartlandApiLinks($, url, restaurant = null) {
     }
   }
 
-  const scopedDomains = scopeHeartlandDomainsToRestaurant([...domains], restaurant);
+  const scopedDomains = scopeHeartlandDomainsToRestaurant(
+    [...domains],
+    restaurant,
+  );
 
   return scopedDomains.map((domain) => {
     const body = {
@@ -24716,9 +27953,17 @@ function scoreHeartlandDomainForRestaurant(domain, restaurant) {
     ...String(restaurant.displayAddress ?? "").split(/[^a-z0-9]+/i),
   ])
     .map((token) => normalizeMenuName(token))
-    .filter((token) => token && token.length >= 4 && !/^(?:metro|county|washington|restaurant)$/i.test(token));
+    .filter(
+      (token) =>
+        token &&
+        token.length >= 4 &&
+        !/^(?:metro|county|washington|restaurant)$/i.test(token),
+    );
 
-  return tokens.reduce((score, token) => score + (domainText.includes(token) ? 1 : 0), 0);
+  return tokens.reduce(
+    (score, token) => score + (domainText.includes(token) ? 1 : 0),
+    0,
+  );
 }
 
 function extractSpotAppsApiLinks($, url) {
@@ -24734,7 +27979,8 @@ function extractSpotAppsApiLinks($, url) {
     const text = decodeHtml(String(rawText ?? "").replace(/\\\//g, "/"));
     let match;
     const spotIdPattern = /(?:[?&]|\b)spot_id=?(\d{4,})\b/gi;
-    const orderingMenuPattern = /tmt\.spotapps\.co\/ordering-menu\/?[^"'<>\s]*/gi;
+    const orderingMenuPattern =
+      /tmt\.spotapps\.co\/ordering-menu\/?[^"'<>\s]*/gi;
 
     while ((match = spotIdPattern.exec(text))) {
       ids.add(match[1]);
@@ -24742,7 +27988,9 @@ function extractSpotAppsApiLinks($, url) {
 
     while ((match = orderingMenuPattern.exec(text))) {
       try {
-        const parsed = new URL(match[0].startsWith("http") ? match[0] : `https://${match[0]}`);
+        const parsed = new URL(
+          match[0].startsWith("http") ? match[0] : `https://${match[0]}`,
+        );
         const spotId = parsed.searchParams.get("spot_id");
 
         if (spotId) {
@@ -24772,7 +28020,8 @@ function extractMenuSifuApiLinks($, url) {
   for (const rawText of texts) {
     const text = decodeHtml(String(rawText ?? "").replace(/\\\//g, "/"));
     let match;
-    const merchantPattern = /order\.mealkeyway\.com\/merchant\/([a-z0-9]{20,})/gi;
+    const merchantPattern =
+      /order\.mealkeyway\.com\/merchant\/([a-z0-9]{20,})/gi;
     const midPattern = /[?&]mid=([a-z0-9]{20,})/gi;
 
     while ((match = merchantPattern.exec(text))) {
@@ -24817,7 +28066,9 @@ function extractSquareOnlineApiLinks($, url) {
       return;
     }
 
-    const userId = squareOnlineId(parsed?.siteData?.user?.id) ?? squareOnlineId(parsed?.user?.id);
+    const userId =
+      squareOnlineId(parsed?.siteData?.user?.id) ??
+      squareOnlineId(parsed?.user?.id);
     const siteId =
       squareOnlineId(parsed?.siteData?.site?.properties?.classicSiteID) ??
       squareOnlineId(parsed?.siteData?.site?.properties?.classicSiteId) ??
@@ -24889,7 +28140,11 @@ function oloVendorApiUrlForMenuUrl(url) {
 
     const haystack = `${parsed.hostname} ${parsed.pathname}`;
 
-    if (/\b(?:catering|private[-_/ ]?events?|event[-_/ ]?menu|banquet)\b/i.test(haystack)) {
+    if (
+      /\b(?:catering|private[-_/ ]?events?|event[-_/ ]?menu|banquet)\b/i.test(
+        haystack,
+      )
+    ) {
       return null;
     }
 
@@ -24918,7 +28173,8 @@ export function mergeRecords(records) {
 
   for (const record of records) {
     const key =
-      /^new g$/i.test(cleanMenuName(record.name) ?? "") && /^pies$/i.test(record.category ?? "")
+      /^new g$/i.test(cleanMenuName(record.name) ?? "") &&
+      /^pies$/i.test(record.category ?? "")
         ? "new-g"
         : similarityKey(record.name);
 
@@ -24940,7 +28196,10 @@ export function mergeRecords(records) {
       areOfficialAllergenRows(current, next) &&
       hasConflictingSpecificCategories(current.category, next.category);
 
-    const authoritativeOfficialMerge = mergeAuthoritativeOfficialAllergenRecord(current, next);
+    const authoritativeOfficialMerge = mergeAuthoritativeOfficialAllergenRecord(
+      current,
+      next,
+    );
 
     if (authoritativeOfficialMerge) {
       byName.set(key, authoritativeOfficialMerge);
@@ -24951,7 +28210,10 @@ export function mergeRecords(records) {
       byName.set(key, {
         ...current,
         evidence: uniqueEvidence([...current.evidence, ...next.evidence]),
-        sourceUrls: publishableSourceUrls([...current.sourceUrls, ...next.sourceUrls]),
+        sourceUrls: publishableSourceUrls([
+          ...current.sourceUrls,
+          ...next.sourceUrls,
+        ]),
       });
       continue;
     }
@@ -24964,16 +28226,28 @@ export function mergeRecords(records) {
         (allergenSourcePriority[current.allergenSourceType] ?? 0)
           ? next.allergenSourceType
           : current.allergenSourceType,
-      category: chooseMergedCategory(current.category, next.category, currentPriority, nextPriority),
+      category: chooseMergedCategory(
+        current.category,
+        next.category,
+        currentPriority,
+        nextPriority,
+      ),
       description: pickBestDescription(current.description, next.description),
       evidence: uniqueEvidence([...current.evidence, ...next.evidence]),
       imageUrl: current.imageUrl ?? next.imageUrl,
-      ingredientsText: pickBestDescription(current.ingredientsText, next.ingredientsText),
+      ingredientsText: pickBestDescription(
+        current.ingredientsText,
+        next.ingredientsText,
+      ),
       isConfigurable: current.isConfigurable || next.isConfigurable,
       mayContain: uniqueStrings([...current.mayContain, ...next.mayContain]),
       nutritionFacts: current.nutritionFacts ?? next.nutritionFacts,
-      sourceKind: nextPriority > currentPriority ? next.sourceKind : current.sourceKind,
-      sourceUrls: publishableSourceUrls([...current.sourceUrls, ...next.sourceUrls]),
+      sourceKind:
+        nextPriority > currentPriority ? next.sourceKind : current.sourceKind,
+      sourceUrls: publishableSourceUrls([
+        ...current.sourceUrls,
+        ...next.sourceUrls,
+      ]),
       variantGroup: current.variantGroup ?? next.variantGroup,
     });
   }
@@ -25017,7 +28291,8 @@ function mergeAuthoritativeOfficialAllergenRecord(current, next) {
 }
 
 function mergeOfficialAllergenRecordWithSupplement(authoritative, supplement) {
-  const authoritativePriority = itemSourcePriority[authoritative.sourceKind] ?? 0;
+  const authoritativePriority =
+    itemSourcePriority[authoritative.sourceKind] ?? 0;
   const supplementPriority = itemSourcePriority[supplement.sourceKind] ?? 0;
 
   return {
@@ -25028,13 +28303,25 @@ function mergeOfficialAllergenRecordWithSupplement(authoritative, supplement) {
       authoritativePriority,
       supplementPriority,
     ),
-    description: pickBestDescription(authoritative.description, supplement.description),
-    evidence: uniqueEvidence([...authoritative.evidence, ...supplement.evidence]),
+    description: pickBestDescription(
+      authoritative.description,
+      supplement.description,
+    ),
+    evidence: uniqueEvidence([
+      ...authoritative.evidence,
+      ...supplement.evidence,
+    ]),
     imageUrl: authoritative.imageUrl ?? supplement.imageUrl,
-    ingredientsText: pickBestDescription(authoritative.ingredientsText, supplement.ingredientsText),
+    ingredientsText: pickBestDescription(
+      authoritative.ingredientsText,
+      supplement.ingredientsText,
+    ),
     isConfigurable: authoritative.isConfigurable || supplement.isConfigurable,
     nutritionFacts: authoritative.nutritionFacts ?? supplement.nutritionFacts,
-    sourceUrls: publishableSourceUrls([...authoritative.sourceUrls, ...supplement.sourceUrls]),
+    sourceUrls: publishableSourceUrls([
+      ...authoritative.sourceUrls,
+      ...supplement.sourceUrls,
+    ]),
     variantGroup: authoritative.variantGroup ?? supplement.variantGroup,
   };
 }
@@ -25042,8 +28329,13 @@ function mergeOfficialAllergenRecordWithSupplement(authoritative, supplement) {
 function isRowLevelOfficialAllergenMatrixRecord(record) {
   return (
     record?.allergenSourceType === allergenSourceTypes.officialAllergenMenu &&
-    ["embedded-flavor-nutrition", "html-allergen-matrix", "pdf-matrix"].includes(record?.sourceKind) &&
-    ((record?.allergens ?? []).length > 0 || (record?.mayContain ?? []).length > 0)
+    [
+      "embedded-flavor-nutrition",
+      "html-allergen-matrix",
+      "pdf-matrix",
+    ].includes(record?.sourceKind) &&
+    ((record?.allergens ?? []).length > 0 ||
+      (record?.mayContain ?? []).length > 0)
   );
 }
 
@@ -25076,7 +28368,12 @@ function hasRowLevelAllergenEvidence(record) {
   );
 }
 
-function chooseMergedCategory(currentCategory, nextCategory, currentPriority, nextPriority) {
+function chooseMergedCategory(
+  currentCategory,
+  nextCategory,
+  currentPriority,
+  nextPriority,
+) {
   if (!nextCategory || nextCategory === "Menu") {
     return currentCategory;
   }
@@ -25085,11 +28382,17 @@ function chooseMergedCategory(currentCategory, nextCategory, currentPriority, ne
     return nextCategory;
   }
 
-  if (isGenericRestaurantCuisineCategory(currentCategory) && !isGenericRestaurantCuisineCategory(nextCategory)) {
+  if (
+    isGenericRestaurantCuisineCategory(currentCategory) &&
+    !isGenericRestaurantCuisineCategory(nextCategory)
+  ) {
     return nextCategory;
   }
 
-  if (isGenericRestaurantCuisineCategory(nextCategory) && !isGenericRestaurantCuisineCategory(currentCategory)) {
+  if (
+    isGenericRestaurantCuisineCategory(nextCategory) &&
+    !isGenericRestaurantCuisineCategory(currentCategory)
+  ) {
     return currentCategory;
   }
 
@@ -25097,7 +28400,9 @@ function chooseMergedCategory(currentCategory, nextCategory, currentPriority, ne
 }
 
 function isGenericRestaurantCuisineCategory(category) {
-  return /^(?:asian|american|restaurant|food|menu|items|cuisine)$/i.test(String(category ?? "").trim());
+  return /^(?:asian|american|restaurant|food|menu|items|cuisine)$/i.test(
+    String(category ?? "").trim(),
+  );
 }
 
 function areOfficialAllergenRows(current, next) {
@@ -25119,7 +28424,10 @@ function hasConflictingSpecificCategories(currentCategory, nextCategory) {
     return false;
   }
 
-  return !isGenericRestaurantCuisineCategory(current) && !isGenericRestaurantCuisineCategory(next);
+  return (
+    !isGenericRestaurantCuisineCategory(current) &&
+    !isGenericRestaurantCuisineCategory(next)
+  );
 }
 
 export function normalizeRecord(record) {
@@ -25127,23 +28435,29 @@ export function normalizeRecord(record) {
   const category = normalizeRecordCategory(
     pfChangsKnownCategoryForName(record) ?? record.category,
   );
-  const explicitDescriptionDisclosure = officialMenuDescriptionDisclosure(record);
+  const explicitDescriptionDisclosure =
+    officialMenuDescriptionDisclosure(record);
   const allergenSourceType =
     explicitDescriptionDisclosure?.allergenSourceType ??
     record.allergenSourceType ??
     allergenSourceTypes.unavailable;
-  const allergens = explicitDescriptionDisclosure?.allergens ?? record.allergens ?? [];
+  const allergens =
+    explicitDescriptionDisclosure?.allergens ?? record.allergens ?? [];
   const mayContain = uniqueStrings([
     ...(record.mayContain ?? []),
     ...(explicitDescriptionDisclosure?.mayContain ?? []),
   ]);
   const evidenceText =
-    explicitDescriptionDisclosure?.evidenceText ?? record.evidenceText ?? record.description ?? record.name;
+    explicitDescriptionDisclosure?.evidenceText ??
+    record.evidenceText ??
+    record.description ??
+    record.name;
 
   return {
     allergens: uniqueStrings(allergens),
     allergenSourceType,
-    category: similarityKey(category) === similarityKey(name) ? "Menu" : category,
+    category:
+      similarityKey(category) === similarityKey(name) ? "Menu" : category,
     description: cleanText(record.description),
     evidence: uniqueEvidence(
       record.evidence ?? [
@@ -25257,7 +28571,9 @@ function isOfficialRestaurantMenuSourceUrl(url) {
   try {
     const host = new URL(url).hostname.replace(/^www\./i, "");
 
-    return !/^(?:toasttab|square|spoton|menupix|restaurantji|allmenus|sirved|tripadvisor|yelp)\.com$/i.test(host);
+    return !/^(?:toasttab|square|spoton|menupix|restaurantji|allmenus|sirved|tripadvisor|yelp)\.com$/i.test(
+      host,
+    );
   } catch {
     return false;
   }
@@ -25351,7 +28667,10 @@ function cleanMenuDescription(description) {
     !cleaned ||
     /^[×✕x]$/i.test(cleaned) ||
     /^description goes here$/i.test(cleaned) ||
-    /^it all begins with an idea\b/i.test(cleaned)
+    /^it all begins with an idea\b/i.test(cleaned) ||
+    /^official .+(?:menu|nutrition|allergen|ingredient).*(?:api|data|source|pdf)\.?$/i.test(
+      cleaned,
+    )
   ) {
     return null;
   }
@@ -25359,7 +28678,10 @@ function cleanMenuDescription(description) {
   return cleaned
     ?.replace(/\bStart Your Order\b/gi, "")
     .replace(/\bView Full Menu\b/gi, "")
-    .replace(/\s+\bnew seasonal menu(?:\s+(?:breakfast|brunch|lunch|dinner))?\b\s*$/i, "")
+    .replace(
+      /\s+\bnew seasonal menu(?:\s+(?:breakfast|brunch|lunch|dinner))?\b\s*$/i,
+      "",
+    )
     .replace(/\s+\bTakeout Beverages\b.*$/i, "")
     .replace(/\s+/g, " ")
     .trim();
@@ -25371,22 +28693,34 @@ function normalizeNutritionFacts(value) {
   }
 
   const entries = Object.entries(value)
-    .map(([key, entryValue]) => [cleanText(key), normalizeNutritionFactValue(entryValue)])
-    .filter(([key, entryValue]) => key && entryValue !== null && entryValue !== undefined);
+    .map(([key, entryValue]) => [
+      cleanText(key),
+      normalizeNutritionFactValue(entryValue),
+    ])
+    .filter(
+      ([key, entryValue]) =>
+        key && entryValue !== null && entryValue !== undefined,
+    );
 
   return entries.length > 0 ? Object.fromEntries(entries) : undefined;
 }
 
 function nutritionFactsFromObject(value) {
   const nutrientFacts = nutritionFactsFromNutrientArray(
-    value?.nutrient_facts?.nutrient ?? value?.nutrientFacts?.nutrient ?? value?.nutrients,
+    value?.nutrient_facts?.nutrient ??
+      value?.nutrientFacts?.nutrient ??
+      value?.nutrients,
   );
 
   if (nutrientFacts) {
     return nutrientFacts;
   }
 
-  const candidate = value?.nutrition ?? value?.nutritionFacts ?? value?.nutritionalInfo ?? value;
+  const candidate =
+    value?.nutrition ??
+    value?.nutritionFacts ??
+    value?.nutritionalInfo ??
+    value;
   const fieldLabels = new Map([
     ["calories", "Calories"],
     ["fatCalories", "Calories from Fat"],
@@ -25440,7 +28774,9 @@ function nutritionFactsFromFieldList(fields) {
   const facts = {};
 
   for (const field of asArray(fields)) {
-    const label = normalizeNutritionHeader(field?.label ?? field?.displayName ?? field?.key);
+    const label = normalizeNutritionHeader(
+      field?.label ?? field?.displayName ?? field?.key,
+    );
     const value = field?.value ?? field?.displayValue;
 
     if (label && value !== undefined && value !== null && value !== "") {
@@ -25492,15 +28828,18 @@ function nutritionFactsFromOrderedValues(values = []) {
   return normalizeNutritionFacts(facts);
 }
 
-function extractTrailingNutritionTextPdfItems(text, restaurant, url, options = {}) {
+function extractTrailingNutritionTextPdfItems(
+  text,
+  restaurant,
+  url,
+  options = {},
+) {
   const records = [];
   let currentCategory = restaurant.category;
 
   for (const rawLine of text.split(/\r?\n/)) {
     const line = cleanText(
-      rawLine
-        .replace(/\bless than 1 g\b/gi, "0.5")
-        .replace(/\bN\/A\b/gi, "0"),
+      rawLine.replace(/\bless than 1 g\b/gi, "0.5").replace(/\bN\/A\b/gi, "0"),
     );
 
     if (!line || isTrailingNutritionTextNoise(line)) {
@@ -25523,11 +28862,14 @@ function extractTrailingNutritionTextPdfItems(text, restaurant, url, options = {
         allergenSourceType: allergenSourceTypes.unavailable,
         allergens: [],
         category: currentCategory,
-        description: options.description ?? `Official ${restaurant.name} nutrition PDF.`,
+        description:
+          options.description ?? `Official ${restaurant.name} nutrition PDF.`,
         imageUrl: null,
         mayContain: [],
         name: parsed.name,
-        nutritionFacts: nutritionFactsFromTrailingNutritionValues(parsed.values),
+        nutritionFacts: nutritionFactsFromTrailingNutritionValues(
+          parsed.values,
+        ),
         sourceKind: "pdf-nutrition",
         sourceUrl: url,
         variantGroup: currentCategory,
@@ -25556,9 +28898,15 @@ function parseTrailingNutritionTextLine(line) {
     return null;
   }
 
-  const name = cleanTrailingNutritionTextName(tokens.slice(0, tokens.length - values.length).join(" "));
+  const name = cleanTrailingNutritionTextName(
+    tokens.slice(0, tokens.length - values.length).join(" "),
+  );
 
-  if (!name || !isProbablyMenuItemName(name) || isTrailingNutritionTextNoise(name)) {
+  if (
+    !name ||
+    !isProbablyMenuItemName(name) ||
+    isTrailingNutritionTextNoise(name)
+  ) {
     return null;
   }
 
@@ -25590,7 +28938,12 @@ function nutritionFactsFromTrailingNutritionValues(values) {
   });
 }
 
-function extractStatementAllergenNutritionPdfItems(text, restaurant, url, options = {}) {
+function extractStatementAllergenNutritionPdfItems(
+  text,
+  restaurant,
+  url,
+  options = {},
+) {
   const records = [];
   const lines = String(text)
     .split(/\r?\n/)
@@ -25634,11 +28987,15 @@ function extractStatementAllergenNutritionPdfItems(text, restaurant, url, option
         allergenSourceType: allergenSourceTypes.officialAllergenMenu,
         allergens: uniqueStrings(direct),
         category: pending.category ?? restaurant.category,
-        description: options.description ?? `Official ${restaurant.name} nutrition and allergen PDF.`,
+        description:
+          options.description ??
+          `Official ${restaurant.name} nutrition and allergen PDF.`,
         imageUrl: null,
         mayContain,
         name: pending.name,
-        nutritionFacts: nutritionFactsFromStatementAllergenValues(pending.values),
+        nutritionFacts: nutritionFactsFromStatementAllergenValues(
+          pending.values,
+        ),
         sourceKind: "pdf-allergen-statement",
         sourceUrl: url,
         variantGroup: pending.category ?? null,
@@ -25734,9 +29091,14 @@ function isStatementAllergenNutritionNoise(line) {
 }
 
 function isTrailingNutritionTextNoise(line) {
-  return /^(?:Menu Item|Nutrition|Nutritional|NUTRITIONAL GUIDE|NUTRITIONAL INFORMATION|Calories|Calories from Fat|Total Fat|Saturated Fat|Trans Fat|Cholesterol|Sodium|Total Carbs|Dietary Fiber|Sugars|Protein|2,000 calories|Page \d+|Valid |Printed |Information is|All Rights Reserved|©|-- \d+ of \d+ --)$/i.test(
-    line,
-  ) || /\b(?:calorie needs vary|general nutrition advice|menu item calories|contains raw or undercooked)\b/i.test(line);
+  return (
+    /^(?:Menu Item|Nutrition|Nutritional|NUTRITIONAL GUIDE|NUTRITIONAL INFORMATION|Calories|Calories from Fat|Total Fat|Saturated Fat|Trans Fat|Cholesterol|Sodium|Total Carbs|Dietary Fiber|Sugars|Protein|2,000 calories|Page \d+|Valid |Printed |Information is|All Rights Reserved|©|-- \d+ of \d+ --)$/i.test(
+      line,
+    ) ||
+    /\b(?:calorie needs vary|general nutrition advice|menu item calories|contains raw or undercooked)\b/i.test(
+      line,
+    )
+  );
 }
 
 function normalizeNutritionHeader(value) {
@@ -25759,7 +29121,8 @@ function normalizeNutritionHeader(value) {
   if (/^trans fat$/i.test(header)) return "Trans Fat";
   if (/^cholesterol$/i.test(header)) return "Cholesterol";
   if (/^sodium$/i.test(header)) return "Sodium";
-  if (/^(?:carbohydrates?|carbs?|total carbohydrates?)$/i.test(header)) return "Total Carbohydrates";
+  if (/^(?:carbohydrates?|carbs?|total carbohydrates?)$/i.test(header))
+    return "Total Carbohydrates";
   if (/^(?:dietary )?fiber$/i.test(header)) return "Dietary Fiber";
   if (/^(?:sugar|sugars|total sugars)$/i.test(header)) return "Sugars";
   if (/^protein$/i.test(header)) return "Protein";
@@ -25781,24 +29144,34 @@ function nutritionFactsFromNutrientArray(value) {
   const facts = {};
 
   for (const nutrient of nutrients) {
-    const label = cleanText(nutrient?.name ?? nutrient?.label ?? nutrient?.nutrientName);
+    const label = cleanText(
+      nutrient?.name ?? nutrient?.label ?? nutrient?.nutrientName,
+    );
     const rawValue = nutrient?.value ?? nutrient?.amount ?? nutrient?.raw_value;
 
-    if (!label || rawValue === undefined || rawValue === null || rawValue === "") {
+    if (
+      !label ||
+      rawValue === undefined ||
+      rawValue === null ||
+      rawValue === ""
+    ) {
       continue;
     }
 
-    facts[normalizeNutritionLabel(label)] = parseNutritionNumber(rawValue) ?? cleanText(rawValue);
+    facts[normalizeNutritionLabel(label)] =
+      parseNutritionNumber(rawValue) ?? cleanText(rawValue);
   }
 
   return normalizeNutritionFacts(facts);
 }
 
 function normalizeNutritionLabel(value) {
-  return cleanText(value)
-    ?.replace(/^Calories From Fat$/i, "Calories from Fat")
-    .replace(/^Carbohydrates$/i, "Total Carbohydrates")
-    .replace(/^Total Sugars$/i, "Sugars") ?? value;
+  return (
+    cleanText(value)
+      ?.replace(/^Calories From Fat$/i, "Calories from Fat")
+      .replace(/^Carbohydrates$/i, "Total Carbohydrates")
+      .replace(/^Total Sugars$/i, "Sugars") ?? value
+  );
 }
 
 function parseNutritionNumber(value) {
@@ -25873,16 +29246,26 @@ function findAllergensInDeclaredFoodText(text) {
 function findDeclaredAllergensOnly(text) {
   const sourceText = String(text);
   const directSections = [
-    ...sourceText.matchAll(/\b(?:contains|allergens?|allerg(?:en|y)\s+alerts?)\s*:?\s*([^.\n;*]+)/gi),
+    ...sourceText.matchAll(
+      /\b(?:contains|allergens?|allerg(?:en|y)\s+alerts?)\s*:?\s*([^.\n;*]+)/gi,
+    ),
   ]
-    .filter((match) => match.index == null || sourceText[match.index - 1] !== "-")
+    .filter(
+      (match) => match.index == null || sourceText[match.index - 1] !== "-",
+    )
     .map((match) => match[1])
     .map((section) =>
       section
         .replace(/\bnon[- ]?dairy(?:\s+\w+){0,3}\s+yogurt\b/gi, "")
         .replace(/\bnon[- ]?dairy\b/gi, "")
-        .replace(/\b(?:packed|made|processed|prepared)\s+in\s+(?:a\s+)?(?:facility|kitchen)[\s\S]*$/i, "")
-        .replace(/\b(?:facility|kitchen)\s+(?:that\s+)?(?:also\s+)?(?:handles?|process(?:es|ed)?|uses)[\s\S]*$/i, "")
+        .replace(
+          /\b(?:packed|made|processed|prepared)\s+in\s+(?:a\s+)?(?:facility|kitchen)[\s\S]*$/i,
+          "",
+        )
+        .replace(
+          /\b(?:facility|kitchen)\s+(?:that\s+)?(?:also\s+)?(?:handles?|process(?:es|ed)?|uses)[\s\S]*$/i,
+          "",
+        )
         .trim(),
     )
     .filter((section) => findAllergensInText(section).length > 0);
@@ -25902,11 +29285,26 @@ function findOfficialIngredientListAllergens(text) {
   }
 
   const ingredientText = sourceText
-    .replace(/\b(?:packed|made|processed|prepared)\s+in\s+(?:a\s+)?(?:facility|kitchen)[\s\S]*$/i, "")
-    .replace(/\b(?:facility|kitchen)\s+(?:that\s+)?(?:also\s+)?(?:handles?|process(?:es|ed)?|uses)[\s\S]*$/i, "")
-    .replace(/\bgluten[- ]?free(?:\s+\w+){0,3}\s+(?:bread\s*crumbs?|breadcrumbs?|bread|bun|roll|pasta|flour)\b/gi, "")
-    .replace(/\b(?:dairy|milk|egg|soy|sesame|peanut|tree[- ]?nut|nut|wheat|gluten|fish|shellfish)[- ]free\b/gi, "")
-    .replace(/\bfree\s+of\s+(?:dairy|milk|egg|soy|sesame|peanut|tree[- ]?nut|nut|wheat|gluten|fish|shellfish)\b/gi, "")
+    .replace(
+      /\b(?:packed|made|processed|prepared)\s+in\s+(?:a\s+)?(?:facility|kitchen)[\s\S]*$/i,
+      "",
+    )
+    .replace(
+      /\b(?:facility|kitchen)\s+(?:that\s+)?(?:also\s+)?(?:handles?|process(?:es|ed)?|uses)[\s\S]*$/i,
+      "",
+    )
+    .replace(
+      /\bgluten[- ]?free(?:\s+\w+){0,3}\s+(?:bread\s*crumbs?|breadcrumbs?|bread|bun|roll|pasta|flour)\b/gi,
+      "",
+    )
+    .replace(
+      /\b(?:dairy|milk|egg|soy|sesame|peanut|tree[- ]?nut|nut|wheat|gluten|fish|shellfish)[- ]free\b/gi,
+      "",
+    )
+    .replace(
+      /\bfree\s+of\s+(?:dairy|milk|egg|soy|sesame|peanut|tree[- ]?nut|nut|wheat|gluten|fish|shellfish)\b/gi,
+      "",
+    )
     .replace(/\bnon[- ]?dairy(?:\s+\w+){0,3}\s+yogurt\b/gi, "")
     .replace(/\bnon[- ]?dairy\b/gi, "");
 
@@ -25924,17 +29322,23 @@ function findMayContainAllergens(text) {
       /\b(?:facility|kitchen)\s+(?:that\s+)?(?:also\s+)?(?:handles?|process(?:es|ed)?|uses)\s*:?\s*([\s\S]*?)(?=\bIngredients?\s*:|\bProduct\s*&\s*Storage\s+Details\b|[.\n;]|$)/gi,
     ),
   ];
-  return uniqueStrings(matches.flatMap((match) => findAllergensInText(match[1])));
+  return uniqueStrings(
+    matches.flatMap((match) => findAllergensInText(match[1])),
+  );
 }
 
 function findAllergensInText(text) {
-  const normalized = ` ${String(text).toLowerCase().replace(/[^a-z0-9]+/g, " ")} `;
+  const normalized = ` ${String(text)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")} `;
   const matches = [];
 
   for (const allergen of allergenTerms) {
     if (
       allergen.terms.some((term) =>
-        normalized.includes(` ${term.toLowerCase().replace(/[^a-z0-9]+/g, " ")} `),
+        normalized.includes(
+          ` ${term.toLowerCase().replace(/[^a-z0-9]+/g, " ")} `,
+        ),
       )
     ) {
       matches.push(allergen.id);
@@ -25947,7 +29351,9 @@ function findAllergensInText(text) {
 function normalizeProviderAllergens(values) {
   return uniqueStrings(
     values.flatMap((value) => {
-      const normalized = String(value).toLowerCase().replace(/[^a-z0-9-]+/g, "");
+      const normalized = String(value)
+        .toLowerCase()
+        .replace(/[^a-z0-9-]+/g, "");
       const mapped = providerAllergenCodes.get(normalized);
 
       return mapped ? [mapped] : findAllergensInText(value);
@@ -25969,10 +29375,7 @@ function getOfficialFoodDisclosure(node, kind) {
     propertyText.allergenText,
   ]);
   const ingredientText = joinDisclosureText([
-    stringifySelectedFields(node, [
-      "ingredients",
-      "ingredientStatement",
-    ]),
+    stringifySelectedFields(node, ["ingredients", "ingredientStatement"]),
     propertyText.ingredientText,
   ]);
   const mayContainText = joinDisclosureText([
@@ -26009,7 +29412,9 @@ function getOfficialFoodDisclosure(node, kind) {
       allergenSourceType: allergenSourceTypes.officialIngredients,
       directAllergens: findAllergensInDeclaredFoodText(ingredientText),
       ingredientsText: ingredientText,
-      mayContain: findMayContainAllergens(`${ingredientText} ${mayContainText}`),
+      mayContain: findMayContainAllergens(
+        `${ingredientText} ${mayContainText}`,
+      ),
     };
   }
 
@@ -26043,7 +29448,9 @@ function partitionAllergenDisclosure(text) {
     };
   }
 
-  const [directText, ...mayContainSegments] = normalized.split(";").map(cleanText);
+  const [directText, ...mayContainSegments] = normalized
+    .split(";")
+    .map(cleanText);
 
   return {
     directText,
@@ -26078,11 +29485,20 @@ function schemaPropertyDisclosureText(properties) {
     }
 
     if (/\bmay\s+contain|cross[-\s]?contact|traces?\b/i.test(name)) {
-      disclosure.mayContainText = joinDisclosureText([disclosure.mayContainText, value]);
+      disclosure.mayContainText = joinDisclosureText([
+        disclosure.mayContainText,
+        value,
+      ]);
     } else if (/\ballergens?|contains|dietary\s+restrictions?\b/i.test(name)) {
-      disclosure.allergenText = joinDisclosureText([disclosure.allergenText, value]);
+      disclosure.allergenText = joinDisclosureText([
+        disclosure.allergenText,
+        value,
+      ]);
     } else if (/\bingredients?\b/i.test(name)) {
-      disclosure.ingredientText = joinDisclosureText([disclosure.ingredientText, value]);
+      disclosure.ingredientText = joinDisclosureText([
+        disclosure.ingredientText,
+        value,
+      ]);
     }
   }
 
@@ -26094,7 +29510,11 @@ function stringifyStructuredFieldValue(value) {
     return "";
   }
 
-  if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+  if (
+    typeof value === "string" ||
+    typeof value === "number" ||
+    typeof value === "boolean"
+  ) {
     return cleanText(value);
   }
 
@@ -26120,7 +29540,11 @@ function joinDisclosureText(values) {
 
 function getScopedDomDisclosure($element, kind) {
   const allergenText = cleanText(
-    $element.find("[class*='allergen'], [id*='allergen'], [class*='contains'], [id*='contains']").text(),
+    $element
+      .find(
+        "[class*='allergen'], [id*='allergen'], [class*='contains'], [id*='contains']",
+      )
+      .text(),
   );
   const ingredientText = cleanText(
     $element.find("[class*='ingredient'], [id*='ingredient']").text(),
@@ -26133,7 +29557,11 @@ function getScopedDomDisclosure($element, kind) {
     ]);
     const mayContain = findMayContainAllergens(allergenText);
 
-    if (directAllergens.length === 0 && mayContain.length === 0 && !ingredientText) {
+    if (
+      directAllergens.length === 0 &&
+      mayContain.length === 0 &&
+      !ingredientText
+    ) {
       return {
         allergenSourceType: allergenSourceTypes.unavailable,
         directAllergens: [],
@@ -26179,7 +29607,9 @@ function stringifySelectedFields(node, keys) {
     }
   }
 
-  return Object.keys(selected).length > 0 ? JSON.stringify(selected).slice(0, 5000) : "";
+  return Object.keys(selected).length > 0
+    ? JSON.stringify(selected).slice(0, 5000)
+    : "";
 }
 
 function hasMeaningfulStructuredValue(value) {
@@ -26234,14 +29664,20 @@ async function readJsonIfExists(filePath) {
 }
 
 function isCliEntry() {
-  return process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+  return (
+    process.argv[1] &&
+    path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+  );
 }
 
 function decodeJavaScriptString(value) {
   try {
     return JSON.parse(`"${value}"`);
   } catch {
-    return value.replace(/\\"/g, '"').replace(/\\n/g, "\n").replace(/\\u002D/g, "-");
+    return value
+      .replace(/\\"/g, '"')
+      .replace(/\\n/g, "\n")
+      .replace(/\\u002D/g, "-");
   }
 }
 
@@ -26280,7 +29716,10 @@ function cleanMenuName(name) {
     .replace(/\s+-\s+Nutrition.*$/i, "")
     .replace(/\s+Menu Item$/i, "")
     .replace(/\s+\d+(?:\.\d+)?\s*(?:g|mg|mL|L|oz)\b.*$/i, "")
-    .replace(/\s+(?:(?:<?\d+(?:\.\d+)?|\d+\s*-\s*\d+)\s+){3,}(?:<?\d+(?:\.\d+)?|\d+\s*-\s*\d+)$/i, "")
+    .replace(
+      /\s+(?:(?:<?\d+(?:\.\d+)?|\d+\s*-\s*\d+)\s+){3,}(?:<?\d+(?:\.\d+)?|\d+\s*-\s*\d+)$/i,
+      "",
+    )
     .replace(/([a-z])v\s+\(ve\)$/i, "$1")
     .replace(/\*+\s+\$?\d+(?:\.\d{1,2})?\s*$/g, "")
     .replace(/\s+-\s*(?:market price)?$/i, "")
@@ -26316,14 +29755,18 @@ function isTrailingMenuCodeCluster(value) {
   ]);
 
   const unknownUppercaseTokens = tokens.filter(
-    (token) => !knownCodes.has(token.toLowerCase()) && token === token.toUpperCase(),
+    (token) =>
+      !knownCodes.has(token.toLowerCase()) && token === token.toUpperCase(),
   );
 
   return (
     tokens.every((token) => knownCodes.has(token.toLowerCase())) ||
     (tokens.length >= 3 &&
       unknownUppercaseTokens.length > 0 &&
-      tokens.every((token) => knownCodes.has(token.toLowerCase()) || token === token.toUpperCase()))
+      tokens.every(
+        (token) =>
+          knownCodes.has(token.toLowerCase()) || token === token.toUpperCase(),
+      ))
   );
 }
 
@@ -26363,7 +29806,9 @@ function isProbablyCategoryName(name) {
     return false;
   }
 
-  return !/^(home|menu|nutrition|allergens?|privacy|terms|locations?|careers)$/i.test(cleaned);
+  return !/^(home|menu|nutrition|allergens?|privacy|terms|locations?|careers)$/i.test(
+    cleaned,
+  );
 }
 
 function isProbablyMenuItemName(name) {
@@ -26413,10 +29858,17 @@ function isProbablyMenuItemName(name) {
 }
 
 function hasSpacedOutLetterText(value) {
-  const tokens = String(value ?? "").trim().split(/\s+/);
-  const singleLetterTokens = tokens.filter((token) => /^[A-Za-z]$/.test(token)).length;
+  const tokens = String(value ?? "")
+    .trim()
+    .split(/\s+/);
+  const singleLetterTokens = tokens.filter((token) =>
+    /^[A-Za-z]$/.test(token),
+  ).length;
 
-  return singleLetterTokens >= 4 && singleLetterTokens / Math.max(tokens.length, 1) >= 0.55;
+  return (
+    singleLetterTokens >= 4 &&
+    singleLetterTokens / Math.max(tokens.length, 1) >= 0.55
+  );
 }
 
 function isLikelyMenuDescriptionFragmentName(name) {
@@ -26442,8 +29894,8 @@ export function filterMenuCatalogRecords(records) {
 }
 
 function preferHighConfidenceMenuRecords(records) {
-  const reviewedFixtureRecords = records.filter(
-    (record) => /^reviewed-/i.test(record.sourceKind ?? record.sourceType ?? ""),
+  const reviewedFixtureRecords = records.filter((record) =>
+    /^reviewed-/i.test(record.sourceKind ?? record.sourceType ?? ""),
   );
 
   if (reviewedFixtureRecords.length >= 4) {
@@ -26529,7 +29981,10 @@ export function isProbablyMenuCatalogRecord(record) {
     return false;
   }
 
-  if ((record?.sourceKind ?? record?.sourceType) === "leye-item-wrap" && /^bin\s+\d+\b/i.test(description ?? "")) {
+  if (
+    (record?.sourceKind ?? record?.sourceType) === "leye-item-wrap" &&
+    /^bin\s+\d+\b/i.test(description ?? "")
+  ) {
     return false;
   }
 
@@ -26541,23 +29996,43 @@ export function isProbablyMenuCatalogRecord(record) {
     return false;
   }
 
-  if (/^elixir$/i.test(name) && /\b(?:soda water|cordial|q mixers)\b/i.test(description)) {
+  if (
+    /^elixir$/i.test(name) &&
+    /\b(?:soda water|cordial|q mixers)\b/i.test(description)
+  ) {
     return false;
   }
 
-  if (description && /\b(?:explore our favorites|favorites loved daily)\b/i.test(description)) {
+  if (
+    description &&
+    /\b(?:explore our favorites|favorites loved daily)\b/i.test(description)
+  ) {
     return false;
   }
 
-  if (description && /\b(?:book a table|customer service|quality of food|been coming here|coming soon|sign up if you love|join our newsletter)\b/i.test(description) && !hasFoodLanguage(`${name} ${description}`)) {
+  if (
+    description &&
+    /\b(?:book a table|customer service|quality of food|been coming here|coming soon|sign up if you love|join our newsletter)\b/i.test(
+      description,
+    ) &&
+    !hasFoodLanguage(`${name} ${description}`)
+  ) {
     return false;
   }
 
-  if (description && /\b(?:video courtesy|chef de cuisine|every dish tells a story)\b/i.test(description)) {
+  if (
+    description &&
+    /\b(?:video courtesy|chef de cuisine|every dish tells a story)\b/i.test(
+      description,
+    )
+  ) {
     return false;
   }
 
-  if (description && /\b(?:host your next event|perfect spot to host)\b/i.test(description)) {
+  if (
+    description &&
+    /\b(?:host your next event|perfect spot to host)\b/i.test(description)
+  ) {
     return false;
   }
 
@@ -26573,15 +30048,26 @@ export function isProbablyMenuCatalogRecord(record) {
     return false;
   }
 
-  if (record?.sourceType === "json-structured" && description && /\bdishes available at\b/i.test(description)) {
+  if (
+    record?.sourceType === "json-structured" &&
+    description &&
+    /\bdishes available at\b/i.test(description)
+  ) {
     return false;
   }
 
-  if (description && /\bclosed until \d{1,2}:\d{2}\s*(?:am|pm)\b/i.test(description)) {
+  if (
+    description &&
+    /\bclosed until \d{1,2}:\d{2}\s*(?:am|pm)\b/i.test(description)
+  ) {
     return false;
   }
 
-  if (description && /\b(?:closed|open)\s+now\b/i.test(description) && /\d{10}/.test(description)) {
+  if (
+    description &&
+    /\b(?:closed|open)\s+now\b/i.test(description) &&
+    /\d{10}/.test(description)
+  ) {
     return false;
   }
 
@@ -26615,9 +30101,14 @@ export function isProbablyMenuCatalogRecord(record) {
       name,
       description,
       category,
-      ["html-card", "leye-item-wrap", "next-flight-products", "pdf-menu", "pdf-menu-grid", "square-online-api"].includes(
-        record?.sourceKind ?? record?.sourceType,
-      ),
+      [
+        "html-card",
+        "leye-item-wrap",
+        "next-flight-products",
+        "pdf-menu",
+        "pdf-menu-grid",
+        "square-online-api",
+      ].includes(record?.sourceKind ?? record?.sourceType),
     )
   ) {
     return false;
@@ -26631,7 +30122,8 @@ function isOfficialWidgetEvidenceBackedCatalogRecord(record) {
     /(?:official-allergen-widget|everybite-widget-graphql)/i.test(
       `${record?.sourceType ?? ""} ${record?.sourceKind ?? ""} ${record?.allergenSourceType ?? ""}`,
     ) &&
-    ((Array.isArray(record?.knownIngredients) && record.knownIngredients.length > 0) ||
+    ((Array.isArray(record?.knownIngredients) &&
+      record.knownIngredients.length > 0) ||
       cleanText(record?.ingredientsText).length > 0 ||
       (Array.isArray(record?.allergens) && record.allergens.length > 0) ||
       (Array.isArray(record?.mayContain) && record.mayContain.length > 0) ||
@@ -26645,7 +30137,9 @@ function isClearlyDescribedShortMenuItem(name, category, description) {
   if (
     /^caesar$/i.test(name ?? "") &&
     /\bsalads?\b/i.test(category ?? "") &&
-    /\b(?:romaine|croutons?|parm(?:esan|igiano)|reggiano)\b/i.test(description ?? "") &&
+    /\b(?:romaine|croutons?|parm(?:esan|igiano)|reggiano)\b/i.test(
+      description ?? "",
+    ) &&
     hasSubstantialFoodLanguage(text)
   ) {
     return true;
@@ -26702,21 +30196,30 @@ function isProbablyWineListRecord(name, description) {
     /\b(?:aligot[eé]|altesse|armagnac|brut|gamay|gras manseng|marsanne|meunier|petit manseng|pineau d[’']aunis|poulsard|reisling|riesling|roussane|rousanne|savagnin|tibouren|trousseau)\b/i.test(
       description,
     ) &&
-    /\|\s*(?:[A-Z][A-Za-zÀ-ÿ'&.-]+|Organic|Biodynamic|Sustainable|Extra Brut)/.test(description)
+    /\|\s*(?:[A-Z][A-Za-zÀ-ÿ'&.-]+|Organic|Biodynamic|Sustainable|Extra Brut)/.test(
+      description,
+    )
   );
 }
 
-function isProbablyAlcoholOnlyCatalogRecord(record, name, description, category, strict = false) {
-  if (record?.allergenSourceType && record.allergenSourceType !== allergenSourceTypes.unavailable) {
+function isProbablyAlcoholOnlyCatalogRecord(
+  record,
+  name,
+  description,
+  category,
+  strict = false,
+) {
+  if (
+    record?.allergenSourceType &&
+    record.allergenSourceType !== allergenSourceTypes.unavailable
+  ) {
     return false;
   }
 
   const sourceKind = record?.sourceKind ?? record?.sourceType;
-  const isLooseBrowserHtmlMenuRecord = record?.browserFetched === true && [
-    "html-card",
-    "html-link",
-    "menu-list-block",
-  ].includes(sourceKind);
+  const isLooseBrowserHtmlMenuRecord =
+    record?.browserFetched === true &&
+    ["html-card", "html-link", "menu-list-block"].includes(sourceKind);
 
   if (!strict && !isLooseBrowserHtmlMenuRecord) {
     return false;
@@ -26728,9 +30231,8 @@ function isProbablyAlcoholOnlyCatalogRecord(record, name, description, category,
     /\b(?:absinthe|amari|amaro|armagnac|beer|bordeaux|bottles?|bourbon|brandy|cacha[çc]a|calvados|champagne|cider|cognac|cordial|gin|large format|liqueur|mezcal|ros[ée]|rum|sake|scotch|special verticals|spirits?|tequila|vodka|whisk(?:e)?y|wine|wines)\b/i.test(
       categoryText,
     );
-  const categoryIsCountryWineList = /^(?:more\s+)?(?:france|usa|italy|australia)$/i.test(
-    categoryText.trim(),
-  );
+  const categoryIsCountryWineList =
+    /^(?:more\s+)?(?:france|usa|italy|australia)$/i.test(categoryText.trim());
   const categoryIsBeverageOnly =
     /^(?:coffee|drink specials?(?:\s*\$\d+)?|tea)$/i.test(categoryText.trim());
   const categorySuggestsBeverage =
@@ -26755,7 +30257,9 @@ function isProbablyAlcoholOnlyCatalogRecord(record, name, description, category,
       text,
     );
   const textSuggestsDrinkOnly =
-    /\b(?:iced\s+black\s+tea|juice|lemonade|soda\s+water|sparkling\s+water)\b/i.test(text);
+    /\b(?:iced\s+black\s+tea|juice|lemonade|soda\s+water|sparkling\s+water)\b/i.test(
+      text,
+    );
 
   if (strict && categoryIsAlcoholOnly && !hasFood) {
     return true;
@@ -26816,7 +30320,11 @@ function isProbablyAlcoholOnlyCatalogRecord(record, name, description, category,
     return true;
   }
 
-  if (!hasFood && (categorySuggestsBeverage || textSuggestsAlcoholOnly) && textSuggestsAlcoholOnly) {
+  if (
+    !hasFood &&
+    (categorySuggestsBeverage || textSuggestsAlcoholOnly) &&
+    textSuggestsAlcoholOnly
+  ) {
     return true;
   }
 
@@ -26862,8 +30370,12 @@ function inferCategoryFromUrl(url) {
     const segments = parsed.pathname
       .split("/")
       .filter(Boolean)
-      .map((segment) => segment.replace(/\.(html?|aspx?)$/i, "").replace(/[-_]+/g, " "));
-    const fullMenuIndex = segments.findIndex((segment) => /^full menu$/i.test(segment));
+      .map((segment) =>
+        segment.replace(/\.(html?|aspx?)$/i, "").replace(/[-_]+/g, " "),
+      );
+    const fullMenuIndex = segments.findIndex((segment) =>
+      /^full menu$/i.test(segment),
+    );
     const foodIndex = segments.findIndex((segment) => /^food$/i.test(segment));
 
     if (fullMenuIndex >= 0 && segments[fullMenuIndex + 1]) {
@@ -26879,7 +30391,8 @@ function inferCategoryFromUrl(url) {
     }
 
     const category = segments.findLast(
-      (segment) => !/^(us|en|menu|product|food|order|pages|content)$/i.test(segment),
+      (segment) =>
+        !/^(us|en|menu|product|food|order|pages|content)$/i.test(segment),
     );
 
     return category ? titleCase(category) : null;
@@ -26893,12 +30406,17 @@ function isLikelyProductHref(url) {
     const pathname = new URL(url).pathname.toLowerCase();
     if (
       /\/(?:events?|locations?|menus?)(?:\/|$)/.test(pathname) ||
-      /\/menu\/(?:brunch|busboys|breakfast|lunch|dinner|dessert|coffee|tea|happy-hour|bar|catering|city-ridge-menu)\/?$/i.test(pathname)
+      /\/menu\/(?:brunch|busboys|breakfast|lunch|dinner|dessert|coffee|tea|happy-hour|bar|catering|city-ridge-menu)\/?$/i.test(
+        pathname,
+      )
     ) {
       return false;
     }
 
-    return /\/(?:product|products|profiles|food|items?|order)\//.test(pathname) || /\/menu\/[^/]+\/[^/]+/.test(pathname);
+    return (
+      /\/(?:product|products|profiles|food|items?|order)\//.test(pathname) ||
+      /\/menu\/[^/]+\/[^/]+/.test(pathname)
+    );
   } catch {
     return false;
   }
@@ -26908,7 +30426,10 @@ function isSameSite(a, b) {
   try {
     const first = new URL(a);
     const second = new URL(b);
-    return first.hostname.replace(/^www\./, "") === second.hostname.replace(/^www\./, "");
+    return (
+      first.hostname.replace(/^www\./, "") ===
+      second.hostname.replace(/^www\./, "")
+    );
   } catch {
     return false;
   }
@@ -27069,7 +30590,11 @@ function isPublishableSourceUrl(value) {
       return false;
     }
 
-    if (/\/(?:activityi|collect|gtm\.js|analytics|pixel|tr|events)(?:[/?;]|$)/i.test(parsed.pathname)) {
+    if (
+      /\/(?:activityi|collect|gtm\.js|analytics|pixel|tr|events)(?:[/?;]|$)/i.test(
+        parsed.pathname,
+      )
+    ) {
       return false;
     }
   } catch {
@@ -27107,7 +30632,9 @@ function uniqueBy(values, getKey) {
 
 function uniqueEvidence(values) {
   return uniqueBy(
-    values.filter((value) => value?.sourceUrl && isPublishableSourceUrl(value.sourceUrl)),
+    values.filter(
+      (value) => value?.sourceUrl && isPublishableSourceUrl(value.sourceUrl),
+    ),
     (value) => `${value.sourceKind}:${value.sourceUrl}:${value.text}`,
   );
 }
@@ -27119,7 +30646,9 @@ function sha256(buffer) {
 function detectContentKind(url, contentType, buffer) {
   const normalizedType = contentType.toLowerCase();
   const signature = buffer.subarray(0, 8).toString("latin1");
-  const head = buffer.toString("utf8", 0, Math.min(buffer.length, 300)).trimStart();
+  const head = buffer
+    .toString("utf8", 0, Math.min(buffer.length, 300))
+    .trimStart();
 
   if (/^(?:<!doctype\s+html|<html\b)/i.test(head)) {
     return "html";
@@ -27161,15 +30690,24 @@ function detectContentKind(url, contentType, buffer) {
 }
 
 function extensionFor(url, contentType) {
-  if (/\.pdf(?:[?#]|$)/i.test(url) || contentType.toLowerCase().includes("pdf")) {
+  if (
+    /\.pdf(?:[?#]|$)/i.test(url) ||
+    contentType.toLowerCase().includes("pdf")
+  ) {
     return "pdf";
   }
 
-  if (/\.json(?:[?#]|$)/i.test(url) || contentType.toLowerCase().includes("json")) {
+  if (
+    /\.json(?:[?#]|$)/i.test(url) ||
+    contentType.toLowerCase().includes("json")
+  ) {
     return "json";
   }
 
-  if (/\.xml(?:[?#]|$)/i.test(url) || contentType.toLowerCase().includes("xml")) {
+  if (
+    /\.xml(?:[?#]|$)/i.test(url) ||
+    contentType.toLowerCase().includes("xml")
+  ) {
     return "xml";
   }
 
@@ -27181,7 +30719,10 @@ function extensionFor(url, contentType) {
     return "xlsx";
   }
 
-  if (/\.csv(?:[?#]|$)/i.test(url) || contentType.toLowerCase().includes("csv")) {
+  if (
+    /\.csv(?:[?#]|$)/i.test(url) ||
+    contentType.toLowerCase().includes("csv")
+  ) {
     return "csv";
   }
 

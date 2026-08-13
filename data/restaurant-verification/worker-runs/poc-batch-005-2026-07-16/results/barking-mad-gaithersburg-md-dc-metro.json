@@ -1,0 +1,973 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-005-2026-07-16",
+  "restaurantId": "barking-mad-gaithersburg-md-dc-metro",
+  "restaurant": {
+    "name": "Barking Mad",
+    "locationId": "gaithersburg-md",
+    "address": "239 Spectrum Ave, Gaithersburg, MD 20879",
+    "domain": "barkingmadcafe.com"
+  },
+  "packetValidation": {
+    "baselineItemCount": 64,
+    "baselineFingerprint": "9240b4fcfef0be097671b5196d87bdb713d2f18771da2f57617ebd0497523814",
+    "frozenItemCheckPath": "data/restaurant-verification/item-checks/barking-mad-gaithersburg-md-dc-metro.jsonl",
+    "frozenItemCheckCount": 64
+  },
+  "identity": {
+    "confirmed": true,
+    "identityAmbiguous": false,
+    "evidenceIds": [
+      "SRC-HOME",
+      "SRC-RESERVATIONS",
+      "SRC-TOAST"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "SRC-HOME",
+      "url": "https://www.barkingmadcafe.com/",
+      "authority": "restaurant_issued",
+      "purpose": "identity/menu-navigation",
+      "outcome": "accessible; identifies Barking Mad and rotating New American menu; links menu services"
+    },
+    {
+      "evidenceId": "SRC-RESERVATIONS",
+      "url": "https://www.barkingmadcafe.com/reservations",
+      "authority": "restaurant_issued",
+      "purpose": "location",
+      "outcome": "239 Spectrum Ave, Gaithersburg, MD 20879"
+    },
+    {
+      "evidenceId": "SRC-MENU",
+      "url": "https://www.barkingmadcafe.com/menu-2",
+      "authority": "restaurant_issued",
+      "purpose": "menu-navigation",
+      "outcome": "links breakfast, lunch, brunch, dinner, happy hour, cocktails, coffee/tea and pastry; dynamic load-more"
+    },
+    {
+      "evidenceId": "SRC-COFFEE",
+      "url": "https://www.barkingmadcafe.com/coffee-menu",
+      "authority": "restaurant_issued",
+      "purpose": "coffee/tea",
+      "outcome": "HOT COFFEE heading and dynamic content; not fully enumerable in accessible page text"
+    },
+    {
+      "evidenceId": "SRC-DRINKS",
+      "url": "https://www.barkingmadcafe.com/drinks-menu",
+      "authority": "restaurant_issued",
+      "purpose": "nonalcoholic menu",
+      "outcome": "SOFT DRINKS heading and dynamic content"
+    },
+    {
+      "evidenceId": "SRC-ORDER",
+      "url": "https://www.barkingmadcafe.com/popmenu-order",
+      "authority": "restaurant_linked_vendor",
+      "purpose": "ordering",
+      "outcome": "official link resolves to an unavailable/no-menu Popmenu state"
+    },
+    {
+      "evidenceId": "SRC-TOAST",
+      "url": "https://order.toasttab.com/online/barking-mad-cafe",
+      "authority": "linked_vendor",
+      "purpose": "current location catalog",
+      "outcome": "Gaithersburg address; breakfast, dinner, N/A beverages and retail sections exposed"
+    },
+    {
+      "evidenceId": "SRC-SEARCH",
+      "url": "https://www.google.com/search?q=site%3Abarkingmadcafe.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF",
+      "authority": "targeted_web_search",
+      "purpose": "allergen discovery",
+      "outcome": "no official allergen matrix, ingredient document, allergen legend, or cross-contact statement found"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "SURF-HOME",
+      "url": "https://www.barkingmadcafe.com/",
+      "authority": "restaurant_issued",
+      "service": "identity/navigation",
+      "mediaType": "html",
+      "current": true,
+      "scopeStatus": "partial",
+      "accessStatus": "accessible",
+      "sourceEvidenceIds": [
+        "SRC-HOME"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "SURF-MENU",
+      "url": "https://www.barkingmadcafe.com/menu-2",
+      "authority": "restaurant_issued",
+      "service": "multi-service",
+      "mediaType": "html",
+      "current": true,
+      "scopeStatus": "partial",
+      "accessStatus": "partial",
+      "sourceEvidenceIds": [
+        "SRC-MENU"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "SURF-COFFEE",
+      "url": "https://www.barkingmadcafe.com/coffee-menu",
+      "authority": "restaurant_issued",
+      "service": "coffee/tea",
+      "mediaType": "html",
+      "current": true,
+      "scopeStatus": "partial",
+      "accessStatus": "partial",
+      "sourceEvidenceIds": [
+        "SRC-COFFEE"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "SURF-DRINKS",
+      "url": "https://www.barkingmadcafe.com/drinks-menu",
+      "authority": "restaurant_issued",
+      "service": "nonalcoholic beverages",
+      "mediaType": "html",
+      "current": true,
+      "scopeStatus": "partial",
+      "accessStatus": "partial",
+      "sourceEvidenceIds": [
+        "SRC-DRINKS"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "SURF-TOAST",
+      "url": "https://order.toasttab.com/online/barking-mad-cafe",
+      "authority": "linked_vendor",
+      "service": "breakfast/dinner/N-A",
+      "mediaType": "html",
+      "current": true,
+      "scopeStatus": "partial",
+      "accessStatus": "accessible",
+      "sourceEvidenceIds": [
+        "SRC-TOAST"
+      ],
+      "currentProductKeys": [
+        "toast-bang-bang-bites",
+        "toast-burrata-caprese",
+        "toast-mussels",
+        "toast-crab-dip",
+        "toast-wings",
+        "toast-royal-salmon",
+        "toast-seasonal-salad",
+        "toast-lomo-saltado",
+        "toast-cicatelli",
+        "toast-mad-burger",
+        "toast-mad-margherita",
+        "toast-kids-cheese-pizza",
+        "toast-brownie",
+        "toast-pepsi",
+        "toast-orange-juice",
+        "toast-whole-milk",
+        "toast-oat-milk"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "toast-bang-bang-bites",
+      "name": "Crispy Bang Bang Bites",
+      "category": "Dinner / Shareables",
+      "sourceEvidenceIds": [
+        "SRC-TOAST"
+      ]
+    },
+    {
+      "currentProductKey": "toast-burrata-caprese",
+      "name": "Burrata Caprese",
+      "category": "Dinner / Shareables",
+      "sourceEvidenceIds": [
+        "SRC-TOAST"
+      ]
+    },
+    {
+      "currentProductKey": "toast-mussels",
+      "name": "Mussels",
+      "category": "Dinner / Shareables",
+      "sourceEvidenceIds": [
+        "SRC-TOAST"
+      ]
+    },
+    {
+      "currentProductKey": "toast-crab-dip",
+      "name": "Crab Dip + Pretzels",
+      "category": "Dinner / Shareables",
+      "sourceEvidenceIds": [
+        "SRC-TOAST"
+      ]
+    },
+    {
+      "currentProductKey": "toast-wings",
+      "name": "Wings",
+      "category": "Dinner / Shareables",
+      "sourceEvidenceIds": [
+        "SRC-TOAST"
+      ]
+    },
+    {
+      "currentProductKey": "toast-royal-salmon",
+      "name": "Royal Salmon",
+      "category": "Dinner / Entrees",
+      "sourceEvidenceIds": [
+        "SRC-TOAST"
+      ]
+    },
+    {
+      "currentProductKey": "toast-seasonal-salad",
+      "name": "Seasonal Salad",
+      "category": "Dinner / Entrees",
+      "sourceEvidenceIds": [
+        "SRC-TOAST"
+      ]
+    },
+    {
+      "currentProductKey": "toast-lomo-saltado",
+      "name": "Lomo Saltado",
+      "category": "Dinner / Entrees",
+      "sourceEvidenceIds": [
+        "SRC-TOAST"
+      ]
+    },
+    {
+      "currentProductKey": "toast-cicatelli",
+      "name": "Cicatelli Pasta",
+      "category": "Dinner / Entrees",
+      "sourceEvidenceIds": [
+        "SRC-TOAST"
+      ]
+    },
+    {
+      "currentProductKey": "toast-mad-burger",
+      "name": "Mad Burger",
+      "category": "Dinner / Handhelds",
+      "sourceEvidenceIds": [
+        "SRC-TOAST"
+      ]
+    },
+    {
+      "currentProductKey": "toast-mad-margherita",
+      "name": "Mad Margherita",
+      "category": "Dinner / Artisan Pizzas",
+      "sourceEvidenceIds": [
+        "SRC-TOAST"
+      ]
+    },
+    {
+      "currentProductKey": "toast-kids-cheese-pizza",
+      "name": "Kids cheese pizza",
+      "category": "Kids Menu",
+      "sourceEvidenceIds": [
+        "SRC-TOAST"
+      ]
+    },
+    {
+      "currentProductKey": "toast-brownie",
+      "name": "Brownie + Vanilla Ice Cream",
+      "category": "Desserts",
+      "sourceEvidenceIds": [
+        "SRC-TOAST"
+      ]
+    },
+    {
+      "currentProductKey": "toast-pepsi",
+      "name": "Pepsi",
+      "category": "N/A Beverages / Soft Drinks",
+      "sourceEvidenceIds": [
+        "SRC-TOAST"
+      ]
+    },
+    {
+      "currentProductKey": "toast-orange-juice",
+      "name": "Orange Juice",
+      "category": "N/A Beverages / Juice",
+      "sourceEvidenceIds": [
+        "SRC-TOAST"
+      ]
+    },
+    {
+      "currentProductKey": "toast-whole-milk",
+      "name": "Whole",
+      "category": "N/A Beverages / Milk",
+      "sourceEvidenceIds": [
+        "SRC-TOAST"
+      ]
+    },
+    {
+      "currentProductKey": "toast-oat-milk",
+      "name": "Oat Milk",
+      "category": "N/A Beverages / Milk",
+      "sourceEvidenceIds": [
+        "SRC-TOAST"
+      ]
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "locations": [
+          "https://www.barkingmadcafe.com/",
+          "https://www.barkingmadcafe.com/menu-2",
+          "https://www.barkingmadcafe.com/coffee-menu",
+          "https://www.barkingmadcafe.com/drinks-menu"
+        ],
+        "outcome": "no allergen matrix or cross-contact disclosure"
+      },
+      {
+        "class": "official_documents",
+        "locations": [
+          "official navigation and site search; PDF/document links reviewed"
+        ],
+        "outcome": "no official allergen, nutrition, ingredient or PDF matrix found"
+      },
+      {
+        "class": "linked_vendor",
+        "locations": [
+          "https://www.barkingmadcafe.com/popmenu-order",
+          "https://order.toasttab.com/online/barking-mad-cafe"
+        ],
+        "outcome": "catalog exposed on Toast; no allergen matrix or cross-contact disclosure"
+      },
+      {
+        "class": "targeted_web_search",
+        "locations": [
+          "site/domain queries for allergen, allergy, nutrition, ingredients, PDF, menu"
+        ],
+        "outcome": "no official allergen material found",
+        "evidenceIds": [
+          "SRC-SEARCH"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:all-american",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "2:almond-milk",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-DRINKS",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "3:americano",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE"
+        ]
+      },
+      {
+        "auditItemKey": "4:arnold-palmer",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-DRINKS",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "5:au-lait",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE"
+        ]
+      },
+      {
+        "auditItemKey": "6:avocado",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "7:bacon",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "8:bacon-breakfast-burrito",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "9:barkuccino",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "10:berry",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "11:black-bean",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "12:brioche-bread",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "13:cappuccino",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE"
+        ]
+      },
+      {
+        "auditItemKey": "14:chai-latte",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE"
+        ]
+      },
+      {
+        "auditItemKey": "15:chai-tea-herbal",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "16:chamomile-herbal",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "17:chocolate-milk",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-DRINKS",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "18:chorizo-breakfast-burrito",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "19:clark-classic",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "20:classic-breakfast-sandwich",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "21:cortado",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE"
+        ]
+      },
+      {
+        "auditItemKey": "22:earl-grey",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "23:english-breakfast-caffinated",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "24:english-breakfast-decaf",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "25:espresso",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "26:french-toast",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "27:green-tea",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "28:hot-chocolate",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "29:iced-coffee",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE"
+        ]
+      },
+      {
+        "auditItemKey": "30:latte",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE"
+        ]
+      },
+      {
+        "auditItemKey": "31:macchiato",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE"
+        ]
+      },
+      {
+        "auditItemKey": "32:matcha-latte",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE"
+        ]
+      },
+      {
+        "auditItemKey": "33:milkshakes",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE"
+        ]
+      },
+      {
+        "auditItemKey": "34:moroccan-mint",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "35:multi-grain-bread",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "36:new-american-inspired-cuisine",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-HOME"
+        ]
+      },
+      {
+        "auditItemKey": "37:nitro-cold-brew",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "38:oat-milk",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-DRINKS",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "39:one-avocado-toast",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "40:pancakes",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "41:pepsi",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [
+          "toast-pepsi"
+        ],
+        "sourceEvidenceIds": [
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "42:pepsi-zero",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "43:pico-de-gallo",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "44:protein-bowl",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "45:salty-brew",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE"
+        ]
+      },
+      {
+        "auditItemKey": "46:san-pellegrino-bottle",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-DRINKS",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "47:sausage",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "48:scrambled-eggs",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "49:seasonal-fruit",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "50:shaken-espresso-iced",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "51:side-french-toast",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "52:side-waffle",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "53:single-pancake",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "54:skim",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-DRINKS",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "55:spinach",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "56:starry",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-DRINKS",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "57:strawberry-matcha",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE"
+        ]
+      },
+      {
+        "auditItemKey": "58:toasted-almond",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "59:turkey-bacon",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "60:veggie-breakfast-burrito",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "61:waffle",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "62:weekday-avocado-toast",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-MENU",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "63:werewolf-in-london",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "SRC-COFFEE",
+          "SRC-TOAST"
+        ]
+      },
+      {
+        "auditItemKey": "64:whole",
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [
+          "toast-whole-milk"
+        ],
+        "sourceEvidenceIds": [
+          "SRC-TOAST"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": true,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": false,
+    "newItems": true,
+    "nameOrCategoryCleanup": true,
+    "restaurantSpecificExtraction": true,
+    "parserIssue": true
+  },
+  "routingSignals": [
+    {
+      "signal": "partial_current_catalog",
+      "severity": "high",
+      "evidenceIds": [
+        "SRC-MENU",
+        "SRC-COFFEE",
+        "SRC-DRINKS",
+        "SRC-TOAST"
+      ]
+    },
+    {
+      "signal": "official_allergen_matrix_unavailable",
+      "severity": "high",
+      "evidenceIds": [
+        "SRC-SEARCH",
+        "SRC-TOAST"
+      ]
+    },
+    {
+      "signal": "unresolved_frozen_reconciliation",
+      "severity": "high",
+      "evidenceIds": [
+        "SRC-MENU",
+        "SRC-TOAST"
+      ]
+    }
+  ],
+  "recommendedLane": "sol_review",
+  "blockedReason": "Current location-specific catalog is only partially enumerable across dynamic official surfaces and Toast; 62 frozen rows remain unresolved rather than absent. No official allergen matrix or cross-contact disclosure was found. Requires exact Sol conflict packet for scope and unsupported baseline allergen claims.",
+  "summary": "Identity confirmed. Current Toast-linked presentation exposes dinner, breakfast, N/A beverages and retail; official site exposes additional dynamic service surfaces. Catalog and allergen completeness cannot be established. No Ingredient Intelligence applied.",
+  "researchOnly": true
+}

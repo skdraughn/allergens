@@ -1,0 +1,2122 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-batch-04-2026-07-16",
+  "restaurant": {
+    "restaurantId": "bayou-bakery-arlington-va",
+    "name": "Bayou Bakery, Coffee Bar & Eatery",
+    "domain": "bayoubakeryva.com",
+    "locationId": "arlington",
+    "baselineItemCount": 83,
+    "baselineItemFingerprint": "69c923ad8ebc8413188c017eedae4023494bdf532f8b8dabb58e365ed0996e57",
+    "officialItemCount": 59,
+    "officialAllergenStatus": "extracted",
+    "sourceFamily": "toast",
+    "parserProfile": "toast-menu",
+    "guideUrl": "https://www.bayoubakeryva.com/eat",
+    "sourceUrls": [
+      "https://www.bayoubakeryva.com/eat",
+      "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100",
+      "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+      "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+      "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+    ]
+  },
+  "effectiveOutcome": "low_confidence",
+  "routingReasons": [
+    "Terra marked the result low_confidence.",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "validationWarnings": [
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "multi_service",
+      "pdf_or_image",
+      "scope_incomplete",
+      "count_drift",
+      "baseline_only",
+      "non_exact_reconciliation",
+      "cross_contact",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 83,
+      "reconciledItemCount": 83,
+      "uniqueReconciledItemCount": 83,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 3,
+      "activeMenuSurfaceCount": 3,
+      "accessibleMenuSurfaceCount": 2,
+      "serviceCount": 2,
+      "pdfImageSurfaceCount": 1,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 0,
+      "incompleteSurfaceCount": 1,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 0,
+      "currentOnlyCount": 0,
+      "baselineOnlyCount": 83,
+      "countDrift": true,
+      "duplicatePresentationCount": 0,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 0,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 83,
+      "allergenMismatchItemCount": 0,
+      "crossContactCount": 1,
+      "parserRepairFindingCount": 0,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 0,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "low_confidence",
+    "confidence": {
+      "level": "low",
+      "overall": 0.29,
+      "menu": 0.58,
+      "allergenSource": 0.05,
+      "extraction": 0.43,
+      "rationale": "Restaurant identity, official Eat navigation, both official three-page PDFs, and the linked Toast catalog were reopened. Multiple current service paths remain only partially enumerable, and no restaurant-issued or linked-vendor allergen matrix, complete ingredient document, negative claim, or cross-contact policy was located."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Bayou Bakery, Coffee Bar & Eatery at 1515 N. Courthouse Road / 1515 N Courthouse Rd Ste 100, Arlington, VA 22201.",
+      "confidence": 0.99,
+      "sourceEvidenceIds": [
+        "T-IDENTITY",
+        "T-EAT",
+        "T-TOAST"
+      ],
+      "notes": "Restaurant-issued location and the linked Toast location agree."
+    },
+    "sources": [
+      {
+        "evidenceId": "T-EAT",
+        "url": "https://www.bayoubakeryva.com/eat",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Bayou Bakery Eat",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "The Arlington restaurant's Eat page links Weekday Linner, Ready To-Go, Weekday Breakfast + Lunch, Brunch All Day, and Daily Online Orders; it states online ordering is seven days a week.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "HTML snapshot"
+      },
+      {
+        "evidenceId": "T-IDENTITY",
+        "url": "https://www.bayoubakeryva.com/location",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Bayou Bakery Location and Hours",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "1515 N. Courthouse Road, Arlington, Virginia 22201; Monday-Friday 7AM-5PM with a linner menu after 3PM; Saturday-Sunday 8AM-4PM.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "HTML snapshot"
+      },
+      {
+        "evidenceId": "T-TOAST",
+        "url": "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Bayou Bakery Toast ordering menu",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Linked ordering page identifies Bayou Bakery at 1515 N Courthouse Rd Ste 100, Arlington, VA and lists All Day, Breakfast, Coffee/Tea, Sodas/Juices, Provisions, and Cocktails; the page was not accepting orders at retrieval.",
+        "stableRowId": "toast-arlington-menu",
+        "contentHash": null,
+        "artifactSuggested": "HTML snapshot"
+      },
+      {
+        "evidenceId": "T-WEEKDAY-PDF",
+        "url": "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Bayou Bakery Weekday Breakfast and Lunch Menu",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Three-page official menu lists all-day, weekday breakfast, and lunch food. It states beignets are fried in 100% refined peanut oil, but has no allergen legend, ingredients matrix, negative allergen claims, or cross-contact statement.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "PDF snapshot"
+      },
+      {
+        "evidenceId": "T-BRUNCH-PDF",
+        "url": "https://www.bayoubakeryva.com/s/BAYOU-BAKERY-MENU-1-c6xd.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Bayou Bakery Brunch All Day Menu",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Three-page official linked brunch menu lists all-day, weekend brunch, and lunch food. It similarly states beignets are fried in 100% refined peanut oil and supplies no allergen matrix, complete ingredient document, negative allergen claims, or cross-contact policy.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "PDF snapshot"
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://www.bayoubakeryva.com/eat",
+        "notes": "Reopened restaurant-controlled service index and official location page; five service paths are identified."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://www.bayoubakeryva.com/s/BAYOU-BAKERY-MENU-1-c6xd.pdf",
+        "notes": "Reopened the Brunch All Day linked PDF; text is extractable but allergen disclosure is absent."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100",
+        "notes": "Reopened restaurant-linked Toast catalog. Ordering was closed but product text remained accessible."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "not_found",
+        "url": null,
+        "notes": "No restaurant-issued allergen matrix, ingredient list, allergy policy, or cross-contact policy was located."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No authoritative archived allergen disclosure was located."
+      },
+      {
+        "kind": "third_party",
+        "status": "not_found",
+        "url": null,
+        "notes": "No third-party source was used to infer or manufacture allergen arrays."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "multi_service",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T-EAT",
+          "T-IDENTITY",
+          "T-TOAST"
+        ],
+        "notes": "The official page identifies weekday linner, ready-to-go, weekday breakfast/lunch, weekend brunch, and online ordering."
+      },
+      {
+        "gateId": "pdf_or_image",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T-EAT",
+          "T-WEEKDAY-PDF",
+          "T-BRUNCH-PDF"
+        ],
+        "notes": "Two official PDF menu surfaces and two official image-linked service surfaces require extraction or visual review."
+      },
+      {
+        "gateId": "scope_incomplete",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T-EAT",
+          "T-TOAST",
+          "T-WEEKDAY-PDF",
+          "T-BRUNCH-PDF"
+        ],
+        "notes": "Linner and ready-to-go are linked image surfaces not independently enumerable in this review; the accessible Toast and PDF scopes also differ."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T-TOAST",
+          "T-WEEKDAY-PDF",
+          "T-BRUNCH-PDF"
+        ],
+        "notes": "The frozen 83-row baseline, broad current Toast catalog, and service-period PDF catalogs do not yield one complete current catalog."
+      },
+      {
+        "gateId": "baseline_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T-TOAST",
+          "T-WEEKDAY-PDF",
+          "T-BRUNCH-PDF"
+        ],
+        "notes": "Several frozen presentations are absent or renamed on reopened current surfaces, including Fillet O' Blue Cat Fish Sandwich, Founding Father's Plate, Watermelon Feta Salad [pint], and Bayou Egg Salad [Pint]."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T-TOAST",
+          "T-WEEKDAY-PDF",
+          "T-BRUNCH-PDF"
+        ],
+        "notes": "Frozen rows mix service-specific, seasonal, generic, configurable, and older presentations; names and variants do not reconcile exactly."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "unresolved",
+        "sourceEvidenceIds": [
+          "T-TOAST",
+          "T-WEEKDAY-PDF",
+          "T-BRUNCH-PDF"
+        ],
+        "notes": "No restaurant-issued or linked-vendor cross-contact policy was found. The refined-peanut-oil statement is a narrow named process positive for beignets, not a facility-wide cross-contact conclusion."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T-EAT",
+          "T-TOAST",
+          "T-WEEKDAY-PDF",
+          "T-BRUNCH-PDF"
+        ],
+        "notes": "Current-surface enumeration and authoritative allergen sourcing remain incomplete."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T-EAT",
+          "T-TOAST",
+          "T-WEEKDAY-PDF"
+        ],
+        "notes": "Independent reopening confirms the scout's multiple-surface, difficult-extraction, count-drift, and incomplete-allergen-source concerns."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "MS-EAT",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "T-EAT"
+        ],
+        "notes": "Checked once. Current restaurant-issued navigation/service index; it is not a complete enumerated product menu."
+      },
+      {
+        "surfaceId": "MS-TOAST",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "T-TOAST"
+        ],
+        "notes": "Checked once. Restaurant-linked vendor catalog was accessible, but it is not restaurant-issued allergen evidence and cannot establish complete restaurant scope."
+      },
+      {
+        "surfaceId": "MS-PDF",
+        "verdict": "mismatch",
+        "sourceEvidenceIds": [
+          "T-WEEKDAY-PDF"
+        ],
+        "notes": "Checked once. It is accessible and text-extractable rather than merely partial, but its service-period scope differs from Toast and it has no allergen disclosure."
+      }
+    ],
+    "currentProductCheckGroups": [],
+    "additionalMenuSurfaces": [
+      {
+        "surfaceId": "MS-LINNER",
+        "title": "Weekday Linner",
+        "service": "weekday linner, 3 PM-5 PM",
+        "url": "https://www.bayoubakeryva.com/s/Linner.png",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "image",
+        "accessStatus": "partial",
+        "fullyEnumerated": false,
+        "scopeStatus": "unresolved",
+        "current": true,
+        "sourceEvidenceIds": [
+          "T-EAT",
+          "T-IDENTITY"
+        ],
+        "currentProductKeys": [],
+        "notes": "The official Eat and location pages establish this current service path, but its linked image could not be independently enumerated."
+      },
+      {
+        "surfaceId": "MS-READY-TO-GO",
+        "title": "Ready To-Go!",
+        "service": "ready-to-go",
+        "url": "https://www.bayoubakeryva.com/s/Provisions.png",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "image",
+        "accessStatus": "partial",
+        "fullyEnumerated": false,
+        "scopeStatus": "unresolved",
+        "current": true,
+        "sourceEvidenceIds": [
+          "T-EAT"
+        ],
+        "currentProductKeys": [],
+        "notes": "The official Eat page establishes this linked service path, but its linked image could not be independently enumerated."
+      },
+      {
+        "surfaceId": "MS-BRUNCH-PDF",
+        "title": "Brunch All Day linked PDF",
+        "service": "weekend brunch, 8 AM-4 PM",
+        "url": "https://www.bayoubakeryva.com/s/BAYOU-BAKERY-MENU-1-c6xd.pdf",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "pdf",
+        "accessStatus": "accessible",
+        "fullyEnumerated": true,
+        "scopeStatus": "partial",
+        "current": true,
+        "sourceEvidenceIds": [
+          "T-BRUNCH-PDF"
+        ],
+        "currentProductKeys": [],
+        "notes": "Separate accessible official PDF surface linked as Brunch All Day; it does not establish all restaurant offerings or allergen coverage."
+      }
+    ],
+    "additionalCurrentProducts": [
+      {
+        "currentProductKey": "toast-current-food-nonalcoholic-catalog",
+        "name": "Toast food and nonalcoholic catalog",
+        "category": "multiple",
+        "surfaceIds": [
+          "MS-TOAST"
+        ],
+        "presentationIds": [],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "T-TOAST"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "T-TOAST"
+        ],
+        "authorityVerdict": "unverifiable",
+        "notes": "Genuinely new discovery because Luna supplied zero currentProducts. Toast visibly lists food, bakery, breakfast, coffee/tea, soda/juice, and provisions products, including Latte, Vanilla Latte, Assorted Pastry, Strawberry Cream Cruffin, Traditional Praline, Peanut Butter-Chocolate Breakfast Bar, Dark Chocolate Brownie, Guava & Cream Cheese Pastelito, Not My Mom's Deviled Eggs, Gumbo, Ham Melt, and several drinks absent from frozen rows. This aggregate records an additional accessible catalog boundary only; it does not assert complete restaurant scope or allergen absence."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 83,
+      "counts": {
+        "variant_match/accurately_unavailable": 83
+      }
+    },
+    "findings": [
+      {
+        "findingId": "T-F-001",
+        "severity": "critical",
+        "kind": "allergen_source",
+        "summary": "Frozen rows label menu-derived arrays as official ingredients or official product-allergen evidence, but the independently reopened sources provide menu names/descriptions only. Toast remains restaurant-linked vendor evidence; the official PDFs are menus, not allergen matrices or complete ingredient documents. Complete arrays, negative semantics, and may-contain assertions cannot be verified.",
+        "sourceEvidenceIds": [
+          "T-TOAST",
+          "T-WEEKDAY-PDF",
+          "T-BRUNCH-PDF"
+        ],
+        "affectedAuditItemKeys": [
+          "1:12oz-yogurt-parfait",
+          "4:avocado-benedict",
+          "5:avocado-toast",
+          "6:bayou-blt",
+          "7:bayou-chedda-roast",
+          "8:bayou-chopped",
+          "9:bayou-egg-salad-pint",
+          "11:bbq-pork-biscuit",
+          "13:biscuits-and-gravy",
+          "14:blackened-turkey-meatballs",
+          "15:blackened-turkey-meatballs-4",
+          "16:brown-butter-pecan-waffle",
+          "17:build-your-own-breakfast-sandwich",
+          "19:cold-blackened-turkey-meatballs",
+          "20:cold-chicken-salad-sandwich",
+          "21:cold-grab-and-go-retail-foods",
+          "22:cold-pimento-cheese-sandwich",
+          "23:cookie",
+          "26:creole-cream-cheese-and-pepper-jelly",
+          "27:croissant",
+          "29:cuban-flan",
+          "30:cucumber-tomato-feta-salad-pint",
+          "32:daily-quiche-plate-spinach-goat-cheese",
+          "33:everything-croissant",
+          "34:fillet-o-blue-cat-fish-sandwich-mkt-price",
+          "35:flat-white",
+          "40:grilled-cheese",
+          "41:grilled-pimento-cheese",
+          "43:ham-cheese-croissant",
+          "44:honey-lavender-latte",
+          "46:hungover-hog",
+          "48:j-baker-pimiento-cheese",
+          "49:j-baker-pimiento-cheese-grilled",
+          "50:j-bakers-pimiento-cheese",
+          "51:j-bakers-pimiento-cheese-12-pint",
+          "52:la-style-biscuits-and-gravy",
+          "54:mac-and-cheese-cheddar-beef-brisket",
+          "55:mini-blueberry-pie",
+          "56:mini-strawberry-rhubarb-pie",
+          "57:mrt",
+          "58:muffin",
+          "59:natural-yogurt",
+          "60:new-orleans-3",
+          "61:no-bread-melt",
+          "63:pimento-cheese-and-ritz-side",
+          "64:pop-up-specials",
+          "68:roasted-pecan-and-brown-butter-waffle",
+          "69:salmon-toast",
+          "70:scotcharoo",
+          "73:smoked-douille-dog",
+          "74:soft-poached-egg",
+          "75:spinach-madeline",
+          "76:star-spangled-sugar-cookie",
+          "77:steel-cut-irish-oats",
+          "78:strawberry-almond-crunch-coffee-cake",
+          "79:the-muff-a-lotta",
+          "81:veggie-ville",
+          "82:watermelon-feta-salad-pint",
+          "83:your-daily-greens"
+        ]
+      },
+      {
+        "findingId": "T-F-002",
+        "severity": "high",
+        "kind": "scope",
+        "summary": "The accessible current menu boundary is incomplete: official Linner and Ready To-Go image surfaces cannot be enumerated, and Toast, weekday PDF, and brunch PDF scopes differ. Therefore the sources cannot establish product removals, complete menu negatives, or restaurant-wide cross-contact semantics.",
+        "sourceEvidenceIds": [
+          "T-EAT",
+          "T-TOAST",
+          "T-WEEKDAY-PDF",
+          "T-BRUNCH-PDF"
+        ],
+        "affectedAuditItemKeys": [
+          "2:all-beef-dog",
+          "3:all-beef-hot-dog",
+          "9:bayou-egg-salad-pint",
+          "18:caesar-salad",
+          "21:cold-grab-and-go-retail-foods",
+          "24:corn-salad-pint",
+          "25:creole-coleslaw-pint",
+          "31:daily-greens",
+          "34:fillet-o-blue-cat-fish-sandwich-mkt-price",
+          "36:founding-fathers-plate-no-substitutions",
+          "37:gw-gristmill-cornbread-loaf",
+          "39:greens",
+          "42:gumbo-cup-or-bowl",
+          "65:rice-krispies",
+          "66:roasted-chicken-salad",
+          "67:roasted-chicken-salad-12-pint",
+          "71:seasonal-soup-cup",
+          "72:side-of-fruit-strawberries",
+          "80:true-grits",
+          "82:watermelon-feta-salad-pint"
+        ]
+      },
+      {
+        "findingId": "T-F-003",
+        "severity": "high",
+        "kind": "extraction",
+        "summary": "The frozen catalog contains duplicate, stale, generic, and service-period-dependent presentations. Examples include All Beef Dog versus All Beef Hot Dog, J. Baker/J. Baker's Pimiento Cheese variants, Blackened Turkey Meatballs variants, old variant labels, and products absent from current accessible surfaces. Parser or source reconciliation requires adjudication before any repair.",
+        "sourceEvidenceIds": [
+          "T-TOAST",
+          "T-WEEKDAY-PDF",
+          "T-BRUNCH-PDF"
+        ],
+        "affectedAuditItemKeys": [
+          "2:all-beef-dog",
+          "3:all-beef-hot-dog",
+          "14:blackened-turkey-meatballs",
+          "15:blackened-turkey-meatballs-4",
+          "19:cold-blackened-turkey-meatballs",
+          "48:j-baker-pimiento-cheese",
+          "49:j-baker-pimiento-cheese-grilled",
+          "50:j-bakers-pimiento-cheese",
+          "51:j-bakers-pimiento-cheese-12-pint",
+          "54:mac-and-cheese-cheddar-beef-brisket",
+          "56:mini-strawberry-rhubarb-pie",
+          "60:new-orleans-3"
+        ]
+      },
+      {
+        "findingId": "T-F-004",
+        "severity": "medium",
+        "kind": "cross_contact",
+        "summary": "The only narrow process statement found is that beignets are fried in 100% refined peanut oil. It is not a complete ingredient list, a restaurant-wide allergen statement, or a cross-contact disclosure; no may-contain conclusion is supported.",
+        "sourceEvidenceIds": [
+          "T-TOAST",
+          "T-WEEKDAY-PDF",
+          "T-BRUNCH-PDF"
+        ],
+        "affectedAuditItemKeys": [
+          "12:beignets",
+          "60:new-orleans-3"
+        ]
+      }
+    ],
+    "summary": "Low-confidence discrepancy result. All three scout menu surfaces were verified exactly once. The scout supplied zero currentProductKeys, so currentProductCheckGroups is intentionally empty; the accessible Toast food/nonalcoholic catalog is reported only once as an additional discovery and is not misrepresented as a scout product. All 83 frozen auditItemKeys are reconciled exactly once. Multiple current menu surfaces, incomplete scope, source-authority gaps, stale/variant catalog drift, and unresolved cross-contact semantics require Sol adjudication.",
+    "coordinatorNotes": [
+      "Correction attempt 2: removed the unrecognized additional Toast catalog key from currentProductCheckGroups. No scout current product was omitted because the scout's currentProducts array is empty.",
+      "Do not treat empty adjudicated allergen arrays as negative claims; they accompany allergenSourceType unavailable and accurately_unavailable verdicts."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "1:12oz-yogurt-parfait",
+      "baseline": {
+        "itemId": "12oz-yogurt-parfait",
+        "name": "12oz Yogurt Parfait",
+        "category": "Southern / Bakery",
+        "variantGroup": "Cold Grab & Go Retail Foods",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "2:all-beef-dog",
+      "baseline": {
+        "itemId": "all-beef-dog",
+        "name": "ALL BEEF DOG",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "3:all-beef-hot-dog",
+      "baseline": {
+        "itemId": "all-beef-hot-dog",
+        "name": "All Beef Hot Dog",
+        "category": "Southern / Bakery",
+        "variantGroup": "Lil Yats",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "4:avocado-benedict",
+      "baseline": {
+        "itemId": "avocado-benedict",
+        "name": "AVOCADO BENEDICT",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "5:avocado-toast",
+      "baseline": {
+        "itemId": "avocado-toast",
+        "name": "Avocado Toast",
+        "category": "Southern / Bakery",
+        "variantGroup": "Creole Cream Cheese & Pepper Jelly",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "6:bayou-blt",
+      "baseline": {
+        "itemId": "bayou-blt",
+        "name": "Bayou BLT",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "7:bayou-chedda-roast",
+      "baseline": {
+        "itemId": "bayou-chedda-roast",
+        "name": "Bayou Chedda' Roast",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "sesame",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "8:bayou-chopped",
+      "baseline": {
+        "itemId": "bayou-chopped",
+        "name": "Bayou Chopped",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "9:bayou-egg-salad-pint",
+      "baseline": {
+        "itemId": "bayou-egg-salad-pint",
+        "name": "Bayou Egg Salad [Pint]",
+        "category": "Southern / Bakery",
+        "variantGroup": "Cucumber-Tomato-Feta Salad [Pint]",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "11:bbq-pork-biscuit",
+      "baseline": {
+        "itemId": "bbq-pork-biscuit",
+        "name": "BBQ Pork Biscuit",
+        "category": "Southern / Bakery",
+        "variantGroup": "Biscuits & Gravy",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "12:beignets",
+      "baseline": {
+        "itemId": "beignets",
+        "name": "Beignets",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "13:biscuits-and-gravy",
+      "baseline": {
+        "itemId": "biscuits-and-gravy",
+        "name": "Biscuits & Gravy",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "14:blackened-turkey-meatballs",
+      "baseline": {
+        "itemId": "blackened-turkey-meatballs",
+        "name": "Blackened Turkey Meatballs",
+        "category": "Southern / Bakery",
+        "variantGroup": "Avocado Toast",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-product-allergen-section",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "15:blackened-turkey-meatballs-4",
+      "baseline": {
+        "itemId": "blackened-turkey-meatballs-4",
+        "name": "BLACKENED TURKEY MEATBALLS [4]",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-product-allergen-section",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "16:brown-butter-pecan-waffle",
+      "baseline": {
+        "itemId": "brown-butter-pecan-waffle",
+        "name": "BROWN BUTTER + PECAN WAFFLE",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "tree-nut",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "17:build-your-own-breakfast-sandwich",
+      "baseline": {
+        "itemId": "build-your-own-breakfast-sandwich",
+        "name": "Build Your Own: Breakfast Sandwich",
+        "category": "Southern / Bakery",
+        "variantGroup": "Featured Items",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "18:caesar-salad",
+      "baseline": {
+        "itemId": "caesar-salad",
+        "name": "Caesar Salad",
+        "category": "Southern / Bakery",
+        "variantGroup": "Daily Greens",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "19:cold-blackened-turkey-meatballs",
+      "baseline": {
+        "itemId": "cold-blackened-turkey-meatballs",
+        "name": "Cold Blackened Turkey Meatballs",
+        "category": "Southern / Bakery",
+        "variantGroup": "12oz Yogurt Parfait",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-product-allergen-section",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "20:cold-chicken-salad-sandwich",
+      "baseline": {
+        "itemId": "cold-chicken-salad-sandwich",
+        "name": "Cold Chicken Salad Sandwich",
+        "category": "Southern / Bakery",
+        "variantGroup": "Cold Pimento Cheese Sandwich",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "21:cold-grab-and-go-retail-foods",
+      "baseline": {
+        "itemId": "cold-grab-and-go-retail-foods",
+        "name": "Cold Grab & Go Retail Foods",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "22:cold-pimento-cheese-sandwich",
+      "baseline": {
+        "itemId": "cold-pimento-cheese-sandwich",
+        "name": "Cold Pimento Cheese Sandwich",
+        "category": "Southern / Bakery",
+        "variantGroup": "J. Baker'S Pimiento Cheese [1/2 Pint]",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "23:cookie",
+      "baseline": {
+        "itemId": "cookie",
+        "name": "Cookie",
+        "category": "Southern / Bakery",
+        "variantGroup": "Cuban Flan",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "24:corn-salad-pint",
+      "baseline": {
+        "itemId": "corn-salad-pint",
+        "name": "Corn Salad [pint]",
+        "category": "Southern / Bakery",
+        "variantGroup": "Founding Father'S Plate [No Substitutions]",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "25:creole-coleslaw-pint",
+      "baseline": {
+        "itemId": "creole-coleslaw-pint",
+        "name": "Creole Coleslaw [pint]",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "26:creole-cream-cheese-and-pepper-jelly",
+      "baseline": {
+        "itemId": "creole-cream-cheese-and-pepper-jelly",
+        "name": "Creole Cream Cheese & Pepper Jelly",
+        "category": "Southern / Bakery",
+        "variantGroup": "\"Not My Mom'S\" Deviled Eggs",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "27:croissant",
+      "baseline": {
+        "itemId": "croissant",
+        "name": "Croissant",
+        "category": "Southern / Bakery",
+        "variantGroup": "Strawberry-Almond Crunch Coffee Cake",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "tree-nut",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "29:cuban-flan",
+      "baseline": {
+        "itemId": "cuban-flan",
+        "name": "Cuban Flan",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "30:cucumber-tomato-feta-salad-pint",
+      "baseline": {
+        "itemId": "cucumber-tomato-feta-salad-pint",
+        "name": "Cucumber-Tomato-Feta Salad [pint]",
+        "category": "Southern / Bakery",
+        "variantGroup": "Watermelon Feta Salad [Pint]",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "31:daily-greens",
+      "baseline": {
+        "itemId": "daily-greens",
+        "name": "Daily Greens",
+        "category": "Southern / Bakery",
+        "variantGroup": "Bayou Chopped",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "32:daily-quiche-plate-spinach-goat-cheese",
+      "baseline": {
+        "itemId": "daily-quiche-plate-spinach-goat-cheese",
+        "name": "Daily Quiche Plate [Spinach Goat Cheese]",
+        "category": "Southern / Bakery",
+        "variantGroup": "Mac & Cheese [Cheddar + Beef Brisket]",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "33:everything-croissant",
+      "baseline": {
+        "itemId": "everything-croissant",
+        "name": "EVERYTHING CROISSANT",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "34:fillet-o-blue-cat-fish-sandwich-mkt-price",
+      "baseline": {
+        "itemId": "fillet-o-blue-cat-fish-sandwich-mkt-price",
+        "name": "Fillet O' \"Blue Cat\" Fish Sandwich [MKT Price]",
+        "category": "Southern / Bakery",
+        "variantGroup": "Bayou Chedda' Roast",
+        "isConfigurable": false,
+        "allergens": [
+          "fish",
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "35:flat-white",
+      "baseline": {
+        "itemId": "flat-white",
+        "name": "Flat White",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "36:founding-fathers-plate-no-substitutions",
+      "baseline": {
+        "itemId": "founding-fathers-plate-no-substitutions",
+        "name": "Founding Father's Plate [No Substitutions]",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "37:gw-gristmill-cornbread-loaf",
+      "baseline": {
+        "itemId": "gw-gristmill-cornbread-loaf",
+        "name": "G.W. Gristmill Cornbread Loaf",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "39:greens",
+      "baseline": {
+        "itemId": "greens",
+        "name": "Greens",
+        "category": "Southern / Bakery",
+        "variantGroup": "Sandwiches",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "40:grilled-cheese",
+      "baseline": {
+        "itemId": "grilled-cheese",
+        "name": "Grilled Cheese",
+        "category": "Southern / Bakery",
+        "variantGroup": "Ham Melt",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "41:grilled-pimento-cheese",
+      "baseline": {
+        "itemId": "grilled-pimento-cheese",
+        "name": "Grilled Pimento Cheese",
+        "category": "Southern / Bakery",
+        "variantGroup": "Bayou Blt",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "42:gumbo-cup-or-bowl",
+      "baseline": {
+        "itemId": "gumbo-cup-or-bowl",
+        "name": "GUMBO [cup or bowl]",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "43:ham-cheese-croissant",
+      "baseline": {
+        "itemId": "ham-cheese-croissant",
+        "name": "HAM + CHEESE CROiSSANT",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "44:honey-lavender-latte",
+      "baseline": {
+        "itemId": "honey-lavender-latte",
+        "name": "Honey Lavender Latte",
+        "category": "Southern / Bakery",
+        "variantGroup": "Iced Yerba Mint Mate",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "46:hungover-hog",
+      "baseline": {
+        "itemId": "hungover-hog",
+        "name": "Hungover Hog",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "48:j-baker-pimiento-cheese",
+      "baseline": {
+        "itemId": "j-baker-pimiento-cheese",
+        "name": "J. Baker's Pimiento Cheese",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "49:j-baker-pimiento-cheese-grilled",
+      "baseline": {
+        "itemId": "j-baker-pimiento-cheese-grilled",
+        "name": "J. BAKER PIMIENTO CHEESE [GRILLED]",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "50:j-bakers-pimiento-cheese",
+      "baseline": {
+        "itemId": "j-bakers-pimiento-cheese",
+        "name": "J. BAKER’S PIMIENTO CHEESE",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "51:j-bakers-pimiento-cheese-12-pint",
+      "baseline": {
+        "itemId": "j-bakers-pimiento-cheese-12-pint",
+        "name": "J. Baker's Pimiento Cheese [1/2 Pint]",
+        "category": "Southern / Bakery",
+        "variantGroup": "Roasted Chicken Salad [1/2 Pint]",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "52:la-style-biscuits-and-gravy",
+      "baseline": {
+        "itemId": "la-style-biscuits-and-gravy",
+        "name": "LA Style Biscuits & Gravy",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "54:mac-and-cheese-cheddar-beef-brisket",
+      "baseline": {
+        "itemId": "mac-and-cheese-cheddar-beef-brisket",
+        "name": "Mac & Cheese [Cheddar + Beef Brisket]",
+        "category": "Southern / Bakery",
+        "variantGroup": "Blackened Turkey Meatballs",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "55:mini-blueberry-pie",
+      "baseline": {
+        "itemId": "mini-blueberry-pie",
+        "name": "Mini Blueberry Pie",
+        "category": "Southern / Bakery",
+        "variantGroup": "Mini Strawberry Rhubarb Pie",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "56:mini-strawberry-rhubarb-pie",
+      "baseline": {
+        "itemId": "mini-strawberry-rhubarb-pie",
+        "name": "Mini Strawberry Rhubarb Pie",
+        "category": "Southern / Bakery",
+        "variantGroup": "Dark Chocolate Brownie",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "57:mrt",
+      "baseline": {
+        "itemId": "mrt",
+        "name": "Mr.T",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "58:muffin",
+      "baseline": {
+        "itemId": "muffin",
+        "name": "Muffin",
+        "category": "Southern / Bakery",
+        "variantGroup": "Scone",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "59:natural-yogurt",
+      "baseline": {
+        "itemId": "natural-yogurt",
+        "name": "Natural Yogurt",
+        "category": "Southern / Bakery",
+        "variantGroup": "Gras-Nola (Granola)",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "60:new-orleans-3",
+      "baseline": {
+        "itemId": "new-orleans-3",
+        "name": "NEW ORLEANS {3}",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "peanut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "61:no-bread-melt",
+      "baseline": {
+        "itemId": "no-bread-melt",
+        "name": "No-Bread Melt",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "63:pimento-cheese-and-ritz-side",
+      "baseline": {
+        "itemId": "pimento-cheese-and-ritz-side",
+        "name": "Pimento Cheese & ritz Side",
+        "category": "Southern / Bakery",
+        "variantGroup": "Sides & Shareables",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "64:pop-up-specials",
+      "baseline": {
+        "itemId": "pop-up-specials",
+        "name": "Pop-Up Specials",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "65:rice-krispies",
+      "baseline": {
+        "itemId": "rice-krispies",
+        "name": "RICE KRISPIES",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "66:roasted-chicken-salad",
+      "baseline": {
+        "itemId": "roasted-chicken-salad",
+        "name": "Roasted Chicken Salad",
+        "category": "Southern / Bakery",
+        "variantGroup": "Grilled Pimento Cheese",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "67:roasted-chicken-salad-12-pint",
+      "baseline": {
+        "itemId": "roasted-chicken-salad-12-pint",
+        "name": "Roasted Chicken Salad [1/2 Pint]",
+        "category": "Southern / Bakery",
+        "variantGroup": "Cold Blackened Turkey Meatballs",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "68:roasted-pecan-and-brown-butter-waffle",
+      "baseline": {
+        "itemId": "roasted-pecan-and-brown-butter-waffle",
+        "name": "Roasted Pecan & Brown Butter Waffle",
+        "category": "Southern / Bakery",
+        "variantGroup": "Weekend Brunch",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "tree-nut",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "69:salmon-toast",
+      "baseline": {
+        "itemId": "salmon-toast",
+        "name": "Salmon Toast",
+        "category": "Southern / Bakery",
+        "variantGroup": "Spinach Madeline",
+        "isConfigurable": false,
+        "allergens": [
+          "fish",
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "70:scotcharoo",
+      "baseline": {
+        "itemId": "scotcharoo",
+        "name": "Scotcharoo",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "peanut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "71:seasonal-soup-cup",
+      "baseline": {
+        "itemId": "seasonal-soup-cup",
+        "name": "SEASONAL SOUP CUP",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "72:side-of-fruit-strawberries",
+      "baseline": {
+        "itemId": "side-of-fruit-strawberries",
+        "name": "Side of Fruit [strawberries]",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "73:smoked-douille-dog",
+      "baseline": {
+        "itemId": "smoked-douille-dog",
+        "name": "Smoked Douille Dog",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "74:soft-poached-egg",
+      "baseline": {
+        "itemId": "soft-poached-egg",
+        "name": "Soft Poached Egg",
+        "category": "Southern / Bakery",
+        "variantGroup": "No-Bread Melt",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "75:spinach-madeline",
+      "baseline": {
+        "itemId": "spinach-madeline",
+        "name": "Spinach Madeline",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "76:star-spangled-sugar-cookie",
+      "baseline": {
+        "itemId": "star-spangled-sugar-cookie",
+        "name": "Star Spangled Sugar Cookie",
+        "category": "Southern / Bakery",
+        "variantGroup": "Mini Blueberry Pie",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "77:steel-cut-irish-oats",
+      "baseline": {
+        "itemId": "steel-cut-irish-oats",
+        "name": "STEEL CUT IRISH OATS",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "78:strawberry-almond-crunch-coffee-cake",
+      "baseline": {
+        "itemId": "strawberry-almond-crunch-coffee-cake",
+        "name": "Strawberry-Almond Crunch Coffee Cake",
+        "category": "Southern / Bakery",
+        "variantGroup": "G.W. Gristmill Cornbread Loaf",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "egg",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "79:the-muff-a-lotta",
+      "baseline": {
+        "itemId": "the-muff-a-lotta",
+        "name": "The Muff-A-Lotta",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "sesame",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "80:true-grits",
+      "baseline": {
+        "itemId": "true-grits",
+        "name": "True Grits",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "81:veggie-ville",
+      "baseline": {
+        "itemId": "veggie-ville",
+        "name": "Veggie-Ville",
+        "category": "Southern / Bakery",
+        "variantGroup": "Southern / Bakery",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "sesame",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-product-allergen-section",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "82:watermelon-feta-salad-pint",
+      "baseline": {
+        "itemId": "watermelon-feta-salad-pint",
+        "name": "Watermelon Feta Salad [pint]",
+        "category": "Southern / Bakery",
+        "variantGroup": "Corn Salad [Pint]",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bayou-bakery-1515-n-courthouse-rd-ste-100"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "83:your-daily-greens",
+      "baseline": {
+        "itemId": "your-daily-greens",
+        "name": "YOUR DAILY GREENS",
+        "category": "Southern / Bakery",
+        "variantGroup": "Sandwiches",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU%2BBAKERY%2BMENU%2B%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b733c6e915bb3c1feb6984/1756836806132/BAYOU+BAKERY+MENU+%281%29.pdf",
+          "https://static1.squarespace.com/static/5f0f4dd977cb0f2068de0e76/t/68b7340f7dd7ba196d730343/1756836879824/BAYOU+BAKERY+MENU+%281%29.pdf"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-04-2026-07-16/jobs/bayou-bakery-arlington-va.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-04-2026-07-16/results/bayou-bakery-arlington-va.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/bayou-bakery-arlington-va.jsonl"
+  }
+}

@@ -1,0 +1,926 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-071-2026-08-05",
+  "restaurantId": "chipotle",
+  "runId": "poc-batch-071-2026-08-05-chipotle-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "chipotle",
+    "name": "Chipotle",
+    "locationId": "",
+    "domain": "chipotle.com",
+    "baselineItemCount": 26,
+    "baselineFingerprint": "a0201486d9bc4076019ac882dd9091ee9dff84831f3a812804ca06edb751693b",
+    "itemChecksRead": 26,
+    "itemChecksPath": "data/restaurant-verification/item-checks/chipotle.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Chipotle",
+    "location": "United States; location selected through official ordering flow",
+    "locationId": "",
+    "domain": "chipotle.com",
+    "officialHomepage": "https://www.chipotle.com/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-menu"
+    ],
+    "notes": "Official Chipotle identity confirmed; no ambiguous location merged."
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-home",
+      "url": "https://www.chipotle.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Official Chipotle homepage.",
+      "id": "ev-home"
+    },
+    {
+      "evidenceId": "ev-menu",
+      "url": "https://www.chipotle.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Official current menu surface.",
+      "id": "ev-menu"
+    },
+    {
+      "evidenceId": "ev-allergen",
+      "url": "https://www.chipotle.com/allergens",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Official allergen guidance and menu metadata source.",
+      "id": "ev-allergen"
+    },
+    {
+      "evidenceId": "ev-api",
+      "url": "https://services.chipotle.com/menu-metadata/v1/menu-metadata/allergendiets",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Official allergen-diets API endpoint; endpoint requires subscription key during unauthenticated retrieval.",
+      "id": "ev-api"
+    },
+    {
+      "evidenceId": "ev-vendor",
+      "url": "https://order.chipotle.com/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Official-linked ordering vendor.",
+      "id": "ev-vendor"
+    },
+    {
+      "evidenceId": "ev-search-site",
+      "url": "https://www.chipotle.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "official_site search inspected homepage, menu navigation and allergen links.",
+      "id": "ev-search-site"
+    },
+    {
+      "evidenceId": "ev-search-docs",
+      "url": "https://www.chipotle.com/allergens",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "official_documents search inspected allergen/nutrition/document links; no standalone downloadable matrix beyond official metadata.",
+      "id": "ev-search-docs"
+    },
+    {
+      "evidenceId": "ev-search-vendor",
+      "url": "https://order.chipotle.com/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "linked_vendor search inspected ordering menu and nutrition disclosures.",
+      "id": "ev-search-vendor"
+    },
+    {
+      "evidenceId": "ev-search-web",
+      "url": "https://www.google.com/search?q=site%3Achipotle.com+allergen+allergy+nutrition+ingredients+PDF",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "targeted_web_search for official-domain allergen, allergy, nutrition, ingredients and PDF.",
+      "id": "ev-search-web"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-menu",
+      "title": "Chipotle current menu",
+      "url": "https://www.chipotle.com/menu",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "United States Chipotle menu; location selected at ordering",
+      "servicePeriod": "all-day",
+      "surfaceType": "html_menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "currentProductKeys": [
+        "barbacoa",
+        "black-beans",
+        "brown-rice",
+        "carnitas",
+        "chicken",
+        "chipotle-honey-vinaigrette",
+        "crispy-corn-tortilla",
+        "fajita-vegetables",
+        "flour-tortilla-burrito",
+        "flour-tortilla-taco",
+        "fresh-tomato-salsa",
+        "guacamole",
+        "monterey-jack-cheese",
+        "pinto-beans",
+        "queso-blanco",
+        "red-chimichurri-sauce",
+        "roasted-chili-corn-salsa",
+        "romaine-lettuce",
+        "sofritas",
+        "sour-cream",
+        "steak",
+        "supergreens-lettuce-blend",
+        "tomatillo-green-chili-salsa",
+        "tomatillo-red-chili-salsa",
+        "tortilla-chips",
+        "white-rice"
+      ]
+    },
+    {
+      "surfaceId": "linked-ordering",
+      "title": "Chipotle online ordering",
+      "url": "https://order.chipotle.com/",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "location-dependent ordering vendor",
+      "servicePeriod": "all-day",
+      "surfaceType": "linked_vendor",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-vendor"
+      ],
+      "currentProductKeys": []
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "barbacoa",
+      "name": "Barbacoa",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "black-beans",
+      "name": "Black Beans",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "brown-rice",
+      "name": "Brown Rice",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "carnitas",
+      "name": "Carnitas",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "chicken",
+      "name": "Chicken",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "chipotle-honey-vinaigrette",
+      "name": "Chipotle Honey Vinaigrette",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [
+        "sulfites"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen",
+        "ev-api"
+      ]
+    },
+    {
+      "currentProductKey": "crispy-corn-tortilla",
+      "name": "Crispy Corn Tortilla",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "fajita-vegetables",
+      "name": "Fajita Vegetables",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "flour-tortilla-burrito",
+      "name": "Flour Tortilla (Burrito)",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [
+        "gluten",
+        "sulfites",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen",
+        "ev-api"
+      ]
+    },
+    {
+      "currentProductKey": "flour-tortilla-taco",
+      "name": "Flour Tortilla (Taco)",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [
+        "gluten",
+        "sulfites",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen",
+        "ev-api"
+      ]
+    },
+    {
+      "currentProductKey": "fresh-tomato-salsa",
+      "name": "Fresh Tomato Salsa",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "guacamole",
+      "name": "Guacamole",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "monterey-jack-cheese",
+      "name": "Monterey Jack Cheese",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen",
+        "ev-api"
+      ]
+    },
+    {
+      "currentProductKey": "pinto-beans",
+      "name": "Pinto Beans",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "queso-blanco",
+      "name": "Queso Blanco",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen",
+        "ev-api"
+      ]
+    },
+    {
+      "currentProductKey": "red-chimichurri-sauce",
+      "name": "Red Chimichurri Sauce",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [
+        "sulfites"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen",
+        "ev-api"
+      ]
+    },
+    {
+      "currentProductKey": "roasted-chili-corn-salsa",
+      "name": "Roasted Chili-Corn Salsa",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "romaine-lettuce",
+      "name": "Romaine Lettuce",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "sofritas",
+      "name": "Sofritas",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [
+        "soy",
+        "sulfites"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen",
+        "ev-api"
+      ]
+    },
+    {
+      "currentProductKey": "sour-cream",
+      "name": "Sour Cream",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen",
+        "ev-api"
+      ]
+    },
+    {
+      "currentProductKey": "steak",
+      "name": "Steak",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "supergreens-lettuce-blend",
+      "name": "Supergreens Lettuce Blend",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "tomatillo-green-chili-salsa",
+      "name": "Tomatillo Green-Chili Salsa",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "tomatillo-red-chili-salsa",
+      "name": "Tomatillo Red-Chili Salsa",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "tortilla-chips",
+      "name": "Tortilla Chips",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "white-rice",
+      "name": "White Rice",
+      "category": "Mexican Grill",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    }
+  ],
+  "matrixSearch": {
+    "status": "found",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "searchClass": "official_site",
+        "location": "chipotle.com homepage/menu/allergen navigation",
+        "url": "https://www.chipotle.com/",
+        "outcome": "found official allergen guidance and metadata link",
+        "sourceEvidenceIds": [
+          "ev-search-site",
+          "ev-allergen"
+        ]
+      },
+      {
+        "searchClass": "official_documents",
+        "location": "official allergen/nutrition/document links",
+        "url": "https://www.chipotle.com/allergens",
+        "outcome": "official allergen material identified; no public PDF matrix retrieved",
+        "sourceEvidenceIds": [
+          "ev-search-docs",
+          "ev-api"
+        ]
+      },
+      {
+        "searchClass": "linked_vendor",
+        "location": "order.chipotle.com",
+        "url": "https://order.chipotle.com/",
+        "outcome": "ordering menu inspected; linked official allergen metadata retained",
+        "sourceEvidenceIds": [
+          "ev-search-vendor"
+        ]
+      },
+      {
+        "searchClass": "targeted_web_search",
+        "location": "Google site-restricted query",
+        "url": "https://www.google.com/search?q=site%3Achipotle.com+allergen+allergy+nutrition+ingredients+PDF",
+        "outcome": "official-domain allergen references located",
+        "sourceEvidenceIds": [
+          "ev-search-web"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:barbacoa",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "barbacoa"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "2:black-beans",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "black-beans"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "3:brown-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "brown-rice"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "4:carnitas",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "carnitas"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "5:chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "6:chipotle-honey-vinaigrette",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chipotle-honey-vinaigrette"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "7:crispy-corn-tortilla",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "crispy-corn-tortilla"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "8:fajita-vegetables",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "fajita-vegetables"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "9:flour-tortilla-burrito",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "flour-tortilla-burrito"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "10:flour-tortilla-taco",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "flour-tortilla-taco"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "11:fresh-tomato-salsa",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "fresh-tomato-salsa"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "12:guacamole",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "guacamole"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "13:monterey-jack-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "monterey-jack-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "14:pinto-beans",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pinto-beans"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "15:queso-blanco",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "queso-blanco"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "16:red-chimichurri-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "red-chimichurri-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "17:roasted-chili-corn-salsa",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roasted-chili-corn-salsa"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "18:romaine-lettuce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "romaine-lettuce"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "19:sofritas",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sofritas"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "20:sour-cream",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sour-cream"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "21:steak",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "steak"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "22:supergreens-lettuce-blend",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "supergreens-lettuce-blend"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "23:tomatillo-green-chili-salsa",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tomatillo-green-chili-salsa"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "24:tomatillo-red-chili-salsa",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tomatillo-red-chili-salsa"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "25:tortilla-chips",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tortilla-chips"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "26:white-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "white-rice"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": true,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "proposedChanges": [
+    "Preserve 26 official allergen-diets products and source references; normalize Sofritas category artifact to Mexican Grill."
+  ],
+  "routingSignals": {
+    "lightweightRepair": [
+      "nameOrCategoryCleanup"
+    ],
+    "safetyEscalation": []
+  },
+  "recommendedLane": "luna_fix",
+  "blockedReason": null,
+  "findings": [],
+  "riskSignals": []
+}

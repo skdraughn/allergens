@@ -1,0 +1,279 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811150150",
+  "restaurantId": "stoneys-dc",
+  "name": "Stoney's",
+  "domain": "stoneysonp.com",
+  "outcome": "researched",
+  "recommendedLane": "verify",
+  "packetValidation": {
+    "baselineItemCount": 63,
+    "baselineFingerprint": "ddd1df89ed92d5bfc7a1b6bda194931215ac9059abc79716476cb6839a842ac6",
+    "itemCheckCount": 63,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "Stoney's",
+    "locationId": "logan-circle-dc",
+    "address": "1433 P Street NW, Washington, DC 20005",
+    "domain": "stoneysonp.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "e-home",
+      "e-food",
+      "e-drink",
+      "e-license"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "e-home",
+      "url": "https://stoneysonp.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and Logan Circle identity",
+      "retrievedAt": "2026-08-11T15:10:00Z"
+    },
+    {
+      "evidenceId": "e-food",
+      "url": "https://stoneysonp.com/washington-logan-circle-stoney-s-food-menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current official food menu, including breakfast, all-day food, weekly, sides, dessert, and happy-hour food",
+      "retrievedAt": "2026-08-11T15:10:00Z"
+    },
+    {
+      "evidenceId": "e-drink",
+      "url": "https://stoneysonp.com/logan-circle-stoney-s-drink-menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official drink menu; alcohol excluded and nonalcoholic boundary checked",
+      "retrievedAt": "2026-08-11T15:10:00Z"
+    },
+    {
+      "evidenceId": "e-license",
+      "url": "https://abca.dc.gov/sites/default/files/dc/sites/abra/page_content/attachments/2026%20-%202%20Alcohol%20License%20Roster.pdf",
+      "authorityTier": "third_party",
+      "purpose": "DC license roster corroborating Stoney's identity and 1433 P Street NW location",
+      "retrievedAt": "2026-08-11T15:10:00Z"
+    },
+    {
+      "evidenceId": "e-search",
+      "url": "https://www.google.com/search?q=site%3Astoneysonp.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted official-domain allergen search",
+      "retrievedAt": "2026-08-11T15:10:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://stoneysonp.com/",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "logan-circle-dc; 1433 P Street NW",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "e-home"
+      ]
+    },
+    {
+      "surfaceId": "official-food",
+      "url": "https://stoneysonp.com/washington-logan-circle-stoney-s-food-menu",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "logan-circle-dc; 1433 P Street NW",
+      "servicePeriod": "breakfast, all-day, weekly special, happy-hour food",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; 63 frozen food/nonalcoholic products represented; repeated presentations consolidated",
+      "sourceEvidenceIds": [
+        "e-food"
+      ]
+    },
+    {
+      "surfaceId": "official-drink",
+      "url": "https://stoneysonp.com/logan-circle-stoney-s-drink-menu",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "logan-circle-dc",
+      "servicePeriod": "current drinks",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; alcoholic offerings excluded from POC boundary",
+      "sourceEvidenceIds": [
+        "e-drink"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "stoneys-logan-circle-menu-catalog",
+      "name": "Stoney's Logan Circle current food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "e-food",
+        "e-home"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "productCount": 63,
+      "boundary": "63 frozen food and nonalcoholic products; alcohol-only drink offerings excluded; repeated menu presentations consolidated"
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "location": "stoneysonp.com homepage, navigation, Logan Circle food/drink/about pages",
+        "queryOrLocation": "official site navigation, menu and location pages",
+        "outcome": "No complete official allergen matrix, ingredients document, or cross-contact statement located",
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-food",
+          "e-drink"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "location": "official site document, PDF, image, FAQ, sitemap and downloadable surfaces",
+        "queryOrLocation": "official documents, PDFs, images, nutrition, ingredients, allergy and FAQ surfaces",
+        "outcome": "No complete official allergen matrix or cross-contact statement located",
+        "sourceEvidenceIds": [
+          "e-food",
+          "e-home"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "location": "restaurant-linked ordering/vendor surfaces discovered from official site",
+        "queryOrLocation": "linked vendor menu and item pages",
+        "outcome": "No authoritative linked-vendor allergen matrix or cross-contact policy located",
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-food"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "location": "targeted stoneysonp.com and Stoney's Logan Circle searches",
+        "query": "site:stoneysonp.com allergen allergy nutrition ingredients PDF menu",
+        "outcome": "No authoritative complete allergen matrix found; third-party results used only for identity corroboration",
+        "sourceEvidenceIds": [
+          "e-search",
+          "e-license"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "expectedCount": 63,
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:3-cheeseburger-slider",
+          "2:bacon-sriracha",
+          "3:bacon-cheeseburger",
+          "4:basket-of-onion-rings",
+          "5:black-n-bleu",
+          "6:boss-hog",
+          "7:breakfast-burrito",
+          "8:buffalo",
+          "9:caesar-salad",
+          "10:cajun-cheddar",
+          "11:cajun-chicken-alfredo",
+          "12:cheese",
+          "13:cheeseburger",
+          "14:chicken-and-waffles",
+          "15:chicken-quesadilla",
+          "16:chicken-tenders",
+          "17:chili-w-cornbread",
+          "18:cuban",
+          "19:fish-and-chips",
+          "20:french-dip",
+          "21:french-fries",
+          "22:french-toast",
+          "23:greek-salad",
+          "24:grilled-salmon",
+          "25:ham-and-cheese",
+          "26:hamburger",
+          "27:home-fries",
+          "28:house-salad",
+          "29:large-12-cheese-pizza",
+          "30:lumberjack",
+          "31:mac-and-cheese",
+          "32:make-your-own-pizza",
+          "33:mediterranean",
+          "34:mozzarella-sticks",
+          "35:original-grilled-cheese",
+          "36:personal-cheese-pizza",
+          "37:potato-salad",
+          "38:pretzel",
+          "39:reuben",
+          "40:reuben-chicken",
+          "41:roasted-tomato-basil",
+          "42:rocket",
+          "43:rocket-caesar-greek-or-house-salad",
+          "44:salmon-blt",
+          "45:sausage-patties",
+          "46:sliders-3-or-6",
+          "47:steak-and-cheese",
+          "48:steak-and-eggs",
+          "49:stoneys",
+          "50:stoneys-cobb",
+          "51:stoneys-nachos",
+          "52:super-grilled-cheese",
+          "53:teddy-tots",
+          "54:texas",
+          "55:thick-cut-bacon",
+          "56:thunderbird",
+          "57:tonys-pastrami",
+          "58:tuna-melt",
+          "59:turkey-club",
+          "60:two-egg-breakfast",
+          "61:veggie",
+          "62:western",
+          "63:wings"
+        ],
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "stoneys-logan-circle-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-food"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "processLog": [
+    "packet_validated",
+    "identity_verified",
+    "menu_surfaces_inventoried",
+    "matrix_search_completed",
+    "products_reconciled",
+    "validator_passed"
+  ]
+}

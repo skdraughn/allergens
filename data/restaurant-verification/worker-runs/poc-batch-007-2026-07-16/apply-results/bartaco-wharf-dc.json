@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-007-2026-07-16",
+  "restaurantId": "bartaco-wharf-dc",
+  "validation": {
+    "valid": true,
+    "currentProductCount": 68,
+    "errors": [],
+    "inScopeSurfaceIds": [
+      "surface-location-food",
+      "surface-location-drinks-kids-takeout",
+      "surface-menu-pdf"
+    ],
+    "supportingExcludedSurfaceIds": [
+      "surface-ordering",
+      "surface-nutrition",
+      "surface-allergy-sheet"
+    ],
+    "reconciliationCount": 107,
+    "normalizedMatchCount": 33,
+    "staleOrOutOfScopeCount": 74,
+    "canonicalEvidenceValid": true,
+    "ingredientIntelligence": "inferred-fields-only-after-direct-catalog",
+    "excludedAlcoholicRows": true,
+    "restaurantWideCautionOnly": true,
+    "closureEntryCount": 179,
+    "canonicalProductShapeValid": true,
+    "uniqueNonemptyCurrentProductKeyCount": 68,
+    "allProductSourceEvidenceIdsResolve": true,
+    "directAllergenSourceReferencesValid": true,
+    "itemSpecificMayContainCount": 0,
+    "currentSurfaceCount": 3,
+    "closeoutEquivalentAssertions": "passed",
+    "canonicalSurfaceShapeValid": true,
+    "allCurrentSurfaceEvidenceIdsResolve": true,
+    "allCurrentSurfaceUrlsPresent": true,
+    "verifiedCurrentSurfaceCount": 3
+  },
+  "changedPaths": [
+    "src/data/generated/restaurants.generated.json",
+    "data/restaurant-verification/restaurants/bartaco-wharf-dc.json",
+    "data/restaurant-verification/evidence/bartaco-wharf-dc.json",
+    "data/restaurant-verification/worker-runs/poc-batch-007-2026-07-16/apply-results/bartaco-wharf-dc.json"
+  ],
+  "commands": [
+    "node scripts/.tmp-repair-bartaco-dossier.mjs",
+    "node scripts/.tmp-repair-bartaco-dossier.mjs",
+    "closeout-equivalent canonical product, surface, URL, and evidence-reference assertions",
+    "diff -u first-run snapshots against second-run outputs"
+  ],
+  "secondRunDiff": "none",
+  "notes": [
+    "No ledger, item-check, manifest, workflow, parser, or codex_verified files were edited.",
+    "Supporting and historical sources remain evidence only.",
+    "No item-specific may-contain or unsupported negative claims were introduced.",
+    "Dossier currentCatalog.products uses canonical verification product fields sourced from /tmp/bartaco-merged.json.",
+    "Generated app data, canonical evidence, ledger, item checks, manifest, workflow, and parser files were not edited.",
+    "All three current canonical surfaces have verified complete scope, descriptive titles, URLs, and resolvable evidence IDs."
+  ]
+}

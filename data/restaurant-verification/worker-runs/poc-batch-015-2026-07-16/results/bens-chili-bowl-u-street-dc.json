@@ -1,0 +1,1907 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-015-2026-07-16",
+  "restaurantId": "bens-chili-bowl-u-street-dc",
+  "packetValidation": {
+    "baselineItemCount": 75,
+    "baselineFingerprint": "055abc4efc56ebb2e6a1648898adfdc958d8e6d7a2c36fa8c65b76bee917354f"
+  },
+  "identity": {
+    "name": "Ben's Chili Bowl U Street",
+    "locationId": "u-street-dc",
+    "domain": "benschilibowl.com",
+    "identityAmbiguous": false,
+    "summary": "Official site and U Street Toast catalog identify the same restaurant/location."
+  },
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-menu",
+      "url": "https://www.benschilibowl.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "U Street restaurant menu",
+      "servicePeriod": "all day",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrieval": "loaded"
+    },
+    {
+      "surfaceId": "official-order",
+      "url": "https://www.benschilibowl.com/order",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "official order gateway",
+      "servicePeriod": "all day",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrieval": "loaded"
+    },
+    {
+      "surfaceId": "toast-u-street",
+      "url": "https://order.toasttab.com/online/bens-chili-bowl-u-st",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "Original U Street",
+      "servicePeriod": "all day",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrieval": "loaded"
+    },
+    {
+      "surfaceId": "toast-bens",
+      "url": "https://order.toasttab.com/online/bens",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "linked Ben's ordering surface",
+      "servicePeriod": "all day",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrieval": "loaded"
+    },
+    {
+      "surfaceId": "group-menu",
+      "url": "https://benschilibowl.com/ticms/uploads/bcb-group-menu-%28school-year-2025-2026%29.pdf",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "group catering; not regular U Street catalog",
+      "servicePeriod": "group service",
+      "current": true,
+      "scopeStatus": "out_of_scope",
+      "retrieval": "loaded"
+    }
+  ],
+  "sources": [
+    {
+      "evidenceId": "official-menu",
+      "url": "https://www.benschilibowl.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current official menu surface and product descriptions",
+      "retrievedAt": "2026-07-16T20:00:00.000Z"
+    },
+    {
+      "evidenceId": "official-order",
+      "url": "https://www.benschilibowl.com/order",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official order link and location scope",
+      "retrievedAt": "2026-07-16T20:00:00.000Z"
+    },
+    {
+      "evidenceId": "toast-u-street",
+      "url": "https://order.toasttab.com/online/bens-chili-bowl-u-st",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current U Street linked ordering catalog",
+      "retrievedAt": "2026-07-16T20:00:00.000Z"
+    },
+    {
+      "evidenceId": "toast-bens",
+      "url": "https://order.toasttab.com/online/bens",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current linked ordering surface",
+      "retrievedAt": "2026-07-16T20:00:00.000Z"
+    },
+    {
+      "evidenceId": "group-menu",
+      "url": "https://benschilibowl.com/ticms/uploads/bcb-group-menu-%28school-year-2025-2026%29.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official group menu document; scope limited to group service",
+      "retrievedAt": "2026-07-16T20:00:00.000Z"
+    },
+    {
+      "evidenceId": "chili-details",
+      "url": "https://www.benschilibowl.com/chili-con-carne-details",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official packaged chili ingredient/nutrition detail",
+      "retrievedAt": "2026-07-16T20:00:00.000Z"
+    },
+    {
+      "evidenceId": "search-results",
+      "url": "https://www.google.com/search?q=site%3Abenschilibowl.com+allergen+ingredients+nutrition+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted web search audit",
+      "retrievedAt": "2026-07-16T20:00:00.000Z"
+    }
+  ],
+  "officialAllergenStatus": "accurately_unavailable",
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "locationInspected": "official homepage, /menu/, /order",
+        "outcome": "No official allergen matrix found; menu descriptions only.",
+        "evidenceIds": [
+          "official-menu",
+          "official-order"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "locationInspected": "official document links, group-menu PDF, chili details page",
+        "outcome": "No restaurant-wide allergen matrix found; product-specific detail only.",
+        "evidenceIds": [
+          "group-menu",
+          "chili-details"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "locationInspected": "U Street Toast catalogs",
+        "outcome": "Current products/descriptions; no allergen matrix.",
+        "evidenceIds": [
+          "toast-u-street",
+          "toast-bens"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "locationInspected": "domain searches for allergen, allergy, nutrition, ingredients, PDF, menu",
+        "outcome": "No official matrix located; unrelated results excluded.",
+        "evidenceIds": [
+          "search-results"
+        ]
+      }
+    ]
+  },
+  "currentProducts": [
+    {
+      "currentProductKey": "12-gallon-chili-con-carne",
+      "name": "1/2 Gallon Chili Con Carne",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "12-gallon-turkey-chili",
+      "name": "1/2 Gallon Turkey Chili",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "12-gallon-veggie-chili",
+      "name": "1/2 Gallon Veggie Chili",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "bens-cornbread-slice",
+      "name": "Ben's Cornbread Slice",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "bens-famous-burger-double",
+      "name": "Ben's Famous Burger — Double",
+      "category": "American",
+      "variantGroup": "Ben'S Famous Burger - Single",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "bens-famous-burger-single",
+      "name": "Ben's Famous Burger — Single",
+      "category": "American",
+      "variantGroup": "Burgers++",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "beyond-burger-sub",
+      "name": "Beyond Burger Sub",
+      "category": "American",
+      "variantGroup": "Chicken Sandwich",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "big-ben-burger",
+      "name": "Big Ben Burger",
+      "category": "American",
+      "variantGroup": "Ben'S Famous Burger - Double",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "bottled-drink",
+      "name": "Bottled Drink",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "burger-sub",
+      "name": "Burger Sub",
+      "category": "American",
+      "variantGroup": "Subs & Sandwiches+++",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "cheese-fries",
+      "name": "Cheese Fries",
+      "category": "American",
+      "variantGroup": "Chili Cheese Fries (Beef)",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "chicken-sandwich",
+      "name": "Chicken Sandwich",
+      "category": "American",
+      "variantGroup": "Chicken Tenders With Fries",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "chicken-tenders-with-fries",
+      "name": "Chicken Tenders with Fries",
+      "category": "American",
+      "variantGroup": "Mambo Chicken Tenders With Fries",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "chili-cheese-fries-beef",
+      "name": "Chili Cheese Fries (Beef)",
+      "category": "American",
+      "variantGroup": "French Fries",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "chili-cheese-fries-turkey",
+      "name": "Chili Cheese Fries (Turkey)",
+      "category": "American",
+      "variantGroup": "Loaded Chili Fries",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "chili-cheese-fries-veggievegan",
+      "name": "Chili Cheese Fries (Veggie/Vegan)",
+      "category": "American",
+      "variantGroup": "Chili Fries (Turkey)",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "chili-con-carne-family-meal-12-gallon",
+      "name": "Chili Con Carne Family Meal 1/2 Gallon",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "chili-con-carne-family-meal-gallon",
+      "name": "Chili Con Carne Family Meal Gallon",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "chili-fries-beef",
+      "name": "Chili Fries (Beef)",
+      "category": "American",
+      "variantGroup": "Cheese Fries",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "chili-fries-turkey",
+      "name": "Chili Fries (Turkey)",
+      "category": "American",
+      "variantGroup": "Chili Cheese Fries (Turkey)",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "chili-fries-veggievegan",
+      "name": "Chili Fries (Veggie/Vegan)",
+      "category": "American",
+      "variantGroup": "Chili Cheese Fries (Veggie/Vegan)",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "coleslaw",
+      "name": "Coleslaw",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "french-fries",
+      "name": "French Fries",
+      "category": "American",
+      "variantGroup": "Spicy Half Smoke",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "fries-and-sides",
+      "name": "FRIES & SIDES",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "gallon-chili-con-carne",
+      "name": "Gallon Chili Con Carne",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "gallon-turkey-chili",
+      "name": "Gallon Turkey Chili",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "gallon-veggie-chili",
+      "name": "Gallon Veggie Chili",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "impossible-burger-sub",
+      "name": "Impossible Burger Sub",
+      "category": "American",
+      "variantGroup": "Beyond Burger Sub",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "jumbo-beef-dog",
+      "name": "Jumbo Beef Dog",
+      "category": "American",
+      "variantGroup": "Spicy Half Smoke",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "junior-dog",
+      "name": "Junior Dog",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "junior-turkey-dog",
+      "name": "Junior Turkey Dog",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "kids-chicken-tenders",
+      "name": "Kids Chicken Tenders",
+      "category": "American",
+      "variantGroup": "Kids Turkey Dog",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "kids-grilled-cheese",
+      "name": "Kids Grilled Cheese",
+      "category": "American",
+      "variantGroup": "Slice Of Cake",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "kids-turkey-dog",
+      "name": "Kids Turkey Dog",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "large-chili-con-carne",
+      "name": "Large Chili Con Carne",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "large-turkey-chili",
+      "name": "Large Turkey Chili",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "large-veggie-chili",
+      "name": "Large Veggie Chili",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "loaded-chili-fries",
+      "name": "Loaded Chili Fries",
+      "category": "American",
+      "variantGroup": "Loaded Chili Nachos",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "loaded-chili-nachos",
+      "name": "Loaded Chili Nachos",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "mambo-chicken-tenders-with-fries",
+      "name": "Mambo Chicken Tenders with Fries",
+      "category": "American",
+      "variantGroup": "Turkey Burger Sub",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "milkshake",
+      "name": "Milkshake",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "onion-rings",
+      "name": "Onion Rings",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "original-half-smoke",
+      "name": "Original Half Smoke",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "potato-salad",
+      "name": "Potato Salad",
+      "category": "American",
+      "variantGroup": "Veggie Burger Sub",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "rice-bowl",
+      "name": "Rice Bowl",
+      "category": "American",
+      "variantGroup": "Large Veggie Chili",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "slice-of-cake",
+      "name": "Slice of Cake",
+      "category": "American",
+      "variantGroup": "Milkshake",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "small-chili-con-carne",
+      "name": "Small Chili Con Carne",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "small-turkey-chili",
+      "name": "Small Turkey Chili",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "small-veggie-chili",
+      "name": "Small Veggie Chili",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "spicy-half-smoke",
+      "name": "Spicy Half Smoke",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "turkey-burger",
+      "name": "Turkey Burger",
+      "category": "American",
+      "variantGroup": "Big Ben Burger",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "turkey-burger-sub",
+      "name": "Turkey Burger Sub",
+      "category": "American",
+      "variantGroup": "Burger Sub",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "turkey-chili-family-meal-12-gallon",
+      "name": "Turkey Chili Family Meal 1/2 Gallon",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "turkey-chili-family-meal-gallon",
+      "name": "Turkey Chili Family Meal Gallon",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "veggie-beyond-burger",
+      "name": "Veggie Beyond Burger",
+      "category": "American",
+      "variantGroup": "Turkey Burger",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "veggie-burger-sub",
+      "name": "Veggie Burger Sub",
+      "category": "American",
+      "variantGroup": "Veggie Impossible Burger",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "veggie-chili-family-meal-12-gallon",
+      "name": "Veggie Chili Family Meal 1/2 Gallon",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "veggie-chili-family-meal-gallon",
+      "name": "Veggie Chili Family Meal Gallon",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "veggie-dog",
+      "name": "Veggie Dog",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "veggie-impossible-burger",
+      "name": "Veggie Impossible Burger",
+      "category": "American",
+      "variantGroup": "Veggie Beyond Burger",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "virginias-banana-pudding",
+      "name": "Virginia's Banana Pudding",
+      "category": "American",
+      "variantGroup": "American",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "toast-u-street"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    }
+  ],
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:12-gallon-chili-con-carne",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "12-gallon-chili-con-carne"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "2:12-gallon-turkey-chili",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "12-gallon-turkey-chili"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "3:12-gallon-veggie-chili",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "12-gallon-veggie-chili"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "4:bens-cornbread-slice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "bens-cornbread-slice"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "5:bens-famous-burger-double",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "bens-famous-burger-double"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "6:bens-famous-burger-single",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "bens-famous-burger-single"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "7:beyond-burger-sub",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "beyond-burger-sub"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "8:big-ben-burger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "big-ben-burger"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "9:big-bens-burger",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": "Embedded duplicate/artifact presentation; no separate current product mapping."
+      },
+      {
+        "auditItemKey": "10:blt",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": "Embedded duplicate/artifact presentation; no separate current product mapping."
+      },
+      {
+        "auditItemKey": "11:bottled-drink",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "bottled-drink"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "12:burger-sub",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "burger-sub"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "13:cheese-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "cheese-fries"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "14:chicken-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken-sandwich"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "15:chicken-tenders-w-fires",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": "Embedded duplicate/artifact presentation; no separate current product mapping."
+      },
+      {
+        "auditItemKey": "16:chicken-tenders-with-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken-tenders-with-fries"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "17:chili-cheese-fries",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": "Embedded duplicate/artifact presentation; no separate current product mapping."
+      },
+      {
+        "auditItemKey": "18:chili-cheese-fries-beef",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chili-cheese-fries-beef"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "19:chili-cheese-fries-turkey",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chili-cheese-fries-turkey"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "20:chili-cheese-fries-veggie",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": "Embedded duplicate/artifact presentation; no separate current product mapping."
+      },
+      {
+        "auditItemKey": "21:chili-cheese-fries-veggievegan",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chili-cheese-fries-veggievegan"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "22:chili-con-carne-family-meal-12-gallon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chili-con-carne-family-meal-12-gallon"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "23:chili-con-carne-family-meal-gallon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chili-con-carne-family-meal-gallon"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "24:chili-fries",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": "Embedded duplicate/artifact presentation; no separate current product mapping."
+      },
+      {
+        "auditItemKey": "25:chili-fries-beef",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chili-fries-beef"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "26:chili-fries-turkey",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chili-fries-turkey"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "27:chili-fries-veggievegan",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chili-fries-veggievegan"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "28:coleslaw",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "coleslaw"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "29:french-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "french-fries"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "30:fresh-garden-salad",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": "Embedded duplicate/artifact presentation; no separate current product mapping."
+      },
+      {
+        "auditItemKey": "31:fries-and-sides",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "fries-and-sides"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "32:gallon-chili-con-carne",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "gallon-chili-con-carne"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "33:gallon-turkey-chili",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "gallon-turkey-chili"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "34:gallon-veggie-chili",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "gallon-veggie-chili"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "35:impossible-burger-sub",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "impossible-burger-sub"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "36:jumbo-beef-dog",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "jumbo-beef-dog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "37:jumbo-turkey-dog",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": "Embedded duplicate/artifact presentation; no separate current product mapping."
+      },
+      {
+        "auditItemKey": "38:junior-dog",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "junior-dog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "39:junior-turkey-dog",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "junior-turkey-dog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "40:kids-chicken-tenders",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kids-chicken-tenders"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "41:kids-grilled-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kids-grilled-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "42:kids-turkey-dog",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kids-turkey-dog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "43:large-chili-con-carne",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "large-chili-con-carne"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "44:large-turkey-chili",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "large-turkey-chili"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "45:large-veggie-chili",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "large-veggie-chili"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "46:loaded-chili-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "loaded-chili-fries"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "47:loaded-chili-nachos",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "loaded-chili-nachos"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "48:mambo-chicken-tenders-w-fries",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": "Embedded duplicate/artifact presentation; no separate current product mapping."
+      },
+      {
+        "auditItemKey": "49:mambo-chicken-tenders-with-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mambo-chicken-tenders-with-fries"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "50:milkshake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "milkshake"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "51:onion-rings",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "onion-rings"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "52:original-half-smoke",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "original-half-smoke"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "53:potato-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "potato-salad"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "54:rice-bowl",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rice-bowl"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "55:salad-bowl",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": "Embedded duplicate/artifact presentation; no separate current product mapping."
+      },
+      {
+        "auditItemKey": "56:slice-of-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "slice-of-cake"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "57:small-chili-con-carne",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "small-chili-con-carne"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "58:small-turkey-chili",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "small-turkey-chili"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "59:small-veggie-chili",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "small-veggie-chili"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "60:spicy-chili-half-smoke",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": "Embedded duplicate/artifact presentation; no separate current product mapping."
+      },
+      {
+        "auditItemKey": "61:spicy-half-smoke",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "spicy-half-smoke"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "62:turkey-burger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "turkey-burger"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "63:turkey-burger-sub",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "turkey-burger-sub"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "64:turkey-chili-cheese-fries",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": "Embedded duplicate/artifact presentation; no separate current product mapping."
+      },
+      {
+        "auditItemKey": "65:turkey-chili-family-meal-12-gallon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "turkey-chili-family-meal-12-gallon"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "66:turkey-chili-family-meal-gallon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "turkey-chili-family-meal-gallon"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "67:turkey-chili-fries",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": "Embedded duplicate/artifact presentation; no separate current product mapping."
+      },
+      {
+        "auditItemKey": "68:veggie-beyond-burger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "veggie-beyond-burger"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "69:veggie-burger-sub",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "veggie-burger-sub"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "70:veggie-chili-family-meal-12-gallon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "veggie-chili-family-meal-12-gallon"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "71:veggie-chili-family-meal-gallon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "veggie-chili-family-meal-gallon"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "72:veggie-dog",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "veggie-dog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "73:veggie-imposible-burger",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": "Embedded duplicate/artifact presentation; no separate current product mapping."
+      },
+      {
+        "auditItemKey": "74:veggie-impossible-burger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "veggie-impossible-burger"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      },
+      {
+        "auditItemKey": "75:virginias-banana-pudding",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "virginias-banana-pudding"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "notes": null
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": true,
+    "catalogDrift": true,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "risks": [
+    "Menu descriptions are not a complete allergen matrix; empty arrays mean unknown, not safe.",
+    "No item mayContain values assigned without item-specific cross-contact evidence.",
+    "Group menu is out of regular U Street scope.",
+    "Embedded user-item rows are retained as artifacts, not distinct products.",
+    "Packaged chili detail cannot be generalized to all items."
+  ],
+  "recommendedLane": "luna_fix"
+}

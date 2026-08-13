@@ -1,0 +1,543 @@
+{
+  "schemaVersion": 1,
+  "runId": "2026-07-15T17-32-10-623Z-f92267",
+  "restaurant": {
+    "restaurantId": "aventino-bethesda",
+    "name": "Aventino Cucina",
+    "domain": "aventinocucina.com",
+    "locationId": "bethesda-md",
+    "baselineItemCount": 55,
+    "baselineItemFingerprint": "d9d3b3bca45f8388d074440d3f77a5a89acf4777d214c324dd5dfa3133c71d21",
+    "officialItemCount": 36,
+    "officialAllergenStatus": "extracted",
+    "sourceFamily": "generic-website",
+    "parserProfile": "generic-website",
+    "guideUrl": "https://aventinocucina.com/menus/",
+    "sourceUrls": [
+      "https://aventinocucina.com/menus/",
+      "https://order.toasttab.com/online/aventino-extended-csd"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found."
+  ],
+  "validationWarnings": [],
+  "terra": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "medium",
+      "overall": 0.79,
+      "menu": 0.9,
+      "allergenSource": 0.68,
+      "extraction": 0.72,
+      "rationale": "Restaurant identity and current official menus are clear. The current menus reconcile most baseline names, but several baseline items are absent or only related variants remain. The official menu supplies ingredients but no allergen legend; the restaurant-linked Toast menu has partial current allergen labels that conflict with or fail to support several baseline claims."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Aventino Cucina at 4747 Bethesda Ave/Avenue, Bethesda, Maryland 20814; current dinner, lunch, brunch, drinks, dessert, happy-hour, and linked Toast ordering surfaces.",
+      "confidence": 0.98,
+      "sourceEvidenceIds": [
+        "official-faq",
+        "official-menus",
+        "toast-ordering"
+      ],
+      "notes": "The restaurant-issued FAQ identifies Aventino Cucina and its Bethesda address, links Toast for delivery/takeout, and the linked ordering page identifies the same restaurant and address."
+    },
+    "sources": [
+      {
+        "evidenceId": "official-faq",
+        "url": "https://aventinocucina.com/faq/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "FAQ — Aventino | Reservations, Hours & Dining Info",
+        "retrievedAt": "2026-07-15T17:35:00.000Z",
+        "excerpt": "Aventino Cucina lists 4747 Bethesda Ave, Bethesda, Maryland 20814, identifies itself as a Roman-inspired Italian restaurant, and states that delivery and takeout are offered through Toast.",
+        "stableRowId": "faq-address-and-delivery",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "official-menus",
+        "url": "https://aventinocucina.com/menus/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Menus — Aventino | Italian Dinner, Lunch & Brunch in Bethesda",
+        "retrievedAt": "2026-07-15T17:35:00.000Z",
+        "excerpt": "Current restaurant menus list dinner aperitivi, antipasti, pasta, secondi, lunch/pranzo, dolci, brunch specialties, Italian vermouth, and aperitivo-hour cicchetti. They list current ingredients, but no allergen legend or allergen labels.",
+        "stableRowId": "menus-current-page",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "toast-ordering",
+        "url": "https://order.toasttab.com/online/aventino-extended-csd",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "allergen",
+        "title": "Order Online — Aventino Cucina",
+        "retrievedAt": "2026-07-15T17:35:00.000Z",
+        "excerpt": "The linked ordering menu identifies Aventino Cucina at 4747 Bethesda Avenue and gives allergen labels for selected current items, including Pizza Rossa, Ricotta, Suppli, Piselli, Tonnarelli, Bucatini, Lumache, Rigatoni Carbonara, Prosciutto Panino, Aventino Burger, Milanese, and Pesce.",
+        "stableRowId": "toast-aventino-extended-csd",
+        "contentHash": null,
+        "artifactSuggested": null
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://aventinocucina.com/menus/",
+        "notes": "Current restaurant-issued menu surface was accessible and contains the relevant menu sections and ingredient descriptions."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://aventinocucina.com/faq/",
+        "notes": "Restaurant-issued FAQ was accessible; it confirms the Bethesda identity and links Toast as the delivery/takeout provider."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://order.toasttab.com/online/aventino-extended-csd",
+        "notes": "Restaurant-linked Toast ordering page was accessible and provides a narrower current menu with selected allergen labels."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": null,
+        "notes": "Targeted public search located the current Toast surface and individual current item pages; results were consistent with the accessible restaurant-controlled surfaces."
+      },
+      {
+        "kind": "third_party",
+        "status": "accessible",
+        "url": "https://www.axios.com/local/washington-dc/2024/01/23/new-restaurants-bethesda-aventino-ap-pizza-shop",
+        "notes": "A dated third-party opening article corroborates the Bethesda Aventino identity but was not used for current menu or allergen determinations."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 55,
+      "counts": {
+        "exact_match/verified": 22,
+        "exact_match/accurately_unavailable": 17,
+        "exact_match/mismatch": 7,
+        "missing_from_source/not_applicable": 6,
+        "variant_match/mismatch": 2,
+        "variant_match/accurately_unavailable": 1
+      }
+    },
+    "findings": [
+      {
+        "findingId": "menu-current-items-missing",
+        "severity": "medium",
+        "kind": "menu",
+        "summary": "Six frozen baseline items are absent from both accessible current restaurant-issued menus and the current linked Toast ordering menu: Asparagi, Carciofo, Rhubarb Coffee Cake, Angel Food Cake, Aventino Tiramisu, and Mascarpone Cheesecake.",
+        "sourceEvidenceIds": [
+          "official-menus",
+          "toast-ordering"
+        ],
+        "affectedAuditItemKeys": [
+          "1:asparagi",
+          "3:carciofo",
+          "23:rhubarb-coffee-cake",
+          "25:angel-food-cake",
+          "26:aventino-tiramisu",
+          "32:mascarpone-cheesecake"
+        ]
+      },
+      {
+        "findingId": "menu-variant-substitutions",
+        "severity": "medium",
+        "kind": "menu",
+        "summary": "The current menu presents Chocolate Nemesis Cake rather than a separate Chocolate Nemesis item, Chocolate Chip Cookies rather than Cookie Plate, and Gelato Selection containing gelato and sorbetto rather than a separately named Gelato e Sorbetto item.",
+        "sourceEvidenceIds": [
+          "official-menus",
+          "toast-ordering"
+        ],
+        "affectedAuditItemKeys": [
+          "27:chocolate-nemesis",
+          "29:cookie-plate",
+          "30:gelato-e-sorbetto"
+        ]
+      },
+      {
+        "findingId": "allergen-source-conflicts",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "Current restaurant-issued ingredient text and the restaurant-linked Toast allergen labels expose material unsupported or conflicting baseline allergen claims. Examples include anchovy/fish absent from Acciughe e Burro's baseline claim, gluten absent from the baseline Suppli al Telefono claim, a current flourless Chocolate Nemesis Cake conflicting with baseline wheat/gluten, and Toast's Milanese label adding finfish while the baseline does not.",
+        "sourceEvidenceIds": [
+          "official-menus",
+          "toast-ordering"
+        ],
+        "affectedAuditItemKeys": [
+          "7:acciughe-e-burro",
+          "11:prosciutto",
+          "13:suppli-al-telefono",
+          "28:chocolate-nemesis-cake",
+          "33:chocolate-chip-cookies",
+          "51:aventino-burger",
+          "52:milanese"
+        ]
+      },
+      {
+        "findingId": "official-menu-no-allergen-legend",
+        "severity": "medium",
+        "kind": "allergen_source",
+        "summary": "The current restaurant-issued menu provides ingredient descriptions but no allergen legend or allergen labels. Toast is explicitly linked by the restaurant and labels only part of the current ordering menu, so it cannot establish a complete official allergen source for every item.",
+        "sourceEvidenceIds": [
+          "official-faq",
+          "official-menus",
+          "toast-ordering"
+        ],
+        "affectedAuditItemKeys": []
+      }
+    ],
+    "summary": "Aventino Cucina Bethesda identity is verified and all 55 frozen audit items were reconciled exactly once. The accessible current menus retain most names, but six baseline items are absent and three are only current variants. Current ingredient and linked-Toast allergen evidence identifies material conflicts in seven baseline allergen records; the restaurant-issued menu itself has no allergen legend. Escalate for discrepancy adjudication; this result does not make a terminal verification claim.",
+    "coordinatorNotes": [
+      "Capture the restaurant-issued menu and linked Toast ordering page before ingestion because both are dynamic current surfaces.",
+      "Review the seven allergen-source mismatches against parser normalization and seasonal-menu handling, especially Chocolate Nemesis Cake, Aventino Burger, and Milanese.",
+      "Treat missing and variant items as likely menu staleness until serial coordinator capture confirms the current snapshot."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "1:asparagi",
+      "baseline": {
+        "itemId": "asparagi",
+        "name": "ASPARAGI",
+        "category": "ANTIPASTI",
+        "variantGroup": "Italian",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://aventinocucina.com/menus/",
+          "https://order.toasttab.com/online/aventino-extended-csd"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "3:carciofo",
+      "baseline": {
+        "itemId": "carciofo",
+        "name": "CARCIOFO",
+        "category": "ANTIPASTI",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://aventinocucina.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "7:acciughe-e-burro",
+      "baseline": {
+        "itemId": "acciughe-e-burro",
+        "name": "ACCIUGHE E BURRO",
+        "category": "APERITIVI",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://aventinocucina.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "11:prosciutto",
+      "baseline": {
+        "itemId": "prosciutto",
+        "name": "PROSCIUTTO",
+        "category": "APERITIVI",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://aventinocucina.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "13:suppli-al-telefono",
+      "baseline": {
+        "itemId": "suppli-al-telefono",
+        "name": "SUPPLI AL TELEFONO",
+        "category": "APERITIVI",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://aventinocucina.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "23:rhubarb-coffee-cake",
+      "baseline": {
+        "itemId": "rhubarb-coffee-cake",
+        "name": "RHUBARB COFFEE CAKE",
+        "category": "BRUNCH SPECIALTIES",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://aventinocucina.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "25:angel-food-cake",
+      "baseline": {
+        "itemId": "angel-food-cake",
+        "name": "ANGEL FOOD CAKE",
+        "category": "DOLCI",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://aventinocucina.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "26:aventino-tiramisu",
+      "baseline": {
+        "itemId": "aventino-tiramisu",
+        "name": "AVENTINO TIRAMISU",
+        "category": "DOLCI",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://aventinocucina.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "27:chocolate-nemesis",
+      "baseline": {
+        "itemId": "chocolate-nemesis",
+        "name": "CHOCOLATE NEMESIS",
+        "category": "DOLCI",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://aventinocucina.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "28:chocolate-nemesis-cake",
+      "baseline": {
+        "itemId": "chocolate-nemesis-cake",
+        "name": "CHOCOLATE NEMESIS CAKE",
+        "category": "DOLCI",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "egg",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://aventinocucina.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "29:cookie-plate",
+      "baseline": {
+        "itemId": "cookie-plate",
+        "name": "COOKIE PLATE",
+        "category": "DOLCI",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://aventinocucina.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "30:gelato-e-sorbetto",
+      "baseline": {
+        "itemId": "gelato-e-sorbetto",
+        "name": "GELATO E SORBETTO",
+        "category": "DOLCI",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://aventinocucina.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "32:mascarpone-cheesecake",
+      "baseline": {
+        "itemId": "mascarpone-cheesecake",
+        "name": "MASCARPONE CHEESECAKE",
+        "category": "DOLCI",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://aventinocucina.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "33:chocolate-chip-cookies",
+      "baseline": {
+        "itemId": "chocolate-chip-cookies",
+        "name": "Chocolate Chip Cookies",
+        "category": "Italian",
+        "variantGroup": "Italian",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/aventino-extended-csd"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "51:aventino-burger",
+      "baseline": {
+        "itemId": "aventino-burger",
+        "name": "AVENTINO BURGER",
+        "category": "PRANZO",
+        "variantGroup": "Featured Items",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "gluten",
+          "wheat",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://aventinocucina.com/menus/",
+          "https://order.toasttab.com/online/aventino-extended-csd"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "52:milanese",
+      "baseline": {
+        "itemId": "milanese",
+        "name": "MILANESE",
+        "category": "PRANZO",
+        "variantGroup": "Italian",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg",
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://aventinocucina.com/menus/",
+          "https://order.toasttab.com/online/aventino-extended-csd"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/2026-07-15T17-32-10-623Z-f92267/jobs/aventino-bethesda.json",
+    "workerResultPath": "data/restaurant-verification/worker-runs/2026-07-15T17-32-10-623Z-f92267/results/aventino-bethesda.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/aventino-bethesda.jsonl"
+  }
+}

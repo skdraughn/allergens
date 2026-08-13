@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-013-2026-07-16",
+  "restaurantId": "osm-barrel-crow-2358153391",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "485ec856b5246b7d148d1ed9e0b5d8f78a78065695f969dc0b06b74abf548242",
+    "currentProductCount": 66,
+    "currentProductSurfaceCounts": {
+      "S2": 48,
+      "S3": 31,
+      "S4": 32,
+      "S5": 7,
+      "S6": 20,
+      "union": 66
+    },
+    "directSourceTypeCounts": {
+      "restaurant_ingredients": 36,
+      "unavailable": 27,
+      "restaurant_linked_vendor": 3
+    },
+    "mayContainCount": 0,
+    "wheatCount": 0,
+    "glutenCount": 0,
+    "evidenceSourceCount": 13,
+    "currentCompleteSurfaceCount": 5,
+    "reconciliation": {
+      "exact_match": 40,
+      "unresolved": 0
+    },
+    "assertions": [
+      "stale fingerprint gate passed",
+      "strengthened validator passed before mutation",
+      "alcohol excluded",
+      "Ingredient Intelligence applied after direct catalog finalization",
+      "no ledger, manifest, closeout, or review writes"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-013-2026-07-16/jobs/osm-barrel-crow-2358153391.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-013-2026-07-16/results/osm-barrel-crow-2358153391.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/osm-barrel-crow-2358153391.jsonl",
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-barrel-crow-2358153391.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-barrel-crow-2358153391.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-013-2026-07-16/apply-results/osm-barrel-crow-2358153391.json"
+  ],
+  "commands": [
+    "node scripts/restaurant-verification-poc-result.mjs (strengthened preflight)",
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "node scripts/apply-barrel-and-crow-poc.mjs (twice)",
+    "sha256 comparison of all owned artifacts"
+  ],
+  "secondRunDiff": "none",
+  "artifactHashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "d8311e50ca857e215bc0be595166c35cb5445556e44774c900c664ac657e2324",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-barrel-crow-2358153391.json": "87b76a0ab53a46283d5ca4052dfd83223f4705577d337757b4ee3f1b919dbe92",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-barrel-crow-2358153391.json": "3c3e2623f9df7a177ffbe5f3bec4a69e2e8c32d5264f0abe09253243f7b7c474"
+  },
+  "counts": {
+    "publishedProducts": 66,
+    "directRestaurantIngredients": 36,
+    "directRestaurantLinkedVendor": 3,
+    "directUnavailable": 27,
+    "mayContainProducts": 0,
+    "wheat": 0,
+    "gluten": 0,
+    "evidenceSources": 13,
+    "currentCompleteSurfaces": 5,
+    "union": 66,
+    "exact": 40,
+    "unresolved": 0
+  }
+}

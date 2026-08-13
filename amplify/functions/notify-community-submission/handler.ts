@@ -53,6 +53,10 @@ export const handler = async (event: DynamoDbStreamEvent) => {
 function buildMessage(payload: SubmissionRecord, sourceArn: string) {
   const model = modelNameFromArn(sourceArn);
 
+  if (model === "CommunityReviewReport" || hasCommunityReviewReportShape(payload)) {
+    return truncateDiscordMessage(formatCommunityReviewReport(payload));
+  }
+
   if (model === "MenuItemReport" || hasMenuItemReportShape(payload)) {
     return truncateDiscordMessage(formatMenuItemReport(payload));
   }
@@ -62,6 +66,23 @@ function buildMessage(payload: SubmissionRecord, sourceArn: string) {
   }
 
   return null;
+}
+
+function formatCommunityReviewReport(payload: SubmissionRecord) {
+  const lines = [
+    "🥜 🚩 Community review report",
+    `Restaurant: ${text(payload.restaurantId, "Unknown restaurant")}`,
+    `Review: ${text(payload.reviewId, "Unknown review")}`,
+    `Reason: ${formatReason(text(payload.reason, "Offensive or abusive content"))}`,
+  ];
+
+  const comment = text(payload.comment);
+  if (comment) {
+    lines.push("", "Comment:", quote(comment));
+  }
+
+  addFooter(lines, payload);
+  return lines.join("\n");
 }
 
 function formatMenuItemReport(payload: SubmissionRecord) {
@@ -178,11 +199,19 @@ function modelNameFromArn(sourceArn: string) {
     return "MenuItemReport";
   }
 
+  if (tableName.startsWith("CommunityReviewReport-")) {
+    return "CommunityReviewReport";
+  }
+
   if (tableName.startsWith("RestaurantRequest-")) {
     return "RestaurantRequest";
   }
 
   return "";
+}
+
+function hasCommunityReviewReportShape(payload: SubmissionRecord) {
+  return Boolean(payload.reviewId && payload.restaurantId && payload.reason);
 }
 
 function hasMenuItemReportShape(payload: SubmissionRecord) {

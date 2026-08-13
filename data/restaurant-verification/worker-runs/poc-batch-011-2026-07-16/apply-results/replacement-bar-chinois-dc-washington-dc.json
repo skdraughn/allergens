@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-011-2026-07-16",
+  "restaurantId": "replacement-bar-chinois-dc-washington-dc",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "8d3f0f03744486141c4360ea8e11d03a989eced71652eeddf9501998639cf881",
+    "currentProductCount": 40,
+    "reconciliation": {
+      "exact": 19,
+      "normalized": 1,
+      "stale": 1
+    },
+    "directSourceTypeCounts": {
+      "unavailable": 24,
+      "restaurant_linked_vendor": 16
+    },
+    "directAuthorityCounts": {
+      "restaurant_linked_vendor": 16,
+      "unavailable": 24
+    },
+    "mayContainCount": 0,
+    "evidenceSourceCount": 8,
+    "matrixSearchCount": 4,
+    "assertions": [
+      "strengthened POC validator passed before mutation",
+      "three current complete DC surfaces published",
+      "dc-toast-root and National Landing excluded",
+      "Surfside Iced Tea stale and absent",
+      "Croque Monsieur Spring Roll current and exact",
+      "unavailable products have no positive evidence",
+      "all direct positives are S6/restaurant_linked_vendor",
+      "fry-oil statements remain item-scoped",
+      "Ingredient Intelligence applied after final direct catalog",
+      "no Terra or Sol and no ledger writes"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/replacement-bar-chinois-dc-washington-dc.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/replacement-bar-chinois-dc-washington-dc.json",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-bar-chinois-dc-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-011-2026-07-16/apply-results/replacement-bar-chinois-dc-washington-dc.json"
+  ],
+  "commands": [
+    "node scripts/restaurant-verification-poc-result.mjs (strengthened preflight)",
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "serialized APPLY twice with byte/hash comparison",
+    "assert 16 linked / 24 unavailable and empty mayContain/evidence invariants"
+  ],
+  "secondRunDiff": "none",
+  "artifactHashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "ebb89a4f1ffea3ec4834d3297d17cc2bbe7c2afe5dadae9fd1aacd991bb011dd",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/replacement-bar-chinois-dc-washington-dc.json": "fb3dcbdc18d8b9da783d472b54d6c85aaa3eeffc7672e3845caf5b735f21ff0d",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/replacement-bar-chinois-dc-washington-dc.json": "bcb22b06fe82811c5dd639b9cd1fbe23673ec98b1cd78cae30c88613495e906a"
+  },
+  "counts": {
+    "publishedProducts": 40,
+    "exactMatches": 19,
+    "normalizedMatches": 1,
+    "staleItems": 1,
+    "evidenceSources": 8,
+    "matrixSearches": 4,
+    "directLinkedVendor": 16,
+    "directUnavailable": 24,
+    "mayContainProducts": 0
+  }
+}

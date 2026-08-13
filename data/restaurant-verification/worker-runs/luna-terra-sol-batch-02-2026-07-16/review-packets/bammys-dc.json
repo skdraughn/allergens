@@ -1,0 +1,797 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-batch-02-2026-07-16",
+  "restaurant": {
+    "restaurantId": "bammys-dc",
+    "name": "Bammy's",
+    "domain": "bammysdc.com",
+    "locationId": "navy-yard-dc",
+    "baselineItemCount": 179,
+    "baselineItemFingerprint": "e5d943175dfaba41920b26952798000eb0873906330b01b7b0197741ad82c6bb",
+    "officialItemCount": 92,
+    "officialAllergenStatus": "not-found",
+    "sourceFamily": "generic-website",
+    "parserProfile": "generic-website",
+    "guideUrl": "https://bammysdc.com/pages/the-menu",
+    "sourceUrls": [
+      "https://bammysdc.com/pages/the-menu",
+      "https://bammysdc.com/",
+      "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6",
+      "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/item-jerk-chicken-rasta-pasta_c54913f3-9ab5-4c27-93a8-a8dde36ff624",
+      "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/item-stewed-cabbage_c418e10b-7fc4-4d4d-86cd-a3e424143430",
+      "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/item-lunch-bowl-jerk-chicken_30fa6c1a-82bb-4f72-9bc0-76c680795886",
+      "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/item-lunch-bowl-curry-chicken_fe79ca87-ec98-4913-9ab7-519da3a39226",
+      "https://order.toasttab.com/online/shark-bar-seafood-house"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "validationWarnings": [
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "multi_service",
+      "scope_incomplete",
+      "count_drift",
+      "baseline_only",
+      "non_exact_reconciliation",
+      "cross_contact",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 179,
+      "reconciledItemCount": 179,
+      "uniqueReconciledItemCount": 179,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 2,
+      "activeMenuSurfaceCount": 2,
+      "accessibleMenuSurfaceCount": 2,
+      "serviceCount": 2,
+      "pdfImageSurfaceCount": 0,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 0,
+      "incompleteSurfaceCount": 2,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 0,
+      "currentOnlyCount": 0,
+      "baselineOnlyCount": 179,
+      "countDrift": true,
+      "duplicatePresentationCount": 0,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 0,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 179,
+      "allergenMismatchItemCount": 0,
+      "crossContactCount": 1,
+      "parserRepairFindingCount": 0,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 0,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "medium",
+      "overall": 0.63,
+      "menu": 0.84,
+      "allergenSource": 0.1,
+      "extraction": 0.62,
+      "rationale": "The official site and restaurant-linked Toast catalog establish identity and expose substantially more current scope than Luna recorded, but their differing menus and no restaurant-issued allergen matrix prevent a complete allergen or cross-contact conclusion."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Bammy's Modern Caribbean, 301 Water St. SE Suite 115, Washington, DC 20003.",
+      "confidence": 0.98,
+      "sourceEvidenceIds": [
+        "terra-home",
+        "terra-toast"
+      ],
+      "notes": "Restaurant-controlled homepage links Toast ordering; Toast repeats the restaurant name and exact address."
+    },
+    "sources": [
+      {
+        "evidenceId": "terra-home",
+        "url": "https://bammysdc.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Bammy's Modern Caribbean homepage",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Restaurant-controlled homepage identifies BAMMY'S and links both its menu and Toast ordering.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-official-menu",
+        "url": "https://bammysdc.com/pages/the-menu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Bammy's official menu",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "HTML menu lists appetizers, entrees, seafood, sides, cocktails, beer, wines, frozen drinks, brunch, and brunch sides. It contains a raw/undercooked-food warning, not an allergen matrix or cross-contact statement.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-toast",
+        "url": "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Bammy's Toast ordering catalog",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Toast identifies Bammy's at 301 Water St. SE Suite 115 and enumerates Food Items, Catering, Spirit's, and Specials; food sections include lunch, appetizers, entrees, seafood, pasta and fried rice, sides, dessert, and condiments.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-allergen-search",
+        "url": "https://www.google.com/search?q=site%3Abammysdc.com+allergen+OR+allergy+OR+gluten",
+        "authorityTier": "third_party",
+        "purpose": "allergen",
+        "title": "Targeted allergen-source search",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Targeted search returned the restaurant menu but no Bammy's restaurant-issued allergen matrix, ingredient document, or cross-contact policy.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-eatbammys",
+        "url": "https://eatbammys.com/",
+        "authorityTier": "third_party",
+        "purpose": "identity",
+        "title": "eatbammys.com search-discovered site",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Search results describe a Bammy's Washington DC site, but direct retrieval returned no inspectable menu content; it was not used to establish menu or allergen claims.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://bammysdc.com/",
+        "notes": "Accessible; links official menu and Toast."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://bammysdc.com/pages/the-menu",
+        "notes": "Accessible, restaurant-issued HTML menu; no allergen disclosure found."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6",
+        "notes": "Accessible restaurant-linked ordering catalog with multiple services."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": "https://www.google.com/search?q=site%3Abammysdc.com+allergen+OR+allergy+OR+gluten",
+        "notes": "No restaurant-specific allergen matrix or cross-contact policy located."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No relevant current archived restaurant allergen document located."
+      },
+      {
+        "kind": "third_party",
+        "status": "accessible",
+        "url": "https://eatbammys.com/",
+        "notes": "Search-discovered site could not be independently inspected as a current menu surface; no allergen evidence used."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "multi_service",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast"
+        ],
+        "notes": "Official menu and Toast separately expose dine-in/menu and ordering/catering/spirit/special services."
+      },
+      {
+        "gateId": "scope_incomplete",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast"
+        ],
+        "notes": "The two current sources materially differ and the relationship of the restaurant-issued web menu to the Toast catalog is unresolved."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast"
+        ],
+        "notes": "179 frozen rows, Luna's zero-product current catalog, and the independently enumerated multi-service Toast catalog cannot be reconciled by count."
+      },
+      {
+        "gateId": "baseline_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast"
+        ],
+        "notes": "Many frozen names are absent from the accessible current source(s), while both sources contain current entries not represented as Luna products."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast"
+        ],
+        "notes": "Variants, outdated names, duplicate presentation forms, out-of-stock states, and service-specific items require semantic reconciliation."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-allergen-search"
+        ],
+        "notes": "The sole restaurant-issued warning concerns raw/undercooked foods. No cross-contact statement or allergen policy was found."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast",
+          "terra-allergen-search"
+        ],
+        "notes": "Allergen authority and unified current scope remain unresolved."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast"
+        ],
+        "notes": "Independent review confirms Luna's substantive scope and allergen-source concerns, while finding an omitted catalog enumeration."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "surface-official-menu",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Accessible restaurant-issued HTML menu; contents are enumerated but do not establish a complete allergen matrix or cross-contact policy."
+      },
+      {
+        "surfaceId": "surface-toast-navy-yard",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "notes": "Accessible location-specific Toast catalog. Its Food Items, Catering, Spirit's, and Specials sections are materially broader than Luna's empty current-product inventory."
+      }
+    ],
+    "currentProductCheckGroups": [],
+    "additionalMenuSurfaces": [
+      {
+        "surfaceId": "surface-toast-catering",
+        "title": "Toast catering catalog",
+        "service": "catering",
+        "url": "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6",
+        "authorityTier": "restaurant_linked_vendor",
+        "mediaType": "html",
+        "accessStatus": "accessible",
+        "fullyEnumerated": true,
+        "scopeStatus": "complete",
+        "current": true,
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "currentProductKeys": [],
+        "notes": "Toast separately lists catering sides and meats; Luna did not enumerate this service."
+      },
+      {
+        "surfaceId": "surface-toast-spirits",
+        "title": "Toast spirits catalog",
+        "service": "spirits",
+        "url": "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6",
+        "authorityTier": "restaurant_linked_vendor",
+        "mediaType": "html",
+        "accessStatus": "accessible",
+        "fullyEnumerated": true,
+        "scopeStatus": "complete",
+        "current": true,
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "currentProductKeys": [],
+        "notes": "Toast separately lists cocktails, classic cocktails, beer, non-alcoholic drinks, and spirits; Luna did not enumerate this service."
+      },
+      {
+        "surfaceId": "surface-toast-specials",
+        "title": "Toast specials catalog",
+        "service": "specials",
+        "url": "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6",
+        "authorityTier": "restaurant_linked_vendor",
+        "mediaType": "html",
+        "accessStatus": "accessible",
+        "fullyEnumerated": true,
+        "scopeStatus": "complete",
+        "current": true,
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "currentProductKeys": [],
+        "notes": "Toast separately lists happy-hour food and drink presentations; Luna did not enumerate this service."
+      }
+    ],
+    "additionalCurrentProducts": [],
+    "reconciliationSummary": {
+      "reconciledItemCount": 179,
+      "counts": {
+        "variant_match/accurately_unavailable": 179
+      }
+    },
+    "findings": [
+      {
+        "findingId": "terra-finding-empty-current-catalog",
+        "severity": "high",
+        "kind": "menu",
+        "summary": "Luna reported zero current products even though the accessible restaurant-linked Toast catalog enumerates food, catering, spirits, and specials, and the official HTML menu independently enumerates food and beverage offerings.",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "terra-finding-source-scope-conflict",
+        "severity": "high",
+        "kind": "scope",
+        "summary": "The restaurant-issued menu and the current Toast catalog have overlapping but materially different product and service scope; no unified current-product boundary is supported without coordinator/Sol adjudication.",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "terra-finding-allergen-authority-unavailable",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "No restaurant-issued allergen matrix, complete ingredients source, or cross-contact policy was found. Visible named ingredients support only narrow positive cues and cannot validate the frozen complete allergen arrays or negatives.",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-allergen-search"
+        ],
+        "affectedAuditItemKeys": []
+      }
+    ],
+    "summary": "Identity and both Luna surfaces are independently verified. Luna's zero-product catalog is discrepant: accessible Toast contains separately enumerated food, catering, spirits, and specials, while the official menu provides another current but non-identical catalog. The frozen 179 rows were reconciled structurally exactly once, but the source conflict and lack of restaurant-issued allergen/cross-contact evidence require Sol adjudication; no complete allergen arrays, negative claims, or cross-contact conclusions are cleared.",
+    "coordinatorNotes": [
+      "Read-only Terra result; no ledger, dossier, frozen-item, or generated-data mutation performed.",
+      "No scout current products or presentation IDs existed to re-check; this itself is the material catalog-enumeration discrepancy.",
+      "Allergen arrays remain unavailable rather than inferred from menu names, descriptions, or the raw/undercooked-food warning."
+    ]
+  },
+  "affectedBaselineItems": [],
+  "sampleBaselineItems": [
+    {
+      "auditItemKey": "1:patty",
+      "baseline": {
+        "itemId": "patty",
+        "name": "Patty",
+        "category": "Beef Pattie",
+        "variantGroup": "Beef Pattie",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "2:1-beef-patty",
+      "baseline": {
+        "itemId": "1-beef-patty",
+        "name": "1 Beef Patty",
+        "category": "Caribbean",
+        "variantGroup": "1 Chicken Patty",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "3:1-chicken-patty",
+      "baseline": {
+        "itemId": "1-chicken-patty",
+        "name": "1 Chicken patty",
+        "category": "Caribbean",
+        "variantGroup": "Plantain 4 Pc",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "4:2-crab-legs-coconut-curry",
+      "baseline": {
+        "itemId": "2-crab-legs-coconut-curry",
+        "name": "2 Crab Legs (Coconut Curry)",
+        "category": "Caribbean",
+        "variantGroup": "Seafood",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "5:2-crab-legs-jerk",
+      "baseline": {
+        "itemId": "2-crab-legs-jerk",
+        "name": "2 Crab Legs (Jerk)",
+        "category": "Caribbean",
+        "variantGroup": "2 Crab Legs (Coconut Curry)",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "6:2-crab-legs-old-bay",
+      "baseline": {
+        "itemId": "2-crab-legs-old-bay",
+        "name": "2 Crab Legs (old bay)",
+        "category": "Caribbean",
+        "variantGroup": "2 Crab Legs (Jerk)",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "7:4-jerk-wings",
+      "baseline": {
+        "itemId": "4-jerk-wings",
+        "name": "4 Jerk wings",
+        "category": "Caribbean",
+        "variantGroup": "$5 Lemon Drop",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "8:4-salt-fish-accra",
+      "baseline": {
+        "itemId": "4-salt-fish-accra",
+        "name": "4 Salt fish Accra",
+        "category": "Caribbean",
+        "variantGroup": "4 Jerk Wings",
+        "isConfigurable": false,
+        "allergens": [
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "9:8-head-on-coconut-curry-shrimp",
+      "baseline": {
+        "itemId": "8-head-on-coconut-curry-shrimp",
+        "name": "8 Head on Coconut Curry Shrimp",
+        "category": "Caribbean",
+        "variantGroup": "2 Crab Legs (Old Bay)",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "10:8-head-on-shrimp-jerk",
+      "baseline": {
+        "itemId": "8-head-on-shrimp-jerk",
+        "name": "8 Head On Shrimp (Jerk)",
+        "category": "Caribbean",
+        "variantGroup": "8 Head On Coconut Curry Shrimp",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "11:8-head-on-steam-shrimp-old-bay",
+      "baseline": {
+        "itemId": "8-head-on-steam-shrimp-old-bay",
+        "name": "8 Head On Steam Shrimp ( Old Bay)",
+        "category": "Caribbean",
+        "variantGroup": "8 Head On Shrimp (Jerk)",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "12:8-oz-salmon-w-caesar-salad",
+      "baseline": {
+        "itemId": "8-oz-salmon-w-caesar-salad",
+        "name": "8 oz Salmon w Caesar Salad",
+        "category": "Caribbean",
+        "variantGroup": "Veggie Pattie",
+        "isConfigurable": false,
+        "allergens": [
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6",
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/item-8-oz-salmon-w-caesar-salad_9b20eccc-9880-472c-b044-7a47a2ac63ce"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "13:bammys-fried-rice",
+      "baseline": {
+        "itemId": "bammys-fried-rice",
+        "name": "Bammy's Fried Rice",
+        "category": "Caribbean",
+        "variantGroup": "Caribbean",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://bammysdc.com/pages/the-menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "14:beef-pattie",
+      "baseline": {
+        "itemId": "beef-pattie",
+        "name": "Beef Pattie",
+        "category": "Caribbean",
+        "variantGroup": "4 Salt Fish Accra",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "15:branzino",
+      "baseline": {
+        "itemId": "branzino",
+        "name": "Branzino",
+        "category": "Caribbean",
+        "variantGroup": "8 Head On Steam Shrimp ( Old Bay)",
+        "isConfigurable": false,
+        "allergens": [
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "16:brown-stew-beef",
+      "baseline": {
+        "itemId": "brown-stew-beef",
+        "name": "Brown Stew Beef",
+        "category": "Caribbean",
+        "variantGroup": "Caribbean",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://bammysdc.com/pages/the-menu",
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "17:butter-toffee-cake",
+      "baseline": {
+        "itemId": "butter-toffee-cake",
+        "name": "Butter Toffee Cake",
+        "category": "Caribbean",
+        "variantGroup": "Coffe",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "18:caesar-salad",
+      "baseline": {
+        "itemId": "caesar-salad",
+        "name": "Caesar Salad",
+        "category": "Caribbean",
+        "variantGroup": "Caribbean",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "fish",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://bammysdc.com/pages/the-menu",
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6",
+          "https://order.toasttab.com/online/shark-bar-seafood-house"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "19:caesar-salad-w-salmon",
+      "baseline": {
+        "itemId": "caesar-salad-w-salmon",
+        "name": "Caesar Salad W/ Salmon",
+        "category": "Caribbean",
+        "variantGroup": "Caesar Salad W/ Shrimp",
+        "isConfigurable": false,
+        "allergens": [
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "20:caesar-salad-w-shrimp",
+      "baseline": {
+        "itemId": "caesar-salad-w-shrimp",
+        "name": "Caesar Salad W/ Shrimp",
+        "category": "Caribbean",
+        "variantGroup": "Caesar Salad",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.toasttab.com/local/order/bammys-new-301-water-st-suite-115/r-c71381e3-0ed3-4213-9dcf-f7d234ded2f6"
+        ]
+      }
+    }
+  ],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-02-2026-07-16/jobs/bammys-dc.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-02-2026-07-16/results/bammys-dc.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/bammys-dc.jsonl"
+  }
+}

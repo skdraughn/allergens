@@ -1,0 +1,905 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-080-2026-08-05",
+  "restaurantId": "cold-stone-creamery",
+  "runId": "poc-batch-080-2026-08-05-cold-stone-creamery-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "cold-stone-creamery",
+    "name": "Cold Stone Creamery",
+    "locationId": "",
+    "domain": "coldstonecreamery.com",
+    "baselineItemCount": 12,
+    "baselineFingerprint": "1a52a4a8df2f7ba4b40516cff3bafda81bba017b0ce558ff18acc5d2b960ae7e",
+    "itemChecksRead": 12,
+    "itemChecksPath": "data/restaurant-verification/item-checks/cold-stone-creamery.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Cold Stone Creamery",
+    "location": "United States chain; location-neutral national menu (no single storefront supplied)",
+    "locationId": "",
+    "domain": "coldstonecreamery.com",
+    "officialHomepage": "https://www.coldstonecreamery.com/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-menu",
+      "ev-nutrition",
+      "ev-allergen",
+      "ev-order"
+    ],
+    "notes": "Packet has empty locationId and is explicitly chain-scoped; no local franchise was merged."
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-home",
+      "url": "https://www.coldstonecreamery.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Official Cold Stone Creamery homepage",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "National Cold Stone Creamery site and store locator."
+    },
+    {
+      "evidenceId": "ev-menu",
+      "url": "https://www.coldstonecreamery.com/menu/index.html",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Official current menu",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Current creations, ice cream, mix-ins, cakes, pies, drinks, smoothies and catering."
+    },
+    {
+      "evidenceId": "ev-nutrition",
+      "url": "https://www.coldstonecreamery.com/nutrition/index.html",
+      "authorityTier": "restaurant_issued",
+      "purpose": "both",
+      "title": "Official nutrition and ingredient index",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Links to ingredient statements and category nutrition PDFs."
+    },
+    {
+      "evidenceId": "ev-allergen",
+      "url": "https://www.coldstonecreamery.com/assets/pdf/nutrition/food-allergies-and-sensitivities.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "Food Allergies and Sensitivities chart",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Official chart marks FDA allergen columns; warns of traces/cross-contact and regional variation."
+    },
+    {
+      "evidenceId": "ev-order",
+      "url": "https://orders.ordercoldstone.com/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "title": "Cold Stone online ordering vendor",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "excerpt": "Official nutrition page links ORDER NOW to this vendor; location selection is required."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "surface-menu",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "url": "https://www.coldstonecreamery.com/menu/index.html",
+      "authority": "official_site",
+      "locationScope": "national chain",
+      "servicePeriod": "all-day",
+      "format": "html",
+      "status": "inspected",
+      "current": true,
+      "scopeStatus": "complete",
+      "evidenceIds": [
+        "ev-menu"
+      ],
+      "currentProductKeys": [
+        "chocolate-chips",
+        "chocolate-shavings",
+        "oreo-pretzel-perfection",
+        "pb-and-chocolate-cookie-duo",
+        "peanut-butter",
+        "pecans",
+        "roasted-almonds",
+        "supergirl-sprinkles",
+        "supergirls-cosmic-kettle-corn",
+        "supergirls-popcorn-supernova",
+        "the-perfect-pair",
+        "allergen-disclaimer"
+      ]
+    },
+    {
+      "surfaceId": "surface-nutrition",
+      "current": false,
+      "sourceEvidenceIds": [
+        "ev-nutrition",
+        "ev-allergen"
+      ],
+      "url": "https://www.coldstonecreamery.com/nutrition/index.html",
+      "authority": "official_documents",
+      "locationScope": "national chain",
+      "servicePeriod": "all-day",
+      "format": "html-plus-pdfs",
+      "status": "inspected",
+      "evidenceIds": [
+        "ev-nutrition",
+        "ev-allergen"
+      ]
+    },
+    {
+      "surfaceId": "surface-order",
+      "current": false,
+      "sourceEvidenceIds": [
+        "ev-order"
+      ],
+      "url": "https://orders.ordercoldstone.com/",
+      "authority": "linked_vendor",
+      "locationScope": "location-selected vendor",
+      "servicePeriod": "all-day",
+      "format": "ordering html",
+      "status": "inspected",
+      "evidenceIds": [
+        "ev-order"
+      ]
+    },
+    {
+      "surfaceId": "surface-locator",
+      "current": false,
+      "sourceEvidenceIds": [
+        "ev-home"
+      ],
+      "url": "https://www.coldstonecreamery.com/locator/",
+      "authority": "official_site",
+      "locationScope": "all US locations",
+      "servicePeriod": "all-day",
+      "format": "html",
+      "status": "inspected",
+      "evidenceIds": [
+        "ev-home"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "chocolate-chips",
+      "name": "Chocolate Chips",
+      "category": "Candy Mix-Ins",
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen"
+      ],
+      "containsAllergens": [
+        "milk",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen"
+      ]
+    },
+    {
+      "currentProductKey": "chocolate-shavings",
+      "name": "Chocolate Shavings",
+      "category": "Candy Mix-Ins",
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen"
+      ],
+      "containsAllergens": [
+        "milk",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen"
+      ]
+    },
+    {
+      "currentProductKey": "oreo-pretzel-perfection",
+      "name": "OREO Pretzel Perfection",
+      "category": "Ice Cream",
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen"
+      ]
+    },
+    {
+      "currentProductKey": "pb-and-chocolate-cookie-duo",
+      "name": "PB & Chocolate Cookie Duo",
+      "category": "Ice Cream",
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen"
+      ],
+      "containsAllergens": [
+        "egg",
+        "peanut",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen"
+      ]
+    },
+    {
+      "currentProductKey": "peanut-butter",
+      "name": "Peanut Butter",
+      "category": "Other Mix-ins",
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen"
+      ],
+      "containsAllergens": [
+        "peanut",
+        "soy",
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen"
+      ]
+    },
+    {
+      "currentProductKey": "pecans",
+      "name": "Pecans",
+      "category": "Nuts",
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen"
+      ],
+      "containsAllergens": [
+        "tree-nut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen"
+      ]
+    },
+    {
+      "currentProductKey": "roasted-almonds",
+      "name": "Roasted Almonds",
+      "category": "Nuts",
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen"
+      ],
+      "containsAllergens": [
+        "tree-nut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen"
+      ]
+    },
+    {
+      "currentProductKey": "supergirl-sprinkles",
+      "name": "Supergirl Sprinkles",
+      "category": "Ice Cream",
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen"
+      ],
+      "containsAllergens": [
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen"
+      ]
+    },
+    {
+      "currentProductKey": "supergirls-cosmic-kettle-corn",
+      "name": "Supergirl's Cosmic Kettle Corn",
+      "category": "Ice Cream",
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen"
+      ]
+    },
+    {
+      "currentProductKey": "supergirls-popcorn-supernova",
+      "name": "Supergirl's Popcorn Supernova",
+      "category": "Ice Cream",
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen"
+      ]
+    },
+    {
+      "currentProductKey": "the-perfect-pair",
+      "name": "The Perfect Pair",
+      "category": "Ice Cream",
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen"
+      ],
+      "containsAllergens": [
+        "egg",
+        "peanut",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen"
+      ]
+    },
+    {
+      "currentProductKey": "allergen-disclaimer",
+      "name": "Allergen disclaimer",
+      "category": "Ice Cream",
+      "sourceEvidenceIds": [
+        "ev-allergen"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [
+        "peanut",
+        "wheat",
+        "milk",
+        "egg",
+        "soy",
+        "tree-nut"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-allergen"
+      ]
+    }
+  ],
+  "products": [
+    {
+      "productKey": "chocolate-chips",
+      "name": "Chocolate Chips",
+      "category": "Candy Mix-Ins",
+      "presentations": [
+        "official ingredient statement",
+        "official allergen chart"
+      ],
+      "sourceEvidenceIds": [
+        "ev-nutrition",
+        "ev-allergen"
+      ],
+      "allergens": [
+        "milk",
+        "soy"
+      ],
+      "mayContain": [],
+      "allergenSourceType": "official-allergen-chart"
+    },
+    {
+      "productKey": "chocolate-shavings",
+      "name": "Chocolate Shavings",
+      "category": "Candy Mix-Ins",
+      "presentations": [
+        "official ingredient statement",
+        "official allergen chart"
+      ],
+      "sourceEvidenceIds": [
+        "ev-nutrition",
+        "ev-allergen"
+      ],
+      "allergens": [
+        "milk",
+        "soy"
+      ],
+      "mayContain": [],
+      "allergenSourceType": "official-allergen-chart"
+    },
+    {
+      "productKey": "oreo-pretzel-perfection",
+      "name": "OREO® Pretzel Perfection",
+      "category": "Ice Cream",
+      "presentations": [
+        "signature creation/promotional build"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen"
+      ],
+      "allergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContain": [],
+      "allergenSourceType": "official-allergen-chart"
+    },
+    {
+      "productKey": "pb-and-chocolate-cookie-duo",
+      "name": "PB & Chocolate Cookie Duo",
+      "category": "Ice Cream",
+      "presentations": [
+        "milkshake creation"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen"
+      ],
+      "allergens": [
+        "egg",
+        "peanut",
+        "soy"
+      ],
+      "mayContain": [],
+      "allergenSourceType": "official-allergen-chart"
+    },
+    {
+      "productKey": "peanut-butter",
+      "name": "Peanut Butter",
+      "category": "Other Mix-ins",
+      "presentations": [
+        "official ingredient statement",
+        "official allergen chart"
+      ],
+      "sourceEvidenceIds": [
+        "ev-nutrition",
+        "ev-allergen"
+      ],
+      "allergens": [
+        "peanut",
+        "soy",
+        "milk"
+      ],
+      "mayContain": [],
+      "allergenSourceType": "official-allergen-chart"
+    },
+    {
+      "productKey": "pecans",
+      "name": "Pecans",
+      "category": "Nuts",
+      "presentations": [
+        "official allergen chart"
+      ],
+      "sourceEvidenceIds": [
+        "ev-allergen"
+      ],
+      "allergens": [
+        "tree-nut"
+      ],
+      "mayContain": [],
+      "allergenSourceType": "official-allergen-chart"
+    },
+    {
+      "productKey": "roasted-almonds",
+      "name": "Roasted Almonds",
+      "category": "Nuts",
+      "presentations": [
+        "official allergen chart"
+      ],
+      "sourceEvidenceIds": [
+        "ev-allergen"
+      ],
+      "allergens": [
+        "tree-nut"
+      ],
+      "mayContain": [],
+      "allergenSourceType": "official-allergen-chart"
+    },
+    {
+      "productKey": "supergirl-sprinkles",
+      "name": "Supergirl Sprinkles",
+      "category": "Ice Cream",
+      "presentations": [
+        "signature creation/promotional build"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen"
+      ],
+      "allergens": [
+        "soy"
+      ],
+      "mayContain": [],
+      "allergenSourceType": "official-allergen-chart"
+    },
+    {
+      "productKey": "supergirls-cosmic-kettle-corn",
+      "name": "Supergirl's Cosmic Kettle Corn",
+      "category": "Ice Cream",
+      "presentations": [
+        "signature creation/promotional build"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen"
+      ],
+      "allergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContain": [],
+      "allergenSourceType": "official-allergen-chart"
+    },
+    {
+      "productKey": "supergirls-popcorn-supernova",
+      "name": "Supergirl's Popcorn Supernova",
+      "category": "Ice Cream",
+      "presentations": [
+        "milkshake creation"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen"
+      ],
+      "allergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContain": [],
+      "allergenSourceType": "official-allergen-chart"
+    },
+    {
+      "productKey": "the-perfect-pair",
+      "name": "The Perfect Pair",
+      "category": "Ice Cream",
+      "presentations": [
+        "signature creation/promotional build"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen"
+      ],
+      "allergens": [
+        "egg",
+        "peanut",
+        "soy"
+      ],
+      "mayContain": [],
+      "allergenSourceType": "official-allergen-chart"
+    },
+    {
+      "productKey": "allergen-disclaimer",
+      "name": "Your health is of utmost concern to us. Please be aware that Cold Stone Creamery",
+      "category": "Ice Cream",
+      "presentations": [
+        "official allergen chart disclaimer"
+      ],
+      "sourceEvidenceIds": [
+        "ev-allergen"
+      ],
+      "allergens": [
+        "peanut",
+        "wheat",
+        "milk",
+        "egg",
+        "soy",
+        "sesame",
+        "tree-nut"
+      ],
+      "mayContain": [
+        "peanut",
+        "tree-nut",
+        "soy",
+        "wheat",
+        "milk",
+        "egg"
+      ],
+      "allergenSourceType": "official-cross-contact-disclosure"
+    }
+  ],
+  "matrixSearchAudit": [
+    {
+      "searchClass": "official_site",
+      "inspected": "coldstonecreamery.com navigation/menu/nutrition",
+      "urls": [
+        "https://www.coldstonecreamery.com/menu/index.html",
+        "https://www.coldstonecreamery.com/nutrition/index.html"
+      ],
+      "outcome": "found",
+      "evidenceIds": [
+        "ev-menu",
+        "ev-nutrition"
+      ]
+    },
+    {
+      "searchClass": "official_documents",
+      "inspected": "nutrition PDFs and downloadable allergen chart",
+      "urls": [
+        "https://www.coldstonecreamery.com/assets/pdf/nutrition/food-allergies-and-sensitivities.pdf"
+      ],
+      "outcome": "found",
+      "evidenceIds": [
+        "ev-allergen"
+      ]
+    },
+    {
+      "searchClass": "linked_vendor",
+      "inspected": "official ORDER NOW vendor",
+      "urls": [
+        "https://orders.ordercoldstone.com/"
+      ],
+      "outcome": "menu found; allergen matrix not separately exposed",
+      "evidenceIds": [
+        "ev-order"
+      ]
+    },
+    {
+      "searchClass": "targeted_web_search",
+      "inspected": "coldstonecreamery.com allergen allergy nutrition ingredients PDF menu",
+      "urls": [
+        "https://www.coldstonecreamery.com/assets/pdf/nutrition/food-allergies-and-sensitivities.pdf"
+      ],
+      "outcome": "confirmed official chart",
+      "evidenceIds": [
+        "ev-allergen"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:chocolate-chips",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chocolate-chips"
+        ],
+        "sourceEvidenceIds": [
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "2:chocolate-shavings",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chocolate-shavings"
+        ],
+        "sourceEvidenceIds": [
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "3:oreor-pretzel-perfection",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "oreo-pretzel-perfection"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "4:pb-and-chocolate-cookie-duo",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pb-and-chocolate-cookie-duo"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "5:peanut-butter",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "peanut-butter"
+        ],
+        "sourceEvidenceIds": [
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "6:pecans",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pecans"
+        ],
+        "sourceEvidenceIds": [
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "7:roasted-almonds",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roasted-almonds"
+        ],
+        "sourceEvidenceIds": [
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "8:supergirl-sprinkles",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "supergirl-sprinkles"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "9:supergirls-cosmic-kettle-corn",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "supergirls-cosmic-kettle-corn"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "10:supergirls-popcorn-supernova",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "supergirls-popcorn-supernova"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "11:the-perfect-pair",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "the-perfect-pair"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "12:your-health-is-of-utmost-concern-to-us-please-be-aware-that-cold-stone-creamery",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "allergen-disclaimer"
+        ],
+        "sourceEvidenceIds": [
+          "ev-allergen"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": true,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "found",
+    "attempts": [
+      {
+        "class": "official_site"
+      },
+      {
+        "class": "official_documents"
+      },
+      {
+        "class": "linked_vendor"
+      },
+      {
+        "class": "targeted_web_search"
+      }
+    ]
+  },
+  "matrixSearches": [
+    {
+      "searchClass": "official_site",
+      "inspected": "coldstonecreamery.com",
+      "urls": [
+        "https://www.coldstonecreamery.com/nutrition/index.html"
+      ],
+      "outcome": "found",
+      "evidenceIds": [
+        "ev-nutrition"
+      ]
+    },
+    {
+      "searchClass": "official_documents",
+      "inspected": "official allergen PDF",
+      "urls": [
+        "https://www.coldstonecreamery.com/assets/pdf/nutrition/food-allergies-and-sensitivities.pdf"
+      ],
+      "outcome": "found",
+      "evidenceIds": [
+        "ev-allergen"
+      ]
+    },
+    {
+      "searchClass": "linked_vendor",
+      "inspected": "orders.ordercoldstone.com",
+      "urls": [
+        "https://orders.ordercoldstone.com/"
+      ],
+      "outcome": "inspected",
+      "evidenceIds": [
+        "ev-order"
+      ]
+    },
+    {
+      "searchClass": "targeted_web_search",
+      "inspected": "Cold Stone allergen nutrition PDF queries",
+      "urls": [
+        "https://www.coldstonecreamery.com/assets/pdf/nutrition/food-allergies-and-sensitivities.pdf"
+      ],
+      "outcome": "found",
+      "evidenceIds": [
+        "ev-allergen"
+      ]
+    }
+  ],
+  "proposedChanges": [],
+  "routingSignals": {
+    "lunaFix": false,
+    "solReview": false,
+    "lightweight": [
+      "normalized spelling of OREO item key"
+    ],
+    "safetyEscalation": [],
+    "officialAllergenStatus": "available"
+  },
+  "blockedReason": null,
+  "validator": {
+    "valid": true,
+    "errors": []
+  }
+}

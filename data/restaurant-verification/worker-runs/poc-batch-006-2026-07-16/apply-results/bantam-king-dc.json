@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-006-2026-07-16",
+  "restaurantId": "bantam-king-dc",
+  "validation": {
+    "valid": true,
+    "currentProductCount": 38,
+    "errors": [],
+    "identity": {
+      "restaurantId": "bantam-king-dc",
+      "name": "Bantam King",
+      "address": "501 G Street NW, Washington, DC 20001"
+    },
+    "inScopeSurfaceIds": [
+      "official-homepage-menu",
+      "official-menus-page"
+    ],
+    "supportingExcludedSurfaceIds": [
+      "toast-ordering"
+    ],
+    "reconciliationCount": 52,
+    "reconciliationDispositionCounts": {
+      "exact_match": 17,
+      "normalized_match": 31,
+      "equivalent_presentation": 2,
+      "stale": 2
+    },
+    "allReconciliationRowsHaveCanonicalMenuEvidence": true,
+    "canonicalEvidenceValid": true,
+    "allCurrentProductsHaveCanonicalMenuEvidence": true,
+    "repairedProductEvidenceIds": {
+      "steamed-rice": [
+        "H1",
+        "E1"
+      ],
+      "can-soda": [
+        "H1",
+        "E1"
+      ]
+    },
+    "ingredientIntelligence": "explicit-positive-inferred-fields-only",
+    "matrixStatus": "accurately_unavailable",
+    "excludedAlcoholicRows": true,
+    "unsupportedSafetyClaimsRemoved": true
+  },
+  "changedPaths": [
+    "data/restaurant-verification/evidence/bantam-king-dc.json",
+    "data/restaurant-verification/worker-runs/poc-batch-006-2026-07-16/apply-results/bantam-king-dc.json"
+  ],
+  "commands": [
+    "node scripts/.tmp-apply-bantam-king.mjs",
+    "node scripts/.tmp-apply-bantam-king.mjs",
+    "focused readback assertions for 38 products, identity/address, two complete official surfaces, safety claim removals, evidence preflight, and Ingredient Intelligence placement",
+    "diff -u first-run snapshots against second-run outputs",
+    "full canonical product/evidence referential check after repairing steamed-rice and can-soda sourceEvidenceIds",
+    "closeout-equivalent validation of all 52 merged reconciliation rows, all 38 current products, and all canonical evidence sources after restoring T1"
+  ],
+  "secondRunDiff": "none",
+  "notes": [
+    "Two binding alcoholic rows were excluded; Toast is supporting/excluded and not a current catalog surface.",
+    "Only directly supported restaurant-issued positive allergens remain; empty arrays do not assert safety.",
+    "Closeout repair replaced the nonexistent sole E3 reference on steamed-rice and can-soda with direct official menu evidence H1 and E1 in the dossier and generated record.",
+    "Canonical evidence now restores authoritative source T1 verbatim so the full frozen reconciliation resolves against canonical menu evidence.",
+    "No ledger, item-check, workflow, parser, or codex_verified claim was edited."
+  ]
+}

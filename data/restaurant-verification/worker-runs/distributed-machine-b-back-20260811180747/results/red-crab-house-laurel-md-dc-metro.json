@@ -1,0 +1,680 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811180747",
+  "restaurantId": "red-crab-house-laurel-md-dc-metro",
+  "packetValidation": {
+    "baselineItemCount": 46,
+    "baselineFingerprint": "a9ce2719b13ae2d1641c7467193ee0b6ee696b329acff6a126286386d3a1a811"
+  },
+  "identity": {
+    "name": "Red Crab House",
+    "locationId": "laurel-md",
+    "address": "14707 Baltimore Ave, Laurel, MD 20707",
+    "domain": "redcrabhouse.com",
+    "verified": true,
+    "identityAmbiguous": false
+  },
+  "sources": [
+    {
+      "evidenceId": "official-menu",
+      "url": "https://redcrabhouse.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official food and nonalcoholic menu, location and service-period inventory",
+      "retrievedAt": "2026-08-11"
+    },
+    {
+      "evidenceId": "official-home",
+      "url": "https://redcrabhouse.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official identity and location",
+      "retrievedAt": "2026-08-11"
+    },
+    {
+      "evidenceId": "official-happy-hour",
+      "url": "https://redcrabhouse.com/happy-hour-specials/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official service-period menu surface",
+      "retrievedAt": "2026-08-11"
+    },
+    {
+      "evidenceId": "toast-menu",
+      "url": "https://order.toasttab.com/online/red-crab-house",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "linked vendor current menu and beverage surface",
+      "retrievedAt": "2026-08-11"
+    },
+    {
+      "evidenceId": "targeted-search",
+      "url": "https://www.google.com/search?q=site%3Aredcrabhouse.com+allergen+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted allergen search record; no official matrix located",
+      "retrievedAt": "2026-08-11"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-menu",
+      "title": "Official menu",
+      "url": "https://redcrabhouse.com/menu/",
+      "authority": "restaurant_issued",
+      "locationScope": "Laurel MD",
+      "servicePeriod": "lunch, all-day food, dessert, nonalcoholic beverage",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "official-menu"
+      ]
+    },
+    {
+      "surfaceId": "official-happy-hour",
+      "title": "Happy Hour Specials",
+      "url": "https://redcrabhouse.com/happy-hour-specials/",
+      "authority": "restaurant_issued",
+      "locationScope": "Laurel MD",
+      "servicePeriod": "Monday-Friday 3pm-7pm; site also states Sunday offering",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "official-happy-hour"
+      ]
+    },
+    {
+      "surfaceId": "toast",
+      "title": "Toast ordering menu",
+      "url": "https://order.toasttab.com/online/red-crab-house",
+      "authority": "restaurant_linked_vendor",
+      "locationScope": "14707 Baltimore Ave, Laurel MD",
+      "servicePeriod": "current ordering, food, nonalcoholic and bar sections",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "toast-menu"
+      ]
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "query": "Official homepage/menu/navigation and allergen, allergy, nutrition, ingredients links",
+        "urls": [
+          "https://redcrabhouse.com/",
+          "https://redcrabhouse.com/menu/",
+          "https://redcrabhouse.com/happy-hour-specials/"
+        ],
+        "outcome": "no official allergen matrix or ingredient document found",
+        "sourceEvidenceIds": [
+          "official-home",
+          "official-menu",
+          "official-happy-hour"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "query": "Official PDFs, downloadable documents, images, sitemap, nutrition, allergen, ingredients",
+        "urls": [
+          "https://redcrabhouse.com/menu/"
+        ],
+        "outcome": "no official allergen or nutrition document found",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "query": "Linked ordering vendor menu and item surfaces",
+        "urls": [
+          "https://order.toasttab.com/online/red-crab-house"
+        ],
+        "outcome": "current Laurel menu found; no allergen matrix or cross-contact statement found",
+        "sourceEvidenceIds": [
+          "toast-menu"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "Red Crab House Laurel site:redcrabhouse.com allergen allergy nutrition ingredients PDF menu",
+        "urls": [
+          "https://www.google.com/search?q=site%3Aredcrabhouse.com+allergen+nutrition+ingredients+PDF+menu"
+        ],
+        "outcome": "no official allergen matrix found",
+        "sourceEvidenceIds": [
+          "targeted-search"
+        ]
+      }
+    ]
+  },
+  "currentProducts": [
+    {
+      "currentProductKey": "red-crab-laurel-current-menu",
+      "name": "Red Crab House Laurel current food and nonalcoholic menu catalog",
+      "category": "consolidated-current-catalog",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "official-happy-hour",
+        "toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "notes": "Catalog includes current food, dessert, nonalcoholic beverage, and configurable presentations; alcohol-only items excluded. No allergen absence inferred."
+    }
+  ],
+  "reconciliation": {
+    "expectedCount": 46,
+    "items": [
+      {
+        "auditItemKey": "1:beef-fried-rice",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "2:black-mussel",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "3:black-mussel-one-pound",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "4:boil-egg",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "5:boil-egg-3",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "6:buffalo-chicken",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "7:buffalo-chicken-philly",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "8:cajun-fries",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "9:chicken-fried-rice",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "10:chicken-tender-basket",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "11:chicken-wings",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "12:clams",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "13:crab-cake-basket",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "14:crawfish",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "15:dungeness",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "16:egg-onion-pea-and-carrot",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "17:french-fries",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "18:green-mussel",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "19:happy-hour-specials",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-happy-hour"
+        ]
+      },
+      {
+        "auditItemKey": "20:hot-spicy-philly-steak",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "21:including",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "22:king-crab-legs",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "23:lobster-tail",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "24:long-island-iced-tea",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "25:mai-tai",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "26:molten-chocolate-cake",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "27:mondays-through-fridays",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "28:onion-rings",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "29:or-make-your-own-fried-combo-choose-up-to-three-half-size-items",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "30:phillies",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "31:philly-cheese-steak",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "32:pick-your-choice",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "33:poboy",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "34:popcorn-shrimp",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "35:rails",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "36:sausage",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "37:sausage-fried-rice",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "38:shrimp",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "39:shrimp-fried-rice",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "40:shrimp-head-on-1-lb",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "41:snow-crab-legs",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "42:sweet-potato-fries",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "43:vegetable-fried-rice",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKey": "44:white-rice",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "45:whiting-fish",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "46:wings",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "red-crab-laurel-current-menu"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify",
+  "outcome": "research_complete"
+}

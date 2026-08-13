@@ -1,0 +1,840 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-a-front-6-front-20260811211635",
+  "restaurantId": "pizzeria-paradiso-georgetown-dc",
+  "name": "Pizzeria Paradiso Georgetown",
+  "packetValidation": {
+    "restaurantId": "pizzeria-paradiso-georgetown-dc",
+    "baselineItemCount": 62,
+    "baselineFingerprint": "a9b3229acb8ac2e05ca62baa4a90498edb741d537fee7628c82f6ff587b63ff9",
+    "itemChecksPath": "data/restaurant-verification/item-checks/pizzeria-paradiso-georgetown-dc.jsonl",
+    "itemCheckCount": 62
+  },
+  "identity": {
+    "status": "confirmed",
+    "location": "3282 M Street Northwest, Washington, DC 20007; official page records closure after July 26, 2026",
+    "locationId": "georgetown-dc",
+    "domain": "eatyourpizza.com",
+    "officialHomepage": "https://www.eatyourpizza.com/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-closure",
+      "ev-toast"
+    ],
+    "notes": [
+      "Identity and former location match packet.",
+      "Official closure page takes precedence over stale ordering availability."
+    ]
+  },
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://www.eatyourpizza.com/",
+      "authority": "restaurant_issued",
+      "locationScope": "brand navigation",
+      "servicePeriod": "all",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-home"
+      ]
+    },
+    {
+      "surfaceId": "official-lunch-dinner",
+      "url": "https://www.eatyourpizza.com/lunch-dinner",
+      "authority": "restaurant_issued",
+      "locationScope": "brand full-scale locations including former Georgetown",
+      "servicePeriod": "lunch_dinner",
+      "current": false,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-lunch"
+      ]
+    },
+    {
+      "surfaceId": "official-express",
+      "url": "https://www.eatyourpizza.com/expresslunch",
+      "authority": "restaurant_issued",
+      "locationScope": "Dupont, Georgetown, Spring Valley; Georgetown now closed",
+      "servicePeriod": "weekday 12-4pm",
+      "current": false,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-express"
+      ]
+    },
+    {
+      "surfaceId": "official-happy-hour",
+      "url": "https://www.eatyourpizza.com/happy-hour-menu",
+      "authority": "restaurant_issued",
+      "locationScope": "brand locations",
+      "servicePeriod": "Mon-Fri 3-6pm",
+      "current": false,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-happy"
+      ]
+    },
+    {
+      "surfaceId": "linked-toast-georgetown",
+      "url": "https://order.toasttab.com/online/pizzeria-paradiso-georgetown",
+      "authority": "restaurant_linked_vendor",
+      "locationScope": "Georgetown; stale after official closure",
+      "servicePeriod": "all",
+      "current": false,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ]
+    }
+  ],
+  "currentProducts": {
+    "products": [
+      {
+        "currentProductKey": "closure-status",
+        "name": "Pizzeria Paradiso Georgetown — closed location",
+        "category": "Location status",
+        "presentationIds": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "notes": "Validator anchor for a closed-location result; not an orderable product."
+      }
+    ]
+  },
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "Official homepage, Georgetown farewell page, menu/navigation pages",
+        "urls": [
+          "https://www.eatyourpizza.com/",
+          "https://www.eatyourpizza.com/location-georgetown-farewell",
+          "https://www.eatyourpizza.com/lunch-dinner",
+          "https://www.eatyourpizza.com/expresslunch",
+          "https://www.eatyourpizza.com/happy-hour-menu"
+        ],
+        "outcome": "No allergen matrix; closure confirmed.",
+        "evidenceIds": [
+          "ev-home",
+          "ev-closure",
+          "ev-lunch",
+          "ev-express",
+          "ev-happy"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "Official PDFs, images, downloads and document surfaces",
+        "urls": [
+          "https://static1.squarespace.com/static/555ea042e4b003d47ad31b75/t/696d43ffc1027d545796b8dd/1768768511045/RestaurantWeek-Georgetown-menu-lunch-3.pdf",
+          "https://static1.squarespace.com/static/555ea042e4b003d47ad31b75/t/693226ae54e92019d93482f3/1764894382389/RestaurantWeek-Georgetown-menu-dinner.pdf"
+        ],
+        "outcome": "Historical/event menus found; no allergen matrix.",
+        "evidenceIds": [
+          "ev-docs"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Toast Georgetown food and nonalcoholic menu",
+        "urls": [
+          "https://order.toasttab.com/online/pizzeria-paradiso-georgetown"
+        ],
+        "outcome": "Provider menu visible but no allergen matrix and conflicts with official closure.",
+        "evidenceIds": [
+          "ev-toast"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "queryOrLocation": "site:eatyourpizza.com allergen allergy nutrition ingredients PDF Pizzeria Paradiso; Pizzeria Paradiso Georgetown DC allergen ingredients menu",
+        "urls": [
+          "https://www.eatyourpizza.com/location-georgetown-farewell",
+          "https://www.eatyourpizza.com/lunch-dinner"
+        ],
+        "outcome": "Menus and closure surfaced; no authoritative allergen matrix.",
+        "evidenceIds": [
+          "ev-search"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "expectedCount": 62,
+    "reconciledCount": 62,
+    "duplicateKeys": [],
+    "missingKeys": [],
+    "items": [
+      {
+        "auditItemKey": "1:7-kids-cheese-pizza",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "2:americana",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "3:antipasti-choose-three",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "4:atomica",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "5:avocado-7",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "6:bianca",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "7:bosco",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "8:bottarga",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "9:bruschetta",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "10:butter-pasta-w-parmesan",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "11:calzone",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "12:capra",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "13:cheese",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "14:chocolate-almond-cake",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "15:choice-1-mini-pizza-7-insalata-mista",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "16:choice-2-sandwich-insalata-mista",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "17:contadina",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "18:crostini-formaggio-di-capra",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "19:di-mare",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "20:enjoy-happy-hour-at-pizzeria-paradiso",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "21:express-lunch-pair",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "22:genovese",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "23:giardino",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "24:herbs-and-veggies",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "25:insalata-affumicata",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "26:insalata-cavolfiore",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "27:insalata-di-mare",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "28:insalata-fichi",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "29:insalata-mista",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "30:insalata-paradiso",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "31:insalata-romana",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "32:macellaio",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "33:macellaio-pizza",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "34:maiale",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "35:margherita",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "36:margherita-pizza",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "37:miniera",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "38:miniera-pizza",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "39:napoletana",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "40:nodi-di-aglio",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "41:oven-grilled-cheese",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "42:paesana",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "43:pane-fritto-bambino",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "44:panino-caprese",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "45:panino-grosso",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "46:panino-melanzana",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "47:panino-nonna",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "48:panino-nonna-sandwich",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "49:panino-verdure",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "50:paradiso",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "51:pick-between",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "52:pizza-bambino-7",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "53:pollo-al-forno",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "54:polpette",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "55:primavera",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "56:proteins",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "57:quattro-formaggi",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "58:siciliana",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "59:tiramisu",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "60:toast-alla-francese",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "61:tonno-e-fagioli",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      },
+      {
+        "auditItemKey": "62:uova-alla-diavola",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ],
+        "notes": "Not current for Georgetown; official closure supersedes frozen historical menu."
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-home",
+      "url": "https://www.eatyourpizza.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage",
+      "retrievedAt": "2026-08-11T21:19:15.787Z",
+      "excerpt": "Official homepage lists Georgetown and menu navigation."
+    },
+    {
+      "evidenceId": "ev-closure",
+      "url": "https://www.eatyourpizza.com/location-georgetown-farewell",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity and closure",
+      "retrievedAt": "2026-08-11T21:19:15.787Z",
+      "excerpt": "Official page states Georgetown closed after 23 years; final day Sunday July 26."
+    },
+    {
+      "evidenceId": "ev-lunch",
+      "url": "https://www.eatyourpizza.com/lunch-dinner",
+      "authorityTier": "restaurant_issued",
+      "purpose": "food menu surface",
+      "retrievedAt": "2026-08-11T21:19:15.787Z",
+      "excerpt": "Official generic lunch/dinner menu; includes gluten-free crust cross-contact warning."
+    },
+    {
+      "evidenceId": "ev-express",
+      "url": "https://www.eatyourpizza.com/expresslunch",
+      "authorityTier": "restaurant_issued",
+      "purpose": "service-period menu",
+      "retrievedAt": "2026-08-11T21:19:15.787Z",
+      "excerpt": "Express Lunch Pair page lists Georgetown among locations."
+    },
+    {
+      "evidenceId": "ev-happy",
+      "url": "https://www.eatyourpizza.com/happy-hour-menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "happy-hour surface",
+      "retrievedAt": "2026-08-11T21:19:15.787Z",
+      "excerpt": "Happy hour schedule and discounts; no itemized allergen menu."
+    },
+    {
+      "evidenceId": "ev-toast",
+      "url": "https://order.toasttab.com/online/pizzeria-paradiso-georgetown",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "linked ordering food and nonalcoholic surface",
+      "retrievedAt": "2026-08-11T21:19:15.787Z",
+      "excerpt": "Toast still exposes Georgetown menu and nonalcoholic drinks despite official closure."
+    },
+    {
+      "evidenceId": "ev-docs",
+      "url": "https://static1.squarespace.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official documents search",
+      "retrievedAt": "2026-08-11T21:19:15.787Z",
+      "excerpt": "Official document surfaces inspected; no allergen matrix."
+    },
+    {
+      "evidenceId": "ev-search",
+      "url": "https://www.google.com/search?q=site%3Aeatyourpizza.com+allergen+allergy+nutrition+ingredients+PDF",
+      "authorityTier": "third_party",
+      "purpose": "targeted web search",
+      "retrievedAt": "2026-08-11T21:19:15.787Z",
+      "excerpt": "Targeted searches found menus and closure, not an allergen matrix."
+    }
+  ],
+  "findings": [
+    "Official closure status supersedes stale Toast ordering availability for current Georgetown catalog scope.",
+    "Official menu cross-contact warning is preserved as evidence; no product-level negative claims are made."
+  ],
+  "routingSignals": [
+    "sourceAuthorityAmbiguous",
+    "closed-location historical catalog fully reconciled; no outstanding catalog repair remains"
+  ],
+  "recommendedLane": "luna_fix",
+  "solConflictPacket": {
+    "required": true,
+    "resolved": true,
+    "reviewType": "narrow_source_authority_conflict_resolution",
+    "reviewedKeys": [],
+    "resolvedSurfaceIds": [],
+    "excludedProductKeys": [],
+    "remainingSolSignals": []
+  }
+}

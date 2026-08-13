@@ -1,0 +1,776 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-a-front-20260810182548",
+  "restaurantId": "insomnia-cookies-dc",
+  "packetValidation": {
+    "baselineItemCount": 51,
+    "baselineFingerprint": "ae54bdab68bbd0ee59e5f8ea136d94a8b40a55e5fec1d2d70ccaea6fa14d910e",
+    "itemChecksRead": 51,
+    "restaurantIdMatched": true
+  },
+  "identity": {
+    "status": "confirmed",
+    "name": "Insomnia Cookies",
+    "location": "3204 O Street NW, Washington, DC 20007",
+    "locationId": "georgetown-dc",
+    "domain": "insomniacookies.com",
+    "officialHomepage": "https://insomniacookies.com/",
+    "sourceEvidenceIds": [
+      "home",
+      "menu"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "home",
+      "url": "https://insomniacookies.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage",
+      "retrievedAt": "2026-08-10T18:35:00.000Z"
+    },
+    {
+      "evidenceId": "menu",
+      "url": "https://insomniacookies.com/menu/Georgetown",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current Georgetown food and nonalcoholic menu",
+      "retrievedAt": "2026-08-10T18:35:00.000Z"
+    },
+    {
+      "evidenceId": "matrix",
+      "url": "https://api.insomniacookies.com/uploads/Insomnia%20Cookies%20Master%20Nutrition%20Facts%20Guide.pdf-compressed%20%281%29.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official nutrition allergen and cross-contact guide",
+      "retrievedAt": "2026-08-10T18:35:00.000Z"
+    },
+    {
+      "evidenceId": "vendor",
+      "url": "https://www.doordash.com/en/store/insomnia-cookies-washington-23136686/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "linked Washington DC delivery menu",
+      "retrievedAt": "2026-08-10T18:35:00.000Z"
+    },
+    {
+      "evidenceId": "search",
+      "url": "https://www.google.com/search?q=site%3Ainsomniacookies.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+PDF",
+      "authorityTier": "third_party",
+      "purpose": "targeted allergen search",
+      "retrievedAt": "2026-08-10T18:35:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-georgetown",
+      "url": "https://insomniacookies.com/menu/Georgetown",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "menu"
+      ]
+    },
+    {
+      "surfaceId": "official-matrix",
+      "url": "https://api.insomniacookies.com/uploads/Insomnia%20Cookies%20Master%20Nutrition%20Facts%20Guide.pdf-compressed%20%281%29.pdf",
+      "current": true,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "matrix"
+      ]
+    },
+    {
+      "surfaceId": "linked-vendor",
+      "url": "https://www.doordash.com/en/store/insomnia-cookies-washington-23136686/",
+      "current": true,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "vendor"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "georgetown-menu-catalog",
+      "name": "Insomnia Cookies Georgetown current menu catalog",
+      "sourceEvidenceIds": [
+        "menu",
+        "vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [
+        "egg",
+        "milk",
+        "peanut",
+        "tree-nut",
+        "wheat",
+        "soy",
+        "gluten"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "matrix"
+      ]
+    }
+  ],
+  "matrixSearch": {
+    "status": "found",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "urlsInspected": [
+          "https://insomniacookies.com/",
+          "https://insomniacookies.com/menu/Georgetown"
+        ],
+        "outcome": "Menu inspected; no complete matrix embedded",
+        "sourceEvidenceIds": [
+          "home",
+          "menu"
+        ],
+        "query": "Insomnia Cookies official homepage and Georgetown menu navigation inspected for allergen, allergy, nutrition, ingredients, PDF, and menu links",
+        "locationInspected": "https://insomniacookies.com/ and https://insomniacookies.com/menu/Georgetown"
+      },
+      {
+        "class": "official_documents",
+        "urlsInspected": [
+          "https://api.insomniacookies.com/uploads/Insomnia%20Cookies%20Master%20Nutrition%20Facts%20Guide.pdf-compressed%20%281%29.pdf"
+        ],
+        "outcome": "Official nutrition and allergen guide found",
+        "sourceEvidenceIds": [
+          "matrix"
+        ],
+        "query": "Insomnia Cookies official documents and API/CDN document surfaces inspected for allergen, allergy, nutrition, ingredients, PDF, and menu",
+        "locationInspected": "https://api.insomniacookies.com/uploads/Insomnia%20Cookies%20Master%20Nutrition%20Facts%20Guide.pdf-compressed%20%281%29.pdf"
+      },
+      {
+        "class": "linked_vendor",
+        "urlsInspected": [
+          "https://www.doordash.com/en/store/insomnia-cookies-washington-23136686/"
+        ],
+        "outcome": "Vendor menu inspected; no separate matrix",
+        "sourceEvidenceIds": [
+          "vendor"
+        ],
+        "query": "Restaurant-linked DoorDash Washington DC Georgetown menu inspected for allergen, allergy, nutrition, ingredients, PDF, and menu links",
+        "locationInspected": "https://www.doordash.com/en/store/insomnia-cookies-washington-23136686/"
+      },
+      {
+        "class": "targeted_web_search",
+        "urlsInspected": [
+          "https://www.google.com/search?q=site%3Ainsomniacookies.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+PDF"
+        ],
+        "outcome": "Official guide located",
+        "sourceEvidenceIds": [
+          "search",
+          "matrix"
+        ],
+        "query": "site:insomniacookies.com allergen OR allergy OR nutrition OR ingredients PDF menu",
+        "locationInspected": "https://www.google.com/search?q=site%3Ainsomniacookies.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+PDF"
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "statement": "Official guide warns of common allergens and shared preparation environment; gluten-free products risk gluten exposure.",
+      "sourceEvidenceIds": [
+        "matrix"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "type": "cross_contact",
+      "status": "direct",
+      "statement": "Official shared-environment and gluten-exposure warning; no allergen-free claims made.",
+      "sourceEvidenceIds": [
+        "matrix"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:100-classic-cookies",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "2:chocolate-chip-brownie",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "3:chocolate-chunk-blondie",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "4:chocolate-chunk-brookie",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "5:small-waffle-cone",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "6:chocolate-chunk",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "7:chocolate-peanut-butter-cup-deluxe",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "8:confetti-deluxe",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "9:double-chocolate-chunk",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "10:double-chocolate-mint",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "11:oatmeal-chocolate-walnut-deluxe",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "12:oatmeal-raisin",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "13:peanut-butter-chip",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "14:salted-caramel-deluxe",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "15:snickerdoodle",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "16:triple-chocolate-deluxe",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "17:vegan-chocolate-chunk",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "18:vegan-double-chocolate-chunk",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "19:vegan-gluten-free-chocolate-chip",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "20:white-chocolate-macadamia",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "21:6-pack",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "22:9-pack",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "23:brookie",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "24:brownies",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "25:classic-cookiewich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "26:classic-cookies",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "27:classic-with-mandmsr",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "28:cone",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "29:cookie-cakes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "30:deluxe-cookiewich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "31:deluxe-cookies",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "32:ice-cream-on-a-classic-cookie",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "33:ice-cream-on-a-deluxe-cookie",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "34:insomnia-cookies-does-not-recommend-these-items-for-guests-with-celiac-disease",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "35:insomnia-tracks",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "36:peanut-butter",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "37:small-waffle",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "38:triple-threat-cookie-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "39:vegan-birthday-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "40:caramellionaire",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "41:chocolate",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "42:cookie-dough",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "43:cookies-n-dream",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "44:dreamweaver",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "45:minterstellar",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "46:peanut-butter-insomnia-tracks",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "47:deluxe-24-pack",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "48:ice-cream-in-a-cup",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "49:ice-cream-on-a-brownie",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "50:pint",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      },
+      {
+        "auditItemKey": "51:smores-deluxe",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "georgetown-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "menu",
+          "matrix"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify"
+}
+

@@ -1,0 +1,3095 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-batch-04-2026-07-16",
+  "restaurant": {
+    "restaurantId": "osm-beeliner-diner-9732729794",
+    "name": "Beeliner Diner",
+    "domain": "beelinerdiner.com",
+    "locationId": "alexandria",
+    "baselineItemCount": 131,
+    "baselineItemFingerprint": "6b0669ae0c92f1cabbe141b425b088e15fe89a6ab9dfcc429f5653c64d09b1bb",
+    "officialItemCount": 89,
+    "officialAllergenStatus": "not-found",
+    "sourceFamily": "generic-website",
+    "parserProfile": "generic-website",
+    "guideUrl": "https://www.beelinerdiner.com/",
+    "sourceUrls": [
+      "https://www.beelinerdiner.com/",
+      "https://www.beelinerdiner.com/_api/v1/access-tokens",
+      "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_27f6b31f5d51415197c938f8332096d6.pdf",
+      "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_365027fc4bd340dc840458191ad7b2ed.pdf",
+      "https://www.beelinerdiner.com/menu",
+      "https://order.toasttab.com/online/beeliner-diner-3648-king-st",
+      "https://www.beelinerdiner.com/_api/restaurants-menus-item/v1/items"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found.",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra reported a mismatched or unverifiable current product.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "validationWarnings": [
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra reported a mismatched or unverifiable current product.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "pdf_or_image",
+      "scope_incomplete",
+      "count_drift",
+      "duplicate_presentations",
+      "authority_ambiguity",
+      "non_exact_reconciliation",
+      "cross_contact",
+      "parser_or_repair_finding",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 131,
+      "reconciledItemCount": 131,
+      "uniqueReconciledItemCount": 131,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 4,
+      "activeMenuSurfaceCount": 4,
+      "accessibleMenuSurfaceCount": 4,
+      "serviceCount": 0,
+      "pdfImageSurfaceCount": 2,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 0,
+      "incompleteSurfaceCount": 1,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 8,
+      "currentOnlyCount": 0,
+      "baselineOnlyCount": 0,
+      "countDrift": true,
+      "duplicatePresentationCount": 4,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 8,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 131,
+      "allergenMismatchItemCount": 0,
+      "crossContactCount": 4,
+      "parserRepairFindingCount": 1,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 0,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "medium",
+      "overall": 0.84,
+      "menu": 0.93,
+      "allergenSource": 0.16,
+      "extraction": 0.8,
+      "rationale": "The official site and its linked Toast ordering menu verify identity and expose a substantially larger current catalog than Luna reported. Restaurant-issued menu PDFs/API are stale, inaccessible, or not independently enumerable in this session; no complete allergen matrix, ingredient disclosure, or cross-contact statement was found."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Beeliner Diner, 3648 King St, Alexandria, VA 22302",
+      "confidence": 0.99,
+      "sourceEvidenceIds": [
+        "terra-home",
+        "terra-toast"
+      ],
+      "notes": "The official homepage and official-linked Toast location agree on restaurant name, address, and phone."
+    },
+    "sources": [
+      {
+        "evidenceId": "terra-home",
+        "url": "https://www.beelinerdiner.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Beeliner Diner home",
+        "retrievedAt": "2026-07-16T19:00:00Z",
+        "excerpt": "Official navigation links Food Menu, Drinks Menu, Order Online, and Catering Menu; footer identifies 3648 King St, Alexandria, VA 22302.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "official-home-html"
+      },
+      {
+        "evidenceId": "terra-menu",
+        "url": "https://www.beelinerdiner.com/menu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Beeliner Diner menus",
+        "retrievedAt": "2026-07-16T19:00:00Z",
+        "excerpt": "Official page offers All-Day Food and All-Day Drinks menu links.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "official-menu-html"
+      },
+      {
+        "evidenceId": "terra-toast",
+        "url": "https://order.toasttab.com/online/beeliner-diner-3648-king-st",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "BeeLiner Diner Toast ordering menu",
+        "retrievedAt": "2026-07-16T19:00:00Z",
+        "excerpt": "Lists the Alexandria location and current categories: All Day Breakfast, Appetizers, Sandwiches, Salads, Entrees, Bun Papa Test Kitchen, Kids Menu, Desserts, and Sides.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "toast-rendered-menu-html"
+      },
+      {
+        "evidenceId": "terra-food-pdf",
+        "url": "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_27f6b31f5d51415197c938f8332096d6.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Former linked All-Day Food PDF",
+        "retrievedAt": "2026-07-16T19:00:00Z",
+        "excerpt": "The official menu page links a food PDF, but the packet URL redirects through a files host that could not be independently retrieved by the research client.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "food-pdf"
+      },
+      {
+        "evidenceId": "terra-drinks-link",
+        "url": "https://www.beelinerdiner.com/menu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Current All-Day Drinks link",
+        "retrievedAt": "2026-07-16T19:00:00Z",
+        "excerpt": "The current official menu page links an All-Day Drinks PDF at a different file identifier than the packet's drinks PDF URL.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "current-drinks-pdf-link"
+      },
+      {
+        "evidenceId": "terra-catering-link",
+        "url": "https://www.beelinerdiner.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Catering Menu link",
+        "retrievedAt": "2026-07-16T19:00:00Z",
+        "excerpt": "Official navigation includes a Catering Menu PDF, omitted from the scout catalog.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "catering-menu-link"
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://www.beelinerdiner.com/",
+        "notes": "Verified identity and official navigation."
+      },
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://www.beelinerdiner.com/menu",
+        "notes": "Verified official food and drinks menu links."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://order.toasttab.com/online/beeliner-diner-3648-king-st",
+        "notes": "Officially linked vendor menu fully rendered and enumerated."
+      },
+      {
+        "kind": "linked_source",
+        "status": "error",
+        "url": "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_27f6b31f5d51415197c938f8332096d6.pdf",
+        "notes": "Redirected file host could not be reopened by the research client."
+      },
+      {
+        "kind": "linked_source",
+        "status": "error",
+        "url": "https://www.beelinerdiner.com/_api/restaurants-menus-item/v1/items",
+        "notes": "Endpoint was not safely openable by the research client."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://order.toasttab.com/online/beeliner-diner-3648-king-st",
+        "notes": "Current public ordering catalog enumerated."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "not_found",
+        "url": null,
+        "notes": "No restaurant-issued allergen guide, complete ingredients document, or cross-contact statement located."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No authoritative archived allergen document located."
+      },
+      {
+        "kind": "third_party",
+        "status": "not_found",
+        "url": null,
+        "notes": "No credible complete third-party allergen matrix located."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "pdf_or_image",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-menu",
+          "terra-food-pdf",
+          "terra-drinks-link"
+        ],
+        "notes": "Official menu surfaces include PDFs; the packet food PDF could not be reopened and the current drinks file identifier differs."
+      },
+      {
+        "gateId": "scope_incomplete",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-menu",
+          "terra-catering-link",
+          "terra-toast"
+        ],
+        "notes": "The scout omitted the official Catering Menu and did not enumerate the actual current Toast catalog."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "notes": "Luna reported eight current products; Toast alone exposes roughly one hundred distinct current ordering items."
+      },
+      {
+        "gateId": "duplicate_presentations",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "notes": "Featured items repeat category products, and several frozen rows are duplicate/variant presentations."
+      },
+      {
+        "gateId": "authority_ambiguity",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-toast",
+          "terra-menu"
+        ],
+        "notes": "Menu descriptions come from an official-linked vendor; they are not restaurant-issued allergen disclosures."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-toast",
+          "terra-food-pdf"
+        ],
+        "notes": "Frozen records contain duplicates, misspellings, malformed names, old PDF/API artifacts, and stale names."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "notes": "No cross-contact statement was found. A selectable Soy Ginger wing flavor is not may-contain or shared-equipment evidence."
+      },
+      {
+        "gateId": "parser_or_repair_finding",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "notes": "The source extraction collapsed a large live catalog to eight products and promoted unsupported source semantics."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-food-pdf",
+          "terra-menu"
+        ],
+        "notes": "PDF/API accessibility and full restaurant-issued catalog scope remain unresolved."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-toast",
+          "terra-menu"
+        ],
+        "notes": "Independent review confirms the scout's broad risk classification but finds more material scope failure."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "surface-official-food-pdf",
+        "verdict": "unverifiable",
+        "sourceEvidenceIds": [
+          "terra-menu",
+          "terra-food-pdf"
+        ],
+        "notes": "The official page still represents a food-PDF surface, but the exact packet PDF could not be reopened; its current completeness and product boundary cannot be verified."
+      },
+      {
+        "surfaceId": "surface-official-drinks-pdf",
+        "verdict": "mismatch",
+        "sourceEvidenceIds": [
+          "terra-menu",
+          "terra-drinks-link"
+        ],
+        "notes": "The official menu page still links All-Day Drinks, but its current PDF file identifier differs from Luna's packet URL; Luna's exact surface evidence is stale."
+      },
+      {
+        "surfaceId": "surface-toast-alexandria",
+        "verdict": "mismatch",
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "notes": "The surface is current and accessible, but Luna falsely represented it as an eight-product catalog rather than enumerating its full menu."
+      },
+      {
+        "surfaceId": "surface-official-api",
+        "verdict": "unverifiable",
+        "sourceEvidenceIds": [
+          "terra-menu"
+        ],
+        "notes": "The reported API endpoint could not be reopened safely and cannot establish a current complete catalog."
+      }
+    ],
+    "currentProductCheckGroups": [
+      {
+        "currentProductKeys": [
+          "bfast-burrito"
+        ],
+        "presentationIds": [
+          "toast-bfast-burrito",
+          "api-bfast-burrito"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "notes": "Toast names scrambled eggs and three-cheese blend. No complete ingredient, negative, or cross-contact disclosure."
+      },
+      {
+        "currentProductKeys": [
+          "vegan-bfast-burrito"
+        ],
+        "presentationIds": [
+          "toast-vegan-bfast-burrito",
+          "api-vegan-bfast-burrito"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "notes": "Description is incomplete; vegan wording does not establish an allergen-free claim."
+      },
+      {
+        "currentProductKeys": [
+          "breakfast-sandwich"
+        ],
+        "presentationIds": [
+          "toast-breakfast-sandwich",
+          "api-breakfast-sandwich"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "notes": "Toast names eggs, cheddar, aioli, and sourdough."
+      },
+      {
+        "currentProductKeys": [
+          "french-toast"
+        ],
+        "presentationIds": [
+          "toast-french-toast"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "notes": "Toast names brioche, custard, and butter."
+      },
+      {
+        "currentProductKeys": [
+          "belgian-waffle"
+        ],
+        "presentationIds": [
+          "toast-belgian-waffle"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "notes": "Butter is named; waffle identity supports only narrow positive ingredient evidence."
+      },
+      {
+        "currentProductKeys": [
+          "chicken-wings"
+        ],
+        "presentationIds": [
+          "toast-chicken-wings"
+        ],
+        "verdict": "mismatch",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "notes": "Soy Ginger is a selectable flavor, not may-contain or cross-contact evidence. Other formulations are undisclosed."
+      },
+      {
+        "currentProductKeys": [
+          "turkey-club-sandwich"
+        ],
+        "presentationIds": [
+          "toast-turkey-club"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "notes": "Toast names sourdough, American cheese, and mayo."
+      },
+      {
+        "currentProductKeys": [
+          "steak-and-eggs"
+        ],
+        "presentationIds": [
+          "toast-steak-and-eggs",
+          "api-steak-and-eggs"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "notes": "Name directly supports egg only; other components are undisclosed."
+      }
+    ],
+    "additionalMenuSurfaces": [
+      {
+        "surfaceId": "surface-official-catering-pdf",
+        "title": "Catering Menu",
+        "service": null,
+        "url": "https://www.beelinerdiner.com/",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "pdf",
+        "accessStatus": "partial",
+        "fullyEnumerated": false,
+        "scopeStatus": "unresolved",
+        "current": true,
+        "sourceEvidenceIds": [
+          "terra-home",
+          "terra-catering-link"
+        ],
+        "currentProductKeys": [],
+        "notes": "Official navigation exposes this omitted PDF surface; its linked file could not be independently opened."
+      }
+    ],
+    "additionalCurrentProducts": [
+      {
+        "currentProductKey": "short-rib-hash",
+        "name": "Short Rib Hash",
+        "category": "Breakfast",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-short-rib-hash"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "106:short-rib-hash"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names fried eggs."
+      },
+      {
+        "currentProductKey": "chicken-and-waffles",
+        "name": "Chicken & Waffles",
+        "category": "Breakfast",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-chicken-and-waffles"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "33:chicken-and-waffles"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Omitted current Toast product."
+      },
+      {
+        "currentProductKey": "garden-omelette",
+        "name": "Garden Omelette",
+        "category": "Breakfast",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-garden-omelette"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "46:garden-omelette"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names eggs and three-cheese blend."
+      },
+      {
+        "currentProductKey": "three-cheese-omelette",
+        "name": "3 Cheese Omelette",
+        "category": "Breakfast",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-3-cheese-omelette"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "5:3-cheese-omelette",
+          "89:three-cheese-omelet"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names eggs, mozzarella, provolone, and cheddar."
+      },
+      {
+        "currentProductKey": "tex-mex-omelette",
+        "name": "Tex-Mex Omelette",
+        "category": "Breakfast",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-tex-mex-omelette"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "86:tex-mex-omelette"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names eggs and three-cheese blend."
+      },
+      {
+        "currentProductKey": "steak-omelette",
+        "name": "Steak Omelette",
+        "category": "Breakfast",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-steak-omelette"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "81:steak-omelet",
+          "82:steak-omelette"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names mozzarella and provolone; omelette identity supports egg."
+      },
+      {
+        "currentProductKey": "country-fried-steak",
+        "name": "Country-Fried Steak",
+        "category": "Breakfast",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-country-fried-steak"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "38:country-fried-steak"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names fried eggs."
+      },
+      {
+        "currentProductKey": "beeliner-benny",
+        "name": "Beeliner Benny",
+        "category": "Breakfast",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-beeliner-benny"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "16:beeliner-benny",
+          "59:mini-bacon-cheddar-waffles-topped-with-sausage"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names bacon-cheddar waffles, eggs, and Hollandaise."
+      },
+      {
+        "currentProductKey": "the-hungry-bee",
+        "name": "The Hungry Bee",
+        "category": "Breakfast",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-the-hungry-bee"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "87:the-hungry-bee"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names eggs."
+      },
+      {
+        "currentProductKey": "teriyaki-hash",
+        "name": "Teriyaki Hash",
+        "category": "Breakfast",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-teriyaki-hash"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Current Toast special omitted from frozen baseline and Luna catalog."
+      },
+      {
+        "currentProductKey": "tex-mex-eggrolls",
+        "name": "Tex Mex Eggrolls",
+        "category": "Appetizers",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-tex-mex-eggrolls"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "85:tex-mex-eggrolls"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast says tortilla-wrapped."
+      },
+      {
+        "currentProductKey": "loaded-tots",
+        "name": "Loaded Tots",
+        "category": "Appetizers",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-loaded-tots"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Current Toast product omitted from Luna and frozen baseline."
+      },
+      {
+        "currentProductKey": "fried-cheese-curds",
+        "name": "Fried Cheese Curds",
+        "category": "Appetizers",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-fried-cheese-curds"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "42:fried-cheese-curds"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Named cheese identity supports milk only."
+      },
+      {
+        "currentProductKey": "pastrami-reuben",
+        "name": "Pastrami Reuben",
+        "category": "Sandwiches",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-pastrami-reuben"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "65:pastrami-reuben"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names Swiss and marble rye."
+      },
+      {
+        "currentProductKey": "blt",
+        "name": "BLT",
+        "category": "Sandwiches",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-blt"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "21:blt"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "wheat",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names sourdough and garlic aioli."
+      },
+      {
+        "currentProductKey": "beef-lamb-gyro-pita-wrap",
+        "name": "Beef & Lamb Gyro Pita/Wrap",
+        "category": "Sandwiches",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-beef-lamb-gyro"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "14:beef-and-lamb-gyro-pitawrap",
+          "129:gyro-pita"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names pita, tzatziki, and feta."
+      },
+      {
+        "currentProductKey": "steak-cheese-sandwich",
+        "name": "Steak & Cheese Sandwich",
+        "category": "Sandwiches",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-steak-cheese"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "79:steak-and-cheese-sandwich",
+          "130:steak-and-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names provolone and hoagie roll."
+      },
+      {
+        "currentProductKey": "sammy-salad",
+        "name": "Sammy Salad",
+        "category": "Salads",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-sammy-salad"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "72:sammy-salad"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Optional protein makes catalog-level allergen arrays incomplete."
+      },
+      {
+        "currentProductKey": "gyro-salad",
+        "name": "Gyro Salad",
+        "category": "Salads",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-gyro-salad"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "51:gyro-salad"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names feta and tzatziki."
+      },
+      {
+        "currentProductKey": "goat-cheese-salad",
+        "name": "Goat Cheese Salad",
+        "category": "Salads",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-goat-cheese-salad"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "47:goat-cheese-salad"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names feta."
+      },
+      {
+        "currentProductKey": "buffalo-chicken-salad",
+        "name": "Buffalo Chicken Salad",
+        "category": "Salads",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-buffalo-chicken-salad"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "26:buffalo-chicken-salad"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Current Toast product omitted by Luna."
+      },
+      {
+        "currentProductKey": "steak-frites",
+        "name": "Steak Frites",
+        "category": "Entrees",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-steak-frites"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "80:steak-frites"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Current Toast product omitted by Luna."
+      },
+      {
+        "currentProductKey": "cajun-roasted-salmon",
+        "name": "Cajun Roasted Salmon",
+        "category": "Entrees",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-cajun-roasted-salmon"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "29:cajun-roasted-salmon"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "fish"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Salmon identity supports fish only."
+      },
+      {
+        "currentProductKey": "blackened-chicken-alfredo",
+        "name": "Blackened Chicken Alfredo",
+        "category": "Entrees",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-blackened-chicken-alfredo"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "20:blackened-chicken-alfredo",
+          "110:blackened-chicken-alfredo-pasta"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Name alone is insufficient for complete arrays."
+      },
+      {
+        "currentProductKey": "beef-lamb-gyro-platter",
+        "name": "Beef Lamb Gyro Platter",
+        "category": "Entrees",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-beef-lamb-gyro-platter"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "15:beef-and-lamb-gyro-platter"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Current Toast product omitted by Luna."
+      },
+      {
+        "currentProductKey": "cajun-jackfruit-plantain-platter",
+        "name": "Cajun Jackfruit & Plantain Platter",
+        "category": "Entrees",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-cajun-jackfruit-plantain-platter"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "97:vegan-cajun-jackfruit"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Name differs materially from frozen record."
+      },
+      {
+        "currentProductKey": "bun-papa-classic-fries",
+        "name": "Bun Papa Classic W/ fries",
+        "category": "Bun Papa Test Kitchen",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-bun-papa-classic"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "27:bun-papa-classic-w-fries",
+          "115:classic-burger"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names cheddar, mayo, and brioche."
+      },
+      {
+        "currentProductKey": "big-papa-deluxe-fries",
+        "name": "Big PaPa Deluxe W/ Fries",
+        "category": "Bun Papa Test Kitchen",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-big-papa-deluxe"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "19:big-papa-deluxe-w-fries",
+          "112:bun-papa-deluxe"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names cheddar."
+      },
+      {
+        "currentProductKey": "roadhouse-fries",
+        "name": "Roadhouse W/ Fries",
+        "category": "Bun Papa Test Kitchen",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-roadhouse"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "70:roadhouse-w-fries",
+          "125:roadhouse-burger"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names cheddar."
+      },
+      {
+        "currentProductKey": "byo-burger-fries",
+        "name": "B.Y.O Burger W/ Fries",
+        "category": "Bun Papa Test Kitchen",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-byo-burger"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "8:byo-burger-w-fries"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Configurable product; no complete disclosure."
+      },
+      {
+        "currentProductKey": "og-chicken-sandwich-fries",
+        "name": "The O.G. Chicken Sandwich W/ Fries",
+        "category": "Bun Papa Test Kitchen",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-og-chicken-sandwich"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "88:the-og-chicken-sandwich-w-fries",
+          "123:og-chicken-sandwich"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names garlic aioli; sauce choice prevents complete arrays."
+      },
+      {
+        "currentProductKey": "byo-dog-fries",
+        "name": "B.Y.O Dog W/ Fries",
+        "category": "Bun Papa Test Kitchen",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-byo-dog"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "9:byo-dog-w-fries"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Configurable product; no complete disclosure."
+      },
+      {
+        "currentProductKey": "bacon-cheese-dog-fries",
+        "name": "Bacon Cheese Dog w/ fries",
+        "category": "Bun Papa Test Kitchen",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-bacon-cheese-dog"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "12:bacon-cheese-dog-w-fries",
+          "109:bacon-cheese-dog"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names cheddar."
+      },
+      {
+        "currentProductKey": "kids-grilled-cheese",
+        "name": "Kids Grilled Cheese",
+        "category": "Kids Menu",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-kids-grilled-cheese"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "55:kids-grilled-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names sourdough, butter, cheddar, and American cheese."
+      },
+      {
+        "currentProductKey": "kids-pasta",
+        "name": "Kids Pasta",
+        "category": "Kids Menu",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-kids-pasta"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "56:kids-pasta"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Penne identity supports wheat; butter option supports no catalog-wide milk conclusion."
+      },
+      {
+        "currentProductKey": "kids-burger-fries",
+        "name": "Kids Burger w/ Fries",
+        "category": "Kids Menu",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-kids-burger"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "54:kids-burger-w-fries",
+          "120:kids-burger"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Current Toast product omitted by Luna."
+      },
+      {
+        "currentProductKey": "nuggets-fries",
+        "name": "Nuggets With Fries",
+        "category": "Kids Menu",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-nuggets-fries"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "61:nuggets-with-fries",
+          "121:kids-nuggets"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Current Toast product omitted by Luna."
+      },
+      {
+        "currentProductKey": "cheese-quesadilla",
+        "name": "Cheese Quesadilla",
+        "category": "Kids Menu",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-cheese-quesadilla"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "31:cheese-quesadilla",
+          "122:kids-quesadilla"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names cheese tortillas; optional protein prevents complete arrays."
+      },
+      {
+        "currentProductKey": "dutch-apple-pie-slice",
+        "name": "Dutch Apple Pie Slice",
+        "category": "Desserts",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-dutch-apple-pie-slice"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "39:dutch-apple-pie-slice"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast says double crust."
+      },
+      {
+        "currentProductKey": "key-lime-pie-slice",
+        "name": "Nolie's Key Lime Pie Slice",
+        "category": "Desserts",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-key-lime-pie-slice"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "4:noelies-key-lime-pie",
+          "60:nolies-key-lime-pie-slice"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names custard, whipped cream, and graham-cracker crust."
+      },
+      {
+        "currentProductKey": "chocolate-cream-pie-slice",
+        "name": "Chocolate Cream Pie Slice",
+        "category": "Desserts",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-chocolate-cream-pie-slice"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "3:chocolate-cream-pie",
+          "36:chocolate-cream-pie-slice"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast names whipped cream and cookie crust."
+      },
+      {
+        "currentProductKey": "chocolate-tower-cake-slice",
+        "name": "Chocolate Tower Cake Slice",
+        "category": "Desserts",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-chocolate-tower-cake-slice"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "37:chocolate-tower-cake-slice",
+          "114:chocolate-tower-cake"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Cake and buttercream descriptions support narrow positives."
+      },
+      {
+        "currentProductKey": "funfetti-tower-cake-slice",
+        "name": "Funfetti Tower Cake Slice",
+        "category": "Desserts",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-funfetti-tower-cake-slice"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "45:funfetti-tower-cake-slice",
+          "119:funfetti-tower-cake"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Cake and buttercream descriptions support narrow positives."
+      },
+      {
+        "currentProductKey": "small-chocolate-cake-slice",
+        "name": "Small Chocolate Cake Slice",
+        "category": "Desserts",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-small-chocolate-cake-slice"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "77:small-chocolate-cake-slice"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Cake and buttercream descriptions support narrow positives."
+      },
+      {
+        "currentProductKey": "small-funfetti-cake-slice",
+        "name": "Small Funfetti Slice",
+        "category": "Desserts",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-small-funfetti-slice"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "78:small-funfetti-slice"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Cake and buttercream descriptions support narrow positives."
+      },
+      {
+        "currentProductKey": "small-carrot-cake-slice",
+        "name": "Small Carrot Cake Slice",
+        "category": "Desserts",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-small-carrot-cake-slice"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "2:carrot-sheet-cake",
+          "76:small-carrot-cake-slice"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Cake and cream-cheese frosting descriptions support narrow positives."
+      },
+      {
+        "currentProductKey": "whole-cherry-pie",
+        "name": "Whole Cherry Pie!",
+        "category": "Desserts",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-whole-cherry-pie"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "99:whole-cherry-pie"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Current Toast product omitted by Luna."
+      },
+      {
+        "currentProductKey": "whole-pecan-pie",
+        "name": "Whole Pecan Pie",
+        "category": "Desserts",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-whole-pecan-pie"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "101:whole-pecan-pie"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "tree-nut"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Pecan identity supports tree nut only."
+      },
+      {
+        "currentProductKey": "side-of-fries",
+        "name": "Side Of Fries",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-side-of-fries"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "40:french-fries",
+          "75:side-of-fries"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "No preparation/cross-contact disclosure."
+      },
+      {
+        "currentProductKey": "half-pita",
+        "name": "Half Pita (Two Pieces)",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-half-pita"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "52:half-pita-two-pieces"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Pita identity supports wheat only."
+      },
+      {
+        "currentProductKey": "whole-pita",
+        "name": "Whole Pita (Four Pieces)",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-whole-pita"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "102:whole-pita-four-pieces"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Pita identity supports wheat only."
+      },
+      {
+        "currentProductKey": "home-fries",
+        "name": "Home fries (Roasted Red Potatoes)",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-home-fries"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "53:home-fries-roasted-red-potatoes",
+          "69:red-potatoes"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "No preparation/cross-contact disclosure."
+      },
+      {
+        "currentProductKey": "two-eggs",
+        "name": "Two Eggs",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-two-eggs"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "94:two-eggs-with-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Current product lacks frozen row's cheese qualifier."
+      },
+      {
+        "currentProductKey": "one-egg",
+        "name": "One Egg",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-one-egg"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "63:one-egg"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Named identity supports egg."
+      },
+      {
+        "currentProductKey": "one-egg-whites",
+        "name": "One Egg whites",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-one-egg-whites"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "64:one-egg-whites"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Named identity supports egg."
+      },
+      {
+        "currentProductKey": "toast",
+        "name": "Toast",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-toast"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "90:toast",
+          "95:two-slices-toast"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Toast identity supports wheat only."
+      },
+      {
+        "currentProductKey": "vegan-tofu-scramble",
+        "name": "Vegan Tofu Scramble",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-vegan-tofu-scramble"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "98:vegan-tofu-scramble"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "soy"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Tofu identity supports soy only."
+      },
+      {
+        "currentProductKey": "blueberry-sauce",
+        "name": "BLUEBERRY SAUCE",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-blueberry-sauce"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "24:blueberry-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "No ingredients disclosed."
+      },
+      {
+        "currentProductKey": "strawberry-sauce",
+        "name": "STRAWBERRY SAUCE",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-strawberry-sauce"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "84:strawberry-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "No ingredients disclosed."
+      },
+      {
+        "currentProductKey": "grilled-chicken",
+        "name": "Grilled Chicken",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-grilled-chicken"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "48:grilled-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "No ingredients disclosed."
+      },
+      {
+        "currentProductKey": "fried-chicken",
+        "name": "Fried Chicken",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-fried-chicken"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "43:fried-chicken",
+          "49:grilled-or-fried-chicken-thigh"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "No ingredients disclosed."
+      },
+      {
+        "currentProductKey": "salmon-filet",
+        "name": "Salmon Filet",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-salmon-filet"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "50:grilled-salmon",
+          "71:salmon-filet"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [
+          "fish"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Salmon identity supports fish."
+      },
+      {
+        "currentProductKey": "sausage-link",
+        "name": "Sausage Link",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-sausage-link"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "73:sausage-link"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "No ingredients disclosed."
+      },
+      {
+        "currentProductKey": "turkey-sausage-links",
+        "name": "Turkey Sausage links (three links)",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-turkey-sausage-links"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "92:turkey-sausage",
+          "93:turkey-sausage-links-three-links"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "No ingredients disclosed."
+      },
+      {
+        "currentProductKey": "applewood-bacon",
+        "name": "Applewood Bacon (two strips)",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-applewood-bacon"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "7:applewood-bacon-two-strips",
+          "11:bacon"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "No ingredients disclosed."
+      },
+      {
+        "currentProductKey": "mashed-potatoes",
+        "name": "Mashed Potatoes",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-mashed-potatoes"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "58:mashed-potatoes"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "No ingredients disclosed."
+      },
+      {
+        "currentProductKey": "side-cajun-jackfruit",
+        "name": "Side Cajun Jackfruit",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-side-cajun-jackfruit"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Current Toast product omitted by Luna and frozen baseline."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 131,
+      "counts": {
+        "artifact/mismatch": 1,
+        "normalized_match/mismatch": 130
+      }
+    },
+    "findings": [
+      {
+        "findingId": "terra-catalog-collapse",
+        "severity": "high",
+        "kind": "menu",
+        "summary": "Luna's eight-product current catalog is materially incomplete: the live official-linked Toast menu contains a broad all-day catalog, including many frozen-item matches and current-only products such as Teriyaki Hash and Loaded Tots.",
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "affectedAuditItemKeys": [
+          "5:3-cheese-omelette",
+          "16:beeliner-benny",
+          "20:blackened-chicken-alfredo",
+          "26:buffalo-chicken-salad",
+          "33:chicken-and-waffles",
+          "46:garden-omelette",
+          "65:pastrami-reuben",
+          "80:steak-frites",
+          "106:short-rib-hash"
+        ]
+      },
+      {
+        "findingId": "terra-surface-drift",
+        "severity": "high",
+        "kind": "scope",
+        "summary": "The scout omitted the official Catering Menu and used a stale drinks-PDF identifier. The food PDF/API cannot currently establish a complete restaurant-issued menu boundary.",
+        "sourceEvidenceIds": [
+          "terra-menu",
+          "terra-catering-link",
+          "terra-drinks-link",
+          "terra-food-pdf"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "terra-allergen-authority-and-semantics",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "Frozen official-ingredients claims cannot be sustained from the accessible evidence. Toast descriptions are restaurant-linked-vendor partial positive ingredient evidence only; absent allergens, complete arrays, and cross-contact conclusions remain unavailable. Luna's chicken-wings may-contain soy claim is semantically unsupported.",
+        "sourceEvidenceIds": [
+          "terra-toast"
+        ],
+        "affectedAuditItemKeys": [
+          "17:belgian-waffle",
+          "18:bfast-burrito",
+          "35:chicken-wings",
+          "41:french-toast",
+          "91:turkey-club-sandwich",
+          "105:breakfast-sandwich",
+          "107:steak-and-eggs"
+        ]
+      },
+      {
+        "findingId": "terra-extraction-artifact",
+        "severity": "medium",
+        "kind": "extraction",
+        "summary": "Frozen row 44:from is an extraction artifact; many remaining frozen rows contain stale, malformed, duplicated, or variant labels and cannot be treated as exact restaurant-issued current products.",
+        "sourceEvidenceIds": [
+          "terra-toast",
+          "terra-food-pdf"
+        ],
+        "affectedAuditItemKeys": [
+          "44:from",
+          "28:caeser-salad",
+          "57:lemon-cake",
+          "83:strawberry-french-toast",
+          "103:wings-dollar1625-for",
+          "111:bluebeerry-milkshake",
+          "116:coffee-drinks"
+        ]
+      }
+    ],
+    "summary": "Identity is verified, but Luna's catalog verification is materially incomplete and cannot support a clean outcome. The official-linked Toast menu contains many products Luna missed, the official Catering Menu was omitted, the exact drinks PDF has changed, and restaurant-issued PDF/API scope is unresolved. No complete authoritative allergen or cross-contact source was found; retained positives are narrow restaurant-linked-vendor description evidence only.",
+    "coordinatorNotes": [
+      "Read-only Terra result; no ledger or repository files were modified.",
+      "Route to Sol: confirmed hard risks plus high-severity catalog, authority, scope, cross-contact-semantics, and extraction findings.",
+      "The item reconciliation is intentionally non-terminal: inaccessible/stale official menu surfaces mean a complete current restaurant-issued boundary and negative allergen claims remain unverifiable."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "5:3-cheese-omelette",
+      "baseline": {
+        "itemId": "3-cheese-omelette",
+        "name": "3 Cheese Omelette",
+        "category": "diner",
+        "variantGroup": "Garden Omelette",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/beeliner-diner-3648-king-st"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "16:beeliner-benny",
+      "baseline": {
+        "itemId": "beeliner-benny",
+        "name": "Beeliner Benny",
+        "category": "diner",
+        "variantGroup": "diner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/beeliner-diner-3648-king-st"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "17:belgian-waffle",
+      "baseline": {
+        "itemId": "belgian-waffle",
+        "name": "Belgian Waffle",
+        "category": "diner",
+        "variantGroup": "diner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_27f6b31f5d51415197c938f8332096d6.pdf",
+          "https://order.toasttab.com/online/beeliner-diner-3648-king-st"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "18:bfast-burrito",
+      "baseline": {
+        "itemId": "bfast-burrito",
+        "name": "Bfast Burrito",
+        "category": "diner",
+        "variantGroup": "diner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/beeliner-diner-3648-king-st"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "20:blackened-chicken-alfredo",
+      "baseline": {
+        "itemId": "blackened-chicken-alfredo",
+        "name": "Blackened Chicken Alfredo",
+        "category": "diner",
+        "variantGroup": "Cajun Roasted Salmon",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/beeliner-diner-3648-king-st"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "26:buffalo-chicken-salad",
+      "baseline": {
+        "itemId": "buffalo-chicken-salad",
+        "name": "Buffalo Chicken Salad",
+        "category": "diner",
+        "variantGroup": "Sandwiches",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_27f6b31f5d51415197c938f8332096d6.pdf",
+          "https://order.toasttab.com/online/beeliner-diner-3648-king-st"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "28:caeser-salad",
+      "baseline": {
+        "itemId": "caeser-salad",
+        "name": "Caeser Salad",
+        "category": "diner",
+        "variantGroup": "Buffalo Chicken Salad",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/beeliner-diner-3648-king-st"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "33:chicken-and-waffles",
+      "baseline": {
+        "itemId": "chicken-and-waffles",
+        "name": "CHICKEN & WAFFLES",
+        "category": "diner",
+        "variantGroup": "diner",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_27f6b31f5d51415197c938f8332096d6.pdf",
+          "https://order.toasttab.com/online/beeliner-diner-3648-king-st"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "35:chicken-wings",
+      "baseline": {
+        "itemId": "chicken-wings",
+        "name": "Chicken Wings",
+        "category": "diner",
+        "variantGroup": "Fried Cheese Curds",
+        "isConfigurable": false,
+        "allergens": [
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/beeliner-diner-3648-king-st"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "41:french-toast",
+      "baseline": {
+        "itemId": "french-toast",
+        "name": "French Toast",
+        "category": "diner",
+        "variantGroup": "diner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_27f6b31f5d51415197c938f8332096d6.pdf",
+          "https://order.toasttab.com/online/beeliner-diner-3648-king-st"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "44:from",
+      "baseline": {
+        "itemId": "from",
+        "name": "FROM",
+        "category": "diner",
+        "variantGroup": "diner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_365027fc4bd340dc840458191ad7b2ed.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "46:garden-omelette",
+      "baseline": {
+        "itemId": "garden-omelette",
+        "name": "Garden Omelette",
+        "category": "diner",
+        "variantGroup": "diner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/beeliner-diner-3648-king-st"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "57:lemon-cake",
+      "baseline": {
+        "itemId": "lemon-cake",
+        "name": "lemon cake",
+        "category": "diner",
+        "variantGroup": "Chocolate Mousse Brookie",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/beeliner-diner-3648-king-st"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "65:pastrami-reuben",
+      "baseline": {
+        "itemId": "pastrami-reuben",
+        "name": "Pastrami Reuben",
+        "category": "diner",
+        "variantGroup": "Sandwiches",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_27f6b31f5d51415197c938f8332096d6.pdf",
+          "https://order.toasttab.com/online/beeliner-diner-3648-king-st"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "80:steak-frites",
+      "baseline": {
+        "itemId": "steak-frites",
+        "name": "Steak Frites",
+        "category": "diner",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_27f6b31f5d51415197c938f8332096d6.pdf",
+          "https://order.toasttab.com/online/beeliner-diner-3648-king-st"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "83:strawberry-french-toast",
+      "baseline": {
+        "itemId": "strawberry-french-toast",
+        "name": "Strawberry French Toast",
+        "category": "diner",
+        "variantGroup": "diner",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_27f6b31f5d51415197c938f8332096d6.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "91:turkey-club-sandwich",
+      "baseline": {
+        "itemId": "turkey-club-sandwich",
+        "name": "Turkey Club Sandwich",
+        "category": "diner",
+        "variantGroup": "Chicken Wings",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/beeliner-diner-3648-king-st"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "103:wings-dollar1625-for",
+      "baseline": {
+        "itemId": "wings-dollar1625-for",
+        "name": "Wings $16.25 for",
+        "category": "diner",
+        "variantGroup": "diner",
+        "isConfigurable": false,
+        "allergens": [
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_27f6b31f5d51415197c938f8332096d6.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "105:breakfast-sandwich",
+      "baseline": {
+        "itemId": "breakfast-sandwich",
+        "name": "Breakfast Sandwich",
+        "category": "Items",
+        "variantGroup": "Vegan Bfast Burrito",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "official-api",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/beeliner-diner-3648-king-st",
+          "https://www.beelinerdiner.com/_api/restaurants-menus-item/v1/items"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "106:short-rib-hash",
+      "baseline": {
+        "itemId": "short-rib-hash",
+        "name": "Short Rib Hash",
+        "category": "Items",
+        "variantGroup": "diner",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "official-api",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/beeliner-diner-3648-king-st",
+          "https://www.beelinerdiner.com/_api/restaurants-menus-item/v1/items"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "107:steak-and-eggs",
+      "baseline": {
+        "itemId": "steak-and-eggs",
+        "name": "Steak and Eggs",
+        "category": "Items",
+        "variantGroup": "diner",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "official-api",
+        "sourceUrls": [
+          "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_27f6b31f5d51415197c938f8332096d6.pdf",
+          "https://order.toasttab.com/online/beeliner-diner-3648-king-st",
+          "https://www.beelinerdiner.com/_api/restaurants-menus-item/v1/items"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "111:bluebeerry-milkshake",
+      "baseline": {
+        "itemId": "bluebeerry-milkshake",
+        "name": "Blue*bee*rry milkshake",
+        "category": "Salads",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_27f6b31f5d51415197c938f8332096d6.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "116:coffee-drinks",
+      "baseline": {
+        "itemId": "coffee-drinks",
+        "name": "Coffee drinkS",
+        "category": "Salads",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_27f6b31f5d51415197c938f8332096d6.pdf"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-04-2026-07-16/jobs/osm-beeliner-diner-9732729794.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-04-2026-07-16/results/osm-beeliner-diner-9732729794.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/osm-beeliner-diner-9732729794.jsonl"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-a-front-20260811132310",
+  "restaurantId": "il-porto-italian-ristorante-alexandria-va-dc-metro",
+  "name": "IL Porto Italian Ristorante",
+  "locationId": "alexandria-va",
+  "packetValidation": {"baselineItemCount": 12, "baselineFingerprint": "42be660e228604707afcc38cc2dd6416e312c19ed83bef030fcfaec8d0883384", "itemChecksRead": 12, "restaurantIdsMatched": 12},
+  "identity": {"name": "IL Porto Italian Ristorante", "address": "121 King Street, Alexandria, VA 22314", "phone": "703-836-8833", "domain": "ilportoristorante.com", "locationConfirmed": true, "identityAmbiguous": false, "sourceEvidenceIds": ["src-home", "src-contact"]},
+  "sources": [
+    {"evidenceId":"src-home","url":"https://www.ilportoristorante.com/","authorityTier":"restaurant_issued","purpose":"official homepage and hours/location","retrievedAt":"2026-08-11T00:00:00.000Z"},
+    {"evidenceId":"src-contact","url":"https://www.ilportoristorante.com/contact/","authorityTier":"restaurant_issued","purpose":"official address, phone, hours","retrievedAt":"2026-08-11T00:00:00.000Z"},
+    {"evidenceId":"src-menu","url":"https://www.ilportoristorante.com/menu/","authorityTier":"restaurant_issued","purpose":"official menu index and service periods","retrievedAt":"2026-08-11T00:00:00.000Z"},
+    {"evidenceId":"src-lunch","url":"https://www.ilportoristorante.com/lunch-menu/","authorityTier":"restaurant_issued","purpose":"current lunch menu","retrievedAt":"2026-08-11T00:00:00.000Z"},
+    {"evidenceId":"src-dinner","url":"https://www.ilportoristorante.com/dinner-menu/","authorityTier":"restaurant_issued","purpose":"current dinner menu","retrievedAt":"2026-08-11T00:00:00.000Z"},
+    {"evidenceId":"src-brunch","url":"https://www.ilportoristorante.com/brunch-menu/","authorityTier":"restaurant_issued","purpose":"current brunch menu","retrievedAt":"2026-08-11T00:00:00.000Z"},
+    {"evidenceId":"src-open-table","url":"https://www.opentable.com/il-porto","authorityTier":"restaurant_linked_vendor","purpose":"restaurant-linked current menu tabs and vendor cross-check","retrievedAt":"2026-08-11T00:00:00.000Z"},
+    {"evidenceId":"src-search","url":"https://www.google.com/search?q=site%3Ailportoristorante.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF","authorityTier":"third_party","purpose":"targeted allergen search","retrievedAt":"2026-08-11T00:00:00.000Z"}
+  ],
+  "menuSurfaces": [
+    {"surfaceId":"official-menu-index","url":"https://www.ilportoristorante.com/menu/","authorityTier":"restaurant_issued","locationScope":"Alexandria","servicePeriod":"lunch, brunch, dinner","scopeStatus":"complete","current":true,"sourceEvidenceIds":["src-menu"]},
+    {"surfaceId":"official-lunch","url":"https://www.ilportoristorante.com/lunch-menu/","authorityTier":"restaurant_issued","locationScope":"Alexandria","servicePeriod":"lunch","scopeStatus":"complete","current":true,"sourceEvidenceIds":["src-lunch"]},
+    {"surfaceId":"official-dinner","url":"https://www.ilportoristorante.com/dinner-menu/","authorityTier":"restaurant_issued","locationScope":"Alexandria","servicePeriod":"dinner","scopeStatus":"complete","current":true,"sourceEvidenceIds":["src-dinner"]},
+    {"surfaceId":"official-brunch","url":"https://www.ilportoristorante.com/brunch-menu/","authorityTier":"restaurant_issued","locationScope":"Alexandria","servicePeriod":"brunch","scopeStatus":"complete","current":true,"sourceEvidenceIds":["src-brunch"]},
+    {"surfaceId":"linked-opentable","url":"https://www.opentable.com/il-porto","authorityTier":"restaurant_linked_vendor","locationScope":"Alexandria","servicePeriod":"food and beverage tabs","scopeStatus":"complete","current":true,"sourceEvidenceIds":["src-open-table"]}
+  ],
+  "currentProducts": [
+    {"currentProductKey":"lunch-menu","name":"Lunch menu","category":"food","sourceEvidenceIds":["src-lunch"],"containsAllergens":["wheat","gluten"],"mayContainAllergens":[],"allergenSourceEvidenceIds":["src-lunch"],"allergenSourceType":"restaurant_ingredients","allergenAuthorityTier":"restaurant_issued"},
+    {"currentProductKey":"dinner-menu","name":"Dinner menu","category":"food","sourceEvidenceIds":["src-dinner"],"containsAllergens":["wheat","gluten"],"mayContainAllergens":[],"allergenSourceEvidenceIds":["src-dinner"],"allergenSourceType":"restaurant_ingredients","allergenAuthorityTier":"restaurant_issued"},
+    {"currentProductKey":"brunch-menu","name":"Brunch menu","category":"food","sourceEvidenceIds":["src-brunch"],"containsAllergens":["wheat","gluten","milk","egg","fish","shellfish"],"mayContainAllergens":[],"allergenSourceEvidenceIds":["src-brunch"],"allergenSourceType":"restaurant_ingredients","allergenAuthorityTier":"restaurant_issued"},
+    {"currentProductKey":"menu-food-and-nonalcoholic","name":"Dessert, coffee, espresso, and nonalcoholic menu offerings","category":"food-and-nonalcoholic","sourceEvidenceIds":["src-menu","src-open-table"],"containsAllergens":[],"mayContainAllergens":[],"allergenSourceEvidenceIds":[],"allergenSourceType":"unavailable"}
+  ],
+  "restaurantLevelAllergenEvidence": [{"statement":"No official allergen matrix or cross-contact policy was located; menu descriptions are not treated as exhaustive negatives.","authorityTier":"restaurant_issued","sourceEvidenceIds":["src-menu","src-search"]}],
+  "matrixSearch": {"attempted":["official_site","official_documents","linked_vendor","targeted_web_search"],"status":"accurately_unavailable","attempts":[
+    {"class":"official_site","queryOrLocation":"Official homepage, menu index, lunch, dinner, brunch, dessert, and beverage navigation","urlsInspected":["https://www.ilportoristorante.com/","https://www.ilportoristorante.com/menu/","https://www.ilportoristorante.com/lunch-menu/","https://www.ilportoristorante.com/dinner-menu/","https://www.ilportoristorante.com/brunch-menu/"],"outcome":"No allergen matrix or cross-contact policy found","sourceEvidenceIds":["src-menu"]},
+    {"class":"official_documents","queryOrLocation":"Official site documents, PDFs, downloads, nutrition, ingredients, allergen, sitemap surfaces","urlsInspected":["https://www.ilportoristorante.com/wp-sitemap.xml"],"outcome":"No official allergen or nutrition document found","sourceEvidenceIds":["src-search"]},
+    {"class":"linked_vendor","queryOrLocation":"OpenTable Il Porto menu tabs","urlsInspected":["https://www.opentable.com/il-porto"],"outcome":"Current menu tabs found; no allergen matrix or cross-contact policy found","sourceEvidenceIds":["src-open-table"]},
+    {"class":"targeted_web_search","queryOrLocation":"site:ilportoristorante.com allergen allergy nutrition ingredients PDF menu","urlsInspected":["https://www.google.com/search?q=site%3Ailportoristorante.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF"],"outcome":"No authoritative allergen matrix found","sourceEvidenceIds":["src-search"]}
+  ]},
+  "reconciliation": {"items":[
+    {"auditItemKey":"1:after-dinner-drink","disposition":"artifact","matchedCurrentProductKeys":[],"sourceEvidenceIds":["src-menu"]},
+    {"auditItemKey":"2:history","disposition":"artifact","matchedCurrentProductKeys":[],"sourceEvidenceIds":["src-home"]},
+    {"auditItemKey":"3:il-porto-ristorante","disposition":"normalized_match","matchedCurrentProductKeys":["menu-food-and-nonalcoholic"],"sourceEvidenceIds":["src-home"]},
+    {"auditItemKey":"4:italian-brunch-in-old-town-alexandria-weekend-brunch","disposition":"normalized_match","matchedCurrentProductKeys":["brunch-menu"],"sourceEvidenceIds":["src-brunch"]},
+    {"auditItemKey":"5:italian-dinner-restaurant-alexandria-va-fresh-pasta-and-seafood","disposition":"normalized_match","matchedCurrentProductKeys":["dinner-menu"],"sourceEvidenceIds":["src-dinner"]},
+    {"auditItemKey":"6:italian-lunch-restaurant-in-old-town-alexandria","disposition":"normalized_match","matchedCurrentProductKeys":["lunch-menu"],"sourceEvidenceIds":["src-lunch"]},
+    {"auditItemKey":"7:meet-our-team","disposition":"artifact","matchedCurrentProductKeys":[],"sourceEvidenceIds":["src-home"]},
+    {"auditItemKey":"8:our-culinary-journey","disposition":"artifact","matchedCurrentProductKeys":[],"sourceEvidenceIds":["src-home"]},
+    {"auditItemKey":"9:our-journey","disposition":"artifact","matchedCurrentProductKeys":[],"sourceEvidenceIds":["src-home"]},
+    {"auditItemKey":"10:served-over-spaghetti-pasta","disposition":"normalized_match","matchedCurrentProductKeys":["dinner-menu"],"sourceEvidenceIds":["src-dinner"]},
+    {"auditItemKey":"11:served-with-grilled-chicken","disposition":"normalized_match","matchedCurrentProductKeys":["brunch-menu"],"sourceEvidenceIds":["src-brunch"]},
+    {"auditItemKey":"12:virtual-tour","disposition":"artifact","matchedCurrentProductKeys":[],"sourceEvidenceIds":["src-home"]}
+  ]},
+  "changes":{"identityAmbiguous":false,"menuScopeUnresolved":false,"officialAllergenConflict":false,"crossContactConflict":false,"unsupportedNegativeClaim":false,"sourceAuthorityAmbiguous":false,"duplicateItems":false,"catalogDrift":true,"staleItems":true,"newItems":true,"nameOrCategoryCleanup":true,"restaurantSpecificExtraction":true,"parserIssue":false},
+  "recommendedLane":"luna_fix",
+  "riskSignals":[],
+  "findings":[{"finding":"Frozen navigation cards and descriptive fragments were artifacts; current service-period menus were retained as consolidated products.","evidenceIds":["src-menu","src-lunch","src-dinner","src-brunch"]}]
+}

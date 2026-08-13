@@ -1,0 +1,1809 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-pilot-2026-07-15",
+  "restaurant": {
+    "restaurantId": "replacement-bacchus-of-lebanon-bethesda-md",
+    "name": "Bacchus of Lebanon",
+    "domain": "bacchusoflebanon.com",
+    "locationId": "bethesda-md",
+    "baselineItemCount": 91,
+    "baselineItemFingerprint": "6a3f521f0ac5e388878cc28b16ea3b3ea2b090f39c65f770f5c9bfa5f1c1e6be",
+    "officialItemCount": 50,
+    "officialAllergenStatus": "not-found",
+    "sourceFamily": "generic-website",
+    "parserProfile": "generic-website",
+    "guideUrl": "https://bacchusoflebanon.com/",
+    "sourceUrls": [
+      "https://www.bacchusoflebanon.com/",
+      "https://www.bacchusoflebanon.com/menu/",
+      "https://order.toasttab.com/online/bacchus-of-lebanon"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found.",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra reported a mismatched or unverifiable current product.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "validationWarnings": [
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra reported a mismatched or unverifiable current product.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "multi_service",
+      "count_drift",
+      "baseline_only",
+      "non_exact_reconciliation",
+      "allergen_mismatch",
+      "cross_contact",
+      "parser_or_repair_finding",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 91,
+      "reconciledItemCount": 91,
+      "uniqueReconciledItemCount": 91,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 4,
+      "activeMenuSurfaceCount": 4,
+      "accessibleMenuSurfaceCount": 4,
+      "serviceCount": 4,
+      "pdfImageSurfaceCount": 0,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 0,
+      "incompleteSurfaceCount": 0,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 4,
+      "currentOnlyCount": 0,
+      "baselineOnlyCount": 7,
+      "countDrift": true,
+      "duplicatePresentationCount": 0,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 0,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 91,
+      "allergenMismatchItemCount": 50,
+      "crossContactCount": 2,
+      "parserRepairFindingCount": 1,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 0,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "medium",
+      "overall": 0.78,
+      "menu": 0.93,
+      "allergenSource": 0.32,
+      "extraction": 0.76,
+      "rationale": "Restaurant identity, official menu, and restaurant-linked Toast ordering catalog were independently reopened. The public menu is complete enough for menu scope but is not an allergen matrix or cross-contact disclosure. Luna incorrectly treated seven still-listed wine entries as stale extras and did not atomically enumerate several current non-baseline offerings."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Bacchus of Lebanon, 7945 Norfolk Ave, Bethesda, MD 20814; official site links directly to the Toast ordering menu for the same address.",
+      "confidence": 0.99,
+      "sourceEvidenceIds": [
+        "terra-official-home",
+        "terra-toast-menu"
+      ],
+      "notes": "Location, restaurant name, telephone, and ordering linkage agree."
+    },
+    "sources": [
+      {
+        "evidenceId": "terra-official-home",
+        "url": "https://www.bacchusoflebanon.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Bacchus of Lebanon homepage",
+        "retrievedAt": "2026-07-15T00:00:00Z",
+        "excerpt": "The official site identifies Bacchus of Lebanon at 7945 Norfolk Ave, Bethesda, MD 20814 and links its Order Now control to Toast.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-official-menu",
+        "url": "https://www.bacchusoflebanon.com/menu/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Bacchus of Lebanon menu",
+        "retrievedAt": "2026-07-15T00:00:00Z",
+        "excerpt": "Official HTML menu contains cuisine, wine, cocktails, and desserts. It expressly lists the seven frozen wine names, food descriptions, and desserts, but no allergen legend, complete allergen matrix, or cross-contact warning.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-toast-menu",
+        "url": "https://order.toasttab.com/online/bacchus-of-lebanon",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Bacchus of Lebanon Toast ordering menu",
+        "retrievedAt": "2026-07-15T00:00:00Z",
+        "excerpt": "Toast identifies Bacchus of Lebanon at 7945 Norfolk Ave, Bethesda and exposes Appetizers, Entrees, Salads, Sides, Dessert, and Soup categories; no item allergen matrix or cross-contact disclosure is shown.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://www.bacchusoflebanon.com/",
+        "notes": "Accessible; confirms identity and directly links the menu and Toast ordering surface."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://www.bacchusoflebanon.com/menu/",
+        "notes": "Accessible official HTML menu; complete menu sections but incomplete for allergen negatives, complete arrays, and cross-contact."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://order.toasttab.com/online/bacchus-of-lebanon",
+        "notes": "Accessible restaurant-linked vendor catalog for the Bethesda location."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "not_found",
+        "url": null,
+        "notes": "No additional restaurant-issued allergen or ingredient document was found beyond the reopened official menu."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No restaurant-issued archived allergen document was located."
+      },
+      {
+        "kind": "third_party",
+        "status": "not_found",
+        "url": null,
+        "notes": "No third-party allergen source was needed or used; no such source can be promoted to restaurant-issued authority."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "structural_invalid",
+        "triggered": false,
+        "verdict": "rejected",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast-menu"
+        ],
+        "notes": "All 91 frozen keys are reconciled exactly once in this result and all current-product references resolve."
+      },
+      {
+        "gateId": "multi_service",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast-menu"
+        ],
+        "notes": "Official cuisine, wine/cocktail, dessert, and Toast pickup-ordering surfaces are all in scope."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast-menu"
+        ],
+        "notes": "The frozen 91 rows do not fully enumerate current offerings; the seven wine rows are current rather than stale, while several current offerings are absent from the frozen list."
+      },
+      {
+        "gateId": "current_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast-menu"
+        ],
+        "notes": "Fattoush, Tabbouleh, Samaki Bacchus, Ice Cream & Sorbet, Batata Makli, and Homemade Pickles are current offerings not represented by a frozen audit key."
+      },
+      {
+        "gateId": "baseline_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "The menu-heading row is an extraction artifact, but the seven wine rows are current official menu entries and must not be classified stale."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast-menu"
+        ],
+        "notes": "Case, spelling, transliteration, and presentation variants require normalized reconciliation."
+      },
+      {
+        "gateId": "allergen_mismatch",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast-menu"
+        ],
+        "notes": "Frozen complete arrays/source claims cannot be verified from incomplete menu prose; only narrow named-ingredient positives are supportable."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast-menu"
+        ],
+        "notes": "Neither reopened surface provides a cross-contact or shared-equipment statement; no conclusion may be drawn from silence."
+      },
+      {
+        "gateId": "parser_or_repair_finding",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "The frozen heading artifact and erroneous stale classification of live wine items indicate extraction/reconciliation behavior requiring repair review."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast-menu"
+        ],
+        "notes": "Allergen-source confidence remains low because neither source supplies complete allergen or cross-contact semantics."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast-menu"
+        ],
+        "notes": "Independent verification confirms material catalog and allergen-source risks."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "official-cuisine",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Official cuisine menu is accessible and enumerated; it includes food entries and descriptions, including items absent from the frozen list."
+      },
+      {
+        "surfaceId": "official-wine-cocktail",
+        "verdict": "mismatch",
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "The surface is current and includes CHATEAU ST THOMAS, DON MANUEL, KSARA MERWAH, SCHILD ESTATE SHIRAZ, CLOS DU CAILLOW, PAUL HOBBS, and STONEWOOD. Luna's stale-extra conclusion for these rows is incorrect."
+      },
+      {
+        "surfaceId": "official-desserts",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Official dessert menu is accessible and includes frozen desserts plus Ice Cream & Sorbet, which has no frozen audit key."
+      },
+      {
+        "surfaceId": "toast-ordering",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-toast-menu"
+        ],
+        "notes": "Restaurant-linked Toast pickup menu is accessible and enumerated; its distinct ordering catalog includes current sides absent from the frozen rows."
+      }
+    ],
+    "currentProductCheckGroups": [
+      {
+        "currentProductKeys": [
+          "official-food-catalog"
+        ],
+        "presentationIds": [
+          "official-cuisine"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "The catalog is current. Named ingredients can support narrow item-specific positives only; this aggregate has no complete allergen array and no may-contain conclusion."
+      },
+      {
+        "currentProductKeys": [
+          "toast-food-catalog"
+        ],
+        "presentationIds": [
+          "toast-ordering"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "terra-toast-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-toast-menu"
+        ],
+        "notes": "Toast is restaurant-linked vendor evidence, not restaurant-issued evidence; no allergen matrix or cross-contact disclosure is exposed."
+      },
+      {
+        "currentProductKeys": [
+          "official-beverage-catalog"
+        ],
+        "presentationIds": [
+          "official-wine-cocktail"
+        ],
+        "verdict": "mismatch",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "not_applicable",
+        "allergenSourceType": "not_applicable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Current official beverage catalog; the seven frozen wine items are present and are not stale extras."
+      },
+      {
+        "currentProductKeys": [
+          "official-dessert-catalog"
+        ],
+        "presentationIds": [
+          "official-desserts"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Current dessert catalog. Names/descriptions support narrow positives such as tree nut for Baklava/Hazelnut Mousse and milk for cheese/ice-cream descriptions, but no complete arrays or cross-contact claims."
+      }
+    ],
+    "additionalMenuSurfaces": [],
+    "additionalCurrentProducts": [
+      {
+        "currentProductKey": "official-fattoush",
+        "name": "Fattoush",
+        "category": "salad",
+        "surfaceIds": [
+          "official-cuisine",
+          "toast-ordering"
+        ],
+        "presentationIds": [
+          "official-cuisine",
+          "toast-ordering"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast-menu"
+        ],
+        "containsAllergens": [
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Official description names toasted Lebanese bread; this is a narrow positive only, not a complete array."
+      },
+      {
+        "currentProductKey": "official-tabbouleh",
+        "name": "Tabbouleh",
+        "category": "salad",
+        "surfaceIds": [
+          "official-cuisine",
+          "toast-ordering"
+        ],
+        "presentationIds": [
+          "official-cuisine",
+          "toast-ordering"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast-menu"
+        ],
+        "containsAllergens": [
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Official description names crushed wheat; this is a narrow positive only."
+      },
+      {
+        "currentProductKey": "official-samaki-bacchus",
+        "name": "Samaki Bacchus",
+        "category": "main course",
+        "surfaceIds": [
+          "official-cuisine"
+        ],
+        "presentationIds": [
+          "official-cuisine"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "authorityVerdict": "unverifiable",
+        "notes": "Catch-of-the-day preparation is explicitly variable and therefore cannot support an allergen array."
+      },
+      {
+        "currentProductKey": "official-ice-cream-sorbet",
+        "name": "Ice Cream & Sorbet",
+        "category": "dessert",
+        "surfaceIds": [
+          "official-desserts"
+        ],
+        "presentationIds": [
+          "official-desserts"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "authorityVerdict": "unverifiable",
+        "notes": "Flavor and ingredients are not enumerated."
+      },
+      {
+        "currentProductKey": "toast-batata-makli",
+        "name": "Batata Makli",
+        "category": "side",
+        "surfaceIds": [
+          "toast-ordering"
+        ],
+        "presentationIds": [
+          "toast-ordering"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-toast-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "terra-toast-menu"
+        ],
+        "authorityVerdict": "unverifiable",
+        "notes": "Current Toast side absent from frozen keys; vendor page gives no ingredient/allergen detail."
+      },
+      {
+        "currentProductKey": "toast-homemade-pickles",
+        "name": "Homemade Pickles",
+        "category": "side",
+        "surfaceIds": [
+          "toast-ordering"
+        ],
+        "presentationIds": [
+          "toast-ordering"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-toast-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "terra-toast-menu"
+        ],
+        "authorityVerdict": "unverifiable",
+        "notes": "Current Toast side absent from frozen keys; vendor page gives no ingredient/allergen detail."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 91,
+      "counts": {
+        "normalized_match/not_applicable": 7,
+        "artifact/not_applicable": 1,
+        "normalized_match/accurately_unavailable": 33,
+        "normalized_match/mismatch": 50
+      }
+    },
+    "findings": [
+      {
+        "findingId": "live-wines-misclassified-as-stale",
+        "severity": "high",
+        "kind": "menu",
+        "summary": "Seven frozen wine rows are visibly current on the official menu and must be normalized matches, not stale extras.",
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "affectedAuditItemKeys": [
+          "16:chateau-st-thomas",
+          "21:clos-du-caillow",
+          "23:don-manuel",
+          "49:ksara-merwah",
+          "65:paul-hobbs",
+          "72:schild-estate-shiraz",
+          "82:stonewood"
+        ]
+      },
+      {
+        "findingId": "current-offerings-not-atomically-enumerated",
+        "severity": "high",
+        "kind": "scope",
+        "summary": "Luna's catalog-level products did not enumerate current Fattoush, Tabbouleh, Samaki Bacchus, Ice Cream & Sorbet, Batata Makli, and Homemade Pickles, all absent from frozen keys.",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast-menu"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "public-allergen-evidence-incomplete",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "The official menu's ingredient prose supports narrow positive identities only. Neither primary surface supplies complete arrays, allergen absences, may-contain semantics, or cross-contact language.",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-toast-menu"
+        ],
+        "affectedAuditItemKeys": [
+          "1:a-selection-of-simmered-vegetables-served-with-grilled-cauliflower-and-lentils",
+          "3:bacchus-delight",
+          "5:bacchus-eggplant-dip",
+          "6:bacchus-salad",
+          "7:bacchus-shrimp",
+          "8:bacchus-veal-chop",
+          "9:baga-ghannouj",
+          "10:baklava",
+          "11:baluza",
+          "15:cauliflower-fried-served-with-tahini",
+          "19:chicken-shawarma",
+          "20:chocolate-souffle",
+          "22:combination-bacchu",
+          "24:falafel",
+          "26:fatte-bel-lahm",
+          "27:fattet-bel-hummus",
+          "28:fattet-makdous",
+          "29:fette-bel-djaj",
+          "32:fresh-grilled-salmon-served-over-basmati-rice-with-spiced-tomato-sauce",
+          "34:hazelnut-mousse",
+          "36:hummus-baladi",
+          "37:hummus-bel-foul",
+          "38:hummus-special",
+          "39:hummus",
+          "40:kafta-mechwi",
+          "43:kibbe-bel-batata",
+          "44:kibbe-bel-laban",
+          "48:knafeh",
+          "50:labneh",
+          "51:lahm-mechwi",
+          "52:lamb-chops",
+          "54:lamb-shank",
+          "59:maacarona-bel-lah",
+          "64:ouzi",
+          "66:pear-tart",
+          "67:potato-with-cracked-wheat-filled-with-vegetables-and-fried-served-with-tahini",
+          "69:salatet-bethenjan",
+          "70:salmon-mechwi",
+          "71:samki-harra",
+          "73:sedr-djaj-mechwi",
+          "74:shankleesh",
+          "75:shaved-marinated-chicken-breast-grilled-with-spices-served-with-tahini",
+          "77:shawrma",
+          "78:shish-taouk",
+          "83:strained-farmers-yogurt-with-olive-oil-and-mint",
+          "84:surf-and-turf",
+          "85:tahini-sauce",
+          "89:warak-inab-mehchi",
+          "90:yogurt-sauce",
+          "91:zahra-makli"
+        ]
+      }
+    ],
+    "summary": "Independent verification found a material reconciliation error: all seven frozen beverage rows Luna marked stale are currently listed on the official menu. The restaurant's official menu and linked Toast catalog are accessible and identify the same Bethesda location; however, they do not provide complete allergen arrays, negatives, may-contain semantics, or cross-contact disclosures. Six current offerings absent from frozen keys were additionally identified. All 91 frozen audit keys were reconciled once: seven current beverages, one heading artifact, 33 products with accurately unavailable allergen data, and 50 products whose frozen complete allergen claims remain unsupported by the incomplete public disclosure.",
+    "coordinatorNotes": [
+      "Read-only Terra result; no files, ledger state, repair, or terminal state was changed.",
+      "Route to Sol is required by confirmed menu-scope, extraction/reconciliation, allergen-source, cross-contact, and low-confidence gates."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "1:a-selection-of-simmered-vegetables-served-with-grilled-cauliflower-and-lentils",
+      "baseline": {
+        "itemId": "a-selection-of-simmered-vegetables-served-with-grilled-cauliflower-and-lentils",
+        "name": "A selection of simmered vegetables served with grilled cauliflower and lentils",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "3:bacchus-delight",
+      "baseline": {
+        "itemId": "bacchus-delight",
+        "name": "BACCHUS DELIGHT",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "fish",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "5:bacchus-eggplant-dip",
+      "baseline": {
+        "itemId": "bacchus-eggplant-dip",
+        "name": "BACCHUS EGGPLANT DIP",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "6:bacchus-salad",
+      "baseline": {
+        "itemId": "bacchus-salad",
+        "name": "BACCHUS SALAD",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/",
+          "https://order.toasttab.com/online/bacchus-of-lebanon"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "7:bacchus-shrimp",
+      "baseline": {
+        "itemId": "bacchus-shrimp",
+        "name": "BACCHUS SHRIMP",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/",
+          "https://order.toasttab.com/online/bacchus-of-lebanon"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "8:bacchus-veal-chop",
+      "baseline": {
+        "itemId": "bacchus-veal-chop",
+        "name": "BACCHUS VEAL CHOP",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "9:baga-ghannouj",
+      "baseline": {
+        "itemId": "baga-ghannouj",
+        "name": "BAGA GHANNOUJ",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "10:baklava",
+      "baseline": {
+        "itemId": "baklava",
+        "name": "BAKLAVA",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "11:baluza",
+      "baseline": {
+        "itemId": "baluza",
+        "name": "BALUZA",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "15:cauliflower-fried-served-with-tahini",
+      "baseline": {
+        "itemId": "cauliflower-fried-served-with-tahini",
+        "name": "Cauliflower fried served with Tahini",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "16:chateau-st-thomas",
+      "baseline": {
+        "itemId": "chateau-st-thomas",
+        "name": "CHÂTEAU ST. THOMAS",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "19:chicken-shawarma",
+      "baseline": {
+        "itemId": "chicken-shawarma",
+        "name": "Chicken Shawarma",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/",
+          "https://www.bacchusoflebanon.com/menu/",
+          "https://order.toasttab.com/online/bacchus-of-lebanon"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "20:chocolate-souffle",
+      "baseline": {
+        "itemId": "chocolate-souffle",
+        "name": "CHOCOLATE SOUFFLÉ",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "21:clos-du-caillow",
+      "baseline": {
+        "itemId": "clos-du-caillow",
+        "name": "CLOS DU CAILLOW",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "22:combination-bacchu",
+      "baseline": {
+        "itemId": "combination-bacchu",
+        "name": "COMBINATION BACCHU",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "23:don-manuel",
+      "baseline": {
+        "itemId": "don-manuel",
+        "name": "DON MANUEL",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "24:falafel",
+      "baseline": {
+        "itemId": "falafel",
+        "name": "FALAFEL",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/",
+          "https://order.toasttab.com/online/bacchus-of-lebanon"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "26:fatte-bel-lahm",
+      "baseline": {
+        "itemId": "fatte-bel-lahm",
+        "name": "FATTE BEL LAHM",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "27:fattet-bel-hummus",
+      "baseline": {
+        "itemId": "fattet-bel-hummus",
+        "name": "FATTET BEL HUMMUS",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/",
+          "https://order.toasttab.com/online/bacchus-of-lebanon"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "28:fattet-makdous",
+      "baseline": {
+        "itemId": "fattet-makdous",
+        "name": "FATTET MAKDOUS",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "29:fette-bel-djaj",
+      "baseline": {
+        "itemId": "fette-bel-djaj",
+        "name": "FETTE BEL DJAJ",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "32:fresh-grilled-salmon-served-over-basmati-rice-with-spiced-tomato-sauce",
+      "baseline": {
+        "itemId": "fresh-grilled-salmon-served-over-basmati-rice-with-spiced-tomato-sauce",
+        "name": "Fresh grilled salmon. Served over basmati rice with spiced tomato sauce",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "34:hazelnut-mousse",
+      "baseline": {
+        "itemId": "hazelnut-mousse",
+        "name": "HAZELNUT MOUSSE",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "egg",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "36:hummus-baladi",
+      "baseline": {
+        "itemId": "hummus-baladi",
+        "name": "HUMMUS BALADI",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/",
+          "https://order.toasttab.com/online/bacchus-of-lebanon"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "37:hummus-bel-foul",
+      "baseline": {
+        "itemId": "hummus-bel-foul",
+        "name": "HUMMUS BEL FOUL",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/",
+          "https://order.toasttab.com/online/bacchus-of-lebanon"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "38:hummus-special",
+      "baseline": {
+        "itemId": "hummus-special",
+        "name": "HUMMUS SPECIAL",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "tree-nut",
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/",
+          "https://order.toasttab.com/online/bacchus-of-lebanon"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "39:hummus",
+      "baseline": {
+        "itemId": "hummus",
+        "name": "HUMMUS",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/",
+          "https://order.toasttab.com/online/bacchus-of-lebanon"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "40:kafta-mechwi",
+      "baseline": {
+        "itemId": "kafta-mechwi",
+        "name": "KAFTA MECHWI",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "43:kibbe-bel-batata",
+      "baseline": {
+        "itemId": "kibbe-bel-batata",
+        "name": "KIBBE BEL BATATA",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "44:kibbe-bel-laban",
+      "baseline": {
+        "itemId": "kibbe-bel-laban",
+        "name": "KIBBE BEL LABAN",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "48:knafeh",
+      "baseline": {
+        "itemId": "knafeh",
+        "name": "KNAFEH",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "49:ksara-merwah",
+      "baseline": {
+        "itemId": "ksara-merwah",
+        "name": "KSARA MERWAH",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "50:labneh",
+      "baseline": {
+        "itemId": "labneh",
+        "name": "LABNEH",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "51:lahm-mechwi",
+      "baseline": {
+        "itemId": "lahm-mechwi",
+        "name": "LAHM MECHWI",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "52:lamb-chops",
+      "baseline": {
+        "itemId": "lamb-chops",
+        "name": "LAMB CHOPS",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/",
+          "https://order.toasttab.com/online/bacchus-of-lebanon"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "54:lamb-shank",
+      "baseline": {
+        "itemId": "lamb-shank",
+        "name": "Lamb Shank",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "59:maacarona-bel-lah",
+      "baseline": {
+        "itemId": "maacarona-bel-lah",
+        "name": "MAACARONA BEL LAH",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "64:ouzi",
+      "baseline": {
+        "itemId": "ouzi",
+        "name": "OUZI",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "65:paul-hobbs",
+      "baseline": {
+        "itemId": "paul-hobbs",
+        "name": "PAUL HOBBS",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "66:pear-tart",
+      "baseline": {
+        "itemId": "pear-tart",
+        "name": "PEAR TART",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "67:potato-with-cracked-wheat-filled-with-vegetables-and-fried-served-with-tahini",
+      "baseline": {
+        "itemId": "potato-with-cracked-wheat-filled-with-vegetables-and-fried-served-with-tahini",
+        "name": "Potato with cracked wheat filled with vegetables and fried. Served with tahini",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "69:salatet-bethenjan",
+      "baseline": {
+        "itemId": "salatet-bethenjan",
+        "name": "SALATET BETHENJAN",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "70:salmon-mechwi",
+      "baseline": {
+        "itemId": "salmon-mechwi",
+        "name": "SALMON MECHWI",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "fish",
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/",
+          "https://order.toasttab.com/online/bacchus-of-lebanon"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "71:samki-harra",
+      "baseline": {
+        "itemId": "samki-harra",
+        "name": "SAMKI HARRA",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "72:schild-estate-shiraz",
+      "baseline": {
+        "itemId": "schild-estate-shiraz",
+        "name": "SCHILD ESTATE SHIRAZ",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "73:sedr-djaj-mechwi",
+      "baseline": {
+        "itemId": "sedr-djaj-mechwi",
+        "name": "SEDR DJAJ MECHWI",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "74:shankleesh",
+      "baseline": {
+        "itemId": "shankleesh",
+        "name": "SHANKLEESH",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "75:shaved-marinated-chicken-breast-grilled-with-spices-served-with-tahini",
+      "baseline": {
+        "itemId": "shaved-marinated-chicken-breast-grilled-with-spices-served-with-tahini",
+        "name": "Shaved marinated chicken breast grilled with spices. Served with tahini",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "77:shawrma",
+      "baseline": {
+        "itemId": "shawrma",
+        "name": "SHAWRMA",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "78:shish-taouk",
+      "baseline": {
+        "itemId": "shish-taouk",
+        "name": "SHISH TAOUK",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "82:stonewood",
+      "baseline": {
+        "itemId": "stonewood",
+        "name": "STONEWOOD",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "83:strained-farmers-yogurt-with-olive-oil-and-mint",
+      "baseline": {
+        "itemId": "strained-farmers-yogurt-with-olive-oil-and-mint",
+        "name": "Strained farmers yogurt with olive oil & mint",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "84:surf-and-turf",
+      "baseline": {
+        "itemId": "surf-and-turf",
+        "name": "SURF & TURF",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "fish",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "85:tahini-sauce",
+      "baseline": {
+        "itemId": "tahini-sauce",
+        "name": "Tahini sauce",
+        "category": "Middle Eastern",
+        "variantGroup": "Yogurt Sauce",
+        "isConfigurable": false,
+        "allergens": [
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bacchus-of-lebanon"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "89:warak-inab-mehchi",
+      "baseline": {
+        "itemId": "warak-inab-mehchi",
+        "name": "WARAK INAB MEHCHI",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "90:yogurt-sauce",
+      "baseline": {
+        "itemId": "yogurt-sauce",
+        "name": "Yogurt Sauce",
+        "category": "Middle Eastern",
+        "variantGroup": "Garlic Sauce",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bacchus-of-lebanon"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "91:zahra-makli",
+      "baseline": {
+        "itemId": "zahra-makli",
+        "name": "ZAHRA MAKLI",
+        "category": "Middle Eastern",
+        "variantGroup": "Middle Eastern",
+        "isConfigurable": false,
+        "allergens": [
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bacchusoflebanon.com/menu/"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-pilot-2026-07-15/jobs/replacement-bacchus-of-lebanon-bethesda-md.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-pilot-2026-07-15/results/replacement-bacchus-of-lebanon-bethesda-md.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/replacement-bacchus-of-lebanon-bethesda-md.jsonl"
+  }
+}

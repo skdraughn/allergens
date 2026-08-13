@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-009-2026-07-16",
+  "restaurantId": "osm-badd-pizza-2193531310",
+  "validation": {
+    "valid": true,
+    "currentProductCount": 66,
+    "evidenceSourceCount": 18,
+    "evidencePreflightValid": true,
+    "assertions": [
+      "baseline fingerprint matches job",
+      "66 distinct current exact-location food/nonalcoholic products published",
+      "official-menu, official-specials, toast-full, and toast-service are current complete surfaces",
+      "supporting and excluded surfaces are not product surfaces",
+      "alcohol, modifiers, ingredients/toppings not independently sold, headers, aggregate classes, and duplicate presentations excluded",
+      "direct app fields use exactly validated containsAllergens and mayContainAllergens",
+      "Monkey Bread peanut may-contain claim preserved with v-allergen-index",
+      "generic pizza, sauce, dressing, shared-fryer, undercooked, and general food-safety statements remain restaurant-level only",
+      "missing evidence remains unavailable",
+      "all nine research sources and referenced evidence IDs resolve",
+      "Ingredient Intelligence runs after direct catalog finalization",
+      "dossier retains restaurantId/name and direct-vs-inferred evidence boundaries",
+      "second run is byte-identical"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-badd-pizza-2193531310.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-badd-pizza-2193531310.json",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-badd-pizza-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-009-2026-07-16/apply-results/osm-badd-pizza-2193531310.json"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "target canonical catalog repair",
+    "recompute Ingredient Intelligence after direct catalog finalization",
+    "target closeout preflight"
+  ],
+  "secondRunDiff": "none"
+}

@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-010-2026-07-16",
+  "restaurantId": "balos-estiatorio-dc",
+  "validation": {
+    "valid": true,
+    "currentProductCount": 105,
+    "evidenceSourceCount": 30,
+    "evidencePreflightValid": true,
+    "assertions": [
+      "baseline fingerprint matches job",
+      "105 distinct current food/nonalcoholic products published",
+      "official-menus-index, official-dinner, official-lunch, and official-dessert are current complete surfaces",
+      "official-home and linked-opentable are supporting current=false",
+      "alcohol, three stale rows, and duplicate presentations excluded",
+      "direct app fields use exactly result containsAllergens and mayContainAllergens; both are empty/unavailable",
+      "generic warnings remain restaurant-level only when supported; none are promoted to item fields",
+      "all 12 research sources are retained with canonical purposes and referenced IDs",
+      "Ingredient Intelligence recomputed after direct catalog finalization",
+      "dossier retains restaurantId/name and direct-vs-inferred boundaries",
+      "no Sol review used",
+      "second run is byte-identical"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/balos-estiatorio-dc.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/balos-estiatorio-dc.json",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-balos-estiatorio-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-010-2026-07-16/apply-results/balos-estiatorio-dc.json"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "target canonical catalog repair",
+    "recompute Ingredient Intelligence after direct catalog finalization",
+    "serialized APPLY twice with byte/hash comparison"
+  ],
+  "secondRunDiff": "none",
+  "scope": {
+    "currentCompleteSurfaces": [
+      "official-menus-index",
+      "official-dinner",
+      "official-lunch",
+      "official-dessert"
+    ],
+    "supportingCurrentFalse": [
+      "official-home",
+      "linked-opentable"
+    ]
+  },
+  "evidence": {
+    "researchSources": [
+      "official-menus",
+      "official-dinner",
+      "official-lunch",
+      "official-brunch",
+      "official-dessert",
+      "official-home",
+      "linked-opentable",
+      "matrix-official-site",
+      "matrix-official-documents",
+      "matrix-linked-vendor",
+      "matrix-targeted-web",
+      "location-michelin"
+    ],
+    "purposes": {
+      "official-menus": "menu",
+      "official-dinner": "menu",
+      "official-lunch": "menu",
+      "official-brunch": "menu",
+      "official-dessert": "menu",
+      "official-home": "identity",
+      "linked-opentable": "identity",
+      "matrix-official-site": "allergen",
+      "matrix-official-documents": "allergen",
+      "matrix-linked-vendor": "allergen",
+      "matrix-targeted-web": "allergen",
+      "location-michelin": "identity"
+    },
+    "directVsInferred": "direct arrays are copied exactly; Ingredient Intelligence is inferred separately"
+  }
+}

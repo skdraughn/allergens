@@ -1,0 +1,1852 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-batch-02-2026-07-16",
+  "restaurant": {
+    "restaurantId": "bar-angie-dc",
+    "name": "Bar Angie",
+    "domain": "barangiedc.com",
+    "locationId": "washington",
+    "baselineItemCount": 97,
+    "baselineItemFingerprint": "2b1ff4352c1e67feb76e7529b0786f315e03ed1c6bc9ecc20df4796aaed03e31",
+    "officialItemCount": 57,
+    "officialAllergenStatus": "not-found",
+    "sourceFamily": "generic-website",
+    "parserProfile": "generic-website",
+    "guideUrl": "https://www.barangiedc.com/",
+    "sourceUrls": [
+      "https://www.barangiedc.com/",
+      "https://media-cdn.getbento.com/accounts/400b2d9456b6ab5ea2cbc6933f198f45/media/WyIuDdaQBOqLgnNasHpl_Lunch%20Menu.pdf",
+      "https://media-cdn.getbento.com/accounts/400b2d9456b6ab5ea2cbc6933f198f45/media/SmYzdANtQsqVQboFKG8R_Dinner%20Menu.pdf",
+      "https://media-cdn.getbento.com/accounts/400b2d9456b6ab5ea2cbc6933f198f45/media/pzttg2K7SMyGEcSaMivy_Brunch%20Menu.pdf",
+      "https://www.barangiedc.com/menu/"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found.",
+    "Low confidence must be explicitly marked low_confidence.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "validationWarnings": [
+    "Low confidence must be explicitly marked low_confidence.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "scope_incomplete",
+      "count_drift",
+      "baseline_only",
+      "non_exact_reconciliation",
+      "cross_contact",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 97,
+      "reconciledItemCount": 97,
+      "uniqueReconciledItemCount": 97,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 1,
+      "activeMenuSurfaceCount": 1,
+      "accessibleMenuSurfaceCount": 1,
+      "serviceCount": 1,
+      "pdfImageSurfaceCount": 0,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 0,
+      "incompleteSurfaceCount": 1,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 0,
+      "currentOnlyCount": 0,
+      "baselineOnlyCount": 97,
+      "countDrift": true,
+      "duplicatePresentationCount": 0,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 0,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 97,
+      "allergenMismatchItemCount": 0,
+      "crossContactCount": 1,
+      "parserRepairFindingCount": 0,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 0,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "low",
+      "overall": 0.46,
+      "menu": 0.65,
+      "allergenSource": 0.2,
+      "extraction": 0.58,
+      "rationale": "The restaurant-issued homepage independently confirms a large current Lunch/Dinner/Brunch catalog and many baseline matches, but the linked restaurant menu PDFs could not be reopened by this verifier. The restaurant-issued menus are descriptions rather than an allergen matrix or ingredients specification; they support only narrow named-ingredient positives, not complete arrays, negatives, or cross-contact conclusions."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Bar Angie at 2300 N Street Northwest, Washington, DC 20037; barangiedc.com.",
+      "confidence": 0.99,
+      "sourceEvidenceIds": [
+        "terra-homepage-20260716"
+      ],
+      "notes": "The official homepage identifies the location, restaurant name, hours, and rendered menus."
+    },
+    "sources": [
+      {
+        "evidenceId": "terra-homepage-20260716",
+        "url": "https://www.barangiedc.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Bar Angie official homepage and rendered Lunch, Dinner, and Brunch menus",
+        "retrievedAt": "2026-07-16T15:02:00Z",
+        "excerpt": "The page identifies Bar Angie at 2300 N Street Northwest, DC; its menu section exposes Lunch, Dinner, and Brunch. It names dishes and some ingredients, but provides no allergen legend, allergen matrix, ingredient statement, or cross-contact statement.",
+        "stableRowId": "lines-2,124-2547",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-lunch-pdf-link-20260716",
+        "url": "https://media-cdn.getbento.com/accounts/400b2d9456b6ab5ea2cbc6933f198f45/media/WyIuDdaQBOqLgnNasHpl_Lunch%20Menu.pdf",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Officially linked Lunch Menu PDF",
+        "retrievedAt": "2026-07-16T15:02:00Z",
+        "excerpt": "The official homepage links this as “Download PDF of the Lunch menu”; the PDF could not be reopened by the verifier.",
+        "stableRowId": "homepage-line-132",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-dinner-pdf-link-20260716",
+        "url": "https://media-cdn.getbento.com/accounts/400b2d9456b6ab5ea2cbc6933f198f45/media/SmYzdANtQsqVQboFKG8R_Dinner%20Menu.pdf",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Officially linked Dinner Menu PDF",
+        "retrievedAt": "2026-07-16T15:02:00Z",
+        "excerpt": "The official homepage links this as “Download PDF of the Dinner menu”; the PDF could not be reopened by the verifier.",
+        "stableRowId": "homepage-line-929",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-brunch-pdf-link-20260716",
+        "url": "https://media-cdn.getbento.com/accounts/400b2d9456b6ab5ea2cbc6933f198f45/media/pzttg2K7SMyGEcSaMivy_Brunch%20Menu.pdf",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Officially linked Brunch Menu PDF",
+        "retrievedAt": "2026-07-16T15:02:00Z",
+        "excerpt": "The official homepage menu exposes Brunch and a linked Brunch PDF; the PDF could not be reopened by the verifier.",
+        "stableRowId": "homepage-menu-tab-brunch",
+        "contentHash": null,
+        "artifactSuggested": null
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://www.barangiedc.com/",
+        "notes": "Restaurant-controlled homepage and rendered menus accessible."
+      },
+      {
+        "kind": "linked_source",
+        "status": "blocked",
+        "url": "https://media-cdn.getbento.com/accounts/400b2d9456b6ab5ea2cbc6933f198f45/media/WyIuDdaQBOqLgnNasHpl_Lunch%20Menu.pdf",
+        "notes": "Officially linked PDF was not reopenable in this verification session."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "not_found",
+        "url": null,
+        "notes": "No ordering-vendor source was necessary or used for allergen adjudication."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": "https://www.barangiedc.com/",
+        "notes": "Official-domain result verified the restaurant domain and menu surface."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No official archive evidence was located or relied upon."
+      },
+      {
+        "kind": "third_party",
+        "status": "not_found",
+        "url": null,
+        "notes": "No third-party source was used for menu or allergen adjudication."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "scope_incomplete",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716",
+          "terra-lunch-pdf-link-20260716",
+          "terra-dinner-pdf-link-20260716",
+          "terra-brunch-pdf-link-20260716"
+        ],
+        "notes": "The rendered HTML catalog was reviewed, but three linked service PDFs remain unverified; complete current-menu scope cannot be established."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "notes": "The frozen baseline includes 97 records, including duplicates, alcoholic beverages, scraped fragments, and descriptions; the current catalog is materially different."
+      },
+      {
+        "gateId": "baseline_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "notes": "Several frozen rows are artifacts or descriptions rather than menu products, and the current HTML catalog has products absent from the frozen baseline."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "notes": "The frozen file includes duplicate, misspelled, variant, and artifact rows, including Bolognaise/Bolognese, Chicken Paillard/Paillarp, and non-product text."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "unresolved",
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "notes": "The only food-safety warning concerns risks from consuming raw or undercooked foods. No restaurant-issued cross-contact or shared-equipment disclosure was found."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716",
+          "terra-lunch-pdf-link-20260716",
+          "terra-dinner-pdf-link-20260716",
+          "terra-brunch-pdf-link-20260716"
+        ],
+        "notes": "Allergen authority and complete menu-surface coverage remain low-confidence."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "notes": "Multiple service menus, unavailable complete allergen evidence, and catalog reconciliation risks are independently observed."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "surface-homepage-menu",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "notes": "The scout surface is the official homepage. Its rendered Lunch, Dinner, and Brunch menu content was independently checked; this does not verify PDF equivalence."
+      }
+    ],
+    "currentProductCheckGroups": [],
+    "additionalMenuSurfaces": [
+      {
+        "surfaceId": "surface-lunch-pdf",
+        "title": "Lunch Menu PDF",
+        "service": "lunch",
+        "url": "https://media-cdn.getbento.com/accounts/400b2d9456b6ab5ea2cbc6933f198f45/media/WyIuDdaQBOqLgnNasHpl_Lunch%20Menu.pdf",
+        "authorityTier": "restaurant_linked_vendor",
+        "mediaType": "pdf",
+        "accessStatus": "blocked",
+        "fullyEnumerated": false,
+        "scopeStatus": "unresolved",
+        "current": null,
+        "sourceEvidenceIds": [
+          "terra-lunch-pdf-link-20260716"
+        ],
+        "currentProductKeys": [],
+        "notes": "Luna noted linked PDFs but did not enumerate this surface."
+      },
+      {
+        "surfaceId": "surface-dinner-pdf",
+        "title": "Dinner Menu PDF",
+        "service": "dinner",
+        "url": "https://media-cdn.getbento.com/accounts/400b2d9456b6ab5ea2cbc6933f198f45/media/SmYzdANtQsqVQboFKG8R_Dinner%20Menu.pdf",
+        "authorityTier": "restaurant_linked_vendor",
+        "mediaType": "pdf",
+        "accessStatus": "blocked",
+        "fullyEnumerated": false,
+        "scopeStatus": "unresolved",
+        "current": null,
+        "sourceEvidenceIds": [
+          "terra-dinner-pdf-link-20260716"
+        ],
+        "currentProductKeys": [],
+        "notes": "Luna noted linked PDFs but did not enumerate this surface."
+      },
+      {
+        "surfaceId": "surface-brunch-pdf",
+        "title": "Brunch Menu PDF",
+        "service": "brunch",
+        "url": "https://media-cdn.getbento.com/accounts/400b2d9456b6ab5ea2cbc6933f198f45/media/pzttg2K7SMyGEcSaMivy_Brunch%20Menu.pdf",
+        "authorityTier": "restaurant_linked_vendor",
+        "mediaType": "pdf",
+        "accessStatus": "blocked",
+        "fullyEnumerated": false,
+        "scopeStatus": "unresolved",
+        "current": null,
+        "sourceEvidenceIds": [
+          "terra-brunch-pdf-link-20260716"
+        ],
+        "currentProductKeys": [],
+        "notes": "Luna noted linked PDFs but did not enumerate this surface."
+      }
+    ],
+    "additionalCurrentProducts": [
+      {
+        "currentProductKey": "shrimp-martini",
+        "name": "Shrimp Martini",
+        "category": "Starters",
+        "surfaceIds": [
+          "surface-homepage-menu"
+        ],
+        "presentationIds": [
+          "homepage:dinner:starters:shrimp-martini"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "containsAllergens": [
+          "shellfish"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Named shrimp supports only shellfish positive evidence."
+      },
+      {
+        "currentProductKey": "spicy-rigatoni",
+        "name": "Spicy Rigatoni",
+        "category": "Pasta",
+        "surfaceIds": [
+          "surface-homepage-menu"
+        ],
+        "presentationIds": [
+          "homepage:dinner:pasta:spicy-rigatoni"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Stracciatella is a named milk ingredient; no complete array is supported."
+      },
+      {
+        "currentProductKey": "pork-chop-martini",
+        "name": "Pork Chop Martini",
+        "category": "Entrees",
+        "surfaceIds": [
+          "surface-homepage-menu"
+        ],
+        "presentationIds": [
+          "homepage:lunch:second-course:pork-chop-martini",
+          "homepage:dinner:entrees:pork-chop-martini",
+          "homepage:brunch:plates:pork-chop-martini"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Parmigiano is a named milk ingredient."
+      },
+      {
+        "currentProductKey": "maine-lobster-benedict",
+        "name": "Maine Lobster Benedict",
+        "category": "Benedicts",
+        "surfaceIds": [
+          "surface-homepage-menu"
+        ],
+        "presentationIds": [
+          "homepage:brunch:benedicts:maine-lobster"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "51:maine-lobster"
+        ],
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "containsAllergens": [
+          "shellfish",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Named lobster and poached eggs/hollandaise support narrow positives only."
+      },
+      {
+        "currentProductKey": "the-classic-benedict",
+        "name": "The Classic Benedict",
+        "category": "Benedicts",
+        "surfaceIds": [
+          "surface-homepage-menu"
+        ],
+        "presentationIds": [
+          "homepage:brunch:benedicts:the-classic"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Named poached eggs and hollandaise support a narrow egg positive."
+      },
+      {
+        "currentProductKey": "lobster-pasta",
+        "name": "Monday Lobster Pasta",
+        "category": "Daily Specials",
+        "surfaceIds": [
+          "surface-homepage-menu"
+        ],
+        "presentationIds": [
+          "homepage:dinner:daily-specials:lobster-pasta"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "containsAllergens": [
+          "shellfish"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Named lobster supports only shellfish positive evidence."
+      },
+      {
+        "currentProductKey": "lobster-mac-and-cheese",
+        "name": "Thursday Lobster Mac & Cheese",
+        "category": "Daily Specials",
+        "surfaceIds": [
+          "surface-homepage-menu"
+        ],
+        "presentationIds": [
+          "homepage:dinner:daily-specials:lobster-mac-cheese"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "containsAllergens": [
+          "shellfish",
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Named lobster and cheese support narrow positives only."
+      },
+      {
+        "currentProductKey": "dover-sole",
+        "name": "Friday Dover Sole",
+        "category": "Daily Specials",
+        "surfaceIds": [
+          "surface-homepage-menu"
+        ],
+        "presentationIds": [
+          "homepage:dinner:daily-specials:dover-sole"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "containsAllergens": [
+          "fish",
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Named sole and butter support narrow positives only."
+      },
+      {
+        "currentProductKey": "lamb-shank",
+        "name": "Saturday Lamb Shank",
+        "category": "Daily Specials",
+        "surfaceIds": [
+          "surface-homepage-menu"
+        ],
+        "presentationIds": [
+          "homepage:dinner:daily-specials:lamb-shank"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "unverified",
+        "notes": "Description cannot establish a complete allergen array."
+      },
+      {
+        "currentProductKey": "lasagna",
+        "name": "Sunday Lasagna",
+        "category": "Daily Specials",
+        "surfaceIds": [
+          "surface-homepage-menu"
+        ],
+        "presentationIds": [
+          "homepage:dinner:daily-specials:lasagna"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "unverified",
+        "notes": "Description cannot establish a complete allergen array."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 97,
+      "counts": {
+        "exact_match/mismatch": 54,
+        "variant_match/mismatch": 14,
+        "exact_match/accurately_unavailable": 11,
+        "normalized_match/mismatch": 2,
+        "variant_match/accurately_unavailable": 2,
+        "stale_extra/not_applicable": 4,
+        "artifact/not_applicable": 10
+      }
+    },
+    "findings": [
+      {
+        "findingId": "terra-current-catalog-missed-by-scout",
+        "severity": "high",
+        "kind": "scope",
+        "summary": "Luna returned no current products despite the official homepage exposing a substantial Lunch/Dinner/Brunch catalog. Terra independently found current products missing from the frozen baseline, including Shrimp Martini, Spicy Rigatoni, Pork Chop Martini, Classic Benedict, and seven daily specials.",
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "terra-linked-pdf-surfaces-unverified",
+        "severity": "high",
+        "kind": "scope",
+        "summary": "Luna did not enumerate the linked Lunch, Dinner, and Brunch PDF surfaces. The verifier could identify them from the official homepage but could not reopen them, leaving menu scope incomplete.",
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716",
+          "terra-lunch-pdf-link-20260716",
+          "terra-dinner-pdf-link-20260716",
+          "terra-brunch-pdf-link-20260716"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "terra-baseline-allergen-authority-overstated",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "Frozen rows label many arrays as official ingredients, while the current restaurant-issued surface provides only dish descriptions. It supports narrow named-ingredient positives, not complete allergen arrays, allergen negatives, or may-contain claims.",
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "affectedAuditItemKeys": [
+          "1:angie-burger",
+          "2:angie-caesar",
+          "3:angie-chicken-caesar",
+          "4:angie-omelette",
+          "5:avocado-toast",
+          "6:blackened-ahi-tuna",
+          "7:blue-crab-rangoon",
+          "8:bolognaise-blanc",
+          "9:bolognese-blanc",
+          "13:buttermilk-pancakes",
+          "14:buttermilk-pancakes",
+          "15:chicken-caesar-sliders",
+          "20:chinese-chicken-salad",
+          "21:clam-chowder",
+          "24:crab-cake",
+          "25:crab-cake-benedict",
+          "26:crab-cakes",
+          "27:crab-fried-rice",
+          "30:eggs-your-way",
+          "32:french-onion-soup",
+          "33:french-toast",
+          "38:grilled-corn-salad",
+          "39:gyro-eggroll",
+          "52:margherita",
+          "55:milanese",
+          "56:mussels-frites",
+          "61:pei-oysters",
+          "62:pan-seared-halibut",
+          "67:profiterole",
+          "68:rainbow-cookie-cake",
+          "73:seafood-tower",
+          "77:smoked-salmon",
+          "78:smoked-salmon-benedict",
+          "79:spinach-artichoke-dip",
+          "83:steak-tartare",
+          "84:swordfish-burger",
+          "85:swordfish-kebab",
+          "88:truffle-tagliatelle",
+          "89:tuna-crudo",
+          "91:vegetarian-chicken-parm",
+          "92:wagyu-french-dip",
+          "93:wagyu-in-a-blanket",
+          "94:warm-shrimp-salad",
+          "95:white-clam"
+        ]
+      },
+      {
+        "findingId": "terra-extraction-artifacts-and-collisions",
+        "severity": "high",
+        "kind": "extraction",
+        "summary": "The frozen baseline contains duplicate/misspelled records and non-product fragments or descriptions, including both Bolognaise/Bolognese, both Chicken Paillard/Paillarp, two pancake rows, sauce/ingredient text, “per person,” “half-priced,” and “Slide 6 of.”",
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "affectedAuditItemKeys": [
+          "8:bolognaise-blanc",
+          "9:bolognese-blanc",
+          "13:buttermilk-pancakes",
+          "14:buttermilk-pancakes",
+          "17:chicken-paillard",
+          "18:chicken-paillarp",
+          "28:creamy-truffle-sauce",
+          "40:half-priced",
+          "59:old-school-red-sauce",
+          "64:per-person",
+          "69:raspberry-preserve",
+          "70:roasted-cherry-tomatoes",
+          "76:slide-6-of",
+          "87:traditional-filling",
+          "90:vanilla-gelato-stuffed",
+          "97:whole-maine"
+        ]
+      },
+      {
+        "findingId": "terra-cross-contact-unavailable",
+        "severity": "medium",
+        "kind": "cross_contact",
+        "summary": "No restaurant-issued cross-contact or shared-equipment statement was found. The homepage’s raw-or-undercooked-food warning is not cross-contact evidence.",
+        "sourceEvidenceIds": [
+          "terra-homepage-20260716"
+        ],
+        "affectedAuditItemKeys": []
+      }
+    ],
+    "summary": "Identity and the scout homepage surface are verified. Luna missed three linked menu-PDF surfaces and a substantial current catalog. The restaurant-issued HTML provides partial recipe-style descriptions only; therefore frozen complete allergen arrays/source authority, any negative claims, and all cross-contact conclusions are not verified. The result requires Sol review.",
+    "coordinatorNotes": [
+      "No scout current-product presentation IDs existed to re-check; Luna supplied an empty currentProducts array.",
+      "Do not treat the grouped matchedCurrentProductKeys as a complete catalog: blocked linked PDFs leave the current product boundary unresolved.",
+      "The item groups collectively contain every frozen auditItemKey exactly once. Groups that combine keys are duplicate/variant/artifact reconciliations, not repeated checks."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "1:angie-burger",
+      "baseline": {
+        "itemId": "angie-burger",
+        "name": "Angie Burger",
+        "category": "Handhelds",
+        "variantGroup": "Bistro / American",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "2:angie-caesar",
+      "baseline": {
+        "itemId": "angie-caesar",
+        "name": "Angie Caesar",
+        "category": "First Course",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "3:angie-chicken-caesar",
+      "baseline": {
+        "itemId": "angie-chicken-caesar",
+        "name": "Angie Chicken Caesar",
+        "category": "Salads",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "4:angie-omelette",
+      "baseline": {
+        "itemId": "angie-omelette",
+        "name": "Angie Omelette",
+        "category": "Second Course",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "5:avocado-toast",
+      "baseline": {
+        "itemId": "avocado-toast",
+        "name": "Avocado Toast",
+        "category": "Second Course",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "6:blackened-ahi-tuna",
+      "baseline": {
+        "itemId": "blackened-ahi-tuna",
+        "name": "Blackened Ahi Tuna",
+        "category": "Tacos",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "7:blue-crab-rangoon",
+      "baseline": {
+        "itemId": "blue-crab-rangoon",
+        "name": "Blue Crab Rangoon",
+        "category": "First Course",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "8:bolognaise-blanc",
+      "baseline": {
+        "itemId": "bolognaise-blanc",
+        "name": "Bolognaise Blanc",
+        "category": "Second Course",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "9:bolognese-blanc",
+      "baseline": {
+        "itemId": "bolognese-blanc",
+        "name": "Bolognese Blanc",
+        "category": "Pasta",
+        "variantGroup": "Entrees",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "13:buttermilk-pancakes",
+      "baseline": {
+        "itemId": "buttermilk-pancakes",
+        "name": "Buttermilk Pancakes",
+        "category": "Brunch Plates",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "14:buttermilk-pancakes",
+      "baseline": {
+        "itemId": "buttermilk-pancakes",
+        "name": "Buttermiļk Pancakes",
+        "category": "Second Course",
+        "variantGroup": "Sides",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg",
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "15:chicken-caesar-sliders",
+      "baseline": {
+        "itemId": "chicken-caesar-sliders",
+        "name": "Chicken Caesar Sliders",
+        "category": "Handhelds",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "17:chicken-paillard",
+      "baseline": {
+        "itemId": "chicken-paillard",
+        "name": "Chicken Paillard",
+        "category": "Brunch Plates",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "18:chicken-paillarp",
+      "baseline": {
+        "itemId": "chicken-paillarp",
+        "name": "Chicken Paillarp",
+        "category": "Entrees",
+        "variantGroup": "Entrees",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "20:chinese-chicken-salad",
+      "baseline": {
+        "itemId": "chinese-chicken-salad",
+        "name": "Chinese Chicken Salad",
+        "category": "Salads",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "tree-nut",
+          "soy",
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "21:clam-chowder",
+      "baseline": {
+        "itemId": "clam-chowder",
+        "name": "Clam Chowder",
+        "category": "Soups",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "24:crab-cake",
+      "baseline": {
+        "itemId": "crab-cake",
+        "name": "Crab Cake",
+        "category": "Benedicts",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "25:crab-cake-benedict",
+      "baseline": {
+        "itemId": "crab-cake-benedict",
+        "name": "Crab Cake Benedict",
+        "category": "Second Course",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "26:crab-cakes",
+      "baseline": {
+        "itemId": "crab-cakes",
+        "name": "Crab Cakes",
+        "category": "Starters",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "27:crab-fried-rice",
+      "baseline": {
+        "itemId": "crab-fried-rice",
+        "name": "Crab Fried Rice",
+        "category": "Sides",
+        "variantGroup": "Sides",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "28:creamy-truffle-sauce",
+      "baseline": {
+        "itemId": "creamy-truffle-sauce",
+        "name": "Creamy truffle sauce",
+        "category": "Entrees",
+        "variantGroup": "Entrees",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://www.barangiedc.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "30:eggs-your-way",
+      "baseline": {
+        "itemId": "eggs-your-way",
+        "name": "Eggs Your Way",
+        "category": "Brunch Plates",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "32:french-onion-soup",
+      "baseline": {
+        "itemId": "french-onion-soup",
+        "name": "French Onion Soup",
+        "category": "Soups",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "33:french-toast",
+      "baseline": {
+        "itemId": "french-toast",
+        "name": "French Toast",
+        "category": "Second Course",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "38:grilled-corn-salad",
+      "baseline": {
+        "itemId": "grilled-corn-salad",
+        "name": "Grilled Corn Salad",
+        "category": "First Course",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "39:gyro-eggroll",
+      "baseline": {
+        "itemId": "gyro-eggroll",
+        "name": "Gyro Eggroll",
+        "category": "Starters",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "40:half-priced",
+      "baseline": {
+        "itemId": "half-priced",
+        "name": "Half-priced",
+        "category": "Sides",
+        "variantGroup": "Sides",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://www.barangiedc.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "52:margherita",
+      "baseline": {
+        "itemId": "margherita",
+        "name": "Margherita",
+        "category": "Flatbread",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "55:milanese",
+      "baseline": {
+        "itemId": "milanese",
+        "name": "Milanese",
+        "category": "Second Course",
+        "variantGroup": "Entrees",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "56:mussels-frites",
+      "baseline": {
+        "itemId": "mussels-frites",
+        "name": "Mussels Frites",
+        "category": "Starters",
+        "variantGroup": "Bistro / American",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "59:old-school-red-sauce",
+      "baseline": {
+        "itemId": "old-school-red-sauce",
+        "name": "Old school red sauce",
+        "category": "Salads",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://www.barangiedc.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "61:pei-oysters",
+      "baseline": {
+        "itemId": "pei-oysters",
+        "name": "P.E.I Oysters",
+        "category": "Raw Bar",
+        "variantGroup": "Dessert",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "62:pan-seared-halibut",
+      "baseline": {
+        "itemId": "pan-seared-halibut",
+        "name": "Pan-Seared Halibut",
+        "category": "Entrees",
+        "variantGroup": "Entrees",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "fish",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "64:per-person",
+      "baseline": {
+        "itemId": "per-person",
+        "name": "per person",
+        "category": "Dessert",
+        "variantGroup": "Dessert",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://www.barangiedc.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "67:profiterole",
+      "baseline": {
+        "itemId": "profiterole",
+        "name": "Profiterole",
+        "category": "Dessert",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "68:rainbow-cookie-cake",
+      "baseline": {
+        "itemId": "rainbow-cookie-cake",
+        "name": "Rainbow Cookie Cake",
+        "category": "Dessert",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "egg",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "69:raspberry-preserve",
+      "baseline": {
+        "itemId": "raspberry-preserve",
+        "name": "Raspberry preserve",
+        "category": "Desserts",
+        "variantGroup": "Dessert",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://www.barangiedc.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "70:roasted-cherry-tomatoes",
+      "baseline": {
+        "itemId": "roasted-cherry-tomatoes",
+        "name": "Roasted cherry tomatoes",
+        "category": "Salads",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://www.barangiedc.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "73:seafood-tower",
+      "baseline": {
+        "itemId": "seafood-tower",
+        "name": "Seafood Tower",
+        "category": "Raw Bar",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "76:slide-6-of",
+      "baseline": {
+        "itemId": "slide-6-of",
+        "name": "Slide 6 of",
+        "category": "Bistro / American",
+        "variantGroup": "Bistro / American",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://www.barangiedc.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "77:smoked-salmon",
+      "baseline": {
+        "itemId": "smoked-salmon",
+        "name": "Smoked Salmon",
+        "category": "Flatbread",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg",
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "78:smoked-salmon-benedict",
+      "baseline": {
+        "itemId": "smoked-salmon-benedict",
+        "name": "Smoked Salmon Benedict",
+        "category": "Second Course",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "79:spinach-artichoke-dip",
+      "baseline": {
+        "itemId": "spinach-artichoke-dip",
+        "name": "Spinach Artichoke Dip",
+        "category": "Starters",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "83:steak-tartare",
+      "baseline": {
+        "itemId": "steak-tartare",
+        "name": "Steak Tartare",
+        "category": "Starters",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "84:swordfish-burger",
+      "baseline": {
+        "itemId": "swordfish-burger",
+        "name": "Swordfish Burger",
+        "category": "Handhelds",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "85:swordfish-kebab",
+      "baseline": {
+        "itemId": "swordfish-kebab",
+        "name": "Swordfish Kebab",
+        "category": "Starters",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "87:traditional-filling",
+      "baseline": {
+        "itemId": "traditional-filling",
+        "name": "Traditional filling",
+        "category": "Sides",
+        "variantGroup": "Sides",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://www.barangiedc.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "88:truffle-tagliatelle",
+      "baseline": {
+        "itemId": "truffle-tagliatelle",
+        "name": "Truffle Tagliatelle",
+        "category": "Pasta",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "89:tuna-crudo",
+      "baseline": {
+        "itemId": "tuna-crudo",
+        "name": "Tuna Crudo",
+        "category": "Raw Bar",
+        "variantGroup": "Dessert",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "90:vanilla-gelato-stuffed",
+      "baseline": {
+        "itemId": "vanilla-gelato-stuffed",
+        "name": "Vanilla gelato stuffed",
+        "category": "Desserts",
+        "variantGroup": "Dessert",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://www.barangiedc.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "91:vegetarian-chicken-parm",
+      "baseline": {
+        "itemId": "vegetarian-chicken-parm",
+        "name": "Vegetarian Chicken Parm",
+        "category": "Second Course",
+        "variantGroup": "Entrees",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "92:wagyu-french-dip",
+      "baseline": {
+        "itemId": "wagyu-french-dip",
+        "name": "Wagyu French Dip",
+        "category": "Handhelds",
+        "variantGroup": "Bistro / American",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "93:wagyu-in-a-blanket",
+      "baseline": {
+        "itemId": "wagyu-in-a-blanket",
+        "name": "Wagyu in A Blanket",
+        "category": "Starters",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "94:warm-shrimp-salad",
+      "baseline": {
+        "itemId": "warm-shrimp-salad",
+        "name": "Warm Shrimp Salad",
+        "category": "First Course",
+        "variantGroup": "Bistro / American",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "95:white-clam",
+      "baseline": {
+        "itemId": "white-clam",
+        "name": "White Clam",
+        "category": "Flatbread",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.barangiedc.com/",
+          "https://www.barangiedc.com/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "97:whole-maine",
+      "baseline": {
+        "itemId": "whole-maine",
+        "name": "Whole maine",
+        "category": "Sides",
+        "variantGroup": "Sides",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-sequential-priced-menu",
+        "sourceUrls": [
+          "https://www.barangiedc.com/"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-02-2026-07-16/jobs/bar-angie-dc.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-02-2026-07-16/results/bar-angie-dc.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/bar-angie-dc.jsonl"
+  }
+}

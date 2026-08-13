@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-016-2026-07-16",
+  "restaurantId": "replacement-best-buns-bakery-and-burgers-springfield-va",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "4cbfe596b3191bcd2fa4ed999e82d92d687072570f12f4d11eef665b15d16591",
+    "currentProductCount": 130,
+    "evidenceSourceCount": 8,
+    "reconciliation": {
+      "exact_match": 112,
+      "artifact": 1,
+      "equivalent_presentation": 1,
+      "stale": 1,
+      "normalized_match": 1
+    },
+    "assertions": [
+      "stale contract fingerprint gate passed",
+      "validatePocResearchResult passed before mutation",
+      "exactly 130 accepted products published",
+      "corrected direct allergen fields and source authority preserved",
+      "official breakfast/lunch/dinner PDFs and Springfield Olo scope preserved",
+      "failed Olo API remains current=false",
+      "Ingredient Intelligence recomputed after direct catalog finalization",
+      "all 116 frozen item-checks updated exactly once",
+      "canonical evidence IDs resolve",
+      "no ledger, manifest, parser, or other restaurant writes"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/replacement-best-buns-bakery-and-burgers-springfield-va.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/replacement-best-buns-bakery-and-burgers-springfield-va.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/replacement-best-buns-bakery-and-burgers-springfield-va.jsonl",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-best-buns-springfield-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-016-2026-07-16/apply-results/replacement-best-buns-bakery-and-burgers-springfield-va.json"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "validatePocResearchResult",
+    "node scripts/apply-best-buns-springfield-poc.mjs (twice)",
+    "sha256 comparison of owned canonical artifacts",
+    "node scripts/restaurant-verification-poc-result.mjs"
+  ],
+  "secondRunDiff": "none",
+  "hashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "7c4f1a1880750483cc2c4d9ebf06bd08b549d45ff01431a38d611ba9ed650899",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/replacement-best-buns-bakery-and-burgers-springfield-va.json": "06b481915e9b5faf6f49c07621aaae48fbf7ef3de4bbb3131eb91c4f7ebdfb73",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/replacement-best-buns-bakery-and-burgers-springfield-va.json": "1fbb0fc2a8a64ae9ad5b4d7de7d3223e9df3b2f8f527724ac186e310429f60b1",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/replacement-best-buns-bakery-and-burgers-springfield-va.jsonl": "147793d28eeed0c25d351095957934812701e7213e63abf4f8f7d964086bf525"
+  },
+  "counts": {
+    "publishedProducts": 130,
+    "exact_match": 112,
+    "normalized_match": 1,
+    "equivalent_presentation": 1,
+    "stale": 1,
+    "artifact": 1,
+    "unresolved": 0,
+    "directUnavailable": 77,
+    "directMilk": 24,
+    "directTreeNut": 11,
+    "directMilkEgg": 9,
+    "directMilkTreeNut": 3,
+    "directWheat": 2,
+    "directEgg": 1,
+    "directMustard": 1,
+    "directMilkMustard": 1,
+    "directPeanut": 1,
+    "directGluten": 0,
+    "mayContainProducts": 0,
+    "evidenceSources": 8,
+    "currentCompleteSurfaces": 5
+  }
+}

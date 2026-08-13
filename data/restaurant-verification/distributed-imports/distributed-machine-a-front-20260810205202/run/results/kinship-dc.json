@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-a-front-20260810205202",
+  "restaurantId": "kinship-dc",
+  "packetValidation": {
+    "baselineItemCount": 0,
+    "baselineFingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "itemChecksRead": 0,
+    "restaurantIdMatched": true
+  },
+  "identity": {
+    "status": "confirmed",
+    "name": "Kinship",
+    "location": "1015 7th Street NW, Washington, DC 20001",
+    "locationId": null,
+    "domain": "kinshipdc.com",
+    "officialHomepage": "https://kinshipdc.com/",
+    "sourceEvidenceIds": ["s-home", "s-menu", "s-reservations"]
+  },
+  "sources": [
+    {"id":"s-home","url":"https://kinshipdc.com/","authorityTier":"restaurant_issued","purpose":"official homepage, identity, closure notice","retrievedAt":"2026-08-10T21:00:00.000Z"},
+    {"id":"s-menu","url":"https://kinshipdc.com/menu/","authorityTier":"restaurant_issued","purpose":"official menu navigation and published menu boundary","retrievedAt":"2026-08-10T21:00:00.000Z"},
+    {"id":"s-menu-pdf","url":"https://kinshipdc.com/wp-content/uploads/2025/09/09.19.25-kinship-dinner-menu.pdf","authorityTier":"restaurant_issued","purpose":"official downloadable dinner menu","retrievedAt":"2026-08-10T21:00:00.000Z"},
+    {"id":"s-wine","url":"https://kinshipdc.com/wine-spirits/","authorityTier":"restaurant_issued","purpose":"official wine, spirits, and nonalcoholic menu surface","retrievedAt":"2026-08-10T21:00:00.000Z"},
+    {"id":"s-reservations","url":"https://kinshipdc.com/reservations/","authorityTier":"restaurant_issued","purpose":"official operating/closure and location context","retrievedAt":"2026-08-10T21:00:00.000Z"},
+    {"id":"s-search","url":"https://www.google.com/search?q=site%3Akinshipdc.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+PDF","authorityTier":"third_party","purpose":"targeted official-domain allergen search","retrievedAt":"2026-08-10T21:00:00.000Z"}
+  ],
+  "menuSurfaces": [
+    {"surfaceId":"official-menu","url":"https://kinshipdc.com/menu/","authority":"restaurant_issued","locationScope":"Washington DC","servicePeriod":"a la carte and tasting menu","current":false,"scopeStatus":"complete","sourceEvidenceIds":["s-menu"]},
+    {"surfaceId":"official-menu-pdf","url":"https://kinshipdc.com/wp-content/uploads/2025/09/09.19.25-kinship-dinner-menu.pdf","authority":"restaurant_issued","locationScope":"Washington DC","servicePeriod":"published dinner menu","current":false,"scopeStatus":"complete","sourceEvidenceIds":["s-menu-pdf"]},
+    {"surfaceId":"official-wine-spirits","url":"https://kinshipdc.com/wine-spirits/","authority":"restaurant_issued","locationScope":"Washington DC","servicePeriod":"wine, spirits, and nonalcoholic options","current":false,"scopeStatus":"complete","sourceEvidenceIds":["s-wine"]},
+    {"surfaceId":"official-reservations","url":"https://kinshipdc.com/reservations/","authority":"restaurant_issued","locationScope":"Washington DC","servicePeriod":"restaurant operations","current":false,"scopeStatus":"complete","sourceEvidenceIds":["s-reservations"]}
+  ],
+  "currentProducts": [],
+  "matrixSearch": {
+    "status":"accurately_unavailable",
+    "attempted":["official_site","official_documents","linked_vendor","targeted_web_search"],
+    "attempts":[
+      {"class":"official_site","queryOrLocation":"Official homepage, menu, wine-spirits, reservations, and site navigation","urlsInspected":["https://kinshipdc.com/","https://kinshipdc.com/menu/","https://kinshipdc.com/wine-spirits/","https://kinshipdc.com/reservations/"],"outcome":"No allergen matrix or cross-contact policy; official homepage reports closure","sourceEvidenceIds":["s-home","s-menu","s-wine","s-reservations"]},
+      {"class":"official_documents","queryOrLocation":"Official PDFs, downloads, menu images, documents, and site document surfaces","urlsInspected":["https://kinshipdc.com/wp-content/uploads/2025/09/09.19.25-kinship-dinner-menu.pdf","https://kinshipdc.com/menu/"],"outcome":"Published menu PDF found; no allergen or nutrition matrix","sourceEvidenceIds":["s-menu-pdf","s-menu"]},
+      {"class":"linked_vendor","queryOrLocation":"Official site linked ordering/vendor navigation","urlsInspected":["https://kinshipdc.com/"],"outcome":"No active linked ordering vendor exposed; restaurant is closed","sourceEvidenceIds":["s-home"]},
+      {"class":"targeted_web_search","queryOrLocation":"site:kinshipdc.com allergen OR allergy OR nutrition OR ingredients PDF","urlsInspected":["https://www.google.com/search?q=site%3Akinshipdc.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+PDF"],"outcome":"No authoritative allergen matrix found","sourceEvidenceIds":["s-search"]}
+    ],
+    "notes":["No negative allergen claims made; direct allergen and cross-contact evidence is unavailable. Restaurant closure means no current products are asserted."]
+  },
+  "restaurantLevelAllergenEvidence": [],
+  "findings":[{"type":"cross_contact","status":"unavailable","statement":"Official sources do not publish a complete cross-contact policy or matrix.","sourceEvidenceIds":["s-menu","s-menu-pdf"]}],
+  "reconciliation":{"items":[],"notes":["Frozen item-check key set is empty and was reconciled exactly once as an empty set."]},
+  "changes":{"identityAmbiguous":false,"menuScopeUnresolved":false,"officialAllergenConflict":false,"crossContactConflict":false,"unsupportedNegativeClaim":false,"sourceAuthorityAmbiguous":false,"duplicateItems":false,"catalogDrift":false,"staleItems":false,"newItems":false,"nameOrCategoryCleanup":false,"restaurantSpecificExtraction":false,"parserIssue":false},
+  "recommendedLane":"luna_fix",
+  "notes":["Research only; canonical files untouched. Official site reports Kinship has closed; historical menu surfaces are retained as non-current evidence."]
+}

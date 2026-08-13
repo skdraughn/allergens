@@ -1,0 +1,1352 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-batch-04-2026-07-16",
+  "restaurant": {
+    "restaurantId": "beau-thai-dc",
+    "name": "Beau Thai",
+    "domain": "beauthaidc.com",
+    "locationId": "shaw-dc",
+    "baselineItemCount": 61,
+    "baselineItemFingerprint": "6e12e45e47f3b00804ad10ac6ba5dbfad6e8dad74654c4ddb70790d7c2fc80fa",
+    "officialItemCount": 2,
+    "officialAllergenStatus": "extracted",
+    "sourceFamily": "generic-website",
+    "parserProfile": "generic-website",
+    "guideUrl": "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+    "sourceUrls": [
+      "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+      "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found.",
+    "Terra reported a mismatched or unverifiable current product.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "validationWarnings": [
+    "Terra reported a mismatched or unverifiable current product.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "multi_service",
+      "count_drift",
+      "current_only",
+      "duplicate_presentations",
+      "authority_ambiguity",
+      "non_exact_reconciliation",
+      "cross_contact",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 61,
+      "reconciledItemCount": 61,
+      "uniqueReconciledItemCount": 61,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 4,
+      "activeMenuSurfaceCount": 4,
+      "accessibleMenuSurfaceCount": 4,
+      "serviceCount": 3,
+      "pdfImageSurfaceCount": 0,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 0,
+      "incompleteSurfaceCount": 0,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 2,
+      "currentOnlyCount": 1,
+      "baselineOnlyCount": 0,
+      "countDrift": true,
+      "duplicatePresentationCount": 2,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 1,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 61,
+      "allergenMismatchItemCount": 0,
+      "crossContactCount": 1,
+      "parserRepairFindingCount": 0,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 0,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "medium",
+      "overall": 0.68,
+      "menu": 0.91,
+      "allergenSource": 0.56,
+      "extraction": 0.71,
+      "rationale": "Official HTML menus and catering disclosure were reopened. Menu coverage is high, but the restaurant provides only dietary markers and named-ingredient positives, not a complete allergen matrix; location and drink-surface omissions require escalation."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Beau Thai Shaw, Washington, DC; Mount Pleasant is an official but separate location comparison surface.",
+      "confidence": 0.96,
+      "sourceEvidenceIds": [
+        "T1",
+        "T2"
+      ],
+      "notes": "The official pages label the two location-specific menus separately."
+    },
+    "sources": [
+      {
+        "evidenceId": "T1",
+        "url": "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Beau Thai – Shaw Food Menu",
+        "retrievedAt": "2026-07-16T21:00:00Z",
+        "excerpt": "Official Shaw food menu labels dietary guide: n! or s! contains nuts or seeds; menu descriptions name peanuts, sesame, shrimp, scallops, squid, and crab where applicable.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "T2",
+        "url": "https://www.beauthaidc.com/beau-thai-mount-pleasant-food",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Beau Thai – Mount Pleasant Food Menu",
+        "retrievedAt": "2026-07-16T21:00:00Z",
+        "excerpt": "Official Mount Pleasant food menu is separately labeled and includes noodle bowls and weekend brunch not shown on the Shaw food menu.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "T3",
+        "url": "https://www.beauthaidc.com/catering",
+        "authorityTier": "restaurant_issued",
+        "purpose": "cross_contact",
+        "title": "Beau Thai Catering",
+        "retrievedAt": "2026-07-16T21:00:00Z",
+        "excerpt": "Catering disclosure says its kitchens use nuts/seeds, flour, and shellfish and that cross-contamination can occur.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "T4",
+        "url": "https://www.toasttab.com/local/order/beau-thai-shaw-ggirj",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Beau Thai – Shaw Toast Ordering",
+        "retrievedAt": "2026-07-16T21:00:00Z",
+        "excerpt": "Linked ordering menu lists food, sides, condiments, non-alcoholic drinks, alcoholic drinks, and stock states.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "T5",
+        "url": "https://www.beauthaidc.com/beau-thai-shaw-drink-menu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Beau Thai – Shaw Drink Menu",
+        "retrievedAt": "2026-07-16T21:00:00Z",
+        "excerpt": "Official navigation exposes a distinct Shaw Drink Menu.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "T6",
+        "url": "https://www.beauthaidc.com/beau-thai-mount-pleasant-drink-menu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Beau Thai – Mount Pleasant Drink Menu",
+        "retrievedAt": "2026-07-16T21:00:00Z",
+        "excerpt": "Official navigation exposes a distinct Mount Pleasant Drink Menu.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+        "notes": "Reopened official Shaw food menu."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://www.beauthaidc.com/catering",
+        "notes": "Reopened official catering page and allergy disclosure."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://www.toasttab.com/local/order/beau-thai-shaw-ggirj",
+        "notes": "Reopened linked Toast ordering menu."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": "https://www.beauthaidc.com/",
+        "notes": "Official navigation located both distinct drink-menu surfaces."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No archive was necessary for current-menu verification."
+      },
+      {
+        "kind": "third_party",
+        "status": "not_found",
+        "url": null,
+        "notes": "No third-party source was needed because restaurant-controlled and linked sources were accessible."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "multi_service",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1",
+          "T2",
+          "T3",
+          "T4",
+          "T5",
+          "T6"
+        ],
+        "notes": "Food, catering, official drink, and ordering surfaces exist."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1",
+          "T2",
+          "T4",
+          "T5",
+          "T6"
+        ],
+        "notes": "Frozen 61-row catalog mixes Shaw and Mount Pleasant items and omits current drink products."
+      },
+      {
+        "gateId": "current_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T4",
+          "T5",
+          "T6"
+        ],
+        "notes": "Current drinks and Toast-only ordering presentations are outside the frozen food rows."
+      },
+      {
+        "gateId": "duplicate_presentations",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1",
+          "T2",
+          "T3",
+          "T4"
+        ],
+        "notes": "The same food appears in restaurant, catering, and ordering presentations."
+      },
+      {
+        "gateId": "authority_ambiguity",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1",
+          "T2",
+          "T3",
+          "T4"
+        ],
+        "notes": "Restaurant-issued menu markers coexist with linked-vendor ordering content; neither supplies a complete allergen matrix."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1",
+          "T2"
+        ],
+        "notes": "Four frozen rows are headings/modifier text and 15 frozen rows are Mount Pleasant-only within the Shaw restaurant scope."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T3"
+        ],
+        "notes": "The disclosure is global kitchen context, not item-specific may-contain evidence."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1",
+          "T2",
+          "T3"
+        ],
+        "notes": "Complete allergen and cross-contact matrices are unavailable."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1",
+          "T2",
+          "T3",
+          "T4"
+        ],
+        "notes": "Independent review confirmed material scope and allergen-source risks."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "S1",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "T1"
+        ],
+        "notes": "Accessible, current official Shaw food HTML surface."
+      },
+      {
+        "surfaceId": "S2",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "T2"
+        ],
+        "notes": "Accessible, current official Mount Pleasant food HTML surface; it is separate from the Shaw baseline scope."
+      },
+      {
+        "surfaceId": "S3",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "T4"
+        ],
+        "notes": "Accessible linked-vendor Shaw ordering surface; authority remains restaurant_linked_vendor."
+      },
+      {
+        "surfaceId": "S4",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "T3"
+        ],
+        "notes": "Accessible official catering surface, including a global cross-contact disclosure."
+      }
+    ],
+    "currentProductCheckGroups": [
+      {
+        "currentProductKeys": [
+          "P1"
+        ],
+        "presentationIds": [
+          "shaw-food",
+          "mount-pleasant-food",
+          "toast-food",
+          "catering-food"
+        ],
+        "verdict": "mismatch",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T1",
+          "T2",
+          "T3"
+        ],
+        "sourceEvidenceIds": [
+          "T1",
+          "T2",
+          "T3",
+          "T4"
+        ],
+        "notes": "Food catalog exists, but a single consolidated product masks distinct location scope and item-level products. Empty arrays are not negative claims; only narrow named-ingredient/dietary-marker positives are supported."
+      },
+      {
+        "currentProductKeys": [
+          "P2"
+        ],
+        "presentationIds": [
+          "toast-drinks",
+          "catering-drinks"
+        ],
+        "verdict": "mismatch",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "T3",
+          "T4"
+        ],
+        "notes": "Scout's drink group omits the official Shaw and Mount Pleasant drink-menu presentations and Toast alcoholic drinks."
+      }
+    ],
+    "additionalMenuSurfaces": [
+      {
+        "surfaceId": "S5",
+        "title": "Shaw drink menu",
+        "service": "drinks",
+        "url": "https://www.beauthaidc.com/beau-thai-shaw-drink-menu",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "html",
+        "accessStatus": "accessible",
+        "fullyEnumerated": false,
+        "scopeStatus": "partial",
+        "current": true,
+        "sourceEvidenceIds": [
+          "T5"
+        ],
+        "currentProductKeys": [
+          "P3"
+        ],
+        "notes": "Official navigation-linked current drink surface missed by Luna; extraction was not fully enumerated in this verification pass."
+      },
+      {
+        "surfaceId": "S6",
+        "title": "Mount Pleasant drink menu",
+        "service": "drinks",
+        "url": "https://www.beauthaidc.com/beau-thai-mount-pleasant-drink-menu",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "html",
+        "accessStatus": "accessible",
+        "fullyEnumerated": false,
+        "scopeStatus": "partial",
+        "current": true,
+        "sourceEvidenceIds": [
+          "T6"
+        ],
+        "currentProductKeys": [
+          "P3"
+        ],
+        "notes": "Official navigation-linked current drink surface missed by Luna; separate-location scope and extraction remain partial."
+      }
+    ],
+    "additionalCurrentProducts": [
+      {
+        "currentProductKey": "P3",
+        "name": "Official location-specific drink catalogs",
+        "category": "drinks",
+        "surfaceIds": [
+          "S5",
+          "S6"
+        ],
+        "presentationIds": [
+          "shaw-drink-menu",
+          "mount-pleasant-drink-menu"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "T5",
+          "T6"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "unverifiable",
+        "notes": "Missed current product boundary: official drink catalogs. Incomplete enumeration cannot support negative allergen claims."
+      },
+      {
+        "currentProductKey": "P4",
+        "name": "Toast alcoholic online drinks",
+        "category": "alcoholic drinks",
+        "surfaceIds": [
+          "S3"
+        ],
+        "presentationIds": [
+          "toast-alcoholic-drinks"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "T4"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "unverifiable",
+        "notes": "Linked-vendor current product class missed by Luna's P2 description; vendor authority is not promoted."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 61,
+      "counts": {
+        "artifact/not_applicable": 4,
+        "variant_match/verified": 8,
+        "normalized_match/verified": 9,
+        "location_mismatch/accurately_unavailable": 15,
+        "normalized_match/accurately_unavailable": 25
+      }
+    },
+    "findings": [
+      {
+        "findingId": "TF-001",
+        "severity": "high",
+        "kind": "scope",
+        "summary": "Luna missed two current official drink-menu surfaces and the corresponding current drink catalog boundary.",
+        "sourceEvidenceIds": [
+          "T5",
+          "T6"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "TF-002",
+        "severity": "high",
+        "kind": "scope",
+        "summary": "Fifteen frozen items are Mount Pleasant-only and should not be reconciled as Shaw products.",
+        "sourceEvidenceIds": [
+          "T1",
+          "T2"
+        ],
+        "affectedAuditItemKeys": [
+          "6:congee-with-pork",
+          "7:congee-with-shrimp",
+          "9:crispy-roti",
+          "14:fried-banana-v",
+          "20:hot-and-spicy-noodle-bowl-n",
+          "22:kanom-krok",
+          "29:omelette",
+          "46:side-of-green-mango-salad",
+          "47:side-of-sticky-rice",
+          "48:side-of-sweet-sausage",
+          "53:street-eggs",
+          "54:thai-donuts",
+          "55:the-hangover-special",
+          "59:vegetable-noodle-bowl-v",
+          "61:yellow-curry-noodle-bowl-khao-soi"
+        ]
+      },
+      {
+        "findingId": "TF-003",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "Restaurant-issued dietary markers and descriptions support only named positive ingredients/contains markers. They do not establish complete arrays, negatives, or item-specific may-contain claims.",
+        "sourceEvidenceIds": [
+          "T1",
+          "T2",
+          "T3"
+        ],
+        "affectedAuditItemKeys": [
+          "1:beau-thai-chicken",
+          "2:cauliflower-rice-gf",
+          "3:chicken-cashew-n-s",
+          "4:chicken-satay-n",
+          "5:chumpon-spicy-seafood-rice-gf",
+          "8:crispy-calamari",
+          "10:crispy-tilapia",
+          "11:crispy-tofu-v-s",
+          "18:green-curry-gf",
+          "19:green-salad-n",
+          "24:larb-gai-gf",
+          "26:massaman-curry-gf-n",
+          "33:pad-thai-gf-n",
+          "35:papaya-salad-gf-n",
+          "37:pineapple-fried-rice-n",
+          "43:shrimp-cakes-s",
+          "44:shrimp-in-garlic-sauce",
+          "49:spring-rolls-v",
+          "50:steamed-dumplings-s",
+          "56:tom-kha-soup-gf",
+          "57:tom-yum-soup-gf",
+          "60:wonton-soup-s"
+        ]
+      },
+      {
+        "findingId": "TF-004",
+        "severity": "medium",
+        "kind": "cross_contact",
+        "summary": "The catering notice is restaurant-issued global kitchen cross-contact context for nuts/seeds, flour, and shellfish; it cannot populate individual may-contain arrays.",
+        "sourceEvidenceIds": [
+          "T3"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "TF-005",
+        "severity": "medium",
+        "kind": "extraction",
+        "summary": "Frozen headers and Add shrimp modifier text were extracted as standalone items.",
+        "sourceEvidenceIds": [
+          "T1",
+          "T2"
+        ],
+        "affectedAuditItemKeys": [
+          "27:noodle-bowls",
+          "28:noodle-dishesadd-shrimp",
+          "40:rice-dishesadd-shrimp",
+          "52:stir-fries"
+        ]
+      }
+    ],
+    "summary": "Independent verification found material catalog-scope discrepancies. Luna covered four accessible scout surfaces but missed both official drink-menu surfaces and Toast alcoholic drinks; its consolidated food product also obscures separate Shaw/Mount Pleasant scope. All 61 frozen keys were reconciled exactly once. Restaurant-issued sources support narrow peanuts, sesame, and shellfish positives only; global cross-contact language is not item-level may-contain evidence.",
+    "coordinatorNotes": [
+      "Read-only verification only; no ledger, dossier, generated data, or coordinator-managed result file was edited.",
+      "Escalate to Sol because deterministic hard-risk gates remain confirmed and the complete current catalog/allergen matrices are unresolved."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "1:beau-thai-chicken",
+      "baseline": {
+        "itemId": "beau-thai-chicken",
+        "name": "BEAU THAI CHICKEN",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "2:cauliflower-rice-gf",
+      "baseline": {
+        "itemId": "cauliflower-rice-gf",
+        "name": "CAULIFLOWER \"RICE\" (GF)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "3:chicken-cashew-n-s",
+      "baseline": {
+        "itemId": "chicken-cashew-n-s",
+        "name": "CHICKEN CASHEW (N!, S!)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "4:chicken-satay-n",
+      "baseline": {
+        "itemId": "chicken-satay-n",
+        "name": "Chicken Satay (N!)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "5:chumpon-spicy-seafood-rice-gf",
+      "baseline": {
+        "itemId": "chumpon-spicy-seafood-rice-gf",
+        "name": "CHUMPON SPICY SEAFOOD RICE* (GF)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "6:congee-with-pork",
+      "baseline": {
+        "itemId": "congee-with-pork",
+        "name": "Congee with Pork",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "7:congee-with-shrimp",
+      "baseline": {
+        "itemId": "congee-with-shrimp",
+        "name": "Congee with Shrimp",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "8:crispy-calamari",
+      "baseline": {
+        "itemId": "crispy-calamari",
+        "name": "CRISPY CALAMARI",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "9:crispy-roti",
+      "baseline": {
+        "itemId": "crispy-roti",
+        "name": "Crispy Roti",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "10:crispy-tilapia",
+      "baseline": {
+        "itemId": "crispy-tilapia",
+        "name": "CRISPY TILAPIA",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "11:crispy-tofu-v-s",
+      "baseline": {
+        "itemId": "crispy-tofu-v-s",
+        "name": "Crispy Tofu (V, s!)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "14:fried-banana-v",
+      "baseline": {
+        "itemId": "fried-banana-v",
+        "name": "Fried Banana (v)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "18:green-curry-gf",
+      "baseline": {
+        "itemId": "green-curry-gf",
+        "name": "GREEN CURRY* (GF)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "19:green-salad-n",
+      "baseline": {
+        "itemId": "green-salad-n",
+        "name": "GREEN SALAD (N!)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "20:hot-and-spicy-noodle-bowl-n",
+      "baseline": {
+        "itemId": "hot-and-spicy-noodle-bowl-n",
+        "name": "HOT & SPICY NOODLE BOWL* (N!)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "22:kanom-krok",
+      "baseline": {
+        "itemId": "kanom-krok",
+        "name": "Kanom krok",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "24:larb-gai-gf",
+      "baseline": {
+        "itemId": "larb-gai-gf",
+        "name": "LARB GAI* (GF)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "26:massaman-curry-gf-n",
+      "baseline": {
+        "itemId": "massaman-curry-gf-n",
+        "name": "MASSAMAN CURRY (GF, N!)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "27:noodle-bowls",
+      "baseline": {
+        "itemId": "noodle-bowls",
+        "name": "Noodle Bowls",
+        "category": "Thai",
+        "variantGroup": "Thai",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "28:noodle-dishesadd-shrimp",
+      "baseline": {
+        "itemId": "noodle-dishesadd-shrimp",
+        "name": "Noodle DishesAdd shrimp +",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "29:omelette",
+      "baseline": {
+        "itemId": "omelette",
+        "name": "Omelette",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "33:pad-thai-gf-n",
+      "baseline": {
+        "itemId": "pad-thai-gf-n",
+        "name": "PAD THAI (GF, N!)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "35:papaya-salad-gf-n",
+      "baseline": {
+        "itemId": "papaya-salad-gf-n",
+        "name": "PAPAYA SALAD* (GF, N!)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "37:pineapple-fried-rice-n",
+      "baseline": {
+        "itemId": "pineapple-fried-rice-n",
+        "name": "PINEAPPLE FRIED RICE (N!)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "40:rice-dishesadd-shrimp",
+      "baseline": {
+        "itemId": "rice-dishesadd-shrimp",
+        "name": "Rice DishesAdd shrimp +",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "43:shrimp-cakes-s",
+      "baseline": {
+        "itemId": "shrimp-cakes-s",
+        "name": "Shrimp Cakes (s!)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "44:shrimp-in-garlic-sauce",
+      "baseline": {
+        "itemId": "shrimp-in-garlic-sauce",
+        "name": "SHRIMP IN GARLIC SAUCE",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "46:side-of-green-mango-salad",
+      "baseline": {
+        "itemId": "side-of-green-mango-salad",
+        "name": "Side of Green Mango Salad",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "47:side-of-sticky-rice",
+      "baseline": {
+        "itemId": "side-of-sticky-rice",
+        "name": "Side of Sticky Rice",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "48:side-of-sweet-sausage",
+      "baseline": {
+        "itemId": "side-of-sweet-sausage",
+        "name": "Side of Sweet Sausage",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "49:spring-rolls-v",
+      "baseline": {
+        "itemId": "spring-rolls-v",
+        "name": "SPRING ROLLS (V)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "50:steamed-dumplings-s",
+      "baseline": {
+        "itemId": "steamed-dumplings-s",
+        "name": "STEAMED DUMPLINGS (s!)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "52:stir-fries",
+      "baseline": {
+        "itemId": "stir-fries",
+        "name": "stir-fries",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "53:street-eggs",
+      "baseline": {
+        "itemId": "street-eggs",
+        "name": "Street Eggs",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "54:thai-donuts",
+      "baseline": {
+        "itemId": "thai-donuts",
+        "name": "Thai Donuts",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "55:the-hangover-special",
+      "baseline": {
+        "itemId": "the-hangover-special",
+        "name": "The Hangover Special",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "56:tom-kha-soup-gf",
+      "baseline": {
+        "itemId": "tom-kha-soup-gf",
+        "name": "TOM KHA SOUP* (GF)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "57:tom-yum-soup-gf",
+      "baseline": {
+        "itemId": "tom-yum-soup-gf",
+        "name": "TOM YUM SOUP* (GF)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "59:vegetable-noodle-bowl-v",
+      "baseline": {
+        "itemId": "vegetable-noodle-bowl-v",
+        "name": "VEGETABLE NOODLE BOWL (V)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "60:wonton-soup-s",
+      "baseline": {
+        "itemId": "wonton-soup-s",
+        "name": "WONTON SOUP (s!)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-shaw-food-menu",
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "61:yellow-curry-noodle-bowl-khao-soi",
+      "baseline": {
+        "itemId": "yellow-curry-noodle-bowl-khao-soi",
+        "name": "YELLOW CURRY NOODLE BOWL (KHAO SOI)",
+        "category": "Thai",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-embedded-user-item",
+        "sourceUrls": [
+          "https://www.beauthaidc.com/beau-thai-mount-pleasant-food"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-04-2026-07-16/jobs/beau-thai-dc.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-04-2026-07-16/results/beau-thai-dc.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/beau-thai-dc.jsonl"
+  }
+}

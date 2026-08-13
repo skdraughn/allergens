@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-012-2026-07-16",
+  "restaurantId": "barcelona-wine-bar-reston-va",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "acfcb4b8489ca8ccf4a0319ac41eb90b9b1833823dfb181f1b4a12cefe331f65",
+    "currentProductCount": 85,
+    "directSourceTypeCounts": {
+      "unavailable": 45,
+      "restaurant_ingredients": 40
+    },
+    "directAuthorityCounts": {
+      "restaurant_ingredients": 40,
+      "unavailable": 45
+    },
+    "containsAllergenCount": 40,
+    "mayContainCount": 0,
+    "evidenceSourceCount": 6,
+    "currentCompleteSurfaceCount": 2,
+    "assertions": [
+      "stale packet gate passed",
+      "strengthened result validator passed before mutation",
+      "85 validated products published",
+      "supporting and stale surfaces add no products",
+      "zero wheat/gluten and zero mayContain",
+      "all six evidence sources canonical and resolvable",
+      "Ingredient Intelligence applied after direct catalog finalization",
+      "no closeout, ledger, or manifest writes",
+      "second run is byte-identical"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/barcelona-wine-bar-reston-va.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/barcelona-wine-bar-reston-va.json",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-barcelona-wine-bar-reston-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-012-2026-07-16/apply-results/barcelona-wine-bar-reston-va.json"
+  ],
+  "commands": [
+    "node scripts/restaurant-verification-poc-result.mjs (strengthened preflight)",
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "node scripts/apply-barcelona-wine-bar-reston-poc.mjs (twice)",
+    "byte/hash comparison of all owned generated artifacts"
+  ],
+  "secondRunDiff": "none",
+  "artifactHashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "21c49856be211aaabfe75563398447a6564c6293aef835192cdd2b4b73050d5c",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/barcelona-wine-bar-reston-va.json": "dd8e56007855aee368069e2e9d77cda7feed6313890ec9326cb990aea8212aac",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/barcelona-wine-bar-reston-va.json": "f79792efd8182f448d75d4f85f8770ab3700b3d148d3802628cc6c372e52ae97"
+  },
+  "counts": {
+    "publishedProducts": 85,
+    "directRestaurantIngredients": 40,
+    "directUnavailable": 45,
+    "mayContainProducts": 0,
+    "evidenceSources": 6,
+    "currentCompleteSurfaces": 2
+  }
+}

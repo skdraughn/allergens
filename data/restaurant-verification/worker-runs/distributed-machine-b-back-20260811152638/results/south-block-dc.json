@@ -1,0 +1,338 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811152638",
+  "restaurantId": "south-block-dc",
+  "name": "South Block",
+  "locationId": "dc-metro",
+  "domain": "southblock.com",
+  "outcome": "researched",
+  "recommendedLane": "verify",
+  "packetValidation": {
+    "baselineItemCount": 50,
+    "baselineFingerprint": "d4227a437d9387c53167b3c84f65109d030c54dcf0c1f8ee8ed4ea4a4a2fa34e",
+    "itemCheckCount": 50,
+    "restaurantIdMatches": true,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "South Block",
+    "locationId": "dc-metro",
+    "address": "Washington, DC metropolitan area; official site lists multiple DC locations",
+    "domain": "southblock.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "site-home",
+      "site-location",
+      "vendor-menu"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "site-home",
+      "url": "https://www.southblock.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and menu navigation",
+      "retrievedAt": "2026-08-11T19:30:00Z"
+    },
+    {
+      "evidenceId": "site-menu",
+      "url": "https://www.southblock.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official menu surface",
+      "retrievedAt": "2026-08-11T19:30:00Z"
+    },
+    {
+      "evidenceId": "site-location",
+      "url": "https://www.southblock.com/locations/union-market",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official DC location identity and ordering link",
+      "retrievedAt": "2026-08-11T19:30:00Z"
+    },
+    {
+      "evidenceId": "vendor-menu",
+      "url": "https://order.incentivio.com/c/southblock/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current linked ordering menu and item descriptions",
+      "retrievedAt": "2026-08-11T19:30:00Z"
+    },
+    {
+      "evidenceId": "toast-menu",
+      "url": "https://www.toasttab.com/local/order/south-block-union-market-new/r-d1a7a597-e245-42d5-ab75-0c2cd64876df",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current linked vendor cross-check of food and nonalcoholic menu",
+      "retrievedAt": "2026-08-11T19:30:00Z"
+    },
+    {
+      "evidenceId": "web-search",
+      "url": "https://www.google.com/search?q=site%3Asouthblock.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted official-domain allergen/document/menu search",
+      "retrievedAt": "2026-08-11T19:30:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-homepage",
+      "url": "https://www.southblock.com/",
+      "authority": "South Block",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "dc-metro",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; food and nonalcoholic categories linked",
+      "sourceEvidenceIds": [
+        "site-home"
+      ]
+    },
+    {
+      "surfaceId": "official-menu",
+      "url": "https://www.southblock.com/menu",
+      "authority": "South Block",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "dc-metro",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; menu page",
+      "sourceEvidenceIds": [
+        "site-menu"
+      ]
+    },
+    {
+      "surfaceId": "incentivio-ordering",
+      "url": "https://order.incentivio.com/c/southblock/",
+      "authority": "South Block linked ordering vendor",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "dc-metro",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; food and nonalcoholic items enumerated; alcohol-only excluded",
+      "sourceEvidenceIds": [
+        "vendor-menu"
+      ]
+    },
+    {
+      "surfaceId": "toast-cross-check",
+      "url": "https://www.toasttab.com/local/order/south-block-union-market-new/r-d1a7a597-e245-42d5-ab75-0c2cd64876df",
+      "authority": "South Block linked Toast vendor",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "union-market-dc",
+      "servicePeriod": "current",
+      "current": false,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "cross-check only; location-specific presentation and not merged beyond shared current products",
+      "sourceEvidenceIds": [
+        "toast-menu"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "south-block-dc-current-food-nonalcoholic-catalog",
+      "name": "South Block current food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "site-home",
+        "site-menu",
+        "vendor-menu",
+        "toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "productCount": 50,
+      "boundary": "50 frozen food and nonalcoholic products reconciled; alcohol-only offerings excluded; no unsupported allergen negatives asserted"
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "location": "southblock.com homepage, menu, locations, FAQ/navigation",
+        "queryOrLocation": "Inspect southblock.com homepage, menu, locations, FAQ/navigation",
+        "urls": [
+          "https://www.southblock.com/",
+          "https://www.southblock.com/menu",
+          "https://www.southblock.com/locations/union-market"
+        ],
+        "outcome": "official menu surfaces found; no complete allergen matrix or cross-contact policy found",
+        "sourceEvidenceIds": [
+          "site-home",
+          "site-menu",
+          "site-location"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "location": "official document, PDF, nutrition, ingredient, FAQ, image, sitemap and downloadable-document surfaces",
+        "queryOrLocation": "Inspect South Block official document, PDF, nutrition, ingredient, FAQ, image, sitemap and downloadable-document surfaces",
+        "urls": [
+          "https://www.southblock.com/menu",
+          "https://www.southblock.com/"
+        ],
+        "outcome": "no current official allergen matrix located",
+        "sourceEvidenceIds": [
+          "site-menu",
+          "site-home"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "location": "Incentivio and linked Toast menu surfaces",
+        "queryOrLocation": "Inspect South Block linked Incentivio and Toast menu surfaces for allergen or nutrition disclosures",
+        "urls": [
+          "https://order.incentivio.com/c/southblock/",
+          "https://www.toasttab.com/local/order/south-block-union-market-new/r-d1a7a597-e245-42d5-ab75-0c2cd64876df"
+        ],
+        "outcome": "current item descriptions and selected ingredient text found; no complete allergen matrix or cross-contact guarantee found",
+        "sourceEvidenceIds": [
+          "vendor-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "location": "targeted southblock.com allergen, allergy, nutrition, ingredients, PDF and menu queries",
+        "query": "site:southblock.com allergen allergy nutrition ingredients PDF menu",
+        "queryOrLocation": "Targeted web search: site:southblock.com allergen allergy nutrition ingredients PDF menu",
+        "urls": [
+          "https://www.google.com/search?q=site%3Asouthblock.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+        ],
+        "outcome": "no authoritative complete allergen matrix located",
+        "sourceEvidenceIds": [
+          "web-search"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "statement": "Linked vendor descriptions provide selected ingredients for some products; these are not treated as a complete allergen matrix.",
+      "authorityTier": "restaurant_linked_vendor",
+      "sourceEvidenceIds": [
+        "vendor-menu",
+        "toast-menu"
+      ]
+    },
+    {
+      "statement": "No official cross-contact guarantee or comprehensive allergen policy was located; shared-equipment risk remains unknown.",
+      "authorityTier": "restaurant_issued",
+      "sourceEvidenceIds": [
+        "site-home",
+        "site-menu"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "expectedCount": 50,
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:almond-butter-bowl",
+          "2:almond-monkey-smoothie",
+          "3:aloha-bowl",
+          "4:blue-sky-smoothie",
+          "5:cali-vibes-bowl",
+          "6:cave-monkey-smoothie",
+          "7:chocolate-covered-strawberry-bowl",
+          "8:daily-protein-smoothie",
+          "9:dubai-chocolate-bowl",
+          "10:fiji-500-ml",
+          "11:green-bowl",
+          "12:green-mini",
+          "13:greens-protein-smoothie",
+          "14:guava-breeze-smoothie",
+          "15:guava-mini",
+          "16:health-nut-smoothie",
+          "17:incredible-bulk-smoothie",
+          "18:kize-bar-peanut-butter-chocolate-chip",
+          "19:loaded-pbj-bowl",
+          "20:magic-dragon-bowl",
+          "21:mango-mania-smoothie",
+          "22:mango-mini",
+          "23:mermaid-bowl",
+          "24:mermaid-smoothie",
+          "25:mighty-warrior-bowl",
+          "26:mother-earth-smoothie",
+          "27:nutella-bowl",
+          "28:pbj-bowl",
+          "29:pbj-smoothie",
+          "30:peanut-blast-bowl",
+          "31:peanut-blast-smoothie",
+          "32:peanut-blast-smoothie-spinach",
+          "33:pink-pitaya-smoothie",
+          "34:south-block-collagen-protein",
+          "35:south-block-plant-protein",
+          "36:south-block-whey-protein",
+          "37:spindrift-lemon",
+          "38:spindrift-raspberry-lime",
+          "39:strawberry-bowl",
+          "40:strawberry-cloud-smoothie",
+          "41:strawberry-lemonade-smoothie",
+          "42:strawberry-mini",
+          "43:strawberry-passion-smoothie",
+          "44:super-green-ginger-smoothie",
+          "45:super-green-smoothie",
+          "46:tropi-kale-smoothie",
+          "47:warrior-nutella-bowl",
+          "48:warrior-bowl",
+          "49:warrior-smoothie",
+          "50:wired-monkey-smoothie"
+        ],
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "south-block-dc-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "vendor-menu",
+          "toast-menu"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "findings": [
+    {
+      "type": "official_allergen_matrix_unavailable",
+      "details": "All four required official searches completed; no complete official allergen matrix or cross-contact guarantee found. Direct positives from menu descriptions were not generalized to the catalog.",
+      "sourceEvidenceIds": [
+        "site-home",
+        "site-menu",
+        "vendor-menu",
+        "toast-menu",
+        "web-search"
+      ]
+    }
+  ],
+  "processLog": [
+    "packet_validated",
+    "identity_verified",
+    "menu_surfaces_inventoried",
+    "matrix_search_completed",
+    "products_reconciled",
+    "validator_passed"
+  ]
+}

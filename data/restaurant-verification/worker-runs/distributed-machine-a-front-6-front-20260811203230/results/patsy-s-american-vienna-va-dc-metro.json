@@ -1,0 +1,745 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-a-front-6-front-20260811203230",
+  "restaurantId": "patsy-s-american-vienna-va-dc-metro",
+  "packetValidation": {
+    "baselineItemCount": 53,
+    "baselineFingerprint": "64e634409ad574113ce4404bedae201a897324b9bbaacc302b5318320c0e636e",
+    "itemChecksRead": 53,
+    "restaurantIdMatched": true
+  },
+  "identity": {
+    "status": "confirmed",
+    "name": "Patsy's American",
+    "location": "8051 Leesburg Pike, Vienna, VA 22182",
+    "locationId": "vienna-va",
+    "domain": "patsysamerican.com",
+    "officialHomepage": "https://www.patsysamerican.com/",
+    "sourceEvidenceIds": [
+      "p-home",
+      "p-locations"
+    ]
+  },
+  "sources": [
+    {
+      "id": "p-home",
+      "url": "https://www.patsysamerican.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage, identity, address, hours and restaurant scope",
+      "retrievedAt": "2026-08-11T20:40:00.000Z"
+    },
+    {
+      "id": "p-locations",
+      "url": "https://www.greatamericanrestaurants.com/restaurants",
+      "authorityTier": "restaurant_issued",
+      "purpose": "Great American Restaurants location listing confirming Patsy's Vienna address and phone",
+      "retrievedAt": "2026-08-11T20:40:00.000Z"
+    },
+    {
+      "id": "p-api",
+      "url": "https://order.greatamericanrestaurants.com/api/vendors/patsys-american",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current Vienna food and nonalcoholic ordering catalog and frozen item source",
+      "retrievedAt": "2026-08-11T20:40:00.000Z"
+    },
+    {
+      "id": "p-order",
+      "url": "https://order.greatamericanrestaurants.com/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "linked Great American Restaurants ordering surface inspected for menu and allergen controls",
+      "retrievedAt": "2026-08-11T20:40:00.000Z"
+    },
+    {
+      "id": "p-search",
+      "url": "https://www.google.com/search?q=site%3Apatsysamerican.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted web search for official allergen materials",
+      "retrievedAt": "2026-08-11T20:40:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://www.patsysamerican.com/",
+      "authority": "restaurant_issued",
+      "locationScope": "Vienna, VA",
+      "servicePeriod": "all published periods",
+      "current": true,
+      "scopeStatus": "identity-only; no menu matrix published",
+      "sourceEvidenceIds": [
+        "p-home"
+      ]
+    },
+    {
+      "surfaceId": "linked-api",
+      "url": "https://order.greatamericanrestaurants.com/api/vendors/patsys-american",
+      "authority": "restaurant_linked_vendor",
+      "locationScope": "Patsy's American, Vienna, VA",
+      "servicePeriod": "current ordering catalog; food and nonalcoholic products",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "p-api"
+      ]
+    },
+    {
+      "surfaceId": "linked-order",
+      "url": "https://order.greatamericanrestaurants.com/",
+      "authority": "restaurant_linked_vendor",
+      "locationScope": "Great American Restaurants ordering network",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "vendor entry inspected",
+      "sourceEvidenceIds": [
+        "p-order"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "menu-catalog",
+      "name": "Patsy's American Vienna current food and nonalcoholic menu catalog (53 frozen products)",
+      "sourceEvidenceIds": [
+        "p-api"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable"
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "Official Patsy's homepage, navigation, location and menu links",
+        "urlsInspected": [
+          "https://www.patsysamerican.com/",
+          "https://www.greatamericanrestaurants.com/restaurants"
+        ],
+        "outcome": "Identity and location confirmed; no official allergen, ingredient or nutrition matrix exposed.",
+        "sourceEvidenceIds": [
+          "p-home",
+          "p-locations"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "Official site HTML, downloadable documents, PDFs, images, FAQ, sitemap and CDN/document links",
+        "urlsInspected": [
+          "https://www.patsysamerican.com/",
+          "https://www.greatamericanrestaurants.com/"
+        ],
+        "outcome": "No official allergen, ingredient or nutrition matrix located.",
+        "sourceEvidenceIds": [
+          "p-home"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Great American Restaurants linked ordering vendor and Patsy's API",
+        "urlsInspected": [
+          "https://order.greatamericanrestaurants.com/",
+          "https://order.greatamericanrestaurants.com/api/vendors/patsys-american"
+        ],
+        "outcome": "Current food catalog inspected; no complete official allergen matrix or cross-contact policy exposed.",
+        "sourceEvidenceIds": [
+          "p-api",
+          "p-order"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "queryOrLocation": "site:patsysamerican.com allergen allergy nutrition ingredients PDF menu",
+        "urlsInspected": [
+          "https://www.google.com/search?q=site%3Apatsysamerican.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+PDF+menu"
+        ],
+        "outcome": "No authoritative complete allergen matrix located.",
+        "sourceEvidenceIds": [
+          "p-search"
+        ]
+      }
+    ],
+    "notes": [
+      "No unsupported absent-allergen claims are made. Frozen direct positives remain audit evidence; this isolated POC catalog records official item-level matrix status as unavailable."
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "type": "direct_item_evidence",
+      "status": "partial",
+      "statement": "The frozen restaurant-linked vendor records contain explicit positives for selected items; no complete current matrix or cross-contact policy was found.",
+      "sourceEvidenceIds": [
+        "p-api"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "type": "cross_contact",
+      "status": "unavailable",
+      "statement": "No official complete cross-contact policy was published in the inspected sources.",
+      "sourceEvidenceIds": [
+        "p-home",
+        "p-api"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:5-starr-reserve-rib-eye-steak",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "2:bbq-baby-back-ribs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "3:drunken-rib-eye",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "4:steak-frites",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "5:wood-grilled-filet-mignon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "6:best-buns-dog-biscuit",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "7:broiled-jumbo-lump-crab-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "8:crab-cake-and-filet-mignon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "9:jambalaya-pasta",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "10:louisiana-pasta",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "11:penne-primavera",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "12:roasted-half-young-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "13:sauteed-jumbo-lump-crab-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "14:short-smoked-salmon-filet",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "15:wood-grilled-chicken-breast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "16:cheeseburger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "17:grilled-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "18:mac-n-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "19:bacon-cheeseburger-double",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "20:bacon-cheeseburger-single",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "21:cheeseburger-double",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "22:cheeseburger-single",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "23:hot-fudge-sundae",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "24:warm-flourless-chocolate-waffle",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "25:buttermilk-fried-chicken-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "26:charleston-salad-with-spiced-pecans",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "27:chop-house-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "28:patsys-lobster-roll",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "29:slow-roasted-french-dip",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "30:blue-crab-and-shrimp-fritters",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "31:hot-spinach-and-artichoke-dip",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "32:tex-mex-eggrolls",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "33:lobster-club-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "34:roast-chicken-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "35:short-smoked-salmon-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "36:waldorf-steak-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "37:warm-goat-cheese-and-spiced-pecans",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "38:bacon-cheeseburger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "39:cheddar-cheeseburger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "40:hickory-bbq-burger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "41:veggie-burger",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "42:creamy-cole-slaw",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "43:crispy-brussels-sprouts-w-bacon-and-spiced-pecans",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "44:fresh-asparagus",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "45:fresh-hand-cut-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "46:loaded-baked-potato",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "47:mashed-potatoes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "48:sweet-potato-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "49:crab-and-corn-chowder",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "50:crispy-fried-point-judith-calamari",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "51:lobster-bisque",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "52:ozzie-rolls",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      },
+      {
+        "auditItemKey": "53:patsys-favorite-hickory-smoked-salmon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "p-api"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify"
+}

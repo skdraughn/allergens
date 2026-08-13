@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 3,
+  "workflow": "safeplate_poc",
+  "runId": "poc-batch-089-2026-08-05",
+  "createdAt": "2026-08-05T18:08:04.577Z",
+  "updatedAt": "2026-08-05T18:17:29.404Z",
+  "status": "completed",
+  "models": {
+    "worker": {
+      "id": "gpt-5.6-luna",
+      "reasoningEffort": "low"
+    },
+    "reviewer": {
+      "id": "gpt-5.6-sol",
+      "reasoningEffort": "medium",
+      "onDemand": true
+    }
+  },
+  "concurrency": {
+    "luna": 3,
+    "terra": 0,
+    "sol": 1
+  },
+  "jobs": [
+    {
+      "restaurantId": "replacement-cucina-morini-washington-dc",
+      "name": "Cucina MORINI",
+      "status": "completed",
+      "agentId": "luna_cucina_morini",
+      "jobPath": "jobs/replacement-cucina-morini-washington-dc.json",
+      "resultPath": "results/replacement-cucina-morini-washington-dc.json",
+      "lunaAttempts": 2,
+      "lunaStartedAt": "2026-08-05T18:08:04.577Z",
+      "completedAt": "2026-08-05T18:17:28.420Z"
+    },
+    {
+      "restaurantId": "osm-curry-palace-indian-452446243",
+      "name": "Curry Palace Indian Restaurant",
+      "status": "completed",
+      "agentId": "luna_curry_palace",
+      "jobPath": "jobs/osm-curry-palace-indian-452446243.json",
+      "resultPath": "results/osm-curry-palace-indian-452446243.json",
+      "lunaAttempts": 4,
+      "lunaStartedAt": "2026-08-05T18:08:04.840Z",
+      "completedAt": "2026-08-05T18:17:28.928Z",
+      "solReviewed": true,
+      "solReviewPath": "reviews/osm-curry-palace-indian-452446243.json"
+    },
+    {
+      "restaurantId": "replacement-cynthia-bar-and-bistro-washington-dc",
+      "name": "Cynthia Bar and Bistro",
+      "status": "completed",
+      "agentId": "luna_cynthia",
+      "jobPath": "jobs/replacement-cynthia-bar-and-bistro-washington-dc.json",
+      "resultPath": "results/replacement-cynthia-bar-and-bistro-washington-dc.json",
+      "lunaAttempts": 2,
+      "lunaStartedAt": "2026-08-05T18:08:05.101Z",
+      "completedAt": "2026-08-05T18:17:29.404Z"
+    }
+  ]
+}

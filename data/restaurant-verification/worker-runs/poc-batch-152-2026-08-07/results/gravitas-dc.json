@@ -1,0 +1,273 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-152-2026-08-07",
+  "restaurantId": "gravitas-dc",
+  "runId": "poc-batch-152-2026-08-07-gravitas-dc-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "gravitas-dc",
+    "name": "Gravitas",
+    "locationId": null,
+    "domain": "gravitasdc.com",
+    "baselineItemCount": 0,
+    "baselineFingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "frozenItemCheckCount": 0,
+    "itemChecksRead": 0,
+    "itemChecksPath": "data/restaurant-verification/item-checks/gravitas-dc.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Gravitas",
+    "location": "1401 Okie Street Northeast, Washington, DC 20002",
+    "locationId": null,
+    "domain": "gravitasdc.com",
+    "officialHomepage": "https://www.gravitasdc.com/",
+    "sourceEvidenceIds": [
+      "ev-toast-identity",
+      "ev-tock-identity"
+    ],
+    "notes": "Toast and Tock independently identify the same Gravitas at 1401 Okie Street NE; no other location merged. Official homepage currently returns 404, so it is retained as the packet domain but not treated as a menu source."
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-toast-identity",
+      "url": "https://order.toasttab.com/online/gravitas",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "other",
+      "title": "Gravitas Toast ordering page",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Identifies Gravitas at 1401 Okie Street NE, Washington, DC 20002."
+    },
+    {
+      "evidenceId": "ev-tock-identity",
+      "url": "https://www.exploretock.com/gravitasdc",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "identity",
+      "title": "Gravitas Tock booking page",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Identifies Gravitas at 1401 Okie Street Northeast, Washington, DC 20002; booking/tasting-menu context."
+    },
+    {
+      "evidenceId": "ev-official-home",
+      "url": "https://www.gravitasdc.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Official Gravitas homepage",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Domain supplied by packet; current fetch returned HTTP 404 and no menu content."
+    },
+    {
+      "evidenceId": "ev-search-site",
+      "url": "https://www.gravitasdc.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_site allergen search",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Inspected official homepage/domain; 404, no allergen or ingredient disclosure."
+    },
+    {
+      "evidenceId": "ev-search-docs",
+      "url": "https://www.gravitasdc.com/robots.txt",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_documents allergen search",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Inspected official-domain document/discovery path; no accessible PDF, image, FAQ, nutrition, ingredient, or allergen matrix found."
+    },
+    {
+      "evidenceId": "ev-search-vendor",
+      "url": "https://order.toasttab.com/online/gravitas",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "title": "linked_vendor allergen search",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Toast exposes private-dining and Restaurant Week package listings, but no allergen matrix or ingredient field."
+    },
+    {
+      "evidenceId": "ev-search-web",
+      "url": "https://www.google.com/search?q=site%3Agravitasdc.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "targeted_web_search allergen search",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Targeted domain search found no official allergen matrix; results point to booking/menu aggregators only."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "title": "Official Gravitas homepage",
+      "url": "https://www.gravitasdc.com/",
+      "authorityTier": "restaurant_issued",
+      "mediaType": "html",
+      "accessStatus": "404",
+      "current": false,
+      "fullyEnumerated": false,
+      "scopeStatus": "excluded",
+      "sourceEvidenceIds": [
+        "ev-official-home"
+      ],
+      "notes": "No navigable menu surface.",
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "toast-private",
+      "title": "Toast private dining menu",
+      "url": "https://order.toasttab.com/online/gravitas",
+      "authorityTier": "restaurant_linked_vendor",
+      "mediaType": "html",
+      "accessStatus": "accessible",
+      "current": false,
+      "fullyEnumerated": true,
+      "scopeStatus": "excluded",
+      "sourceEvidenceIds": [
+        "ev-toast-identity"
+      ],
+      "notes": "Lists package products and passed hors d'oeuvres; this is private-event catering, not necessarily the current public tasting menu.",
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "toast-restaurant-week",
+      "title": "Toast Restaurant Week menu",
+      "url": "https://order.toasttab.com/online/gravitas",
+      "authorityTier": "restaurant_linked_vendor",
+      "mediaType": "html",
+      "accessStatus": "accessible",
+      "current": false,
+      "fullyEnumerated": true,
+      "scopeStatus": "excluded",
+      "sourceEvidenceIds": [
+        "ev-toast-identity"
+      ],
+      "notes": "Seasonal/event package listings; not a complete public menu.",
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "tock-booking",
+      "title": "Tock reservation/tasting-menu surface",
+      "url": "https://www.exploretock.com/gravitasdc",
+      "authorityTier": "restaurant_linked_vendor",
+      "mediaType": "booking-html",
+      "accessStatus": "accessible",
+      "current": false,
+      "fullyEnumerated": false,
+      "scopeStatus": "excluded",
+      "sourceEvidenceIds": [
+        "ev-tock-identity"
+      ],
+      "notes": "Booking-only page; menu is rotating and not statically enumerated.",
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "closed-current-catalog",
+      "url": "https://www.gravitasdc.com/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "1401 Okie Street Northeast, Washington, DC 20002",
+      "servicePeriod": "closed",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-official-home"
+      ],
+      "currentProductKeys": []
+    }
+  ],
+  "currentProducts": [],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "url": "https://www.gravitasdc.com/",
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-site"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "url": "https://www.gravitasdc.com/robots.txt",
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-docs"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "url": "https://order.toasttab.com/online/gravitas",
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "site:gravitasdc.com allergen allergy nutrition ingredients PDF menu",
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-web"
+        ]
+      }
+    ],
+    "notes": "No direct allergen positives, negatives, or cross-contact statements located; absence is not treated as a negative."
+  },
+  "allergenSearch": {
+    "status": "accurately_unavailable",
+    "searches": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "crossContactStatements": [],
+    "notes": "No direct allergen positives, negatives, or cross-contact statements located; absence is not treated as a negative."
+  },
+  "reconciliation": {
+    "items": []
+  },
+  "routingSignals": {
+    "lunaFix": [],
+    "solReview": [
+      {
+        "type": "unresolved_menu_scope",
+        "reason": "Public tasting menu is booking-only/rotating on Tock; official homepage is 404; Toast surfaces are private-event and seasonal packages. Complete current POC food/nonalcoholic boundary cannot be safely asserted.",
+        "affectedAuditItemKeys": []
+      }
+    ],
+    "identityAmbiguous": false
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": true,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityConflict": false,
+    "catalogRepair": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "proposedChanges": [],
+  "blockedReason": null,
+  "validator": {
+    "valid": true,
+    "errors": []
+  },
+  "outcome": "verified",
+  "recommendedLane": "verify",
+  "emptyCatalogReason": "closed_or_no_current_catalog"
+}

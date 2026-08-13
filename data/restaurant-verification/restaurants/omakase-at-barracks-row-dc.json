@@ -1,0 +1,259 @@
+{
+  "schemaVersion": 1,
+  "verificationContractVersion": 2,
+  "restaurantId": "omakase-at-barracks-row-dc",
+  "name": "Omakase at Barracks Row",
+  "status": "codex_verified",
+  "identity": {
+    "status": "confirmed",
+    "name": "Omakase @ Barracks Row",
+    "location": "522 8th Street SE, Washington, DC 20003",
+    "officialHomepage": "https://omakasedc.com/",
+    "sourceEvidenceIds": [
+      "src-home",
+      "src-bid"
+    ]
+  },
+  "currentCatalog": {
+    "status": "verified",
+    "reviewedBaselineItemCount": 0,
+    "currentProductCount": 1,
+    "reconciledCurrentProductCount": 1,
+    "inventoryFingerprint": "c9e108cb7ee151c28eec4689b9703d6d9e8cbaafae67cdca66020c5e8ad16acc",
+    "surfaces": [
+      {
+        "surfaceId": "official-home",
+        "title": "Official homepage and reservation experience",
+        "url": "https://omakasedc.com/",
+        "current": true,
+        "scopeStatus": "complete",
+        "verified": true,
+        "evidenceIds": [
+          "src-home"
+        ],
+        "notes": [
+          "current dinner service"
+        ]
+      },
+      {
+        "surfaceId": "official-faq",
+        "title": "Official FAQ dietary/menu surface",
+        "url": "https://omakasedc.com/faq",
+        "current": true,
+        "scopeStatus": "complete",
+        "verified": true,
+        "evidenceIds": [
+          "src-faq"
+        ],
+        "notes": [
+          "current seasonal omakase"
+        ]
+      },
+      {
+        "surfaceId": "linked-resy",
+        "title": "Linked Resy reservation surface",
+        "url": "https://resy.com/cities/washington-dc/venues/omakase-barracks-row",
+        "current": true,
+        "scopeStatus": "complete",
+        "verified": true,
+        "evidenceIds": [
+          "src-resy"
+        ],
+        "notes": [
+          "current reservation tickets"
+        ]
+      }
+    ],
+    "products": [
+      {
+        "currentProductKey": "omakase-tasting-menu",
+        "name": "Omakase tasting menu",
+        "category": "food",
+        "presentationIds": [],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "src-home",
+          "src-faq",
+          "src-resy"
+        ],
+        "containsAllergens": [
+          "fish",
+          "shellfish",
+          "soy"
+        ],
+        "mayContainAllergens": [],
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "src-faq"
+        ],
+        "coordinatorReviewed": true,
+        "notes": []
+      }
+    ],
+    "notes": [
+      "Coordinator terminal catalog derived from validated Luna research and serialized APPLY output."
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "type": "dietary_boundary",
+      "status": "direct",
+      "statement": "The official FAQ says the menu includes cooked-off alcohol, soy, and seafood that cannot be omitted; seasonal menu may include shellfish and other seafood.",
+      "sourceEvidenceIds": [
+        "src-faq"
+      ]
+    }
+  ],
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 0,
+      "sourceItemCount": 1,
+      "notes": [
+        "POC catalog and every frozen item were coordinator-reconciled."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "accurately_unavailable",
+      "directPositiveCount": 1,
+      "directAssertionCount": 3,
+      "highestAuthorityTier": "restaurant_issued",
+      "notes": [
+        "All four official-matrix search classes completed; direct positives are retained and missing disclosure remains unavailable."
+      ]
+    },
+    "extraction": {
+      "verdict": "not_applicable",
+      "parserReviewed": false,
+      "semanticsVerified": true,
+      "notes": [
+        "POC closeout uses a verified target-specific catalog transformation; shared-parser review is deferred."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "class": "official_site",
+      "queryOrLocation": "Official homepage and FAQ navigation inspected for allergen, allergy, nutrition, ingredients, and menu disclosures",
+      "urlsInspected": [
+        "https://omakasedc.com/",
+        "https://omakasedc.com/faq"
+      ],
+      "outcome": "Official site describes the current reservation-only tasting but publishes no complete allergen matrix or itemized nutrition menu.",
+      "sourceEvidenceIds": [
+        "src-home",
+        "src-faq"
+      ]
+    },
+    {
+      "class": "official_documents",
+      "queryOrLocation": "Official site document, PDF, image, sitemap, FAQ, and downloadable surfaces inspected",
+      "urlsInspected": [
+        "https://omakasedc.com/",
+        "https://omakasedc.com/faq"
+      ],
+      "outcome": "No official allergen, ingredient, nutrition PDF, image menu, or downloadable matrix located.",
+      "sourceEvidenceIds": [
+        "src-home",
+        "src-faq"
+      ]
+    },
+    {
+      "class": "linked_vendor",
+      "queryOrLocation": "Restaurant-linked Resy reservation surface inspected for current ticket/menu and dietary disclosure",
+      "urlsInspected": [
+        "https://resy.com/cities/washington-dc/venues/omakase-barracks-row"
+      ],
+      "outcome": "Resy is the linked reservation vendor; accessible surface exposes reservation context, not a complete allergen matrix or itemized menu.",
+      "sourceEvidenceIds": [
+        "src-resy"
+      ]
+    },
+    {
+      "class": "targeted_web_search",
+      "queryOrLocation": "site:omakasebarracksrow.com allergen OR allergy OR nutrition OR ingredients PDF menu; Omakase Barracks Row menu searches",
+      "urlsInspected": [
+        "https://www.google.com/search?q=site%3Aomakasebarracksrow.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+PDF+menu",
+        "https://www.google.com/search?q=Omakase+at+Barracks+Row+DC+official+menu"
+      ],
+      "outcome": "Search found the official omakasedc.com identity and third-party descriptions, but no authoritative complete allergen matrix.",
+      "sourceEvidenceIds": [
+        "src-search"
+      ]
+    }
+  ],
+  "findings": [],
+  "reconciliation": {
+    "unresolved": 0
+  },
+  "adjudication": {
+    "type": "coordinator",
+    "runId": "distributed-machine-a-front-5-front-20260811191822",
+    "decidedAt": "2026-08-12T12:33:00.198Z",
+    "recommendation": "codex_verified",
+    "model": {
+      "id": "codex-poc-coordinator",
+      "reasoningEffort": "high"
+    },
+    "rationale": "Research structure, current product mappings, direct allergen authority, target repair, Ingredient Intelligence timing, focused validation, and idempotency passed the POC terminal gates.",
+    "artifactHashes": []
+  },
+  "workerHandoff": {
+    "runId": "distributed-machine-a-front-5-front-20260811191822",
+    "restaurantId": "omakase-at-barracks-row-dc",
+    "preparedAt": "2026-08-12T12:33:00.196Z",
+    "routeDestination": "coordinator",
+    "solRequired": false,
+    "artifacts": [
+      {
+        "kind": "poc_job",
+        "path": "distributed-runs/distributed-machine-a-front-5-front-20260811191822/jobs/omakase-at-barracks-row-dc.json",
+        "sha256": "4e029c9ca87c87c61452f308a0a62aa3268bb9cc0e6905d96f51f3aa5d6c49df"
+      },
+      {
+        "kind": "poc_research",
+        "path": "worker-runs/distributed-machine-a-front-5-front-20260811191822/results/omakase-at-barracks-row-dc.json",
+        "sha256": "f5bf08721973f8a01e098f9baec43b3e8dfe56dccdb21da62355845afc2d9bf1"
+      },
+      {
+        "kind": "poc_apply",
+        "path": "worker-runs/distributed-machine-a-front-5-front-20260811191822/apply-results/omakase-at-barracks-row-dc.json",
+        "sha256": "36c7d2da6a0851b88bf5dab91e054c90235ed353b712035e154a255da2a03070"
+      }
+    ],
+    "notes": [
+      "POC worker artifacts persisted by the root coordinator."
+    ]
+  },
+  "repairs": [
+    {
+      "id": "distributed-machine-a-front-5-front-20260811191822-omakase-at-barracks-row-dc-target-repair",
+      "status": "verified",
+      "summary": "Applied and validated the restaurant-specific POC catalog repair.",
+      "files": [
+        "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+        "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/omakase-at-barracks-row-dc.json",
+        "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/omakase-at-barracks-row-dc.json",
+        "/Users/skdraughn/software/allergy-app/data/restaurant-verification/distributed-runs/distributed-machine-a-front-5-front-20260811191822/apply-results/omakase-at-barracks-row-dc.json",
+        "/Users/skdraughn/software/allergy-app/scripts/apply-batch40-poc.mjs"
+      ],
+      "fixturePaths": [
+        "data/restaurant-verification/distributed-runs/distributed-machine-a-front-5-front-20260811191822/results/omakase-at-barracks-row-dc.json"
+      ],
+      "verificationCommands": [
+        "fingerprint gate",
+        "validatePocResearchFiles",
+        "exact current-surface preflight",
+        "target-only canonical apply",
+        "recompute Ingredient Intelligence after direct finalization",
+        "run twice and compare owned bytes"
+      ]
+    }
+  ],
+  "notes": [
+    "Coordinator-only POC closeout packet generated after serialized APPLY."
+  ],
+  "updatedAt": "2026-08-12T12:33:00.661Z",
+  "completedAt": "2026-08-12T12:33:00.661Z"
+}

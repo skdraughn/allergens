@@ -1,0 +1,1002 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-007-2026-07-16",
+  "restaurantId": "bbq-chicken",
+  "name": "bb.q Chicken",
+  "packetValidation": {
+    "restaurantId": "bbq-chicken",
+    "locationId": null,
+    "domain": "bbqchicken.com",
+    "baselineItemCount": 44,
+    "baselineFingerprint": "b693b970c68bcce9f89bf7f9f8e4fa478b4ab27eda48541e651d9cffc57610d6",
+    "frozenItemChecksRead": true,
+    "frozenItemCheckCount": 44,
+    "status": "valid"
+  },
+  "identity": {
+    "status": "confirmed",
+    "identityAmbiguous": false,
+    "locationScope": "U.S. bb.q Chicken brand catalog; packet locationId is null, so individual franchise menus are not merged",
+    "officialHomepage": "https://bbqchicken.com/",
+    "evidenceIds": [
+      "S1",
+      "S2",
+      "S3"
+    ],
+    "notes": "Official brand site confirms bb.q Chicken; its menu states flavor availability varies by restaurant. Linked ordering stores were retained as location-specific risk evidence, not merged into the brand catalog."
+  },
+  "sources": [
+    {
+      "evidenceId": "S1",
+      "url": "https://bbqchicken.com/",
+      "authority": "restaurant_issued",
+      "purpose": "identity/navigation",
+      "retrieval": "accessible",
+      "anchor": "Official bb.q Chicken U.S. homepage; links to Menu and Order Now."
+    },
+    {
+      "evidenceId": "S2",
+      "url": "https://bbqchicken.com/menu/",
+      "authority": "restaurant_issued",
+      "purpose": "current-menu",
+      "retrieval": "accessible",
+      "anchor": "Current Menu page; Korean Fried Chicken, K Food, and Sides headings with named products; page states flavors vary by restaurant."
+    },
+    {
+      "evidenceId": "S3",
+      "url": "https://bbqchicken.com/wp-content/uploads/2024/01/bbq-Allergy-List_2024.pdf",
+      "authority": "restaurant_issued",
+      "purpose": "allergen-document",
+      "retrieval": "accessible",
+      "anchor": "2024 official allergen/potential-cross-contaminants PDF; dated and not established as current for the packet checkpoint."
+    },
+    {
+      "evidenceId": "S4",
+      "url": "https://order.bbqchicken.com/store/2305631",
+      "authority": "restaurant_linked_vendor",
+      "purpose": "location-menu",
+      "retrieval": "accessible",
+      "anchor": "North Quincy, MA store page; location-specific current ordering surface, not promoted to null-location brand scope."
+    },
+    {
+      "evidenceId": "S5",
+      "url": "https://order.bbqchicken.com/store/23977060",
+      "authority": "restaurant_linked_vendor",
+      "purpose": "location-menu",
+      "retrieval": "accessible",
+      "anchor": "Huntington Drive store page; separate location-specific current ordering surface, not merged with S4."
+    },
+    {
+      "evidenceId": "S6",
+      "url": "https://www.google.com/search?q=site%3Abbqchicken.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF",
+      "authority": "targeted_web_search",
+      "purpose": "allergen-discovery",
+      "retrieval": "searched",
+      "anchor": "Search surfaced the official 2024 allergen PDF but no newer current matrix."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "M1",
+      "title": "Official homepage",
+      "url": "https://bbqchicken.com/",
+      "authority": "restaurant_issued",
+      "servicePeriod": "navigation",
+      "mediaType": "html",
+      "current": true,
+      "scopeStatus": "partial",
+      "accessStatus": "accessible",
+      "sourceEvidenceIds": [
+        "S1"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "M2",
+      "title": "Official U.S. Menu",
+      "url": "https://bbqchicken.com/menu/",
+      "authority": "restaurant_issued",
+      "servicePeriod": "all-day",
+      "mediaType": "html",
+      "current": true,
+      "scopeStatus": "partial",
+      "accessStatus": "accessible",
+      "sourceEvidenceIds": [
+        "S2"
+      ],
+      "currentProductKeys": [
+        "golden-original",
+        "secret-sauce",
+        "hot-spicy",
+        "honey-garlic",
+        "soy-garlic",
+        "galbi",
+        "spicy-galbi",
+        "cheesling",
+        "gangnam-style",
+        "gangjeong",
+        "spicy-original",
+        "wings-of-fire",
+        "ddeok-bokki",
+        "rose-ddeok-bokki",
+        "kimchi-fried-rice",
+        "french-fries",
+        "sweet-potato-fries",
+        "cheese-sticks",
+        "onion-rings",
+        "fried-dumplings",
+        "cheesling-fries",
+        "coleslaw",
+        "steamed-rice",
+        "pickled-radish"
+      ],
+      "notes": "Flavor availability varies by restaurant; therefore not a complete location catalog."
+    },
+    {
+      "surfaceId": "M3",
+      "title": "North Quincy online ordering",
+      "url": "https://order.bbqchicken.com/store/2305631",
+      "authority": "restaurant_linked_vendor",
+      "servicePeriod": "all-day",
+      "mediaType": "html",
+      "current": true,
+      "scopeStatus": "unresolved",
+      "accessStatus": "accessible",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "currentProductKeys": [],
+      "notes": "Current location-specific surface; compatibility with the null-location chain baseline requires scope adjudication."
+    },
+    {
+      "surfaceId": "M4",
+      "title": "Huntington Drive online ordering",
+      "url": "https://order.bbqchicken.com/store/23977060",
+      "authority": "restaurant_linked_vendor",
+      "servicePeriod": "all-day",
+      "mediaType": "html",
+      "current": true,
+      "scopeStatus": "unresolved",
+      "accessStatus": "accessible",
+      "sourceEvidenceIds": [
+        "S5"
+      ],
+      "currentProductKeys": [],
+      "notes": "Current location-specific surface; compatibility with the null-location chain baseline requires scope adjudication."
+    },
+    {
+      "surfaceId": "M5",
+      "title": "Official allergen PDF",
+      "url": "https://bbqchicken.com/wp-content/uploads/2024/01/bbq-Allergy-List_2024.pdf",
+      "authority": "restaurant_issued",
+      "servicePeriod": "undated/currentness unresolved",
+      "mediaType": "pdf",
+      "current": false,
+      "scopeStatus": "historical_or_unresolved",
+      "accessStatus": "accessible",
+      "sourceEvidenceIds": [
+        "S3"
+      ],
+      "currentProductKeys": [],
+      "notes": "Observed direct positives are not applied as current because the document is dated 2024."
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "golden-original",
+      "name": "Golden Original",
+      "category": "Korean Fried Chicken",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "secret-sauce",
+      "name": "Secret Sauce",
+      "category": "Korean Fried Chicken",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "hot-spicy",
+      "name": "Hot Spicy",
+      "category": "Korean Fried Chicken",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "honey-garlic",
+      "name": "Honey Garlic",
+      "category": "Korean Fried Chicken",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "soy-garlic",
+      "name": "Soy Garlic",
+      "category": "Korean Fried Chicken",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "galbi",
+      "name": "Galbi",
+      "category": "Korean Fried Chicken",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "spicy-galbi",
+      "name": "Spicy Galbi",
+      "category": "Korean Fried Chicken",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "cheesling",
+      "name": "Cheesling",
+      "category": "Korean Fried Chicken",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "gangnam-style",
+      "name": "Gangnam Style",
+      "category": "Korean Fried Chicken",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "gangjeong",
+      "name": "Gang-Jeong",
+      "category": "Korean Fried Chicken",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "spicy-original",
+      "name": "Spicy Original",
+      "category": "Korean Fried Chicken",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "wings-of-fire",
+      "name": "Wings of Fire",
+      "category": "Korean Fried Chicken",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "ddeok-bokki",
+      "name": "Ddeok-Bokki",
+      "category": "K Food",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "rose-ddeok-bokki",
+      "name": "Rose’ Ddeok-Bokki",
+      "category": "K Food",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "kimchi-fried-rice",
+      "name": "Kimchi Fried Rice",
+      "category": "K Food",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "french-fries",
+      "name": "French Fries",
+      "category": "Sides",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ]
+    },
+    {
+      "currentProductKey": "sweet-potato-fries",
+      "name": "Sweet Potato Fries",
+      "category": "Sides",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ]
+    },
+    {
+      "currentProductKey": "cheese-sticks",
+      "name": "Cheese Sticks",
+      "category": "Sides",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ]
+    },
+    {
+      "currentProductKey": "onion-rings",
+      "name": "Onion Rings",
+      "category": "Sides",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ]
+    },
+    {
+      "currentProductKey": "fried-dumplings",
+      "name": "Fried Dumplings",
+      "category": "Sides",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ]
+    },
+    {
+      "currentProductKey": "cheesling-fries",
+      "name": "Cheesling Fries",
+      "category": "Sides",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ]
+    },
+    {
+      "currentProductKey": "coleslaw",
+      "name": "Coleslaw",
+      "category": "Sides",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ]
+    },
+    {
+      "currentProductKey": "steamed-rice",
+      "name": "Steamed Rice",
+      "category": "Sides",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ]
+    },
+    {
+      "currentProductKey": "pickled-radish",
+      "name": "Pickled Radish",
+      "category": "Sides",
+      "surfaceIds": [
+        "M2"
+      ],
+      "sourceEvidenceIds": [
+        "S2"
+      ]
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "url": "https://bbqchicken.com/menu/",
+        "outcome": "No current allergen matrix on official menu/navigation surfaces.",
+        "evidenceIds": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "url": "https://bbqchicken.com/wp-content/uploads/2024/01/bbq-Allergy-List_2024.pdf",
+        "outcome": "Older official PDF found; currentness not established.",
+        "evidenceIds": [
+          "S3"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "url": "https://order.bbqchicken.com/",
+        "outcome": "Location-specific ordering surfaces inspected; no current brand-wide allergen matrix.",
+        "evidenceIds": [
+          "S4",
+          "S5"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "url": "https://www.google.com/search?q=site%3Abbqchicken.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF",
+        "outcome": "Only the dated official PDF surfaced; no current matrix.",
+        "evidenceIds": [
+          "S6"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:buldak-rice-bowl",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2",
+          "S4"
+        ]
+      },
+      {
+        "auditItemKey": "2:bulgogi-cheese-nachos",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "3:bulgogi-poutine",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "4:bulgogi-rice-bowl",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2",
+          "S4"
+        ]
+      },
+      {
+        "auditItemKey": "5:caesar-salad",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "6:carbonara-ddeok-bokki",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "7:caribbean-spice",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "8:caribbean-spice-rice-bowl",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "9:cheese-buldak",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "10:cheesling",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "cheesling"
+        ],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "11:cheesling-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "cheesling-fries"
+        ],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "12:chicken-alfredo-pasta",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "13:chicken-cheese-ball",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "14:chicken-fried-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kimchi-fried-rice"
+        ],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "15:coleslaw",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "coleslaw"
+        ],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "16:corn-salad",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "17:ddeok-bokki",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "ddeok-bokki"
+        ],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "18:galbi",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "galbi"
+        ],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "19:gangjeong",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "gangjeong"
+        ],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "20:gangnam-style",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "gangnam-style"
+        ],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "21:golden-original",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "golden-original"
+        ],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "22:golden-original-sandwich",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "23:grilled-chicken-salad",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "24:honey-garlic",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "honey-garlic"
+        ],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "25:hot-mala",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "26:hot-spicy",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "hot-spicy"
+        ],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "27:kimchi-fried-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kimchi-fried-rice"
+        ],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "28:kimchi-ramen",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "29:kimchicken-pasta",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "30:kimchicken-quesadilla",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "31:kimchicken-rice-bowl",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "32:mala-ddeok-bokki",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "33:mustard-chicken-salad",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "34:ramen",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "35:rose-ddeok-bokki",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rose-ddeok-bokki"
+        ],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "36:rose-pasta",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "37:secret-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "secret-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "38:so-ddeok-so-ddeok",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "39:soy-garlic",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "soy-garlic"
+        ],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "40:spicy-galbi",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "spicy-galbi"
+        ],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "41:spicy-original-sandwich",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "42:spicy-original-wing",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "spicy-original"
+        ],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "43:wings-of-fire",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wings-of-fire"
+        ],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      },
+      {
+        "auditItemKey": "44:yuzu-cobb-salad",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S2"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": true,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": true,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": true,
+    "newItems": true,
+    "nameOrCategoryCleanup": true,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "routingSignals": [
+    {
+      "signal": "menu_scope_unresolved",
+      "severity": "high",
+      "summary": "Packet has no location while official menu says availability varies by restaurant; two linked vendor menus are separate locations.",
+      "sourceEvidenceIds": [
+        "S2",
+        "S4",
+        "S5"
+      ]
+    },
+    {
+      "signal": "dated_allergen_document",
+      "severity": "high",
+      "summary": "Official allergen PDF is dated 2024; no current matrix was found, so no current positive or negative allergen claims are applied.",
+      "sourceEvidenceIds": [
+        "S3",
+        "S6"
+      ]
+    }
+  ],
+  "recommendedLane": "luna_retry",
+  "summary": "Identity is confirmed at brand level. Current official menu products were enumerated, but location scope is unresolved because the packet has no location and the official menu says availability varies by restaurant. The four required matrix searches are complete; current official allergen status is accurately_unavailable. Frozen 44 keys are each reconciled once; no current allergen negatives or cross-contact conclusions are claimed."
+}

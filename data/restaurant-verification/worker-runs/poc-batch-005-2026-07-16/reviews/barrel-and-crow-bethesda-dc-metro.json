@@ -1,0 +1,778 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-005-2026-07-16",
+  "restaurantId": "barrel-and-crow-bethesda-dc-metro",
+  "reviewType": "binding_current_menu_scope_resolution",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "role": "sol_reviewer"
+  },
+  "reviewedKeys": [],
+  "resolution": {
+    "binding": true,
+    "outcome": "current_food_and_nonalcoholic_catalog_resolved",
+    "catalogDefinition": {
+      "scope": "Current food and explicitly nonalcoholic products for Barrel & Crow at 4867 Cordell Avenue, Bethesda, Maryland 20814 across dinner, Sunday brunch, dessert, bar/happy-hour food, sides, kids offerings, and named nonalcoholic tea.",
+      "completeSurfaceIds": [
+        "surface-toast-dinner",
+        "surface-official-food-drink",
+        "surface-official-image-menus"
+      ],
+      "supportingSurfaceIds": [],
+      "enumerationRule": "union_of_exact_location_current_toast_dinner_and_current_restaurant_linked_official_dinner_brunch_dessert_and_happy_hour_image_rows_deduplicated_by_product_identity",
+      "excludedCategories": [
+        "wine, beer, cocktails, spirits, rail liquor, brandy, cognac, armagnac, ports, sparkling wine, and other alcoholic beverages",
+        "menu headings and section labels",
+        "modifier-only preparation choices",
+        "historical or superseded PDF rows not present on current surfaces"
+      ],
+      "sourceEvidenceIds": [
+        "toast-current-menu",
+        "official-food-drink"
+      ],
+      "existingProductCount": 48,
+      "additionalProductCount": 27,
+      "resolvedCatalogProductCount": 75,
+      "currentOfficialChildPages": {
+        "dinner": "https://barrelandcrow.com/food-drink/dinnermenu01/",
+        "brunch": "https://barrelandcrow.com/food-drink/brunchmenu01/",
+        "dessert": "https://barrelandcrow.com/food-drink/dessertmenu01/",
+        "happyHour": "https://barrelandcrow.com/food-drink/barhappyhourmenu01/"
+      },
+      "imageAuthorityAssessment": "The current official Food & Drink index directly embeds or links these exact menu drawings, advertises current Sunday brunch and happy-hour service, and identifies the Bethesda address. The drawings substantially corroborate current exact-location Toast names and prices while adding service-specific rows. They are accepted as current restaurant-issued catalog surfaces.",
+      "historicalDocumentAssessment": "The 2025 dinner PDF and 2023 brunch PDF are superseded by the current linked drawings and current Toast dinner. They supply no binding additions.",
+      "nonalcoholicAssessment": "The current dessert drawing explicitly lists eight Harney & Sons tea selections. They are included as named nonalcoholic product identities. Alcoholic dessert drinks and all wine, beer, cocktail, spirit, and rail-liquor rows are excluded.",
+      "allergenBoundary": "Only direct named ingredient or unavoidable product-identity positives are retained. No complete allergen profile, supported negative, may-contain absence, or cross-contact outcome is established.",
+      "rationale": "Toast remains the complete current dinner ordering catalog. The official index and its current image menus extend the complete POC boundary to current dinner rows omitted from Toast, Sunday brunch, dessert, happy-hour/bar food, and explicitly named teas. Repeated and normalized presentations are mapped to existing Toast identities rather than duplicated."
+    },
+    "items": [],
+    "surfaceResolutions": [
+      {
+        "surfaceId": "surface-official-food-drink",
+        "disposition": "complete",
+        "title": "Official Food & Drink index and current Dinner/Brunch children",
+        "url": "https://barrelandcrow.com/food-drink/",
+        "authority": "restaurant_issued",
+        "locationScope": "Barrel & Crow, 4867 Cordell Avenue, Bethesda, MD 20814",
+        "servicePeriods": [
+          "dinner",
+          "Sunday brunch",
+          "happy hour",
+          "dessert"
+        ],
+        "currentAsOf": "2026-07-16",
+        "current": true,
+        "scopeClassification": "authoritative_current_service_index_and_food_catalog",
+        "sourceEvidenceIds": [
+          "official-food-drink",
+          "toast-current-menu"
+        ],
+        "rationale": "The current official index identifies the exact Bethesda location, publishes current service hours, and directly links the current Dinner and Brunch drawings. Those drawings are readable and substantially match current Toast dinner. They add two current official dinner identities and eleven brunch identities beyond Toast; normalized repeats and side presentations are bound to existing products.",
+        "additionalProductsRequired": [
+          {
+            "currentProductKey": "seasonal-soup",
+            "name": "Seasonal Soup",
+            "category": "Dinner and bar menu / appetizer",
+            "description": null,
+            "surfaceIds": [
+              "surface-official-food-drink",
+              "surface-official-image-menus"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "No item-specific allergen conclusion is introduced."
+            }
+          },
+          {
+            "currentProductKey": "raspberry-point-oysters",
+            "name": "Raspberry Point Oysters",
+            "category": "Dinner / appetizer",
+            "description": "1/2 dozen oysters, mignonette, cocktail sauce",
+            "surfaceIds": [
+              "surface-official-food-drink"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [
+                "shellfish"
+              ],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "Only the current official row name or description supports these direct positives; no absent-allergen or cross-contact conclusion is inferred."
+            }
+          },
+          {
+            "currentProductKey": "breakfast-burrito",
+            "name": "Breakfast Burrito",
+            "category": "Brunch / entree",
+            "description": "Scrambled egg, potatoes, avocado, pico de gallo, chipotle crema, mixed green salad, lime",
+            "surfaceIds": [
+              "surface-official-food-drink"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [
+                "egg",
+                "milk"
+              ],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "Only the current official row name or description supports these direct positives; no absent-allergen or cross-contact conclusion is inferred."
+            }
+          },
+          {
+            "currentProductKey": "pulled-pork-potato-hash",
+            "name": "Pulled Pork-Potato Hash",
+            "category": "Brunch / entree",
+            "description": "Fried egg, salsa verde, pickled onions, creme fraiche, jalapenos, cilantro",
+            "surfaceIds": [
+              "surface-official-food-drink"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [
+                "egg",
+                "milk"
+              ],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "Only the current official row name or description supports these direct positives; no absent-allergen or cross-contact conclusion is inferred."
+            }
+          },
+          {
+            "currentProductKey": "southern-shakshouka",
+            "name": "Southern Shakshouka",
+            "category": "Brunch / entree",
+            "description": "Cajun tomato sauce, andouille, avocado, creme fraiche, two fried eggs, grilled bread",
+            "surfaceIds": [
+              "surface-official-food-drink"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [
+                "egg",
+                "milk",
+                "wheat"
+              ],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "Only the current official row name or description supports these direct positives; no absent-allergen or cross-contact conclusion is inferred."
+            }
+          },
+          {
+            "currentProductKey": "buttermilk-pancakes",
+            "name": "Buttermilk Pancakes",
+            "category": "Brunch / entree",
+            "description": "Smoked bacon, lemon curd, granola dust, blueberry compote",
+            "surfaceIds": [
+              "surface-official-food-drink"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [
+                "milk"
+              ],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "Only the current official row name or description supports these direct positives; no absent-allergen or cross-contact conclusion is inferred."
+            }
+          },
+          {
+            "currentProductKey": "brioche-french-toast",
+            "name": "Brioche French Toast",
+            "category": "Brunch / entree",
+            "description": "Apricot compote, candied walnuts, whipped cream, smoked bacon",
+            "surfaceIds": [
+              "surface-official-food-drink"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [
+                "milk",
+                "tree_nut",
+                "wheat"
+              ],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "Only the current official row name or description supports these direct positives; no absent-allergen or cross-contact conclusion is inferred."
+            }
+          },
+          {
+            "currentProductKey": "hanger-steak-and-eggs",
+            "name": "Hanger Steak & Eggs",
+            "category": "Brunch / entree",
+            "description": "Sunny side up egg, hollandaise, potato hash",
+            "surfaceIds": [
+              "surface-official-food-drink"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [
+                "egg"
+              ],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "Only the current official row name or description supports these direct positives; no absent-allergen or cross-contact conclusion is inferred."
+            }
+          },
+          {
+            "currentProductKey": "eggs-benedict",
+            "name": "Eggs Benedict",
+            "category": "Brunch / entree",
+            "description": "English muffin, Tasso ham, two poached eggs, hollandaise, potato hash",
+            "surfaceIds": [
+              "surface-official-food-drink"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [
+                "egg",
+                "wheat"
+              ],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "Only the current official row name or description supports these direct positives; no absent-allergen or cross-contact conclusion is inferred."
+            }
+          },
+          {
+            "currentProductKey": "fried-green-tomato-blt",
+            "name": "Fried Green Tomato BLT",
+            "category": "Brunch / entree",
+            "description": "Focaccia, fried green tomato, bacon, lettuce, pesto, mixed green salad",
+            "surfaceIds": [
+              "surface-official-food-drink"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [
+                "wheat"
+              ],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "Only the current official row name or description supports these direct positives; no absent-allergen or cross-contact conclusion is inferred."
+            }
+          },
+          {
+            "currentProductKey": "potato-hash",
+            "name": "Potato Hash",
+            "category": "Brunch / side",
+            "description": "Onions, thyme",
+            "surfaceIds": [
+              "surface-official-food-drink"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "No item-specific allergen conclusion is introduced."
+            }
+          },
+          {
+            "currentProductKey": "two-eggs-any-style",
+            "name": "2 Eggs Any Style",
+            "category": "Brunch / side",
+            "description": null,
+            "surfaceIds": [
+              "surface-official-food-drink"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [
+                "egg"
+              ],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "Only the current official row name or description supports these direct positives; no absent-allergen or cross-contact conclusion is inferred."
+            }
+          },
+          {
+            "currentProductKey": "applewood-smoked-bacon",
+            "name": "Applewood Smoked Bacon",
+            "category": "Brunch / side",
+            "description": null,
+            "surfaceIds": [
+              "surface-official-food-drink"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "No item-specific allergen conclusion is introduced."
+            }
+          }
+        ],
+        "coveredExistingProductMappings": [
+          {
+            "officialPresentation": "Steamed Mussels",
+            "currentProductKey": "mussels-app"
+          },
+          {
+            "officialPresentation": "Fried Calamari",
+            "currentProductKey": "calamari"
+          },
+          {
+            "officialPresentation": "Pan Seared Rainbow Trout",
+            "currentProductKey": "pan-seared-trout"
+          },
+          {
+            "officialPresentation": "14 oz. Grilled Heritage Pork Chop",
+            "currentProductKey": "heritage-breed-pork-chop"
+          },
+          {
+            "officialPresentation": "Red Bell Pepper Ricotta Ravioli",
+            "currentProductKey": "roasted-red-pepper-ravioli"
+          },
+          {
+            "officialPresentation": "Roasted Baby Potatoes",
+            "currentProductKey": "sd-baby-potatoes"
+          },
+          {
+            "officialPresentation": "Sauteed Green Beans",
+            "currentProductKey": "sd-green-beans"
+          },
+          {
+            "officialPresentation": "Stone Ground Grits",
+            "currentProductKey": "sd-grits"
+          },
+          {
+            "officialPresentation": "Bacon Braised Collards",
+            "currentProductKey": "sd-collard-greens"
+          },
+          {
+            "officialPresentation": "Oysters on Half Shell",
+            "currentProductKey": "raspberry-point-oysters"
+          }
+        ],
+        "excludedHistoricalSurfaces": [
+          "surface-official-dinner-pdf",
+          "surface-official-brunch-pdf"
+        ],
+        "allergenAssessment": {
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfilesEstablished": false,
+          "notes": "Only direct named ingredient or unavoidable product-identity positives are preserved. No negative, may-contain absence, or cross-contact conclusion is introduced."
+        },
+        "safetySourceAuthorityConflictRemains": false,
+        "allergenAuthorityLimitationRemains": true
+      },
+      {
+        "surfaceId": "surface-official-image-menus",
+        "disposition": "complete",
+        "title": "Current official Dessert and Bar/Happy Hour image menus",
+        "url": "https://barrelandcrow.com/food-drink/",
+        "authority": "restaurant_issued",
+        "locationScope": "Barrel & Crow, 4867 Cordell Avenue, Bethesda, MD 20814",
+        "servicePeriods": [
+          "dessert",
+          "bar",
+          "happy hour"
+        ],
+        "currentAsOf": "2026-07-16",
+        "current": true,
+        "scopeClassification": "authoritative_current_visual_catalog_with_alcoholic_submenus_excluded",
+        "sourceEvidenceIds": [
+          "official-food-drink",
+          "toast-current-menu"
+        ],
+        "rationale": "The currently linked Dessert and Bar/Happy Hour drawings are readable and enumerate current products. Four distinct happy-hour food identities, two distinct dessert identities, and eight named nonalcoholic teas are added. Repeated dinner/dessert rows map to existing Toast identities. Separate wine, beer, cocktail, spirit, dessert-wine, sparkling, cognac, brandy, armagnac, port, and rail-liquor rows are alcohol-only and excluded.",
+        "additionalProductsRequired": [
+          {
+            "currentProductKey": "smoked-beef-brisket-slider-2",
+            "name": "Smoked Beef Brisket Slider (2)",
+            "category": "Happy Hour / food",
+            "description": "Kohlrabi slaw; two per order",
+            "surfaceIds": [
+              "surface-official-image-menus"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "No item-specific allergen conclusion is introduced."
+            }
+          },
+          {
+            "currentProductKey": "blackened-salmon-slider-2",
+            "name": "Blackened Salmon Slider (2)",
+            "category": "Happy Hour / food",
+            "description": "Cilantro mayo, greens; two per order",
+            "surfaceIds": [
+              "surface-official-image-menus"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [
+                "fish"
+              ],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "Only the current official row name or description supports these direct positives; no absent-allergen or cross-contact conclusion is inferred."
+            }
+          },
+          {
+            "currentProductKey": "mini-pork-tacos-3",
+            "name": "Mini Pork Tacos (3)",
+            "category": "Happy Hour / food",
+            "description": "Salsa verde, pickled onions, creme fraiche",
+            "surfaceIds": [
+              "surface-official-image-menus"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [
+                "milk"
+              ],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "Only the current official row name or description supports these direct positives; no absent-allergen or cross-contact conclusion is inferred."
+            }
+          },
+          {
+            "currentProductKey": "fried-pickles",
+            "name": "Fried Pickles",
+            "category": "Happy Hour and bar menu / food",
+            "description": "Chipotle aioli",
+            "surfaceIds": [
+              "surface-official-image-menus"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "No item-specific allergen conclusion is introduced."
+            }
+          },
+          {
+            "currentProductKey": "vanilla-creme-brulee",
+            "name": "Vanilla Creme Brulee",
+            "category": "Dessert",
+            "description": "Classic burnt sugar crust, citrus and almond biscotti",
+            "surfaceIds": [
+              "surface-official-image-menus"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [
+                "tree_nut"
+              ],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "Only the current official row name or description supports these direct positives; no absent-allergen or cross-contact conclusion is inferred."
+            }
+          },
+          {
+            "currentProductKey": "housemade-ice-cream-and-sorbet",
+            "name": "Housemade Ice Cream & Sorbet",
+            "category": "Dessert",
+            "description": "Daily selection",
+            "surfaceIds": [
+              "surface-official-image-menus"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "No item-specific allergen conclusion is introduced."
+            }
+          },
+          {
+            "currentProductKey": "harney-sons-jasmine-tea",
+            "name": "Harney & Sons Jasmine Tea",
+            "category": "Dessert / nonalcoholic tea",
+            "description": "Menu presentation: Jasmine",
+            "surfaceIds": [
+              "surface-official-image-menus"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "No item-specific allergen conclusion is introduced."
+            }
+          },
+          {
+            "currentProductKey": "harney-sons-earl-grey-tea",
+            "name": "Harney & Sons Earl Grey Tea",
+            "category": "Dessert / nonalcoholic tea",
+            "description": "Menu presentation: Earl Grey",
+            "surfaceIds": [
+              "surface-official-image-menus"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "No item-specific allergen conclusion is introduced."
+            }
+          },
+          {
+            "currentProductKey": "harney-sons-sencha-tea",
+            "name": "Harney & Sons Sencha Tea",
+            "category": "Dessert / nonalcoholic tea",
+            "description": "Menu presentation: Sencha",
+            "surfaceIds": [
+              "surface-official-image-menus"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "No item-specific allergen conclusion is introduced."
+            }
+          },
+          {
+            "currentProductKey": "harney-sons-peaches-and-ginger-tea",
+            "name": "Harney & Sons Peaches & Ginger Tea",
+            "category": "Dessert / nonalcoholic tea",
+            "description": "Menu presentation: Peaches & Ginger",
+            "surfaceIds": [
+              "surface-official-image-menus"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "No item-specific allergen conclusion is introduced."
+            }
+          },
+          {
+            "currentProductKey": "harney-sons-paris-tea",
+            "name": "Harney & Sons Paris Tea",
+            "category": "Dessert / nonalcoholic tea",
+            "description": "Menu presentation: Paris",
+            "surfaceIds": [
+              "surface-official-image-menus"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "No item-specific allergen conclusion is introduced."
+            }
+          },
+          {
+            "currentProductKey": "harney-sons-english-breakfast-tea",
+            "name": "Harney & Sons English Breakfast Tea",
+            "category": "Dessert / nonalcoholic tea",
+            "description": "Menu presentation: English Breakfast",
+            "surfaceIds": [
+              "surface-official-image-menus"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "No item-specific allergen conclusion is introduced."
+            }
+          },
+          {
+            "currentProductKey": "harney-sons-chamomile-tea",
+            "name": "Harney & Sons Chamomile Tea",
+            "category": "Dessert / nonalcoholic decaffeinated tea",
+            "description": "Menu presentation: Chamomile",
+            "surfaceIds": [
+              "surface-official-image-menus"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "No item-specific allergen conclusion is introduced."
+            }
+          },
+          {
+            "currentProductKey": "harney-sons-mint-verbena-tea",
+            "name": "Harney & Sons Mint Verbena Tea",
+            "category": "Dessert / nonalcoholic decaffeinated tea",
+            "description": "Menu presentation: Mint Verbena",
+            "surfaceIds": [
+              "surface-official-image-menus"
+            ],
+            "sourceEvidenceIds": [
+              "official-food-drink"
+            ],
+            "allergenAssessment": {
+              "explicitPositiveSupport": [],
+              "negativeClaimsIntroduced": [],
+              "completeAllergenProfileEstablished": false,
+              "notes": "No item-specific allergen conclusion is introduced."
+            }
+          }
+        ],
+        "coveredExistingProductMappings": [
+          {
+            "officialPresentation": "Steamed Mussels",
+            "currentProductKey": "mussels-app"
+          },
+          {
+            "officialPresentation": "Fried Calamari",
+            "currentProductKey": "calamari"
+          },
+          {
+            "officialPresentation": "Rosemary Duck Fat Fries",
+            "currentProductKey": "duck-fat-fries"
+          },
+          {
+            "officialPresentation": "Flourless Chocolate Torte",
+            "currentProductKey": "chocolate-torte"
+          },
+          {
+            "officialPresentation": "Strawberry-Rhubarb Crisp",
+            "currentProductKey": "strawberry-rhubarb-crisp"
+          },
+          {
+            "officialPresentation": "Sweet Beignets (6)",
+            "currentProductKey": "sweet-beignets-6"
+          },
+          {
+            "officialPresentation": "Rustic Peach Tart",
+            "currentProductKey": "rustic-peach-tart"
+          }
+        ],
+        "excludedAlcoholicSections": [
+          "Wine",
+          "Draft Beer",
+          "Rail Liquor",
+          "Cognac, Brandy & Armagnac",
+          "Dessert Wines & Ports",
+          "Sparkling",
+          "Red Wine",
+          "White Wine & Wines by the Glass",
+          "Beer Menu",
+          "Cocktail & Spirits Menu",
+          "Bottomless Mimosas & Bloody Mary"
+        ],
+        "allergenAssessment": {
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfilesEstablished": false,
+          "notes": "Only direct named ingredient or unavoidable product-identity positives are preserved. No negative, may-contain absence, or cross-contact conclusion is introduced."
+        },
+        "safetySourceAuthorityConflictRemains": false,
+        "allergenAuthorityLimitationRemains": true
+      }
+    ],
+    "safetySourceAuthorityConflictRemains": false,
+    "allergenAuthorityLimitationRemains": true,
+    "allergenAuthorityRationale": "All four required matrix searches remain complete and accurately unavailable. Current product scope is resolved, but no official complete allergen, ingredient, may-contain, or cross-contact matrix exists."
+  },
+  "remainingSolSignals": [
+    {
+      "signal": "allergen_authority_incomplete",
+      "status": "accurately_unavailable_non_blocking_for_catalog_scope",
+      "affectedSurfaces": [
+        "surface-toast-dinner",
+        "surface-official-food-drink",
+        "surface-official-image-menus"
+      ],
+      "sourceEvidenceIds": [
+        "toast-current-menu",
+        "official-food-drink",
+        "official-dinner-pdf-2025",
+        "official-brunch-pdf-2023"
+      ],
+      "rationale": "The four completed searches found no complete official allergen, ingredient, may-contain, or cross-contact matrix. The raw-or-undercooked warning is not a cross-contact disclosure."
+    }
+  ],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "baselineItemCount": 39,
+    "reviewedKeyCount": 0,
+    "resolutionItemCount": 0,
+    "allAffectedKeysReviewedExactlyOnce": true,
+    "allDispositionsBinding": true,
+    "unresolvedReviewedKeys": [],
+    "surfaceResolutionCount": 2,
+    "partialSurfaceIds": [
+      "surface-official-food-drink",
+      "surface-official-image-menus"
+    ],
+    "allPartialSurfacesResolvedExactlyOnce": true,
+    "existingProductCount": 48,
+    "foodDrinkSurfaceAddedProductCount": 13,
+    "imageMenuSurfaceAddedProductCount": 14,
+    "additionalProductCount": 27,
+    "resolvedCatalogProductCount": 75,
+    "additionalProductKeysUnique": true,
+    "additionalProductKeysDisjointFromExistingCatalog": true,
+    "currentOfficialImageMenusAccepted": true,
+    "historicalDinnerPdfExcludedAsSuperseded": true,
+    "historicalBrunchPdfExcludedAsSuperseded": true,
+    "alcoholicRowsExcluded": true,
+    "nonProductRowsExcluded": true,
+    "unsupportedAllergenNegativesIntroduced": false,
+    "itemSpecificMayContainClaimsIntroduced": false,
+    "crossContactConclusionIntroduced": false,
+    "completeAllergenProfileClaimed": false,
+    "matrixSearchCount": 4,
+    "matrixStatusRemainsAccuratelyUnavailable": true,
+    "codexVerifiedClaimed": false
+  }
+}

@@ -1,0 +1,448 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260810181148",
+  "restaurantId": "wooboi-chicken-va",
+  "packetValidation": {
+    "baselineItemCount": 22,
+    "baselineFingerprint": "95aae0b798799b616b702de4092cec64295cf705f7e5e53d3aa51b9f6b13ea3e",
+    "itemCheckCount": 22,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "Wooboi Chicken",
+    "locationId": "dc-metro",
+    "address": "12721 Shoppes Ln, Fairfax, VA 22033",
+    "domain": "wooboichicken.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "official-fairfax-menu",
+      "official-home"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "official-home",
+      "url": "https://www.wooboichicken.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and menu navigation",
+      "retrievedAt": "2026-08-10T18:20:00Z"
+    },
+    {
+      "evidenceId": "official-fairfax-menu",
+      "url": "https://www.wooboichicken.com/menu/574",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current Fairfax food and nonalcoholic menu",
+      "retrievedAt": "2026-08-10T18:20:00Z"
+    },
+    {
+      "evidenceId": "official-order",
+      "url": "https://order.mixbowl.co/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "restaurant-linked ordering entry point",
+      "retrievedAt": "2026-08-10T18:20:00Z"
+    },
+    {
+      "evidenceId": "targeted-search",
+      "url": "https://www.google.com/search?q=site%3Awooboichicken.com+allergen+allergy+nutrition+ingredients+PDF",
+      "authorityTier": "third_party",
+      "purpose": "targeted allergen and document search record",
+      "retrievedAt": "2026-08-10T18:20:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-fairfax-menu",
+      "url": "https://www.wooboichicken.com/menu/574",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "dc-metro / Fairfax",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; 33 current items; alcohol none listed",
+      "currentProductKeys": [
+        "wooboi-fairfax-current-catalog"
+      ],
+      "sourceEvidenceIds": [
+        "official-fairfax-menu"
+      ]
+    },
+    {
+      "surfaceId": "official-home",
+      "url": "https://www.wooboichicken.com/menu",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "multi-location; Fairfax separated by location page",
+      "servicePeriod": "current",
+      "current": false,
+      "scopeStatus": "supporting",
+      "retrievalOutcome": "inspected for location navigation; Herndon menu not merged",
+      "sourceEvidenceIds": [
+        "official-home"
+      ]
+    },
+    {
+      "surfaceId": "linked-order",
+      "url": "https://order.mixbowl.co/",
+      "authority": "linked vendor",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "restaurant-linked ordering entry point",
+      "servicePeriod": "current",
+      "current": false,
+      "scopeStatus": "supporting",
+      "retrievalOutcome": "linked vendor entry inspected; no complete allergen matrix retained",
+      "sourceEvidenceIds": [
+        "official-order"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "wooboi-fairfax-current-catalog",
+      "name": "Wooboi Chicken Fairfax current food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "official-fairfax-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "productCount": 33,
+      "boundary": "33 current Fairfax products across For You, Sides, Add Ons, For Family, and Extras; alcohol-only items excluded"
+    },
+    {
+      "currentProductKey": "mumbo-sauce",
+      "name": "Mumbo Sauce",
+      "sourceEvidenceIds": [
+        "official-fairfax-menu"
+      ],
+      "containsAllergens": [
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "official-fairfax-menu"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued"
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "wooboichicken.com homepage, Menu & Locations, and Fairfax menu",
+        "urls": [
+          "https://www.wooboichicken.com/",
+          "https://www.wooboichicken.com/menu/574"
+        ],
+        "outcome": "current menu found; no official allergen matrix or cross-contact policy",
+        "sourceEvidenceIds": [
+          "official-home",
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "official site document, nutrition, ingredient, FAQ, PDF, image, sitemap, and downloadable-document surfaces",
+        "urls": [
+          "https://www.wooboichicken.com/"
+        ],
+        "outcome": "no official allergen or nutrition document located",
+        "sourceEvidenceIds": [
+          "official-home"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "restaurant-linked Mixbowl ordering entry point",
+        "urls": [
+          "https://order.mixbowl.co/"
+        ],
+        "outcome": "linked ordering surface inspected; no complete allergen matrix or cross-contact statement located",
+        "sourceEvidenceIds": [
+          "official-order"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "site:wooboichicken.com allergen allergy nutrition ingredients PDF menu",
+        "urls": [
+          "https://www.google.com/search?q=site%3Awooboichicken.com+allergen+allergy+nutrition+ingredients+PDF"
+        ],
+        "outcome": "no authoritative official allergen matrix located; unrelated third-party allergen PDFs excluded",
+        "sourceEvidenceIds": [
+          "targeted-search"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "evidenceId": "official-fairfax-menu",
+      "claim": "Mumbo Sauce contains soy",
+      "authorityTier": "restaurant_issued",
+      "sourceEvidenceIds": [
+        "official-fairfax-menu"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "expectedCount": 22,
+    "items": [
+      {
+        "auditItemKey": "1:apple-smoked-barbeque-sauce",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "2:cilantro-lime-sauce",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "3:dcs-favorite-sauce",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "4:duo-wings",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "5:fries-w-love",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "6:garlic-onion-rice",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "7:garlic-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "8:honey-mustard",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "9:junior",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "10:just-pure-honey",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "11:munch-box",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "12:our-signature-sauce",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "13:rice-w-love",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "14:skinny",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "15:super-meal",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "16:ten-juniors",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "17:tenders",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "18:the-sando",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "19:tray-of-fries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "20:wing-squad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "21:wings",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      },
+      {
+        "auditItemKey": "22:zard-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wooboi-fairfax-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-fairfax-menu"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify",
+  "outcome": "researched",
+  "processLog": [
+    "packet_validated",
+    "identity_verified",
+    "menu_surfaces_inventoried",
+    "matrix_search_completed",
+    "products_reconciled",
+    "catalog_issues_resolved",
+    "validator_passed"
+  ]
+}

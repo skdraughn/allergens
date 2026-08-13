@@ -1,0 +1,302 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260810181741",
+  "restaurantId": "wingstop",
+  "name": "Wingstop",
+  "domain": "wingstop.com",
+  "outcome": "researched",
+  "recommendedLane": "verify",
+  "packetValidation": {
+    "baselineItemCount": 27,
+    "baselineFingerprint": "eb74b12f0b3d132b16320c12e7835752ec78e4156b0e47be8faec12571e1d806",
+    "itemCheckCount": 27,
+    "restaurantIdMatches": true,
+    "locationMatches": true
+  },
+  "identity": {
+    "name": "Wingstop",
+    "locationId": null,
+    "domain": "wingstop.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "official-home",
+      "official-locations"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "official-home",
+      "url": "https://www.wingstop.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and menu navigation",
+      "retrievedAt": "2026-08-10T18:24:00.000Z"
+    },
+    {
+      "evidenceId": "official-menu",
+      "url": "https://www.wingstop.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current official food and nonalcoholic menu surface",
+      "retrievedAt": "2026-08-10T18:24:00.000Z"
+    },
+    {
+      "evidenceId": "official-nutrition",
+      "url": "https://www.wingstop.com/nutrition",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official nutrition and downloadable-document surface",
+      "retrievedAt": "2026-08-10T18:24:00.000Z"
+    },
+    {
+      "evidenceId": "official-allergens",
+      "url": "https://www.wingstop.com/allergens",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official allergen declaration and linked allergen menu",
+      "retrievedAt": "2026-08-10T18:24:00.000Z"
+    },
+    {
+      "evidenceId": "official-locations",
+      "url": "https://locations.wingstop.com/us",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official location directory and scope check",
+      "retrievedAt": "2026-08-10T18:24:00.000Z"
+    },
+    {
+      "evidenceId": "official-allergen-pdf",
+      "url": "https://cdn.bfldr.com/NDQASMJ1/as/2v4qqb9ww8mvcm64gnh7ktnc/WS_Allergens_1226_2",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official allergen matrix linked by baseline and allergen surface",
+      "retrievedAt": "2026-08-10T18:24:00.000Z"
+    },
+    {
+      "evidenceId": "targeted-search",
+      "url": "https://www.google.com/search?q=site%3Awingstop.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted web search for official allergen materials",
+      "retrievedAt": "2026-08-10T18:24:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-menu",
+      "title": "Wingstop food menu",
+      "url": "https://www.wingstop.com/menu",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "United States; location-specific ordering may vary",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "official-menu"
+      ]
+    },
+    {
+      "surfaceId": "official-nonalcoholic",
+      "title": "Wingstop nonalcoholic beverages and menu selections",
+      "url": "https://www.wingstop.com/menu",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "United States; location-specific ordering may vary",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; alcohol excluded",
+      "sourceEvidenceIds": [
+        "official-menu"
+      ]
+    },
+    {
+      "surfaceId": "official-nutrition",
+      "title": "Nutrition and allergen-linked document surface",
+      "url": "https://www.wingstop.com/nutrition",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "United States",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "official-nutrition"
+      ]
+    },
+    {
+      "surfaceId": "official-location-directory",
+      "title": "Location directory",
+      "url": "https://locations.wingstop.com/us",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "United States",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; no single location supplied in packet",
+      "sourceEvidenceIds": [
+        "official-locations"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "wingstop-poc-menu-catalog",
+      "name": "Wingstop current food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "official-nutrition"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "productCount": 27,
+      "boundary": "27 frozen food/nonalcoholic products represented by the current official menu/allergen catalog; alcohol-only offerings excluded"
+    }
+  ],
+  "matrixSearch": {
+    "status": "found",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "query": "Inspect wingstop.com homepage, menu, allergen and nutrition navigation",
+        "location": "wingstop.com official pages",
+        "outcome": "completed; official allergen declaration and menu links found",
+        "sourceEvidenceIds": [
+          "official-home",
+          "official-menu",
+          "official-allergens"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "query": "site:wingstop.com allergen OR allergy OR nutrition OR ingredients PDF image sitemap",
+        "location": "official nutrition/allergen pages and linked CDN document",
+        "outcome": "completed; official allergen matrix PDF found",
+        "sourceEvidenceIds": [
+          "official-nutrition",
+          "official-allergens",
+          "official-allergen-pdf"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "query": "Wingstop current ordering/menu provider and allergen information",
+        "location": "official ordering path; no packet location supplied",
+        "outcome": "completed; no location-specific linked vendor could be uniquely scoped; official catalog retained",
+        "sourceEvidenceIds": [
+          "official-home",
+          "official-locations"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "Wingstop allergen allergy nutrition ingredients PDF menu",
+        "location": "targeted web search results",
+        "outcome": "completed; official allergen and nutrition pages identified",
+        "sourceEvidenceIds": [
+          "targeted-search",
+          "official-allergens"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "statement": "Wingstop states that it attempts to avoid allergen cross-contamination but cannot guarantee that it does not occur and recommends caution for food allergies.",
+      "authorityTier": "restaurant_issued",
+      "sourceEvidenceIds": [
+        "official-allergens"
+      ],
+      "crossContact": "explicit restaurant-issued caution; no absence claim"
+    },
+    {
+      "statement": "The official allergen matrix provides direct recipe allergen declarations for the frozen products; preserve the baseline declarations exactly and do not infer unlisted allergens as absent beyond the matrix scope.",
+      "authorityTier": "restaurant_issued",
+      "sourceEvidenceIds": [
+        "official-allergen-pdf"
+      ],
+      "crossContact": "matrix evidence is direct but does not override the official cross-contact caution"
+    }
+  ],
+  "reconciliation": {
+    "expectedCount": 27,
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:atomic",
+          "2:blue-cheese-dip",
+          "3:boneless",
+          "4:brownie",
+          "5:buffalo-ranch-fries",
+          "6:cajun",
+          "7:cheddar-cheese-sauce",
+          "8:cheese-fries",
+          "9:filet",
+          "10:garlic-parmesan",
+          "11:hawaiian",
+          "12:hickory-smoked-bbq",
+          "13:hot-honey-fries",
+          "14:hot-honey-rub",
+          "15:lemon-pepper",
+          "16:lemon-pepper-fries",
+          "17:louisiana-rub",
+          "18:louisiana-voodoo-fries",
+          "19:mango-habanero",
+          "20:mild",
+          "21:original-hot",
+          "22:parmesan-fries",
+          "23:ranch-dip",
+          "24:seasoned-fried-corn",
+          "25:seasoned-fries",
+          "26:spicy-korean-q",
+          "27:tenders"
+        ],
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wingstop-poc-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "official-allergen-pdf"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "findings": [
+    {
+      "type": "cross_contact_caution",
+      "details": "Official allergen page warns cross-contamination cannot be guaranteed; no unsupported negative claims made.",
+      "sourceEvidenceIds": [
+        "official-allergens"
+      ]
+    }
+  ],
+  "processLog": [
+    "packet_validated",
+    "identity_verified",
+    "menu_surfaces_inventoried",
+    "matrix_search_completed",
+    "products_reconciled",
+    "validator_passed"
+  ]
+}

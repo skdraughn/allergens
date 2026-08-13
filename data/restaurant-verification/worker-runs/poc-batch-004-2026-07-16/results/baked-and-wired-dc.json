@@ -1,0 +1,541 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-004-2026-07-16",
+  "restaurantId": "baked-and-wired-dc",
+  "identity": {
+    "name": "Baked & Wired",
+    "locationId": "georgetown-dc",
+    "address": "1052 Thomas Jefferson Street NW, Washington, DC 20007",
+    "identityAmbiguous": false,
+    "evidenceIds": [
+      "official-home",
+      "linked-toast"
+    ]
+  },
+  "packetValidation": {
+    "baselineItemCount": 194,
+    "baselineFingerprint": "53eb1beb539e86da9358f2edbbd0a1cd5ea544335b15bfdcc25e8ab0d724aeb7",
+    "frozenItemCheckCount": 194
+  },
+  "sources": [
+    {
+      "evidenceId": "official-home",
+      "url": "https://bakedandwired.com/",
+      "authority": "restaurant_issued",
+      "purpose": "identity/menu-boundary/cross-contact",
+      "retrieval": "current homepage identifies Georgetown location, links same-day and advance ordering, and warns that nuts, dairy, eggs, and wheat are processed with possible cross-contamination."
+    },
+    {
+      "evidenceId": "linked-toast",
+      "url": "https://order.toasttab.com/online/baked-wired-1052-thomas-jefferson-street-nw",
+      "authority": "restaurant_linked_vendor",
+      "purpose": "current location-specific menu",
+      "retrieval": "current Toast menu for 1052 Thomas Jefferson Street NW; visible Breakfast, Baked Goods, Packaged From the Baked&Wired Kitchen, Drinks, Retail, and Dried Flowers sections."
+    },
+    {
+      "evidenceId": "official-shop",
+      "url": "https://bakedandwired.com/shop/",
+      "authority": "restaurant_issued",
+      "purpose": "advance/shipped catalog",
+      "retrieval": "current official shop surface lists packaged and shipped products; pagination/order context prevents complete static enumeration."
+    },
+    {
+      "evidenceId": "official-bread",
+      "url": "https://bakedandwired.com/bread/",
+      "authority": "restaurant_issued",
+      "purpose": "bread menu surface",
+      "retrieval": "current official bread surface lists everyday breads and day-specific specials."
+    },
+    {
+      "evidenceId": "official-faq",
+      "url": "https://bakedandwired.com/faqs/",
+      "authority": "restaurant_issued",
+      "purpose": "ordering scope",
+      "retrieval": "current FAQ documents same-day Toast orders and 72-hour advance-order workflow; no item-level allergen matrix found."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "toast-georgetown",
+      "title": "Same-day Toast location menu",
+      "url": "https://order.toasttab.com/online/baked-wired-1052-thomas-jefferson-street-nw",
+      "authorityTier": "restaurant_linked_vendor",
+      "mediaType": "html",
+      "accessStatus": "accessible",
+      "current": true,
+      "fullyEnumerated": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "linked-toast"
+      ],
+      "notes": "Extensive current food and nonalcoholic catalog; current availability is time/order dependent."
+    },
+    {
+      "surfaceId": "official-cakecups",
+      "title": "Official Cakecups ordering surface",
+      "url": "https://bakedandwired.com/cakecups/",
+      "authorityTier": "restaurant_issued",
+      "mediaType": "html",
+      "accessStatus": "accessible",
+      "current": true,
+      "fullyEnumerated": false,
+      "scopeStatus": "partial",
+      "sourceEvidenceIds": [
+        "official-home"
+      ],
+      "notes": "Cakecups-specific surface; ordering/date context prevents complete static enumeration."
+    },
+    {
+      "surfaceId": "official-advance",
+      "title": "Official advance orders",
+      "url": "https://bakedandwired.com/advanced-orders/",
+      "authorityTier": "restaurant_issued",
+      "mediaType": "html",
+      "accessStatus": "accessible",
+      "current": true,
+      "fullyEnumerated": false,
+      "scopeStatus": "partial",
+      "sourceEvidenceIds": [
+        "official-home",
+        "official-faq"
+      ],
+      "notes": "Requires date/order session; unresolved complete boundary."
+    },
+    {
+      "surfaceId": "official-shop",
+      "title": "Official shop/shipped goods",
+      "url": "https://bakedandwired.com/shop/",
+      "authorityTier": "restaurant_issued",
+      "mediaType": "html",
+      "accessStatus": "accessible",
+      "current": true,
+      "fullyEnumerated": false,
+      "scopeStatus": "partial",
+      "sourceEvidenceIds": [
+        "official-shop"
+      ],
+      "notes": "Paginated and order-context dependent."
+    },
+    {
+      "surfaceId": "official-bread",
+      "title": "Official bread menu",
+      "url": "https://bakedandwired.com/bread/",
+      "authorityTier": "restaurant_issued",
+      "mediaType": "html",
+      "accessStatus": "accessible",
+      "current": true,
+      "fullyEnumerated": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "official-bread"
+      ],
+      "notes": "Day-specific specials create service-period variability."
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "toast-lorraine-quiche",
+      "name": "Lorraine (Ham & Gruyere Quiche) Slice",
+      "category": "Breakfast / Hot Breakfast",
+      "description": "Homemade crust filled with eggs, ham, and cheese.",
+      "sourceEvidenceIds": [
+        "linked-toast"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "linked_vendor_ingredients",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "linked-toast"
+      ]
+    },
+    {
+      "currentProductKey": "toast-spinach-feta-quiche",
+      "name": "Spinach & Feta Quiche Slice",
+      "category": "Breakfast / Hot Breakfast",
+      "description": "Spinach and feta in egg custard and homemade crust.",
+      "sourceEvidenceIds": [
+        "linked-toast"
+      ],
+      "containsAllergens": [
+        "egg",
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "linked_vendor_ingredients",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "linked-toast"
+      ]
+    },
+    {
+      "currentProductKey": "toast-soccer-mom",
+      "name": "Soccer Mom",
+      "category": "Baked Goods",
+      "description": "Graham cracker crust with chocolate and butterscotch chips, pecans, and coconut.",
+      "sourceEvidenceIds": [
+        "linked-toast"
+      ],
+      "containsAllergens": [
+        "tree-nut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "linked_vendor_ingredients",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "linked-toast"
+      ]
+    },
+    {
+      "currentProductKey": "toast-glazed-donut",
+      "name": "Glazed Donut",
+      "category": "Breakfast / Donuts",
+      "description": "Current Toast listing; item formulation not disclosed.",
+      "sourceEvidenceIds": [
+        "linked-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "toast-apple-caramel-bar",
+      "name": "Apple Caramel Bar",
+      "category": "Baked Goods",
+      "description": "Current Toast listing; item formulation not fully disclosed.",
+      "sourceEvidenceIds": [
+        "linked-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "toast-pecan-dream",
+      "name": "Pecan Dream",
+      "category": "Baked Goods",
+      "description": "Current Toast listing explicitly naming pecan.",
+      "sourceEvidenceIds": [
+        "linked-toast"
+      ],
+      "containsAllergens": [
+        "tree-nut"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "linked_vendor_ingredients",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "linked-toast"
+      ]
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "location": "bakedandwired.com homepage, FAQ, shop, bread and ordering links",
+        "outcome": "no item-level allergen matrix; global cross-contact warning only",
+        "evidenceIds": [
+          "official-home",
+          "official-faq"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "location": "official site navigation, downloadable/document search, shop and bread pages",
+        "outcome": "no current allergen/nutrition/ingredient matrix located",
+        "evidenceIds": [
+          "official-shop",
+          "official-bread"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "location": "Georgetown Toast menu",
+        "outcome": "menu descriptions provide narrow positive ingredient cues only; no complete matrix",
+        "evidenceIds": [
+          "linked-toast"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "Baked & Wired Washington DC allergen allergy ingredients nutrition PDF menu",
+        "outcome": "located official homepage, Toast menu, shop and bread surfaces; no current official matrix",
+        "evidenceIds": [
+          "official-home",
+          "linked-toast",
+          "official-shop",
+          "official-bread"
+        ]
+      }
+    ],
+    "notes": "No negative or item-specific may-contain claims are made. Global official warning is retained as a risk signal, not converted into item arrays."
+  },
+  "reconciliation": {
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:americano",
+          "2:askinosie-chocolate-covered-malt-balls",
+          "3:askinosie-coconut-milk-chocolate-bar",
+          "4:askinosie-fleur-de-sel-dark-chocolate-bar",
+          "5:askinosie-jenis-malted-milk-chocolate-bar",
+          "6:askinosie-mababu-tanzania-chocolate-bar",
+          "7:aulait",
+          "8:bacon-and-cheddar-biscuit",
+          "9:bakers-choice-assortment-cupcakes",
+          "10:banana-bread-slice",
+          "11:beesting",
+          "12:big-picture-farm-chai-farm-box",
+          "13:big-picture-farm-cocoa-latte-farm-box",
+          "14:birthday-dozen-assortment-cupcakes",
+          "15:biscotti-butts",
+          "16:black-and-white-cookie",
+          "17:black-eye",
+          "18:bonbon-latte",
+          "19:butter-spritz",
+          "20:cappuccino",
+          "21:caramel-popcorn-bag",
+          "22:carrot-cake-cupcake",
+          "23:chai-latte",
+          "24:cherry-pistachio-biscotti",
+          "25:chocolate-chip-cookie",
+          "26:chocolate-chip-cookie-with-nuts",
+          "27:chocolate-dipped-almond-biscotti",
+          "28:chocolate-milk",
+          "29:coconut-cupcake",
+          "30:cold-brew",
+          "31:cold-brew-joe-2-go",
+          "32:cream-cheese-brownie",
+          "33:date-better-almond-java-crunch",
+          "34:date-better-hazelnut-praline",
+          "35:date-better-peanut-butter-crunch",
+          "36:date-better-royal-cinnamon-baklava",
+          "37:dick-taylor-belize-dark-chocolate-bar",
+          "38:dick-taylor-chocolate-coated-almonds",
+          "39:dick-taylor-chocolate-coated-cherries",
+          "40:dick-taylor-chocolate-covered-butter-toffee-hazelnuts",
+          "41:dick-taylor-hazelnut-milk-chocolate-bar",
+          "42:dick-taylor-lemon-and-bergamot-chocolate-bar",
+          "43:dick-taylor-peanut-butter-chocolate-bar",
+          "44:dirty-chai-cupcake",
+          "45:dirty-chai-latte",
+          "46:doom-cupcake",
+          "47:double-espresso",
+          "48:espresso-on-ice-12-oz-only",
+          "49:fine-and-raw-cashew-butter-chocolate-bar",
+          "50:fine-and-raw-lucuma-and-vanilla-chocolate-bar",
+          "51:flat-white",
+          "52:flourless-peanut-butter-cookie",
+          "53:fossa-coffee-jasmine-creme-chocolate-bar",
+          "54:fossa-honey-orchid-dancong-hongcha-chocolate-bar",
+          "55:fossa-salted-egg-cereal-chocolate-bar",
+          "56:fossa-soy-milk-and-youtiao-chocolate-bar",
+          "57:fossa-xing-ren-hu-chocolate-bar",
+          "58:fossa-yuzu-sea-salt-chocolate-bar",
+          "59:freddo-cappuccino",
+          "60:freddo-espresso",
+          "61:freddo-flat-white",
+          "62:fruition-brown-butter-milk-chocolate-bar",
+          "63:fruition-colombia-tumaco-dark-chocolate-bar",
+          "64:fruition-ghana-three-mountains-dark-chocolate-bar",
+          "65:fruition-spring-salted-dark-milk-chocolate-bar",
+          "66:fruity-patootie-assortment-cupcakes",
+          "67:fu-wan-taiwan-1-ping-tung-chocolate-bar",
+          "68:fu-wan-taiwan-10-ping-tung-dark-milk-chocolate-bar",
+          "69:fu-wan-taiwan-magao-wild-pepper-chocolate-bar",
+          "70:fu-wan-taiwan-red-jade-tea-chocolate-bar",
+          "71:german-chocolate-cupcake",
+          "72:gf-chocolate-espresso-cookie",
+          "73:gf-vexy-cupcake",
+          "74:ginger-lemon-molasses-cookie-sammie",
+          "75:ginger-toddy",
+          "76:goodnow-farms-cafe-con-leche-bar",
+          "77:goodnow-farms-classic-milk-chocolate-bar",
+          "78:goodnow-farms-colombia-boyaca-chocolate-bar",
+          "79:goodnow-farms-ecuador-esmeraldas-bar",
+          "80:happy-trails-trail-mix",
+          "81:hazelnut-brownie-cookie",
+          "82:hibiscus-mint-herbal-iced-tea",
+          "83:hippie-crack-no-fruit",
+          "84:hippie-crack-with-fruit",
+          "85:hojicha-latte",
+          "86:honey-cinnamon-latte",
+          "87:hot-chocolate",
+          "88:hot-coffee-joe-2-go",
+          "89:iced-tea-joe-2-go-box",
+          "90:jcoco-alaskan-smoked-sea-salt-bar",
+          "91:jcoco-black-fig-pistachio",
+          "92:jcoco-cayenne-veracruz-orange",
+          "93:jcoco-crisp-quinoa-sesame-chocolate-bar",
+          "94:jcoco-edamame-sea-salt-chocolate-bar",
+          "95:jcoco-himalayan-salt-toffee-bar",
+          "96:jcoco-mango-plantain-chocolate-bar",
+          "97:jcoco-peruvian-dark-w-cacao-nibs-bar",
+          "98:jcoco-peruvian-signature-dark-bar",
+          "99:karens-birthday-cupcake",
+          "100:kyoto-fog",
+          "101:latte",
+          "102:lil-bertha-cookie-sammie",
+          "103:london-fog",
+          "104:lorraine-ham-and-gruyere-quiche-slice",
+          "105:luisa-abrams-acara-wild-cacao-chocolate-bar",
+          "106:luisa-abrams-cashew-nut-dragees",
+          "107:luisa-abrams-cupuacu-dragees",
+          "108:luisa-abrams-purus-wild-cacao-chocolate-bar",
+          "109:luisa-abrams-tocantins-river-chocolate-bar",
+          "110:macchiato",
+          "111:maeve-cabin-smores-truffle-bar",
+          "112:maeve-dirt-pile-truffle-bar",
+          "113:maeve-kettle-chips-truffle-bar",
+          "114:maeve-virgin-dirty-shirley-temple-truffle-bar",
+          "115:mango-black-tea",
+          "116:markham-and-fitz-gingerbread-jingle-chocolate-bar",
+          "117:markham-and-fitz-ooh-la-lavender-chocolate-bar",
+          "118:markham-and-fitz-southern-pecan-chocolate-bar",
+          "119:marou-ba-ria-chocolate-bar",
+          "120:marou-ben-tre-chocolate-bar",
+          "121:marou-caphe-sua-chocolate-bar",
+          "122:marou-dak-lak-chocolate-bar",
+          "123:marou-lam-dong-chocolate-bar",
+          "124:marshmallow",
+          "125:matcha-americano",
+          "126:matcha-latte",
+          "127:mocha",
+          "128:nitro",
+          "129:oatmeal",
+          "130:oatmeal-raisin-cookie",
+          "131:olive-and-sinclair-coffee-crunch-chocolate-bar",
+          "132:olive-and-sinclair-duck-fat-caramels",
+          "133:olive-and-sinclair-sea-salt-and-vinegar-caramels",
+          "134:omg",
+          "135:orange-dreamin",
+          "136:passion-and-envy-green-iced-tea",
+          "137:pear-green",
+          "138:pear-pecan-cake-slice",
+          "139:persian-nectar-black-iced-tea",
+          "140:phig-newton",
+          "141:pistachio-honey-cupcake",
+          "142:plain-jane-brownie",
+          "143:pretty-bitchin-cupcake",
+          "144:pump-street-cookie-chip-chocolate-bar",
+          "145:pump-street-croissant-chocolate-bar",
+          "146:pump-street-sourdough-and-sea-salt-chocolate-bar",
+          "147:pump-street-togo-chocolate-bar",
+          "148:pumpkin-ginger-bread-slice",
+          "149:qantu-bagua-chocolate-bar",
+          "150:qantu-morropon-chocolate-bar",
+          "151:raaka-bananas-foster-dark-chocolate-bar",
+          "152:raaka-double-cocoa-dipped-waffle-cone-bar",
+          "153:raaka-green-tea-crunch-chocolate-bar",
+          "154:raaka-matcha-dipped-waffle-cone-bar",
+          "155:raaka-pink-sea-salt-chocolate-bar",
+          "156:raaka-vanilla-dipped-waffle-cone-bar",
+          "157:raspberry-crunch-bar",
+          "158:razmanian-devil-cupcake",
+          "159:red-velvet-cupcake",
+          "160:rice-krispie",
+          "161:rock-your-world-brownie",
+          "162:rosemary-and-goat-cheese-biscuit",
+          "163:rozsavolgyi-csokolade-birds-of-uganda-chocolate-bar",
+          "164:rozsavolgyi-csokolade-cardamom-chocolate-bar",
+          "165:rozsavolgyi-csokolade-hazelnut-gianduja-bar",
+          "166:rozsavolgyi-csokolade-pistachio-gianduja",
+          "167:rozsavolgyi-csokolade-tea-time-and-biscuits-chocolate-bar",
+          "168:shipped-goodies",
+          "169:smurfette-cupcake",
+          "170:snickerdoodle-cookie",
+          "171:soccer-mom",
+          "172:spinach-and-feta-quiche-slice",
+          "173:spring-blossom-big-ass-cookie",
+          "174:strawberry-cupcake",
+          "175:tallat",
+          "176:tea",
+          "177:tea-retail",
+          "178:tessita-cupcake",
+          "179:thai-iced-tea",
+          "180:uniporn-and-rainho-cupcake",
+          "181:valerie-confections-almond-toffee-bar",
+          "182:valerie-confections-almond-toffee-treats",
+          "183:valerie-confections-chocolate-pretzels",
+          "184:valerie-confections-durango-bark",
+          "185:valerie-confections-good-mix-chocolate-bar",
+          "186:valerie-confections-rice-and-sesame-bar",
+          "187:valerie-confections-rice-and-sesame-caramels",
+          "188:vanilla-satin-cupcake",
+          "189:vanilla-vanilla-cupcake",
+          "190:vegan-oreo-cupcake",
+          "191:zotter-buttercaramel-bar",
+          "192:zotter-honey-crunch-bar",
+          "193:zotter-mango-chili-bar",
+          "194:zucchini-bread-slice"
+        ],
+        "disposition": "unresolved",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "linked-toast",
+          "official-home",
+          "official-advance",
+          "official-shop",
+          "official-bread"
+        ],
+        "notes": "Frozen row cannot be safely classified against a complete unified current boundary: exact-location Toast is current, while Cakecups/Advanced Orders/Breakfast Breads/shop surfaces are separate or partial. No allergen absence is inferred."
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": true,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": true,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": true,
+    "newItems": true,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": true,
+    "parserIssue": true
+  },
+  "routingSignals": {
+    "strongSignals": [
+      "current catalog is substantially larger than the six prior draft products",
+      "official advance/shop/bread surfaces are partial or service-period dependent",
+      "global cross-contact warning exists",
+      "no complete official allergen matrix"
+    ],
+    "solConflictPacket": {
+      "affectedAuditItemKeys": "all 194 frozen auditItemKeys require exact reconciliation after complete current catalog enumeration",
+      "conflicts": [
+        "prior zero-product/6-product artifacts conflict with current extensive Toast catalog",
+        "official linked surfaces have non-identical scope",
+        "item-level positives must be preserved without unsupported negatives or may-contain assignments"
+      ],
+      "evidenceIds": [
+        "official-home",
+        "linked-toast",
+        "official-shop",
+        "official-bread",
+        "official-faq"
+      ]
+    }
+  },
+  "recommendedLane": "sol_review",
+  "blockedReason": "Complete current food and nonalcoholic catalog reconciliation cannot be safely asserted from the available current surfaces in this pass; Sol must adjudicate the exact catalog boundary and review the conflict packet.",
+  "coordinatorRoute": "sol_review"
+}

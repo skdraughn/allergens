@@ -1,0 +1,1833 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-105-2026-08-05",
+  "restaurantId": "dos-toros-dc",
+  "runId": "poc-batch-105-2026-08-05-dos-toros-dc-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "dos-toros-dc",
+    "name": "Dos Toros Taqueria",
+    "locationId": "dc-metro",
+    "domain": "dostoros.com",
+    "baselineItemCount": 39,
+    "baselineFingerprint": "2a7748a2d554348f6d6544e6faf76a899e7e00bd6ef9bceefb5e3df889673c90",
+    "itemChecksRead": 39,
+    "itemChecksPath": "data/restaurant-verification/item-checks/dos-toros-dc.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Dos Toros Taqueria",
+    "location": "Washington, DC metro (official DC locations)",
+    "locationId": "dc-metro",
+    "domain": "dostoros.com",
+    "officialHomepage": "https://www.dostoros.com/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-locations"
+    ],
+    "notes": "DC metro scope confirmed; no non-DC locations merged."
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-home",
+      "url": "https://www.dostoros.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Dos Toros official homepage",
+      "retrievedAt": "2026-08-05T00:00:00Z",
+      "excerpt": "Official Dos Toros Taqueria website."
+    },
+    {
+      "evidenceId": "ev-locations",
+      "url": "https://www.dostoros.com/locations/dc",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Washington DC locations",
+      "retrievedAt": "2026-08-05T00:00:00Z",
+      "excerpt": "Official DC metro location listing."
+    },
+    {
+      "evidenceId": "ev-menu",
+      "url": "https://www.dostoros.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Our Menu",
+      "retrievedAt": "2026-08-05T00:00:00Z",
+      "excerpt": "Current food menu including breakfast burritos and build-your-own components."
+    },
+    {
+      "evidenceId": "ev-vendor",
+      "url": "https://orders.dostoros.com/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "title": "Official linked ordering vendor",
+      "retrievedAt": "2026-08-05T00:00:00Z",
+      "excerpt": "Current online ordering for Washington DC locations."
+    },
+    {
+      "evidenceId": "ev-allergen-pdf",
+      "url": "https://s3.amazonaws.com/assets-dostoros.com/menus/DT_Nutrition%26Allergen.96150cfa.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "Dos Toros allergens and dietary info",
+      "retrievedAt": "2026-08-05T00:00:00Z",
+      "excerpt": "Official allergen/dietary guide; last updated October 2023."
+    },
+    {
+      "evidenceId": "ev-search-site",
+      "url": "https://www.dostoros.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_site allergen search",
+      "retrievedAt": "2026-08-05T00:00:00Z",
+      "excerpt": "allergen links/menu inspected; guide link identified"
+    },
+    {
+      "evidenceId": "ev-search-docs",
+      "url": "https://s3.amazonaws.com/assets-dostoros.com/menus/DT_Nutrition%26Allergen.96150cfa.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_documents allergen search",
+      "retrievedAt": "2026-08-05T00:00:00Z",
+      "excerpt": "official allergen PDF found with direct item allergen marks"
+    },
+    {
+      "evidenceId": "ev-search-vendor",
+      "url": "https://orders.dostoros.com/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "title": "linked_vendor allergen search",
+      "retrievedAt": "2026-08-05T00:00:00Z",
+      "excerpt": "ordering menu inspected; no separate allergen matrix"
+    },
+    {
+      "evidenceId": "ev-search-web",
+      "url": "site:dostoros.com allergen nutrition ingredients PDF",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "targeted_web_search allergen search",
+      "retrievedAt": "2026-08-05T00:00:00Z",
+      "excerpt": "official allergen PDF corroborated"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-menu",
+      "title": "Official menu",
+      "url": "https://www.dostoros.com/menu",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "DC metro",
+      "servicePeriod": "all-day and breakfast",
+      "surfaceType": "html_menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "currentProductKeys": [
+        "breakfast-burritos-bacon-breakfast-burrito",
+        "breakfast-burritos-chorizo-breakfast-burrito",
+        "breakfast-burritos-steak-breakfast-burrito",
+        "breakfast-burritos-vegetarian-breakfast-burrito",
+        "desserts-cinnamon-swirl-cookie",
+        "desserts-dulce-brownie",
+        "dressing-creamy-chipotle",
+        "dressing-spicy-avocado-goddess",
+        "grainsbeans-black-beans",
+        "grainsbeans-cilantro-lime-brown-rice",
+        "grainsbeans-farro",
+        "grainsbeans-mexican-rice",
+        "grainsbeans-pinto-beans",
+        "greens-greens-blend",
+        "greens-romaine",
+        "hot-sauce-habanero-hot-sauce",
+        "hot-sauce-smoky-hot-sauce",
+        "hot-sauce-verde-hot-sauce",
+        "mains-braised-pork-carnitas",
+        "mains-grilled-pollo-asado",
+        "mains-seared-carne-asada",
+        "mains-seasonal-springsummer-verde-chicken",
+        "mains-spiced-brussels-sprouts",
+        "mains-spiced-chorizo",
+        "mains-spiced-sweet-potatoes",
+        "toppings-corn-salsa",
+        "toppings-guacamole",
+        "toppings-peppers-and-onions",
+        "toppings-pickled-red-onion",
+        "toppings-pico-de-gallo",
+        "toppings-queso-fresco",
+        "toppings-shredded-monterrey-jack",
+        "toppings-sliced-monterrey-jack",
+        "toppings-sour-cream",
+        "toppings-taqueria-salsa",
+        "tortilla-burrito-tortilla",
+        "tortilla-quesadilla-tortilla",
+        "tortilla-taco-tortilla",
+        "tortilla-tortilla-chips"
+      ],
+      "outcome": "Current food/nonalcoholic menu catalog."
+    },
+    {
+      "surfaceId": "dc-locations",
+      "title": "DC locations",
+      "url": "https://www.dostoros.com/locations/dc",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "DC metro",
+      "servicePeriod": "all-day",
+      "surfaceType": "location_page",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-locations"
+      ],
+      "currentProductKeys": [
+        "breakfast-burritos-bacon-breakfast-burrito",
+        "breakfast-burritos-chorizo-breakfast-burrito",
+        "breakfast-burritos-steak-breakfast-burrito",
+        "breakfast-burritos-vegetarian-breakfast-burrito",
+        "desserts-cinnamon-swirl-cookie",
+        "desserts-dulce-brownie",
+        "dressing-creamy-chipotle",
+        "dressing-spicy-avocado-goddess",
+        "grainsbeans-black-beans",
+        "grainsbeans-cilantro-lime-brown-rice",
+        "grainsbeans-farro",
+        "grainsbeans-mexican-rice",
+        "grainsbeans-pinto-beans",
+        "greens-greens-blend",
+        "greens-romaine",
+        "hot-sauce-habanero-hot-sauce",
+        "hot-sauce-smoky-hot-sauce",
+        "hot-sauce-verde-hot-sauce",
+        "mains-braised-pork-carnitas",
+        "mains-grilled-pollo-asado",
+        "mains-seared-carne-asada",
+        "mains-seasonal-springsummer-verde-chicken",
+        "mains-spiced-brussels-sprouts",
+        "mains-spiced-chorizo",
+        "mains-spiced-sweet-potatoes",
+        "toppings-corn-salsa",
+        "toppings-guacamole",
+        "toppings-peppers-and-onions",
+        "toppings-pickled-red-onion",
+        "toppings-pico-de-gallo",
+        "toppings-queso-fresco",
+        "toppings-shredded-monterrey-jack",
+        "toppings-sliced-monterrey-jack",
+        "toppings-sour-cream",
+        "toppings-taqueria-salsa",
+        "tortilla-burrito-tortilla",
+        "tortilla-quesadilla-tortilla",
+        "tortilla-taco-tortilla",
+        "tortilla-tortilla-chips"
+      ],
+      "outcome": "DC locations confirmed."
+    },
+    {
+      "surfaceId": "ordering",
+      "title": "Online ordering",
+      "url": "https://orders.dostoros.com/",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "DC metro",
+      "servicePeriod": "all-day",
+      "surfaceType": "linked_ordering_vendor",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-vendor"
+      ],
+      "currentProductKeys": [
+        "breakfast-burritos-bacon-breakfast-burrito",
+        "breakfast-burritos-chorizo-breakfast-burrito",
+        "breakfast-burritos-steak-breakfast-burrito",
+        "breakfast-burritos-vegetarian-breakfast-burrito",
+        "desserts-cinnamon-swirl-cookie",
+        "desserts-dulce-brownie",
+        "dressing-creamy-chipotle",
+        "dressing-spicy-avocado-goddess",
+        "grainsbeans-black-beans",
+        "grainsbeans-cilantro-lime-brown-rice",
+        "grainsbeans-farro",
+        "grainsbeans-mexican-rice",
+        "grainsbeans-pinto-beans",
+        "greens-greens-blend",
+        "greens-romaine",
+        "hot-sauce-habanero-hot-sauce",
+        "hot-sauce-smoky-hot-sauce",
+        "hot-sauce-verde-hot-sauce",
+        "mains-braised-pork-carnitas",
+        "mains-grilled-pollo-asado",
+        "mains-seared-carne-asada",
+        "mains-seasonal-springsummer-verde-chicken",
+        "mains-spiced-brussels-sprouts",
+        "mains-spiced-chorizo",
+        "mains-spiced-sweet-potatoes",
+        "toppings-corn-salsa",
+        "toppings-guacamole",
+        "toppings-peppers-and-onions",
+        "toppings-pickled-red-onion",
+        "toppings-pico-de-gallo",
+        "toppings-queso-fresco",
+        "toppings-shredded-monterrey-jack",
+        "toppings-sliced-monterrey-jack",
+        "toppings-sour-cream",
+        "toppings-taqueria-salsa",
+        "tortilla-burrito-tortilla",
+        "tortilla-quesadilla-tortilla",
+        "tortilla-taco-tortilla",
+        "tortilla-tortilla-chips"
+      ],
+      "outcome": "Ordering vendor reachable; no additional distinct products captured."
+    },
+    {
+      "surfaceId": "supporting",
+      "title": "Supporting surfaces",
+      "url": "https://www.dostoros.com/nutrition",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "DC metro",
+      "servicePeriod": "all-day",
+      "surfaceType": "official_documents",
+      "current": false,
+      "scopeStatus": "empty",
+      "sourceEvidenceIds": [],
+      "currentProductKeys": [],
+      "outcome": "No separate current surface beyond linked allergen PDF."
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "breakfast-burritos-bacon-breakfast-burrito",
+      "name": "Bacon Breakfast Burrito",
+      "category": "Breakfast Burritos",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "1:breakfast-burritos-bacon-breakfast-burrito"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "milk",
+        "egg",
+        "gluten",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "breakfast-burritos-chorizo-breakfast-burrito",
+      "name": "Chorizo Breakfast Burrito",
+      "category": "Breakfast Burritos",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "2:breakfast-burritos-chorizo-breakfast-burrito"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "milk",
+        "egg",
+        "gluten",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "breakfast-burritos-steak-breakfast-burrito",
+      "name": "Steak Breakfast Burrito",
+      "category": "Breakfast Burritos",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "3:breakfast-burritos-steak-breakfast-burrito"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "milk",
+        "egg",
+        "gluten",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "breakfast-burritos-vegetarian-breakfast-burrito",
+      "name": "Vegetarian Breakfast Burrito",
+      "category": "Breakfast Burritos",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "4:breakfast-burritos-vegetarian-breakfast-burrito"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "milk",
+        "egg",
+        "gluten",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "desserts-cinnamon-swirl-cookie",
+      "name": "Cinnamon Swirl Cookie",
+      "category": "Desserts",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "5:desserts-cinnamon-swirl-cookie"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "milk",
+        "egg",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "desserts-dulce-brownie",
+      "name": "Dulce Brownie",
+      "category": "Desserts",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "6:desserts-dulce-brownie"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "milk",
+        "egg",
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "dressing-creamy-chipotle",
+      "name": "Creamy Chipotle",
+      "category": "Dressing",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "7:dressing-creamy-chipotle"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "milk",
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "dressing-spicy-avocado-goddess",
+      "name": "Spicy Avocado Goddess",
+      "category": "Dressing",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "8:dressing-spicy-avocado-goddess"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "grainsbeans-black-beans",
+      "name": "Black Beans",
+      "category": "Grains/Beans",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "9:grainsbeans-black-beans"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "grainsbeans-cilantro-lime-brown-rice",
+      "name": "Cilantro Lime Brown Rice",
+      "category": "Grains/Beans",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "10:grainsbeans-cilantro-lime-brown-rice"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "grainsbeans-farro",
+      "name": "Farro",
+      "category": "Grains/Beans",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "11:grainsbeans-farro"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "gluten"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "grainsbeans-mexican-rice",
+      "name": "Mexican Rice",
+      "category": "Grains/Beans",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "12:grainsbeans-mexican-rice"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "grainsbeans-pinto-beans",
+      "name": "Pinto Beans",
+      "category": "Grains/Beans",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "13:grainsbeans-pinto-beans"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "greens-greens-blend",
+      "name": "Greens Blend",
+      "category": "Greens",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "14:greens-greens-blend"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "greens-romaine",
+      "name": "Romaine",
+      "category": "Greens",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "15:greens-romaine"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "hot-sauce-habanero-hot-sauce",
+      "name": "Habanero Hot Sauce",
+      "category": "Hot Sauce",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "16:hot-sauce-habanero-hot-sauce"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "hot-sauce-smoky-hot-sauce",
+      "name": "Smoky Hot Sauce",
+      "category": "Hot Sauce",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "17:hot-sauce-smoky-hot-sauce"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "hot-sauce-verde-hot-sauce",
+      "name": "Verde Hot Sauce",
+      "category": "Hot Sauce",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "18:hot-sauce-verde-hot-sauce"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "mains-braised-pork-carnitas",
+      "name": "Braised Pork Carnitas",
+      "category": "Mains",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "19:mains-braised-pork-carnitas"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "mains-grilled-pollo-asado",
+      "name": "Grilled Pollo Asado",
+      "category": "Mains",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "20:mains-grilled-pollo-asado"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "mains-seared-carne-asada",
+      "name": "Seared Carne Asada",
+      "category": "Mains",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "21:mains-seared-carne-asada"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "mains-seasonal-springsummer-verde-chicken",
+      "name": "Seasonal Spring/Summer - Verde Chicken",
+      "category": "Mains",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "22:mains-seasonal-springsummer-verde-chicken"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "mains-spiced-brussels-sprouts",
+      "name": "Spiced Brussels Sprouts",
+      "category": "Mains",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "23:mains-spiced-brussels-sprouts"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "mains-spiced-chorizo",
+      "name": "Spiced Chorizo",
+      "category": "Mains",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "24:mains-spiced-chorizo"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "mains-spiced-sweet-potatoes",
+      "name": "Spiced Sweet Potatoes",
+      "category": "Mains",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "25:mains-spiced-sweet-potatoes"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "toppings-corn-salsa",
+      "name": "Corn Salsa",
+      "category": "Toppings",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "26:toppings-corn-salsa"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "toppings-guacamole",
+      "name": "Guacamole",
+      "category": "Toppings",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "27:toppings-guacamole"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "toppings-peppers-and-onions",
+      "name": "Peppers & Onions",
+      "category": "Toppings",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "28:toppings-peppers-and-onions"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "toppings-pickled-red-onion",
+      "name": "Pickled Red Onion",
+      "category": "Toppings",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "29:toppings-pickled-red-onion"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "toppings-pico-de-gallo",
+      "name": "Pico de Gallo",
+      "category": "Toppings",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "30:toppings-pico-de-gallo"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "toppings-queso-fresco",
+      "name": "Queso Fresco",
+      "category": "Toppings",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "31:toppings-queso-fresco"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "toppings-shredded-monterrey-jack",
+      "name": "Shredded Monterrey Jack",
+      "category": "Toppings",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "32:toppings-shredded-monterrey-jack"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "toppings-sliced-monterrey-jack",
+      "name": "Sliced Monterrey Jack",
+      "category": "Toppings",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "33:toppings-sliced-monterrey-jack"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "toppings-sour-cream",
+      "name": "Sour Cream",
+      "category": "Toppings",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "34:toppings-sour-cream"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "toppings-taqueria-salsa",
+      "name": "Taqueria Salsa",
+      "category": "Toppings",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "35:toppings-taqueria-salsa"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "tortilla-burrito-tortilla",
+      "name": "Burrito Tortilla",
+      "category": "Tortilla",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "36:tortilla-burrito-tortilla"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "gluten",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "tortilla-quesadilla-tortilla",
+      "name": "Quesadilla Tortilla",
+      "category": "Tortilla",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "37:tortilla-quesadilla-tortilla"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "gluten",
+        "milk",
+        "soy",
+        "wheat"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "tortilla-taco-tortilla",
+      "name": "Taco Tortilla",
+      "category": "Tortilla",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "38:tortilla-taco-tortilla"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    },
+    {
+      "currentProductKey": "tortilla-tortilla-chips",
+      "name": "Tortilla Chips",
+      "category": "Tortilla",
+      "servicePeriod": "all-day/breakfast",
+      "presentationIds": [
+        "39:tortilla-tortilla-chips"
+      ],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-allergen-pdf"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-allergen-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": []
+    }
+  ],
+  "matrixSearch": {
+    "status": "found",
+    "authorityTier": "restaurant_issued",
+    "matrixType": "contains_allergen_marks",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "locationOrQuery": "Official homepage/menu navigation",
+        "url": "https://www.dostoros.com/menu",
+        "outcome": "Menu inspected; allergen guide link identified",
+        "sourceEvidenceIds": [
+          "ev-search-site"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "locationOrQuery": "Official nutrition/allergen PDF",
+        "url": "site:dostoros.com allergen nutrition ingredients PDF",
+        "outcome": "Official guide found with direct item-level marks",
+        "sourceEvidenceIds": [
+          "ev-search-docs",
+          "ev-allergen-pdf"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "locationOrQuery": "Official linked ordering vendor",
+        "url": "https://orders.dostoros.com/",
+        "outcome": "No separate allergen matrix",
+        "sourceEvidenceIds": [
+          "ev-search-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "locationOrQuery": "site:dostoros.com allergen nutrition ingredients PDF",
+        "url": "https://www.google.com/search?q=site%3Adostoros.com+allergen+nutrition+ingredients+PDF",
+        "outcome": "Official allergen PDF corroborated",
+        "sourceEvidenceIds": [
+          "ev-search-web",
+          "ev-allergen-pdf"
+        ]
+      }
+    ],
+    "notes": "Direct official guide marks retained; no inferred negatives."
+  },
+  "restaurantLevelAllergenEvidence": [],
+  "reconciliation": {
+    "frozenItemCount": 39,
+    "reconciledCount": 39,
+    "auditItemKeys": [
+      "breakfast-burritos-bacon-breakfast-burrito",
+      "breakfast-burritos-chorizo-breakfast-burrito",
+      "breakfast-burritos-steak-breakfast-burrito",
+      "breakfast-burritos-vegetarian-breakfast-burrito",
+      "desserts-cinnamon-swirl-cookie",
+      "desserts-dulce-brownie",
+      "dressing-creamy-chipotle",
+      "dressing-spicy-avocado-goddess",
+      "grainsbeans-black-beans",
+      "grainsbeans-cilantro-lime-brown-rice",
+      "grainsbeans-farro",
+      "grainsbeans-mexican-rice",
+      "grainsbeans-pinto-beans",
+      "greens-greens-blend",
+      "greens-romaine",
+      "hot-sauce-habanero-hot-sauce",
+      "hot-sauce-smoky-hot-sauce",
+      "hot-sauce-verde-hot-sauce",
+      "mains-braised-pork-carnitas",
+      "mains-grilled-pollo-asado",
+      "mains-seared-carne-asada",
+      "mains-seasonal-springsummer-verde-chicken",
+      "mains-spiced-brussels-sprouts",
+      "mains-spiced-chorizo",
+      "mains-spiced-sweet-potatoes",
+      "toppings-corn-salsa",
+      "toppings-guacamole",
+      "toppings-peppers-and-onions",
+      "toppings-pickled-red-onion",
+      "toppings-pico-de-gallo",
+      "toppings-queso-fresco",
+      "toppings-shredded-monterrey-jack",
+      "toppings-sliced-monterrey-jack",
+      "toppings-sour-cream",
+      "toppings-taqueria-salsa",
+      "tortilla-burrito-tortilla",
+      "tortilla-quesadilla-tortilla",
+      "tortilla-taco-tortilla",
+      "tortilla-tortilla-chips"
+    ],
+    "items": [
+      {
+        "auditItemKey": "1:breakfast-burritos-bacon-breakfast-burrito",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "breakfast-burritos-bacon-breakfast-burrito"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "2:breakfast-burritos-chorizo-breakfast-burrito",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "breakfast-burritos-chorizo-breakfast-burrito"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "3:breakfast-burritos-steak-breakfast-burrito",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "breakfast-burritos-steak-breakfast-burrito"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "4:breakfast-burritos-vegetarian-breakfast-burrito",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "breakfast-burritos-vegetarian-breakfast-burrito"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "5:desserts-cinnamon-swirl-cookie",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "desserts-cinnamon-swirl-cookie"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "6:desserts-dulce-brownie",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "desserts-dulce-brownie"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "7:dressing-creamy-chipotle",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "dressing-creamy-chipotle"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "8:dressing-spicy-avocado-goddess",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "dressing-spicy-avocado-goddess"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "9:grainsbeans-black-beans",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "grainsbeans-black-beans"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "10:grainsbeans-cilantro-lime-brown-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "grainsbeans-cilantro-lime-brown-rice"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "11:grainsbeans-farro",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "grainsbeans-farro"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "12:grainsbeans-mexican-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "grainsbeans-mexican-rice"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "13:grainsbeans-pinto-beans",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "grainsbeans-pinto-beans"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "14:greens-greens-blend",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "greens-greens-blend"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "15:greens-romaine",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "greens-romaine"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "16:hot-sauce-habanero-hot-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "hot-sauce-habanero-hot-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "17:hot-sauce-smoky-hot-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "hot-sauce-smoky-hot-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "18:hot-sauce-verde-hot-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "hot-sauce-verde-hot-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "19:mains-braised-pork-carnitas",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mains-braised-pork-carnitas"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "20:mains-grilled-pollo-asado",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mains-grilled-pollo-asado"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "21:mains-seared-carne-asada",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mains-seared-carne-asada"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "22:mains-seasonal-springsummer-verde-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mains-seasonal-springsummer-verde-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "23:mains-spiced-brussels-sprouts",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mains-spiced-brussels-sprouts"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "24:mains-spiced-chorizo",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mains-spiced-chorizo"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "25:mains-spiced-sweet-potatoes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mains-spiced-sweet-potatoes"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "26:toppings-corn-salsa",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toppings-corn-salsa"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "27:toppings-guacamole",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toppings-guacamole"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "28:toppings-peppers-and-onions",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toppings-peppers-and-onions"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "29:toppings-pickled-red-onion",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toppings-pickled-red-onion"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "30:toppings-pico-de-gallo",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toppings-pico-de-gallo"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "31:toppings-queso-fresco",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toppings-queso-fresco"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "32:toppings-shredded-monterrey-jack",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toppings-shredded-monterrey-jack"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "33:toppings-sliced-monterrey-jack",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toppings-sliced-monterrey-jack"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "34:toppings-sour-cream",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toppings-sour-cream"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "35:toppings-taqueria-salsa",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "toppings-taqueria-salsa"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "36:tortilla-burrito-tortilla",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tortilla-burrito-tortilla"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "37:tortilla-quesadilla-tortilla",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tortilla-quesadilla-tortilla"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "38:tortilla-taco-tortilla",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tortilla-taco-tortilla"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      },
+      {
+        "auditItemKey": "39:tortilla-tortilla-chips",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tortilla-tortilla-chips"
+        ],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-allergen-pdf"
+        ],
+        "notes": "Current menu item; official guide provides direct allergen marks."
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "proposedChanges": [],
+  "routingSignals": {
+    "lightweightRepairSignals": [],
+    "safetyEscalationSignals": []
+  },
+  "blockedReason": null
+}

@@ -1,0 +1,483 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-081-2026-08-05",
+  "restaurantId": "columbia-firehouse-alexandria-dc-metro",
+  "runId": "poc-batch-081-2026-08-05-columbia-firehouse-alexandria-dc-metro-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "columbia-firehouse-alexandria-dc-metro",
+    "name": "Columbia Firehouse Alexandria",
+    "locationId": "alexandria-va",
+    "domain": "columbiafirehouse.com",
+    "baselineItemCount": 24,
+    "baselineFingerprint": "1c5ae5012a372a90f50268e0633203d80bf2a8864ed6a6a2a86fb37777efa388",
+    "itemCheckCount": 24,
+    "itemCheckFingerprint": "1c5ae5012a372a90f50268e0633203d80bf2a8864ed6a6a2a86fb37777efa388",
+    "itemChecksPath": "data/restaurant-verification/item-checks/columbia-firehouse-alexandria-dc-metro.jsonl"
+  },
+  "identity": {
+    "status": "confirmed_historical_closed",
+    "identityAmbiguous": false,
+    "name": "Columbia Firehouse Alexandria",
+    "location": "109 S St Asaph St, Alexandria, VA 22314",
+    "locationId": "alexandria-va",
+    "domain": "columbiafirehouse.com",
+    "officialHomepage": "https://columbiafirehouse.com/",
+    "sourceEvidenceIds": [
+      "ev-history",
+      "ev-closure",
+      "ev-toast-josephine"
+    ],
+    "notes": "Historical Columbia Firehouse identity and address confirmed. The concept permanently closed; Josephine now occupies the same address. Locations are not merged."
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-history",
+      "url": "https://media.alexandriava.gov/docs-archives/historic/info/attic/2019/attic20190221columbiafirehouse.pdf",
+      "authorityTier": "third_party",
+      "purpose": "identity",
+      "title": "City of Alexandria Columbia Firehouse history",
+      "retrievedAt": "2026-08-05T00:00:00Z",
+      "excerpt": "109 S. Asaph Street historic Columbia Firehouse location."
+    },
+    {
+      "evidenceId": "ev-closure",
+      "url": "https://patch.com/virginia/oldtownalexandria/new-restaurant-open-former-columbia-firehouse-location",
+      "authorityTier": "third_party",
+      "purpose": "identity",
+      "title": "Josephine replacing Columbia Firehouse",
+      "retrievedAt": "2026-08-05T00:00:00Z",
+      "excerpt": "Josephine replaced the former Columbia Firehouse concept at 109 S St. Asaph; Columbia had not reopened after pandemic closure."
+    },
+    {
+      "evidenceId": "ev-toast-josephine",
+      "url": "https://order.toasttab.com/online/columbia-firehouse",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "title": "Toast current location catalog",
+      "retrievedAt": "2026-08-05T00:00:00Z",
+      "excerpt": "URL now serves Josephine, 109 S St Asaph St, Alexandria VA; current Josephine menu, not Columbia Firehouse."
+    },
+    {
+      "evidenceId": "ev-official-home",
+      "url": "https://columbiafirehouse.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Columbia Firehouse official homepage",
+      "retrievedAt": "2026-08-05T00:00:00Z",
+      "excerpt": "Domain unavailable/redirected; no current Columbia menu or allergen disclosure."
+    },
+    {
+      "evidenceId": "ev-search-site",
+      "url": "https://www.google.com/search?q=site%3Acolumbiafirehouse.com+Alexandria+menu+allergen",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "Official-site targeted inspection",
+      "retrievedAt": "2026-08-05T00:00:00Z",
+      "excerpt": "No current official Columbia Firehouse allergen matrix found."
+    },
+    {
+      "evidenceId": "ev-search-docs",
+      "url": "https://www.google.com/search?q=Columbia+Firehouse+Alexandria+allergen+nutrition+ingredients+PDF",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "Official documents search",
+      "retrievedAt": "2026-08-05T00:00:00Z",
+      "excerpt": "No restaurant-issued allergen, nutrition, ingredient, PDF, or image matrix found."
+    },
+    {
+      "evidenceId": "ev-search-vendor",
+      "url": "https://order.toasttab.com/online/columbia-firehouse",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "title": "Linked vendor allergen inspection",
+      "retrievedAt": "2026-08-05T00:00:00Z",
+      "excerpt": "Current vendor page is Josephine; allergy request controls/menu descriptions are not a Columbia allergen matrix."
+    },
+    {
+      "evidenceId": "ev-search-web",
+      "url": "https://www.google.com/search?q=Columbia+Firehouse+Alexandria+allergen+menu",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "Targeted web search",
+      "retrievedAt": "2026-08-05T00:00:00Z",
+      "excerpt": "Search results confirm closure/replacement and provide no official Columbia allergen matrix."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-homepage",
+      "title": "Columbia Firehouse official homepage",
+      "url": "https://columbiafirehouse.com/",
+      "current": false,
+      "scopeStatus": "closed",
+      "currentProductKeys": [],
+      "sourceEvidenceIds": [
+        "ev-official-home"
+      ]
+    },
+    {
+      "surfaceId": "toast-josephine-replacement",
+      "title": "Toast current 109 S St Asaph ordering menu (Josephine)",
+      "url": "https://order.toasttab.com/online/columbia-firehouse",
+      "current": true,
+      "scopeStatus": "complete",
+      "currentProductKeys": [
+        "josephine-replacement-excluded"
+      ],
+      "sourceEvidenceIds": [
+        "ev-toast-josephine"
+      ],
+      "notes": [
+        "Authoritative current surface at address; different restaurant identity, represented only as an excluded replacement marker and not merged into Columbia catalog."
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "josephine-replacement-excluded",
+      "name": "Josephine replacement menu (excluded)",
+      "category": "location_mismatch",
+      "description": "Different restaurant at former Columbia Firehouse address; not part of Columbia catalog.",
+      "presentationIds": [],
+      "surfaceIds": [
+        "toast-josephine-replacement"
+      ],
+      "sourceEvidenceIds": [
+        "ev-toast-josephine"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    }
+  ],
+  "matrixSearchAudit": [
+    {
+      "searchClass": "official_site",
+      "inspectedLocationOrQuery": "columbiafirehouse.com homepage/navigation",
+      "urls": [
+        "https://columbiafirehouse.com/"
+      ],
+      "outcome": "not_found",
+      "evidenceIds": [
+        "ev-official-home",
+        "ev-search-site"
+      ]
+    },
+    {
+      "searchClass": "official_documents",
+      "inspectedLocationOrQuery": "restaurant domain and targeted PDF/image/document queries",
+      "urls": [
+        "https://www.google.com/search?q=Columbia+Firehouse+Alexandria+allergen+nutrition+ingredients+PDF"
+      ],
+      "outcome": "not_found",
+      "evidenceIds": [
+        "ev-search-docs"
+      ]
+    },
+    {
+      "searchClass": "linked_vendor",
+      "inspectedLocationOrQuery": "Toast linked vendor URL",
+      "urls": [
+        "https://order.toasttab.com/online/columbia-firehouse"
+      ],
+      "outcome": "different_restaurant_no_matrix",
+      "evidenceIds": [
+        "ev-toast-josephine",
+        "ev-search-vendor"
+      ]
+    },
+    {
+      "searchClass": "targeted_web_search",
+      "inspectedLocationOrQuery": "Columbia Firehouse Alexandria allergen/menu queries",
+      "urls": [
+        "https://www.google.com/search?q=Columbia+Firehouse+Alexandria+allergen+menu"
+      ],
+      "outcome": "not_found",
+      "evidenceIds": [
+        "ev-closure",
+        "ev-search-web"
+      ]
+    }
+  ],
+  "officialAllergenStatus": "accurately_unavailable",
+  "reconciliation": {
+    "frozenItemCount": 24,
+    "items": [
+      {
+        "auditItemKey": "1:6-extra-waffle-chips",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "2:beef-bourguignon",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "3:burger-josephine",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "4:duck-confit",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "5:gougeres",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "6:grilled-salmon",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "7:kids-chicken-tenders",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "8:kids-grilled-cheese",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "9:kids-mac-n-cheese",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "10:kids-peanutbutter-and-jelly-sandwich",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "11:lyonnaise-salade",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "12:mesclun-salad",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "13:opera-cake",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "14:pate",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "15:poulet-roti",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "16:riz-au-lait",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "17:salade-josephine",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "18:salmon-rillettes",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "19:salt-cod-croquettes",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "20:sauteed-mushrooms",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "21:scallops",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "22:soup-du-jour",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "23:strip-au-poivre",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      },
+      {
+        "auditItemKey": "24:trout-amandine",
+        "disposition": "stale",
+        "currentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      }
+    ]
+  },
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "query": "columbiafirehouse.com homepage/navigation",
+        "url": "https://columbiafirehouse.com/",
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-official-home",
+          "ev-search-site"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "query": "restaurant domain and PDF/image/document queries",
+        "url": "https://www.google.com/search?q=Columbia+Firehouse+Alexandria+allergen+nutrition+ingredients+PDF",
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-search-docs"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "query": "Toast linked vendor URL",
+        "url": "https://order.toasttab.com/online/columbia-firehouse",
+        "outcome": "different_restaurant_no_matrix",
+        "evidenceIds": [
+          "ev-toast-josephine",
+          "ev-search-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "Columbia Firehouse Alexandria allergen/menu",
+        "url": "https://www.google.com/search?q=Columbia+Firehouse+Alexandria+allergen+menu",
+        "outcome": "not_found",
+        "evidenceIds": [
+          "ev-closure",
+          "ev-search-web"
+        ]
+      }
+    ],
+    "officialAllergenStatus": "accurately_unavailable"
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": true,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "proposedChanges": [
+    {
+      "type": "stale_catalog",
+      "description": "Retire the 24 historical Columbia Firehouse item rows; restaurant is closed and current Toast URL belongs to Josephine. Do not merge replacement menu."
+    }
+  ],
+  "routingSignals": {
+    "lightweight": [
+      "stale_items",
+      "restaurant_closed",
+      "location_menu_replacement"
+    ],
+    "safetyEscalation": [],
+    "recommendedLane": "luna_fix"
+  },
+  "blockedReason": null,
+  "notes": [
+    "All frozen rows reconciled as stale; no current Columbia food/nonalcoholic product boundary exists."
+  ]
+}

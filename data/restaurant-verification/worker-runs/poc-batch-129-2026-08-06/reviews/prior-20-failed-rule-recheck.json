@@ -1,0 +1,289 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-129-2026-08-06",
+  "reviewType": "prior_20_failed_rule_recheck",
+  "completionRange": [460, 479],
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium",
+    "role": "sol_reviewer"
+  },
+  "reviewedRules": [
+    "current_menu_surface_completeness_and_membership_truth",
+    "frozen_direct_positive_preservation_and_truthful_reconciliation_scope",
+    "linked_vendor_search_credibility_and_source_surface_authority_consistency"
+  ],
+  "resolution": {
+    "binding": true,
+    "outcome": "prior_20_recheck_failed",
+    "reviewedCompletionCount": 20,
+    "passedTargetCount": 5,
+    "failedTargetCount": 15,
+    "failedRestaurantIds": [
+      "osm-ema-rossi-pizzeria-13912184601",
+      "evening-star-cafe-alexandria-va",
+      "replacement-exiles-bar-washington-dc",
+      "osm-facci-1351555296",
+      "falafel-inc-dc",
+      "famous-daves",
+      "replacement-famous-toastery-of-ashburn-ashburn-va",
+      "farmers-and-distillers-dc",
+      "farmers-fishers-bakers-dc",
+      "replacement-fat-pete-s-bbq-washington-dc",
+      "replacement-feru-ethiopian-cuisine-washington-dc",
+      "osm-fialova-12652608675",
+      "filomena-dc",
+      "osm-finnegan-s-wake-irish-pub-1332524327",
+      "fiola-dc"
+    ],
+    "materialSafetyError": true
+  },
+  "targets": [
+    {
+      "completion": 460,
+      "restaurantId": "osm-ema-rossi-pizzeria-13912184601",
+      "verdict": "fail",
+      "failedRules": ["current_menu_surface_completeness_and_membership_truth"],
+      "affectedSurfaceIds": ["spotapps"],
+      "affectedKeySet": {
+        "artifact": "data/restaurant-verification/worker-runs/poc-batch-119-2026-08-06/results/osm-ema-rossi-pizzeria-13912184601.json",
+        "selector": "menuSurfaces[surfaceId=spotapps].currentProductKeys",
+        "count": 67
+      },
+      "finding": "The linked SpotApps surface is assigned the same 67 keys as official-food, but every product cites ev-food and none cites the surface's ev-spotapps evidence. Membership on spotapps is unsupported. The 58 direct positives and all 75 reconciliations are preserved; the specific SpotApps vendor URL is otherwise credible."
+    },
+    {
+      "completion": 461,
+      "restaurantId": "evening-star-cafe-alexandria-va",
+      "verdict": "fail",
+      "failedRules": ["current_menu_surface_completeness_and_membership_truth"],
+      "affectedSurfaceIds": ["official-spring-pdf", "linked-toast"],
+      "affectedKeySet": {
+        "artifact": "data/restaurant-verification/worker-runs/poc-batch-123-2026-08-06/results/evening-star-cafe-alexandria-va.json",
+        "selector": "menuSurfaces[surfaceId in (official-spring-pdf,linked-toast)].currentProductKeys",
+        "countPerSurface": 80
+      },
+      "finding": "A spring dinner PDF and a distinct Toast takeout surface are each assigned all 80 products, including obvious cross-menu BBQ, taco, beverage, and by-the-pound keys; the products do not cite ev-menu-pdf for the PDF membership. Direct positives and reconciliations are preserved and Toast authority is consistent."
+    },
+    {
+      "completion": 462,
+      "restaurantId": "replacement-exiles-bar-washington-dc",
+      "verdict": "fail",
+      "failedRules": ["current_menu_surface_completeness_and_membership_truth"],
+      "affectedSurfaceIds": [],
+      "affectedKeySet": {
+        "artifact": "data/restaurant-verification/worker-runs/poc-batch-123-2026-08-06/results/replacement-exiles-bar-washington-dc.json",
+        "selector": "currentProducts[*].currentProductKey",
+        "count": 31
+      },
+      "finding": "The result publishes 31 products but declares no current menu surface, leaving the entire catalog without current surface membership. All 22 direct positives and 31 reconciliations are preserved; the specific Toast source resolves as restaurant_linked_vendor."
+    },
+    {
+      "completion": 463,
+      "restaurantId": "osm-facci-1351555296",
+      "verdict": "fail",
+      "failedRules": ["current_menu_surface_completeness_and_membership_truth"],
+      "affectedSurfaceIds": ["official-home", "lunch", "dinner"],
+      "affectedKeySet": {
+        "artifact": "data/restaurant-verification/worker-runs/poc-batch-123-2026-08-06/results/osm-facci-1351555296.json",
+        "selector": "menuSurfaces[surfaceId in (official-home,lunch,dinner)].currentProductKeys",
+        "countPerSurface": 38
+      },
+      "finding": "The homepage plus distinct lunch and dinner PDFs are each assigned the identical full 38-product set; 65 surface/product evidence joins do not resolve to the surface evidence. Direct positives and reconciliations are preserved. The linked_vendor attempt truthfully inspects the restaurant-issued /online-order/ page without inventing a vendor."
+    },
+    {
+      "completion": 464,
+      "restaurantId": "facci-wood-fire-pizza-wine-bar-of-maple-lawn-laurel-md-dc-metro",
+      "verdict": "pass",
+      "failedRules": [],
+      "finding": "Distinct dinner/lunch/dessert memberships are scoped 22/25/3 over 37 products; 30 frozen positives and all 43 reconciliations are preserved; no linked vendor is invented and restaurant-issued authority is retained."
+    },
+    {
+      "completion": 465,
+      "restaurantId": "falafel-inc-dc",
+      "verdict": "fail",
+      "failedRules": [
+        "current_menu_surface_completeness_and_membership_truth",
+        "linked_vendor_search_credibility_and_source_surface_authority_consistency"
+      ],
+      "affectedSurfaceIds": ["homepage-menu"],
+      "affectedCurrentProductKeys": ["shawarma-sandwich"],
+      "affectedEvidenceIds": ["ev-search-vendor"],
+      "finding": "shawarma-sandwich is assigned to homepage-menu without the homepage surface evidence. The vendor evidence uses only the generic https://order.online/ root, which does not identify Falafel Inc or prove restaurant linkage. Direct positives and reconciliations are preserved."
+    },
+    {
+      "completion": 466,
+      "restaurantId": "family-ethiopian-restaurant-washington-dc-dc-metro",
+      "verdict": "pass",
+      "failedRules": [],
+      "finding": "The single official PDF truthfully scopes 21 products. Nine current direct positives are preserved; 8:fish-entrees is specifically and plausibly reconciled as a section-heading artifact. The no-vendor search resolves to inspected official homepage/menu evidence without assigning linked-vendor authority."
+    },
+    {
+      "completion": 467,
+      "restaurantId": "famous-daves",
+      "verdict": "fail",
+      "failedRules": [
+        "current_menu_surface_completeness_and_membership_truth",
+        "linked_vendor_search_credibility_and_source_surface_authority_consistency"
+      ],
+      "affectedSurfaceIds": ["official-menu-location-160"],
+      "affectedKeySet": {
+        "artifact": "data/restaurant-verification/worker-runs/poc-batch-125-2026-08-06/results/famous-daves.json",
+        "selector": "currentProducts[*].currentProductKey",
+        "count": 217
+      },
+      "affectedEvidenceIds": ["fd-order"],
+      "finding": "The only current surface has zero keys while 217 products are published. Reconciliation exists in the result's dispositions schema, but current membership is absent. The DoorDash business-page search has no restaurant-issued referring evidence proving it is a restaurant-linked vendor."
+    },
+    {
+      "completion": 468,
+      "restaurantId": "famous-toastery-ashburn-dc-metro",
+      "verdict": "pass",
+      "failedRules": [],
+      "finding": "One specific Ashburn Toast surface contains all 98 products, all 67 direct positives are preserved, all 98 rows reconcile, and the specific Toast URL and linked-vendor authority are consistent."
+    },
+    {
+      "completion": 469,
+      "restaurantId": "replacement-famous-toastery-of-ashburn-ashburn-va",
+      "verdict": "fail",
+      "failedRules": [
+        "current_menu_surface_completeness_and_membership_truth",
+        "frozen_direct_positive_preservation_and_truthful_reconciliation_scope",
+        "linked_vendor_search_credibility_and_source_surface_authority_consistency"
+      ],
+      "affectedSurfaceIds": ["official-breakfast", "official-lunch", "official-kids"],
+      "affectedKeySet": {
+        "artifact": "data/restaurant-verification/worker-runs/poc-batch-125-2026-08-06/results/replacement-famous-toastery-of-ashburn-ashburn-va.json",
+        "selector": "currentProducts[*].currentProductKey",
+        "count": 29
+      },
+      "affectedAuditItemKeys": ["33:yogurt-parfait"],
+      "affectedEvidenceIds": ["ev-search-vendor"],
+      "finding": "All three official surfaces have zero membership despite 29 published products. Frozen positive 33:yogurt-parfait is removed as an alleged marketing/header artifact without product-specific supporting evidence. The linked_vendor attempt inspects a Boone Toast location, not Ashburn, so it cannot establish target vendor scope."
+    },
+    {
+      "completion": 470,
+      "restaurantId": "farmers-and-distillers-dc",
+      "verdict": "fail",
+      "failedRules": [
+        "current_menu_surface_completeness_and_membership_truth",
+        "frozen_direct_positive_preservation_and_truthful_reconciliation_scope",
+        "linked_vendor_search_credibility_and_source_surface_authority_consistency"
+      ],
+      "affectedSurfaceIds": ["fd-breakfast", "fd-brunch"],
+      "affectedKeySet": {
+        "artifact": "data/restaurant-verification/item-checks/farmers-and-distillers-dc.jsonl",
+        "selector": "rows where baseline.allergens or baseline.mayContain is nonempty",
+        "count": 117
+      },
+      "finding": "Distinct breakfast and brunch PDFs are assigned the same 21 keys. More importantly, all 117 frozen direct-positive rows are normalized matches but all 168 current products are reset to unavailable, with zero direct positives and no truthful stale reasons. The /order-food-to-go-delivery/ attempt supplies no resolving evidence ID or captured outbound vendor."
+    },
+    {
+      "completion": 471,
+      "restaurantId": "farmers-fishers-bakers-dc",
+      "verdict": "fail",
+      "failedRules": ["current_menu_surface_completeness_and_membership_truth"],
+      "affectedSurfaceIds": ["official-location", "official-lunch-dinner-pdf"],
+      "affectedKeySet": {
+        "artifact": "data/restaurant-verification/worker-runs/poc-batch-126-2026-08-06/results/farmers-fishers-bakers-dc.json",
+        "selector": "menuSurfaces[surfaceId in (official-location,official-lunch-dinner-pdf)].currentProductKeys",
+        "countPerSurface": 97
+      },
+      "finding": "A location/navigation page and a distinct lunch-dinner PDF are both marked complete with the identical full 97-product set instead of source-specific membership. All 57 positives and 97 reconciliations are preserved; the specific Uber Eats evidence is consistently labeled restaurant_linked_vendor."
+    },
+    {
+      "completion": 472,
+      "restaurantId": "replacement-fat-pete-s-bbq-washington-dc",
+      "verdict": "fail",
+      "failedRules": ["linked_vendor_search_credibility_and_source_surface_authority_consistency"],
+      "affectedEvidenceUrl": "https://fatpetesbbq.com/order",
+      "finding": "Menu scope, 73 direct positives, and 137 reconciliations pass. The linked_vendor attempt records the restaurant-issued /order page but supplies no resolving evidence ID and no inspected outbound vendor URL or explicit no-vendor search evidence."
+    },
+    {
+      "completion": 473,
+      "restaurantId": "fava-pot-falls-church-va-dc-metro",
+      "verdict": "pass",
+      "failedRules": [],
+      "finding": "The single official PDF scopes all 51 products, all 51 rows reconcile, no frozen direct positives exist, and the no-vendor result resolves to the inspected official homepage without assigning invented vendor authority."
+    },
+    {
+      "completion": 474,
+      "restaurantId": "federalist-pig-dc",
+      "verdict": "pass",
+      "failedRules": [],
+      "finding": "The full menu has 45 products and the distinct lunch surface has a truthful 12-product subset; all 17 positives and 41 frozen reconciliations are preserved; the restaurant-specific order.online URL resolves through evidence."
+    },
+    {
+      "completion": 475,
+      "restaurantId": "replacement-feru-ethiopian-cuisine-washington-dc",
+      "verdict": "fail",
+      "failedRules": ["linked_vendor_search_credibility_and_source_surface_authority_consistency"],
+      "affectedEvidenceIds": ["ev-vendor"],
+      "finding": "Menu scope, 10 positives, and 23 reconciliations pass. ev-vendor labels the restaurant-controlled https://www.discoverferu.com/order-online URL restaurant_linked_vendor rather than restaurant_issued, leaving an authority conflict."
+    },
+    {
+      "completion": 476,
+      "restaurantId": "osm-fialova-12652608675",
+      "verdict": "fail",
+      "failedRules": [
+        "frozen_direct_positive_preservation_and_truthful_reconciliation_scope",
+        "linked_vendor_search_credibility_and_source_surface_authority_consistency"
+      ],
+      "affectedKeySet": {
+        "artifact": "data/restaurant-verification/item-checks/osm-fialova-12652608675.jsonl",
+        "selector": "rows where baseline.allergens or baseline.mayContain is nonempty",
+        "count": 29
+      },
+      "affectedEvidenceIds": ["ev-vendor"],
+      "finding": "All 29 frozen direct-positive rows are normalized matches but all 46 current products are reset to unavailable, with no truthful stale reasons. ev-vendor additionally mislabels the restaurant-controlled https://www.fialovabethesda.com/menus/ URL restaurant_linked_vendor."
+    },
+    {
+      "completion": 477,
+      "restaurantId": "filomena-dc",
+      "verdict": "fail",
+      "failedRules": [
+        "current_menu_surface_completeness_and_membership_truth",
+        "linked_vendor_search_credibility_and_source_surface_authority_consistency"
+      ],
+      "affectedSurfaceIds": ["official-dinner-pdf", "official-lunch-pdf"],
+      "affectedKeySet": {
+        "artifact": "data/restaurant-verification/worker-runs/poc-batch-128-2026-08-06/results/filomena-dc.json",
+        "selector": "menuSurfaces[surfaceId in (official-dinner-pdf,official-lunch-pdf)].currentProductKeys",
+        "countPerSurface": 45
+      },
+      "affectedEvidenceIds": ["ev-search-vendor"],
+      "finding": "Distinct dinner and lunch PDFs are each assigned the identical complete 45-product set. The vendor evidence mislabels the restaurant-controlled https://www.filomena.com/menu/ URL restaurant_linked_vendor. All 33 positives and 45 reconciliations are otherwise preserved."
+    },
+    {
+      "completion": 478,
+      "restaurantId": "osm-finnegan-s-wake-irish-pub-1332524327",
+      "verdict": "fail",
+      "failedRules": ["frozen_direct_positive_preservation_and_truthful_reconciliation_scope"],
+      "affectedKeySet": {
+        "artifact": "data/restaurant-verification/item-checks/osm-finnegan-s-wake-irish-pub-1332524327.jsonl",
+        "selector": "rows where baseline.allergens or baseline.mayContain is nonempty",
+        "count": 31
+      },
+      "finding": "Food/brunch/happy-hour membership is separated 22/7/5 and vendor authority is truthful. However, all 31 frozen direct-positive rows are matched without stale dispositions while every one of the 34 current products is reset to unavailable."
+    },
+    {
+      "completion": 479,
+      "restaurantId": "fiola-dc",
+      "verdict": "fail",
+      "failedRules": ["current_menu_surface_completeness_and_membership_truth"],
+      "affectedSurfaceIds": ["official-dinner", "official-alacarte"],
+      "affectedKeySet": {
+        "artifact": "data/restaurant-verification/worker-runs/poc-batch-129-2026-08-06/results/fiola-dc.json",
+        "selector": "menuSurfaces[surfaceId in (official-dinner,official-alacarte)].currentProductKeys",
+        "countPerSurface": 42
+      },
+      "finding": "The distinct tasting-menu and dinner-a-la-carte surfaces are each assigned the identical full 42-product set. All 42 frozen rows reconcile and no frozen direct positives exist. The no-vendor search correctly uses restaurant-issued evidence."
+    }
+  ],
+  "failedRuleCounts": {
+    "current_menu_surface_completeness_and_membership_truth": 11,
+    "frozen_direct_positive_preservation_and_truthful_reconciliation_scope": 4,
+    "linked_vendor_search_credibility_and_source_surface_authority_consistency": 8
+  },
+  "coordinatorRecommendation": "Keep new claims paused. Route the 15 failed targets to focused repair using only their enumerated failed rules and evidence/key selectors. Re-run this same narrow prior-20 packet after repairs; resume only when every target passes or is explicitly nonterminal."
+}

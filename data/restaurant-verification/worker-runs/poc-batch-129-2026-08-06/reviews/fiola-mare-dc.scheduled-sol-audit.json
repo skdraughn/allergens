@@ -1,0 +1,258 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-129-2026-08-06",
+  "restaurantId": "fiola-mare-dc",
+  "reviewType": "scheduled_one_in_20_audit",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium",
+    "role": "sol_reviewer"
+  },
+  "reviewedKeys": [
+    "1:a-collection-of-seafood-crudi-inspired-by-the-amalfi-coast",
+    "4:amalfi-coast-delizia-al-limone",
+    "5:angel-hair-al-limone",
+    "6:artichoke-alla-giudia",
+    "7:asparagus-gazpacho",
+    "8:atlantic-razor-clams",
+    "10:bombolini",
+    "12:bucatini-carbonara",
+    "13:canary-island-branzino-crudo",
+    "14:canary-islands-branzino",
+    "15:carolina-yellowfin-tuna",
+    "16:carolina-yellowfin-tuna-crudo",
+    "17:cassata-siciliana",
+    "18:cavatelli-ragu-di-seppia",
+    "19:caviar-sourdough-milk-toast",
+    "20:chef-kates-pastry-and-bread-basket",
+    "24:dry-aged-double-smash-burger",
+    "25:eggplant-al-funghetto",
+    "26:fiola-mare-basil-caesar-salad",
+    "27:fiola-mare-grand-chocolate-cake",
+    "28:fiola-mare-lobster-ravioli",
+    "29:fiola-mare-seafood-tower",
+    "30:fiola-mare-tiramisu",
+    "31:fusilli-cacio-e-pepe",
+    "32:grand-chocolate-cake",
+    "33:grilled-california-asparagus",
+    "34:hazelnut-rocher",
+    "36:lemon-berry-cake",
+    "37:ligurian-pesto-ravioli",
+    "39:merasheen-bay-oysters",
+    "40:neapolitan-paccheri-frutti-di-mare",
+    "41:octopus-arrabbiata",
+    "43:royal-oscietra",
+    "44:sassano-burrata",
+    "46:setaro-spaghetti-chitarra-alle-vongole",
+    "47:sexy-fish",
+    "48:shrimp-cocktail",
+    "49:siberian-royal",
+    "50:smoked-salmon-scramble",
+    "51:spicy-maryland-crab-cake-benedict",
+    "52:spring-garden",
+    "53:strawberry-shortcake",
+    "54:tuna-tartare-puttanesca",
+    "56:venetian-tiramisu",
+    "57:wester-ross-salmon",
+    "58:whole-canary-islands-branzino",
+    "59:whole-grilled-maine-lobster",
+    "63:wild-rhode-island-calamari"
+  ],
+  "evidence": [
+    {
+      "evidenceId": "packet-job",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-129-2026-08-06/jobs/fiola-mare-dc.json",
+      "finding": "The immutable packet identifies Fiola Mare, Georgetown DC, fiolamaredc.com, 64 frozen rows, and fingerprint 88591cc6ed5e6644f79f4b28a20816c8fb060772d5d9809c63bffdb7a54e162d."
+    },
+    {
+      "evidenceId": "official-identity",
+      "url": "https://www.fiolamaredc.com/",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-06",
+      "finding": "The official homepage identifies Fiola Mare at 3050 K St NW, Washington DC 20007 on the Georgetown waterfront; packet identity and location are confirmed."
+    },
+    {
+      "evidenceId": "official-dinner-current",
+      "url": "https://www.fiolamaredc.com/dinner",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-06",
+      "finding": "The current dinner surface does not truthfully match the result membership. Examples include current CAVILLION MELON GAZPACHO, WILD NIGERIAN TIGER PRAWN, FAROE ISLAND SALMON, CAROLINA BLUEFIN TUNA, IRISH POINT OYSTERS, and CHEF CREEK OYSTERS where the result instead carries asparagus-gazpacho, australian-prawn, wester-ross-salmon, carolina-yellowfin-tuna, and merasheen-bay-oysters or omits the current products."
+    },
+    {
+      "evidenceId": "official-lunch-current",
+      "url": "https://www.fiolamaredc.com/lunch",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-06",
+      "finding": "The current lunch surface includes ROASTED PEACH GAZPACHO, RIGATONI AL RAGU DI SEPPIA, WILD ATLANTIC STRIPED BASS, WILD NIGERIAN TIGER PRAWN, FAROE ISLAND SALMON, and CAROLINA BLUEFIN TUNA; corresponding result membership is stale or missing, including asparagus-gazpacho, cavatelli-ragu-di-seppia, australian-prawn, wester-ross-salmon, and carolina-yellowfin-tuna."
+    },
+    {
+      "evidenceId": "official-brunch-current",
+      "url": "https://www.fiolamaredc.com/brunch",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-06",
+      "finding": "The current brunch surface includes LEMON RICOTTA PANCAKES, EGGS BENEDICT, TONNARELLI CARBONARA, GIANDUJA CHOCOLATE CAKE, FAROE ISLAND SALMON, and WILD NIGERIAN TIGER PRAWN; result membership omits these or retains stale bucatini-carbonara, spicy-maryland-crab-cake-benedict, grand-chocolate-cake, wester-ross-salmon, and australian-prawn keys."
+    },
+    {
+      "evidenceId": "frozen-direct-positive-set",
+      "artifact": "data/restaurant-verification/item-checks/fiola-mare-dc.jsonl",
+      "finding": "The 64 frozen rows contain 48 restaurant-issued official-ingredients positive rows. All 48 are normalized matches in the isolated result, but every matched product is reset to allergenSourceType unavailable with empty contains/mayContain arrays and no item-specific reason that the positive no longer applies."
+    },
+    {
+      "evidenceId": "research-result",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-129-2026-08-06/results/fiola-mare-dc.json",
+      "finding": "The result claims three complete current surfaces and 64 normalized matches, reports zero direct positives, and records generic notes that the direct matrix is unavailable rather than adjudicating the 48 existing positive rows."
+    },
+    {
+      "evidenceId": "canonical-dossier",
+      "artifact": "data/restaurant-verification/restaurants/fiola-mare-dc.json",
+      "finding": "The dossier publishes all 64 products with allergenSourceType unavailable, directPositiveCount 0, and directAssertionCount 0, reproducing the direct-positive loss and stale surface membership."
+    },
+    {
+      "evidenceId": "matrix-search-authority",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-129-2026-08-06/results/fiola-mare-dc.json",
+      "finding": "Only official_site and targeted_web_search resolve credibly. official_documents merely reuses the /menus HTML page without an inspected document, sitemap, downloadable URL, or complete domain-qualified document query. linked_vendor also reuses https://www.fiolamaredc.com/menus rather than an actual vendor URL."
+    },
+    {
+      "evidenceId": "canonical-evidence-authority",
+      "artifact": "data/restaurant-verification/evidence/fiola-mare-dc.json",
+      "finding": "ev-vendor labels the restaurant-controlled https://www.fiolamaredc.com/menus URL restaurant_linked_vendor, creating a source-authority conflict; ev-menus and ev-vendor contain no capture hash, final URL, HTTP status, or artifact path that could resolve the claimed distinction."
+    },
+    {
+      "evidenceId": "apply-result",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-129-2026-08-06/apply-results/fiola-mare-dc.json",
+      "finding": "Mechanical APPLY validation passes and reports zero direct positives, but it does not detect the safety-semantic reset, incomplete search evidence, false vendor authority, or current menu-membership mismatch."
+    }
+  ],
+  "resolution": {
+    "binding": true,
+    "outcome": "audit_failed_material_safety_error",
+    "items": [
+      {
+        "affectedAuditItemKeys": [
+          "1:a-collection-of-seafood-crudi-inspired-by-the-amalfi-coast",
+          "4:amalfi-coast-delizia-al-limone",
+          "5:angel-hair-al-limone",
+          "6:artichoke-alla-giudia",
+          "7:asparagus-gazpacho",
+          "8:atlantic-razor-clams",
+          "10:bombolini",
+          "12:bucatini-carbonara",
+          "13:canary-island-branzino-crudo",
+          "14:canary-islands-branzino",
+          "15:carolina-yellowfin-tuna",
+          "16:carolina-yellowfin-tuna-crudo",
+          "17:cassata-siciliana",
+          "18:cavatelli-ragu-di-seppia",
+          "19:caviar-sourdough-milk-toast",
+          "20:chef-kates-pastry-and-bread-basket",
+          "24:dry-aged-double-smash-burger",
+          "25:eggplant-al-funghetto",
+          "26:fiola-mare-basil-caesar-salad",
+          "27:fiola-mare-grand-chocolate-cake",
+          "28:fiola-mare-lobster-ravioli",
+          "29:fiola-mare-seafood-tower",
+          "30:fiola-mare-tiramisu",
+          "31:fusilli-cacio-e-pepe",
+          "32:grand-chocolate-cake",
+          "33:grilled-california-asparagus",
+          "34:hazelnut-rocher",
+          "36:lemon-berry-cake",
+          "37:ligurian-pesto-ravioli",
+          "39:merasheen-bay-oysters",
+          "40:neapolitan-paccheri-frutti-di-mare",
+          "41:octopus-arrabbiata",
+          "43:royal-oscietra",
+          "44:sassano-burrata",
+          "46:setaro-spaghetti-chitarra-alle-vongole",
+          "47:sexy-fish",
+          "48:shrimp-cocktail",
+          "49:siberian-royal",
+          "50:smoked-salmon-scramble",
+          "51:spicy-maryland-crab-cake-benedict",
+          "52:spring-garden",
+          "53:strawberry-shortcake",
+          "54:tuna-tartare-puttanesca",
+          "56:venetian-tiramisu",
+          "57:wester-ross-salmon",
+          "58:whole-canary-islands-branzino",
+          "59:whole-grilled-maine-lobster",
+          "63:wild-rhode-island-calamari"
+        ],
+        "resolution": "direct_positive_preservation_failed",
+        "requiredAction": "For each still-current presentation, preserve the frozen restaurant-issued positive with correct authority and evidence; otherwise record an item-specific evidence-backed reason it no longer applies. A missing matrix does not authorize wholesale reset to unavailable."
+      }
+    ],
+    "surfaceResolutions": [
+      {
+        "surfaceId": "surface-dinner",
+        "resolution": "current_membership_not_truthful",
+        "affectedCurrentProductKeys": [
+          "asparagus-gazpacho",
+          "australian-prawn",
+          "wester-ross-salmon",
+          "carolina-yellowfin-tuna",
+          "merasheen-bay-oysters"
+        ]
+      },
+      {
+        "surfaceId": "surface-lunch",
+        "resolution": "current_membership_not_truthful",
+        "affectedCurrentProductKeys": [
+          "asparagus-gazpacho",
+          "cavatelli-ragu-di-seppia",
+          "australian-prawn",
+          "wester-ross-salmon",
+          "carolina-yellowfin-tuna"
+        ]
+      },
+      {
+        "surfaceId": "surface-brunch",
+        "resolution": "current_membership_not_truthful",
+        "affectedCurrentProductKeys": [
+          "bucatini-carbonara",
+          "spicy-maryland-crab-cake-benedict",
+          "grand-chocolate-cake",
+          "wester-ross-salmon",
+          "australian-prawn"
+        ]
+      }
+    ],
+    "safetySourceAuthorityConflictRemains": true
+  },
+  "remainingSolSignals": [
+    "menu_scope_incomplete_or_stale",
+    "direct_positive_preservation_failed",
+    "official_documents_search_incomplete",
+    "linked_vendor_search_incomplete",
+    "linked_vendor_authority_mislabeled"
+  ],
+  "validation": {
+    "valid": false,
+    "errors": [
+      "Current dinner, lunch, and brunch product memberships are not truthful against the cited official surfaces.",
+      "Forty-eight frozen restaurant-issued positive rows were wholesale-reset to unavailable without item-specific evidence.",
+      "official_documents does not resolve to a credible inspected document surface or query.",
+      "linked_vendor does not resolve to an actual vendor URL and its evidence authority is mislabeled."
+    ],
+    "identityConfirmed": true,
+    "locationConfirmed": true,
+    "currentMenuSurfaceCount": 3,
+    "surfacesWithTruthfulCurrentProductKeys": 0,
+    "requiredMatrixSearchClassCount": 4,
+    "recordedMatrixSearchClassCount": 4,
+    "credibleMatrixSearchClassCount": 2,
+    "officialMatrixSearchComplete": false,
+    "linkedVendorSearchCredible": false,
+    "frozenDirectPositiveItemCount": 48,
+    "preservedDirectPositiveItemCount": 0,
+    "unsupportedAllergenNegativeClaimCount": 0,
+    "crossContactConflictCount": 0,
+    "sourceAuthorityConflictCount": 1,
+    "materialSafetyError": true,
+    "frozenItemCount": 64,
+    "reconciledFrozenItemCount": 64,
+    "reconciliationKeySetValid": true,
+    "codexVerifiedClaimed": false
+  },
+  "coordinatorRecommendation": "Fail the sampled completion, pause new claims, and keep fiola-mare-dc nonterminal. Issue a focused target-specific repair for the three current menu memberships, the 48 direct-positive dispositions, the official_documents and linked_vendor searches, and ev-vendor authority; then repeat this narrow audit and recheck the prior 20 fast-path completions against the failed direct-positive-preservation, menu-membership, search-credibility, and source-authority rules before resuming."
+}

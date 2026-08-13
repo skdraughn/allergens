@@ -1,0 +1,262 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-004-2026-07-16",
+  "restaurantId": "osm-bakeshop-11399205397",
+  "reviewType": "narrow_menu_scope_resolution",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "role": "sol_reviewer"
+  },
+  "reviewedKeys": [
+    "2:baconham",
+    "5:dailybread"
+  ],
+  "resolution": {
+    "binding": true,
+    "outcome": "menu_scope_resolved",
+    "catalogDefinition": {
+      "scope": "Current food and nonalcoholic catalog for Bakeshop at 100 E. Fairfax Street, Falls Church, Virginia, including same-day pickup and current advance-order products.",
+      "completeSurfaceIds": [
+        "official-full-menu-pdf",
+        "official-cakes",
+        "toast-falls-church",
+        "official-cake-request-fc"
+      ],
+      "supportingSurfaceIds": [
+        "official-menu-hub",
+        "official-order"
+      ],
+      "enumerationRule": "deduplicated_union_of_current_official_full_menu_and_cake_catalog_with_exact_location_toast_and_falls_church_cake_request_presentations",
+      "sourceEvidenceIds": [
+        "official-menu",
+        "official-cakes",
+        "official-order",
+        "toast-falls-church",
+        "official-full-menu-pdf",
+        "official-cake-request-fc"
+      ],
+      "existingProductCount": 4,
+      "additionalProductCount": 0,
+      "resolvedCatalogProductCount": 4,
+      "rationale": "The official menu hub currently links the restaurant-issued Menu_July2026 PDF, which is a valid three-page PDF and fully enumerates cupcakes, configurable breakfast sandwiches, drinks, cakes, pies, refrigerated desserts, breads, cookies, treats, and macarons for Bakeshop locations including Falls Church. The official cake page enumerates the advance cake catalog, the Falls Church request page is its location-specific order presentation, and the restaurant-linked Toast page enumerates the current same-day Falls Church pickup catalog. These surfaces are complementary and overlap substantially. The four existing result products intentionally represent these complete catalog families, so the binding boundary requires no additional product identity beyond them."
+    },
+    "items": [
+      {
+        "auditItemKey": "2:baconham",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-full-menu-pdf",
+          "toast-falls-church"
+        ],
+        "rationale": "The current official PDF's Breakfast builder lists Bacon and Ham as separate choices under 'Choose Your Protein'; it does not sell a product named BaconHam or Bacon/Ham. The frozen key is a flattened modifier-list extraction artifact. The current breakfast catalog remains represented by official-full-menu-catalog and toast-falls-church-catalog.",
+        "allergenAssessment": {
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfileEstablished": false,
+          "notes": "Classifying the flattened text does not establish any allergen absence, may-contain absence, or cross-contact status."
+        },
+        "safetySourceAuthorityConflictRemains": false
+      },
+      {
+        "auditItemKey": "5:dailybread",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-full-menu-pdf",
+          "toast-falls-church"
+        ],
+        "rationale": "The current official PDF contains a BREAD section with named loaf products and notes that individual slices change seasonally; it contains no independently sellable product named DAILYBREAD. The frozen key is a collapsed section or navigation label, while the named breads remain covered by official-full-menu-catalog and the current Toast food catalog.",
+        "allergenAssessment": {
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfileEstablished": false,
+          "notes": "The section-label resolution makes no item-level ingredient, allergen-negative, may-contain, or cross-contact conclusion."
+        },
+        "safetySourceAuthorityConflictRemains": false
+      }
+    ],
+    "surfaceResolutions": [
+      {
+        "surfaceId": "official-menu-hub",
+        "disposition": "excluded",
+        "title": "Official menu hub",
+        "url": "https://www.bakeshopva.com/menu",
+        "authority": "restaurant_issued",
+        "locationScope": "Bakeshop locations, including Falls Church at 100 E. Fairfax Street",
+        "currentAsOf": "2026-07-16",
+        "current": true,
+        "scopeClassification": "identity_and_catalog_navigation_supporting_surface",
+        "sourceEvidenceIds": [
+          "official-menu",
+          "official-full-menu-pdf",
+          "official-cakes"
+        ],
+        "rationale": "The current hub identifies the menu entry points and links the valid July 2026 full-menu PDF and official cake catalog, but does not itself enumerate products. It is explicitly excluded from direct catalog enumeration and retained as authority and navigation support.",
+        "additionalProductsRequired": [],
+        "allergenAssessment": {
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfilesEstablished": false,
+          "notes": "The navigation page supplies no complete item-level allergen profile."
+        },
+        "safetySourceAuthorityConflictRemains": false,
+        "allergenAuthorityLimitationRemains": true
+      },
+      {
+        "surfaceId": "official-order",
+        "disposition": "excluded",
+        "title": "Official ordering page",
+        "url": "https://www.bakeshopva.com/order",
+        "authority": "restaurant_issued",
+        "locationScope": "Bakeshop Falls Church same-day pickup and location-specific order routing",
+        "currentAsOf": "2026-07-16",
+        "current": true,
+        "scopeClassification": "location_and_vendor_navigation_supporting_surface",
+        "sourceEvidenceIds": [
+          "official-order",
+          "toast-falls-church",
+          "official-cake-request-fc"
+        ],
+        "rationale": "The page currently routes Falls Church same-day pickup to the exact-location Toast catalog and advance cakes to location forms. It also warns that unauthorized delivery menus may be inaccurate. Because it enumerates no independent products, it is excluded from direct enumeration and retained as location and linked-vendor authority support.",
+        "additionalProductsRequired": [],
+        "allergenAssessment": {
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfilesEstablished": false,
+          "notes": "The routing page supplies no item-level allergen conclusion."
+        },
+        "safetySourceAuthorityConflictRemains": false,
+        "allergenAuthorityLimitationRemains": true
+      },
+      {
+        "surfaceId": "official-full-menu-pdf",
+        "disposition": "complete",
+        "title": "Current full menu PDF",
+        "url": "https://static1.squarespace.com/static/616386c687b45a450e96aa9a/t/6a46bad413aa3e3223557645/1783020261286/Menu_July2026",
+        "authority": "restaurant_issued",
+        "locationScope": "Bakeshop locations listed in the document, including Falls Church at 100 E. Fairfax Street",
+        "servicePeriod": "current regular and advance-order menu, with explicitly marked seasonal products",
+        "currentAsOf": "2026-07-16",
+        "current": true,
+        "scopeClassification": "included_authoritative_fully_enumerated_official_catalog",
+        "sourceEvidenceIds": [
+          "official-menu",
+          "official-full-menu-pdf",
+          "toast-falls-church",
+          "official-cakes"
+        ],
+        "rationale": "The official hub links this July 2026 document. The URL returns a valid three-page application/pdf document whose text is extractable and whose location block includes Falls Church. It fully enumerates the official food and nonalcoholic menu, including the Breakfast choice structure and named BREAD rows that resolve both frozen extraction artifacts. It is current and authoritative, not stale or inaccessible.",
+        "additionalProductsRequired": [],
+        "coveredExistingProductMappings": [
+          {
+            "surfaceCatalog": "July 2026 full food and nonalcoholic menu",
+            "currentProductKey": "official-full-menu-catalog"
+          }
+        ],
+        "allergenAssessment": {
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfilesEstablished": false,
+          "notes": "Names and descriptions may support only direct positive ingredients for applicable products. The PDF is not a complete allergen or cross-contact matrix."
+        },
+        "safetySourceAuthorityConflictRemains": false,
+        "allergenAuthorityLimitationRemains": true
+      },
+      {
+        "surfaceId": "official-cake-request-fc",
+        "disposition": "complete",
+        "title": "Falls Church cake request",
+        "url": "https://www.bakeshopva.com/cake-request-falls-church",
+        "authority": "restaurant_issued",
+        "locationScope": "Bakeshop Falls Church, 100 E. Fairfax Street, Falls Church, VA 22046",
+        "servicePeriod": "advance cake ordering",
+        "currentAsOf": "2026-07-16",
+        "current": true,
+        "scopeClassification": "included_location_specific_alternate_order_presentation",
+        "sourceEvidenceIds": [
+          "official-cake-request-fc",
+          "official-cakes",
+          "official-full-menu-pdf"
+        ],
+        "rationale": "The current Falls Church request form is the location-specific advance-order presentation for cakes and links back to the official cake descriptions and pricing. Its visible cake choices overlap the complete official cake catalog and introduce no distinct product identity, but it is included as the binding location-specific ordering presentation rather than treated as an unresolved surface.",
+        "additionalProductsRequired": [],
+        "coveredExistingProductMappings": [
+          {
+            "surfaceCatalog": "Falls Church advance cake choices",
+            "currentProductKey": "official-cake-catalog"
+          }
+        ],
+        "allergenAssessment": {
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfilesEstablished": false,
+          "notes": "Cake names and descriptions preserve direct positives only; the form provides no complete allergen or cross-contact profile."
+        },
+        "safetySourceAuthorityConflictRemains": false,
+        "allergenAuthorityLimitationRemains": true
+      }
+    ],
+    "safetySourceAuthorityConflictRemains": false,
+    "allergenAuthorityLimitationRemains": true,
+    "allergenAuthorityRationale": "All four required matrix searches remain complete and accurately unavailable. Current official and linked-vendor product text can support only directly stated positive ingredients; no negative, may-contain absence, complete profile, or cross-contact conclusion is introduced."
+  },
+  "remainingSolSignals": [
+    {
+      "signal": "seasonal_and_channel_availability_variation",
+      "status": "non_blocking_for_catalog_identity",
+      "affectedSurfaces": [
+        "official-full-menu-pdf",
+        "toast-falls-church"
+      ],
+      "sourceEvidenceIds": [
+        "official-full-menu-pdf",
+        "toast-falls-church"
+      ],
+      "rationale": "The official PDF explicitly marks seasonal flavors and says individual bread slices change seasonally, while Toast is a same-day availability presentation. These channel and availability differences do not make either current surface stale and do not change the binding product-family boundary."
+    },
+    {
+      "signal": "allergen_authority_incomplete",
+      "status": "accurately_unavailable_non_blocking_for_catalog_identity",
+      "affectedSurfaces": [
+        "official-full-menu-pdf",
+        "official-cakes",
+        "toast-falls-church",
+        "official-cake-request-fc"
+      ],
+      "sourceEvidenceIds": [
+        "official-full-menu-pdf",
+        "official-cakes",
+        "toast-falls-church",
+        "official-cake-request-fc"
+      ],
+      "rationale": "No complete allergen, may-contain, or cross-contact matrix was found after the four required searches."
+    }
+  ],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "reviewedKeyCount": 2,
+    "resolutionItemCount": 2,
+    "unresolvedFrozenKeyCount": 2,
+    "allAffectedKeysReviewedExactlyOnce": true,
+    "allDispositionsBinding": true,
+    "unresolvedReviewedKeys": [],
+    "artifactReviewedKeys": [
+      "2:baconham",
+      "5:dailybread"
+    ],
+    "surfaceResolutionCount": 4,
+    "partialSurfaceIds": [
+      "official-menu-hub",
+      "official-order",
+      "official-full-menu-pdf",
+      "official-cake-request-fc"
+    ],
+    "allPartialSurfacesResolvedExactlyOnce": true,
+    "existingProductCount": 4,
+    "additionalProductCount": 0,
+    "resolvedCatalogProductCount": 4,
+    "july2026PdfValidAndCurrent": true,
+    "toastFallsChurchCurrentAndLocationSpecific": true,
+    "unsupportedAllergenNegativesIntroduced": false,
+    "crossContactConclusionIntroduced": false,
+    "completeAllergenProfileClaimed": false,
+    "matrixStatusRemainsAccuratelyUnavailable": true,
+    "codexVerifiedClaimed": false
+  }
+}

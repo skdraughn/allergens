@@ -13,6 +13,7 @@ import {
 } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import {
+  Linking,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -30,7 +31,6 @@ import Animated, {
   useSharedValue,
   withDelay,
   withRepeat,
-  withSequence,
   withTiming,
 } from "react-native-reanimated";
 import { signIn, signUp } from "aws-amplify/auth";
@@ -83,7 +83,7 @@ const featureSteps = [
   {
     id: "sources",
     title: "Know where signals come from.",
-    subtitle: "SafePlate always labels the source type.",
+    subtitle: "MySafeMenu always labels the source type.",
   },
   {
     id: "menuItems",
@@ -1599,8 +1599,18 @@ function WelcomeStep({
           delay={560}
           style={styles.welcomeLegalRow}
         >
-          <Text style={styles.welcomeLegalText}>Privacy Policy</Text>
-          <Text style={styles.welcomeLegalText}>Terms of Service</Text>
+          <Pressable
+            accessibilityRole="link"
+            onPress={() => void Linking.openURL("https://www.mysafemenu.com/privacy")}
+          >
+            <Text style={styles.welcomeLegalText}>Privacy Policy</Text>
+          </Pressable>
+          <Pressable
+            accessibilityRole="link"
+            onPress={() => void Linking.openURL("https://www.mysafemenu.com/terms")}
+          >
+            <Text style={styles.welcomeLegalText}>Terms of Service</Text>
+          </Pressable>
         </RiseFadeIn>
       </View>
     </View>

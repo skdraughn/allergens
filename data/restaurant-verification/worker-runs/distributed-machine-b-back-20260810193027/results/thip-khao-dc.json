@@ -1,0 +1,559 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260810193027",
+  "restaurantId": "thip-khao-dc",
+  "packetValidation": {
+    "baselineItemCount": 36,
+    "baselineFingerprint": "c4657cb1100ff543ad4ca7887b309a6708bab5a9782ae3bb01b4f4ed4ff0d9bb",
+    "itemCheckCount": 36,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "Thip Khao",
+    "locationId": "columbia-heights-dc",
+    "address": "3462 14th St NW, Washington, DC 20010",
+    "domain": "thipkhao.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "e-home",
+      "e-menu-pdf"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "e-home",
+      "url": "https://www.thipkhao.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and location identity",
+      "retrievedAt": "2026-08-10T19:45:00Z"
+    },
+    {
+      "evidenceId": "e-menu-pdf",
+      "url": "https://media-cdn.getbento.com/accounts/3bb09ea51c65edb6643a20c462fbdb23/media/menus_files/4tQWPGXRRZigW5UwNOnr_menu%203.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official menu PDF; current food/nonalcoholic menu and allergy notice",
+      "retrievedAt": "2026-08-10T19:46:00Z"
+    },
+    {
+      "evidenceId": "e-singleplatform",
+      "url": "https://places.singleplatform.com/thip-khao/menu",
+      "authorityTier": "third_party",
+      "purpose": "frozen baseline menu source inspected for continuity",
+      "retrievedAt": "2026-08-10T19:47:00Z"
+    },
+    {
+      "evidenceId": "e-targeted-search",
+      "url": "https://www.google.com/search?q=site%3Athipkhao.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted official-domain allergen search",
+      "retrievedAt": "2026-08-10T19:48:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-homepage",
+      "url": "https://www.thipkhao.com/",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "columbia-heights-dc",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; homepage confirms location and links menu/navigation",
+      "sourceEvidenceIds": [
+        "e-home"
+      ]
+    },
+    {
+      "surfaceId": "official-menu-pdf",
+      "url": "https://media-cdn.getbento.com/accounts/3bb09ea51c65edb6643a20c462fbdb23/media/menus_files/4tQWPGXRRZigW5UwNOnr_menu%203.pdf",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "columbia-heights-dc",
+      "servicePeriod": "current dinner menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; food, nonalcoholic drinks, and drinks pages; alcohol-only items excluded",
+      "sourceEvidenceIds": [
+        "e-menu-pdf"
+      ]
+    },
+    {
+      "surfaceId": "singleplatform-baseline",
+      "url": "https://places.singleplatform.com/thip-khao/menu",
+      "authority": "linked menu reference",
+      "authorityTier": "third_party",
+      "locationScope": "columbia-heights-dc",
+      "servicePeriod": "baseline reference",
+      "current": false,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "frozen source retained for exact reconciliation; not treated as current authority",
+      "sourceEvidenceIds": [
+        "e-singleplatform"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "thip-khao-current-catalog",
+      "name": "Thip Khao current food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "e-menu-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [
+        "wheat",
+        "shellfish",
+        "peanut",
+        "tree-nut",
+        "milk",
+        "egg",
+        "fish",
+        "sesame",
+        "soy"
+      ],
+      "allergenSourceEvidenceIds": [
+        "e-menu-pdf"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenEvidenceNote": "Official menu says not all ingredients are listed, instructs guests to notify the server about allergies/sensitivities, and says gluten-free dishes may share a fryer with gluten-containing dishes. Item-level positives are not asserted from incomplete disclosure.",
+      "productCount": 36,
+      "boundary": "36 frozen food/nonalcoholic products reconciled; alcohol-only drink offerings excluded"
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "outcome": "No allergen matrix located",
+        "sourceEvidenceIds": [
+          "e-home"
+        ],
+        "location": "thipkhao.com homepage and menu/navigation pages",
+        "queryOrLocation": "thipkhao.com homepage and menu/navigation pages",
+        "url": "https://www.thipkhao.com/"
+      },
+      {
+        "class": "official_documents",
+        "outcome": "Official menu PDF located but no complete allergen matrix; allergy notice and fryer cross-contact statement recorded",
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ],
+        "location": "official menu PDF, document/image/download surfaces",
+        "queryOrLocation": "official menu PDF, document/image/download surfaces",
+        "url": "https://media-cdn.getbento.com/accounts/3bb09ea51c65edb6643a20c462fbdb23/media/menus_files/4tQWPGXRRZigW5UwNOnr_menu%203.pdf"
+      },
+      {
+        "class": "linked_vendor",
+        "outcome": "No current restaurant-linked ordering vendor or allergen matrix located",
+        "sourceEvidenceIds": [
+          "e-home"
+        ],
+        "location": "official homepage reservation/menu links and linked vendor surfaces",
+        "queryOrLocation": "official homepage reservation/menu links and linked vendor surfaces",
+        "url": "https://www.thipkhao.com/"
+      },
+      {
+        "class": "targeted_web_search",
+        "outcome": "No authoritative complete allergen matrix located",
+        "sourceEvidenceIds": [
+          "e-targeted-search",
+          "e-menu-pdf"
+        ],
+        "location": "targeted searches for thipkhao.com with allergen, allergy, nutrition, ingredients, PDF, and menu terms",
+        "queryOrLocation": "site:thipkhao.com allergen allergy nutrition ingredients PDF menu",
+        "query": "site:thipkhao.com allergen allergy nutrition ingredients PDF menu",
+        "url": "https://www.google.com/search?q=site%3Athipkhao.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+      }
+    ]
+  },
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:awk",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "2:chuenh-nok",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "3:chuenh-paa-sa-moun-pai",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "4:chuenh-peek-gai",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "5:chuenh-taohu",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "6:gaeng-phet",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "7:gaeng-som",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "8:hu-muu-todd",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "9:khao-niew-loang-mak-euak",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "10:khao-poon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "11:khao-siin-muu-haeng",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "12:khaonom-mun-falang",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "13:kua-khao-jaew-bong",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "14:kua-mee-viengchanh",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "15:laab",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "16:laab-ekae",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "17:lon-som-paa",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "18:mee-kathi",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "19:milkcult",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "20:moak-paa-nongbon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "21:muu-som",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "22:naem-khao-hu-muu",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "23:naem-khao-thadeau",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "24:oob-bae",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "25:paa-nuong-mak-now",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "26:piing",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "27:piing-hua-jai-kai",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "28:pun-mieng-paa",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "29:sai-oua",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "30:siin-muu-haeng",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "31:tam-muk-houng",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "32:tam-muk-houng-phet-phet",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "33:tam-som",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "34:thai-iced-coffee",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "35:thai-iced-tea",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "36:yum-woon-sen",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "thip-khao-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu-pdf"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify",
+  "outcome": "researched"
+}

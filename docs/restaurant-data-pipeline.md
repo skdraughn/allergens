@@ -72,6 +72,11 @@ The Lambda reads the previous `latest.json` before publishing and also imports t
 
 The app loads bundled generated data first, then attempts to fetch `restaurant-data/latest.json` from Amplify Storage, validates the snapshot schema, and caches the last valid remote snapshot in AsyncStorage.
 
+Published repository and per-restaurant JSON objects are compact JSON encoded with
+gzip (`Content-Encoding: gzip`). S3/HTTP clients transparently decode them, so the
+public schema retains descriptive keys while substantially reducing stored and
+transferred bytes.
+
 `snapshotVersion` is a schema compatibility gate, not a freshness selector. The app always pulls `restaurant-data/latest.json`; timestamped `runs/` and `manifests/` objects are for audit/debugging.
 
 ## DynamoDB Search Index
@@ -106,8 +111,14 @@ The index intentionally stores compact allergen summary fields:
 - direct-allergen counts and exact item indexes by allergen id
 - cross-contact counts and exact item indexes by allergen id
 - unavailable item count and exact item indexes
+- allergy-specific unavailable item indexes, derived from compact restaurant-level official allergen profiles
 
-The exact item indexes let the app compute user-specific `Ok`, `Review`, and `Avoid` counts without double-counting items that contain multiple selected allergens.
+The exact item indexes let the app compute user-specific `Ok`, `Review`, and `Avoid` counts without double-counting items that contain multiple selected allergens. Complete official matrices store their covered allergen set once per restaurant profile; menu items reference the profile by a short ID, so explicit blank rows can count as official negatives without treating uncovered allergens as safe.
+
+Compatibility summaries live only on the canonical `META` row. `POPULAR`, `TOKEN`, and
+`GEO` rows contain restaurant/location/rank lookup fields, and the search Lambda hydrates
+each result page with a DynamoDB `BatchGet`. This avoids duplicating the same summary across
+all search access paths.
 
 ## Location And Address Policy
 

@@ -1,0 +1,272 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811150150",
+  "restaurantId": "stk-steakhouse-dc",
+  "name": "STK Steakhouse DC",
+  "locationId": "washington",
+  "domain": "stksteakhouse.com",
+  "outcome": "researched",
+  "recommendedLane": "verify",
+  "packetValidation": {
+    "baselineItemCount": 67,
+    "baselineFingerprint": "7cc31c222c89f5f8102c6ff01bcab6cd04d4b8bd6fe4654dad7b178534d73f60",
+    "itemCheckCount": 67,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "STK Steakhouse DC",
+    "locationId": "washington",
+    "address": "901 Massachusetts Avenue NW, Washington, DC 20001",
+    "domain": "stksteakhouse.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "e-home",
+      "e-menu",
+      "e-olo"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "e-home",
+      "url": "https://stksteakhouse.com/en-us/location/washington/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official location identity",
+      "retrievedAt": "2026-08-11T19:00:00Z"
+    },
+    {
+      "evidenceId": "e-menu",
+      "url": "https://stksteakhouse.com/en-us/location/washington/menu/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official current menu surfaces and allergy service language",
+      "retrievedAt": "2026-08-11T19:00:00Z"
+    },
+    {
+      "evidenceId": "e-olo",
+      "url": "https://stksteakhouse.olo.com/api/vendors/stk-washington-dc",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "linked current ordering catalog",
+      "retrievedAt": "2026-08-11T19:00:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-location",
+      "url": "https://stksteakhouse.com/en-us/location/washington/",
+      "authority": "STK Steakhouse",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "washington",
+      "servicePeriod": "current; brunch lunch dinner happy hour beverage",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "e-home"
+      ]
+    },
+    {
+      "surfaceId": "official-menu",
+      "url": "https://stksteakhouse.com/en-us/location/washington/menu/",
+      "authority": "STK Steakhouse",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "washington",
+      "servicePeriod": "current service periods",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "e-menu"
+      ]
+    },
+    {
+      "surfaceId": "olo-ordering",
+      "url": "https://stksteakhouse.olo.com/api/vendors/stk-washington-dc",
+      "authority": "Olo linked by STK",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "washington",
+      "servicePeriod": "current ordering",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; alcohol excluded",
+      "sourceEvidenceIds": [
+        "e-olo"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "stk-menu-catalog",
+      "name": "STK Washington DC current food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "e-menu",
+        "e-olo"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "productCount": 67,
+      "boundary": "67 current frozen food/nonalcoholic products; alcohol-only offerings excluded; duplicate presentations consolidated."
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "query": "Inspect the official STK Steakhouse Washington location and menu pages for allergen, allergy, nutrition, ingredients, PDF, and menu materials",
+        "location": "official Washington location and menu pages",
+        "url": "https://stksteakhouse.com/en-us/location/washington/menu/",
+        "outcome": "No complete allergen matrix found.",
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-menu"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "query": "Inspect official PDFs, nutrition, ingredients, FAQ, sitemap, image, and downloadable-document surfaces for an allergen matrix",
+        "location": "official PDFs, nutrition, ingredients, FAQ, sitemap and downloadable menu surfaces",
+        "url": "https://stksteakhouse.com/en-us/location/washington/menu/",
+        "outcome": "No current complete matrix found; menu materials direct allergy questions to staff.",
+        "sourceEvidenceIds": [
+          "e-menu"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "query": "Inspect the linked STK Olo Washington DC catalog for item-level allergen fields, ingredients, and cross-contact policy",
+        "location": "STK Olo Washington DC catalog",
+        "url": "https://stksteakhouse.olo.com/api/vendors/stk-washington-dc",
+        "outcome": "Item-level fields inspected; no complete matrix or cross-contact policy found.",
+        "sourceEvidenceIds": [
+          "e-olo"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "site:stksteakhouse.com Washington allergen allergy nutrition ingredients PDF menu",
+        "location": "targeted domain and Washington allergen/allergy/nutrition/ingredients/PDF/menu queries",
+        "url": "https://www.google.com/search?q=site%3Astksteakhouse.com+Washington+allergen+allergy+nutrition+ingredients+PDF+menu",
+        "outcome": "No authoritative complete matrix located.",
+        "sourceEvidenceIds": [
+          "e-menu"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "evidenceId": "e-allergy-request",
+      "statement": "Official menu materials direct guests with allergies or intolerances to notify the team and request allergen information from the server.",
+      "authorityTier": "restaurant_issued",
+      "sourceEvidenceIds": [
+        "e-menu"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "expectedCount": 67,
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:6-pack-burger-and-chips",
+          "2:a5-japanese-wagyu-potstickers",
+          "3:a5-japanese-wagyu-steak-fried-rice",
+          "4:apple-pie",
+          "5:asparagus",
+          "6:australian-flat-iron",
+          "7:baby-gem-caesar",
+          "8:bacon-mac-and-cheese",
+          "9:bag-o-donuts",
+          "10:bbq-wings",
+          "11:black-truffle-mac-and-cheese",
+          "12:blue-iceberg",
+          "13:bone-in-filet",
+          "14:braised-short-rib-mac-and-cheese",
+          "15:braised-short-rib-quesadilla",
+          "16:buffalo-chicken-wings",
+          "17:burger-bash-duo",
+          "18:buttermilk-fried-chicken",
+          "19:cheesecake",
+          "20:corn-pudding",
+          "21:cowgirl-ribeye",
+          "22:cream-spinach",
+          "23:crispy-brussels-sprouts",
+          "24:crispy-calamari",
+          "25:dry-aged-bone-in-strip",
+          "26:dry-aged-delmonico",
+          "27:dry-aged-porterhouse",
+          "28:dry-aged-tomahawk",
+          "29:filet",
+          "30:fish-and-chips",
+          "31:free-range-chicken",
+          "32:fried-chicken-sandwich",
+          "33:garlic-parmesan-wings",
+          "34:grilled-chicken-breast-sandwich",
+          "35:hallbut-fish-and-chips",
+          "36:lil-brgs",
+          "37:lobster-mac-and-cheese",
+          "38:mac-and-cheese",
+          "39:mac-and-cheese-trio",
+          "40:maine-lobster-linguini",
+          "41:maine-lobster-mac-and-cheese",
+          "42:maple-rubbed-salmon",
+          "43:miso-glazed-chilean-sea-bass",
+          "44:mushroom-and-truffle-tagliatelle",
+          "45:ny-strip",
+          "46:parmesan-truffle-fries",
+          "47:pull-apart-bread",
+          "48:ribeye-spinalis",
+          "49:sands-perfect-pair",
+          "50:santa-margherita-sparkling-rose",
+          "51:shrimp-scampi",
+          "52:steak-frites",
+          "53:steakhouse-skirt",
+          "54:stk-cheeseburger",
+          "55:stk-sandwich",
+          "56:surf-and-turf-grilled-prawns",
+          "57:surf-and-turf-dinner",
+          "58:taste-of-stk",
+          "59:tater-tots",
+          "60:teriyaki-wings",
+          "61:the-fsh",
+          "62:three-times-the-fun",
+          "63:traditional-mac-and-cheese",
+          "64:tuna-tartare",
+          "65:wagyu-meatballs",
+          "66:wagyu-sloppy-joe-mac-and-cheese",
+          "67:yukon-gold-mashed-potatoes"
+        ],
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "stk-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-olo"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  }
+}

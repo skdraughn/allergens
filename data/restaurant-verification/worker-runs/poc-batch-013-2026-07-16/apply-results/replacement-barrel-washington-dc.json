@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-013-2026-07-16",
+  "restaurantId": "replacement-barrel-washington-dc",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "6407ad47827b58a3b95913e30d382b4d0f42bfe65be67c67958f296a09169907",
+    "currentProductCount": 41,
+    "currentProductSurfaceCounts": {
+      "food": 38,
+      "nonalcoholicDrink": 3
+    },
+    "directSourceTypeCounts": {
+      "unavailable": 15,
+      "restaurant_ingredients": 26
+    },
+    "mayContainCount": 0,
+    "wheatCount": 0,
+    "glutenCount": 0,
+    "evidenceSourceCount": 6,
+    "currentCompleteSurfaceCount": 2,
+    "reconciliation": {
+      "exact_match": 35,
+      "artifact": 2,
+      "stale": 5
+    },
+    "assertions": [
+      "stale/fingerprint gate passed",
+      "strengthened validator passed before mutation",
+      "alcohol excluded",
+      "restaurant-level peanut-oil statement preserved",
+      "Ingredient Intelligence applied after direct catalog finalization",
+      "no ledger, manifest, or closeout writes"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/replacement-barrel-washington-dc.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/replacement-barrel-washington-dc.json",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-barrel-dc-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-013-2026-07-16/apply-results/replacement-barrel-washington-dc.json"
+  ],
+  "commands": [
+    "node scripts/restaurant-verification-poc-result.mjs (strengthened preflight)",
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "node scripts/apply-barrel-dc-poc.mjs (twice)",
+    "sha256 comparison of all owned generated artifacts"
+  ],
+  "secondRunDiff": "none",
+  "artifactHashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "e0a8324a662ca97aa05dfd476ba40612acad7a651708761492c3b0a7dc14fbd5",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/replacement-barrel-washington-dc.json": "57cabd6a81fed02aa2b7f264235b9a3fe8f447b020f4fb4194c548f49641284a",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/replacement-barrel-washington-dc.json": "3b6cf4cf3cd3ed06f4191a5146fc98d32d7d4481edbac274e5abcf48e545177c"
+  },
+  "counts": {
+    "publishedProducts": 41,
+    "food": 38,
+    "nonalcoholicDrink": 3,
+    "directRestaurantIngredients": 26,
+    "directUnavailable": 15,
+    "mayContainProducts": 0,
+    "wheat": 0,
+    "gluten": 0,
+    "evidenceSources": 6,
+    "currentCompleteSurfaces": 2,
+    "exact": 35,
+    "artifacts": 2,
+    "stale": 5,
+    "unresolved": 0
+  }
+}

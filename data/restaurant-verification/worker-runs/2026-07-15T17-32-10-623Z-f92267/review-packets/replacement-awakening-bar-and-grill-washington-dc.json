@@ -1,0 +1,1340 @@
+{
+  "schemaVersion": 1,
+  "runId": "2026-07-15T17-32-10-623Z-f92267",
+  "restaurant": {
+    "restaurantId": "replacement-awakening-bar-and-grill-washington-dc",
+    "name": "Awakening Bar & Grill",
+    "domain": "awakeningdc.com",
+    "locationId": "washington-dc",
+    "baselineItemCount": 48,
+    "baselineItemFingerprint": "3a25b63981d1089d3bce48f040553560f9ce36f57d58c6dee500596a6445a7b1",
+    "officialItemCount": 36,
+    "officialAllergenStatus": "not-found",
+    "sourceFamily": "generic-website",
+    "parserProfile": "generic-website",
+    "guideUrl": "http://awakeningdc.com/",
+    "sourceUrls": [
+      "https://awakeningdc.com/",
+      "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+      "https://awakeningdc.com/food-menu",
+      "https://awakeningdc.com/food-menu?menu_id=1117292",
+      "https://awakeningdc.com/food-menu?menu_id=1231505",
+      "https://awakeningdc.com/food-menu?menu_id=1240778"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found."
+  ],
+  "validationWarnings": [],
+  "terra": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "medium",
+      "overall": 0.82,
+      "menu": 0.94,
+      "allergenSource": 0.88,
+      "extraction": 0.9,
+      "rationale": "The current restaurant-issued site identifies the Washington, DC restaurant and displays the food, brunch, and happy-hour menu items. It does not provide an allergen chart, legend, or item-level allergen declarations sufficient to validate the frozen direct-allergen arrays."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Awakening Bar & Grill, 520 8th Street Southeast, Washington, DC 20003.",
+      "confidence": 0.98,
+      "sourceEvidenceIds": [
+        "official-home"
+      ],
+      "notes": "The restaurant-controlled homepage names Awakening Bar and Grill and lists the Washington, DC address; its Menu link leads to the reviewed food-menu page."
+    },
+    "sources": [
+      {
+        "evidenceId": "official-home",
+        "url": "https://awakeningdc.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Awakening Bar and Grill — Washington, DC",
+        "retrievedAt": "2026-07-15T17:33:16Z",
+        "excerpt": "Homepage identifies “Awakening Bar and Grill,” lists 520 8th Street Southeast, Washington, DC 20003, and links to Menu and Jobs.",
+        "stableRowId": "homepage-location-and-navigation",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "official-menu",
+        "url": "https://awakeningdc.com/food-menu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Awakening Bar and Grill — Food Menu",
+        "retrievedAt": "2026-07-15T17:33:16Z",
+        "excerpt": "Current menu has Lunch & Dinner, Brunch Menu, and Happy Hour sections and lists the reconciled food items, including Crab Rolls, Awakening Burger, Cream of Crab Soup, Chicken & Waffles, and Mambo Wings (4).",
+        "stableRowId": "food-menu-sections-and-items",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "official-menu-allergen-review",
+        "url": "https://awakeningdc.com/food-menu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "allergen",
+        "title": "Awakening Bar and Grill — Food Menu allergen review",
+        "retrievedAt": "2026-07-15T17:33:16Z",
+        "excerpt": "The published menu provides item names and narrative descriptions but no allergen legend, allergen matrix, cross-contact statement, or item-level allergen declarations.",
+        "stableRowId": "food-menu-allergen-review",
+        "contentHash": null,
+        "artifactSuggested": null
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://awakeningdc.com/",
+        "notes": "Restaurant-controlled homepage accessible; identity, address, menu, and jobs links reviewed."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://awakeningdc.com/food-menu",
+        "notes": "Restaurant-controlled linked food-menu page accessible and used for item reconciliation and allergen-source review."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "error",
+        "url": "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+        "notes": "Linked SpotApps ordering-menu surface returned an internal/safe-open error in this research environment."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "not_found",
+        "url": null,
+        "notes": "Targeted searches for an Awakening Bar and Grill allergen, allergy, or gluten guide returned no results."
+      },
+      {
+        "kind": "archive",
+        "status": "blocked",
+        "url": "https://web.archive.org/cdx/search/cdx?url=awakeningdc.com/food-menu",
+        "notes": "Archive CDX query could not be opened in this research environment."
+      },
+      {
+        "kind": "third_party",
+        "status": "blocked",
+        "url": "https://www.doordash.com/store/awakening-bar-and-grill-washington-24467022/",
+        "notes": "The restaurant-linked DoorDash ordering surface could not be opened in this research environment; no independent third-party allergen source was located."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 48,
+      "counts": {
+        "exact_match/accurately_unavailable": 42,
+        "variant_match/accurately_unavailable": 1,
+        "artifact/not_applicable": 5
+      }
+    },
+    "findings": [
+      {
+        "findingId": "allergen-source-unavailable",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "The restaurant-issued current menu has no allergen chart, legend, cross-contact policy, or item-level allergen declarations. Consequently, its menu descriptions cannot validate the frozen full direct-allergen arrays; allergen availability is accurately unavailable for every reconciled food item.",
+        "sourceEvidenceIds": [
+          "official-menu-allergen-review"
+        ],
+        "affectedAuditItemKeys": [
+          "1:avocado-bruschetta",
+          "2:black-and-blue-bites",
+          "3:candied-bacon-deviled-eggs",
+          "4:crab-rolls",
+          "5:crispy-green-beans",
+          "6:fried-green-tomatoes",
+          "7:gouda-burger-sliders",
+          "8:half-smoke",
+          "9:old-bay-shrimp",
+          "10:veggie-roll",
+          "11:wings",
+          "12:artisanal-avocado-bruschetta",
+          "13:blt",
+          "14:bread-pudding-french-toast",
+          "15:chicken-and-waffles",
+          "16:cognac-scented-crabcake-benedict",
+          "17:mimis-homemade-buttermilk-biscuits",
+          "18:shrimp-and-grits",
+          "19:sirloin-hash",
+          "20:sirloin-steak-and-eggs-with-chimichurri",
+          "21:sweet-cream-grits-and-berries",
+          "22:million-dollar-brownie",
+          "23:rock-creek-peach-cake",
+          "24:awakening-burger",
+          "25:crab-cake-sandwich",
+          "26:impossible-burger",
+          "27:uptown-burger",
+          "29:blackened-salmon",
+          "30:jumbo-lump-crabcakes",
+          "31:lamb-chops",
+          "32:pasta-primavera",
+          "33:rasta-pasta",
+          "34:steak-frites",
+          "35:mambo-wings-4",
+          "39:caesar-salad",
+          "40:chopped-kale-salad",
+          "41:house-salad",
+          "42:garlic-green-beans",
+          "43:house-fries",
+          "44:mac-n-cheese",
+          "45:mimis-homemade-biscuits-2",
+          "46:cream-of-crab-soup",
+          "47:loaded-chili"
+        ]
+      },
+      {
+        "findingId": "non-menu-artifacts",
+        "severity": "medium",
+        "kind": "extraction",
+        "summary": "The frozen baseline includes homepage/jobs promotional text rather than menu items; these rows should not appear as food records.",
+        "sourceEvidenceIds": [
+          "official-home"
+        ],
+        "affectedAuditItemKeys": [
+          "28:we-are-hiring",
+          "36:a-place-where-flavors-come-together-in-the-best-style",
+          "37:book-your-next-party-with-us",
+          "48:start-your-next-adventure-with-us"
+        ]
+      },
+      {
+        "findingId": "nested-dessert-description-artifact",
+        "severity": "medium",
+        "kind": "extraction",
+        "summary": "“Rich bread pudding with bourbon glaze • Whole 9in pan” is the description of the current Bourbon Bread Pudding menu item, not its menu-item name.",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "affectedAuditItemKeys": [
+          "38:rich-bread-pudding-with-bourbon-glaze-whole-9in-pan"
+        ]
+      },
+      {
+        "findingId": "chicken-waffles-variant-scope",
+        "severity": "low",
+        "kind": "scope",
+        "summary": "Chicken & Waffles appears in both the Lunch & Dinner and Brunch portions of the current menu, while the frozen row has the Brunch category paired with a Lunch & Dinner variant group.",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "affectedAuditItemKeys": [
+          "15:chicken-and-waffles"
+        ]
+      }
+    ],
+    "summary": "Identity and current public menu presence are verified from restaurant-issued pages. The baseline contains five non-menu extraction artifacts, Chicken & Waffles has a menu-scope variant inconsistency, and the public source lacks sufficient allergen disclosures to verify the frozen allergen arrays.",
+    "coordinatorNotes": [
+      "Read-only Terra result only; no ledger, generated data, evidence manifest, or item-check files were modified.",
+      "This result identifies discrepancies and must be routed for coordinator/Sol adjudication; it does not claim terminal verification."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "1:avocado-bruschetta",
+      "baseline": {
+        "itemId": "avocado-bruschetta",
+        "name": "Avocado Bruschetta",
+        "category": "Bar Bites & Sharables",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "2:black-and-blue-bites",
+      "baseline": {
+        "itemId": "black-and-blue-bites",
+        "name": "Black & Blue Bites",
+        "category": "Bar Bites & Sharables",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "3:candied-bacon-deviled-eggs",
+      "baseline": {
+        "itemId": "candied-bacon-deviled-eggs",
+        "name": "Candied Bacon Deviled Eggs",
+        "category": "Bar Bites & Sharables",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "4:crab-rolls",
+      "baseline": {
+        "itemId": "crab-rolls",
+        "name": "Crab Rolls",
+        "category": "Bar Bites & Sharables",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "5:crispy-green-beans",
+      "baseline": {
+        "itemId": "crispy-green-beans",
+        "name": "Crispy Green Beans",
+        "category": "Bar Bites & Sharables",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "6:fried-green-tomatoes",
+      "baseline": {
+        "itemId": "fried-green-tomatoes",
+        "name": "Fried Green Tomatoes",
+        "category": "Bar Bites & Sharables",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "7:gouda-burger-sliders",
+      "baseline": {
+        "itemId": "gouda-burger-sliders",
+        "name": "Gouda Burger Sliders",
+        "category": "Bar Bites & Sharables",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "8:half-smoke",
+      "baseline": {
+        "itemId": "half-smoke",
+        "name": "Half Smoke",
+        "category": "Bar Bites & Sharables",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "9:old-bay-shrimp",
+      "baseline": {
+        "itemId": "old-bay-shrimp",
+        "name": "Old Bay Shrimp",
+        "category": "Bar Bites & Sharables",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "10:veggie-roll",
+      "baseline": {
+        "itemId": "veggie-roll",
+        "name": "Veggie Roll",
+        "category": "Bar Bites & Sharables",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "11:wings",
+      "baseline": {
+        "itemId": "wings",
+        "name": "Wings",
+        "category": "Bar Bites & Sharables",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "12:artisanal-avocado-bruschetta",
+      "baseline": {
+        "itemId": "artisanal-avocado-bruschetta",
+        "name": "Artisanal Avocado Bruschetta",
+        "category": "Brunch",
+        "variantGroup": "Brunch Menu",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "13:blt",
+      "baseline": {
+        "itemId": "blt",
+        "name": "BLT",
+        "category": "Brunch",
+        "variantGroup": "Brunch Menu",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "14:bread-pudding-french-toast",
+      "baseline": {
+        "itemId": "bread-pudding-french-toast",
+        "name": "Bread Pudding French Toast",
+        "category": "Brunch",
+        "variantGroup": "Brunch Menu",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "15:chicken-and-waffles",
+      "baseline": {
+        "itemId": "chicken-and-waffles",
+        "name": "Chicken & Waffles",
+        "category": "Brunch",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "16:cognac-scented-crabcake-benedict",
+      "baseline": {
+        "itemId": "cognac-scented-crabcake-benedict",
+        "name": "Cognac-Scented Crabcake Benedict",
+        "category": "Brunch",
+        "variantGroup": "Brunch Menu",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "17:mimis-homemade-buttermilk-biscuits",
+      "baseline": {
+        "itemId": "mimis-homemade-buttermilk-biscuits",
+        "name": "Mimi's Homemade Buttermilk Biscuits",
+        "category": "Brunch",
+        "variantGroup": "Brunch Menu",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "18:shrimp-and-grits",
+      "baseline": {
+        "itemId": "shrimp-and-grits",
+        "name": "Shrimp & Grits",
+        "category": "Brunch",
+        "variantGroup": "Brunch Menu",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "19:sirloin-hash",
+      "baseline": {
+        "itemId": "sirloin-hash",
+        "name": "Sirloin Hash",
+        "category": "Brunch",
+        "variantGroup": "Brunch Menu",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "20:sirloin-steak-and-eggs-with-chimichurri",
+      "baseline": {
+        "itemId": "sirloin-steak-and-eggs-with-chimichurri",
+        "name": "Sirloin Steak & Eggs With Chimichurri",
+        "category": "Brunch",
+        "variantGroup": "Brunch Menu",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "21:sweet-cream-grits-and-berries",
+      "baseline": {
+        "itemId": "sweet-cream-grits-and-berries",
+        "name": "Sweet Cream Grits & Berries",
+        "category": "Brunch",
+        "variantGroup": "Brunch Menu",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "22:million-dollar-brownie",
+      "baseline": {
+        "itemId": "million-dollar-brownie",
+        "name": "Million - Dollar Brownie",
+        "category": "Desserts",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "23:rock-creek-peach-cake",
+      "baseline": {
+        "itemId": "rock-creek-peach-cake",
+        "name": "Rock Creek Peach Cake",
+        "category": "Desserts",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "24:awakening-burger",
+      "baseline": {
+        "itemId": "awakening-burger",
+        "name": "Awakening Burger",
+        "category": "Handhelds",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "25:crab-cake-sandwich",
+      "baseline": {
+        "itemId": "crab-cake-sandwich",
+        "name": "Crab Cake Sandwich",
+        "category": "Handhelds",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "26:impossible-burger",
+      "baseline": {
+        "itemId": "impossible-burger",
+        "name": "Impossible Burger",
+        "category": "Handhelds",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "27:uptown-burger",
+      "baseline": {
+        "itemId": "uptown-burger",
+        "name": "Uptown Burger",
+        "category": "Handhelds",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "28:we-are-hiring",
+      "baseline": {
+        "itemId": "we-are-hiring",
+        "name": "We are hiring!",
+        "category": "Job Listings",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/job-listings?spot_id=549021&callback_url=http://awakeningdc.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "29:blackened-salmon",
+      "baseline": {
+        "itemId": "blackened-salmon",
+        "name": "Blackened Salmon",
+        "category": "Mains",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "30:jumbo-lump-crabcakes",
+      "baseline": {
+        "itemId": "jumbo-lump-crabcakes",
+        "name": "Jumbo Lump Crabcakes",
+        "category": "Mains",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "31:lamb-chops",
+      "baseline": {
+        "itemId": "lamb-chops",
+        "name": "Lamb Chops",
+        "category": "Mains",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "32:pasta-primavera",
+      "baseline": {
+        "itemId": "pasta-primavera",
+        "name": "Pasta Primavera",
+        "category": "Mains",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "33:rasta-pasta",
+      "baseline": {
+        "itemId": "rasta-pasta",
+        "name": "Rasta Pasta",
+        "category": "Mains",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "34:steak-frites",
+      "baseline": {
+        "itemId": "steak-frites",
+        "name": "Steak Frites",
+        "category": "Mains",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "35:mambo-wings-4",
+      "baseline": {
+        "itemId": "mambo-wings-4",
+        "name": "Mambo Wings (4)",
+        "category": "Menu",
+        "variantGroup": "Happy Hour",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "36:a-place-where-flavors-come-together-in-the-best-style",
+      "baseline": {
+        "itemId": "a-place-where-flavors-come-together-in-the-best-style",
+        "name": "a place where flavors come together in the best style",
+        "category": "Restaurant",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://awakeningdc.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "37:book-your-next-party-with-us",
+      "baseline": {
+        "itemId": "book-your-next-party-with-us",
+        "name": "Book your next party with us!",
+        "category": "Restaurant",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://awakeningdc.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "38:rich-bread-pudding-with-bourbon-glaze-whole-9in-pan",
+      "baseline": {
+        "itemId": "rich-bread-pudding-with-bourbon-glaze-whole-9in-pan",
+        "name": "Rich bread pudding with bourbon glaze • Whole 9in pan",
+        "category": "Restaurant",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "39:caesar-salad",
+      "baseline": {
+        "itemId": "caesar-salad",
+        "name": "Caesar Salad",
+        "category": "Salads",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "40:chopped-kale-salad",
+      "baseline": {
+        "itemId": "chopped-kale-salad",
+        "name": "Chopped Kale Salad",
+        "category": "Salads",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "41:house-salad",
+      "baseline": {
+        "itemId": "house-salad",
+        "name": "House Salad",
+        "category": "Salads",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "42:garlic-green-beans",
+      "baseline": {
+        "itemId": "garlic-green-beans",
+        "name": "Garlic Green Beans",
+        "category": "Sides",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "43:house-fries",
+      "baseline": {
+        "itemId": "house-fries",
+        "name": "House Fries",
+        "category": "Sides",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "44:mac-n-cheese",
+      "baseline": {
+        "itemId": "mac-n-cheese",
+        "name": "Mac N Cheese",
+        "category": "Sides",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "45:mimis-homemade-biscuits-2",
+      "baseline": {
+        "itemId": "mimis-homemade-biscuits-2",
+        "name": "Mimi’s Homemade Biscuits (2)",
+        "category": "Sides",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "46:cream-of-crab-soup",
+      "baseline": {
+        "itemId": "cream-of-crab-soup",
+        "name": "Cream of Crab Soup",
+        "category": "Soups",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "47:loaded-chili",
+      "baseline": {
+        "itemId": "loaded-chili",
+        "name": "Loaded Chili",
+        "category": "Soups",
+        "variantGroup": "Lunch & Dinner",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "spotapps-nuxt-menu",
+        "sourceUrls": [
+          "https://tmt.spotapps.co/ordering-menu/?spot_id=549021",
+          "https://awakeningdc.com/food-menu",
+          "https://awakeningdc.com/food-menu?menu_id=1117292",
+          "https://awakeningdc.com/food-menu?menu_id=1231505",
+          "https://awakeningdc.com/food-menu?menu_id=1240778"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "48:start-your-next-adventure-with-us",
+      "baseline": {
+        "itemId": "start-your-next-adventure-with-us",
+        "name": "Start Your Next Adventure With Us",
+        "category": "We Are Hiring!",
+        "variantGroup": "We Are Hiring!",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://awakeningdc.com/"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/2026-07-15T17-32-10-623Z-f92267/jobs/replacement-awakening-bar-and-grill-washington-dc.json",
+    "workerResultPath": "data/restaurant-verification/worker-runs/2026-07-15T17-32-10-623Z-f92267/results/replacement-awakening-bar-and-grill-washington-dc.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/replacement-awakening-bar-and-grill-washington-dc.jsonl"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-037-2026-07-21",
+  "restaurantId": "bread-furst-dc",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "3665b6917001cdb233e33aff0691f749b0596958a432fb90fdf7d07bb5f683a6",
+    "currentProductCount": 58,
+    "directPositiveProductCount": 32,
+    "directAssertionCount": 40,
+    "directUnavailableProductCount": 26,
+    "mayContainCount": 0,
+    "currentCompleteSurfaceCount": 1,
+    "surfaceProductCounts": {
+      "toastOnline": 58,
+      "officialHome": 0,
+      "officialMenu": 0
+    },
+    "normalizedMatchCount": 58,
+    "reconciliationCount": 58,
+    "evidenceSourceCount": 4,
+    "itemCheckCount": 58,
+    "matrixStatus": "accurately_unavailable",
+    "matrixSearchCount": 4,
+    "ingredientIntelligence": "recomputed-after-direct-catalog-finalization",
+    "evidenceArtifactIntegrityValid": true,
+    "closeoutPreflightValid": true,
+    "assertions": [
+      "stale fingerprint gate passed",
+      "Toast sole current complete surface with exact unique 58 keys",
+      "official home/menu supporting noncurrent zero-key surfaces",
+      "32 direct-positive products and 40 assertions",
+      "zero mayContain and no inferred wheat/gluten claims",
+      "all reconciliation rows have valid menu evidence",
+      "canonical evidence purposes enforced",
+      "no ledger, manifest, or other restaurant writes"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/bread-furst-dc.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/bread-furst-dc.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/bread-furst-dc.jsonl",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-bread-furst-dc-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-037-2026-07-21/apply-results/bread-furst-dc.json"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "validatePocResearchFiles",
+    "target catalog/surface/direct-claim equality assertions",
+    "persist canonical evidence",
+    "recompute Ingredient Intelligence after direct catalog finalization",
+    "exact official closeout preflight",
+    "run apply twice and compare bytes/hashes"
+  ],
+  "secondRunDiff": "none",
+  "counts": {
+    "publishedProducts": 58,
+    "normalizedMatches": 58,
+    "directPositiveProducts": 32,
+    "directAssertions": 40,
+    "mayContain": 0,
+    "unavailableProducts": 26,
+    "matrixSearches": 4,
+    "evidenceSources": 4,
+    "itemChecks": 58
+  },
+  "artifactHashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "fb5a0b2a95be93834955540ddc1e123677f74d80d6aee154eb3c4e40de22e17b",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/bread-furst-dc.json": "bbc70dc658143f18e84a55b400e35c287f1e661b6c754bd5b3ea6d16d85236ad",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/bread-furst-dc.json": "9c9afe3e9db2195495d417763dde17a9700df518b097a3f70adc5b0a122639e5",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/bread-furst-dc.jsonl": "dcc6c7789de7a0ff0985bb2d53fa13f5f53c9d8c3619d145fade80e5c21d5ed0"
+  }
+}

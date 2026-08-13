@@ -22,26 +22,34 @@ import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
-  withTiming,
 } from "react-native-reanimated";
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { DetailPageShell, DetailPageTopBar } from "@/components/detail-page-shell";
+import { AllergyRatingPicker } from "@/components/allergy-rating-picker";
+import { CommunityReviewCard } from "@/components/community-review-card";
+import { CommunityReviewSummary } from "@/components/community-review-summary";
+import { IconButtonSurface } from "@/components/icon-button";
+import { ModalIconButton } from "@/components/modal-icon-button";
 import { PrimaryButton } from "@/components/primary-button";
+import { FloatingPillButton } from "@/components/restaurant-request-button";
 import { RestaurantLogo } from "@/components/restaurant-logo";
-import { ScreenBackground } from "@/components/screen-background";
 import { SelectableChip } from "@/components/selectable-chip";
 import { SereneLoader } from "@/components/serene-loader";
 import { allergyOptions, getAllergyLabels, normalizeAllergyIds } from "@/constants/allergies";
 import { colors, radius, spacing } from "@/constants/theme";
-import { getRestaurantBrand, getRestaurantBrandBackground } from "@/data/brand-assets";
+import {
+  getRestaurantBrand,
+  getRestaurantBrandBackground,
+} from "@/data/brand-assets";
 import type { MenuItem } from "@/data/restaurants";
-import type { CommunityAllergyReview } from "@/features/community/community-service";
 import {
   useCommunitySubmission,
   useRestaurantCommunity,
 } from "@/features/community/use-restaurant-community";
 import { useAllergyProfile } from "@/features/profile/allergy-profile-context";
 import { useRestaurantDetail } from "@/features/restaurants/restaurant-data-context";
+import { useDebouncedValue } from "@/hooks/use-debounced-value";
 
 type ReviewForm = {
   allergyIds: string[];
@@ -53,7 +61,6 @@ type ReviewForm = {
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 type AnimatedPressableStyle = ComponentProps<typeof AnimatedPressable>["style"];
 type AnimatedViewStyle = ComponentProps<typeof Animated.View>["style"];
-const compactNavAnimationDurationMs = 180;
 
 const emptyForm = (menuItemId = "", allergyIds: string[] = []): ReviewForm => ({
   allergyIds: normalizeAllergyIds(allergyIds),
@@ -65,7 +72,8 @@ const emptyForm = (menuItemId = "", allergyIds: string[] = []): ReviewForm => ({
 export function RestaurantReviewsScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { id, menuItemId, snapshotPath } = useLocalSearchParams<{
+  const { compose, id, menuItemId, snapshotPath } = useLocalSearchParams<{
+    compose?: string;
     id: string;
     menuItemId?: string;
     snapshotPath?: string;
@@ -76,7 +84,7 @@ export function RestaurantReviewsScreen() {
   const community = useRestaurantCommunity(restaurant?.id ?? "");
   const submissions = useCommunitySubmission(restaurant?.id);
   const initialMenuItemId = typeof menuItemId === "string" ? menuItemId : "";
-  const shouldOpenComposerFromLink = initialMenuItemId.length > 0;
+  const shouldOpenComposerFromLink = compose === "1" || initialMenuItemId.length > 0;
   const [form, setForm] = useState<ReviewForm>(() =>
     emptyForm(initialMenuItemId, selectedAllergyIds),
   );
@@ -152,11 +160,7 @@ export function RestaurantReviewsScreen() {
   );
   const handleScroll = useAnimatedScrollHandler({
     onScroll: (event) => {
-      animatedScrollY.set(
-        withTiming(event.contentOffset.y, {
-          duration: compactNavAnimationDurationMs,
-        }),
-      );
+      animatedScrollY.set(event.contentOffset.y);
     },
   });
   useEffect(() => {
@@ -186,7 +190,11 @@ export function RestaurantReviewsScreen() {
         restaurantId: restaurant.id,
       });
       setForm(emptyForm(form.menuItemId, selectedAllergyIds));
-      setComposerVisible(false);
+      if (router.canGoBack()) {
+        router.back();
+      } else {
+        setComposerVisible(false);
+      }
       Alert.alert("Review submitted", "Thanks. Your allergy review is queued for review.");
     } catch (error) {
       Alert.alert(
@@ -206,9 +214,8 @@ export function RestaurantReviewsScreen() {
   };
 
   return (
-    <ScreenBackground>
-      <SafeAreaView edges={["top", "left", "right"]} style={styles.safeArea}>
-        <View style={styles.nav}>
+    <DetailPageShell>
+        <DetailPageTopBar style={styles.nav}>
           <View style={styles.navLeading}>
             <AnimatedNavButton
               Icon={ChevronLeft}
@@ -225,7 +232,7 @@ export function RestaurantReviewsScreen() {
               {composerVisible ? "Leave review" : restaurant?.name ?? "Allergy reviews"}
             </Animated.Text>
           </View>
-        </View>
+        </DetailPageTopBar>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : undefined}
           style={styles.safeArea}
@@ -268,7 +275,7 @@ export function RestaurantReviewsScreen() {
                 <Text numberOfLines={2} style={styles.title}>
                   {restaurant?.name ?? "Restaurant"}
                 </Text>
-                <AllergyRatingSummaryBadge summary={summary} />
+                <CommunityReviewSummary summary={summary} />
               </View>
             ) : (
               <View
@@ -328,7 +335,15 @@ export function RestaurantReviewsScreen() {
                   </Text>
                 </View>
               ) : (
-                reviews.map((review) => <ReviewCard key={review.id} review={review} />)
+                <View style={styles.reviewList}>
+                  {reviews.map((review, index) => (
+                    <CommunityReviewCard
+                      key={review.id}
+                      last={index === reviews.length - 1}
+                      review={review}
+                    />
+                  ))}
+                </View>
               )}
             </View>
             ) : null}
@@ -358,76 +373,16 @@ export function RestaurantReviewsScreen() {
           </View>
         ) : null}
         {!composerVisible ? (
-          <View
-            pointerEvents="box-none"
-            style={[styles.floatingReviewWrap, { bottom: Math.max(insets.bottom + 14, 24) }]}
-          >
-            <Pressable
-              accessibilityRole="button"
-              onPress={() => setComposerVisible(true)}
-              style={styles.floatingReviewButton}
-            >
-              <Plus color={colors.primary} size={17} strokeWidth={2.6} />
-              <Text style={styles.floatingReviewText}>Leave an Allergy Review</Text>
-            </Pressable>
-          </View>
+          <FloatingPillButton
+            Icon={HeartPulse}
+            label="Leave an Allergy Review"
+            onPress={() => router.push({
+              pathname: "/restaurant-review",
+              params: { compose: "1", id, snapshotPath },
+            })}
+          />
         ) : null}
-      </SafeAreaView>
-    </ScreenBackground>
-  );
-}
-
-function AllergyRatingPicker({
-  onChange,
-  rating,
-}: {
-  onChange: (rating: number) => void;
-  rating: number;
-}) {
-  return (
-    <View style={styles.field}>
-      <Text style={styles.fieldLabel}>Allergy rating</Text>
-      <View style={styles.ratingPicker}>
-        {[1, 2, 3, 4, 5].map((value) => {
-          const active = value <= rating;
-
-          return (
-            <Pressable
-              accessibilityRole="button"
-              accessibilityState={{ selected: active }}
-              key={value}
-              onPress={() => onChange(value)}
-              style={[styles.ratingPip, active && styles.ratingPipActive]}
-            >
-              <HeartPulse
-                color={active ? colors.coral : colors.muted}
-                size={19}
-                strokeWidth={2.55}
-              />
-            </Pressable>
-          );
-        })}
-      </View>
-    </View>
-  );
-}
-
-function AllergyRatingSummaryBadge({
-  summary,
-}: {
-  summary: { averageRating: number | null; count: number };
-}) {
-  const hasRating = summary.count > 0 && summary.averageRating !== null;
-
-  if (!hasRating) {
-    return <Text style={styles.summaryEmptyText}>No allergy ratings yet</Text>;
-  }
-
-  return (
-    <View style={styles.summaryRatingRow}>
-      <AllergyRatingDisplay rating={summary.averageRating ?? 0} />
-      <Text style={styles.summaryRatingText}>{formatSummary(summary)}</Text>
-    </View>
+    </DetailPageShell>
   );
 }
 
@@ -514,7 +469,6 @@ function AllergyContextPicker({
             label={option.label}
             onPress={() => toggleAllergy(option.id)}
             selected={normalizedSelectedIds.includes(option.id)}
-            style={styles.allergyContextChip}
           />
         ))}
       </View>
@@ -538,7 +492,8 @@ function MenuItemSearchModal({
   visible: boolean;
 }) {
   const insets = useSafeAreaInsets();
-  const normalizedQuery = query.trim().toLowerCase();
+  const debouncedQuery = useDebouncedValue(query, 180);
+  const normalizedQuery = debouncedQuery.trim().toLowerCase();
   const hasSearchQuery = normalizedQuery.length > 0;
   const matchingItems = useMemo(() => {
     if (!normalizedQuery) {
@@ -610,14 +565,12 @@ function MenuItemSearchModal({
               </Pressable>
             ) : null}
           </View>
-          <Pressable
-            accessibilityLabel="Close menu search"
-            accessibilityRole="button"
+          <ModalIconButton
+            Icon={X}
+            label="Close menu search"
             onPress={onClose}
             style={styles.searchCloseButton}
-          >
-            <X color={colors.primary} size={20} strokeWidth={2.45} />
-          </Pressable>
+          />
         </View>
         <FlatList
           contentContainerStyle={styles.searchResultsContent}
@@ -668,50 +621,6 @@ function Field({
   );
 }
 
-function ReviewCard({ review }: { review: CommunityAllergyReview }) {
-  return (
-    <View style={styles.reviewCard}>
-      <View style={styles.reviewCardHeader}>
-        <AllergyRatingDisplay rating={review.rating} />
-        {review.communityStatus === "pending" ? (
-          <Text style={styles.pendingBadge}>Pending review</Text>
-        ) : null}
-      </View>
-      {review.menuItemName ? (
-        <Text numberOfLines={1} style={styles.menuItemLabel}>
-          {review.menuItemName}
-        </Text>
-      ) : null}
-      <Text style={styles.reviewBody}>{review.body}</Text>
-      <View style={styles.reviewMetaRow}>
-        {review.allergyContext ? (
-          <Text numberOfLines={1} style={styles.reviewMeta}>
-            {review.allergyContext}
-          </Text>
-        ) : null}
-        {review.createdAt ? <Text style={styles.reviewMeta}>{formatDate(review.createdAt)}</Text> : null}
-      </View>
-    </View>
-  );
-}
-
-function AllergyRatingDisplay({ rating }: { rating: number }) {
-  const roundedRating = Math.round(rating);
-
-  return (
-    <View style={styles.ratingDisplay}>
-      {[1, 2, 3, 4, 5].map((value) => (
-        <HeartPulse
-          color={value <= roundedRating ? colors.coral : "#C7C7CC"}
-          key={value}
-          size={15}
-          strokeWidth={2.45}
-        />
-      ))}
-    </View>
-  );
-}
-
 function AnimatedNavButton({
   Icon,
   iconStyle,
@@ -736,31 +645,12 @@ function AnimatedNavButton({
       onPress={onPress}
       style={[styles.navButton, style]}
     >
+      <IconButtonSurface />
       <Animated.View style={iconStyle}>
         <Icon color={colors.primary} size={size} strokeWidth={strokeWidth} />
       </Animated.View>
     </AnimatedPressable>
   );
-}
-
-function formatSummary(summary: { averageRating: number | null; count: number }) {
-  if (summary.count === 0 || summary.averageRating === null) {
-    return "No allergy ratings yet";
-  }
-
-  return `${summary.averageRating.toFixed(1)} from ${summary.count} review${
-    summary.count === 1 ? "" : "s"
-  }`;
-}
-
-function formatDate(value: string) {
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return "";
-  }
-
-  return date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
 }
 
 function formatAllergyContext(allergyIds: string[]) {
@@ -819,10 +709,6 @@ function getSearchTextRank(text: string, normalizedQuery: string) {
 }
 
 const styles = StyleSheet.create({
-  allergyContextChip: {
-    paddingHorizontal: 11,
-    paddingVertical: 8,
-  },
   allergyContextChips: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -844,12 +730,22 @@ const styles = StyleSheet.create({
     width: 30,
   },
   composer: {
+    backgroundColor: "rgba(255,255,255,0.94)",
+    borderColor: colors.line,
+    borderCurve: "continuous",
+    borderRadius: 26,
+    borderWidth: 1,
     gap: spacing.two,
-    paddingTop: spacing.one,
+    padding: spacing.three,
+    shadowColor: "#000000",
+    shadowOffset: { height: 8, width: 0 },
+    shadowOpacity: 0.05,
+    shadowRadius: 24,
   },
   composerIntro: {
     gap: 8,
-    paddingTop: spacing.one,
+    paddingHorizontal: spacing.one,
+    paddingTop: spacing.two,
   },
   composerTitle: {
     color: colors.ink,
@@ -1030,15 +926,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: spacing.two,
     justifyContent: "space-between",
-    paddingBottom: spacing.one,
-    paddingHorizontal: spacing.three,
-    paddingTop: spacing.four,
+    minHeight: 64,
   },
   navButton: {
     alignItems: "center",
-    backgroundColor: "#F2F2F7",
     height: 48,
     justifyContent: "center",
+    overflow: "hidden",
     width: 48,
   },
   navLeading: {
@@ -1066,25 +960,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 9,
     paddingVertical: 5,
   },
-  ratingDisplay: {
-    flexDirection: "row",
-    gap: 3,
-  },
-  ratingPicker: {
-    flexDirection: "row",
-    gap: 8,
-  },
-  ratingPip: {
-    alignItems: "center",
-    backgroundColor: "#F2F2F7",
-    borderRadius: 18,
-    height: 38,
-    justifyContent: "center",
-    width: 38,
-  },
-  ratingPipActive: {
-    backgroundColor: "#FFF2F5",
-  },
   reviewBody: {
     color: colors.ink,
     fontSize: 15,
@@ -1092,12 +967,14 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   reviewCard: {
-    backgroundColor: colors.white,
-    borderColor: colors.line,
-    borderRadius: 22,
-    borderWidth: 1,
-    gap: 8,
-    padding: spacing.two,
+    gap: 10,
+    marginLeft: spacing.two,
+    paddingRight: spacing.two,
+    paddingVertical: 17,
+  },
+  reviewCardDivider: {
+    borderBottomColor: "rgba(60,60,67,0.13)",
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   reviewCardHeader: {
     alignItems: "center",
@@ -1105,15 +982,52 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   reviewMeta: {
-    color: colors.muted,
-    flexShrink: 1,
-    fontSize: 12,
-    fontWeight: "700",
+    color: "#5F6470",
+    fontSize: 11,
+    fontWeight: "800",
   },
-  reviewMetaRow: {
+  reviewAllergyPill: {
+    alignSelf: "flex-start",
+    backgroundColor: "#F2F2F7",
+    borderRadius: radius.pill,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+  },
+  reviewContextRow: {
+    alignItems: "center",
     flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
+    justifyContent: "space-between",
+  },
+  reviewDate: {
+    color: colors.muted,
+    fontSize: 12,
+    fontWeight: "600",
+  },
+  reviewList: {
+    backgroundColor: "rgba(255,255,255,0.94)",
+    borderColor: "rgba(60,60,67,0.12)",
+    borderCurve: "continuous",
+    borderRadius: 24,
+    borderWidth: StyleSheet.hairlineWidth,
+    overflow: "hidden",
+  },
+  reviewRatingCluster: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 7,
+  },
+  reviewRatingIcon: {
+    alignItems: "center",
+    backgroundColor: "#FFF0F3",
+    borderRadius: 14,
+    height: 28,
+    justifyContent: "center",
+    width: 28,
+  },
+  reviewRatingValue: {
+    color: colors.ink,
+    fontSize: 16,
+    fontWeight: "800",
   },
   reviewSection: {
     gap: spacing.two,
@@ -1127,11 +1041,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   searchCloseButton: {
-    alignItems: "center",
-    backgroundColor: "#F2F2F7",
     borderRadius: 20,
     height: 40,
-    justifyContent: "center",
     width: 40,
   },
   searchEmptyCopy: {
@@ -1219,24 +1130,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 0,
   },
-  summaryEmptyText: {
-    color: colors.muted,
-    fontSize: 13,
-    fontWeight: "800",
-    lineHeight: 18,
-    marginTop: 2,
-  },
   summaryRatingRow: {
     alignItems: "center",
     flexDirection: "row",
     gap: 7,
     marginTop: 3,
-  },
-  summaryRatingText: {
-    color: colors.coral,
-    fontSize: 13,
-    fontWeight: "900",
-    lineHeight: 18,
   },
   title: {
     color: colors.ink,

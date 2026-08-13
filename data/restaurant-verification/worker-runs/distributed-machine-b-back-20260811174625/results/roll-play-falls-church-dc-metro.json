@@ -1,0 +1,508 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811174625",
+  "restaurantId": "roll-play-falls-church-dc-metro",
+  "name": "Roll Play Falls Church",
+  "locationId": "falls-church-va",
+  "domain": "rollplaygrill.com",
+  "packetValidation": {
+    "baselineItemCount": 29,
+    "baselineFingerprint": "c6b9c77e11a6ad3534de4d71297cf72483b64244fc8384a81311526fefcd2caf",
+    "itemCheckCount": 29,
+    "fingerprintVerified": true,
+    "itemChecksPath": "data/restaurant-verification/item-checks/roll-play-falls-church-dc-metro.jsonl"
+  },
+  "identity": {
+    "name": "Roll Play Falls Church",
+    "locationId": "falls-church-va",
+    "address": "944 W Broad Street, Falls Church, VA 22046",
+    "domain": "rollplaygrill.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "src-official-home",
+      "src-linked-order"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "src-official-home",
+      "url": "https://rollplaygrill.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and restaurant identity",
+      "retrievedAt": "2026-08-11T21:00:00Z"
+    },
+    {
+      "evidenceId": "src-linked-order",
+      "url": "https://order.rollplaygrill.com/order/rp-falls-church",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current Falls Church food and nonalcoholic ordering menu",
+      "retrievedAt": "2026-08-11T21:00:00Z"
+    },
+    {
+      "evidenceId": "src-allergen-pdf",
+      "url": "https://rollplaygrill.com/wp-content/uploads/2026/05/RP-Nutrition-Allergen-Sheet_4.27.26.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official allergen and ingredient sheet; direct allergen and cross-contact evidence",
+      "retrievedAt": "2026-08-11T21:00:00Z"
+    },
+    {
+      "evidenceId": "src-targeted-search",
+      "url": "https://www.google.com/search?q=site%3Arollplaygrill.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted web search audit",
+      "retrievedAt": "2026-08-11T21:00:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://rollplaygrill.com/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "Falls Church VA",
+      "servicePeriod": "homepage/current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "src-official-home"
+      ]
+    },
+    {
+      "surfaceId": "linked-toast-order",
+      "url": "https://order.rollplaygrill.com/order/rp-falls-church",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "Falls Church VA",
+      "servicePeriod": "current all-day menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; alcohol-only items excluded",
+      "sourceEvidenceIds": [
+        "src-linked-order"
+      ]
+    },
+    {
+      "surfaceId": "official-allergen-document",
+      "url": "https://rollplaygrill.com/wp-content/uploads/2026/05/RP-Nutrition-Allergen-Sheet_4.27.26.pdf",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "Roll Play menu system including Falls Church",
+      "servicePeriod": "current document",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "src-allergen-pdf"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "roll-play-falls-church-menu-catalog",
+      "name": "Roll Play Falls Church current food and nonalcoholic menu catalog",
+      "category": "Vietnamese",
+      "variantGroup": "Falls Church current menu",
+      "sourceEvidenceIds": [
+        "src-linked-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "productCount": 29,
+      "boundary": "29 frozen food/nonalcoholic products represented; alcohol-only offerings excluded; configurable presentations consolidated"
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "found",
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "official homepage and menu navigation for Roll Play Falls Church",
+        "urls": [
+          "https://rollplaygrill.com/"
+        ],
+        "outcome": "Official homepage/menu navigation inspected; linked current ordering and allergen document located",
+        "location": "rollplaygrill.com official site",
+        "sourceEvidenceIds": [
+          "src-official-home",
+          "src-allergen-pdf"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "official Roll Play nutrition and allergen PDF/document surfaces",
+        "urls": [
+          "https://rollplaygrill.com/wp-content/uploads/2026/05/RP-Nutrition-Allergen-Sheet_4.27.26.pdf"
+        ],
+        "outcome": "Official RP Nutrition Allergen Sheet located and inspected; contains ingredient/allergen tables and cross-contact disclaimer",
+        "location": "official PDF/document and download surfaces",
+        "sourceEvidenceIds": [
+          "src-allergen-pdf"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Falls Church ordering vendor menu and allergen-related product information",
+        "urls": [
+          "https://order.rollplaygrill.com/order/rp-falls-church"
+        ],
+        "outcome": "Falls Church Toast ordering surface inspected for current products, descriptions, modifiers, and nonalcoholic beverages",
+        "location": "order.rollplaygrill.com/order/rp-falls-church",
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "site:rollplaygrill.com allergen allergy nutrition ingredients PDF menu",
+        "urls": [
+          "https://www.google.com/search?q=site%3Arollplaygrill.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+        ],
+        "outcome": "Targeted searches for allergen, allergy, nutrition, ingredients, PDF, and menu confirmed official PDF and linked menu",
+        "location": "site:rollplaygrill.com targeted queries",
+        "sourceEvidenceIds": [
+          "src-targeted-search",
+          "src-allergen-pdf"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "evidenceId": "src-allergen-pdf",
+      "statement": "Individual foods may contact one another during preparation; cross-contact is not fully reflected on the chart and cannot be guaranteed absent.",
+      "authorityTier": "restaurant_issued",
+      "sourceEvidenceIds": [
+        "src-allergen-pdf"
+      ]
+    },
+    {
+      "evidenceId": "src-allergen-pdf-fryer",
+      "statement": "Crispy roll is fried in a fryer with contact with traces of shellfish and pork.",
+      "authorityTier": "restaurant_issued",
+      "sourceEvidenceIds": [
+        "src-allergen-pdf"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:48-hour-pho-soups",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "2:avocado-oil-sate-jar-v-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "3:banh-mi-sandwich-weggs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "4:chicken-pho-gf-abf-halal-humane",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "5:create-your-own-banh-mi",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "6:create-your-own-noodle-salad-bowl-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "7:create-your-own-pho-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "8:create-your-own-rice-bowl-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "9:crisp-wings-abf-halal-humane",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "10:dessert-dream-jar-v-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "11:garden-bowl-v-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "12:lifestyle-pho-soups-and-rice-bowls",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "13:low-carb-pho-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "14:moms-fried-rice-large-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "15:moms-fried-rice-small-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "16:new-1-pound-protein-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "17:new-all-in-combination-beef-pho-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "18:new-beef-brisket-pho-gf-grass-fed",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "19:noodle-salad-bowl-w2-egg-rolls-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "20:power-bowl-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "21:power-pho-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "22:saigon-bowl-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "23:salmon-pho-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "24:shrimp-pho-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "25:spicy-oxtail-pho-gf-grass-fed",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "26:summer-roll-1-ct-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "27:summer-rolls-3-ct-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "28:vegan-pho-v-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "auditItemKey": "29:veggie-broth-20-oz-vg-gf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roll-play-falls-church-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "riskSignals": [
+    "Official ingredient/allergen chart is component-level; no item-level negative allergen claims are made.",
+    "Cross-contact warning retained from official sheet."
+  ],
+  "recommendedLane": "verify",
+  "outcome": "researched"
+}

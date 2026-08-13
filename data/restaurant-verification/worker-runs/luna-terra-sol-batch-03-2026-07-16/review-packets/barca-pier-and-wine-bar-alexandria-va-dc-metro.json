@@ -1,0 +1,1723 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-batch-03-2026-07-16",
+  "restaurant": {
+    "restaurantId": "barca-pier-and-wine-bar-alexandria-va-dc-metro",
+    "name": "BARCA Pier & Wine Bar",
+    "domain": "barcaalx.com",
+    "locationId": "alexandria-va",
+    "baselineItemCount": 26,
+    "baselineItemFingerprint": "cd21d5262c3ae37d3d5632f1b8d4ea6fe21394d0305e52c70da92e3662d9ecbe",
+    "officialItemCount": 19,
+    "officialAllergenStatus": "not-found",
+    "sourceFamily": "generic-website",
+    "parserProfile": "generic-website",
+    "guideUrl": "https://www.barcaalx.com/",
+    "sourceUrls": [
+      "https://barcaalx.com/"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found.",
+    "Low confidence must be explicitly marked low_confidence.",
+    "Terra must verify every scout product presentation exactly once.",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra reported a mismatched or unverifiable current product.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "validationWarnings": [
+    "Low confidence must be explicitly marked low_confidence.",
+    "Terra must verify every scout product presentation exactly once.",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra reported a mismatched or unverifiable current product.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "multi_service",
+      "inaccessible_source",
+      "count_drift",
+      "current_only",
+      "baseline_only",
+      "duplicate_presentations",
+      "non_exact_reconciliation",
+      "allergen_mismatch",
+      "cross_contact",
+      "validation_warnings",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 26,
+      "reconciledItemCount": 26,
+      "uniqueReconciledItemCount": 26,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 4,
+      "activeMenuSurfaceCount": 4,
+      "accessibleMenuSurfaceCount": 3,
+      "serviceCount": 3,
+      "pdfImageSurfaceCount": 0,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 1,
+      "incompleteSurfaceCount": 0,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 38,
+      "currentOnlyCount": 16,
+      "baselineOnlyCount": 4,
+      "countDrift": true,
+      "duplicatePresentationCount": 2,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 0,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 7,
+      "allergenMismatchItemCount": 14,
+      "crossContactCount": 4,
+      "parserRepairFindingCount": 0,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 3,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "low",
+      "overall": 0.42,
+      "menu": 0.5,
+      "allergenSource": 0.3,
+      "extraction": 0.35,
+      "rationale": "The official site verifies identity, service structure, partial brunch and happy-hour mentions, but its embedded menu is not enumerated in accessible text. The detailed current all-day list is only independently visible on OpenTable and remains third-party; no restaurant-issued allergen or cross-contact disclosure was located."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "BARCA Pier & Wine Bar, 2 Pioneer Mill Way, Alexandria, VA 22314",
+      "confidence": 0.98,
+      "sourceEvidenceIds": [
+        "t1",
+        "t2"
+      ],
+      "notes": "Official homepage and FAQ identify the Alexandria business, address, and phone number."
+    },
+    "sources": [
+      {
+        "evidenceId": "t1",
+        "url": "https://barcaalx.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Home Page - Barca Pier & Wine Bar",
+        "retrievedAt": "2026-07-16T16:31:00Z",
+        "excerpt": "Official page identifies the restaurant and separate Pier, Wine Bar, brunch, and Wine Bar Happy Hour services. Its menu section renders only “Loading Menu”; brunch and happy-hour prose name limited products.",
+        "stableRowId": "homepage-menu-section",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "t2",
+        "url": "https://barcaalx.com/faqs/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "allergen",
+        "title": "Faqs - Barca Pier & Wine Bar",
+        "retrievedAt": "2026-07-16T16:31:00Z",
+        "excerpt": "The FAQ says vegan and gluten-free options are indicated with V or G and gives no allergen matrix, ingredient list, shared-equipment language, or cross-contact policy.",
+        "stableRowId": "gluten-free-vegetarian-options",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "t3",
+        "url": "https://www.opentable.com/r/barca-wine-bar-and-pier-alexandria",
+        "authorityTier": "third_party",
+        "purpose": "menu",
+        "title": "Barca Wine Bar & Pier - OpenTable menu",
+        "retrievedAt": "2026-07-16T16:31:00Z",
+        "excerpt": "OpenTable labels its detailed All-Day menu last updated May 13, 2026 and supplies food names and ingredient descriptions; it is a third-party source.",
+        "stableRowId": "menu-all-day",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "t4",
+        "url": "https://www.toasttab.com/local/order/barca-pier-and-wine-bar",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Toast ordering page",
+        "retrievedAt": "2026-07-16T16:31:00Z",
+        "excerpt": "The attempted ordering URL returns 404 Page Not Found.",
+        "stableRowId": "http-404",
+        "contentHash": null,
+        "artifactSuggested": null
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://barcaalx.com/",
+        "notes": "Accessible; identity and service mentions are available, but the current embedded menu is not text-enumerable."
+      },
+      {
+        "kind": "linked_source",
+        "status": "not_found",
+        "url": "https://barcaalx.com/",
+        "notes": "No restaurant-linked ingredient or allergen document was found from the official site."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "not_found",
+        "url": "https://www.toasttab.com/local/order/barca-pier-and-wine-bar",
+        "notes": "The supplied Toast ordering URL returned 404."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": "https://www.opentable.com/r/barca-wine-bar-and-pier-alexandria",
+        "notes": "Located the detailed third-party current menu."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": "https://barcaalx.com/",
+        "notes": "No usable restaurant-issued archived allergen/menu document found."
+      },
+      {
+        "kind": "third_party",
+        "status": "accessible",
+        "url": "https://www.opentable.com/r/barca-wine-bar-and-pier-alexandria",
+        "notes": "Detailed all-day menu accessible; authority remains third_party."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "multi_service",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "t1"
+        ],
+        "notes": "Official page explicitly distinguishes Pier, Wine Bar, brunch, and Wine Bar Happy Hour."
+      },
+      {
+        "gateId": "inaccessible_source",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "t1",
+          "t4"
+        ],
+        "notes": "The official embedded menu is not enumerated in accessible text and the linked ordering URL returns 404."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "The third-party detailed all-day menu and official partial brunch/happy-hour prose show catalog drift and incomplete primary scope."
+      },
+      {
+        "gateId": "current_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Additional food products are visible on OpenTable and additional brunch products are named officially."
+      },
+      {
+        "gateId": "baseline_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Several baseline products are absent from the detailed all-day menu and cannot be negatively resolved from the incomplete primary brunch surface."
+      },
+      {
+        "gateId": "duplicate_presentations",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "t1"
+        ],
+        "notes": "Pier and Wine Bar are distinct services; three scout beverage consolidation claims are not independently enumerable."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Burrata toast, Torrijas, Soft Scramble, and breakfast croquetas require scope/name interpretation."
+      },
+      {
+        "gateId": "allergen_mismatch",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "t2",
+          "t3"
+        ],
+        "notes": "The frozen official-ingredient claims are not supported by a restaurant-issued complete disclosure; only limited direct positives are observable."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "unresolved",
+        "sourceEvidenceIds": [
+          "t2"
+        ],
+        "notes": "No restaurant-issued cross-contact or shared-equipment statement was located; it cannot be cleared or inferred."
+      },
+      {
+        "gateId": "validation_warnings",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Scout marked unavailable menus as complete and promoted third-party detailed content to restaurant-issued evidence."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "t1",
+          "t2",
+          "t3",
+          "t4"
+        ],
+        "notes": "Independent primary-source coverage is materially incomplete."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "t1",
+          "t2",
+          "t3"
+        ],
+        "notes": "Multiple surfaces, incomplete disclosure, drift, and partial brunch are independently present."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "official-all-day-food",
+        "verdict": "mismatch",
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Official homepage exposes only a loading menu widget, not the scout's complete 31-product list. Detailed all-day content is available from OpenTable only."
+      },
+      {
+        "surfaceId": "official-pier-beverage",
+        "verdict": "unverifiable",
+        "sourceEvidenceIds": [
+          "t1"
+        ],
+        "notes": "Official page confirms Pier service but does not enumerate the claimed beverage products."
+      },
+      {
+        "surfaceId": "official-wine-bar-beverage",
+        "verdict": "unverifiable",
+        "sourceEvidenceIds": [
+          "t1"
+        ],
+        "notes": "Official page confirms Wine Bar service but does not enumerate the claimed beverage products."
+      },
+      {
+        "surfaceId": "official-brunch-mentions",
+        "verdict": "mismatch",
+        "sourceEvidenceIds": [
+          "t1"
+        ],
+        "notes": "Official prose names brunch but is partial and names products Luna omitted; it cannot establish a complete two-product brunch surface."
+      }
+    ],
+    "currentProductCheckGroups": [
+      {
+        "currentProductKeys": [
+          "spanish-tomato-salad"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Manchego supports only a narrow positive from third-party menu text."
+      },
+      {
+        "currentProductKeys": [
+          "stuffed-piquillo-peppers"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "milk",
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Mahón cheese and bread crumbs are third-party menu positives."
+      },
+      {
+        "currentProductKeys": [
+          "seared-scallops"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "shellfish",
+          "tree-nut"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Scallops and marcona almonds are third-party menu positives."
+      },
+      {
+        "currentProductKeys": [
+          "gambas-al-ajillo"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "shellfish",
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Shrimp and butter are third-party menu positives."
+      },
+      {
+        "currentProductKeys": [
+          "tuna-tartare"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "fish",
+          "milk",
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Tuna, labneh, and breadcrumbs are third-party menu positives."
+      },
+      {
+        "currentProductKeys": [
+          "marinated-cucumbers"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "soy"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Shoyu is a third-party menu positive."
+      },
+      {
+        "currentProductKeys": [
+          "catalan-style-mussels"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "shellfish"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Mussels are a third-party menu positive."
+      },
+      {
+        "currentProductKeys": [
+          "pan-con-tomate"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Ciabatta is a third-party menu positive."
+      },
+      {
+        "currentProductKeys": [
+          "lamb-chops",
+          "chicken-albondigas",
+          "mojo-rojo-braised-pork-belly",
+          "patatas-bravas",
+          "skirt-steak",
+          "andalusian-chicken-skewers",
+          "chickpea-hummus",
+          "chocolate-torta"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Products appear only in third-party detailed menu; available descriptions do not establish complete arrays or negatives."
+      },
+      {
+        "currentProductKeys": [
+          "garlic-chicken-montadito"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "milk",
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Mahón cheese and bread identity are third-party menu positives."
+      },
+      {
+        "currentProductKeys": [
+          "basque-green-beans"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "peanut"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Peanut dukkah is a third-party menu positive."
+      },
+      {
+        "currentProductKeys": [
+          "jamon-serrano-croquetas"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Manchego is a third-party menu positive."
+      },
+      {
+        "currentProductKeys": [
+          "stuffed-dates"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "milk",
+          "tree-nut"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Cheese and almond crunch are third-party menu positives."
+      },
+      {
+        "currentProductKeys": [
+          "beef-kebab",
+          "tzatziki",
+          "burnt-basque-cheesecake"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Named yogurt/dairy identity supports limited third-party positives."
+      },
+      {
+        "currentProductKeys": [
+          "fried-calamari"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "shellfish"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Calamari supports a narrow third-party shellfish positive; frying does not establish wheat."
+      },
+      {
+        "currentProductKeys": [
+          "crispy-brussels-sprouts"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "milk",
+          "tree-nut"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Feta and pecans are third-party menu positives."
+      },
+      {
+        "currentProductKeys": [
+          "burrata-mushroom-toast"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "milk",
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Burrata, butter, and ciabatta are third-party menu positives."
+      },
+      {
+        "currentProductKeys": [
+          "quesos-y-embutidos"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "tree-nut"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Cheese, bread, and almonds are third-party menu positives."
+      },
+      {
+        "currentProductKeys": [
+          "butternut-squash-romesco"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "tree-nut"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Pecans are a third-party menu positive."
+      },
+      {
+        "currentProductKeys": [
+          "whipped-goat-cheese"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "milk",
+          "tree-nut"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Goat cheese and pistachio are third-party menu positives."
+      },
+      {
+        "currentProductKeys": [
+          "creme-catalana-shortbread"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Shortbread supports a narrow third-party wheat positive."
+      },
+      {
+        "currentProductKeys": [
+          "flan"
+        ],
+        "presentationIds": [],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "third_party_allergen",
+        "allergenAuthorityTier": "third_party",
+        "allergenSourceEvidenceIds": [
+          "t3"
+        ],
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "notes": "Flan identity supports narrow third-party milk and egg positives."
+      },
+      {
+        "currentProductKeys": [
+          "hibiscus-tea"
+        ],
+        "presentationIds": [],
+        "verdict": "unverifiable",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "t1"
+        ],
+        "notes": "Official site does not enumerate this product or ingredients."
+      },
+      {
+        "currentProductKeys": [
+          "passion-fruit-nojito"
+        ],
+        "presentationIds": [
+          "official-wine-bar-beverage"
+        ],
+        "verdict": "unverifiable",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "t1"
+        ],
+        "notes": "Pier and Wine Bar presentation asserted by Luna cannot be independently enumerated."
+      },
+      {
+        "currentProductKeys": [
+          "blackberry-sage-whiskey-smash"
+        ],
+        "presentationIds": [
+          "official-wine-bar-beverage"
+        ],
+        "verdict": "unverifiable",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "t1"
+        ],
+        "notes": "Pier and Wine Bar presentation asserted by Luna cannot be independently enumerated."
+      },
+      {
+        "currentProductKeys": [
+          "orange-wave"
+        ],
+        "presentationIds": [
+          "official-wine-bar-beverage"
+        ],
+        "verdict": "unverifiable",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "t1"
+        ],
+        "notes": "Pier and Wine Bar presentation asserted by Luna cannot be independently enumerated."
+      },
+      {
+        "currentProductKeys": [
+          "pomelo-dulce"
+        ],
+        "presentationIds": [],
+        "verdict": "unverifiable",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "t1"
+        ],
+        "notes": "Official site does not enumerate this claimed Wine Bar product or ingredients."
+      },
+      {
+        "currentProductKeys": [
+          "soft-scramble"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [
+          "egg",
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "t1"
+        ],
+        "sourceEvidenceIds": [
+          "t1"
+        ],
+        "notes": "Official Instagram embed names soft scrambled eggs and toast; brunch scope remains partial."
+      },
+      {
+        "currentProductKeys": [
+          "torrijas"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "t1"
+        ],
+        "sourceEvidenceIds": [
+          "t1"
+        ],
+        "notes": "Official brunch prose identifies French toast and whipped labneh; product/menu scope is partial."
+      }
+    ],
+    "additionalMenuSurfaces": [
+      {
+        "surfaceId": "official-wine-bar-happy-hour-mentions",
+        "title": "Wine Bar Happy Hour mentions",
+        "service": "wine_bar_happy_hour",
+        "url": "https://barcaalx.com/",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "html",
+        "accessStatus": "partial",
+        "fullyEnumerated": false,
+        "scopeStatus": "partial",
+        "current": true,
+        "sourceEvidenceIds": [
+          "t1"
+        ],
+        "currentProductKeys": [
+          "butternut-squash-skordalia",
+          "serrano-ham-croquetas"
+        ],
+        "notes": "Official page names this service and limited products; it is not a complete menu."
+      }
+    ],
+    "additionalCurrentProducts": [
+      {
+        "currentProductKey": "shrimp-and-grits-con-huevos",
+        "name": "Shrimp & Grits con Huevos",
+        "category": "food",
+        "surfaceIds": [
+          "official-brunch-mentions"
+        ],
+        "presentationIds": [],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "t1"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "unverifiable",
+        "notes": "Official brunch prose names product; no formulation or complete brunch catalog."
+      },
+      {
+        "currentProductKey": "bec-croquetas",
+        "name": "B.E.C. Croquetas",
+        "category": "food",
+        "surfaceIds": [
+          "official-brunch-mentions"
+        ],
+        "presentationIds": [],
+        "matchedBaselineAuditItemKeys": [
+          "4:breakfast-croquetas"
+        ],
+        "sourceEvidenceIds": [
+          "t1"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "ambiguous",
+        "notes": "Official brunch prose names a breakfast croquetas product, but it is not an exact name/formulation match to the frozen item."
+      },
+      {
+        "currentProductKey": "breakfast-patatas-bravas",
+        "name": "Breakfast Patatas Bravas",
+        "category": "food",
+        "surfaceIds": [
+          "official-brunch-mentions"
+        ],
+        "presentationIds": [],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "t1"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "unverifiable",
+        "notes": "Official brunch prose names product; no formulation or complete brunch catalog."
+      },
+      {
+        "currentProductKey": "butternut-squash-skordalia",
+        "name": "Butternut Squash Skordalia",
+        "category": "food",
+        "surfaceIds": [
+          "official-wine-bar-happy-hour-mentions"
+        ],
+        "presentationIds": [],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "t1"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "unverifiable",
+        "notes": "Official happy-hour prose names product; no formulation or complete happy-hour catalog."
+      },
+      {
+        "currentProductKey": "serrano-ham-croquetas",
+        "name": "Serrano Ham Croquetas",
+        "category": "food",
+        "surfaceIds": [
+          "official-wine-bar-happy-hour-mentions"
+        ],
+        "presentationIds": [],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "t1"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "ambiguous",
+        "notes": "Official happy-hour prose names product; may relate to Luna's Jamon Serrano Croquetas but formulation/scope are unresolved."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 26,
+      "counts": {
+        "exact_match/accurately_unavailable": 5,
+        "missing_from_source/mismatch": 2,
+        "exact_match/mismatch": 14,
+        "variant_match/mismatch": 1,
+        "normalized_match/mismatch": 3,
+        "missing_from_source/accurately_unavailable": 1
+      }
+    },
+    "findings": [
+      {
+        "findingId": "terra-f1",
+        "severity": "high",
+        "kind": "menu",
+        "summary": "Luna misclassified a non-enumerated official loading widget as a complete official all-day and beverage catalog; the detailed all-day evidence is OpenTable third-party content.",
+        "sourceEvidenceIds": [
+          "t1",
+          "t3"
+        ],
+        "affectedAuditItemKeys": [
+          "1:andalusian-chicken-skewers-g",
+          "3:basque-green-beans-v",
+          "5:burrata-and-mushroom-toast-v",
+          "6:catalan-style-mussels",
+          "7:chicken-albondigas",
+          "8:chickpea-hummus-v",
+          "9:chocolate-torta-g",
+          "10:crispy-brussels-sprouts-v",
+          "12:gambas-al-ajillo-g",
+          "13:garlic-chicken-montadito",
+          "14:lamb-chops-g",
+          "15:mojo-rojo-braised-pork-belly",
+          "16:patatas-bravas-v",
+          "17:quesos-y-embutidos",
+          "18:seared-scallops",
+          "19:skirt-steak-g",
+          "21:spanish-tomato-salad",
+          "23:stuffed-piquillo-peppers-v",
+          "25:tuna-tartare",
+          "26:whipped-goat-cheese-v"
+        ]
+      },
+      {
+        "findingId": "terra-f2",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "Restaurant-issued evidence supplies no complete allergen arrays or cross-contact policy. Luna's restaurant-issued allergen authority for detailed all-day products is unsupported; observed all-day positives are third-party-only and no negatives or complete arrays are supportable.",
+        "sourceEvidenceIds": [
+          "t2",
+          "t3"
+        ],
+        "affectedAuditItemKeys": [
+          "2:barca-breakfast",
+          "3:basque-green-beans-v",
+          "4:breakfast-croquetas",
+          "5:burrata-and-mushroom-toast-v",
+          "6:catalan-style-mussels",
+          "8:chickpea-hummus-v",
+          "9:chocolate-torta-g",
+          "10:crispy-brussels-sprouts-v",
+          "12:gambas-al-ajillo-g",
+          "13:garlic-chicken-montadito",
+          "16:patatas-bravas-v",
+          "17:quesos-y-embutidos",
+          "18:seared-scallops",
+          "20:soft-scramble-v",
+          "22:spanish-tortilla",
+          "23:stuffed-piquillo-peppers-v",
+          "24:torrijas-bread-pudding-v",
+          "25:tuna-tartare",
+          "26:whipped-goat-cheese-v"
+        ]
+      },
+      {
+        "findingId": "terra-f3",
+        "severity": "medium",
+        "kind": "scope",
+        "summary": "Official brunch and Wine Bar Happy Hour prose are partial and name products Luna missed, including Shrimp & Grits con Huevos, B.E.C. Croquetas, Breakfast Patatas Bravas, Butternut Squash Skordalia, and Serrano Ham Croquetas.",
+        "sourceEvidenceIds": [
+          "t1"
+        ],
+        "affectedAuditItemKeys": [
+          "4:breakfast-croquetas",
+          "20:soft-scramble-v",
+          "22:spanish-tortilla",
+          "24:torrijas-bread-pudding-v"
+        ]
+      }
+    ],
+    "summary": "Identity is verified, but Luna's catalog and authority conclusions do not hold on independent review. The official site provides only partial service/product mentions and no restaurant-issued comprehensive menu, allergen matrix, or cross-contact disclosure. OpenTable supplies detailed all-day text but remains third-party. All deterministic risks remain escalated; no complete current catalog, negatives, complete arrays, or cross-contact conclusion is supported.",
+    "coordinatorNotes": [
+      "Read-only verification only; no ledger, frozen items, generated data, or coordinator-managed result file was modified.",
+      "The required result destination is coordinator-managed and was not written."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "1:andalusian-chicken-skewers-g",
+      "baseline": {
+        "itemId": "andalusian-chicken-skewers-g",
+        "name": "ANDALUSIAN CHICKEN SKEWERS G",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "2:barca-breakfast",
+      "baseline": {
+        "itemId": "barca-breakfast",
+        "name": "BARCA BREAKFAST",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "3:basque-green-beans-v",
+      "baseline": {
+        "itemId": "basque-green-beans-v",
+        "name": "BASQUE GREEN BEANS",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "peanut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "4:breakfast-croquetas",
+      "baseline": {
+        "itemId": "breakfast-croquetas",
+        "name": "BREAKFAST CROQUETAS",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "5:burrata-and-mushroom-toast-v",
+      "baseline": {
+        "itemId": "burrata-and-mushroom-toast-v",
+        "name": "BURRATA & MUSHROOM TOAST",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "6:catalan-style-mussels",
+      "baseline": {
+        "itemId": "catalan-style-mussels",
+        "name": "CATALAN STYLE MUSSELS",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "7:chicken-albondigas",
+      "baseline": {
+        "itemId": "chicken-albondigas",
+        "name": "CHICKEN ALBONDIGAS",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "8:chickpea-hummus-v",
+      "baseline": {
+        "itemId": "chickpea-hummus-v",
+        "name": "CHICKPEA HUMMUS",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "9:chocolate-torta-g",
+      "baseline": {
+        "itemId": "chocolate-torta-g",
+        "name": "CHOCOLATE TORTA G",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "10:crispy-brussels-sprouts-v",
+      "baseline": {
+        "itemId": "crispy-brussels-sprouts-v",
+        "name": "CRISPY BRUSSELS SPROUTS",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "12:gambas-al-ajillo-g",
+      "baseline": {
+        "itemId": "gambas-al-ajillo-g",
+        "name": "GAMBAS AL AJILLO G",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "13:garlic-chicken-montadito",
+      "baseline": {
+        "itemId": "garlic-chicken-montadito",
+        "name": "GARLIC CHICKEN MONTADITO",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "14:lamb-chops-g",
+      "baseline": {
+        "itemId": "lamb-chops-g",
+        "name": "LAMB CHOPS* G",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "15:mojo-rojo-braised-pork-belly",
+      "baseline": {
+        "itemId": "mojo-rojo-braised-pork-belly",
+        "name": "MOJO ROJO-BRAISED PORK BELLY",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "16:patatas-bravas-v",
+      "baseline": {
+        "itemId": "patatas-bravas-v",
+        "name": "PATATAS BRAVAS",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "17:quesos-y-embutidos",
+      "baseline": {
+        "itemId": "quesos-y-embutidos",
+        "name": "QUESOS Y EMBUTIDOS",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "18:seared-scallops",
+      "baseline": {
+        "itemId": "seared-scallops",
+        "name": "SEARED SCALLOPS",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "19:skirt-steak-g",
+      "baseline": {
+        "itemId": "skirt-steak-g",
+        "name": "SKIRT STEAK* G",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "20:soft-scramble-v",
+      "baseline": {
+        "itemId": "soft-scramble-v",
+        "name": "SOFT SCRAMBLE*",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "21:spanish-tomato-salad",
+      "baseline": {
+        "itemId": "spanish-tomato-salad",
+        "name": "SPANISH TOMATO SALAD",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "22:spanish-tortilla",
+      "baseline": {
+        "itemId": "spanish-tortilla",
+        "name": "SPANISH TORTILLA",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "23:stuffed-piquillo-peppers-v",
+      "baseline": {
+        "itemId": "stuffed-piquillo-peppers-v",
+        "name": "STUFFED PIQUILLO PEPPERS",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "24:torrijas-bread-pudding-v",
+      "baseline": {
+        "itemId": "torrijas-bread-pudding-v",
+        "name": "TORRIJAS BREAD PUDDING",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "25:tuna-tartare",
+      "baseline": {
+        "itemId": "tuna-tartare",
+        "name": "TUNA TARTARE",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "egg",
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "26:whipped-goat-cheese-v",
+      "baseline": {
+        "itemId": "whipped-goat-cheese-v",
+        "name": "WHIPPED GOAT CHEESE",
+        "category": "Mediterranean",
+        "variantGroup": "Mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://barcaalx.com/"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-03-2026-07-16/jobs/barca-pier-and-wine-bar-alexandria-va-dc-metro.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-03-2026-07-16/results/barca-pier-and-wine-bar-alexandria-va-dc-metro.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/barca-pier-and-wine-bar-alexandria-va-dc-metro.jsonl"
+  }
+}

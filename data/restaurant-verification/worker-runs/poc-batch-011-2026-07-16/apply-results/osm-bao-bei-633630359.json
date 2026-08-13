@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-011-2026-07-16",
+  "restaurantId": "osm-bao-bei-633630359",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "0796cf1b46c3f23fa09933dbceeb7bd7ee59cf10f66207f437a02b85392c1c9c",
+    "currentProductCount": 38,
+    "directSourceTypeCounts": {
+      "restaurant_linked_vendor": 9,
+      "restaurant_ingredients": 6,
+      "unavailable": 23
+    },
+    "evidenceSourceCount": 7,
+    "evidencePreflightValid": true,
+    "assertions": [
+      "strengthened POC validator passed before mutation",
+      "38 distinct current products published",
+      "S2 and S3 are current complete surfaces",
+      "S1 and S4-S6 are current=false",
+      "three artifact rows remain unmapped",
+      "direct arrays, source types, authority tiers, and evidence IDs copied exactly",
+      "unavailable is not allergen-free and has no direct evidence",
+      "matrix verdict accurately_unavailable with four searches",
+      "all seven evidence sources canonical and resolvable",
+      "Ingredient Intelligence applied after final direct catalog",
+      "no Sol or Terra used",
+      "second run is byte-identical"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-bao-bei-633630359.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-bao-bei-633630359.json",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-bao-bei-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-011-2026-07-16/apply-results/osm-bao-bei-633630359.json"
+  ],
+  "commands": [
+    "node scripts/restaurant-verification-poc-result.mjs (strengthened preflight)",
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "serialized APPLY twice with byte/hash comparison",
+    "assert direct source-type distribution and empty-array evidence invariants"
+  ],
+  "secondRunDiff": "none",
+  "artifactHashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "d6b16b8eb5c89b2fe68fd49fa1e7c06173c88c6e3e293264b54896c35ffc58d1",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-bao-bei-633630359.json": "db4750d8a520689d111adaea0c7a2a02e3590da5897a397cb993151936d9c1d0",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-bao-bei-633630359.json": "4c86b76b9501b105c03d03e269eacdef6a098687dca000a14efa50e9c088c6d9"
+  },
+  "counts": {
+    "publishedProducts": 38,
+    "unmappedArtifactRows": 3,
+    "evidenceSources": 7,
+    "matrixSearches": 4
+  }
+}

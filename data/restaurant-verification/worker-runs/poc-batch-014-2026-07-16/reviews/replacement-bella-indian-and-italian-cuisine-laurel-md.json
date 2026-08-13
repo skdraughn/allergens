@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-014-2026-07-16",
+  "restaurantId": "replacement-bella-indian-and-italian-cuisine-laurel-md",
+  "reviewType": "binding_menu_scope_and_direct_allergen_adjudication",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "role": "sol_reviewer",
+    "reasoningEffort": "medium"
+  },
+  "resolution": {
+    "binding": true,
+    "outcome": "complete_current_nonalcoholic_catalog_union_and_direct_allergen_scope_resolved",
+    "catalogDefinition": {
+      "scope": "Current food and nonalcoholic products for Bella Indian & Italian Cuisine, 7423 Van Dusen Rd, Laurel, MD 20707.",
+      "enumerationRule": "Use the 196-product restaurant-issued S1 union, consolidate 20 repeated Vegan Menu presentations, exclude nonsold modifiers, and use linked-vendor S2 only as supporting presentation evidence.",
+      "existingProductCount": 196,
+      "additionalProductCount": 0,
+      "removedProductCount": 0,
+      "excludedProductCount": 0,
+      "resolvedCatalogProductCount": 196,
+      "completeCurrentSurfaceIds": [
+        "S1"
+      ],
+      "supportingSurfaceIds": [
+        "S2"
+      ],
+      "rationale": "Sol counted 216 visible S1 rows collapsing to 196 distinct products. S2 has 184 visible rows and 182 distinct presentations, all contained in S1. The original 40-product candidate retained 39 products, removed stale Saag Paneer, and required 157 additions."
+    },
+    "items": [],
+    "surfaceResolutions": [],
+    "safetySourceAuthorityConflictRemains": false
+  },
+  "adjudicationSummary": {
+    "officialSurface": {
+      "surfaceId": "S1",
+      "authorityTier": "restaurant_issued",
+      "visibleRowCount": 216,
+      "duplicatePresentationCount": 20,
+      "distinctProductCount": 196,
+      "sourceEvidenceIds": [
+        "E2"
+      ]
+    },
+    "linkedVendorSurface": {
+      "surfaceId": "S2",
+      "authorityTier": "restaurant_linked_vendor",
+      "visibleRowCount": 184,
+      "distinctPresentationCount": 182,
+      "uniqueUnionAdditions": 0,
+      "sourceEvidenceIds": [
+        "E3"
+      ]
+    },
+    "catalogDeltaFromScout": {
+      "candidateProductCount": 40,
+      "retainedProductCount": 39,
+      "additionalProductCount": 157,
+      "removedProductCount": 1,
+      "removedProductKeys": [
+        "saag-paneer"
+      ]
+    },
+    "directAllergenRules": {
+      "wheatProductKeys": [
+        "aloo-paratha",
+        "roti"
+      ],
+      "wheatRationale": "E2 explicitly says whole wheat for these two products. No other wheat or gluten claim may be inferred from names, generic flour, bread, pasta, naan, pizza, pastry, calzone, cake, breading, or croutons.",
+      "glutenProductCount": 0,
+      "mayContainProductCount": 0,
+      "authorityTier": "restaurant_issued",
+      "sourceEvidenceIds": [
+        "E2"
+      ],
+      "negativeClaimRule": "Empty arrays mean unavailable, not allergen-free.",
+      "linkedVendorAuthorityPromoted": false
+    },
+    "matrixSearch": {
+      "status": "accurately_unavailable",
+      "attempted": [
+        "official_site",
+        "official_documents",
+        "linked_vendor",
+        "targeted_web_search"
+      ],
+      "attemptCount": 4
+    }
+  },
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "frozenBaselineItemCount": 40,
+    "researchReconciledItemCount": 40,
+    "unresolvedResearchKeyCount": 0,
+    "reviewedKeyCount": 0,
+    "resolutionItemCount": 0,
+    "allAffectedKeysReviewedExactlyOnce": true,
+    "researchCurrentProductCount": 196,
+    "additionalProductCount": 0,
+    "removedProductCount": 0,
+    "excludedProductCount": 0,
+    "resolvedCatalogProductCount": 196,
+    "surfaceResolutionCount": 0,
+    "partialSurfaceIds": [],
+    "resolvedSurfaceIds": [],
+    "allPartialSurfacesResolvedExactlyOnce": true,
+    "matrixSearchCount": 4,
+    "matrixStatusRemainsAccuratelyUnavailable": true,
+    "unsupportedWheatOrGlutenClaimsRetained": false,
+    "unsupportedNegativeClaimsIntroduced": false,
+    "itemSpecificMayContainClaimsIntroduced": false,
+    "linkedVendorAuthorityPromoted": false,
+    "codexVerifiedClaimed": false
+  }
+}

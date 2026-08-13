@@ -16,6 +16,23 @@ const defaultAllocationRoot = path.join(verificationRoot, "allocations");
 const defaultRunRoot = path.join(verificationRoot, "distributed-runs");
 const defaultImportRoot = path.join(verificationRoot, "distributed-imports");
 export const maximumDistributedWorkers = 5;
+export const workerSandboxForPlatform = (platform = process.platform) =>
+  platform === "win32" ? "danger-full-access" : "workspace-write";
+
+export function resolveCodexInvocation(args, {
+  platform = process.platform,
+  env = process.env,
+  nodeExecutable = process.execPath,
+  fileExists = existsSync,
+} = {}) {
+  if (platform !== "win32") return { command: "codex", args };
+  const pathEntries = String(env.PATH || env.Path || "").split(";").filter(Boolean);
+  for (const entry of pathEntries) {
+    const cli = path.join(entry, "node_modules", "@openai", "codex", "bin", "codex.js");
+    if (fileExists(cli)) return { command: nodeExecutable, args: [cli, ...args] };
+  }
+  return { command: "codex", args };
+}
 
 export async function createAllocation({
   direction,
@@ -23,6 +40,7 @@ export async function createAllocation({
   machineId,
   outputPath,
   excludeExisting = false,
+  skip = 0,
   now = new Date().toISOString(),
   root = verificationRoot,
 } = {}) {
@@ -46,20 +64,23 @@ export async function createAllocation({
     pending = pending.filter((row) => !existingIds.has(row.restaurantId));
   }
   const ordered = direction === "back" ? [...pending].reverse() : pending;
-  if (ordered.length < count) throw new Error(`Only ${ordered.length} pending rows are available.`);
+  if (!Number.isInteger(skip) || skip < 0) throw new Error("skip must be a nonnegative integer.");
+  const selected = ordered.slice(skip);
+  if (selected.length < count) throw new Error(`Only ${selected.length} pending rows are available after skipping ${skip}.`);
   const allocation = {
     schemaVersion: 1,
     kind: "restaurant_verification_distributed_allocation",
     allocationId: `${machineId}-${direction}-${now.replace(/[^0-9]/g, "").slice(0, 14)}`,
     machineId,
     direction,
+    selectionOffset: skip,
     createdAt: now,
     base: {
       ledgerSha256: sha256(ledgerBytes),
       verificationManifestSha256: sha256(manifestBytes),
       restaurantCount: rows.length,
     },
-    entries: ordered.slice(0, count).map((row, index) => ({
+    entries: selected.slice(0, count).map((row, index) => ({
       ordinal: index + 1,
       restaurantId: row.restaurantId,
       name: row.name,
@@ -266,6 +287,7 @@ export async function exportRun({ allocationPath, runId, outputPath } = {}) {
 
 export async function importRun({ bundlePath, write = false } = {}) {
   const bundleRoot = path.resolve(bundlePath);
+  const bundleFile = (filePath) => path.join(bundleRoot, String(filePath).replaceAll("\\", "/"));
   const [allocation, receipt, manifest] = await Promise.all([
     readJson(path.join(bundleRoot, "allocation.json")),
     readJson(path.join(bundleRoot, "export-receipt.json")),
@@ -274,7 +296,7 @@ export async function importRun({ bundlePath, write = false } = {}) {
   if (allocation.allocationSha256 !== allocationDigest(allocation)) throw new Error("Allocation digest mismatch.");
   if (receipt.bundleSha256 !== sha256(JSON.stringify(receipt.files))) throw new Error("Bundle receipt digest mismatch.");
   for (const file of receipt.files) {
-    const bytes = await readFile(path.join(bundleRoot, file.path));
+    const bytes = await readFile(bundleFile(file.path));
     if (sha256(bytes) !== file.sha256) throw new Error(`Bundle file hash mismatch: ${file.path}`);
   }
   if (!["completed", "completed_with_followup"].includes(manifest.status) || manifest.researchOnly !== true) throw new Error("Bundle is not a completed research-only run.");
@@ -287,8 +309,8 @@ export async function importRun({ bundlePath, write = false } = {}) {
     if (!allocationEntry || !row) throw new Error(`Unallocated restaurant in bundle: ${jobEntry.restaurantId}`);
     if (row.status !== "pending") throw new Error(`${jobEntry.restaurantId} is no longer pending (${row.status}).`);
     if (row.baseline.itemFingerprint !== allocationEntry.baselineFingerprint) throw new Error(`${jobEntry.restaurantId} baseline is stale.`);
-    const jobPath = path.join(bundleRoot, "run", jobEntry.jobPath);
-    const resultPath = path.join(bundleRoot, "run", jobEntry.finalResultPath ?? jobEntry.resultPath);
+    const jobPath = bundleFile(path.join("run", jobEntry.jobPath));
+    const resultPath = bundleFile(path.join("run", jobEntry.finalResultPath ?? jobEntry.resultPath));
     const validation = await validateResult(jobPath, resultPath);
     if (!validation.valid) throw new Error(`${jobEntry.restaurantId} result is invalid: ${(validation.errors ?? []).join("; ")}`);
     validations.push({ restaurantId: jobEntry.restaurantId, validation });
@@ -525,7 +547,8 @@ async function spawnCodex({ args, logPath, timeoutSeconds }) {
   await mkdir(path.dirname(logPath), { recursive: true });
   return new Promise((resolve) => {
     const log = createWriteStream(logPath, { flags: "a" });
-    const child = spawn("codex", args, { cwd: repositoryRoot, env: process.env, stdio: ["ignore", "pipe", "pipe"] });
+    const invocation = resolveCodexInvocation(args);
+    const child = spawn(invocation.command, invocation.args, { cwd: repositoryRoot, env: process.env, stdio: ["ignore", "pipe", "pipe"] });
     child.stdout.pipe(log); child.stderr.pipe(log);
     let timedOut = false;
     const timer = setTimeout(() => { timedOut = true; child.kill("SIGTERM"); }, timeoutSeconds * 1000);

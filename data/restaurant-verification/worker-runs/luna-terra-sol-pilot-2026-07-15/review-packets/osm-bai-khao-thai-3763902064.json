@@ -1,0 +1,840 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-pilot-2026-07-15",
+  "restaurant": {
+    "restaurantId": "osm-bai-khao-thai-3763902064",
+    "name": "Bai Khao Thai",
+    "domain": "baikaothai.com",
+    "locationId": "potomac",
+    "baselineItemCount": 70,
+    "baselineItemFingerprint": "183981e543e947da2971c1d40b4691217b6e62ea70cc428b15500c597c32586f",
+    "officialItemCount": 14,
+    "officialAllergenStatus": "not-found",
+    "sourceFamily": "generic-website",
+    "parserProfile": "generic-website",
+    "guideUrl": "https://www.baikaothai.com/",
+    "sourceUrls": [
+      "https://www.baikaothai.com/",
+      "https://www.baikaothai.com/menu",
+      "https://static1.squarespace.com/static/65f225310a09bf478226b300/t/69ff2849e0d8367f273450ec/1778329673550/Carry+Out+Menu_Revised_020426.pdf"
+    ]
+  },
+  "effectiveOutcome": "low_confidence",
+  "routingReasons": [
+    "Terra marked the result low_confidence.",
+    "Terra must verify every scout product presentation exactly once.",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra reported a mismatched or unverifiable current product.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "validationWarnings": [
+    "Terra must verify every scout product presentation exactly once.",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra reported a mismatched or unverifiable current product.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "multi_service",
+      "pdf_or_image",
+      "count_drift",
+      "current_only",
+      "duplicate_presentations",
+      "non_exact_reconciliation",
+      "cross_contact",
+      "parser_or_repair_finding",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 70,
+      "reconciledItemCount": 70,
+      "uniqueReconciledItemCount": 70,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 3,
+      "activeMenuSurfaceCount": 3,
+      "accessibleMenuSurfaceCount": 3,
+      "serviceCount": 3,
+      "pdfImageSurfaceCount": 1,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 0,
+      "incompleteSurfaceCount": 0,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 5,
+      "currentOnlyCount": 4,
+      "baselineOnlyCount": 0,
+      "countDrift": true,
+      "duplicatePresentationCount": 4,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 0,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 70,
+      "allergenMismatchItemCount": 0,
+      "crossContactCount": 1,
+      "parserRepairFindingCount": 1,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 0,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "low_confidence",
+    "confidence": {
+      "level": "low",
+      "overall": 0.52,
+      "menu": 0.7,
+      "allergenSource": 0.18,
+      "extraction": 0.4,
+      "rationale": "Official HTML and the homepage-linked Toast menu were independently reopened and enumerated. The two linked restaurant PDFs establish current menu surfaces but could not be independently extracted, and no restaurant-issued complete allergen, negative-claim, or cross-contact disclosure was located."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Bai Kao Thai, 12944 Travilah Road, Suite D, Potomac, MD 20854",
+      "confidence": 0.98,
+      "sourceEvidenceIds": [
+        "T1",
+        "T3"
+      ],
+      "notes": "The official homepage and linked Toast location agree on the name, address, phone, and Potomac pickup scope."
+    },
+    "sources": [
+      {
+        "evidenceId": "T1",
+        "url": "https://www.baikaothai.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Bai Kao Thai official homepage",
+        "retrievedAt": "2026-07-16T14:00:00Z",
+        "excerpt": "Official homepage identifies Potomac at 12944 Travilah Road, STE D, Potomac, MD 20854-1079, and links Menu, Catering, and Toast online ordering.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "T2",
+        "url": "https://www.baikaothai.com/menu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Bai Kao Thai official HTML menu",
+        "retrievedAt": "2026-07-16T14:00:00Z",
+        "excerpt": "Official HTML menu lists the food catalog and named ingredients including shrimp, fish, egg, peanut, cashew, soy sauce, and coconut. It provides no allergen legend, matrix, negative claim, or cross-contact statement.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "T3",
+        "url": "https://order.toasttab.com/online/bai-kao-thai-12944-d-travilah-road",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Bai Kao Thai Toast pickup menu",
+        "retrievedAt": "2026-07-16T14:00:00Z",
+        "excerpt": "Homepage-linked Toast menu lists Main Menu, Side Order, Desserts Menu, and Drink Menu, including Chicken Satay, Pad Broccoli, Pla Pad Black Pepper, and Bai Kao Bowl absent from Luna's catalog.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "T4",
+        "url": "https://www.baikaothai.com/catering",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Bai Kao Thai catering page",
+        "retrievedAt": "2026-07-16T14:00:00Z",
+        "excerpt": "Official catering page links a Catering Menu and says party-sized portions are available.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "T5",
+        "url": "https://static1.squarespace.com/static/65f225310a09bf478226b300/t/6721a5a7d6176e7056c1e904/1730258344427/Catering%2BMenu.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Bai Kao Thai Catering Menu PDF",
+        "retrievedAt": "2026-07-16T14:00:00Z",
+        "excerpt": "Homepage-linked catering PDF; direct extraction was unavailable in the verification environment.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "T6",
+        "url": "https://static1.squarespace.com/static/65f225310a09bf478226b300/t/69ff2849e0d8367f273450ec/1778329673550/Carry+Out+Menu_Revised_020426.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Official carry-out menu PDF",
+        "retrievedAt": "2026-07-16T14:00:00Z",
+        "excerpt": "The official HTML menu links this carry-out PDF; direct extraction was unavailable in the verification environment.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://www.baikaothai.com/",
+        "notes": "Official identity and navigation reopened."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://www.baikaothai.com/menu",
+        "notes": "Official HTML food menu reopened and enumerated."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://order.toasttab.com/online/bai-kao-thai-12944-d-travilah-road",
+        "notes": "Homepage-linked Toast pickup catalog reopened and enumerated."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": "https://www.google.com/search?q=site%3Abaikaothai.com+allergen+OR+allergy+OR+gluten",
+        "notes": "No restaurant-issued allergen, ingredient matrix, negative claim, or cross-contact disclosure found."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No useful official archive or historical allergen disclosure identified."
+      },
+      {
+        "kind": "third_party",
+        "status": "accessible",
+        "url": "https://www.grubhub.com/restaurant/bai-kao-thai-12944d-travilah-rd-potomac/10608520",
+        "notes": "Third-party current-menu corroboration only; it was not used as restaurant-issued allergen evidence."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "multi_service",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1",
+          "T2",
+          "T3",
+          "T4"
+        ],
+        "notes": "Official HTML, carry-out PDF, Toast pickup, and catering are distinct relevant surfaces."
+      },
+      {
+        "gateId": "pdf_or_image",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T5",
+          "T6"
+        ],
+        "notes": "Carry-out and catering are linked PDFs that could not be directly extracted."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T3",
+          "T5"
+        ],
+        "notes": "Toast and catering expose current scope beyond the frozen 70-key catalog."
+      },
+      {
+        "gateId": "current_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T3",
+          "T5"
+        ],
+        "notes": "Toast has Chicken Satay, Pad Broccoli, Pla Pad Black Pepper, and Bai Kao Bowl; catering is also a separate current product boundary."
+      },
+      {
+        "gateId": "duplicate_presentations",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T2",
+          "T3",
+          "T5",
+          "T6"
+        ],
+        "notes": "Core food products are presented across HTML, carry-out, Toast, and catering."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T2",
+          "T6"
+        ],
+        "notes": "Frozen keys include compacted PDF duplicates, a Bamee description fragment, and category-heading artifacts."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "unresolved",
+        "sourceEvidenceIds": [
+          "T1",
+          "T2",
+          "T3"
+        ],
+        "notes": "No restaurant-issued cross-contact or shared-equipment statement was located; absence cannot be inferred."
+      },
+      {
+        "gateId": "parser_or_repair_finding",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T2",
+          "T6"
+        ],
+        "notes": "Frozen PDF-derived allergen arrays are not supported as complete restaurant-issued allergen disclosure and include unsupported or overbroad semantics."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T5",
+          "T6"
+        ],
+        "notes": "Incomplete PDF extraction and unavailable complete allergen sourcing require low confidence."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T2",
+          "T3",
+          "T6"
+        ],
+        "notes": "Luna correctly identified multiple surfaces, PDF extraction risk, catalog drift, and unavailable allergen disclosure; Terra found missed current scope."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "S1",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "T2"
+        ],
+        "notes": "Official HTML food menu was reopened and independently enumerated."
+      },
+      {
+        "surfaceId": "S2",
+        "verdict": "unverifiable",
+        "sourceEvidenceIds": [
+          "T2",
+          "T6"
+        ],
+        "notes": "The official menu links the carry-out PDF, but its full contents could not be independently extracted; Luna's complete-enumeration assertion is not verifiable."
+      },
+      {
+        "surfaceId": "S3",
+        "verdict": "mismatch",
+        "sourceEvidenceIds": [
+          "T1",
+          "T3"
+        ],
+        "notes": "Toast is current and accessible, but Luna omitted current Toast products and its monthly-special grouping does not represent the full Toast Main Menu."
+      }
+    ],
+    "currentProductCheckGroups": [
+      {
+        "currentProductKeys": [
+          "official-food-catalog"
+        ],
+        "presentationIds": [
+          "official-html",
+          "official-pdf"
+        ],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "egg",
+          "fish",
+          "shellfish",
+          "peanut",
+          "tree-nut",
+          "soy"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T2"
+        ],
+        "sourceEvidenceIds": [
+          "T2",
+          "T6"
+        ],
+        "notes": "The official HTML catalog supports only aggregate narrow named-ingredient positives. The linked PDF presentation could not be extracted and cannot support complete arrays, negatives, or cross-contact conclusions."
+      },
+      {
+        "currentProductKeys": [
+          "toast-monthly-specials"
+        ],
+        "presentationIds": [
+          "toast"
+        ],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "fish",
+          "soy"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "T3"
+        ],
+        "sourceEvidenceIds": [
+          "T3"
+        ],
+        "notes": "Pla Rad Prik and the soy-dipping-sauce chive cakes support only linked-vendor positives. Toast contains further current food Luna did not account for."
+      },
+      {
+        "currentProductKeys": [
+          "toast-sides"
+        ],
+        "presentationIds": [
+          "toast"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "T3"
+        ],
+        "sourceEvidenceIds": [
+          "T3"
+        ],
+        "notes": "Fried Egg supports only the narrow linked-vendor egg positive."
+      },
+      {
+        "currentProductKeys": [
+          "toast-dessert"
+        ],
+        "presentationIds": [
+          "toast"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "T3"
+        ],
+        "notes": "Mango with Sticky Rice is a duplicate Toast dessert presentation; no ingredient or allergen disclosure is shown."
+      },
+      {
+        "currentProductKeys": [
+          "toast-na-drinks"
+        ],
+        "presentationIds": [
+          "toast"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "T3"
+        ],
+        "notes": "Toast nonalcoholic drinks were enumerated; no complete allergen disclosure is supplied."
+      }
+    ],
+    "additionalMenuSurfaces": [
+      {
+        "surfaceId": "T-S4",
+        "title": "Official catering menu",
+        "service": "catering",
+        "url": "https://www.baikaothai.com/catering",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "pdf",
+        "accessStatus": "partial",
+        "fullyEnumerated": false,
+        "scopeStatus": "partial",
+        "current": true,
+        "sourceEvidenceIds": [
+          "T4",
+          "T5"
+        ],
+        "currentProductKeys": [
+          "catering-catalog"
+        ],
+        "notes": "Luna missed the official catering page and linked PDF. The current surface is established, but the PDF is not fully extractable."
+      }
+    ],
+    "additionalCurrentProducts": [
+      {
+        "currentProductKey": "toast-unlisted-current-food",
+        "name": "Chicken Satay; Pad Broccoli; Pla Pad Black Pepper; Bai Kao Bowl",
+        "category": "food",
+        "surfaceIds": [
+          "S3"
+        ],
+        "presentationIds": [
+          "toast"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "T3"
+        ],
+        "containsAllergens": [
+          "fish",
+          "peanut",
+          "soy"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "T3"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current Toast food omitted by Luna. Named fish, peanut sauce, and soy are narrow linked-vendor positives only."
+      },
+      {
+        "currentProductKey": "catering-catalog",
+        "name": "Catering trays and party-sized Thai classics",
+        "category": "catering",
+        "surfaceIds": [
+          "T-S4"
+        ],
+        "presentationIds": [
+          "official-catering-pdf"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "T4",
+          "T5"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "unverifiable",
+        "notes": "Additional official catering product boundary omitted by Luna; partial PDF access cannot support full products or allergen conclusions."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 70,
+      "counts": {
+        "variant_match/mismatch": 6,
+        "normalized_match/mismatch": 14,
+        "exact_match/mismatch": 9,
+        "artifact/not_applicable": 2,
+        "normalized_match/accurately_unavailable": 39
+      }
+    },
+    "findings": [
+      {
+        "findingId": "F1",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "No complete current restaurant-issued allergen disclosure was found. Explicit named ingredients support only narrow positives; they do not establish complete arrays, negatives, or cross-contact status.",
+        "sourceEvidenceIds": [
+          "T1",
+          "T2",
+          "T3"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "F2",
+        "severity": "high",
+        "kind": "extraction",
+        "summary": "Frozen PDF-derived allergen claims are unsupported or overbroad as complete restaurant-issued allergen evidence; compacted duplicates and extraction fragments require repair/adjudication.",
+        "sourceEvidenceIds": [
+          "T2",
+          "T6"
+        ],
+        "affectedAuditItemKeys": [
+          "5:deep-fried-vegetable-dumpling",
+          "37:padseeew",
+          "38:padthai",
+          "44:pomelosalad",
+          "47:savory-egg-noodles-topped-with-flavorful",
+          "52:steamed-minced-pork-and-shrimp-dumplings",
+          "61:tomkha",
+          "63:udontomkha",
+          "66:wontonsoup",
+          "68:yellowcurry"
+        ]
+      },
+      {
+        "findingId": "F3",
+        "severity": "medium",
+        "kind": "scope",
+        "summary": "Luna missed an official catering surface and current Toast food products outside its five-product catalog.",
+        "sourceEvidenceIds": [
+          "T3",
+          "T4",
+          "T5"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "F4",
+        "severity": "medium",
+        "kind": "menu",
+        "summary": "The carry-out PDF surface is linked and current but not independently extractable in this run; it cannot support Luna's complete-enumeration claim.",
+        "sourceEvidenceIds": [
+          "T2",
+          "T6"
+        ],
+        "affectedAuditItemKeys": []
+      }
+    ],
+    "summary": "Low-confidence discrepancy verification: all five Luna current-product groups and their stated presentations were checked, all 70 frozen audit keys were reconciled once, and all deterministic gates were reviewed. Official HTML and Toast confirm identity and substantial menu scope, while the linked catering surface and additional Toast food were missed by Luna. Complete allergen, negative, and cross-contact disclosure remains unavailable; PDF extraction limitations prevent complete menu or allergen conclusions.",
+    "coordinatorNotes": [
+      "Correction attempt 3. No files were edited and no ledger or terminal state was mutated.",
+      "Allergen positives are limited to explicitly named ingredients; no negative, complete-array, or cross-contact conclusion is made from incomplete surfaces."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "5:deep-fried-vegetable-dumpling",
+      "baseline": {
+        "itemId": "deep-fried-vegetable-dumpling",
+        "name": "Deep fried vegetable dumpling",
+        "category": "thai",
+        "variantGroup": "thai",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "egg",
+          "fish",
+          "shellfish",
+          "peanut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/65f225310a09bf478226b300/t/69ff2849e0d8367f273450ec/1778329673550/Carry+Out+Menu_Revised_020426.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "37:padseeew",
+      "baseline": {
+        "itemId": "padseeew",
+        "name": "PADSEEEW",
+        "category": "thai",
+        "variantGroup": "thai",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/65f225310a09bf478226b300/t/69ff2849e0d8367f273450ec/1778329673550/Carry+Out+Menu_Revised_020426.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "38:padthai",
+      "baseline": {
+        "itemId": "padthai",
+        "name": "PADTHAI",
+        "category": "thai",
+        "variantGroup": "thai",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "peanut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/65f225310a09bf478226b300/t/69ff2849e0d8367f273450ec/1778329673550/Carry+Out+Menu_Revised_020426.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "44:pomelosalad",
+      "baseline": {
+        "itemId": "pomelosalad",
+        "name": "POMELOSALAD",
+        "category": "thai",
+        "variantGroup": "thai",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish",
+          "peanut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/65f225310a09bf478226b300/t/69ff2849e0d8367f273450ec/1778329673550/Carry+Out+Menu_Revised_020426.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "47:savory-egg-noodles-topped-with-flavorful",
+      "baseline": {
+        "itemId": "savory-egg-noodles-topped-with-flavorful",
+        "name": "Savory egg noodles topped with flavorful",
+        "category": "thai",
+        "variantGroup": "thai",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/65f225310a09bf478226b300/t/69ff2849e0d8367f273450ec/1778329673550/Carry+Out+Menu_Revised_020426.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "52:steamed-minced-pork-and-shrimp-dumplings",
+      "baseline": {
+        "itemId": "steamed-minced-pork-and-shrimp-dumplings",
+        "name": "Steamed minced pork and shrimp dumplings",
+        "category": "thai",
+        "variantGroup": "thai",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/65f225310a09bf478226b300/t/69ff2849e0d8367f273450ec/1778329673550/Carry+Out+Menu_Revised_020426.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "61:tomkha",
+      "baseline": {
+        "itemId": "tomkha",
+        "name": "TOMKHA",
+        "category": "thai",
+        "variantGroup": "thai",
+        "isConfigurable": false,
+        "allergens": [
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/65f225310a09bf478226b300/t/69ff2849e0d8367f273450ec/1778329673550/Carry+Out+Menu_Revised_020426.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "63:udontomkha",
+      "baseline": {
+        "itemId": "udontomkha",
+        "name": "UDONTOMKHA",
+        "category": "thai",
+        "variantGroup": "thai",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/65f225310a09bf478226b300/t/69ff2849e0d8367f273450ec/1778329673550/Carry+Out+Menu_Revised_020426.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "66:wontonsoup",
+      "baseline": {
+        "itemId": "wontonsoup",
+        "name": "WONTONSOUP",
+        "category": "thai",
+        "variantGroup": "thai",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/65f225310a09bf478226b300/t/69ff2849e0d8367f273450ec/1778329673550/Carry+Out+Menu_Revised_020426.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "68:yellowcurry",
+      "baseline": {
+        "itemId": "yellowcurry",
+        "name": "YELLOWCURRY",
+        "category": "thai",
+        "variantGroup": "thai",
+        "isConfigurable": false,
+        "allergens": [
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://static1.squarespace.com/static/65f225310a09bf478226b300/t/69ff2849e0d8367f273450ec/1778329673550/Carry+Out+Menu_Revised_020426.pdf"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-pilot-2026-07-15/jobs/osm-bai-khao-thai-3763902064.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-pilot-2026-07-15/results/osm-bai-khao-thai-3763902064.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/osm-bai-khao-thai-3763902064.jsonl"
+  }
+}

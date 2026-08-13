@@ -1,0 +1,704 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-083-2026-08-05",
+  "restaurantId": "coopers-hawk-reston-va",
+  "runId": "poc-batch-083-2026-08-05-coopers-hawk-reston-va-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "coopers-hawk-reston-va",
+    "name": "Cooper's Hawk Winery & Restaurant Reston",
+    "locationId": "reston-va",
+    "domain": "chwinery.com",
+    "baselineItemCount": 15,
+    "baselineFingerprint": "c739b5991d25da683cf11f898474343991110500e40a8fad8c14046f1f921936",
+    "itemChecksRead": 15,
+    "itemChecksPath": "data/restaurant-verification/item-checks/coopers-hawk-reston-va.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Cooper's Hawk Winery & Restaurant Reston",
+    "location": "12130 Sunset Hills Road, Reston, VA 20190",
+    "locationId": "reston-va",
+    "domain": "chwinery.com",
+    "officialHomepage": "https://chwinery.com/locations/reston",
+    "sourceEvidenceIds": [
+      "ev-location",
+      "ev-brunch",
+      "ev-dessert",
+      "ev-carryout"
+    ],
+    "notes": "Official Reston location page and menu pages identify the Sunset Hills Road restaurant; no other Cooper's Hawk location merged."
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-location",
+      "url": "https://chwinery.com/locations/reston",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "title": "Official Cooper's Hawk Reston location"
+    },
+    {
+      "evidenceId": "ev-brunch",
+      "url": "https://chwinery.com/menus/brunch-bubbles",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "title": "Official Brunch & Bubbles menu"
+    },
+    {
+      "evidenceId": "ev-dessert",
+      "url": "https://chwinery.com/menus/dessert",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "title": "Official Dessert menu"
+    },
+    {
+      "evidenceId": "ev-carryout",
+      "url": "https://carryout.chwinery.com/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "title": "Linked official carryout ordering vendor"
+    },
+    {
+      "evidenceId": "ev-search-site",
+      "url": "https://chwinery.com/menus/brunch-bubbles",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "title": "official_site allergen search",
+      "excerpt": "Inspected official navigation and menu pages; menus state an allergen guide is available upon request but publish no matrix."
+    },
+    {
+      "evidenceId": "ev-search-docs",
+      "url": "https://assets.chwinery.com/uploads/general/Menus/CH_Brunch_0425_WEB.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "title": "official_documents allergen search",
+      "excerpt": "Inspected downloadable menu PDF and document surfaces; no allergen matrix."
+    },
+    {
+      "evidenceId": "ev-search-vendor",
+      "url": "https://carryout.chwinery.com/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "allergen",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "title": "linked_vendor allergen search",
+      "excerpt": "Inspected linked carryout vendor; no official allergen matrix exposed."
+    },
+    {
+      "evidenceId": "ev-search-web",
+      "url": "https://www.google.com/search?q=site%3Achwinery.com+Reston+allergen+allergy+nutrition+ingredients+PDF",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "retrievedAt": "2026-08-05T00:00:00.000Z",
+      "title": "targeted_web_search allergen search",
+      "excerpt": "Targeted domain search found menu pages and generic allergy-guide language, but no published matrix."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "reston-brunch-bubbles",
+      "title": "Reston Brunch & Bubbles",
+      "url": "https://chwinery.com/menus/brunch-bubbles",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "Reston, VA",
+      "servicePeriod": "Saturday-Sunday 10am-2pm",
+      "surfaceType": "html_menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-location",
+        "ev-brunch"
+      ],
+      "currentProductKeys": [
+        "breakfast-gnocchi-carbonara",
+        "candied-bacon-blt",
+        "caramelized-hawaiian-bread-french-toast",
+        "coopers-hawk-steak-and-eggs",
+        "smoked-brisket-hash",
+        "smoked-salmon-toast",
+        "sunrise-breakfast"
+      ],
+      "outcome": "Current brunch food surface; alcohol and beverage-only entries excluded from POC food/nonalcoholic scope."
+    },
+    {
+      "surfaceId": "reston-dessert",
+      "title": "Reston House-Made Dessert",
+      "url": "https://chwinery.com/menus/dessert",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "Reston, VA",
+      "servicePeriod": "all",
+      "surfaceType": "html_menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-location",
+        "ev-dessert"
+      ],
+      "currentProductKeys": [
+        "banoffee-pie",
+        "coopers-hawk-chocolate-cake",
+        "flourless-chocolate-torte",
+        "house-made-truffles",
+        "key-lime-pie",
+        "reeses-ice-cream-cookie",
+        "smore-budino",
+        "salted-caramel-creme-brulee"
+      ],
+      "outcome": "Current dessert surface; Wine & Chocolates retained as dessert presentation but frozen POC boundary tracks truffles as equivalent product."
+    },
+    {
+      "surfaceId": "reston-carryout",
+      "title": "Reston Carryout Ordering",
+      "url": "https://carryout.chwinery.com/",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "Reston, VA",
+      "servicePeriod": "all",
+      "surfaceType": "linked_ordering_vendor",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-location",
+        "ev-carryout"
+      ],
+      "currentProductKeys": [
+        "breakfast-gnocchi-carbonara",
+        "candied-bacon-blt",
+        "caramelized-hawaiian-bread-french-toast",
+        "coopers-hawk-steak-and-eggs",
+        "smoked-brisket-hash",
+        "smoked-salmon-toast",
+        "sunrise-breakfast",
+        "banoffee-pie",
+        "coopers-hawk-chocolate-cake",
+        "flourless-chocolate-torte",
+        "house-made-truffles",
+        "key-lime-pie",
+        "reeses-ice-cream-cookie",
+        "smore-budino",
+        "salted-caramel-creme-brulee"
+      ],
+      "outcome": "Linked vendor inspected as supporting current location surface; catalog mirrors official menu."
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "banoffee-pie",
+      "name": "Banoffee Pie",
+      "category": "House-Made Desserts",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-dessert",
+        "ev-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Official allergen disclosure unavailable; no negative claim inferred."
+      ]
+    },
+    {
+      "currentProductKey": "breakfast-gnocchi-carbonara",
+      "name": "Breakfast Gnocchi Carbonara",
+      "category": "Entrées",
+      "servicePeriod": "brunch",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-brunch",
+        "ev-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Official allergen disclosure unavailable; no negative claim inferred."
+      ]
+    },
+    {
+      "currentProductKey": "candied-bacon-blt",
+      "name": "Candied Bacon BLT",
+      "category": "Entrées",
+      "servicePeriod": "brunch",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-brunch",
+        "ev-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Official allergen disclosure unavailable; no negative claim inferred."
+      ]
+    },
+    {
+      "currentProductKey": "caramelized-hawaiian-bread-french-toast",
+      "name": "Caramelized Hawaiian Bread French Toast",
+      "category": "Entrées",
+      "servicePeriod": "brunch",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-brunch",
+        "ev-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Official allergen disclosure unavailable; no negative claim inferred."
+      ]
+    },
+    {
+      "currentProductKey": "coopers-hawk-chocolate-cake",
+      "name": "Cooper's Hawk Chocolate Cake",
+      "category": "House-Made Desserts",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-dessert",
+        "ev-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Official allergen disclosure unavailable; no negative claim inferred."
+      ]
+    },
+    {
+      "currentProductKey": "coopers-hawk-steak-and-eggs",
+      "name": "Cooper's Hawk Steak & Eggs",
+      "category": "Entrées",
+      "servicePeriod": "brunch",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-brunch",
+        "ev-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Official allergen disclosure unavailable; no negative claim inferred."
+      ]
+    },
+    {
+      "currentProductKey": "flourless-chocolate-torte",
+      "name": "Flourless Chocolate Torte",
+      "category": "House-Made Desserts",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-dessert",
+        "ev-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Official allergen disclosure unavailable; no negative claim inferred."
+      ]
+    },
+    {
+      "currentProductKey": "house-made-truffles",
+      "name": "House-Made Truffles",
+      "category": "House-Made Desserts",
+      "servicePeriod": "all",
+      "presentationIds": [
+        "wine-and-chocolates"
+      ],
+      "sourceEvidenceIds": [
+        "ev-dessert",
+        "ev-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Official allergen disclosure unavailable; no negative claim inferred."
+      ]
+    },
+    {
+      "currentProductKey": "key-lime-pie",
+      "name": "Key Lime Pie",
+      "category": "House-Made Desserts",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-dessert",
+        "ev-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Official allergen disclosure unavailable; no negative claim inferred."
+      ]
+    },
+    {
+      "currentProductKey": "reeses-ice-cream-cookie",
+      "name": "Reese's Ice Cream Cookie",
+      "category": "House-Made Desserts",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-dessert",
+        "ev-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Official allergen disclosure unavailable; no negative claim inferred."
+      ]
+    },
+    {
+      "currentProductKey": "smore-budino",
+      "name": "S'more Budino",
+      "category": "House-Made Desserts",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-dessert",
+        "ev-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Official allergen disclosure unavailable; no negative claim inferred."
+      ]
+    },
+    {
+      "currentProductKey": "salted-caramel-creme-brulee",
+      "name": "Salted Caramel Crème Brûlée",
+      "category": "House-Made Desserts",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-dessert",
+        "ev-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Official allergen disclosure unavailable; no negative claim inferred."
+      ]
+    },
+    {
+      "currentProductKey": "smoked-brisket-hash",
+      "name": "Smoked Brisket Hash",
+      "category": "Entrées",
+      "servicePeriod": "brunch",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-brunch",
+        "ev-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Official allergen disclosure unavailable; no negative claim inferred."
+      ]
+    },
+    {
+      "currentProductKey": "smoked-salmon-toast",
+      "name": "Smoked Salmon Toast",
+      "category": "Entrées",
+      "servicePeriod": "brunch",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-brunch",
+        "ev-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Official allergen disclosure unavailable; no negative claim inferred."
+      ]
+    },
+    {
+      "currentProductKey": "sunrise-breakfast",
+      "name": "Sunrise Breakfast",
+      "category": "Kids",
+      "servicePeriod": "brunch",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-brunch",
+        "ev-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Official allergen disclosure unavailable; no negative claim inferred."
+      ]
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "location": "chwinery.com menu/navigation",
+        "url": "https://chwinery.com/menus/brunch-bubbles",
+        "outcome": "no matrix",
+        "evidenceIds": [
+          "ev-search-site"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "location": "official menu PDF/CDN",
+        "url": "https://assets.chwinery.com/uploads/general/Menus/CH_Brunch_0425_WEB.pdf",
+        "outcome": "no matrix",
+        "evidenceIds": [
+          "ev-search-docs"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "location": "carryout.chwinery.com",
+        "url": "https://carryout.chwinery.com/",
+        "outcome": "no matrix",
+        "evidenceIds": [
+          "ev-search-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "location": "Google site query",
+        "url": "https://www.google.com/search?q=site%3Achwinery.com+Reston+allergen+allergy+nutrition+ingredients+PDF",
+        "outcome": "no official matrix found",
+        "evidenceIds": [
+          "ev-search-web"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:banoffee-pie",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "banoffee-pie"
+        ],
+        "sourceEvidenceIds": [
+          "ev-dessert"
+        ]
+      },
+      {
+        "auditItemKey": "2:breakfast-gnocchi-carbonara",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "breakfast-gnocchi-carbonara"
+        ],
+        "sourceEvidenceIds": [
+          "ev-brunch"
+        ]
+      },
+      {
+        "auditItemKey": "3:candied-bacon-blt",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "candied-bacon-blt"
+        ],
+        "sourceEvidenceIds": [
+          "ev-brunch"
+        ]
+      },
+      {
+        "auditItemKey": "4:caramelized-hawaiian-bread-french-toast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "caramelized-hawaiian-bread-french-toast"
+        ],
+        "sourceEvidenceIds": [
+          "ev-brunch"
+        ]
+      },
+      {
+        "auditItemKey": "5:coopers-hawk-chocolate-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "coopers-hawk-chocolate-cake"
+        ],
+        "sourceEvidenceIds": [
+          "ev-dessert"
+        ]
+      },
+      {
+        "auditItemKey": "6:coopers-hawk-steak-and-eggs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "coopers-hawk-steak-and-eggs"
+        ],
+        "sourceEvidenceIds": [
+          "ev-brunch"
+        ]
+      },
+      {
+        "auditItemKey": "7:flourless-chocolate-torte",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "flourless-chocolate-torte"
+        ],
+        "sourceEvidenceIds": [
+          "ev-dessert"
+        ]
+      },
+      {
+        "auditItemKey": "8:house-made-truffles",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "house-made-truffles"
+        ],
+        "sourceEvidenceIds": [
+          "ev-dessert"
+        ]
+      },
+      {
+        "auditItemKey": "9:key-lime-pie",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "key-lime-pie"
+        ],
+        "sourceEvidenceIds": [
+          "ev-dessert"
+        ]
+      },
+      {
+        "auditItemKey": "10:reeses-ice-cream-cookie",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "reeses-ice-cream-cookie"
+        ],
+        "sourceEvidenceIds": [
+          "ev-dessert"
+        ]
+      },
+      {
+        "auditItemKey": "11:smore-budino",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "smore-budino"
+        ],
+        "sourceEvidenceIds": [
+          "ev-dessert"
+        ]
+      },
+      {
+        "auditItemKey": "12:salted-caramel-creme-brulee",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "salted-caramel-creme-brulee"
+        ],
+        "sourceEvidenceIds": [
+          "ev-dessert"
+        ]
+      },
+      {
+        "auditItemKey": "13:smoked-brisket-hash",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "smoked-brisket-hash"
+        ],
+        "sourceEvidenceIds": [
+          "ev-brunch"
+        ]
+      },
+      {
+        "auditItemKey": "14:smoked-salmon-toast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "smoked-salmon-toast"
+        ],
+        "sourceEvidenceIds": [
+          "ev-brunch"
+        ]
+      },
+      {
+        "auditItemKey": "15:sunrise-breakfast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sunrise-breakfast"
+        ],
+        "sourceEvidenceIds": [
+          "ev-brunch"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "proposedChanges": {
+    "summary": "No canonical repair proposed; frozen POC catalog matches current official brunch and dessert products. Preserve unavailable allergen status and recompute Ingredient Intelligence after coordinator apply."
+  },
+  "routing": {
+    "lane": "verify",
+    "solRequired": false,
+    "signals": [],
+    "blockedReason": null
+  }
+}

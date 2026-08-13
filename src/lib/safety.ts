@@ -1,5 +1,10 @@
 import { getAllergyLabels } from "@/constants/allergies";
-import type { MenuItem, Restaurant } from "@/data/restaurants";
+import type {
+  AllergenId,
+  MenuItem,
+  OfficialAllergenProfiles,
+  Restaurant,
+} from "@/data/restaurants";
 
 export type SafetyStatus = "unknown" | "ok" | "caution" | "avoid";
 
@@ -23,16 +28,72 @@ function getMatchingInferredAllergens(item: MenuItem, selectedAllergyIds: Set<st
     .filter((allergen) => selectedAllergyIds.has(allergen));
 }
 
-export function getMenuItemSafety(item: MenuItem, selectedAllergyIds: string[]) {
+export function hasIngredientIntelligence(item: MenuItem) {
+  return Boolean(
+    item.ingredientIntelligenceReviewed ||
+      (item.inferredAllergenSignals ?? []).length > 0 ||
+      (item.inferenceSuppressions ?? []).length > 0,
+  );
+}
+
+function isCoveredByOfficialProfile(
+  allergenId: string,
+  item: MenuItem,
+  profiles: OfficialAllergenProfiles | undefined,
+) {
+  const profileId = item.officialAllergenProfileId;
+
+  if (!profileId) {
+    return Boolean(
+      item.allergenSourceType !== "unavailable" &&
+        (item.allergenSourceType || item.allergens.length > 0 || (item.mayContain ?? []).length > 0),
+    );
+  }
+
+  if (item.allergenSourceType === "unavailable") {
+    return false;
+  }
+
+  const coveredIds = new Set(profiles?.[profileId]?.coveredAllergenIds ?? []);
+
+  return (
+    coveredIds.has(allergenId as AllergenId) ||
+    (allergenId === "gluten" && coveredIds.has("wheat")) ||
+    (allergenId === "wheat" && coveredIds.has("gluten"))
+  );
+}
+
+export function getUncoveredOfficialAllergenIds(
+  item: MenuItem,
+  selectedAllergyIds: string[],
+  profiles?: OfficialAllergenProfiles,
+) {
+  return Array.from(new Set(selectedAllergyIds)).filter(
+    (allergenId) => !isCoveredByOfficialProfile(allergenId, item, profiles),
+  );
+}
+
+export function getMenuItemSafety(
+  item: MenuItem,
+  selectedAllergyIds: string[],
+  profiles?: OfficialAllergenProfiles,
+) {
   const selectedAllergenSet = expandSelectedAllergyIds(selectedAllergyIds);
-  const officialAllergenDataUnavailable =
-    item.allergenSourceType === "unavailable" ||
-    (!item.allergenSourceType && item.allergens.length === 0 && (item.mayContain ?? []).length === 0);
-  const directMatches = getMatchingAllergens(item.allergens, selectedAllergenSet);
-  const cautionMatches = getMatchingAllergens(item.mayContain ?? [], selectedAllergenSet);
-  const inferredMatches = officialAllergenDataUnavailable
-    ? getMatchingInferredAllergens(item, selectedAllergenSet)
+  const uncoveredOfficialAllergenIds = getUncoveredOfficialAllergenIds(
+    item,
+    selectedAllergyIds,
+    profiles,
+  );
+  const officialAllergenDataUnavailable = uncoveredOfficialAllergenIds.length > 0;
+  const hasOfficialAllergenSource = item.allergenSourceType !== "unavailable";
+  const directMatches = hasOfficialAllergenSource
+    ? getMatchingAllergens(item.allergens, selectedAllergenSet)
     : [];
+  const cautionMatches = hasOfficialAllergenSource
+    ? getMatchingAllergens(item.mayContain ?? [], selectedAllergenSet)
+    : [];
+  const uncoveredExpandedIds = expandSelectedAllergyIds(uncoveredOfficialAllergenIds);
+  const inferredMatches = getMatchingInferredAllergens(item, uncoveredExpandedIds);
 
   let status: SafetyStatus = "ok";
 
@@ -42,7 +103,9 @@ export function getMenuItemSafety(item: MenuItem, selectedAllergyIds: string[]) 
     status = "avoid";
   } else if (cautionMatches.length > 0) {
     status = "caution";
-  } else if (officialAllergenDataUnavailable || inferredMatches.length > 0) {
+  } else if (inferredMatches.length > 0) {
+    status = "avoid";
+  } else if (officialAllergenDataUnavailable) {
     status = "caution";
   }
 
@@ -55,13 +118,16 @@ export function getMenuItemSafety(item: MenuItem, selectedAllergyIds: string[]) 
     inferredMatches,
     matchedLabels: getAllergyLabels([...directMatches, ...cautionMatches, ...inferredMatches]),
     officialAllergenDataUnavailable,
+    uncoveredOfficialAllergenIds,
     status,
   };
 }
 
 export function getRestaurantSafety(restaurant: Restaurant, selectedAllergyIds: string[]) {
   const selectedAllergenSet = expandSelectedAllergyIds(selectedAllergyIds);
-  const itemResults = restaurant.items.map((item) => getMenuItemSafety(item, selectedAllergyIds));
+  const itemResults = restaurant.items.map((item) =>
+    getMenuItemSafety(item, selectedAllergyIds, restaurant.officialAllergenProfiles),
+  );
   const avoidCount = itemResults.filter((result) => result.status === "avoid").length;
   const cautionCount = itemResults.filter((result) => result.status === "caution").length;
   const okCount = itemResults.filter((result) => result.status === "ok").length;
@@ -69,11 +135,22 @@ export function getRestaurantSafety(restaurant: Restaurant, selectedAllergyIds: 
   const matchedAllergenIds = Array.from(
     new Set(
       restaurant.items.flatMap((item) => [
-        ...getMatchingAllergens(item.allergens, selectedAllergenSet),
-        ...getMatchingAllergens(item.mayContain ?? [], selectedAllergenSet),
-        ...(item.allergenSourceType === "unavailable"
-          ? getMatchingInferredAllergens(item, selectedAllergenSet)
+        ...(item.allergenSourceType !== "unavailable"
+          ? getMatchingAllergens(item.allergens, selectedAllergenSet)
           : []),
+        ...(item.allergenSourceType !== "unavailable"
+          ? getMatchingAllergens(item.mayContain ?? [], selectedAllergenSet)
+          : []),
+        ...getMatchingInferredAllergens(
+          item,
+          expandSelectedAllergyIds(
+            getUncoveredOfficialAllergenIds(
+              item,
+              selectedAllergyIds,
+              restaurant.officialAllergenProfiles,
+            ),
+          ),
+        ),
       ]),
     ),
   );

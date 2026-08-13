@@ -1,0 +1,535 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-006-2026-07-16",
+  "restaurantId": "baskin-robbins",
+  "name": "Baskin-Robbins",
+  "packetValidation": {
+    "restaurantId": "baskin-robbins",
+    "locationId": null,
+    "domain": "baskinrobbins.com",
+    "baselineItemCount": 80,
+    "baselineFingerprint": "d9cbf2ca431aff376f7eb5146a64935d96ff4e20ae746e41b8772a91e6cc7825",
+    "frozenItemChecksRead": true,
+    "frozenItemCheckCount": 80,
+    "status": "valid"
+  },
+  "identity": {
+    "status": "ambiguous",
+    "location": null,
+    "officialHomepage": "https://www.baskinrobbins.com/en",
+    "evidenceIds": [
+      "official-home",
+      "official-menu",
+      "official-ordering"
+    ],
+    "notes": "Official U.S. brand identity is clear, but the packet has no locationId. The linked ordering catalog is shop-specific, so a precise current location catalog cannot be established without selecting a shop."
+  },
+  "sources": [
+    {
+      "evidenceId": "official-home",
+      "url": "https://www.baskinrobbins.com/en",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity/menu",
+      "retrievedAt": "2026-07-16",
+      "excerpt": "Official U.S. homepage exposes menu categories: Flavors, Scoops, Beverages, Sundaes, Cake in a Box, Custom Cakes & Pies, Take-Home, and Polar Pizza."
+    },
+    {
+      "evidenceId": "official-menu",
+      "url": "https://order.baskinrobbins.com/menu/flavors",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-16",
+      "excerpt": "Official linked ordering surface is accessible and location-dependent; a selected shop is required for the catalog."
+    },
+    {
+      "evidenceId": "official-ordering",
+      "url": "https://order.baskinrobbins.com/static/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-16",
+      "excerpt": "Official linked ordering domain provides menu/order navigation but does not establish a packet-specific shop without location selection."
+    },
+    {
+      "evidenceId": "official-nutrition",
+      "url": "https://www.baskinrobbins.com/content/dam/br/pdf/BRNutrition.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "ingredients",
+      "retrievedAt": "2026-07-16",
+      "excerpt": "Current Nutrition Guide is dated 06-21-2026 and states information can change frequently; it enumerates nutrition products but is not a complete location-specific ordering catalog or allergen matrix."
+    },
+    {
+      "evidenceId": "official-allergen-old",
+      "url": "https://www.baskinrobbins.com/content/dam/br/pdf/BRAllergens.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "retrievedAt": "2026-07-16",
+      "excerpt": "Restaurant-issued allergen PDF is labeled effective 9/1/24-9/30/24, includes a partial bakery/cone matrix and a global contact warning; it is not current enough to serve as a complete current matrix."
+    },
+    {
+      "evidenceId": "third-party-baseline",
+      "url": "https://www.nutritionix.com/baskin-robbins/menu/premium",
+      "authorityTier": "third_party",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-16",
+      "excerpt": "Frozen baseline source URL is third-party and is not promoted to official authority."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "title": "Official U.S. homepage menu navigation",
+      "url": "https://www.baskinrobbins.com/en",
+      "authorityTier": "restaurant_issued",
+      "mediaType": "html",
+      "current": true,
+      "scopeStatus": "partial",
+      "accessStatus": "accessible",
+      "fullyEnumerated": false,
+      "sourceEvidenceIds": [
+        "official-home"
+      ],
+      "currentProductKeys": [
+        "flavors",
+        "scoops",
+        "beverages",
+        "sundaes",
+        "cake-in-a-box",
+        "custom-cakes-pies",
+        "take-home",
+        "polar-pizza"
+      ],
+      "notes": "Category navigation is current but not a complete store catalog."
+    },
+    {
+      "surfaceId": "official-ordering",
+      "title": "Official linked ordering menu",
+      "url": "https://order.baskinrobbins.com/menu/flavors",
+      "authorityTier": "restaurant_linked_vendor",
+      "mediaType": "html",
+      "current": true,
+      "scopeStatus": "unresolved",
+      "accessStatus": "partial",
+      "fullyEnumerated": false,
+      "sourceEvidenceIds": [
+        "official-menu",
+        "official-ordering"
+      ],
+      "currentProductKeys": [
+        "shop-specific-menu"
+      ],
+      "notes": "Requires a selected shop; no compatible packet locationId is supplied."
+    },
+    {
+      "surfaceId": "official-nutrition",
+      "title": "Current Nutrition Guide",
+      "url": "https://www.baskinrobbins.com/content/dam/br/pdf/BRNutrition.pdf",
+      "authorityTier": "restaurant_issued",
+      "mediaType": "pdf",
+      "current": true,
+      "scopeStatus": "partial",
+      "accessStatus": "accessible",
+      "fullyEnumerated": false,
+      "sourceEvidenceIds": [
+        "official-nutrition"
+      ],
+      "currentProductKeys": [
+        "nutrition-guide-products"
+      ],
+      "notes": "Useful current product/nutrition presentation, not proof of complete location availability or allergen coverage."
+    },
+    {
+      "surfaceId": "official-allergen-old",
+      "title": "Historical official allergen PDF",
+      "url": "https://www.baskinrobbins.com/content/dam/br/pdf/BRAllergens.pdf",
+      "authorityTier": "restaurant_issued",
+      "mediaType": "pdf",
+      "current": false,
+      "scopeStatus": "superseded",
+      "accessStatus": "accessible",
+      "fullyEnumerated": false,
+      "sourceEvidenceIds": [
+        "official-allergen-old"
+      ],
+      "currentProductKeys": [],
+      "notes": "Retained as historical evidence only."
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "flavors",
+      "name": "Flavors",
+      "category": "ice cream/flavors",
+      "surfaceIds": [
+        "official-home"
+      ],
+      "sourceEvidenceIds": [
+        "official-home",
+        "official-nutrition"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": [],
+      "notes": "Official category; product-level currentness and shop availability unresolved."
+    },
+    {
+      "currentProductKey": "scoops",
+      "name": "Scoops",
+      "category": "food",
+      "surfaceIds": [
+        "official-home"
+      ],
+      "sourceEvidenceIds": [
+        "official-home"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": [],
+      "notes": "Category only."
+    },
+    {
+      "currentProductKey": "beverages",
+      "name": "Beverages",
+      "category": "nonalcoholic beverage",
+      "surfaceIds": [
+        "official-home"
+      ],
+      "sourceEvidenceIds": [
+        "official-home"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": [],
+      "notes": "Category only."
+    },
+    {
+      "currentProductKey": "sundaes",
+      "name": "Sundaes",
+      "category": "food",
+      "surfaceIds": [
+        "official-home"
+      ],
+      "sourceEvidenceIds": [
+        "official-home"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": [],
+      "notes": "Category only."
+    },
+    {
+      "currentProductKey": "cake-in-a-box",
+      "name": "Cake in a Box",
+      "category": "food",
+      "surfaceIds": [
+        "official-home",
+        "official-nutrition"
+      ],
+      "sourceEvidenceIds": [
+        "official-home",
+        "official-nutrition"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": [],
+      "notes": "Current guide presentation; location availability unresolved."
+    },
+    {
+      "currentProductKey": "custom-cakes-pies",
+      "name": "Custom Cakes & Pies",
+      "category": "food",
+      "surfaceIds": [
+        "official-home"
+      ],
+      "sourceEvidenceIds": [
+        "official-home"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": [],
+      "notes": "Category only."
+    },
+    {
+      "currentProductKey": "take-home",
+      "name": "Take-Home",
+      "category": "food",
+      "surfaceIds": [
+        "official-home",
+        "official-nutrition"
+      ],
+      "sourceEvidenceIds": [
+        "official-home",
+        "official-nutrition"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": [],
+      "notes": "Current guide presentation; location availability unresolved."
+    },
+    {
+      "currentProductKey": "polar-pizza",
+      "name": "Polar Pizza",
+      "category": "food",
+      "surfaceIds": [
+        "official-home"
+      ],
+      "sourceEvidenceIds": [
+        "official-home"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": [],
+      "notes": "Category only."
+    },
+    {
+      "currentProductKey": "nutrition-guide-products",
+      "name": "Products enumerated in current Nutrition Guide",
+      "category": "food and nonalcoholic beverages",
+      "surfaceIds": [
+        "official-nutrition"
+      ],
+      "sourceEvidenceIds": [
+        "official-nutrition"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "partial_positive_only",
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenSourceEvidenceIds": [
+        "official-nutrition"
+      ],
+      "notes": "Guide is a presentation of current nutrition products, not a complete location-specific catalog; no negatives inferred."
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "locations": [
+          "https://www.baskinrobbins.com/en",
+          "official menu navigation"
+        ],
+        "urls": [
+          "https://www.baskinrobbins.com/en"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "official-home"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "locations": [
+          "official PDF/document surfaces"
+        ],
+        "urls": [
+          "https://www.baskinrobbins.com/content/dam/br/pdf/BRNutrition.pdf",
+          "https://www.baskinrobbins.com/content/dam/br/pdf/BRAllergens.pdf"
+        ],
+        "outcome": "not_found_current_complete_matrix",
+        "evidenceIds": [
+          "official-nutrition",
+          "official-allergen-old"
+        ],
+        "notes": "Nutrition guide is current but not an allergen matrix; allergen PDF is historical and partial."
+      },
+      {
+        "class": "linked_vendor",
+        "locations": [
+          "official linked ordering domain"
+        ],
+        "urls": [
+          "https://order.baskinrobbins.com/menu/flavors"
+        ],
+        "outcome": "not_found",
+        "evidenceIds": [
+          "official-menu",
+          "official-ordering"
+        ],
+        "notes": "Shop selection required; no packet location supplied."
+      },
+      {
+        "class": "targeted_web_search",
+        "locations": [
+          "Baskin-Robbins/domain searches for allergen, allergy, nutrition, ingredients, PDF, menu"
+        ],
+        "urls": [
+          "https://www.baskinrobbins.com/content/dam/br/pdf/BRNutrition.pdf",
+          "https://www.baskinrobbins.com/content/dam/br/pdf/BRAllergens.pdf"
+        ],
+        "outcome": "not_found_current_complete_matrix",
+        "evidenceIds": [
+          "official-nutrition",
+          "official-allergen-old",
+          "third-party-baseline"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:caramel-cappuccino-blast-large",
+          "2:caramel-cappuccino-blast-medium",
+          "3:caramel-cappuccino-blast-small",
+          "4:lava-colada-large",
+          "5:lava-colada-medium",
+          "6:lava-colada-small",
+          "7:mango-smoothie-large",
+          "8:mango-smoothie-medium",
+          "9:mango-smoothie-small",
+          "10:mangonada-large",
+          "11:mangonada-medium",
+          "12:mangonada-small",
+          "13:mocha-cappuccino-blast-large",
+          "14:mocha-cappuccino-blast-medium",
+          "15:mocha-cappuccino-blast-small",
+          "16:oreo-n-cookies-cappuccino-blast-large",
+          "17:oreo-n-cookies-cappuccino-blast-medium",
+          "18:oreo-n-cookies-cappuccino-blast-small",
+          "19:original-cappuccino-blast-large",
+          "20:original-cappuccino-blast-medium",
+          "21:original-cappuccino-blast-small",
+          "22:strawberry-smoothie-large",
+          "23:strawberry-smoothie-medium",
+          "24:strawberry-smoothie-small",
+          "25:trolli-sour-blast-fizz-large",
+          "26:trolli-sour-blast-fizz-medium",
+          "27:trolli-sour-blast-fizz-small",
+          "28:turtle-cappuccino-blast-large",
+          "29:turtle-cappuccino-blast-medium",
+          "30:turtle-cappuccino-blast-small",
+          "31:dragon-creature-creation",
+          "32:elf-creature-creation",
+          "33:wizard-creature-creation",
+          "34:baseball-nut",
+          "35:beach-day",
+          "36:cherries-jubilee",
+          "37:chocolate",
+          "38:chocolate-almond",
+          "39:chocolate-chip",
+          "40:chocolate-chip-cookie-dough",
+          "41:chocolate-fudge",
+          "42:chocolate-mousse-royale",
+          "43:cookie-monster",
+          "44:cotton-candy",
+          "45:daiquiri-ice",
+          "46:gold-medal-ribbon",
+          "47:icing-on-the-cake",
+          "48:jamoca",
+          "49:jamoca-almond-fudge",
+          "50:lemon-sorbet",
+          "51:mint-chocolate-chip",
+          "52:moms-makin-cookies",
+          "53:no-sugar-added-caramel-turtle-truffle",
+          "54:no-sugar-added-pineapple-coconut",
+          "55:non-dairy-cookies-n-creme",
+          "56:nutty-coconut",
+          "57:old-fashioned-butter-pecan",
+          "58:oreo-n-cold-brew",
+          "59:oreo-cookies-n-cream",
+          "60:peanut-butter-n-chocolate",
+          "61:pink-bubblegum",
+          "62:pistachio-almond",
+          "63:pralines-n-cream",
+          "64:rainbow-sherbet",
+          "65:reeses-peanut-butter-cup",
+          "66:rocky-road",
+          "67:strawberry-cheesecake",
+          "68:strawberry-tres-leches",
+          "69:triple-mango",
+          "70:trolli-sour-blast",
+          "71:twix-caramel-crunch",
+          "72:vanilla-ice-cream",
+          "73:very-berry-strawberry",
+          "74:wild-n-reckless-sherbet",
+          "75:world-class-chocolate",
+          "76:chocolate-chip-cookie-dough-layered-sundae",
+          "77:oreo-layered-sundae",
+          "78:reeses-peanut-butter-cup-layered-sundae",
+          "79:trolli-dirt-n-worms-2-scoop-sundae",
+          "80:trolli-dirt-n-worms-3-scoop-sundae"
+        ],
+        "disposition": "location_mismatch",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "official-ordering",
+          "official-nutrition",
+          "third-party-baseline"
+        ],
+        "notes": "Frozen chain/third-party baseline cannot be mapped to a precise current shop catalog without a locationId; no allergen negatives inferred."
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": true,
+    "menuScopeUnresolved": true,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": true,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": false,
+    "newItems": true,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": true,
+    "parserIssue": false
+  },
+  "riskSignals": [
+    "No frozen locationId; chain scope and current shop catalog cannot be safely combined.",
+    "Official ordering is store-specific and requires shop selection.",
+    "Current Nutrition Guide is not a complete allergen matrix or complete location catalog.",
+    "Historical official allergen PDF is dated 9/1/24-9/30/24 and partial.",
+    "Empty allergen arrays are not negatives; no cross-contact absence was inferred."
+  ],
+  "solConflictPacket": {
+    "reason": "unresolved location-specific menu scope and source-authority/catalog conflict",
+    "affectedProductKeys": [
+      "flavors",
+      "scoops",
+      "beverages",
+      "sundaes",
+      "cake-in-a-box",
+      "custom-cakes-pies",
+      "take-home",
+      "polar-pizza",
+      "nutrition-guide-products"
+    ],
+    "evidenceIds": [
+      "official-home",
+      "official-menu",
+      "official-ordering",
+      "official-nutrition",
+      "official-allergen-old",
+      "third-party-baseline"
+    ],
+    "question": "Can Sol bind a precise location-specific catalog, or should this chain record remain blocked until a locationId/shop is supplied?"
+  },
+  "recommendedLane": "sol_review",
+  "blockedReason": "Exact 80-key reconciliation is complete, but the packet lacks a locationId and the official linked catalog is shop-specific; a complete current location-specific food/nonalcoholic catalog cannot be independently established. No codex_verified claim is made."
+}

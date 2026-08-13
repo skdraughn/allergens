@@ -16,7 +16,10 @@ import {
 } from "./ingredient-intelligence.mjs";
 import { buildIngredientIntelligenceAudit } from "./audit-ingredient-intelligence.mjs";
 import { brandAdapters } from "./restaurant-adapters.mjs";
-import { genericAdapters, modularAdapterOverrides } from "./restaurant-adapters/index.mjs";
+import {
+  genericAdapters,
+  modularAdapterOverrides,
+} from "./restaurant-adapters/index.mjs";
 import {
   buildRestaurantSourceAuditRows,
   summarizeRestaurantSourceAudit,
@@ -98,6 +101,8 @@ import {
   isGenericMatrixAllergenCellEvidence,
   isAllowedSourceMenuName,
   extractTropicalSmoothieNutritionPdfItems,
+  createRecord,
+  wendysImageUrl,
 } from "./pipeline/legacy-scrape-engine.mjs";
 import * as XLSX from "xlsx";
 
@@ -126,7 +131,9 @@ test("Flipsnack official guide helper decodes embedded guide hashes and extracts
   );
   assert.equal(
     buildFlipsnackDataJsonUrlFromAuthorization(encodedHash, {
-      signature: { "71caxhx4ot": "Signature=test&Policy=test&Key-Pair-Id=test" },
+      signature: {
+        "71caxhx4ot": "Signature=test&Policy=test&Key-Pair-Id=test",
+      },
     }),
     "https://d3u72tnj701eui.cloudfront.net/EACA9C5569B/collections/71caxhx4ot/data.json?Signature=test&Policy=test&Key-Pair-Id=test",
   );
@@ -163,14 +170,23 @@ test("Shopify allergen guide parser extracts item-level official matrix rows", (
       </article>
     </section>
     `,
-    { sourceUrl: "https://toastique.com/pages/toastique-allergen-dietary-guide" },
+    {
+      sourceUrl: "https://toastique.com/pages/toastique-allergen-dietary-guide",
+    },
   );
 
   assert.equal(rows.length, 2);
   assert.equal(rows[0].name, "Spicy Crab");
   assert.equal(rows[0].category, "Gourmet Toasts");
   assert.equal(rows[0].containsText, "Dairy,Eggs,Gluten,Soy");
-  assert.deepEqual(rows[0].allergens, ["egg", "gluten", "milk", "shellfish", "soy", "wheat"]);
+  assert.deepEqual(rows[0].allergens, [
+    "egg",
+    "gluten",
+    "milk",
+    "shellfish",
+    "soy",
+    "wheat",
+  ]);
   assert.deepEqual(rows[1].allergens, []);
 });
 
@@ -189,7 +205,10 @@ test("EveryBite widget parser maps official item allergens and ingredients", () 
           ],
           ingredients: [
             { name: "Prepped Oysters", isIncluded: true },
-            { name: "Tempura Batter Kits - DUPLICATE IMPORT (2023-11-13 23:32:53)", isIncluded: true },
+            {
+              name: "Tempura Batter Kits - DUPLICATE IMPORT (2023-11-13 23:32:53)",
+              isIncluded: true,
+            },
             { name: "Removed Salsa", isIncluded: false },
           ],
         },
@@ -205,7 +224,10 @@ test("EveryBite widget parser maps official item allergens and ingredients", () 
   assert.equal(rows[0].name, "crispy oyster");
   assert.equal(rows[0].category, "TACOS");
   assert.deepEqual(rows[0].allergens, ["gluten", "shellfish", "soy", "wheat"]);
-  assert.deepEqual(rows[0].ingredients, ["Prepped Oysters", "Tempura Batter Kits"]);
+  assert.deepEqual(rows[0].ingredients, [
+    "Prepped Oysters",
+    "Tempura Batter Kits",
+  ]);
 });
 
 test("defines one BrandAdapter for every configured restaurant", () => {
@@ -221,29 +243,39 @@ test("bespoke and generic adapter declarations live in adapter modules", () => {
     modularAdapterOverrides.map((adapter) => adapter.id).sort(),
     ["burger-king", "founding-farmers-dc", "mcdonalds"],
   );
-  assert.deepEqual(
-    genericAdapters.map((adapter) => adapter.id).sort(),
-    ["generic-html", "generic-pdf-matrix"],
-  );
+  assert.deepEqual(genericAdapters.map((adapter) => adapter.id).sort(), [
+    "generic-html",
+    "generic-pdf-matrix",
+  ]);
   assert.equal(
     brandAdapters.find((adapter) => adapter.id === "founding-farmers-dc")
       ?.regionalScope,
     "local-menu-with-intelligence-fallback",
   );
   assert.equal(
-    brandAdapters.find((adapter) => adapter.id === "founding-farmers-dc")?.parserProfile,
+    brandAdapters.find((adapter) => adapter.id === "founding-farmers-dc")
+      ?.parserProfile,
     "founding-farmers-pdf-menu",
   );
 });
 
 test("all restaurant sources have portfolio classification metadata", () => {
   const missing = brandAdapters.filter(
-    (adapter) => !adapter.brandKey || !adapter.sourceFamily || !adapter.parserProfile,
+    (adapter) =>
+      !adapter.brandKey || !adapter.sourceFamily || !adapter.parserProfile,
   );
-  const unknownFamilies = brandAdapters.filter((adapter) => adapter.sourceFamily === "unknown");
+  const unknownFamilies = brandAdapters.filter(
+    (adapter) => adapter.sourceFamily === "unknown",
+  );
 
-  assert.deepEqual(missing.map((adapter) => adapter.id), []);
-  assert.deepEqual(unknownFamilies.map((adapter) => adapter.id), []);
+  assert.deepEqual(
+    missing.map((adapter) => adapter.id),
+    [],
+  );
+  assert.deepEqual(
+    unknownFamilies.map((adapter) => adapter.id),
+    [],
+  );
 });
 
 test("source audit covers the whole portfolio with official extraction statuses", () => {
@@ -265,15 +297,24 @@ test("source audit covers the whole portfolio with official extraction statuses"
     rows.filter((row) => !row.remediationBucket).map((row) => row.id),
     [],
   );
-  assert.deepEqual(officialMissingRows.map((source) => source.id), []);
+  assert.deepEqual(
+    officialMissingRows.map((source) => source.id),
+    [],
+  );
   assert.deepEqual(
     rows
-      .filter((row) => row.officialAllergenStatus === officialAllergenStatuses.sourceFoundUnparsed)
+      .filter(
+        (row) =>
+          row.officialAllergenStatus ===
+          officialAllergenStatuses.sourceFoundUnparsed,
+      )
       .filter((row) => !row.remediationBucket)
       .map((row) => row.id),
     [],
   );
-  assert.ok(summary.documentSchemaProfileMigration.migratedProfileIds.length > 0);
+  assert.ok(
+    summary.documentSchemaProfileMigration.migratedProfileIds.length > 0,
+  );
   assert.ok(summary.officialExtractedByProfile);
 });
 
@@ -304,8 +345,14 @@ test("source audit emits configured URL role warnings and food extraction counts
   });
   const row = rows[0];
 
-  assert.match(row.configuredUrlRoles, /menu:special-food-menu:https:\/\/example\.com\/happy-hour\.pdf/);
-  assert.match(row.configuredUrlRoles, /menu:drinks-menu:https:\/\/example\.com\/cocktails\.pdf/);
+  assert.match(
+    row.configuredUrlRoles,
+    /menu:special-food-menu:https:\/\/example\.com\/happy-hour\.pdf/,
+  );
+  assert.match(
+    row.configuredUrlRoles,
+    /menu:drinks-menu:https:\/\/example\.com\/cocktails\.pdf/,
+  );
   assert.match(row.configuredUrlWarnings, /configured-url-special-food-menu/);
   assert.match(row.configuredUrlWarnings, /configured-url-drinks-menu/);
   assert.equal(row.nonFoodDocumentSuspected, true);
@@ -338,8 +385,13 @@ test("launch coverage target plan can synthesize scrape-ready new candidate sour
 
 test("launch coverage canary selection keeps mixed target statuses", async () => {
   const plan = await buildLaunchTargetPlan();
-  const selected = selectLaunchWaveTargets(plan.targets, { wave: "canary", limit: 25 });
-  const selectedStatuses = new Set(selected.map((target) => target.sourceStatus));
+  const selected = selectLaunchWaveTargets(plan.targets, {
+    wave: "canary",
+    limit: 25,
+  });
+  const selectedStatuses = new Set(
+    selected.map((target) => target.sourceStatus),
+  );
 
   assert.equal(selected.length, 25);
   assert.ok(selected.every((target) => target.scrapeReady));
@@ -352,13 +404,23 @@ test("launch coverage canary selection keeps mixed target statuses", async () =>
 
 test("launch coverage full wave supports resumable offset chunks", async () => {
   const plan = await buildLaunchTargetPlan();
-  const first = selectLaunchWaveTargets(plan.targets, { wave: "full", limit: 10, offset: 0 });
-  const second = selectLaunchWaveTargets(plan.targets, { wave: "full", limit: 10, offset: 10 });
+  const first = selectLaunchWaveTargets(plan.targets, {
+    wave: "full",
+    limit: 10,
+    offset: 0,
+  });
+  const second = selectLaunchWaveTargets(plan.targets, {
+    wave: "full",
+    limit: 10,
+    offset: 10,
+  });
 
   assert.equal(first.length, 10);
   assert.equal(second.length, 10);
   assert.deepEqual(
-    first.map((target) => target.id).filter((id) => second.some((target) => target.id === id)),
+    first
+      .map((target) => target.id)
+      .filter((id) => second.some((target) => target.id === id)),
     [],
   );
 });
@@ -414,9 +476,15 @@ test("launch coverage aggregate accounts for scraped, duplicate, no-source, and 
   const rowById = new Map(aggregate.rows.map((row) => [row.id, row]));
 
   assert.equal(aggregate.summary.totalTargets, 4);
-  assert.equal(rowById.get("scraped").launchStatus, launchQualityStatuses.published);
+  assert.equal(
+    rowById.get("scraped").launchStatus,
+    launchQualityStatuses.published,
+  );
   assert.equal(rowById.get("duplicate").launchStatus, "deduped-to-source");
-  assert.equal(rowById.get("no-source").launchStatus, launchQualityStatuses.noSource);
+  assert.equal(
+    rowById.get("no-source").launchStatus,
+    launchQualityStatuses.noSource,
+  );
   assert.equal(rowById.get("not-run").launchStatus, "not-run");
 });
 
@@ -425,14 +493,23 @@ test("launch quality flags artifacts without rejecting normal beverage rows", ()
     suspiciousMenuRows([
       { id: "water", name: "Bottled Water", category: "Beverages" },
       { id: "coffee", name: "Extra Large Iced Coffee", category: "Drinks" },
-      { id: "cosmo", name: "Classic Cosmo", category: "Happy Hour-Swizzle & Swirl" },
-      { id: "flatbread", name: "Margherita Flatbread", category: "Regional Happy Hour" },
+      {
+        id: "cosmo",
+        name: "Classic Cosmo",
+        category: "Happy Hour-Swizzle & Swirl",
+      },
+      {
+        id: "flatbread",
+        name: "Margherita Flatbread",
+        category: "Regional Happy Hour",
+      },
       { id: "beignets", name: "Crab Beignets", category: "Happy Hour-Sizzle" },
       {
         id: "sub-combo",
         name: "Sub Combo for just $13.99",
         category: "Specials",
-        description: "Get any 8” Signature Sub or Wrap, an order of Crispy Fries and a 20oz soda.",
+        description:
+          "Get any 8” Signature Sub or Wrap, an order of Crispy Fries and a 20oz soda.",
         evidence: [{ sourceUrl: "https://example.com/menu" }],
       },
       {
@@ -454,7 +531,11 @@ test("launch quality flags artifacts without rejecting normal beverage rows", ()
 
   assert.deepEqual(
     suspiciousMenuRows([
-      { id: "cocktails", name: "Cocktails", category: "Happy Hour-Swizzle & Swirl" },
+      {
+        id: "cocktails",
+        name: "Cocktails",
+        category: "Happy Hour-Swizzle & Swirl",
+      },
       { id: "join", name: "Join Our Team", category: "Menu" },
       { id: "modifier", name: "Add Bacon", category: "Sandwiches" },
       { id: "paid-modifier", name: "$ Add Caramel", category: "NA Beverages" },
@@ -463,7 +544,16 @@ test("launch quality flags artifacts without rejecting normal beverage rows", ()
       { id: "private-room", name: "Private Dining Room", category: "Seafood" },
       { id: "copy", name: "Copyright", category: "Menu" },
     ]).map((row) => row.id),
-    ["cocktails", "join", "modifier", "paid-modifier", "sub", "spaced", "private-room", "copy"],
+    [
+      "cocktails",
+      "join",
+      "modifier",
+      "paid-modifier",
+      "sub",
+      "spaced",
+      "private-room",
+      "copy",
+    ],
   );
 });
 
@@ -500,7 +590,9 @@ test("shared menu row classifier rejects allergen guide headers and preparation 
     classifyMenuItemRow({
       name: "COMMON ALLERGENS GUIDE: CITY RIDGE",
       sourceType: "pdf-menu-matrix",
-      evidence: [{ text: "Official Taco Bamba menu item from allergen matrix." }],
+      evidence: [
+        { text: "Official Taco Bamba menu item from allergen matrix." },
+      ],
     }).kind,
     "source-note",
   );
@@ -508,7 +600,9 @@ test("shared menu row classifier rejects allergen guide headers and preparation 
     classifyMenuItemRow({
       name: "Moby Dick House of Kabob - Common Allergens",
       sourceType: "pdf-menu-matrix",
-      evidence: [{ text: "Official Moby Dick menu item from allergen matrix." }],
+      evidence: [
+        { text: "Official Moby Dick menu item from allergen matrix." },
+      ],
     }).kind,
     "source-note",
   );
@@ -523,7 +617,8 @@ test("shared menu row classifier rejects allergen guide headers and preparation 
   assert.equal(
     classifyMenuItemRow({
       name: "Please allow for 30-minute preparation",
-      description: "Three-Hour Slow-Cooked Lamb Shoulder served with Ottoman Rice.",
+      description:
+        "Three-Hour Slow-Cooked Lamb Shoulder served with Ottoman Rice.",
       sourceType: "pdf-menu",
     }).kind,
     "source-note",
@@ -540,8 +635,18 @@ test("launch quality quarantines empty outputs and reviews parser artifacts", ()
       name: "Artifact",
       coverageStatus: "complete",
       items: [
-        { id: "join", name: "Join Our Team", category: "Menu", sourceUrl: "https://example.com" },
-        { id: "burger", name: "Classic Burger", category: "Burgers", sourceUrl: "https://example.com" },
+        {
+          id: "join",
+          name: "Join Our Team",
+          category: "Menu",
+          sourceUrl: "https://example.com",
+        },
+        {
+          id: "burger",
+          name: "Classic Burger",
+          category: "Burgers",
+          sourceUrl: "https://example.com",
+        },
       ],
     },
   });
@@ -586,7 +691,8 @@ test("publish quality removes source boilerplate from descriptions without dropp
     id: "angel-eggs",
     name: "Angel Eggs",
     category: "Small Plates",
-    sourceSummary: "Angel Eggs from the restaurant's current official menu or allergen source.",
+    sourceSummary:
+      "Angel Eggs from the restaurant's current official menu or allergen source.",
   });
   const plainMatrixSourceSummaryLeak = sanitizeMenuItemDisplayFields({
     id: "sashimi",
@@ -598,7 +704,8 @@ test("publish quality removes source boilerplate from descriptions without dropp
     id: "berry-blanco",
     name: "BERRY BLANCO",
     category: "Smoothies",
-    description: "Smoothies | VG | K | CAL. | $7.49 blueberries + coconut + honey granola Order Now",
+    description:
+      "Smoothies | VG | K | CAL. | $7.49 blueberries + coconut + honey granola Order Now",
   });
   const cateringOperationalTail = sanitizeMenuItemDisplayFields({
     id: "caesar-salad-tray",
@@ -617,13 +724,15 @@ test("publish quality removes source boilerplate from descriptions without dropp
     id: "thursday-lobster",
     name: "THURSDAY LOBSTER: 1 1/2 lb Maine Lobster - Order Anytime for THURSDAY pickup",
     category: "Specials",
-    description: "Steamed Maine lobster, drawn butter, daily vegetables, seasoned roasted baby potatoes.",
+    description:
+      "Steamed Maine lobster, drawn butter, daily vegetables, seasoned roasted baby potatoes.",
   });
   const pickBetweenBoundaryRow = sanitizeMenuItemDisplayFields({
     id: "pick-between",
     name: "Pick between:",
     category: "Sandwiches",
-    description: "Panino Grosso: prosciutto di parma, mozzarella, mortadella, salami, pecorino, tomato, and red onions",
+    description:
+      "Panino Grosso: prosciutto di parma, mozzarella, mortadella, salami, pecorino, tomato, and red onions",
   });
   const pollutedDescriptionWithCleanEvidence = sanitizeMenuItemDisplayFields({
     id: "vegan-crab-fritters",
@@ -662,8 +771,7 @@ test("publish quality removes source boilerplate from descriptions without dropp
     evidence: [
       {
         source: "website-menu",
-        text:
-          "I’m a description for a section of your menu. Click me and then “Edit Menu” to open the Restaurant Menu editor and change my text",
+        text: "I’m a description for a section of your menu. Click me and then “Edit Menu” to open the Restaurant Menu editor and change my text",
       },
     ],
   });
@@ -671,18 +779,19 @@ test("publish quality removes source boilerplate from descriptions without dropp
     id: "vanilla-gelato",
     name: "Vanilla Gelato",
     category: "Desserts",
-    ingredientsText: "Seasonal Sorbet © 2026 Sage Restaurant Concepts. All rights reserved.",
+    ingredientsText:
+      "Seasonal Sorbet © 2026 Sage Restaurant Concepts. All rights reserved.",
   });
   const usefulIngredientEvidence = sanitizeMenuItemDisplayFields({
     id: "cheeseburger",
     name: "Cheeseburger",
     category: "Burgers",
-    ingredientsText: "Ingredients: Enriched Flour (wheat Flour), Beef, Cheese. Contains: Wheat, Milk.",
+    ingredientsText:
+      "Ingredients: Enriched Flour (wheat Flour), Beef, Cheese. Contains: Wheat, Milk.",
     evidence: [
       {
         source: "official-product-page",
-        text:
-          "Ingredients: Enriched Flour (wheat Flour), Beef, Cheese. Contains: Wheat, Milk. - Official McDonald's nutrition calculator API.",
+        text: "Ingredients: Enriched Flour (wheat Flour), Beef, Cheese. Contains: Wheat, Milk. - Official McDonald's nutrition calculator API.",
       },
     ],
   });
@@ -700,17 +809,32 @@ test("publish quality removes source boilerplate from descriptions without dropp
   assert.equal(brandPrefixedOfficialMatrix.description, undefined);
   assert.equal(brandPrefixedOfficialMatrix.sourceSummary, undefined);
   assert.equal(officialFlagsDescription.description, undefined);
-  assert.equal(officialFlagsDescription.sourceSummary, "Official allergen flags: gluten, sulfites.");
+  assert.equal(
+    officialFlagsDescription.sourceSummary,
+    "Official allergen flags: gluten, sulfites.",
+  );
   assert.equal(pdfDescription.description, undefined);
   assert.equal(pdfDescription.sourceSummary, undefined);
   assert.equal(noMarkedAllergenTableRow.description, undefined);
   assert.equal(noMarkedAllergenTableRow.sourceSummary, undefined);
   assert.equal(sourceSummaryLeak.sourceSummary, undefined);
   assert.equal(plainMatrixSourceSummaryLeak.sourceSummary, undefined);
-  assert.equal(orderNowTail.description, "blueberries + coconut + honey granola");
-  assert.equal(cateringOperationalTail.description, "Serves 6-8. Caesar dressing, parmesan, breadcrumbs");
-  assert.equal(leadingSizeDescription.description, "8 oz cup of Carvel soft-serve ice cream.");
-  assert.equal(orderAnytimeNameTail.name, "THURSDAY LOBSTER: 1 1/2 lb Maine Lobster");
+  assert.equal(
+    orderNowTail.description,
+    "blueberries + coconut + honey granola",
+  );
+  assert.equal(
+    cateringOperationalTail.description,
+    "Serves 6-8. Caesar dressing, parmesan, breadcrumbs",
+  );
+  assert.equal(
+    leadingSizeDescription.description,
+    "8 oz cup of Carvel soft-serve ice cream.",
+  );
+  assert.equal(
+    orderAnytimeNameTail.name,
+    "THURSDAY LOBSTER: 1 1/2 lb Maine Lobster",
+  );
   assert.equal(pickBetweenBoundaryRow.name, "Panino Grosso");
   assert.equal(
     pickBetweenBoundaryRow.description,
@@ -726,15 +850,49 @@ test("publish quality removes source boilerplate from descriptions without dropp
   assert.equal(sectionPlaceholder.description, undefined);
   assert.equal(sectionPlaceholder.evidence, undefined);
   assert.equal(legalIngredients.ingredientsText, undefined);
-  assert.equal(usefulIngredientEvidence.ingredientsText, "Ingredients: Enriched Flour (wheat Flour), Beef, Cheese. Contains: Wheat, Milk.");
+  assert.equal(
+    usefulIngredientEvidence.ingredientsText,
+    "Ingredients: Enriched Flour (wheat Flour), Beef, Cheese. Contains: Wheat, Milk.",
+  );
   assert.equal(
     usefulIngredientEvidence.evidence[0].text,
     "Ingredients: Enriched Flour (wheat Flour), Beef, Cheese. Contains: Wheat, Milk.",
   );
   assert.equal(classifyMenuItemRow(pickBetweenBoundaryRow).kind, "menu-item");
   assert.equal(classifyMenuItemRow(sanitized).kind, "menu-item");
-  assert.equal(quality.issueCodes.includes("source-boilerplate-descriptions"), true);
+  assert.equal(
+    quality.issueCodes.includes("source-boilerplate-descriptions"),
+    true,
+  );
   assert.equal(quality.boilerplateDescriptionCount, 1);
+});
+
+test("legacy API records keep real menu copy and reject source-label descriptions", () => {
+  assert.equal(
+    createRecord({
+      category: "Burgers",
+      description: "Official Wendy's menu and nutrition API.",
+      name: "Jr. Bacon Cheeseburger",
+      sourceKind: "official-api",
+      sourceUrl: "https://api.app.prd.wendys.digital/menu",
+    }).description,
+    null,
+  );
+  assert.equal(
+    createRecord({
+      category: "Burgers",
+      description:
+        "Fresh, never-frozen beef, Applewood smoked bacon, American cheese, crisp lettuce, tomato, and mayo.",
+      name: "Jr. Bacon Cheeseburger",
+      sourceKind: "official-api",
+      sourceUrl: "https://api.app.prd.wendys.digital/menu",
+    }).description,
+    "Fresh, never-frozen beef, Applewood smoked bacon, American cheese, crisp lettuce, tomato, and mayo.",
+  );
+  assert.equal(
+    wendysImageUrl("2260"),
+    "https://app.wendys.com/unified/assets/menu/pg-cropped/2260_small_US_en.png",
+  );
 });
 
 test("publish quality strips inline allergen headings and official notice tails from dish descriptions", () => {
@@ -756,33 +914,60 @@ test("publish quality strips inline allergen headings and official notice tails 
     id: "mozzarella-sticks",
     name: "Mozzarella Sticks",
     category: "American",
-    description: "Mozzarella sticks served with marinara on the sideMilk/Egg Allergens Cross-contact possible with wheat",
+    description:
+      "Mozzarella sticks served with marinara on the sideMilk/Egg Allergens Cross-contact possible with wheat",
   });
   const containsNoticeTail = sanitizeMenuItemDisplayFields({
     id: "cajun-fries",
     name: "Cajun Fries",
     category: "American",
-    description: "Crispy fries tossed in Cajun seasoning. ⚠️ Contains egg. Cross-contact with wheat is possible.",
+    description:
+      "Crispy fries tossed in Cajun seasoning. ⚠️ Contains egg. Cross-contact with wheat is possible.",
   });
   const sauceContainsTail = sanitizeMenuItemDisplayFields({
     id: "tenders-and-fries",
     name: "Tenders & Fries",
     category: "American",
-    description: "Three buttermilk marinated chicken tenders & crispy fries Wheat/Milk Allergens Honey Mustard contains egg",
+    description:
+      "Three buttermilk marinated chicken tenders & crispy fries Wheat/Milk Allergens Honey Mustard contains egg",
   });
 
   assert.equal(
     sagaStyleHeading.description,
     "Pan seared rice cake, pickled mussels, black garlic dressing, lemon gel, lime zest",
   );
-  assert.equal(sagaStyleHeading.sourceSummary, "ALLERGENS: SHELLFISH, CITRUS, ALLIUMS");
-  assert.equal(sagaStyleSecondHeading.description, "Calamari sofrito, shrimps, pine nuts vinaigrette");
-  assert.equal(quincyStyleNoticeTail.description, "Mozzarella sticks served with marinara on the side");
-  assert.equal(quincyStyleNoticeTail.sourceSummary, "Milk/Egg Allergens Cross-contact possible with wheat");
-  assert.equal(containsNoticeTail.description, "Crispy fries tossed in Cajun seasoning.");
-  assert.equal(containsNoticeTail.sourceSummary, "⚠️ Contains egg. Cross-contact with wheat is possible.");
-  assert.equal(sauceContainsTail.description, "Three buttermilk marinated chicken tenders & crispy fries");
-  assert.equal(sauceContainsTail.sourceSummary, "Wheat/Milk Allergens Honey Mustard contains egg");
+  assert.equal(
+    sagaStyleHeading.sourceSummary,
+    "ALLERGENS: SHELLFISH, CITRUS, ALLIUMS",
+  );
+  assert.equal(
+    sagaStyleSecondHeading.description,
+    "Calamari sofrito, shrimps, pine nuts vinaigrette",
+  );
+  assert.equal(
+    quincyStyleNoticeTail.description,
+    "Mozzarella sticks served with marinara on the side",
+  );
+  assert.equal(
+    quincyStyleNoticeTail.sourceSummary,
+    "Milk/Egg Allergens Cross-contact possible with wheat",
+  );
+  assert.equal(
+    containsNoticeTail.description,
+    "Crispy fries tossed in Cajun seasoning.",
+  );
+  assert.equal(
+    containsNoticeTail.sourceSummary,
+    "⚠️ Contains egg. Cross-contact with wheat is possible.",
+  );
+  assert.equal(
+    sauceContainsTail.description,
+    "Three buttermilk marinated chicken tenders & crispy fries",
+  );
+  assert.equal(
+    sauceContainsTail.sourceSummary,
+    "Wheat/Milk Allergens Honey Mustard contains egg",
+  );
 });
 
 test("publish quality removes carousel text and classifies option and nutrition artifacts", () => {
@@ -852,7 +1037,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     id: "sauces",
     name: "SAUCES +4",
     category: "Seafood",
-    description: "beurre blanc • whiskey sauce • chimichurri lobster tail MP • crab cake 27 • seared scallops grilled shrimp 15 • oscar",
+    description:
+      "beurre blanc • whiskey sauce • chimichurri lobster tail MP • crab cake 27 • seared scallops grilled shrimp 15 • oscar",
   };
   const allergenMatrixBleedName = {
     id: "habit-table-bleed",
@@ -865,13 +1051,15 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     id: "fiber-in-grams",
     name: "Fiber in Grams",
     category: "Nutrition",
-    description: "Contains Milk X Contains Milk Egg Contains Egg X Contains Egg Soy Contains Soy X Contains Soy Wheat Contains Wheat",
+    description:
+      "Contains Milk X Contains Milk Egg Contains Egg X Contains Egg Soy Contains Soy X Contains Soy Wheat Contains Wheat",
   };
   const leadingAllergenMatrixCellName = {
     id: "habit-leading-table-cell",
     name: "Almond - X Contains Sesame Santa Barbara Cobb",
     category: "Salads",
-    description: "Contains Milk X Contains Egg X Contains Soy - - - - X Contains Sesame Sides French Fries 440 27",
+    description:
+      "Contains Milk X Contains Egg X Contains Soy - - - - X Contains Sesame Sides French Fries 440 27",
   };
   const exclusiveOfferCard = {
     id: "exclusive-offers",
@@ -880,26 +1068,29 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     description:
       "Add Cheese (70 Cal), Bacon (100 Cal), Avocado (90 Cal), Mushrooms (102 Cal) or Garlic Mushrooms (157 Cal).",
   };
-  const realOfficialItemWithTableBleedDescription = sanitizeMenuItemDisplayFields({
-    id: "vanilla-shake",
-    name: "Vanilla Shake",
-    category: "Shakes",
-    description:
-      "Contains Milk - - - - - - - Chocolate Shake 670 20 13 0 75 230 108 2 90 12 X Contains Milk - - - - - - - Strawberry Shake 580 20",
-    allergens: ["milk"],
-    allergenSourceType: "official",
-  });
+  const realOfficialItemWithTableBleedDescription =
+    sanitizeMenuItemDisplayFields({
+      id: "vanilla-shake",
+      name: "Vanilla Shake",
+      category: "Shakes",
+      description:
+        "Contains Milk - - - - - - - Chocolate Shake 670 20 13 0 75 230 108 2 90 12 X Contains Milk - - - - - - - Strawberry Shake 580 20",
+      allergens: ["milk"],
+      allergenSourceType: "official",
+    });
   const wineSauceDish = {
     id: "beef-wellington",
     name: "Beef Wellington",
     category: "Dinner",
-    description: "potato purée, glazed root vegetables, red wine demi-glace served medium rare",
+    description:
+      "potato purée, glazed root vegetables, red wine demi-glace served medium rare",
   };
   const swedishFishCocktail = {
     id: "drunken-rockfish",
     name: "Drunken Rockfish",
     category: "Cocktails",
-    description: "Parrot Bay Rum, blue curacao, pineapple, pomegranate, Swedish Fish",
+    description:
+      "Parrot Bay Rum, blue curacao, pineapple, pomegranate, Swedish Fish",
   };
   const wixWidgetRow = {
     id: "bring-traffic-to-your-site",
@@ -957,21 +1148,34 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     id: "egift-cards",
     name: "eGift Cards",
     category: "Seafood",
-    description: "Give the gift of BBQ, perfect for the BBQ lover on your list.",
+    description:
+      "Give the gift of BBQ, perfect for the BBQ lover on your list.",
   };
   const websiteAnchorBarCard = {
     id: "bar",
     name: "BAR",
     category: "Brunch Menu",
     sourceType: "html-card",
-    evidence: [{ sourceKind: "html-card", sourceUrl: "https://lafiammaitalian.com/#bar", text: "BAR" }],
+    evidence: [
+      {
+        sourceKind: "html-card",
+        sourceUrl: "https://lafiammaitalian.com/#bar",
+        text: "BAR",
+      },
+    ],
   };
   const websiteAnchorGiftCard = {
     id: "gift-ideas",
     name: "GIFT IDEAS",
     category: "Brunch Menu",
     sourceType: "html-card",
-    evidence: [{ sourceKind: "html-card", sourceUrl: "https://lafiammaitalian.com/#gift", text: "GIFT IDEAS" }],
+    evidence: [
+      {
+        sourceKind: "html-card",
+        sourceUrl: "https://lafiammaitalian.com/#gift",
+        text: "GIFT IDEAS",
+      },
+    ],
   };
   const pdfBulletProteinAddon = {
     id: "1-mild-italian-sausage",
@@ -990,7 +1194,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     id: "side-house-salad",
     name: "· Side house salad ·",
     category: "Italian",
-    description: "Combination of arugula, kale and romaine greens, pickled red onions and grape tomatoes. Topped with croutons.",
+    description:
+      "Combination of arugula, kale and romaine greens, pickled red onions and grape tomatoes. Topped with croutons.",
     sourceType: "pdf-menu",
   };
   const claimMenuDisclaimer = {
@@ -1004,7 +1209,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     id: "toppings-arugula-dollar250",
     name: "Toppings: Arugula +$2.50",
     category: "Ny Style Pizza",
-    description: "Caramelized Onion +$2.50 Roasted Peppers +$2.50 Mushrooms +$2.50",
+    description:
+      "Caramelized Onion +$2.50 Roasted Peppers +$2.50 Mushrooms +$2.50",
   };
   const eventScheduleRow = {
     id: "upcoming-big-games",
@@ -1016,7 +1222,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     id: "how-do-i-join-you",
     name: "How do I join you?",
     category: "Seasonal American",
-    description: "You just walk in. Think of us the same way you do your favorite no reservation restaurants.",
+    description:
+      "You just walk in. Think of us the same way you do your favorite no reservation restaurants.",
   };
   const standaloneTimeWindow = {
     id: "4-00pm-7-00pm",
@@ -1037,7 +1244,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     id: "allergen-key",
     name: "Allergen Key:",
     category: "Barbecue",
-    description: "(D) Contains Dairy (N) Contains Nuts (GF) Gluten-Free (V) Vegetarian",
+    description:
+      "(D) Contains Dairy (N) Contains Nuts (GF) Gluten-Free (V) Vegetarian",
   };
   const allergenGuidePdfRow = {
     id: "allergen-guide-pdf",
@@ -1048,7 +1256,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     id: "contains-meat",
     name: "Contains meat",
     category: "Salad",
-    description: "Contains wheat, soybeans, fish, sesame, tree nuts 930 Calories 35G Protein 88G Carbs",
+    description:
+      "Contains wheat, soybeans, fish, sesame, tree nuts 930 Calories 35G Protein 88G Carbs",
   };
   const officialMatrixCategoryArtifact = {
     id: "red-lobster-feasts",
@@ -1070,7 +1279,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     id: "auntie-annes-original",
     name: "Original",
     category: "Snack",
-    sourceSummary: "Official Auntie Anne's allergen and sensitivities PDF matrix.",
+    sourceSummary:
+      "Official Auntie Anne's allergen and sensitivities PDF matrix.",
     allergens: ["wheat", "soy"],
     mayContain: [],
   };
@@ -1078,7 +1288,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     id: "bww-natural-flavor",
     name: "NATURAL FLAVOR,",
     category: "Sports Bar",
-    sourceSummary: "Official Buffalo Wild Wings allergen matrix note: WATER, CITRIC ACID, SODIUM",
+    sourceSummary:
+      "Official Buffalo Wild Wings allergen matrix note: WATER, CITRIC ACID, SODIUM",
     allergens: ["wheat", "soy"],
     mayContain: [],
   };
@@ -1091,7 +1302,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     id: "a-20percent-gratuity-is-applied",
     name: "A 20% Gratuity Is Applied To All Checks",
     category: "Chinese",
-    description: "— Gluten-Free | Available Gluten-Free | Vegan | d — Dairy | n — Contains Nuts",
+    description:
+      "— Gluten-Free | Available Gluten-Free | Vegan | d — Dairy | n — Contains Nuts",
   };
   const disclosureFragmentRow = {
     id: "the-nectarine-content-is-approximately",
@@ -1184,7 +1396,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     id: "ikea-college-park",
     name: "IKEA College Park",
     category: "College Park",
-    description: "IKEA College Park10100 Baltimore AvenueCollege Park, MD 20740",
+    description:
+      "IKEA College Park10100 Baltimore AvenueCollege Park, MD 20740",
   };
   const currencyBoundaryRow = {
     id: "cad",
@@ -1402,7 +1615,7 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     name: "Bayou Chedda' Roast",
     category: "Southern / Bakery",
     description:
-      "Allen Brothers medium rare roast beef, Tillamook sharp cheddar, lemon-dressed arugula and tangy horseradish sauce. Served on a toasted sesame roll. Fillet O' \"Blue Cat\" Fish Sandwich [MKT Price] Breaded blue catfish fillet, tartar sauce.",
+      'Allen Brothers medium rare roast beef, Tillamook sharp cheddar, lemon-dressed arugula and tangy horseradish sauce. Served on a toasted sesame roll. Fillet O\' "Blue Cat" Fish Sandwich [MKT Price] Breaded blue catfish fillet, tartar sauce.',
   };
   const plainChoiceOfOptionRow = {
     name: "CHOICE OF",
@@ -1422,17 +1635,32 @@ test("parser quality keeps useful served-with context while flagging hard row ar
   const officialAllergenInstructionRow = {
     name: "Please always inform us of any dietary restrictions or allergies when placing your order",
     category: "Healthy",
-    evidence: [{ sourceKind: "pdf-menu-matrix", text: "Official Flower Child Bethesda menu item from allergen matrix." }],
+    evidence: [
+      {
+        sourceKind: "pdf-menu-matrix",
+        text: "Official Flower Child Bethesda menu item from allergen matrix.",
+      },
+    ],
   };
   const officialNutritionAllergenHeading = {
     name: "NUTRITIONAL & ALLERGEN INFORMATION",
     category: "Healthy",
-    evidence: [{ sourceKind: "pdf-menu-matrix", text: "Official Flower Child Bethesda menu item from allergen matrix." }],
+    evidence: [
+      {
+        sourceKind: "pdf-menu-matrix",
+        text: "Official Flower Child Bethesda menu item from allergen matrix.",
+      },
+    ],
   };
   const officialMenuSectionHeading = {
     name: "SALADS (served with dressing)",
     category: "Healthy",
-    evidence: [{ sourceKind: "pdf-menu-matrix", text: "Official Flower Child Bethesda menu item from allergen matrix." }],
+    evidence: [
+      {
+        sourceKind: "pdf-menu-matrix",
+        text: "Official Flower Child Bethesda menu item from allergen matrix.",
+      },
+    ],
   };
   const dottedPriceNameRow = {
     name: "AVOCADO TOAST v............................................................$11",
@@ -1460,7 +1688,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
   const dottedUsefulDescription = {
     name: "Flaky Biscuits with Sausage Gravy",
     category: "Breakfast",
-    description: "With Two Eggs ......................................................................",
+    description:
+      "With Two Eggs ......................................................................",
   };
   const dottedAllDescription = {
     name: "Silky Tofu Hot Pot",
@@ -1470,7 +1699,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
   const premiumOptionsRow = {
     name: "Premium Options for 2.95 each",
     category: "Breakfast",
-    description: "Country Fried Steak and Eggs ..................................... 16.95",
+    description:
+      "Country Fried Steak and Eggs ..................................... 16.95",
   };
   const alcoholDottedBleedRow = {
     name: "RICH + POWERFUL",
@@ -1481,7 +1711,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
   const adjacentInitialismBleed = {
     name: "Grilled Chicken",
     category: "Pizza",
-    description: "HCBLT ................................................................... (Ham, cheese, bacon, lettuce, tomato, mayo)",
+    description:
+      "HCBLT ................................................................... (Ham, cheese, bacon, lettuce, tomato, mayo)",
   };
   const substituteWithRow = {
     name: "Substitute with Shrimp",
@@ -1490,7 +1721,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
   const substituteOptionDescriptionRow = {
     name: "GLUTEN FREE SOY",
     category: "Japanese / Sushi",
-    description: "substitute to gluten free soy sauce pack for your sushi & sashimi order",
+    description:
+      "substitute to gluten free soy sauce pack for your sushi & sashimi order",
   };
   const choiceOfColonRow = {
     name: "Choice of: Ground beef",
@@ -1507,7 +1739,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
   const reservationPolicyRow = {
     name: "RESERVATION CANCELLATION / NO SHOW POLICY",
     category: "Japanese / Sushi",
-    description: "Cancellations within 24 hours of your table reservation time will incur a $35 fee per person.",
+    description:
+      "Cancellations within 24 hours of your table reservation time will incur a $35 fee per person.",
   };
   const packagePriceRow = {
     name: "Level 1 Pizza Buffet",
@@ -1517,7 +1750,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
   const barePackagePriceRow = {
     name: "$55 per Person",
     category: "Lebanese",
-    description: "For the whole family 34$ Kanafeh, Halawet El Jebn, Warbat, Baklawa, Ice Cream Book Your Table",
+    description:
+      "For the whole family 34$ Kanafeh, Halawet El Jebn, Warbat, Baklawa, Ice Cream Book Your Table",
   };
   const weeklySpecialsHeader = {
     name: "Weekly Specials",
@@ -1532,7 +1766,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
   const dropInsEventRow = {
     name: "Drop-ins",
     category: "Restaurant",
-    description: "Sub in for a single league game. Try a new sport or join friends without the season-long commitment. Find a drop-in",
+    description:
+      "Sub in for a single league game. Try a new sport or join friends without the season-long commitment. Find a drop-in",
   };
   const reversedSentenceNameRow = {
     name: "a spicy black bean vegetable patty served with lettuce & tomato",
@@ -1547,12 +1782,14 @@ test("parser quality keeps useful served-with context while flagging hard row ar
   const beerBottleWithTemperatureRow = {
     name: "CERVEJA (750 ML)",
     category: "Brunch",
-    description: "(BELGIUM / 5.2% / 48° / 750ML / Single) Brewed with brazilian hops & pepper.",
+    description:
+      "(BELGIUM / 5.2% / 48° / 750ML / Single) Brewed with brazilian hops & pepper.",
   };
   const beerBottle375Row = {
     name: "SIDE PROJECT BLEU (375ML)",
     category: "Brunch",
-    description: "(Limit 1 per person) (Missouri / 6% / 375 ml / Single) Missouri Wild Ale aged in French Oak.",
+    description:
+      "(Limit 1 per person) (Missouri / 6% / 375 ml / Single) Missouri Wild Ale aged in French Oak.",
   };
   const danglingChoiceDescription = {
     name: "Empanadas",
@@ -1603,7 +1840,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
   const servedWithBoundaryFragment = {
     name: "Served with your choice of hand-cut French fries or mixed green salad",
     category: "Seafood",
-    description: "$34.99 per person* Does not include restaurant surcharge, tax, gratuity or beverages",
+    description:
+      "$34.99 per person* Does not include restaurant surcharge, tax, gratuity or beverages",
   };
   const withBoundaryFragment = {
     name: "with baby carrots and potatoes",
@@ -1651,7 +1889,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
   const earthyBeerHeading = {
     name: "EARTHY",
     category: "American",
-    description: "Gueuze Lambic / BEL / 4.8% / Mixed Fermentation Saison / BEL / 5.3%",
+    description:
+      "Gueuze Lambic / BEL / 4.8% / Mixed Fermentation Saison / BEL / 5.3%",
   };
   const sectionHeaderExperience = {
     name: "EXPERIENCE TO SHARE",
@@ -1670,7 +1909,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
   const spacedDotLeaderShortDietLegend = {
     name: "MIXED CHEESE PIDE",
     category: "Mediterranean",
-    description: "N F . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .",
+    description:
+      "N F . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .",
   };
   const spacedDotLeaderName = {
     name: "BONEIN CHICKEN. . . . . . . . . . . . . . qtr 7 / half 13 / whole",
@@ -1726,59 +1966,79 @@ test("parser quality keeps useful served-with context while flagging hard row ar
   const dogonRealServedWithContext = {
     name: "BBQ Greens",
     category: "With Bread",
-    description: "Candied Cipollini, Roasted Garlic, Beef Bacon with Corn Bread",
+    description:
+      "Candied Cipollini, Roasted Garlic, Beef Bacon with Corn Bread",
   };
   const northItaliaOcrSplitName = {
     name: "BR AISE D SH ORTRIB",
     category: "Salads",
     description:
       "grana padano crema, horseradish gremolata, herb breadcrumb, arugula 1930 cal",
-    sourceUrls: ["https://www.northitalia.com/wp-content/uploads/2025/08/NOR_Lunch_SPRING-2026-NMRO_3020-Reston.pdf"],
+    sourceUrls: [
+      "https://www.northitalia.com/wp-content/uploads/2025/08/NOR_Lunch_SPRING-2026-NMRO_3020-Reston.pdf",
+    ],
   };
   const northItaliaShortArtifactName = {
     name: "BR OOKIE",
     category: "Italian",
-    description: "anilla, pistachio & chocolate gelato, dark chocolate, banana, strawberry, pecan 1300 cal",
-    sourceUrls: ["https://www.northitalia.com/wp-content/uploads/2025/08/NOR_Dessert_SPRING-2026-NMRO_3020-Reston.pdf"],
+    description:
+      "anilla, pistachio & chocolate gelato, dark chocolate, banana, strawberry, pecan 1300 cal",
+    sourceUrls: [
+      "https://www.northitalia.com/wp-content/uploads/2025/08/NOR_Dessert_SPRING-2026-NMRO_3020-Reston.pdf",
+    ],
   };
   const northItaliaRealItemWithPollutedDescription = {
     name: "Cacio e Pepe Pizza",
     category: "Italian",
     description:
       "CHEF'S BOARD Kids' Menu - - - - - - - - - - - SPAGHETTI with butter SPAGHETTI with red sauce",
-    sourceUrls: ["https://www.northitalia.com/wp-content/uploads/2026/04/North-Italia-Nutritional-Guide-04-2026-1.pdf"],
+    sourceUrls: [
+      "https://www.northitalia.com/wp-content/uploads/2026/04/North-Italia-Nutritional-Guide-04-2026-1.pdf",
+    ],
   };
   const northItaliaWineArtifact = {
     name: "CH AR DONN AY",
     category: "Salads",
     description: "bollini barricato 40, trentino",
-    sourceUrls: ["https://www.northitalia.com/wp-content/uploads/2025/08/NOR_Lunch_SPRING-2026-NMRO_3020-Reston.pdf"],
+    sourceUrls: [
+      "https://www.northitalia.com/wp-content/uploads/2025/08/NOR_Lunch_SPRING-2026-NMRO_3020-Reston.pdf",
+    ],
   };
   const northItaliaRepeatedOfficialArtifact = {
     name: "CACIOEPEPEARANCINICACIOEPEPEARANCINI",
     category: "Italian",
-    description: "crispy risotto, pecorino romano, crushed pepper blend, pesto aioli",
-    sourceUrls: ["https://www.northitalia.com/wp-content/uploads/2026/04/North-Italia-Nutritional-Guide-04-2026-1.pdf"],
+    description:
+      "crispy risotto, pecorino romano, crushed pepper blend, pesto aioli",
+    sourceUrls: [
+      "https://www.northitalia.com/wp-content/uploads/2026/04/North-Italia-Nutritional-Guide-04-2026-1.pdf",
+    ],
   };
   const northItaliaRealArancini = {
     name: "Cacio e Pepe Arancini",
     category: "Small Plates",
-    description: "crispy risotto, pecorino romano, crushed pepper blend, pesto aioli",
-    sourceUrls: ["https://www.northitalia.com/wp-content/uploads/2025/08/NOR_Dinner_SPRING-2026-NMRO_3020-Reston.pdf"],
+    description:
+      "crispy risotto, pecorino romano, crushed pepper blend, pesto aioli",
+    sourceUrls: [
+      "https://www.northitalia.com/wp-content/uploads/2025/08/NOR_Dinner_SPRING-2026-NMRO_3020-Reston.pdf",
+    ],
   };
   const northItaliaSectionArtifact = {
     name: "Fresh Pasta & Entrées",
     category: "Salads",
     description:
       "substitute gluten-free pasta (removes 30-210 cal) or vegetable noodles (removes 180-450 cal) +$3.50 Spicy Rigatoni Vodka 25.5 italian sausage, crispy pancetta",
-    sourceUrls: ["https://www.northitalia.com/wp-content/uploads/2025/08/NOR_Lunch_SPRING-2026-NMRO_3020-Reston.pdf"],
+    sourceUrls: [
+      "https://www.northitalia.com/wp-content/uploads/2025/08/NOR_Lunch_SPRING-2026-NMRO_3020-Reston.pdf",
+    ],
   };
   const northItaliaRealItemWithListBleed = {
     name: "Black Mediterranean Mussels",
     category: "Italian",
     description:
       "FARMERS MARKET BOARD CHEF'S BOARD GRILLED ARTICHOKE Daily Soups - - - - - - - - - - - BUTTERNUT SQUASH",
-    sourceUrls: ["https://www.northitalia.com/wp-content/uploads/2025/08/NOR_Dinner_SPRING-2026-NMRO_3020-Reston.pdf"],
+    sourceUrls: [
+      "https://www.northitalia.com/wp-content/uploads/2025/08/NOR_Dinner_SPRING-2026-NMRO_3020-Reston.pdf",
+    ],
   };
   const nandoCategoryArtifact = {
     name: "Category",
@@ -1802,8 +2062,10 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     name: "Vegan Fried Tofu Bento Box",
     category: "Bentos",
     allergenSourceType: "official-ingredients",
-    ingredientsText: "Y Y Y Y Y NOTE Y N Y gluten - cross contamination - same fryer as panko chicken",
-    sourceSummary: "Y Y Y Y Y NOTE Y N Y gluten - cross contamination - same fryer as panko chicken",
+    ingredientsText:
+      "Y Y Y Y Y NOTE Y N Y gluten - cross contamination - same fryer as panko chicken",
+    sourceSummary:
+      "Y Y Y Y Y NOTE Y N Y gluten - cross contamination - same fryer as panko chicken",
   });
   const merchandiseCategoryRow = {
     name: "ALL MERCHANDISE",
@@ -1846,7 +2108,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
   const seafoodHeaderRow = {
     name: "SEAFOOD",
     category: "Menu",
-    description: "Relationships over 30 years with TOP Seafood Suppliers [MARKET AVAILABILITY]",
+    description:
+      "Relationships over 30 years with TOP Seafood Suppliers [MARKET AVAILABILITY]",
   };
   const cookingInstructionRow = {
     name: "How to Use Your Pizza Stone",
@@ -1886,40 +2149,77 @@ test("parser quality keeps useful served-with context while flagging hard row ar
   assert.equal(classifyMenuItemRow(comboPackage).kind, "menu-item");
   assert.equal(classifyMenuItemRow(priceOnlyDescription).kind, "menu-item");
   assert.equal(
-    classifyMenuItemRow(priceOnlyDescription).reasons.includes("price-only-description"),
+    classifyMenuItemRow(priceOnlyDescription).reasons.includes(
+      "price-only-description",
+    ),
     true,
   );
-  assert.equal(sanitizeMenuItemDisplayFields(priceOnlyDescription).description, undefined);
+  assert.equal(
+    sanitizeMenuItemDisplayFields(priceOnlyDescription).description,
+    undefined,
+  );
   assert.equal(
     sanitizeMenuItemDisplayFields(pearlDiveBoundaryBleed).description,
     "Double Patty, Bacon, Pepper Jack, Green Chilies, LTO, Cayenne Aioli",
   );
   assert.equal(classifyMenuItemRow(optionGroup).kind, "option-group");
   assert.equal(classifyMenuItemRow(groupedHeader).kind, "option-group");
-  assert.equal(classifyMenuItemRow(allergenMatrixBleedName).kind, "source-note");
+  assert.equal(
+    classifyMenuItemRow(allergenMatrixBleedName).kind,
+    "source-note",
+  );
   assert.equal(classifyMenuItemRow(nutritionColumnHeader).kind, "source-note");
-  assert.equal(classifyMenuItemRow(leadingAllergenMatrixCellName).kind, "source-note");
+  assert.equal(
+    classifyMenuItemRow(leadingAllergenMatrixCellName).kind,
+    "source-note",
+  );
   assert.equal(classifyMenuItemRow(exclusiveOfferCard).kind, "promo");
-  assert.equal(realOfficialItemWithTableBleedDescription.description, undefined);
-  assert.deepEqual(realOfficialItemWithTableBleedDescription.allergens, ["milk"]);
-  assert.match(realOfficialItemWithTableBleedDescription.sourceSummary, /Chocolate Shake 670/);
+  assert.equal(
+    realOfficialItemWithTableBleedDescription.description,
+    undefined,
+  );
+  assert.deepEqual(realOfficialItemWithTableBleedDescription.allergens, [
+    "milk",
+  ]);
+  assert.match(
+    realOfficialItemWithTableBleedDescription.sourceSummary,
+    /Chocolate Shake 670/,
+  );
   assert.equal(classifyMenuItemRow(swedishFishCocktail).kind, "source-note");
   assert.equal(classifyMenuItemRow(wixWidgetRow).kind, "promo");
   assert.equal(classifyMenuItemRow(bareTakeoutRow).kind, "navigation/legal");
-  assert.equal(sanitizeMenuItemDisplayFields(reviewedOfficialDescription).description, undefined);
+  assert.equal(
+    sanitizeMenuItemDisplayFields(reviewedOfficialDescription).description,
+    undefined,
+  );
   assert.equal(
     sanitizeMenuItemDisplayFields(reviewedOfficialDescription).sourceSummary,
     "Reviewed Pie Gourmet official shop product API.",
   );
-  assert.equal(sanitizeMenuItemDisplayFields(realItemWithAllHoursPollution).description, undefined);
-  assert.equal(classifyMenuItemRow(realItemWithAllHoursPollution).kind, "menu-item");
+  assert.equal(
+    sanitizeMenuItemDisplayFields(realItemWithAllHoursPollution).description,
+    undefined,
+  );
+  assert.equal(
+    classifyMenuItemRow(realItemWithAllHoursPollution).kind,
+    "menu-item",
+  );
   assert.equal(classifyMenuItemRow(orderingStatusRow).kind, "navigation/legal");
   assert.equal(classifyMenuItemRow(toastShellCard).kind, "navigation/legal");
-  assert.equal(classifyMenuItemRow(directOrderingShell).kind, "navigation/legal");
+  assert.equal(
+    classifyMenuItemRow(directOrderingShell).kind,
+    "navigation/legal",
+  );
   assert.equal(classifyMenuItemRow(manageOrderShell).kind, "navigation/legal");
   assert.equal(classifyMenuItemRow(giftCardShell).kind, "promo");
-  assert.equal(classifyMenuItemRow(websiteAnchorBarCard).kind, "navigation/legal");
-  assert.equal(classifyMenuItemRow(websiteAnchorGiftCard).kind, "navigation/legal");
+  assert.equal(
+    classifyMenuItemRow(websiteAnchorBarCard).kind,
+    "navigation/legal",
+  );
+  assert.equal(
+    classifyMenuItemRow(websiteAnchorGiftCard).kind,
+    "navigation/legal",
+  );
   assert.equal(
     classifyMenuItemRow({
       name: "Collect Email Leads",
@@ -1933,7 +2233,8 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     classifyMenuItemRow({
       name: "Birthday Celebration",
       category: "Brunch",
-      description: "The ultimate birthday celebration with private dining rooms and custom menus.",
+      description:
+        "The ultimate birthday celebration with private dining rooms and custom menus.",
     }).kind,
     "promo",
   );
@@ -1944,16 +2245,34 @@ test("parser quality keeps useful served-with context while flagging hard row ar
   assert.equal(classifyMenuItemRow(toppingsModifierRow).kind, "option-group");
   assert.equal(classifyMenuItemRow(eventScheduleRow).kind, "promo");
   assert.equal(classifyMenuItemRow(faqRow).kind, "navigation/legal");
-  assert.equal(classifyMenuItemRow(standaloneTimeWindow).kind, "navigation/legal");
+  assert.equal(
+    classifyMenuItemRow(standaloneTimeWindow).kind,
+    "navigation/legal",
+  );
   assert.equal(classifyMenuItemRow(explicitAddOnRow).kind, "option-group");
   assert.equal(classifyMenuItemRow(spacedOutPromoRow).kind, "promo");
   assert.equal(classifyMenuItemRow(allergenLegendRow).kind, "source-note");
   assert.equal(classifyMenuItemRow(allergenGuidePdfRow).kind, "source-note");
-  assert.equal(classifyMenuItemRow(containsMeatDisclosureRow).kind, "source-note");
-  assert.equal(classifyMenuItemRow(officialMatrixCategoryArtifact).kind, "source-note");
-  assert.equal(classifyMenuItemRow(officialMatrixLegendFragment).kind, "source-note");
-  assert.equal(classifyMenuItemRow(officialMatrixRealOriginal).kind, "menu-item");
-  assert.equal(classifyMenuItemRow(officialIngredientFragment).kind, "source-note");
+  assert.equal(
+    classifyMenuItemRow(containsMeatDisclosureRow).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(officialMatrixCategoryArtifact).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(officialMatrixLegendFragment).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(officialMatrixRealOriginal).kind,
+    "menu-item",
+  );
+  assert.equal(
+    classifyMenuItemRow(officialIngredientFragment).kind,
+    "source-note",
+  );
   assert.equal(classifyMenuItemRow(nandoCategoryArtifact).kind, "source-note");
   assert.equal(classifyMenuItemRow(playaGranolaDisclosure).kind, "source-note");
   assert.equal(classifyMenuItemRow(sovereignBeerFragment).kind, "source-note");
@@ -1970,19 +2289,34 @@ test("parser quality keeps useful served-with context while flagging hard row ar
   assert.equal(classifyMenuItemRow(cookingInstructionRow).kind, "source-note");
   assert.equal(classifyMenuItemRow(mapPluginRow).kind, "promo");
   assert.equal(classifyMenuItemRow(visitorAnalyticsRow).kind, "promo");
-  assert.equal(classifyMenuItemRow(mailingListSubmitRow).kind, "navigation/legal");
+  assert.equal(
+    classifyMenuItemRow(mailingListSubmitRow).kind,
+    "navigation/legal",
+  );
   assert.equal(classifyMenuItemRow(pressTeaserRow).kind, "promo");
   assert.equal(trailingCommaItem.name, "Avocado Ranch");
   assert.equal(classifyMenuItemRow(gratuityPolicyRow).kind, "source-note");
   assert.equal(classifyMenuItemRow(disclosureFragmentRow).kind, "source-note");
   assert.equal(classifyMenuItemRow(servedWithFragmentName).kind, "source-note");
-  assert.equal(classifyMenuItemRow({ name: "Fried & served with marinara" }).kind, "source-note");
+  assert.equal(
+    classifyMenuItemRow({ name: "Fried & served with marinara" }).kind,
+    "source-note",
+  );
   assert.equal(classifyMenuItemRow(dietaryLegendBleedRow).kind, "source-note");
   assert.equal(classifyMenuItemRow(pdfOcrHeadingBleed).kind, "source-note");
-  assert.equal(classifyMenuItemRow(ingredientFragmentBleed).kind, "source-note");
-  assert.equal(classifyMenuItemRow(officialDanglingMatrixRow).kind, "source-note");
+  assert.equal(
+    classifyMenuItemRow(ingredientFragmentBleed).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(officialDanglingMatrixRow).kind,
+    "source-note",
+  );
   assert.equal(classifyMenuItemRow(frenchSectionHeader).kind, "source-note");
-  assert.equal(classifyMenuItemRow(globalAllergenNoticeOnDrink).kind, "source-note");
+  assert.equal(
+    classifyMenuItemRow(globalAllergenNoticeOnDrink).kind,
+    "source-note",
+  );
   assert.equal(teaismDietaryMatrixRow.ingredientsText, undefined);
   assert.equal(
     teaismDietaryMatrixRow.sourceSummary,
@@ -1991,32 +2325,80 @@ test("parser quality keeps useful served-with context while flagging hard row ar
   assert.equal(classifyMenuItemRow(chaserOptionRow).kind, "option-group");
   assert.equal(classifyMenuItemRow(dineInOnlyPromoRow).kind, "promo");
   assert.equal(classifyMenuItemRow(fromTheBarSectionRow).kind, "source-note");
-  assert.equal(classifyMenuItemRow(officialProductBoundaryFragment).kind, "source-note");
-  assert.equal(classifyMenuItemRow(officialProductIncludesFragment).kind, "source-note");
-  assert.equal(classifyMenuItemRow(recoveredGenericMatrixRow).kind, "source-note");
-  assert.equal(classifyMenuItemRow(kidsDottedSectionFragment).kind, "source-note");
-  assert.equal(classifyMenuItemRow(adjacentBracketPriceBleed).kind, "source-note");
-  assert.equal(classifyMenuItemRow(plainChoiceOfOptionRow).kind, "option-group");
+  assert.equal(
+    classifyMenuItemRow(officialProductBoundaryFragment).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(officialProductIncludesFragment).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(recoveredGenericMatrixRow).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(kidsDottedSectionFragment).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(adjacentBracketPriceBleed).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(plainChoiceOfOptionRow).kind,
+    "option-group",
+  );
   assert.equal(classifyMenuItemRow(busboysEventCard).kind, "promo");
   assert.equal(classifyMenuItemRow(bartacoGivingPromo).kind, "promo");
-  assert.equal(classifyMenuItemRow(officialAllergenInstructionRow).kind, "source-note");
-  assert.equal(classifyMenuItemRow(officialNutritionAllergenHeading).kind, "source-note");
-  assert.equal(classifyMenuItemRow(officialMenuSectionHeading).kind, "source-note");
-  assert.equal(sanitizeMenuItemDisplayFields(dottedPriceNameRow).name, "AVOCADO TOAST");
-  assert.equal(sanitizeMenuItemDisplayFields(ocrDividerPriceName).name, "HUMMUS");
-  assert.equal(classifyMenuItemRow(sanitizeMenuItemDisplayFields(dottedPriceNameRow)).kind, "menu-item");
+  assert.equal(
+    classifyMenuItemRow(officialAllergenInstructionRow).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(officialNutritionAllergenHeading).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(officialMenuSectionHeading).kind,
+    "source-note",
+  );
+  assert.equal(
+    sanitizeMenuItemDisplayFields(dottedPriceNameRow).name,
+    "AVOCADO TOAST",
+  );
+  assert.equal(
+    sanitizeMenuItemDisplayFields(ocrDividerPriceName).name,
+    "HUMMUS",
+  );
+  assert.equal(
+    classifyMenuItemRow(sanitizeMenuItemDisplayFields(dottedPriceNameRow)).kind,
+    "menu-item",
+  );
   assert.equal(
     sanitizeMenuItemDisplayFields(adjacentPricedDescriptionBleed).description,
     "romaine, garlic croutons, parmesan, classic anchovy dressing.",
   );
-  assert.equal(sanitizeMenuItemDisplayFields(dottedUsefulDescription).description, "With Two Eggs");
-  assert.equal(sanitizeMenuItemDisplayFields(dottedAllDescription).description, undefined);
-  assert.equal(sanitizeMenuItemDisplayFields(adjacentInitialismBleed).description, undefined);
+  assert.equal(
+    sanitizeMenuItemDisplayFields(dottedUsefulDescription).description,
+    "With Two Eggs",
+  );
+  assert.equal(
+    sanitizeMenuItemDisplayFields(dottedAllDescription).description,
+    undefined,
+  );
+  assert.equal(
+    sanitizeMenuItemDisplayFields(adjacentInitialismBleed).description,
+    undefined,
+  );
   assert.equal(
     sanitizeMenuItemDisplayFields(legalTailDishDescription).description,
     "hoagie roll, gruyere, muenster, griddled onion, au jus",
   );
-  assert.equal(sanitizeMenuItemDisplayFields(rawWarningOnlyDescription).description, undefined);
+  assert.equal(
+    sanitizeMenuItemDisplayFields(rawWarningOnlyDescription).description,
+    undefined,
+  );
   assert.equal(
     sanitizeMenuItemDisplayFields(sushiWithRawWarningTail).description,
     "tuna, spicy mayo, cucumber.",
@@ -2025,14 +2407,24 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     sanitizeMenuItemDisplayFields(gratuityTailDescription).description,
     "Multigrain toast, smashed avocado, pickled red onion, everything seasoning, chili oil.",
   );
-  assert.equal(classifyMenuItemRow(servedWithBoundaryFragment).kind, "source-note");
-  assert.equal(classifyMenuItemRow(sanitizeMenuItemDisplayFields(withBoundaryFragment)).kind, "source-note");
+  assert.equal(
+    classifyMenuItemRow(servedWithBoundaryFragment).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(sanitizeMenuItemDisplayFields(withBoundaryFragment))
+      .kind,
+    "source-note",
+  );
   assert.equal(classifyMenuItemRow(consumerAdvisoryRow).kind, "source-note");
   assert.equal(
     sanitizeMenuItemDisplayFields(fullServiceChargeTail).description,
     "coconut ice-cream, chocolate shell, jackfruit, cashew, cookie crumble",
   );
-  assert.equal(classifyMenuItemRow(sectionHeaderWithShortDish).kind, "source-note");
+  assert.equal(
+    classifyMenuItemRow(sectionHeaderWithShortDish).kind,
+    "source-note",
+  );
   assert.equal(classifyMenuItemRow(bottleServicePolicyRow).kind, "promo");
   assert.equal(
     sanitizeMenuItemDisplayFields(spacedDotLeaderDescription).description,
@@ -2050,14 +2442,35 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     sanitizeMenuItemDisplayFields(surchargeTailDescription).description,
     "Shiitake sticky rice, soy butter sauce.",
   );
-  assert.equal(classifyMenuItemRow(withFragmentWithDescription).kind, "source-note");
+  assert.equal(
+    classifyMenuItemRow(withFragmentWithDescription).kind,
+    "source-note",
+  );
   assert.equal(classifyMenuItemRow(earthyBeerHeading).kind, "source-note");
-  assert.equal(classifyMenuItemRow(sectionHeaderExperience).kind, "source-note");
-  assert.equal(classifyMenuItemRow(sectionHeaderMainDishes).kind, "source-note");
-  assert.equal(classifyMenuItemRow(sectionHeaderFromSeaWithItems).kind, "source-note");
-  assert.equal(sanitizeMenuItemDisplayFields(spacedDotLeaderShortDietLegend).description, undefined);
-  assert.equal(sanitizeMenuItemDisplayFields(spacedDotLeaderName).name, "BONEIN CHICKEN");
-  assert.equal(sanitizeMenuItemDisplayFields(spacedDotLeaderName).description, undefined);
+  assert.equal(
+    classifyMenuItemRow(sectionHeaderExperience).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(sectionHeaderMainDishes).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(sectionHeaderFromSeaWithItems).kind,
+    "source-note",
+  );
+  assert.equal(
+    sanitizeMenuItemDisplayFields(spacedDotLeaderShortDietLegend).description,
+    undefined,
+  );
+  assert.equal(
+    sanitizeMenuItemDisplayFields(spacedDotLeaderName).name,
+    "BONEIN CHICKEN",
+  );
+  assert.equal(
+    sanitizeMenuItemDisplayFields(spacedDotLeaderName).description,
+    undefined,
+  );
   assert.deepEqual(
     {
       name: sanitizeMenuItemDisplayFields({
@@ -2074,16 +2487,37 @@ test("parser quality keeps useful served-with context while flagging hard row ar
       description: "Veal Scaloppini sautéed with Capers in a Lemon-Wine Sauce",
     },
   );
-  assert.equal(sanitizeMenuItemDisplayFields({ name: "Petto di Pollo Picatta…" }).name, "Petto di Pollo Picatta");
+  assert.equal(
+    sanitizeMenuItemDisplayFields({ name: "Petto di Pollo Picatta…" }).name,
+    "Petto di Pollo Picatta",
+  );
   assert.equal(classifyMenuItemRow(prixFixeSurchargeBleed).kind, "source-note");
   assert.equal(classifyMenuItemRow(spacedDotModifierFragment).kind, "modifier");
-  assert.equal(sanitizeMenuItemDisplayFields(dottedBeverageDescription).description, undefined);
-  assert.equal(sanitizeMenuItemDisplayFields(dottedSizeDescription).description, undefined);
-  assert.equal(classifyMenuItemRow(sandwichesServedWithHeader).kind, "source-note");
+  assert.equal(
+    sanitizeMenuItemDisplayFields(dottedBeverageDescription).description,
+    undefined,
+  );
+  assert.equal(
+    sanitizeMenuItemDisplayFields(dottedSizeDescription).description,
+    undefined,
+  );
+  assert.equal(
+    classifyMenuItemRow(sandwichesServedWithHeader).kind,
+    "source-note",
+  );
   assert.equal(classifyMenuItemRow(cafeRiggsPromo).kind, "promo");
-  assert.equal(classifyMenuItemRow(privateUseSectionHeader).kind, "source-note");
-  assert.equal(classifyMenuItemRow(dogonGroupedSectionHeader).kind, "source-note");
-  assert.equal(classifyMenuItemRow(dogonRealServedWithContext).kind, "menu-item");
+  assert.equal(
+    classifyMenuItemRow(privateUseSectionHeader).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(dogonGroupedSectionHeader).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(dogonRealServedWithContext).kind,
+    "menu-item",
+  );
   assert.equal(
     classifyMenuItemRow({
       name: "Showing all 13 results",
@@ -2107,42 +2541,102 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     }).kind,
     "option-group",
   );
-  assert.equal(classifyMenuItemRow(northItaliaOcrSplitName).kind, "source-note");
-  assert.equal(classifyMenuItemRow(northItaliaShortArtifactName).kind, "source-note");
-  assert.equal(classifyMenuItemRow(northItaliaWineArtifact).kind, "source-note");
-  assert.equal(classifyMenuItemRow(northItaliaRepeatedOfficialArtifact).kind, "source-note");
+  assert.equal(
+    classifyMenuItemRow(northItaliaOcrSplitName).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(northItaliaShortArtifactName).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(northItaliaWineArtifact).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(northItaliaRepeatedOfficialArtifact).kind,
+    "source-note",
+  );
   assert.equal(classifyMenuItemRow(northItaliaRealArancini).kind, "menu-item");
-  assert.equal(classifyMenuItemRow(northItaliaSectionArtifact).kind, "source-note");
-  assert.equal(classifyMenuItemRow(sanitizeMenuItemDisplayFields(northItaliaRealItemWithPollutedDescription)).kind, "menu-item");
-  assert.equal(sanitizeMenuItemDisplayFields(northItaliaRealItemWithPollutedDescription).description, undefined);
-  assert.equal(classifyMenuItemRow(sanitizeMenuItemDisplayFields(northItaliaRealItemWithListBleed)).kind, "menu-item");
-  assert.equal(sanitizeMenuItemDisplayFields(northItaliaRealItemWithListBleed).description, undefined);
+  assert.equal(
+    classifyMenuItemRow(northItaliaSectionArtifact).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(
+      sanitizeMenuItemDisplayFields(northItaliaRealItemWithPollutedDescription),
+    ).kind,
+    "menu-item",
+  );
+  assert.equal(
+    sanitizeMenuItemDisplayFields(northItaliaRealItemWithPollutedDescription)
+      .description,
+    undefined,
+  );
+  assert.equal(
+    classifyMenuItemRow(
+      sanitizeMenuItemDisplayFields(northItaliaRealItemWithListBleed),
+    ).kind,
+    "menu-item",
+  );
+  assert.equal(
+    sanitizeMenuItemDisplayFields(northItaliaRealItemWithListBleed).description,
+    undefined,
+  );
   assert.equal(classifyMenuItemRow(dottedMenuListBleed).kind, "source-note");
   assert.equal(classifyMenuItemRow(alcoholDottedBleedRow).kind, "source-note");
   assert.equal(classifyMenuItemRow(premiumOptionsRow).kind, "option-group");
   assert.equal(classifyMenuItemRow(substituteWithRow).kind, "option-group");
-  assert.equal(classifyMenuItemRow(substituteOptionDescriptionRow).kind, "modifier");
+  assert.equal(
+    classifyMenuItemRow(substituteOptionDescriptionRow).kind,
+    "modifier",
+  );
   assert.equal(classifyMenuItemRow(choiceOfColonRow).kind, "option-group");
   assert.equal(classifyMenuItemRow(choiceOfSoftCrispyRow).kind, "option-group");
-  assert.equal(classifyMenuItemRow(reservationPolicyRow).kind, "navigation/legal");
+  assert.equal(
+    classifyMenuItemRow(reservationPolicyRow).kind,
+    "navigation/legal",
+  );
   assert.equal(classifyMenuItemRow(packagePriceRow).kind, "source-note");
   assert.equal(classifyMenuItemRow(barePackagePriceRow).kind, "source-note");
   assert.equal(classifyMenuItemRow(weeklySpecialsHeader).kind, "source-note");
   assert.equal(classifyMenuItemRow(choiceOfSoftDrinkRow).kind, "option-group");
   assert.equal(classifyMenuItemRow(dropInsEventRow).kind, "promo");
-  assert.equal(sanitizeMenuItemDisplayFields(reversedSentenceNameRow).name, "Zesty Bean Gardenburger");
+  assert.equal(
+    sanitizeMenuItemDisplayFields(reversedSentenceNameRow).name,
+    "Zesty Bean Gardenburger",
+  );
   assert.equal(
     sanitizeMenuItemDisplayFields(reversedSentenceNameRow).description,
     "a spicy black bean vegetable patty served with lettuce & tomato",
   );
   assert.equal(classifyMenuItemRow(beerBottleRow).kind, "source-note");
-  assert.equal(classifyMenuItemRow(beerBottleWithTemperatureRow).kind, "source-note");
+  assert.equal(
+    classifyMenuItemRow(beerBottleWithTemperatureRow).kind,
+    "source-note",
+  );
   assert.equal(classifyMenuItemRow(beerBottle375Row).kind, "source-note");
-  assert.equal(sanitizeMenuItemDisplayFields(danglingChoiceDescription).description, "Fried corn masa turnovers filled");
-  assert.equal(sanitizeMenuItemDisplayFields(duplicatedMultiwordName).name, "Avocado Toast");
-  assert.equal(sanitizeMenuItemDisplayFields(duplicatedPunctuationName).name, "MAKARONI");
-  assert.equal(sanitizeMenuItemDisplayFields(partiallyCleanedDuplicatedPunctuationName).name, "MAKARONI");
-  assert.equal(sanitizeMenuItemDisplayFields(singleAllergenDescription).description, undefined);
+  assert.equal(
+    sanitizeMenuItemDisplayFields(danglingChoiceDescription).description,
+    "Fried corn masa turnovers filled",
+  );
+  assert.equal(
+    sanitizeMenuItemDisplayFields(duplicatedMultiwordName).name,
+    "Avocado Toast",
+  );
+  assert.equal(
+    sanitizeMenuItemDisplayFields(duplicatedPunctuationName).name,
+    "MAKARONI",
+  );
+  assert.equal(
+    sanitizeMenuItemDisplayFields(partiallyCleanedDuplicatedPunctuationName)
+      .name,
+    "MAKARONI",
+  );
+  assert.equal(
+    sanitizeMenuItemDisplayFields(singleAllergenDescription).description,
+    undefined,
+  );
   assert.equal(
     sanitizeMenuItemDisplayFields({
       name: "Buttery Croissant",
@@ -2161,14 +2655,16 @@ test("parser quality keeps useful served-with context while flagging hard row ar
   assert.equal(
     sanitizeMenuItemDisplayFields({
       name: "Chocolate Peanut Butter",
-      ingredientsText: "Whole milk, cane sugar, peanut butter. Contains: milk, peanuts.",
+      ingredientsText:
+        "Whole milk, cane sugar, peanut butter. Contains: milk, peanuts.",
     }).ingredientsText,
     "Whole milk, cane sugar, peanut butter. Contains: milk, peanuts.",
   );
   assert.deepEqual(
     sanitizeMenuItemDisplayFields({
       name: "Caesar Salad",
-      description: "I’m a dish description. Click “Edit Menu” to open the Restaurant Menu editor and change my text",
+      description:
+        "I’m a dish description. Click “Edit Menu” to open the Restaurant Menu editor and change my text",
       evidence: [
         {
           sourceKind: "wix-restaurant-menus-api",
@@ -2199,22 +2695,59 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     classifyMenuItemRow(
       sanitizeMenuItemDisplayFields({
         name: "Caesar Salad",
-        description: "I’m a dish description. Click “Edit Menu” to open the Restaurant Menu editor and change my text",
+        description:
+          "I’m a dish description. Click “Edit Menu” to open the Restaurant Menu editor and change my text",
       }),
     ).kind,
     "menu-item",
   );
-  assert.equal(classifyMenuItemRow(allergenPrefixArtifactRow).kind, "source-note");
+  assert.equal(
+    classifyMenuItemRow(allergenPrefixArtifactRow).kind,
+    "source-note",
+  );
   assert.equal(classifyMenuItemRow(websiteAdminWidgetRow).kind, "promo");
-  assert.equal(classifyMenuItemRow({ name: "Google indexing", description: "Your testimonials will appear in Google search results." }).kind, "promo");
-  assert.equal(classifyMenuItemRow({ name: "Number of Sliders", description: "The number of different sliders you can add to one website." }).kind, "promo");
-  assert.equal(classifyMenuItemRow({ name: "Flexible Dates", description: "S M T W T F S Number of Nights Remove Nights" }).kind, "navigation/legal");
-  assert.equal(classifyMenuItemRow({ name: "GENERALMANAGERTIMMANLEY", description: "P R I V A T E D I N I N G R O O M S A V A I L A B L E Call 202.393.0313 to reserve for your occasion." }).kind, "source-note");
-  assert.equal(classifyMenuItemRow({ name: "PICKYOURPROTEIN", description: "Choice of grilled chicken breast or salmon." }).kind, "option-group");
+  assert.equal(
+    classifyMenuItemRow({
+      name: "Google indexing",
+      description: "Your testimonials will appear in Google search results.",
+    }).kind,
+    "promo",
+  );
+  assert.equal(
+    classifyMenuItemRow({
+      name: "Number of Sliders",
+      description:
+        "The number of different sliders you can add to one website.",
+    }).kind,
+    "promo",
+  );
+  assert.equal(
+    classifyMenuItemRow({
+      name: "Flexible Dates",
+      description: "S M T W T F S Number of Nights Remove Nights",
+    }).kind,
+    "navigation/legal",
+  );
+  assert.equal(
+    classifyMenuItemRow({
+      name: "GENERALMANAGERTIMMANLEY",
+      description:
+        "P R I V A T E D I N I N G R O O M S A V A I L A B L E Call 202.393.0313 to reserve for your occasion.",
+    }).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow({
+      name: "PICKYOURPROTEIN",
+      description: "Choice of grilled chicken breast or salmon.",
+    }).kind,
+    "option-group",
+  );
   assert.equal(
     sanitizeMenuItemDisplayFields({
       name: "Egg Sandwich",
-      description: "Y N Y Y Y modify N modify modify gluten - sub rice for ciabatta roll / soy - no slaw / sesame - no slaw",
+      description:
+        "Y N Y Y Y modify N modify modify gluten - sub rice for ciabatta roll / soy - no slaw / sesame - no slaw",
     }).description,
     undefined,
   );
@@ -2234,31 +2767,74 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     "crunchy cinnamon sugar streusel",
   );
   assert.equal(classifyMenuItemRow(exactAdminRow).kind, "navigation/legal");
-  assert.equal(classifyMenuItemRow(orderingLocationShellRow).kind, "navigation/legal");
+  assert.equal(
+    classifyMenuItemRow(orderingLocationShellRow).kind,
+    "navigation/legal",
+  );
   assert.equal(classifyMenuItemRow(storeLocatorWidgetRow).kind, "promo");
-  assert.equal(classifyMenuItemRow(bareAdminProfileRow).kind, "navigation/legal");
-  assert.equal(classifyMenuItemRow(restaurantAdminCategoryRow).kind, "navigation/legal");
-  assert.equal(classifyMenuItemRow(locationFinderNoSpaceRow).kind, "navigation/legal");
+  assert.equal(
+    classifyMenuItemRow(bareAdminProfileRow).kind,
+    "navigation/legal",
+  );
+  assert.equal(
+    classifyMenuItemRow(restaurantAdminCategoryRow).kind,
+    "navigation/legal",
+  );
+  assert.equal(
+    classifyMenuItemRow(locationFinderNoSpaceRow).kind,
+    "navigation/legal",
+  );
   assert.equal(classifyMenuItemRow(retailPosterRow).kind, "promo");
   assert.equal(classifyMenuItemRow(newsletterSignupRow).kind, "promo");
-  assert.equal(classifyMenuItemRow(restaurantLocationShell).kind, "navigation/legal");
-  assert.equal(classifyMenuItemRow(compactAddressLocationShell).kind, "navigation/legal");
+  assert.equal(
+    classifyMenuItemRow(restaurantLocationShell).kind,
+    "navigation/legal",
+  );
+  assert.equal(
+    classifyMenuItemRow(compactAddressLocationShell).kind,
+    "navigation/legal",
+  );
   assert.equal(classifyMenuItemRow(currencyBoundaryRow).kind, "source-note");
-  assert.equal(classifyMenuItemRow(categoryCurrencyBoundaryRow).kind, "source-note");
-  assert.equal(classifyMenuItemRow(sectionHeaderAllergenNote).kind, "source-note");
+  assert.equal(
+    classifyMenuItemRow(categoryCurrencyBoundaryRow).kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow(sectionHeaderAllergenNote).kind,
+    "source-note",
+  );
   assert.equal(classifyMenuItemRow(groupedHandRollsBleed).kind, "source-note");
   assert.equal(classifyMenuItemRow(compactSushiBoxBleed).kind, "source-note");
-  assert.equal(classifyMenuItemRow(actualDishWithWelcomeKeyword).kind, "menu-item");
+  assert.equal(
+    classifyMenuItemRow(actualDishWithWelcomeKeyword).kind,
+    "menu-item",
+  );
   assert.equal(actualDishWithLocationHoursBleed.description, undefined);
-  assert.equal(classifyMenuItemRow(actualDishWithLocationHoursBleed).kind, "menu-item");
+  assert.equal(
+    classifyMenuItemRow(actualDishWithLocationHoursBleed).kind,
+    "menu-item",
+  );
   assert.equal(classifyMenuItemRow(visitPlanningRow).kind, "navigation/legal");
   assert.equal(classifyMenuItemRow(groupPlanningRow).kind, "navigation/legal");
-  assert.equal(classifyMenuItemRow(sectionHeaderWithDefaultSides).kind, "source-note");
+  assert.equal(
+    classifyMenuItemRow(sectionHeaderWithDefaultSides).kind,
+    "source-note",
+  );
   assert.equal(classifyMenuItemRow(noSpaceFoodborneLegend).kind, "source-note");
-  assert.equal(classifyMenuItemRow(noSpaceFlexitarianHeader).kind, "source-note");
+  assert.equal(
+    classifyMenuItemRow(noSpaceFlexitarianHeader).kind,
+    "source-note",
+  );
   assert.equal(classifyMenuItemRow(kidsMenuPackedHeader).kind, "source-note");
-  assert.equal(classifyMenuItemRow({ name: "Column1", category: "CLASSIC CONCESSIONS" }).kind, "source-note");
-  assert.equal(classifyMenuItemRow({ name: "Sugar in Grams", category: "Burger" }).kind, "source-note");
+  assert.equal(
+    classifyMenuItemRow({ name: "Column1", category: "CLASSIC CONCESSIONS" })
+      .kind,
+    "source-note",
+  );
+  assert.equal(
+    classifyMenuItemRow({ name: "Sugar in Grams", category: "Burger" }).kind,
+    "source-note",
+  );
   assert.equal(
     classifyMenuItemRow({
       name: "KFC products are fried in oil which may",
@@ -2325,18 +2901,37 @@ test("parser quality keeps useful served-with context while flagging hard row ar
     undefined,
   );
   assert.equal(classifyMenuItemRow(saladToppingsHeader).kind, "option-group");
-  assert.equal(sanitizeMenuItemDisplayFields(singleLetterDescription).description, undefined);
-  assert.equal(sanitizeMenuItemDisplayFields(claimMenuDisclaimer).description, undefined);
+  assert.equal(
+    sanitizeMenuItemDisplayFields(singleLetterDescription).description,
+    undefined,
+  );
+  assert.equal(
+    sanitizeMenuItemDisplayFields(claimMenuDisclaimer).description,
+    undefined,
+  );
   assert.equal(classifyMenuItemRow(whiskeyGlazeSauce).kind, "menu-item");
   assert.equal(classifyMenuItemRow(whiskeyGlazeFood).kind, "menu-item");
   assert.equal(classifyMenuItemRow(hardSeltzer).kind, "source-note");
-  assert.equal(classifyMenuItemRow({ name: "Rose Ddeok-Bokki", category: "K-Food" }).kind, "menu-item");
-  assert.equal(classifyMenuItemRow({ name: "admin-dev", category: "Menu" }).kind, "navigation/legal");
-  assert.equal(classifyMenuItemRow({ name: "Contacts", category: "Menu" }).kind, "navigation/legal");
+  assert.equal(
+    classifyMenuItemRow({ name: "Rose Ddeok-Bokki", category: "K-Food" }).kind,
+    "menu-item",
+  );
+  assert.equal(
+    classifyMenuItemRow({ name: "admin-dev", category: "Menu" }).kind,
+    "navigation/legal",
+  );
+  assert.equal(
+    classifyMenuItemRow({ name: "Contacts", category: "Menu" }).kind,
+    "navigation/legal",
+  );
   assert.equal(classifyMenuItemRow(sarkuHeroShell).kind, "promo");
   assert.equal(classifyMenuItemRow(sarkuSelfDescription).kind, "promo");
   assert.equal(classifyMenuItemRow(sarkuOfficialInfoShell).kind, "source-note");
-  assert.equal(classifyMenuItemRow({ name: "Teriyaki Entrées", category: "Teriyaki" }).kind, "source-note");
+  assert.equal(
+    classifyMenuItemRow({ name: "Teriyaki Entrées", category: "Teriyaki" })
+      .kind,
+    "source-note",
+  );
   assert.equal(
     sanitizeMenuItemDisplayFields({
       name: "Big Queso Energy Burger",
@@ -2364,7 +2959,8 @@ test("parser quality rejects package, template, delivery marketing, and cocktail
   assert.equal(
     classifyMenuItemRow({
       category: "Party Menus",
-      description: "Choose from a selection of beautiful timeline templates to display on your site.",
+      description:
+        "Choose from a selection of beautiful timeline templates to display on your site.",
       name: "Stunning templates",
     }).kind,
     "promo",
@@ -2389,7 +2985,8 @@ test("parser quality rejects package, template, delivery marketing, and cocktail
   assert.equal(
     classifyMenuItemRow({
       category: "Seafood",
-      description: "Choose from Ketel One or Tanqueray 10, vermouth, Fish Shop olive brine",
+      description:
+        "Choose from Ketel One or Tanqueray 10, vermouth, Fish Shop olive brine",
       name: "THIS IS THE RIVER",
     }).kind,
     "source-note",
@@ -2414,7 +3011,8 @@ test("parser quality rejects package, template, delivery marketing, and cocktail
   assert.equal(
     classifyMenuItemRow({
       category: "Mexican",
-      description: "Allow your customer to leave you custom instructions at checkout.",
+      description:
+        "Allow your customer to leave you custom instructions at checkout.",
       name: "Collect Custom Order Instructions",
     }).kind,
     "navigation/legal",
@@ -2422,7 +3020,8 @@ test("parser quality rejects package, template, delivery marketing, and cocktail
   assert.equal(
     classifyMenuItemRow({
       category: "Brunch",
-      description: "IRELAND’S FOUR PROVINCES RESTAURANT & PUB, est.1997 FOLLOW Private Events & Catering Available Visit Our Website:",
+      description:
+        "IRELAND’S FOUR PROVINCES RESTAURANT & PUB, est.1997 FOLLOW Private Events & Catering Available Visit Our Website:",
       name: "We Proudly Serve American Ground Beef",
     }).kind,
     "source-note",
@@ -2439,7 +3038,8 @@ test("parser quality rejects package, template, delivery marketing, and cocktail
   assert.equal(
     classifyMenuItemRow({
       category: "Allergies",
-      description: "Our food may contain or come into contact with common allergens.",
+      description:
+        "Our food may contain or come into contact with common allergens.",
       name: "Food Allergies:",
     }).kind,
     "source-note",
@@ -2447,7 +3047,8 @@ test("parser quality rejects package, template, delivery marketing, and cocktail
   assert.equal(
     classifyMenuItemRow({
       category: "Restaurant",
-      description: ":00 AM - 6:00 PM July 4th 12/24/2026 11:00 AM - 5:00 PM Christmas Eve",
+      description:
+        ":00 AM - 6:00 PM July 4th 12/24/2026 11:00 AM - 5:00 PM Christmas Eve",
       name: "Special Store Hours",
     }).kind,
     "navigation/legal",
@@ -2463,7 +3064,8 @@ test("parser quality rejects package, template, delivery marketing, and cocktail
   assert.equal(
     classifyMenuItemRow({
       category: "Restaurant",
-      description: "Street/Garage Parking Nearby. Nearest Metro Station: Rosslyn",
+      description:
+        "Street/Garage Parking Nearby. Nearest Metro Station: Rosslyn",
       name: "Parking & Metro",
     }).kind,
     "navigation/legal",
@@ -2520,7 +3122,8 @@ test("parser quality rejects package, template, delivery marketing, and cocktail
   assert.equal(
     classifyMenuItemRow({
       category: "Antipasti",
-      description: "Mussels sauteed in white wine, parsley, and garlic or Napolitan tomato sauce.",
+      description:
+        "Mussels sauteed in white wine, parsley, and garlic or Napolitan tomato sauce.",
       name: "Cozze",
     }).kind,
     "menu-item",
@@ -2528,7 +3131,8 @@ test("parser quality rejects package, template, delivery marketing, and cocktail
   assert.equal(
     classifyMenuItemRow({
       category: "Greek",
-      description: "You are 1 click away from having the best Testimonials App on your site.",
+      description:
+        "You are 1 click away from having the best Testimonials App on your site.",
       name: "Beautiful, Easy Integration",
     }).kind,
     "promo",
@@ -2536,7 +3140,8 @@ test("parser quality rejects package, template, delivery marketing, and cocktail
   assert.equal(
     classifyMenuItemRow({
       category: "Dessert",
-      description: "Categories: Dessert, Mini Pastries, Pastries, Cookies and Sweets, Regular Pastries, Sweets Tag: Breakfast $2.00",
+      description:
+        "Categories: Dessert, Mini Pastries, Pastries, Cookies and Sweets, Regular Pastries, Sweets Tag: Breakfast $2.00",
       name: "SKU:",
     }).kind,
     "source-note",
@@ -2544,7 +3149,8 @@ test("parser quality rejects package, template, delivery marketing, and cocktail
   assert.equal(
     classifyMenuItemRow({
       category: "Reviews",
-      description: "Linzer cookies, hammentashen, brats, doughnuts, coffee, brotchen, and more. All good. On my all time top10 of best food places in USA.",
+      description:
+        "Linzer cookies, hammentashen, brats, doughnuts, coffee, brotchen, and more. All good. On my all time top10 of best food places in USA.",
       name: "Yelp! Review",
     }).kind,
     "promo",
@@ -2552,7 +3158,8 @@ test("parser quality rejects package, template, delivery marketing, and cocktail
   assert.equal(
     classifyMenuItemRow({
       category: "Faq 1",
-      description: "MON-THURS: 5:30-9:00 PM FRI-SAT: 5:00-9:00 PM SUNDAY: CLOSED",
+      description:
+        "MON-THURS: 5:30-9:00 PM FRI-SAT: 5:00-9:00 PM SUNDAY: CLOSED",
       name: "COUNTER SERVICE: FIRST COME / FIRST SERVED",
     }).kind,
     "navigation/legal",
@@ -2569,7 +3176,8 @@ test("parser quality rejects package, template, delivery marketing, and cocktail
   assert.equal(
     classifyMenuItemRow({
       category: "Cajun / Creole",
-      description: "Where to find New York-style pizza, Texas barbecue, hot chicken",
+      description:
+        "Where to find New York-style pizza, Texas barbecue, hot chicken",
       name: "14 Food Halls Around D.C",
     }).kind,
     "promo",
@@ -2577,7 +3185,8 @@ test("parser quality rejects package, template, delivery marketing, and cocktail
   assert.equal(
     classifyMenuItemRow({
       category: "Italian",
-      description: "Everything you need to know before your visit - from hours and reservations to pasta, wine, and private events",
+      description:
+        "Everything you need to know before your visit - from hours and reservations to pasta, wine, and private events",
       name: "CLOSED",
     }).kind,
     "navigation/legal",
@@ -2585,7 +3194,8 @@ test("parser quality rejects package, template, delivery marketing, and cocktail
   assert.equal(
     classifyMenuItemRow({
       category: "Restaurant",
-      description: "Chicken Marinated & grilled Falafel Crispy & plant-based Gyro Savory lamb & beef",
+      description:
+        "Chicken Marinated & grilled Falafel Crispy & plant-based Gyro Savory lamb & beef",
       name: "1Choose a protein:",
     }).kind,
     "option-group",
@@ -2593,7 +3203,8 @@ test("parser quality rejects package, template, delivery marketing, and cocktail
   assert.equal(
     classifyMenuItemRow({
       category: "Restaurant",
-      description: "choice of protein, tomato, onions, lettuce, and tzatziki or choice of sauce",
+      description:
+        "choice of protein, tomato, onions, lettuce, and tzatziki or choice of sauce",
       name: "ALL BURGERS SERVED ON A MARTIN'S POTATO BUN",
     }).kind,
     "source-note",
@@ -2636,7 +3247,8 @@ test("parser quality rejects package, template, delivery marketing, and cocktail
   assert.equal(
     sanitizeMenuItemDisplayFields({
       category: "Chicken",
-      description: "BEVERAGE MENU @YARDBIRDRESTAURANTS | RUNCHICKENRUN.COM preparation.",
+      description:
+        "BEVERAGE MENU @YARDBIRDRESTAURANTS | RUNCHICKENRUN.COM preparation.",
       name: "Chicken & Waffles",
     }).description,
     undefined,
@@ -2658,7 +3270,8 @@ test("coverage gate applies reviewed display repairs before inference rebuilds",
             id: "chicken",
             name: "Chicken",
             category: "Sandwiches",
-            description: "grilled chicken, pepper jack cheese, caramelized onions, lettuce, tomato, avocado",
+            description:
+              "grilled chicken, pepper jack cheese, caramelized onions, lettuce, tomato, avocado",
           },
         ],
       },
@@ -2721,7 +3334,8 @@ test("official evidence audit separates full, partial, disclosure-only, global-n
       {
         id: "cross-contact",
         name: "Kitchen Notice",
-        description: "Food prepared here may contain traces due to cross-contact.",
+        description:
+          "Food prepared here may contain traces due to cross-contact.",
         allergenSourceType: "official-ingredients",
         officialSource: true,
       },
@@ -2737,7 +3351,8 @@ test("official evidence audit separates full, partial, disclosure-only, global-n
       {
         id: "sausage-roll",
         name: "Sausage Roll",
-        description: "Puff pastry wrapped around pork sausage. May contain sesame seeds.",
+        description:
+          "Puff pastry wrapped around pork sausage. May contain sesame seeds.",
         allergenSourceType: "official-ingredients",
         officialSource: true,
         allergens: ["wheat", "gluten"],
@@ -2787,11 +3402,16 @@ test("official evidence audit separates full, partial, disclosure-only, global-n
 
 test("launch quality publishes accommodation-only shells without menu items", () => {
   const shell = evaluateRestaurantLaunchQuality({
-    restaurant: { id: "accommodation-shell", name: "Accommodation Shell", items: [] },
+    restaurant: {
+      id: "accommodation-shell",
+      name: "Accommodation Shell",
+      items: [],
+    },
     target: {
       accommodationOnly: true,
       allergyAccommodationPolicy: {
-        summary: "Guests should contact the restaurant before booking to discuss allergies.",
+        summary:
+          "Guests should contact the restaurant before booking to discuss allergies.",
         source: "official-site",
       },
     },
@@ -2813,7 +3433,8 @@ test("official source status stays unparsed for token partial extraction", () =>
     id: source.id,
     items: Array.from({ length: 30 }, (_, index) => ({
       name: `Item ${index + 1}`,
-      allergenSourceType: index === 0 ? "official-product-allergen-section" : "unavailable",
+      allergenSourceType:
+        index === 0 ? "official-product-allergen-section" : "unavailable",
     })),
   };
 
@@ -2821,7 +3442,13 @@ test("official source status stays unparsed for token partial extraction", () =>
     officialStatusForSource({
       source,
       restaurant,
-      sourceResults: [{ ok: true, url: "https://example.com/allergen-guide", role: "official-allergen" }],
+      sourceResults: [
+        {
+          ok: true,
+          url: "https://example.com/allergen-guide",
+          role: "official-allergen",
+        },
+      ],
     }),
     officialAllergenStatuses.sourceFoundUnparsed,
   );
@@ -2846,7 +3473,13 @@ test("official nutrition-only sources do not count as unparsed allergen sources"
     officialStatusForSource({
       source,
       restaurant,
-      sourceResults: [{ ok: true, url: "https://example.com/nutrition", role: "official-nutrition" }],
+      sourceResults: [
+        {
+          ok: true,
+          url: "https://example.com/nutrition",
+          role: "official-nutrition",
+        },
+      ],
     }),
     officialAllergenStatuses.notFound,
   );
@@ -2914,7 +3547,10 @@ test("weak direct allergen smear is not treated as sufficient extracted data", (
   const quality = evaluateRestaurantLaunchQuality({ restaurant });
 
   assert.equal(officialAllergenSmearSummary(restaurant).suspected, true);
-  assert.equal(officialAllergenDistributionSummary(restaurant).likelyDirectSmear, true);
+  assert.equal(
+    officialAllergenDistributionSummary(restaurant).likelyDirectSmear,
+    true,
+  );
   assert.notEqual(
     officialStatusForSource({ source, restaurant, sourceResults: [] }),
     officialAllergenStatuses.extracted,
@@ -2958,14 +3594,23 @@ test("official broad cross-contact evidence is not treated as direct allergen sm
   assert.equal(officialAllergenSmearSummary(restaurant).suspected, false);
   assert.equal(
     officialStatusForSource({
-      source: { id: restaurant.id, allergenUrls: ["https://example.com/bww-allergen-guide.pdf"] },
+      source: {
+        id: restaurant.id,
+        allergenUrls: ["https://example.com/bww-allergen-guide.pdf"],
+      },
       restaurant,
       sourceResults: [],
     }),
     officialAllergenStatuses.extracted,
   );
-  assert.equal(quality.issueCodes.includes("official-direct-allergen-smear"), false);
-  assert.equal(quality.issueCodes.includes("official-cross-contact-needs-evidence"), false);
+  assert.equal(
+    quality.issueCodes.includes("official-direct-allergen-smear"),
+    false,
+  );
+  assert.equal(
+    quality.issueCodes.includes("official-cross-contact-needs-evidence"),
+    false,
+  );
 
   const globalNoticeRestaurant = {
     id: "global-contact-notice-test",
@@ -2973,7 +3618,16 @@ test("official broad cross-contact evidence is not treated as direct allergen sm
       name: `Menu Item ${index + 1}`,
       allergenSourceType: "official-global-cross-contact-note",
       allergens: [],
-      mayContain: ["egg", "fish", "milk", "peanut", "shellfish", "soy", "tree-nut", "wheat"],
+      mayContain: [
+        "egg",
+        "fish",
+        "milk",
+        "peanut",
+        "shellfish",
+        "soy",
+        "tree-nut",
+        "wheat",
+      ],
       evidence: [
         {
           sourceKind: "official-website-note",
@@ -2983,7 +3637,11 @@ test("official broad cross-contact evidence is not treated as direct allergen sm
     })),
   };
 
-  assert.equal(officialAllergenDistributionSummary(globalNoticeRestaurant).supportedBroadCrossContact, true);
+  assert.equal(
+    officialAllergenDistributionSummary(globalNoticeRestaurant)
+      .supportedBroadCrossContact,
+    true,
+  );
 });
 
 test("high direct allergens with row-level evidence are audited but not automatically rejected", () => {
@@ -3009,7 +3667,10 @@ test("high direct allergens with row-level evidence are audited but not automati
   assert.equal(officialAllergenSmearSummary(restaurant).suspected, false);
   assert.equal(
     officialStatusForSource({
-      source: { id: restaurant.id, allergenUrls: ["https://example.com/allergen-matrix.pdf"] },
+      source: {
+        id: restaurant.id,
+        allergenUrls: ["https://example.com/allergen-matrix.pdf"],
+      },
       restaurant,
       sourceResults: [],
     }),
@@ -3023,7 +3684,15 @@ test("P.F. Chang's strict official direct matrix is supported by row-level sourc
     items: Array.from({ length: 60 }, (_, index) => ({
       name: `P.F. Chang's Matrix Item ${index + 1}`,
       allergenSourceType: "official-allergen-menu",
-      allergens: ["egg", "milk", "sesame", "shellfish", "soy", "sulfites", "wheat"],
+      allergens: [
+        "egg",
+        "milk",
+        "sesame",
+        "shellfish",
+        "soy",
+        "sulfites",
+        "wheat",
+      ],
       mayContain: [],
       evidence: [
         {
@@ -3100,12 +3769,28 @@ test("official spreadsheet allergen matrices produce official item records", () 
 
 test("official spreadsheet allergen matrices ignore nutrition numbers in stale allergen columns", () => {
   const rows = [
-    ["NUTRITION FACTS", "Serving Size", "Calories", "ALLERGENS", null, null, null],
+    [
+      "NUTRITION FACTS",
+      "Serving Size",
+      "Calories",
+      "ALLERGENS",
+      null,
+      null,
+      null,
+    ],
     [null, null, null, "Egg", "Milk", "Wheat", "Soy"],
     ["APPETIZERS", null, null, null, null, null, null],
     ["Pretzel Sticks", 1, 720, null, "x", "x", null],
     ["CLASSIC CONCESSIONS", null, null, null, null, null, null],
-    ["Column1", "Column2", "Column3", "Column4", "Column5", "Column6", "Column7"],
+    [
+      "Column1",
+      "Column2",
+      "Column3",
+      "Column4",
+      "Column5",
+      "Column6",
+      "Column7",
+    ],
     ["Brewed Coffee", "12oz", 0, 0, 0, 2, 0],
   ];
   const worksheet = XLSX.utils.aoa_to_sheet(rows);
@@ -3127,7 +3812,10 @@ test("official spreadsheet allergen matrices ignore nutrition numbers in stale a
   assert.ok(coffee);
   assert.equal(coffee.allergenSourceType, "unavailable");
   assert.deepEqual(coffee.allergens, []);
-  assert.equal(records.some((record) => record.name === "Column1"), false);
+  assert.equal(
+    records.some((record) => record.name === "Column1"),
+    false,
+  );
 });
 
 test("P.F. Chang's official allergen tables keep section categories and row evidence", async () => {
@@ -3144,7 +3832,9 @@ test("P.F. Chang's official allergen tables keep section categories and row evid
     "https://www.pfchangs.com/nutrition/allergens-to-go",
     "allergen",
   );
-  const item = records.items.find((record) => record.name === "Dynamite Popcorn Chicken");
+  const item = records.items.find(
+    (record) => record.name === "Dynamite Popcorn Chicken",
+  );
 
   assert.ok(item);
   assert.equal(item.category, "Appetizers");
@@ -3157,7 +3847,10 @@ test("P.F. Chang's official allergen tables keep section categories and row evid
     "sulfites",
     "wheat",
   ]);
-  assert.match(item.evidenceText, /Dynamite Popcorn Chicken: Wheat X; Soy X; Milk X/);
+  assert.match(
+    item.evidenceText,
+    /Dynamite Popcorn Chicken: Wheat X; Soy X; Milk X/,
+  );
 });
 
 test("record merge prefers specific menu sections over generic cuisine categories", () => {
@@ -3184,7 +3877,11 @@ test("record merge prefers specific menu sections over generic cuisine categorie
 
   assert.equal(item.category, "Appetizers");
   assert.deepEqual(item.allergens.sort(), ["soy", "wheat"]);
-  assert.ok(item.evidence.some((entry) => /Dynamite Popcorn Chicken/.test(entry.text ?? "")));
+  assert.ok(
+    item.evidence.some((entry) =>
+      /Dynamite Popcorn Chicken/.test(entry.text ?? ""),
+    ),
+  );
 });
 
 test("record merge does not union official allergens across different real sections", () => {
@@ -3205,7 +3902,8 @@ test("record merge does not union official allergens across different real secti
       sourceUrl: "https://example.com/allergens.html",
       allergenSourceType: "official-allergen-menu",
       allergens: ["wheat", "soy", "milk", "shellfish"],
-      evidenceText: "Official lunch row: Mongolian Beef: Wheat X; Soy X; Milk X; Shellfish X.",
+      evidenceText:
+        "Official lunch row: Mongolian Beef: Wheat X; Soy X; Milk X; Shellfish X.",
     },
   ]);
 
@@ -3231,7 +3929,17 @@ test("record merge keeps row-level official matrix allergens over weak Nutrition
       sourceKind: "official-api",
       sourceUrl: "https://www.nutritionix.com/tgi-fridays/menu/premium",
       allergenSourceType: "official-allergen-menu",
-      allergens: ["egg", "fish", "gluten", "milk", "peanut", "shellfish", "soy", "tree-nut", "wheat"],
+      allergens: [
+        "egg",
+        "fish",
+        "gluten",
+        "milk",
+        "peanut",
+        "shellfish",
+        "soy",
+        "tree-nut",
+        "wheat",
+      ],
       description: "TGI Fridays Nutritionix online nutrition guide.",
       nutritionFacts: { calories: 1120 },
     },
@@ -3249,7 +3957,8 @@ test("P.F. Chang's official PDF fallback rows use reviewed source-profile sectio
       name: "Korean Sesame Chicken",
       category: "Asian",
       sourceKind: "pdf-matrix",
-      sourceUrl: "https://www.pfchangs.com/docs/default-source/pdf/pfc-national-menu-allergens-june-2026.pdf",
+      sourceUrl:
+        "https://www.pfchangs.com/docs/default-source/pdf/pfc-national-menu-allergens-june-2026.pdf",
       allergenSourceType: "official-allergen-menu",
       allergens: ["wheat", "soy", "milk", "egg", "shellfish", "sesame"],
       evidenceText: "Official P.F. Chang's menu item from allergen matrix.",
@@ -3261,14 +3970,24 @@ test("P.F. Chang's official PDF fallback rows use reviewed source-profile sectio
       sourceUrl: "https://www.pfchangs.com/nutrition/allergens-to-go",
       allergenSourceType: "official-allergen-menu",
       allergens: ["soy"],
-      evidenceText: "Official P.F. Chang's allergen matrix row: Chicken: Soy X.",
+      evidenceText:
+        "Official P.F. Chang's allergen matrix row: Chicken: Soy X.",
     },
   ]);
-  const item = items.find((candidate) => candidate.name === "Korean Sesame Chicken");
+  const item = items.find(
+    (candidate) => candidate.name === "Korean Sesame Chicken",
+  );
 
   assert.ok(item);
   assert.equal(item.category, "Chicken");
-  assert.deepEqual(item.allergens.sort(), ["egg", "milk", "sesame", "shellfish", "soy", "wheat"]);
+  assert.deepEqual(item.allergens.sort(), [
+    "egg",
+    "milk",
+    "sesame",
+    "shellfish",
+    "soy",
+    "wheat",
+  ]);
 });
 
 test("source menu name gate keeps food items with drink-like substrings", () => {
@@ -3276,7 +3995,10 @@ test("source menu name gate keeps food items with drink-like substrings", () => 
 
   assert.equal(isAllowedSourceMenuName(source, "Golden Original"), true);
   assert.equal(isAllowedSourceMenuName(source, "Spicy Original Wing"), true);
-  assert.equal(isAllowedSourceMenuName(source, "Golden Original Sandwich"), true);
+  assert.equal(
+    isAllowedSourceMenuName(source, "Golden Original Sandwich"),
+    true,
+  );
   assert.equal(isAllowedSourceMenuName(source, "Rose Pasta"), true);
   assert.equal(isAllowedSourceMenuName(source, "Rose Ddeok-Bokki"), true);
   assert.equal(isAllowedSourceMenuName(source, "Lemon Tonic"), false);
@@ -3330,8 +4052,17 @@ test("bb.q Chicken PDF parser groups allergen text by item row bands", () => {
 
   assert.ok(honeyGarlic);
   assert.deepEqual(honeyGarlic.allergens.sort(), ["soy", "wheat"]);
-  assert.deepEqual(honeyGarlic.mayContain.sort(), ["egg", "fish", "milk", "peanut", "shellfish"]);
-  assert.match(honeyGarlic.evidenceText, /Honey Garlic allergens: Wheat, Soybean/);
+  assert.deepEqual(honeyGarlic.mayContain.sort(), [
+    "egg",
+    "fish",
+    "milk",
+    "peanut",
+    "shellfish",
+  ]);
+  assert.match(
+    honeyGarlic.evidenceText,
+    /Honey Garlic allergens: Wheat, Soybean/,
+  );
   assert.match(honeyGarlic.evidenceText, /Shrimp, Squid, Abalone and Mussels/);
 });
 
@@ -3354,11 +4085,18 @@ test("bb.q Chicken official PDF parser preserves official rows with drink-like s
   assert.ok(byName.has("Spicy Original Wing"));
   assert.ok(byName.has("Rose Pasta"));
   assert.ok(byName.has("Rose Ddeok-Bokki"));
-  assert.deepEqual(byName.get("Rose Pasta").allergens.sort(), ["egg", "milk", "shellfish", "soy", "wheat"]);
+  assert.deepEqual(byName.get("Rose Pasta").allergens.sort(), [
+    "egg",
+    "milk",
+    "shellfish",
+    "soy",
+    "wheat",
+  ]);
 });
 
 test("OSI Top 9 official allergen PDFs map Y markers to item allergens and sections", async () => {
-  const pdfPath = "/tmp/allergy-audit/bonefish/BonefishGrillAllergensApril2026.pdf";
+  const pdfPath =
+    "/tmp/allergy-audit/bonefish/BonefishGrillAllergensApril2026.pdf";
 
   if (!existsSync(pdfPath)) {
     return;
@@ -3371,15 +4109,31 @@ test("OSI Top 9 official allergen PDFs map Y markers to item allergens and secti
   );
   const byName = new Map(records.map((record) => [record.name, record]));
   const starterBangBangShrimp = records.find(
-    (record) => record.name === "Bang Bang Shrimp" && record.category === "Starters & Sharing",
+    (record) =>
+      record.name === "Bang Bang Shrimp" &&
+      record.category === "Starters & Sharing",
   );
 
   assert.ok(records.length >= 200);
-  assert.equal(records.filter((record) => record.category === "Eggs").length, 0);
+  assert.equal(
+    records.filter((record) => record.category === "Eggs").length,
+    0,
+  );
   assert.ok(starterBangBangShrimp);
-  assert.deepEqual(starterBangBangShrimp.allergens.sort(), ["egg", "milk", "shellfish", "soy", "wheat"]);
+  assert.deepEqual(starterBangBangShrimp.allergens.sort(), [
+    "egg",
+    "milk",
+    "shellfish",
+    "soy",
+    "wheat",
+  ]);
   assert.deepEqual(byName.get("Jasmine Rice").allergens, []);
-  assert.deepEqual(byName.get("Bourbon Glazed Salmon").allergens.sort(), ["egg", "fish", "soy", "wheat"]);
+  assert.deepEqual(byName.get("Bourbon Glazed Salmon").allergens.sort(), [
+    "egg",
+    "fish",
+    "soy",
+    "wheat",
+  ]);
 });
 
 test("Nando's official allergen PDF separates direct and may-contain disclosures", async () => {
@@ -3398,11 +4152,33 @@ test("Nando's official allergen PDF separates direct and may-contain disclosures
 
   assert.ok(records.length >= 100);
   assert.deepEqual(byName.get("Boneless Breast").allergens, []);
-  assert.deepEqual(byName.get("Boneless Breast").mayContain.sort(), ["egg", "mustard", "soy", "wheat"]);
+  assert.deepEqual(byName.get("Boneless Breast").mayContain.sort(), [
+    "egg",
+    "mustard",
+    "soy",
+    "wheat",
+  ]);
   assert.deepEqual(byName.get("Portuguese Roll").allergens.sort(), ["wheat"]);
-  assert.deepEqual(byName.get("Portuguese Roll").mayContain.sort(), ["egg", "milk", "sesame", "soy", "sulfites"]);
-  assert.deepEqual(byName.get("Chicken Sandwich").allergens.sort(), ["egg", "gluten", "mustard", "soy", "wheat"]);
-  assert.deepEqual(byName.get("Chicken Sandwich").mayContain.sort(), ["milk", "sesame", "sulfites", "tree-nut"]);
+  assert.deepEqual(byName.get("Portuguese Roll").mayContain.sort(), [
+    "egg",
+    "milk",
+    "sesame",
+    "soy",
+    "sulfites",
+  ]);
+  assert.deepEqual(byName.get("Chicken Sandwich").allergens.sort(), [
+    "egg",
+    "gluten",
+    "mustard",
+    "soy",
+    "wheat",
+  ]);
+  assert.deepEqual(byName.get("Chicken Sandwich").mayContain.sort(), [
+    "milk",
+    "sesame",
+    "sulfites",
+    "tree-nut",
+  ]);
 });
 
 test("RASA official allergy chart ignores unsupported columns and maps nuts cautiously", async () => {
@@ -3421,15 +4197,33 @@ test("RASA official allergy chart ignores unsupported columns and maps nuts caut
 
   assert.equal(records.length, 46);
   assert.deepEqual(byName.get("Masala Quinoa").allergens, []);
-  assert.deepEqual(byName.get("Tandoori Paneer").allergens.sort(), ["milk", "soy"]);
-  assert.deepEqual(byName.get("Peanut Sesame Sauce").allergens.sort(), ["peanut", "sesame", "tree-nut"]);
-  assert.deepEqual(byName.get("Garlic Naan").allergens.sort(), ["egg", "milk", "wheat"]);
-  assert.equal(records.some((record) => record.category === "Indian"), false);
-  assert.equal(records.some((record) => record.allergens.includes("shellfish")), false);
+  assert.deepEqual(byName.get("Tandoori Paneer").allergens.sort(), [
+    "milk",
+    "soy",
+  ]);
+  assert.deepEqual(byName.get("Peanut Sesame Sauce").allergens.sort(), [
+    "peanut",
+    "sesame",
+    "tree-nut",
+  ]);
+  assert.deepEqual(byName.get("Garlic Naan").allergens.sort(), [
+    "egg",
+    "milk",
+    "wheat",
+  ]);
+  assert.equal(
+    records.some((record) => record.category === "Indian"),
+    false,
+  );
+  assert.equal(
+    records.some((record) => record.allergens.includes("shellfish")),
+    false,
+  );
 });
 
 test("Insomnia Cookies official nutrition guide parses product pages instead of ingredient fragments", async () => {
-  const pdfPath = "/tmp/allergy-audit/insomnia/Insomnia-Master-Nutrition-Facts-Guide.pdf";
+  const pdfPath =
+    "/tmp/allergy-audit/insomnia/Insomnia-Master-Nutrition-Facts-Guide.pdf";
 
   if (!existsSync(pdfPath)) {
     return;
@@ -3437,13 +4231,22 @@ test("Insomnia Cookies official nutrition guide parses product pages instead of 
 
   const records = await extractInsomniaCookiesNutritionGuidePdfItems(
     readFileSync(pdfPath),
-    { id: "insomnia-cookies-dc", name: "Insomnia Cookies", category: "Dessert" },
+    {
+      id: "insomnia-cookies-dc",
+      name: "Insomnia Cookies",
+      category: "Dessert",
+    },
     "https://cdn1.insomniacookies.com/uploads/Insomnia%20Cookies%20Master%20Nutrition%20Facts%20Guide%20(1).pdf",
   );
   const byName = new Map(records.map((record) => [record.name, record]));
 
   assert.ok(records.length >= 25);
-  assert.deepEqual(byName.get("Chocolate Chunk").allergens.sort(), ["egg", "milk", "soy", "wheat"]);
+  assert.deepEqual(byName.get("Chocolate Chunk").allergens.sort(), [
+    "egg",
+    "milk",
+    "soy",
+    "wheat",
+  ]);
   assert.deepEqual(byName.get("White Chocolate Macadamia").allergens.sort(), [
     "egg",
     "milk",
@@ -3451,17 +4254,25 @@ test("Insomnia Cookies official nutrition guide parses product pages instead of 
     "tree-nut",
     "wheat",
   ]);
-  assert.deepEqual(byName.get("Vegan Gluten-Free Chocolate Chip").allergens.sort(), ["soy"]);
-  assert.ok(byName.get("Vegan Gluten-Free Chocolate Chip").mayContain.includes("gluten"));
-  assert.deepEqual(byName.get("Peanut Butter Insomnia Tracks").allergens.sort(), [
-    "egg",
-    "gluten",
-    "milk",
-    "peanut",
-    "soy",
-    "wheat",
-  ]);
-  assert.equal(records.some((record) => /DEXTROSE|VANILLA EXTRACT|DIGLYCERIDES/i.test(record.name)), false);
+  assert.deepEqual(
+    byName.get("Vegan Gluten-Free Chocolate Chip").allergens.sort(),
+    ["soy"],
+  );
+  assert.ok(
+    byName
+      .get("Vegan Gluten-Free Chocolate Chip")
+      .mayContain.includes("gluten"),
+  );
+  assert.deepEqual(
+    byName.get("Peanut Butter Insomnia Tracks").allergens.sort(),
+    ["egg", "gluten", "milk", "peanut", "soy", "wheat"],
+  );
+  assert.equal(
+    records.some((record) =>
+      /DEXTROSE|VANILLA EXTRACT|DIGLYCERIDES/i.test(record.name),
+    ),
+    false,
+  );
 });
 
 test("Canva allergen table footnotes produce official fried cross-contact caution records only", () => {
@@ -3493,7 +4304,10 @@ test("Canva allergen table footnotes produce official fried cross-contact cautio
     records.map((record) => record.name),
     ["CRISPY SHRIMP", "HUSH PUPPIES"],
   );
-  assert.deepEqual(records.map((record) => record.allergens), [[], []]);
+  assert.deepEqual(
+    records.map((record) => record.allergens),
+    [[], []],
+  );
   assert.deepEqual(
     records.map((record) => record.mayContain),
     [
@@ -3502,7 +4316,9 @@ test("Canva allergen table footnotes produce official fried cross-contact cautio
     ],
   );
   assert.ok(
-    records.every((record) => record.allergenSourceType === "official-allergen-menu"),
+    records.every(
+      (record) => record.allergenSourceType === "official-allergen-menu",
+    ),
   );
 });
 
@@ -3653,12 +4469,20 @@ test("Darden platform location pages discover and parse hosted menu APIs", () =>
     "https://www.thecapitalburger.com/locations/dc/washington/washington-dc/3400",
     "menu",
   );
-  const dardenLink = htmlResult.apiLinks.find((link) => link.label === "Darden platform menu API");
+  const dardenLink = htmlResult.apiLinks.find(
+    (link) => link.label === "Darden platform menu API",
+  );
 
   assert.deepEqual(htmlResult.items, []);
   assert.ok(dardenLink);
-  assert.equal(dardenLink.url, "https://www.thecapitalburger.com/api/menu?restaurantNum=3400");
-  assert.equal(dardenLink.fetchOptions.extraHeaders["X-Concept-Code"], "CAPITALBURGER");
+  assert.equal(
+    dardenLink.url,
+    "https://www.thecapitalburger.com/api/menu?restaurantNum=3400",
+  );
+  assert.equal(
+    dardenLink.fetchOptions.extraHeaders["X-Concept-Code"],
+    "CAPITALBURGER",
+  );
 
   const records = extractJsonMenuFragmentItems(
     JSON.stringify({
@@ -3693,7 +4517,10 @@ test("Darden platform location pages discover and parse hosted menu APIs", () =>
     "api",
   );
 
-  assert.deepEqual(records.map((record) => record.name), ["Classic Cheeseburger"]);
+  assert.deepEqual(
+    records.map((record) => record.name),
+    ["Classic Cheeseburger"],
+  );
   assert.equal(records[0].category, "Signature Burgers");
   assert.equal(records[0].sourceKind, "darden-platform-api");
   assert.match(records[0].description, /Vermont Cheddar/);
@@ -3704,11 +4531,19 @@ test("Darden platform location pages discover and parse hosted menu APIs", () =>
     "https://www.eddiev.com/locations/va/mclean/mclean/8516",
     "menu",
   );
-  const eddieVsLink = eddieVsResult.apiLinks.find((link) => link.label === "Darden platform menu API");
+  const eddieVsLink = eddieVsResult.apiLinks.find(
+    (link) => link.label === "Darden platform menu API",
+  );
 
   assert.ok(eddieVsLink);
-  assert.equal(eddieVsLink.url, "https://www.eddiev.com/api/menu?restaurantNum=8516");
-  assert.equal(eddieVsLink.fetchOptions.extraHeaders["X-Concept-Code"], "EDDIEVS");
+  assert.equal(
+    eddieVsLink.url,
+    "https://www.eddiev.com/api/menu?restaurantNum=8516",
+  );
+  assert.equal(
+    eddieVsLink.fetchOptions.extraHeaders["X-Concept-Code"],
+    "EDDIEVS",
+  );
 });
 
 test("Wix rich text menu sections produce shared menu records", () => {
@@ -3772,14 +4607,20 @@ test("official menu descriptions with explicit contains text become official all
   const alertRecord = normalizeRecord({
     allergenSourceType: "unavailable",
     category: "Fresh Fish",
-    description: "Grilled ahi tuna. *Allergy Alert: Finfish, Gluten, Sesame, Soy*",
+    description:
+      "Grilled ahi tuna. *Allergy Alert: Finfish, Gluten, Sesame, Soy*",
     name: "Ahi Tuna Filet",
     sourceKind: "html-menu",
     sourceUrl: "https://www.joes.net/washington-dc/menus",
   });
 
   assert.equal(alertRecord.allergenSourceType, "official-ingredients");
-  assert.deepEqual(alertRecord.allergens.sort(), ["fish", "gluten", "sesame", "soy"]);
+  assert.deepEqual(alertRecord.allergens.sort(), [
+    "fish",
+    "gluten",
+    "sesame",
+    "soy",
+  ]);
   assert.match(alertRecord.evidence[0].text, /Allergy Alert/i);
 
   const facilityRecord = normalizeRecord({
@@ -3794,12 +4635,20 @@ test("official menu descriptions with explicit contains text become official all
 
   assert.equal(facilityRecord.allergenSourceType, "official-ingredients");
   assert.deepEqual(facilityRecord.allergens.sort(), ["milk", "tree-nut"]);
-  assert.deepEqual(facilityRecord.mayContain.sort(), ["gluten", "milk", "peanut", "soy", "tree-nut", "wheat"]);
+  assert.deepEqual(facilityRecord.mayContain.sort(), [
+    "gluten",
+    "milk",
+    "peanut",
+    "soy",
+    "tree-nut",
+    "wheat",
+  ]);
 
   const legendRecord = normalizeRecord({
     allergenSourceType: "unavailable",
     category: "Dinner",
-    description: "Dinner v-vegetarian, vg-vegan, n-contains nuts, g-contains gluten d-contains dairy, sh-contains shellfish",
+    description:
+      "Dinner v-vegetarian, vg-vegan, n-contains nuts, g-contains gluten d-contains dairy, sh-contains shellfish",
     name: "Dietary Key",
     sourceKind: "html-menu",
     sourceUrl: "https://official.example.com/menu",
@@ -3832,7 +4681,10 @@ test("official menu descriptions with explicit contains text become official all
     sourceUrl: "https://official.example.com/menu",
   });
 
-  assert.equal(glutenFreeOfficialRecord.allergenSourceType, "official-ingredients");
+  assert.equal(
+    glutenFreeOfficialRecord.allergenSourceType,
+    "official-ingredients",
+  );
   assert.deepEqual(glutenFreeOfficialRecord.allergens.sort(), ["egg", "milk"]);
   assert.deepEqual(glutenFreeOfficialRecord.mayContain, []);
 });
@@ -3864,7 +4716,8 @@ test("Wix restaurant menu API produces shared menu records", () => {
   const payload = {
     items: [
       {
-        description: "Marinated short rib grilled over flame with rice and banchan",
+        description:
+          "Marinated short rib grilled over flame with rice and banchan",
         image: { url: "https://static.wixstatic.com/media/galbi.jpg" },
         name: "Galbi BBQ Plate",
         visible: true,
@@ -3884,7 +4737,10 @@ test("Wix restaurant menu API produces shared menu records", () => {
     "api",
   );
 
-  assert.deepEqual(records.map((record) => record.name), ["Galbi BBQ Plate", "Soondubu Jjigae"]);
+  assert.deepEqual(
+    records.map((record) => record.name),
+    ["Galbi BBQ Plate", "Soondubu Jjigae"],
+  );
   assert.equal(records[0].category, "Korean");
   assert.equal(records[0].sourceKind, "wix-restaurant-menus-api");
 });
@@ -3892,12 +4748,32 @@ test("Wix restaurant menu API produces shared menu records", () => {
 test("Wix restaurant menu API drops default demo catalogs", () => {
   const payload = {
     items: [
-      { description: "Our classic burger with lettuce", name: "Classic burger", visible: true },
-      { description: "Topped with raspberry jam", name: "Classic cheesecake", visible: true },
-      { description: "Fresh catch of the day", name: "Fish of the day", visible: true },
+      {
+        description: "Our classic burger with lettuce",
+        name: "Classic burger",
+        visible: true,
+      },
+      {
+        description: "Topped with raspberry jam",
+        name: "Classic cheesecake",
+        visible: true,
+      },
+      {
+        description: "Fresh catch of the day",
+        name: "Fish of the day",
+        visible: true,
+      },
       { description: "Fresh out the oven", name: "Brownie", visible: true },
-      { description: "Served with ice cream", name: "Sticky date & ice cream", visible: true },
-      { description: "Grilled tofu skewers", name: "Tofu skewers", visible: true },
+      {
+        description: "Served with ice cream",
+        name: "Sticky date & ice cream",
+        visible: true,
+      },
+      {
+        description: "Grilled tofu skewers",
+        name: "Tofu skewers",
+        visible: true,
+      },
     ],
   };
 
@@ -3939,7 +4815,11 @@ test("schema.org OfferCatalog sections preserve menu categories", () => {
 
   const records = extractJsonMenuFragmentItems(
     JSON.stringify(payload),
-    { category: "Bakery", id: "pluma-bakery-dc", name: "Pluma by Bluebird Bakery" },
+    {
+      category: "Bakery",
+      id: "pluma-bakery-dc",
+      name: "Pluma by Bluebird Bakery",
+    },
     "https://places.singleplatform.com/example/menu",
     "menu",
   );
@@ -4015,11 +4895,15 @@ test("short menu links are discovered when labels identify food menus", () => {
 
 test("Google Drive preview URLs canonicalize to direct downloads", () => {
   assert.equal(
-    directGoogleDriveDownloadUrl("https://drive.google.com/file/d/1hOfcj4GSuVPh0iU60xuj5LKSmaskpMnY/view?usp=sharing"),
+    directGoogleDriveDownloadUrl(
+      "https://drive.google.com/file/d/1hOfcj4GSuVPh0iU60xuj5LKSmaskpMnY/view?usp=sharing",
+    ),
     "https://drive.google.com/uc?export=download&id=1hOfcj4GSuVPh0iU60xuj5LKSmaskpMnY",
   );
   assert.equal(
-    directGoogleDriveDownloadUrl("https://drive.google.com/uc?export=download&id=abc123"),
+    directGoogleDriveDownloadUrl(
+      "https://drive.google.com/uc?export=download&id=abc123",
+    ),
     null,
   );
 });
@@ -4071,7 +4955,11 @@ test("official allergen iframe embeds are discovered as allergen documents", () 
   `;
   const result = extractHtmlItems(
     html,
-    { category: "Spanish", id: "boqueria-penn-quarter-dc", name: "Boqueria Test" },
+    {
+      category: "Spanish",
+      id: "boqueria-penn-quarter-dc",
+      name: "Boqueria Test",
+    },
     "https://boqueriarestaurant.com/allergy-charts/",
     "allergen",
   );
@@ -4156,7 +5044,9 @@ test("generic HTML allergen matrices parse category-first headers and direct X m
     "https://example.com/nutrition",
     "allergen",
   );
-  const records = result.items.filter((item) => item.sourceKind === "html-allergen-matrix");
+  const records = result.items.filter(
+    (item) => item.sourceKind === "html-allergen-matrix",
+  );
 
   assert.deepEqual(
     records.map((record) => record.name),
@@ -4165,10 +5055,16 @@ test("generic HTML allergen matrices parse category-first headers and direct X m
   assert.deepEqual(records[0].category, "Charburgers");
   assert.deepEqual(records[0].allergens.sort(), ["milk", "wheat"]);
   assert.deepEqual(records[0].mayContain, []);
-  assert.match(records[0].evidenceText, /Charburger with Cheese: contains milk, wheat/);
+  assert.match(
+    records[0].evidenceText,
+    /Charburger with Cheese: contains milk, wheat/,
+  );
   assert.deepEqual(records[1].allergens, ["egg"]);
   assert.deepEqual(records[1].mayContain, ["milk"]);
-  assert.match(records[1].evidenceText, /Ranch: contains egg; may contain milk/);
+  assert.match(
+    records[1].evidenceText,
+    /Ranch: contains egg; may contain milk/,
+  );
 });
 
 test("generic HTML allergen matrices parse icon-only table cells", () => {
@@ -4207,9 +5103,14 @@ test("generic HTML allergen matrices parse icon-only table cells", () => {
     "https://example.com/allergen-information",
     "allergen",
   );
-  const records = result.items.filter((item) => item.sourceKind === "html-allergen-matrix");
+  const records = result.items.filter(
+    (item) => item.sourceKind === "html-allergen-matrix",
+  );
 
-  assert.deepEqual(records.map((record) => record.name), ["Orange Chicken", "Cashew Chicken"]);
+  assert.deepEqual(
+    records.map((record) => record.name),
+    ["Orange Chicken", "Cashew Chicken"],
+  );
   assert.deepEqual(records[0].allergens.sort(), ["egg", "wheat"]);
   assert.equal(records[0].allergens.includes("gluten"), false);
   assert.match(records[0].evidenceText, /Orange Chicken: contains egg, wheat/);
@@ -4249,18 +5150,32 @@ test("generic HTML allergen matrices parse div-based official allergy charts", (
 
   const result = extractHtmlItems(
     html,
-    { category: "Spanish", id: "boqueria-penn-quarter-dc", name: "Boqueria Test" },
+    {
+      category: "Spanish",
+      id: "boqueria-penn-quarter-dc",
+      name: "Boqueria Test",
+    },
     "https://www.boquepedia.net/allergies-embed",
     "allergen",
   );
-  const records = result.items.filter((item) => item.sourceKind === "html-allergen-matrix");
+  const records = result.items.filter(
+    (item) => item.sourceKind === "html-allergen-matrix",
+  );
 
   assert.equal(records.length, 1);
   assert.equal(records[0].name, "Caesar Salad");
   assert.equal(records[0].category, "Verduras");
-  assert.deepEqual(records[0].allergens.sort(), ["egg", "fish", "milk", "tree-nut"]);
+  assert.deepEqual(records[0].allergens.sort(), [
+    "egg",
+    "fish",
+    "milk",
+    "tree-nut",
+  ]);
   assert.match(records[0].description, /Baby gem/);
-  assert.match(records[0].evidenceText, /Caesar Salad: contains milk, egg, tree-nut, fish/);
+  assert.match(
+    records[0].evidenceText,
+    /Caesar Salad: contains milk, egg, tree-nut, fish/,
+  );
 });
 
 test("generic HTML allergen matrices parse SVG checkmark charts", () => {
@@ -4285,7 +5200,9 @@ test("generic HTML allergen matrices parse SVG checkmark charts", () => {
     "https://example.com/allergen-guide",
     "allergen",
   );
-  const records = result.items.filter((item) => item.sourceKind === "svg-allergen-matrix");
+  const records = result.items.filter(
+    (item) => item.sourceKind === "svg-allergen-matrix",
+  );
 
   assert.equal(records.length, 2);
   assert.deepEqual(records[0].allergens.sort(), ["gluten", "wheat"]);
@@ -4322,16 +5239,25 @@ test("generic HTML allergen matrices parse class-based grid charts", () => {
 
   const result = extractHtmlItems(
     html,
-    { category: "Steakhouse", id: "chima-steakhouse-tysons-tysons-va-dc-metro", name: "Chima Test" },
+    {
+      category: "Steakhouse",
+      id: "chima-steakhouse-tysons-tysons-va-dc-metro",
+      name: "Chima Test",
+    },
     "https://example.com/menu-allergies/",
     "allergen",
   );
-  const records = result.items.filter((item) => item.sourceKind === "class-grid-allergen-matrix");
+  const records = result.items.filter(
+    (item) => item.sourceKind === "class-grid-allergen-matrix",
+  );
 
   assert.equal(records.length, 1);
   assert.equal(records[0].name, "Breaded Coalho Cheese");
   assert.deepEqual(records[0].allergens.sort(), ["gluten", "milk"]);
-  assert.match(records[0].evidenceText, /Breaded Coalho Cheese: contains milk, gluten/);
+  assert.match(
+    records[0].evidenceText,
+    /Breaded Coalho Cheese: contains milk, gluten/,
+  );
 });
 
 test("product pages extract official allergens from embedded ingredient metafields", () => {
@@ -4459,7 +5385,9 @@ test("embedded flavor nutrition data emits official allergen records from contai
     "https://example.com/flavor-nutrition",
     "allergen",
   );
-  const records = result.items.filter((item) => item.sourceKind === "embedded-flavor-nutrition");
+  const records = result.items.filter(
+    (item) => item.sourceKind === "embedded-flavor-nutrition",
+  );
 
   assert.equal(records.length, 1);
   assert.equal(records[0].name, "Birthday Cake");
@@ -4469,7 +5397,9 @@ test("embedded flavor nutrition data emits official allergen records from contai
 });
 
 test("generated Bruster's official flavor rows keep alcohol-flavored ice cream as food", () => {
-  const brusters = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "chain-bruster-s-ice-cream");
+  const brusters = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "chain-bruster-s-ice-cream",
+  );
   const rumRaisin = brusters?.items.find((item) => item.id === "rum-raisin");
 
   assert.ok(brusters);
@@ -4500,11 +5430,10 @@ test("iMenuPro embedded scripts produce menu records with explicit official alle
     "api",
   );
 
-  assert.deepEqual(records.map((record) => record.name), [
-    "Calamari Fritti",
-    "Bruleed Citrus",
-    "Margherita",
-  ]);
+  assert.deepEqual(
+    records.map((record) => record.name),
+    ["Calamari Fritti", "Bruleed Citrus", "Margherita"],
+  );
   assert.deepEqual(records[0].allergens, ["shellfish"]);
   assert.deepEqual(records[1].allergens, ["tree-nut"]);
   assert.equal(records[2].allergenSourceType, "unavailable");
@@ -4534,7 +5463,9 @@ test("Lunchbox Nova storefronts discover app bundles and parse class-based aller
     "menu",
   );
 
-  const bundleLink = htmlResult.apiLinks.find((link) => link.role === "lunchbox-nova-app-bundle");
+  const bundleLink = htmlResult.apiLinks.find(
+    (link) => link.role === "lunchbox-nova-app-bundle",
+  );
 
   assert.ok(bundleLink);
   assert.equal(bundleLink.url, "https://order.mamannyc.com/js/app.abc123.js");
@@ -4585,7 +5516,10 @@ test("Lunchbox Nova storefronts discover app bundles and parse class-based aller
   assert.equal(records.length, 2);
   assert.equal(records[0].name, "Cheddar Sandwich");
   assert.deepEqual(records[0].allergens.sort(), ["milk", "wheat"]);
-  assert.equal(records[0].allergenSourceType, "official-product-allergen-section");
+  assert.equal(
+    records[0].allergenSourceType,
+    "official-product-allergen-section",
+  );
   assert.equal(records[0].sourceKind, "lunchbox-nova-menu-api");
   assert.equal(records[1].allergenSourceType, "unavailable");
 });
@@ -4651,7 +5585,9 @@ test("Squarespace menu roots discover menu pages and parse native menu blocks", 
     ["Breakfast:Bacon Egg & Cheese", "Breakfast:Smoked Salmon"],
   );
   assert.match(
-    menuResult.items.find((item) => item.sourceKind === "squarespace-menu-block")?.description,
+    menuResult.items.find(
+      (item) => item.sourceKind === "squarespace-menu-block",
+    )?.description,
     /cheddar cheese/,
   );
 });
@@ -4689,13 +5625,17 @@ test("simple item-card menus parse cards before broad priced-text fallback", () 
             "SPICY SALMON",
             "EEL CUCUMBER",
             "CALIFORNIA ROLL",
-          ].map((name) => `
+          ]
+            .map(
+              (name) => `
             <div class="item-card">
               <span class="item-name">${name}</span>
               <span class="item-price">$5.95</span>
               <p class="item-desc">salmon with cucumber and avocado</p>
             </div>
-          `).join("")}
+          `,
+            )
+            .join("")}
         </section>
       </body>
     </html>
@@ -4712,13 +5652,22 @@ test("simple item-card menus parse cards before broad priced-text fallback", () 
     "menu",
   );
 
-  const simpleCardItems = result.items.filter((item) => item.sourceKind === "simple-item-card");
+  const simpleCardItems = result.items.filter(
+    (item) => item.sourceKind === "simple-item-card",
+  );
   assert.equal(simpleCardItems.length, 11);
   assert.deepEqual(
     simpleCardItems.slice(0, 3).map((item) => `${item.category}:${item.name}`),
-    ["Lunch Special:L-PAD THAI", "Lunch Special:L-SEE EW NOODLES", "Lunch Special:KAO SOI GAI"],
+    [
+      "Lunch Special:L-PAD THAI",
+      "Lunch Special:L-SEE EW NOODLES",
+      "Lunch Special:KAO SOI GAI",
+    ],
   );
-  assert.equal(simpleCardItems.find((item) => item.name === "KAO SOI GAI")?.category, "Lunch Special");
+  assert.equal(
+    simpleCardItems.find((item) => item.name === "KAO SOI GAI")?.category,
+    "Lunch Special",
+  );
   assert.match(simpleCardItems[0].description, /crushed peanuts/);
 });
 
@@ -4751,7 +5700,9 @@ test("take out and meal kit links can be discovered as special food menus", () =
 });
 
 test("Founding Farmers locations share one parser profile and document discovery policy", () => {
-  const dc = restaurantSources.find((source) => source.id === "founding-farmers-dc");
+  const dc = restaurantSources.find(
+    (source) => source.id === "founding-farmers-dc",
+  );
   const reston = {
     ...dc,
     id: "founding-farmers-reston-station",
@@ -4764,7 +5715,9 @@ test("Founding Farmers locations share one parser profile and document discovery
     ...dc,
     id: "founding-farmers-tysons",
     name: "Founding Farmers Tysons",
-    menuUrls: ["https://www.wearefoundingfarmers.com/founding-farmers-tysons-menu/"],
+    menuUrls: [
+      "https://www.wearefoundingfarmers.com/founding-farmers-tysons-menu/",
+    ],
   };
 
   for (const source of [dc, reston, tysons]) {
@@ -4803,15 +5756,30 @@ test("configured special menus are audited while discovered special menus stay c
     name: "Special Menu Policy Test",
     domain: "example.com",
     type: "local",
-    menuUrls: ["https://example.com/happy-hour.pdf", "https://example.com/cocktails.pdf"],
+    menuUrls: [
+      "https://example.com/happy-hour.pdf",
+      "https://example.com/cocktails.pdf",
+    ],
     allergenUrls: [],
   };
   const audit = configuredUrlAuditForSource(source);
 
-  assert.equal(inferConfiguredUrlRole("https://example.com/happy-hour.pdf", "menu"), configuredUrlRoles.specialFoodMenu);
-  assert.equal(inferConfiguredUrlRole("https://example.com/cocktails.pdf", "menu"), configuredUrlRoles.drinksMenu);
-  assert.match(audit.configuredUrlWarnings.join(" | "), /configured-url-special-food-menu/);
-  assert.match(audit.configuredUrlWarnings.join(" | "), /configured-url-drinks-menu/);
+  assert.equal(
+    inferConfiguredUrlRole("https://example.com/happy-hour.pdf", "menu"),
+    configuredUrlRoles.specialFoodMenu,
+  );
+  assert.equal(
+    inferConfiguredUrlRole("https://example.com/cocktails.pdf", "menu"),
+    configuredUrlRoles.drinksMenu,
+  );
+  assert.match(
+    audit.configuredUrlWarnings.join(" | "),
+    /configured-url-special-food-menu/,
+  );
+  assert.match(
+    audit.configuredUrlWarnings.join(" | "),
+    /configured-url-drinks-menu/,
+  );
   assert.equal(
     normalizeConfiguredSourceUrls({
       menuUrls: ["https://example.com/wp-content/uploads/spring-dinner.pdf%22"],
@@ -4898,7 +5866,10 @@ test("configured official-source detection separates allergen docs from ordinary
     configuredUrlRoles.officialAllergen,
   );
   assert.equal(
-    inferConfiguredUrlRole("https://order.toasttab.com/online/chicken-whiskey-14th-street", "allergen"),
+    inferConfiguredUrlRole(
+      "https://order.toasttab.com/online/chicken-whiskey-14th-street",
+      "allergen",
+    ),
     configuredUrlRoles.primaryMenu,
   );
   assert.equal(
@@ -4913,7 +5884,9 @@ test("configured official-source detection separates allergen docs from ordinary
     configuredUrlRoles.primaryMenu,
   );
   assert.deepEqual(
-    normalizeConfiguredSourceUrls(ordinaryMenuSource).map((entry) => `${entry.kind}:${entry.role}`),
+    normalizeConfiguredSourceUrls(ordinaryMenuSource).map(
+      (entry) => `${entry.kind}:${entry.role}`,
+    ),
     ["menu:primary-menu", "menu:primary-menu"],
   );
   assert.deepEqual(
@@ -4924,14 +5897,24 @@ test("configured official-source detection separates allergen docs from ordinary
         "https://example.com/allergen-guide.pdf",
       ],
     }).map((entry) => `${entry.kind}:${entry.role}`),
-    ["menu:primary-menu", "allergen:official-nutrition", "allergen:official-allergen"],
+    [
+      "menu:primary-menu",
+      "allergen:official-nutrition",
+      "allergen:official-allergen",
+    ],
   );
 });
 
 test("official extractor migration keeps direct ID dispatch out of migrated profile wrappers", () => {
-  const source = readFileSync(new URL("./pipeline/legacy-scrape-engine.mjs", import.meta.url), "utf8");
-  const summary = summarizeRestaurantSourceAudit(buildRestaurantSourceAuditRows());
-  const migratedProfileIds = summary.documentSchemaProfileMigration.migratedProfileIds;
+  const source = readFileSync(
+    new URL("./pipeline/legacy-scrape-engine.mjs", import.meta.url),
+    "utf8",
+  );
+  const summary = summarizeRestaurantSourceAudit(
+    buildRestaurantSourceAuditRows(),
+  );
+  const migratedProfileIds =
+    summary.documentSchemaProfileMigration.migratedProfileIds;
   const profileDispatchRegion = source.slice(
     source.indexOf("async function extractBrandPdfItems"),
     source.indexOf("async function extractLegacyRestaurantIdPdfItems"),
@@ -4958,7 +5941,10 @@ test("official extractor migration keeps direct ID dispatch out of migrated prof
   assert.equal(/restaurant\.id\s*===/.test(htmlDispatchRegion), false);
   assert.equal(/restaurant\.id\s*===/.test(xmlDispatchRegion), false);
   assert.equal(/restaurant\.id\s*===/.test(legacyQuarantine), false);
-  assert.equal(summary.documentSchemaProfileMigration.emptyPdfQuarantine, "extractLegacyRestaurantIdPdfItems");
+  assert.equal(
+    summary.documentSchemaProfileMigration.emptyPdfQuarantine,
+    "extractLegacyRestaurantIdPdfItems",
+  );
   assert.deepEqual(
     [
       "chick-fil-a-html-allergen",
@@ -4973,7 +5959,8 @@ test("official extractor migration keeps direct ID dispatch out of migrated prof
     [],
   );
   assert.deepEqual(
-    summary.documentSchemaProfileMigration.remainingRestaurantIdExtractorSurfaces,
+    summary.documentSchemaProfileMigration
+      .remainingRestaurantIdExtractorSurfaces,
     [],
   );
   assert.deepEqual(
@@ -4983,7 +5970,12 @@ test("official extractor migration keeps direct ID dispatch out of migrated prof
       "nutritionix-special-diets",
       "rbi-sanity",
       "tim-hortons-nutritionix-with-known-good-fallback",
-    ].filter((id) => !summary.documentSchemaProfileMigration.supplementalSourceProfileIds.includes(id)),
+    ].filter(
+      (id) =>
+        !summary.documentSchemaProfileMigration.supplementalSourceProfileIds.includes(
+          id,
+        ),
+    ),
     [],
   );
 });
@@ -4999,8 +5991,10 @@ test("generic PDF matrix allergen cells accept named allergen evidence", () => {
 });
 
 test("restaurant scraper uses pipeline modules instead of a monolithic CLI file", () => {
-  const wrapperLineCount = readFileSync(new URL("./scrape-restaurants.mjs", import.meta.url), "utf8")
-    .split("\n").length;
+  const wrapperLineCount = readFileSync(
+    new URL("./scrape-restaurants.mjs", import.meta.url),
+    "utf8",
+  ).split("\n").length;
   const expectedModules = [
     "./pipeline/build-repository.mjs",
     "./pipeline/fetch-source.mjs",
@@ -5015,9 +6009,14 @@ test("restaurant scraper uses pipeline modules instead of a monolithic CLI file"
     "./restaurant-adapters/generic-pdf-matrix.mjs",
   ];
 
-  assert.ok(wrapperLineCount < 60, `scrape-restaurants.mjs has ${wrapperLineCount} lines`);
+  assert.ok(
+    wrapperLineCount < 60,
+    `scrape-restaurants.mjs has ${wrapperLineCount} lines`,
+  );
   assert.deepEqual(
-    expectedModules.filter((modulePath) => !existsSync(new URL(modulePath, import.meta.url))),
+    expectedModules.filter(
+      (modulePath) => !existsSync(new URL(modulePath, import.meta.url)),
+    ),
     [],
   );
 });
@@ -5026,7 +6025,10 @@ test("menu catalog filter removes operational artifacts but keeps real bundles",
   const records = [
     { category: "Burger", name: "$1 Coupon Book - BK Scholars" },
     { category: "Burger", name: "16 Pc. Chicken Nuggets - PDP Test" },
-    { category: "Burger", name: "Dummy Item for Restaurant Only Coupon -- DO NOT USE" },
+    {
+      category: "Burger",
+      name: "Dummy Item for Restaurant Only Coupon -- DO NOT USE",
+    },
     { category: "Fees", name: "Bag Fee" },
     { category: "Pizza", name: "BY THE SLICE" },
     { category: "Menu Listing", name: "&MORE" },
@@ -5042,7 +6044,10 @@ test("menu catalog filter removes operational artifacts but keeps real bundles",
     { category: "Pizza", name: "Pork: Our pepperoni is pork-based" },
     { category: "Chicken", name: "12PC BUNDLE" },
     { category: "McValue", name: "The McChicken Meal Deal Bundle" },
-    { category: "Pizza", name: "1 CHEESE/PEPPERONI PIZZA + 6 WINGS + 3 GARLIC KNOTS" },
+    {
+      category: "Pizza",
+      name: "1 CHEESE/PEPPERONI PIZZA + 6 WINGS + 3 GARLIC KNOTS",
+    },
     { category: "Flame Grilled Burgers", name: "Whopper" },
   ];
 
@@ -5058,24 +6063,102 @@ test("menu catalog filter removes operational artifacts but keeps real bundles",
 });
 
 test("menu catalog filter rejects non-food public-menu utility rows", () => {
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Foodware", name: "Fork" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Extras", name: "Napkins, Utensils and Straws." }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Mediterranean", name: "Disposable Cutlery and Napkins" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Menu", name: "Arundel Mills" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Menu", name: "DC METRO" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Menu", name: "glenarden" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Menu", name: "Foundation" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Menu", name: "Happy Hour" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Steakhouse", name: "All the Bites" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Barbecue", name: "American or cheddar cheese" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Restaurant", name: "BRUNCH" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Seafood", name: "$26 HALF/ $46 WHOLE" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Restaurant", name: "BUILD YOUR OWN" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Chinese", name: "HAPPY HOUR HAPPY HOUR" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Steakhouse", name: "CAESAR" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Menu", name: "host at bartaco" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Menu", name: "work at bartaco" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Footer", name: "cookie preferences" }), false);
+  assert.equal(
+    isProbablyMenuCatalogRecord({ category: "Foodware", name: "Fork" }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({
+      category: "Extras",
+      name: "Napkins, Utensils and Straws.",
+    }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({
+      category: "Mediterranean",
+      name: "Disposable Cutlery and Napkins",
+    }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({ category: "Menu", name: "Arundel Mills" }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({ category: "Menu", name: "DC METRO" }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({ category: "Menu", name: "glenarden" }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({ category: "Menu", name: "Foundation" }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({ category: "Menu", name: "Happy Hour" }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({
+      category: "Steakhouse",
+      name: "All the Bites",
+    }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({
+      category: "Barbecue",
+      name: "American or cheddar cheese",
+    }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({ category: "Restaurant", name: "BRUNCH" }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({
+      category: "Seafood",
+      name: "$26 HALF/ $46 WHOLE",
+    }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({
+      category: "Restaurant",
+      name: "BUILD YOUR OWN",
+    }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({
+      category: "Chinese",
+      name: "HAPPY HOUR HAPPY HOUR",
+    }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({ category: "Steakhouse", name: "CAESAR" }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({ category: "Menu", name: "host at bartaco" }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({ category: "Menu", name: "work at bartaco" }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({
+      category: "Footer",
+      name: "cookie preferences",
+    }),
+    false,
+  );
   assert.equal(
     isProbablyMenuCatalogRecord({
       category: "Salads",
@@ -5093,8 +6176,17 @@ test("menu catalog filter rejects non-food public-menu utility rows", () => {
     }),
     true,
   );
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Menu", name: "Renaissance Hotel" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Korean", name: "Woodbridge, VA" }), false);
+  assert.equal(
+    isProbablyMenuCatalogRecord({
+      category: "Menu",
+      name: "Renaissance Hotel",
+    }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({ category: "Korean", name: "Woodbridge, VA" }),
+    false,
+  );
   assert.equal(
     isProbablyMenuCatalogRecord({
       category: "Korean",
@@ -5102,12 +6194,36 @@ test("menu catalog filter rejects non-food public-menu utility rows", () => {
     }),
     false,
   );
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Menu", name: "Entertainment" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Menu", name: "Parties" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Menu", name: "Party & Events Menus" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Burgers", name: "Our Team" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Burgers", name: "PLNT Impact" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Burgers", name: "Loved your visit?" }), false);
+  assert.equal(
+    isProbablyMenuCatalogRecord({ category: "Menu", name: "Entertainment" }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({ category: "Menu", name: "Parties" }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({
+      category: "Menu",
+      name: "Party & Events Menus",
+    }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({ category: "Burgers", name: "Our Team" }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({ category: "Burgers", name: "PLNT Impact" }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({
+      category: "Burgers",
+      name: "Loved your visit?",
+    }),
+    false,
+  );
   assert.equal(
     isProbablyMenuCatalogRecord({
       category: "Burgers",
@@ -5122,17 +6238,47 @@ test("menu catalog filter rejects non-food public-menu utility rows", () => {
     }),
     false,
   );
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Indian", name: "Email Us" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Indian", name: "Open Hours" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Indian", name: "Highly Rated & Trusted" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Indian", name: "Why Choose Our Catering?" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Privateevents", name: "Private Events & Weddings" }), false);
   assert.equal(
-    isProbablyMenuCatalogRecord({ category: "Best Of 2015 Nightlife Fun Irish Bar", name: "The Auld Shebeen" }),
+    isProbablyMenuCatalogRecord({ category: "Indian", name: "Email Us" }),
     false,
   );
   assert.equal(
-    isProbablyMenuCatalogRecord({ category: "Mediterranean", name: "Sunday, 11:00am to 8:00 pm" }),
+    isProbablyMenuCatalogRecord({ category: "Indian", name: "Open Hours" }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({
+      category: "Indian",
+      name: "Highly Rated & Trusted",
+    }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({
+      category: "Indian",
+      name: "Why Choose Our Catering?",
+    }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({
+      category: "Privateevents",
+      name: "Private Events & Weddings",
+    }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({
+      category: "Best Of 2015 Nightlife Fun Irish Bar",
+      name: "The Auld Shebeen",
+    }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({
+      category: "Mediterranean",
+      name: "Sunday, 11:00am to 8:00 pm",
+    }),
     false,
   );
   assert.equal(
@@ -5142,27 +6288,57 @@ test("menu catalog filter rejects non-food public-menu utility rows", () => {
     }),
     false,
   );
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Menu", name: "menu offerings." }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Privacy Policy", name: "1. Information We Collect" }), false);
-  assert.equal(isProbablyMenuCatalogRecord({ category: "Refund Policy", name: "1. Eligibility for Refunds" }), false);
   assert.equal(
-    isProbablyMenuCatalogRecord({ category: "Thai", name: "A Thai coconut rice custard with a layer of" }),
+    isProbablyMenuCatalogRecord({ category: "Menu", name: "menu offerings." }),
     false,
   );
   assert.equal(
-    isProbablyMenuCatalogRecord({ category: "Thai", name: "Sautéed green beans combined with choice of" }),
+    isProbablyMenuCatalogRecord({
+      category: "Privacy Policy",
+      name: "1. Information We Collect",
+    }),
     false,
   );
   assert.equal(
-    isProbablyMenuCatalogRecord({ category: "Thai", name: "Marinated chicken sautéed with cashew" }),
+    isProbablyMenuCatalogRecord({
+      category: "Refund Policy",
+      name: "1. Eligibility for Refunds",
+    }),
     false,
   );
   assert.equal(
-    isProbablyMenuCatalogRecord({ category: "Thai", name: "the comforting homemade sweet sticky" }),
+    isProbablyMenuCatalogRecord({
+      category: "Thai",
+      name: "A Thai coconut rice custard with a layer of",
+    }),
     false,
   );
   assert.equal(
-    isProbablyMenuCatalogRecord({ category: "Condiments", name: "Honey Mustard Dipping Sauce" }),
+    isProbablyMenuCatalogRecord({
+      category: "Thai",
+      name: "Sautéed green beans combined with choice of",
+    }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({
+      category: "Thai",
+      name: "Marinated chicken sautéed with cashew",
+    }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({
+      category: "Thai",
+      name: "the comforting homemade sweet sticky",
+    }),
+    false,
+  );
+  assert.equal(
+    isProbablyMenuCatalogRecord({
+      category: "Condiments",
+      name: "Honey Mustard Dipping Sauce",
+    }),
     true,
   );
 });
@@ -5212,7 +6388,8 @@ test("menu catalog filter rejects beverage-only browser cards while preserving f
     isProbablyMenuCatalogRecord({
       category: "American",
       name: "ELIXIR",
-      description: "salted cucumber, ginger cordial, lemon, Q Mixers soda water",
+      description:
+        "salted cucumber, ginger cordial, lemon, Q Mixers soda water",
       sourceType: "pdf-menu",
     }),
     false,
@@ -5290,7 +6467,10 @@ test("generated Timber Pizza recovery keeps food rows and drops menu artifacts",
 
   assert.ok(timber);
   assert.equal(timber.coverageStatus, "complete");
-  assert.ok(timber.items.length >= 20, `expected recovered Timber menu, got ${timber.items.length}`);
+  assert.ok(
+    timber.items.length >= 20,
+    `expected recovered Timber menu, got ${timber.items.length}`,
+  );
   assert.deepEqual(
     [
       "Be advised: some products contain nuts",
@@ -5315,21 +6495,35 @@ test("generated Burger King menu is not inflated by catalog artifacts", () => {
     burgerKing.items.length < 350,
     `expected Burger King to stay below catalog-inflated counts, got ${burgerKing.items.length}`,
   );
-  assert.deepEqual(filterMenuCatalogRecords(burgerKing.items).length, burgerKing.items.length);
-  assert.equal(burgerKing.items.some((item) => item.category === "Burger"), false);
+  assert.deepEqual(
+    filterMenuCatalogRecords(burgerKing.items).length,
+    burgerKing.items.length,
+  );
+  assert.equal(
+    burgerKing.items.some((item) => item.category === "Burger"),
+    false,
+  );
 });
 
 test("generated Sonic menu uses official allergen matrix rows", () => {
-  const sonic = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "sonic");
+  const sonic = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "sonic",
+  );
 
   assert.ok(sonic);
-  assert.equal(sonic.officialAllergenStatus, officialAllergenStatuses.extracted);
+  assert.equal(
+    sonic.officialAllergenStatus,
+    officialAllergenStatuses.extracted,
+  );
   assert.equal(sonic.allergenDataStatus.officialItemCount, sonic.items.length);
   assert.ok(
     sonic.items.length >= 100,
     `expected at least 100 Sonic official rows, got ${sonic.items.length}`,
   );
-  assert.equal(sonic.items.some((item) => item.name === "Hot"), false);
+  assert.equal(
+    sonic.items.some((item) => item.name === "Hot"),
+    false,
+  );
   assert.deepEqual(
     sonic.items.find((item) => item.name === "Hot Dog Bun")?.allergens,
     ["soy", "wheat", "gluten"],
@@ -5341,18 +6535,29 @@ test("generated Sonic menu uses official allergen matrix rows", () => {
 });
 
 test("generated Smoothie King uses official product-page allergen disclosures", () => {
-  const smoothieKing = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "smoothie-king");
+  const smoothieKing = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "smoothie-king",
+  );
 
   assert.ok(smoothieKing);
-  assert.equal(smoothieKing.officialAllergenStatus, officialAllergenStatuses.extracted);
+  assert.equal(
+    smoothieKing.officialAllergenStatus,
+    officialAllergenStatuses.extracted,
+  );
   assert.ok(
     smoothieKing.allergenDataStatus.officialItemCount >= 250,
     `expected Smoothie King official product-page matches, got ${smoothieKing.allergenDataStatus.officialItemCount}`,
   );
 
-  const angelFood = smoothieKing.items.find((item) => item.id === "angel-food-20-ounce");
-  const angelFoodSlim = smoothieKing.items.find((item) => item.id === "angel-food-slim-20-ounce");
-  const cocoaHazeBowl = smoothieKing.items.find((item) => item.id === "acai-cocoa-haze-bowl");
+  const angelFood = smoothieKing.items.find(
+    (item) => item.id === "angel-food-20-ounce",
+  );
+  const angelFoodSlim = smoothieKing.items.find(
+    (item) => item.id === "angel-food-slim-20-ounce",
+  );
+  const cocoaHazeBowl = smoothieKing.items.find(
+    (item) => item.id === "acai-cocoa-haze-bowl",
+  );
 
   assert.deepEqual(angelFood?.allergens, ["milk"]);
   assert.equal(angelFood?.allergenSourceType, "official-allergen-menu");
@@ -5360,8 +6565,12 @@ test("generated Smoothie King uses official product-page allergen disclosures", 
     angelFood?.evidence?.map((entry) => entry.text).join(" ") ?? "",
     /Official Smoothie King allergen disclosure: Milk\./,
   );
-  const angelFoodSlim32 = smoothieKing.items.find((item) => item.id === "angel-food-slim-32-ounce");
-  const angelFood32 = smoothieKing.items.find((item) => item.id === "angel-food-32-ounce");
+  const angelFoodSlim32 = smoothieKing.items.find(
+    (item) => item.id === "angel-food-slim-32-ounce",
+  );
+  const angelFood32 = smoothieKing.items.find(
+    (item) => item.id === "angel-food-32-ounce",
+  );
 
   assert.deepEqual(angelFoodSlim?.allergens, ["milk"]);
   assert.equal(angelFoodSlim?.allergenSourceType, "official-allergen-menu");
@@ -5397,10 +6606,19 @@ Santa Fe Chicken 3 8 \t450 \t165 \t18 \t10 \t0 \t75 \t1140 \t46 \t3 \t4 \t28
     "https://www.tropicalsmoothiecafe.com/nutrition/latest",
   ).map(normalizeRecord);
   const byName = new Map(records.map((record) => [record.name, record]));
-  const sortedAllergens = (name) => [...(byName.get(name)?.allergens ?? [])].sort();
+  const sortedAllergens = (name) =>
+    [...(byName.get(name)?.allergens ?? [])].sort();
 
-  assert.deepEqual(sortedAllergens("Peanut Butter Cup"), ["milk", "peanut", "soy"]);
-  assert.deepEqual(sortedAllergens("Hawaiian Island Flat"), ["milk", "soy", "wheat"]);
+  assert.deepEqual(sortedAllergens("Peanut Butter Cup"), [
+    "milk",
+    "peanut",
+    "soy",
+  ]);
+  assert.deepEqual(sortedAllergens("Hawaiian Island Flat"), [
+    "milk",
+    "soy",
+    "wheat",
+  ]);
   assert.equal(byName.get("Hawaiian Island Flat")?.category, "Flatbreads");
   assert.deepEqual(
     byName.get("24 oz How Far You’ll Mango Smoothie Full Turbinado")?.allergens,
@@ -5412,14 +6630,22 @@ Santa Fe Chicken 3 8 \t450 \t165 \t18 \t10 \t0 \t75 \t1140 \t46 \t3 \t4 \t28
   );
   assert.equal(byName.get("Santa Fe Chicken")?.category, "Dillas");
   assert.deepEqual(sortedAllergens("Santa Fe Chicken"), ["milk", "wheat"]);
-  assert.equal(byName.get("Santa Fe Chicken")?.nutritionFacts?.["Calories from Fat"], "165");
+  assert.equal(
+    byName.get("Santa Fe Chicken")?.nutritionFacts?.["Calories from Fat"],
+    "165",
+  );
 });
 
 test("generated Subway allergen data excludes ingredient-pdf fragments", () => {
-  const subway = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "subway");
+  const subway = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "subway",
+  );
 
   assert.ok(subway);
-  assert.equal(subway.officialAllergenStatus, officialAllergenStatuses.extracted);
+  assert.equal(
+    subway.officialAllergenStatus,
+    officialAllergenStatuses.extracted,
+  );
   assert.ok(
     subway.items.some(
       (item) =>
@@ -5440,7 +6666,10 @@ test("generated Subway allergen data excludes ingredient-pdf fragments", () => {
   );
   assert.deepEqual(
     subway.items
-      .filter((item) => item.sourceType === "pdf-matrix" || item.sourceKind === "pdf-matrix")
+      .filter(
+        (item) =>
+          item.sourceType === "pdf-matrix" || item.sourceKind === "pdf-matrix",
+      )
       .flatMap((item) => item.sourceUrls ?? [])
       .filter((url) => /us-ingredients/i.test(url)),
     [],
@@ -5448,14 +6677,20 @@ test("generated Subway allergen data excludes ingredient-pdf fragments", () => {
 });
 
 test("generated BIBIBOP data uses reviewed official matrix rows without nutrition artifacts", () => {
-  const bibibopRestaurants = generatedRestaurants.restaurants.filter((restaurant) =>
-    ["osm-bibibop-asian-6952285839", "osm-bibbop-7802068505"].includes(restaurant.id),
+  const bibibopRestaurants = generatedRestaurants.restaurants.filter(
+    (restaurant) =>
+      ["osm-bibibop-asian-6952285839", "osm-bibbop-7802068505"].includes(
+        restaurant.id,
+      ),
   );
 
   assert.equal(bibibopRestaurants.length, 2);
 
   for (const restaurant of bibibopRestaurants) {
-    assert.equal(restaurant.officialAllergenStatus, officialAllergenStatuses.extracted);
+    assert.equal(
+      restaurant.officialAllergenStatus,
+      officialAllergenStatuses.extracted,
+    );
     assert.equal(restaurant.items.length, 40);
     assert.equal(restaurant.allergenDataStatus.officialItemCount, 40);
     assert.ok(
@@ -5466,7 +6701,8 @@ test("generated BIBIBOP data uses reviewed official matrix rows without nutritio
       ),
     );
     assert.deepEqual(
-      restaurant.items.find((item) => item.name === "Miso Glazed Salmon")?.allergens,
+      restaurant.items.find((item) => item.name === "Miso Glazed Salmon")
+        ?.allergens,
       ["soy", "sesame", "fish"],
     );
     assert.deepEqual(
@@ -5475,7 +6711,9 @@ test("generated BIBIBOP data uses reviewed official matrix rows without nutritio
     );
     assert.ok(
       restaurant.items.every(
-        (item) => item.mayContain?.includes("gluten") && item.mayContain?.includes("wheat"),
+        (item) =>
+          item.mayContain?.includes("gluten") &&
+          item.mayContain?.includes("wheat"),
       ),
     );
     assert.deepEqual(
@@ -5493,42 +6731,63 @@ test("generated BIBIBOP data uses reviewed official matrix rows without nutritio
 
 test("generated Hawkers menu uses reviewed official allergen guide rows without guide artifacts", () => {
   const hawkers = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "hawkers-asian-street-food-bethesda-md-dc-metro",
+    (restaurant) =>
+      restaurant.id === "hawkers-asian-street-food-bethesda-md-dc-metro",
   );
 
   assert.ok(hawkers, "expected generated Hawkers restaurant");
-  assert.equal(hawkers.officialAllergenStatus, officialAllergenStatuses.extracted);
+  assert.equal(
+    hawkers.officialAllergenStatus,
+    officialAllergenStatuses.extracted,
+  );
   assert.equal(hawkers.items.length, 79);
   assert.equal(hawkers.allergenDataStatus.officialItemCount, 79);
   assert.equal(
-    hawkers.items.some((item) =>
-      /^(?:GUIDE|DIM SUM|MEATS|ROLLS|NOODLES|WINGS|Dining|CATER)$/i.test(item.name) ||
-      /vegetable oil|sauces, dressings/i.test(item.name),
+    hawkers.items.some(
+      (item) =>
+        /^(?:GUIDE|DIM SUM|MEATS|ROLLS|NOODLES|WINGS|Dining|CATER)$/i.test(
+          item.name,
+        ) || /vegetable oil|sauces, dressings/i.test(item.name),
     ),
     false,
   );
   assert.deepEqual(
-    hawkers.items.find((item) => item.name === "Bao - Singapore Chili Crab")?.allergens,
+    hawkers.items.find((item) => item.name === "Bao - Singapore Chili Crab")
+      ?.allergens,
     ["soy", "milk"],
   );
   assert.deepEqual(
     hawkers.items.find((item) => item.name === "Pad Thai")?.allergens,
     ["soy", "peanut", "sesame"],
   );
-  assert.deepEqual(hawkers.items.find((item) => item.name === "Pad Thai")?.mayContain, ["soy"]);
+  assert.deepEqual(
+    hawkers.items.find((item) => item.name === "Pad Thai")?.mayContain,
+    ["soy"],
+  );
 });
 
 test("generated Elephant & Castle does not treat Canada-only nutrition as DC official allergens", () => {
   const elephant = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "elephant-and-castle-washington-dc-dc-metro",
+    (restaurant) =>
+      restaurant.id === "elephant-and-castle-washington-dc-dc-metro",
   );
 
   assert.ok(elephant, "expected generated Elephant & Castle restaurant");
-  assert.equal(elephant.officialAllergenStatus, officialAllergenStatuses.notApplicable);
-  assert.equal(elephant.allergenDataStatus.officialItemCount, 0);
-  assert.equal(elephant.items.some((item) => item.id === "sausage"), false);
   assert.equal(
-    elephant.items.some((item) => /Serving Size|Cholesterol|Canadian locations only/i.test(item.ingredientsText ?? "")),
+    elephant.officialAllergenStatus,
+    officialAllergenStatuses.notApplicable,
+  );
+  assert.equal(elephant.allergenDataStatus.officialItemCount, 0);
+  assert.equal(
+    elephant.items.some((item) => item.id === "sausage"),
+    false,
+  );
+  assert.equal(
+    elephant.items.some((item) =>
+      /Serving Size|Cholesterol|Canadian locations only/i.test(
+        item.ingredientsText ?? "",
+      ),
+    ),
     false,
   );
   assert.equal(
@@ -5538,15 +6797,24 @@ test("generated Elephant & Castle does not treat Canada-only nutrition as DC off
 });
 
 test("generated Crumbl menu uses official product profile allergen disclosures", () => {
-  const crumbl = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "crumbl");
+  const crumbl = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "crumbl",
+  );
   const almondCookie = crumbl?.items.find(
     (item) => item.name === "Almond Coconut Fudge Cookie",
   );
-  const classicCheesecake = crumbl?.items.find((item) => item.id === "classic-cheesecake");
-  const glutenFriendlyCup = crumbl?.items.find((item) => item.id === "chocolate-strawberry-cup-gluten-friendly");
+  const classicCheesecake = crumbl?.items.find(
+    (item) => item.id === "classic-cheesecake",
+  );
+  const glutenFriendlyCup = crumbl?.items.find(
+    (item) => item.id === "chocolate-strawberry-cup-gluten-friendly",
+  );
 
   assert.ok(crumbl);
-  assert.equal(crumbl.officialAllergenStatus, officialAllergenStatuses.extracted);
+  assert.equal(
+    crumbl.officialAllergenStatus,
+    officialAllergenStatuses.extracted,
+  );
   assert.ok(
     crumbl.allergenDataStatus.officialItemCount >= 140,
     `expected at least 140 Crumbl official profile rows, got ${crumbl.allergenDataStatus.officialItemCount}`,
@@ -5576,9 +6844,20 @@ test("generated Crumbl menu uses official product profile allergen disclosures",
       "Single Dessert",
     ],
   );
-  assert.deepEqual([...new Set(crumbl.items.map((item) => item.category))].filter((category) => category === "Menu"), []);
-  assert.equal(crumbl.items.some((item) => item.id === "crumbl-cookies"), false);
-  assert.equal(crumbl.items.some((item) => item.id === "cookie-7-712"), false);
+  assert.deepEqual(
+    [...new Set(crumbl.items.map((item) => item.category))].filter(
+      (category) => category === "Menu",
+    ),
+    [],
+  );
+  assert.equal(
+    crumbl.items.some((item) => item.id === "crumbl-cookies"),
+    false,
+  );
+  assert.equal(
+    crumbl.items.some((item) => item.id === "cookie-7-712"),
+    false,
+  );
   assert.equal(almondCookie?.category, "Cookies");
   assert.deepEqual(almondCookie?.allergens, [
     "wheat",
@@ -5589,8 +6868,19 @@ test("generated Crumbl menu uses official product profile allergen disclosures",
   ]);
   assert.deepEqual(almondCookie?.mayContain, ["peanut"]);
   assert.equal(classicCheesecake?.category, "Cheesecakes & Pies");
-  assert.deepEqual(classicCheesecake?.allergens, ["wheat", "milk", "egg", "soy"]);
-  assert.deepEqual(classicCheesecake?.mayContain, ["sesame", "fish", "shellfish", "peanut", "tree-nut"]);
+  assert.deepEqual(classicCheesecake?.allergens, [
+    "wheat",
+    "milk",
+    "egg",
+    "soy",
+  ]);
+  assert.deepEqual(classicCheesecake?.mayContain, [
+    "sesame",
+    "fish",
+    "shellfish",
+    "peanut",
+    "tree-nut",
+  ]);
   assert.deepEqual(glutenFriendlyCup?.allergens, ["milk", "soy"]);
   assert.deepEqual(glutenFriendlyCup?.mayContain, []);
   assert.equal(
@@ -5600,7 +6890,9 @@ test("generated Crumbl menu uses official product profile allergen disclosures",
 });
 
 test("generated &pizza menu uses official HTML allergen guide", () => {
-  const andPizza = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "andpizza-dc");
+  const andPizza = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "andpizza-dc",
+  );
 
   assert.ok(andPizza);
   assert.equal(andPizza.officialAllergenStatus, "extracted");
@@ -5664,7 +6956,9 @@ test("generated True Food menu uses official statement allergen PDF", () => {
 
 test("generated DIG menu uses official ingredient allergen rows", () => {
   for (const id of ["dig", "dig-bethesda"]) {
-    const dig = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === id);
+    const dig = generatedRestaurants.restaurants.find(
+      (restaurant) => restaurant.id === id,
+    );
 
     assert.ok(dig, `${id} should exist`);
     assert.equal(dig.officialAllergenStatus, "extracted");
@@ -5689,7 +6983,9 @@ test("generated DIG menu uses official ingredient allergen rows", () => {
 
 test("generated Chasin Tails keeps partial official fried cross-contact evidence", () => {
   const chasin = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "chasin-tails-seafood-that-celebrates-falls-church-va-dc-metro",
+    (restaurant) =>
+      restaurant.id ===
+      "chasin-tails-seafood-that-celebrates-falls-church-va-dc-metro",
   );
 
   assert.ok(chasin);
@@ -5711,7 +7007,8 @@ test("generated Chasin Tails keeps partial official fried cross-contact evidence
 
 test("generated DoorDash storefront menu uses Next flight item lists", () => {
   const unconventional = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "unconventional-diner-washington-dc-dc-metro",
+    (restaurant) =>
+      restaurant.id === "unconventional-diner-washington-dc-dc-metro",
   );
 
   assert.ok(unconventional);
@@ -5732,11 +7029,19 @@ test("generated DoorDash storefront menu uses Next flight item lists", () => {
 
 test("generated recovered weak DC menus stay complete", () => {
   const expectations = [
-    ["ambar-restaurant-capitol-hill-washington-dc-dc-metro", 39, "Balkan Kebabs"],
+    [
+      "ambar-restaurant-capitol-hill-washington-dc-dc-metro",
+      39,
+      "Balkan Kebabs",
+    ],
     ["ambar-restaurant-clarendon-arlington-va-dc-metro", 39, "Balkan Kebabs"],
     ["copper-canyon-grill-washington-dc-dc-metro", 70, "Chicken Parmesan"],
     ["crisp-and-juicy-kensington-md-dc-metro", 100, "Whole Chicken"],
-    ["guapo-s-cocina-and-bar-gaithersburg-md-dc-metro", 150, "Aventura Ceviche"],
+    [
+      "guapo-s-cocina-and-bar-gaithersburg-md-dc-metro",
+      150,
+      "Aventura Ceviche",
+    ],
     ["joia-burger-dc", 10, "Patty Wagyu Burger"],
     ["la-vie-washington-dc-dc-metro", 35, "SMASH BURGER"],
     ["la-grande-boucherie-dc-washington-dc-dc-metro", 90, "BOUCHERIE BURGER"],
@@ -5747,7 +7052,11 @@ test("generated recovered weak DC menus stay complete", () => {
       "Mofongo De Camarones",
     ],
     ["mon-ami-gabi-bethesda-md-dc-metro", 70, "Onion Soup au Gratin"],
-    ["mirch-dhamaka-indian-fine-dine-cafe-and-bar-herndon-va-dc-metro", 250, "Dhamaka Dosa (Big 5’ Dosa)"],
+    [
+      "mirch-dhamaka-indian-fine-dine-cafe-and-bar-herndon-va-dc-metro",
+      250,
+      "Dhamaka Dosa (Big 5’ Dosa)",
+    ],
     ["2941-restaurant-falls-church-va-dc-metro", 20, "Yellowfin Tuna Tartare"],
     ["old-house-cosmopolitan-alexandria-va-dc-metro", 30, "Wiener Schnitzel"],
     ["texas-jack-s-barbecue-washington-dc-dc-metro", 60, "Brisket Sandwich"],
@@ -5762,16 +7071,26 @@ test("generated recovered weak DC menus stay complete", () => {
       45,
       "ARTICHOKE & LOBSTER DIP",
     ],
-    ["summer-house-santa-monica-bethesda-md-dc-metro", 80, "Classic Margherita"],
+    [
+      "summer-house-santa-monica-bethesda-md-dc-metro",
+      80,
+      "Classic Margherita",
+    ],
     ["taberna-del-alabardero-washington-dc-dc-metro", 70, "GAMBAS AL AJILLO"],
     ["talkin-tacos-washington-dc-washington-dc-dc-metro", 85, "Birria Tacos"],
     ["turmerica-by-tanvi-modi-sterling-va-dc-metro", 80, "Aam Palak Chaat"],
-    ["uncle-julio-s-gaithersburg-gaithersburg-md-dc-metro", 143, "Acapulco Seafood Salad"],
+    [
+      "uncle-julio-s-gaithersburg-gaithersburg-md-dc-metro",
+      143,
+      "Acapulco Seafood Salad",
+    ],
     ["urban-roast-washington-dc-dc-metro", 100, "Cheeseburger"],
   ];
 
   for (const [id, minimumItems, expectedItemName] of expectations) {
-    const restaurant = generatedRestaurants.restaurants.find((entry) => entry.id === id);
+    const restaurant = generatedRestaurants.restaurants.find(
+      (entry) => entry.id === id,
+    );
 
     assert.ok(restaurant, `${id} should exist`);
     assert.ok(
@@ -5798,17 +7117,25 @@ test("generated reviewed menu recoveries keep Ingredient Intelligence annotation
       "calamari-fritti",
       ["egg", "gluten", "shellfish", "wheat"],
     ],
-    ["shia-dc", "scallop-and-fried-oyster-ssam", ["egg", "gluten", "shellfish", "wheat"]],
+    [
+      "shia-dc",
+      "scallop-and-fried-oyster-ssam",
+      ["egg", "gluten", "shellfish", "wheat"],
+    ],
   ];
 
   for (const [restaurantId, itemId, expectedSignals] of expectations) {
-    const restaurant = generatedRestaurants.restaurants.find((entry) => entry.id === restaurantId);
+    const restaurant = generatedRestaurants.restaurants.find(
+      (entry) => entry.id === restaurantId,
+    );
     const menuItem = restaurant?.items.find((entry) => entry.id === itemId);
 
     assert.ok(menuItem, `${restaurantId}:${itemId} should exist`);
     for (const expectedSignal of expectedSignals) {
       assert.ok(
-        menuItem.inferredAllergenSignals?.some((signal) => signal.id === expectedSignal),
+        menuItem.inferredAllergenSignals?.some(
+          (signal) => signal.id === expectedSignal,
+        ),
         `${restaurantId}:${itemId} should infer ${expectedSignal}`,
       );
     }
@@ -5816,7 +7143,9 @@ test("generated reviewed menu recoveries keep Ingredient Intelligence annotation
 });
 
 test("generated Falafel Inc PDF recovery keeps compact side-grid food rows", () => {
-  const falafel = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "falafel-inc-dc");
+  const falafel = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "falafel-inc-dc",
+  );
 
   assert.ok(falafel);
   assert.ok(falafel.items.length >= 10);
@@ -5827,7 +7156,9 @@ test("generated Falafel Inc PDF recovery keeps compact side-grid food rows", () 
 
 test("generated Bluestone Lane menu excludes allergen-disclosure prefix artifact rows", () => {
   for (const id of ["chain-bluestone-lane", "bluestone-lane-west-end-dc"]) {
-    const bluestone = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === id);
+    const bluestone = generatedRestaurants.restaurants.find(
+      (restaurant) => restaurant.id === id,
+    );
 
     assert.ok(bluestone, `${id} should exist`);
     assert.deepEqual(
@@ -5863,78 +7194,161 @@ test("generated Bluestone Lane menu excludes allergen-disclosure prefix artifact
 });
 
 test("generated official manual repair layer keeps source-backed allergens and removes boundary artifacts", () => {
-  const jinya = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "jinya-ramen-dc");
-  const dosToros = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "dos-toros-dc");
-  const sushiTaro = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "sushi-taro-dc");
+  const jinya = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "jinya-ramen-dc",
+  );
+  const dosToros = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "dos-toros-dc",
+  );
+  const sushiTaro = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "sushi-taro-dc",
+  );
   const neutralGround = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "neutral-ground-mclean-va",
   );
-  const changChang = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "chang-chang-dc");
-  const ometeo = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "ometeo-tysons-va");
-  const riverClub = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "river-club-dc");
-  const peterChang = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "peter-chang-mclean-va");
-  const baanMae = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "baan-mae-dc");
-  const rakuya = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "rakuya-dc");
-  const northsideSocial = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "northside-social-va");
-  const harth = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "harth-tysons-va");
-  const kizuna = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "kizuna-sushi-ramen-tysons-va");
-  const phoHaiDuong = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "pho-hai-duong-tysons-va");
-  const mandnsPizza = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "mandns-pizza-bethesda-md");
-  const medina = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "medina-dc");
+  const changChang = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "chang-chang-dc",
+  );
+  const ometeo = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "ometeo-tysons-va",
+  );
+  const riverClub = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "river-club-dc",
+  );
+  const peterChang = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "peter-chang-mclean-va",
+  );
+  const baanMae = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "baan-mae-dc",
+  );
+  const rakuya = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "rakuya-dc",
+  );
+  const northsideSocial = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "northside-social-va",
+  );
+  const harth = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "harth-tysons-va",
+  );
+  const kizuna = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "kizuna-sushi-ramen-tysons-va",
+  );
+  const phoHaiDuong = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "pho-hai-duong-tysons-va",
+  );
+  const mandnsPizza = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "mandns-pizza-bethesda-md",
+  );
+  const medina = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "medina-dc",
+  );
   const huTieuMiLacay = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "hu-tieu-mi-lacay-cho-lon-falls-church-va",
+    (restaurant) =>
+      restaurant.id === "hu-tieu-mi-lacay-cho-lon-falls-church-va",
   );
   const rareBird = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "rare-bird-coffee-roasters-falls-church-va",
+    (restaurant) =>
+      restaurant.id === "rare-bird-coffee-roasters-falls-church-va",
   );
   const elPolloRico = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "el-pollo-rico-arlington-va",
   );
   const dogon = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "replacement-dogon-by-kwame-onwuachi-washington-dc",
+    (restaurant) =>
+      restaurant.id === "replacement-dogon-by-kwame-onwuachi-washington-dc",
   );
-  const arrels = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "arrels-dc");
-  const chaoBan = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "chao-ban-tysons-va");
-  const amparo = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "amparo-fondita-dc");
-  const xiquet = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "xiquet-dc");
-  const providencia = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "providencia-dc");
+  const arrels = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "arrels-dc",
+  );
+  const chaoBan = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "chao-ban-tysons-va",
+  );
+  const amparo = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "amparo-fondita-dc",
+  );
+  const xiquet = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "xiquet-dc",
+  );
+  const providencia = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "providencia-dc",
+  );
   const azteca = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "azteca-restaurant-college-park-md-dc-metro",
+    (restaurant) =>
+      restaurant.id === "azteca-restaurant-college-park-md-dc-metro",
   );
-  const primrose = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "primrose-dc");
-  const marvsDogs = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "marvs-dogs-dc");
-  const bumblebirds = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "bumblebirds-dc");
+  const primrose = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "primrose-dc",
+  );
+  const marvsDogs = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "marvs-dogs-dc",
+  );
+  const bumblebirds = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "bumblebirds-dc",
+  );
   const fossette = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "fossette-focacceria-union-market-dc",
   );
-  const juliiPike = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "julii-pike-and-rose-md");
+  const juliiPike = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "julii-pike-and-rose-md",
+  );
   const juliiBethesda = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "julii-bethesda-md-dc-metro",
   );
-  const greenhouse = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "greenhouse-jefferson-dc");
+  const greenhouse = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "greenhouse-jefferson-dc",
+  );
   const lighthouseTofu = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "lighthouse-tofu-annandale-va-dc-metro",
   );
   const tigerDumplings = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "tiger-dumplings-arlington-va",
   );
-  const rasikaPenn = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "rasika-penn-quarter-dc");
-  const bartaco = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "bartaco-wharf-dc");
-  const texasDeBrazil = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "texas-de-brazil-fairfax-fairfax-va-dc-metro",
+  const rasikaPenn = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "rasika-penn-quarter-dc",
   );
-  const kinDa = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "osm-kin-da-2598575314");
-  const laCasina = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "la-casina-capitol-hill-dc");
-  const laCasinaBufalina = laCasina?.items.find((item) => item.id === "pizza-la-bufalina");
-  const laCasinaCarbonara = laCasina?.items.find((item) => item.id === "pizza-la-carbonara");
-  const laCasinaMarinare = laCasina?.items.find((item) => item.id === "fritti-le-nuvolette-marinare");
-  const laCasinaPistachioTiramisu = laCasina?.items.find((item) => item.id === "desserts-tiramisu-al-pistacchio");
-  const laCasinaVesuvio = laCasina?.items.find((item) => item.id === "pizza-vesuvio");
-  const boogy = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "boogy-and-peel-dupont-dc");
-  const boogyMachaRoni = boogy?.items.find((item) => item.id === "pizza-macha-roni");
-  const boogyPatricia = boogy?.items.find((item) => item.id === "sandos-the-patricia-sando");
-  const boogyPimentoCheese = boogy?.items.find((item) => item.id === "small-plates-salsa-macha-pimento-cheese");
-  const boogyKellyRuben = boogy?.items.find((item) => item.id === "pizza-the-kelly-ruben");
+  const bartaco = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "bartaco-wharf-dc",
+  );
+  const texasDeBrazil = generatedRestaurants.restaurants.find(
+    (restaurant) =>
+      restaurant.id === "texas-de-brazil-fairfax-fairfax-va-dc-metro",
+  );
+  const kinDa = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "osm-kin-da-2598575314",
+  );
+  const laCasina = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "la-casina-capitol-hill-dc",
+  );
+  const laCasinaBufalina = laCasina?.items.find(
+    (item) => item.id === "pizza-la-bufalina",
+  );
+  const laCasinaCarbonara = laCasina?.items.find(
+    (item) => item.id === "pizza-la-carbonara",
+  );
+  const laCasinaMarinare = laCasina?.items.find(
+    (item) => item.id === "fritti-le-nuvolette-marinare",
+  );
+  const laCasinaPistachioTiramisu = laCasina?.items.find(
+    (item) => item.id === "desserts-tiramisu-al-pistacchio",
+  );
+  const laCasinaVesuvio = laCasina?.items.find(
+    (item) => item.id === "pizza-vesuvio",
+  );
+  const boogy = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "boogy-and-peel-dupont-dc",
+  );
+  const boogyMachaRoni = boogy?.items.find(
+    (item) => item.id === "pizza-macha-roni",
+  );
+  const boogyPatricia = boogy?.items.find(
+    (item) => item.id === "sandos-the-patricia-sando",
+  );
+  const boogyPimentoCheese = boogy?.items.find(
+    (item) => item.id === "small-plates-salsa-macha-pimento-cheese",
+  );
+  const boogyKellyRuben = boogy?.items.find(
+    (item) => item.id === "pizza-the-kelly-ruben",
+  );
   const thompson = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "thompson-italian-falls-church-dc-metro",
   );
@@ -5944,31 +7358,66 @@ test("generated official manual repair layer keeps source-backed allergens and r
   const zinnia = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "zinnia-silver-spring-dc-metro",
   );
-  const zinniaMac = zinnia?.items.find((item) => item.id === "baked-mac-and-cheese");
-  const zinniaSeafoodChowder = zinnia?.items.find((item) => item.id === "seafood-chowder");
-  const zinniaSpicedCauliflower = zinnia?.items.find((item) => item.id === "spiced-cauliflower");
-  const sonnys = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "sonnys-pizza-dc");
+  const zinniaMac = zinnia?.items.find(
+    (item) => item.id === "baked-mac-and-cheese",
+  );
+  const zinniaSeafoodChowder = zinnia?.items.find(
+    (item) => item.id === "seafood-chowder",
+  );
+  const zinniaSpicedCauliflower = zinnia?.items.find(
+    (item) => item.id === "spiced-cauliflower",
+  );
+  const sonnys = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "sonnys-pizza-dc",
+  );
   const sonnysCheese = sonnys?.items.find((item) => item.id === "cheese");
-  const sonnysGlutenFreeCheese = sonnys?.items.find((item) => item.id === "gluten-free-cheese-pie");
-  const sonnysGlutenFreeTomato = sonnys?.items.find((item) => item.id === "gluten-free-tomato-pie");
+  const sonnysGlutenFreeCheese = sonnys?.items.find(
+    (item) => item.id === "gluten-free-cheese-pie",
+  );
+  const sonnysGlutenFreeTomato = sonnys?.items.find(
+    (item) => item.id === "gluten-free-tomato-pie",
+  );
   const sonnysLongShot = sonnys?.items.find((item) => item.id === "long-shot");
-  const kWings = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "k-wings-centreville-dc-metro");
-  const kWingsBattered = kWings?.items.find((item) => item.id === "16pcs-wings-bone-in-m");
-  const kWingsCalamari = kWings?.items.find((item) => item.id === "fried-calamari");
-  const kWingsShrimpTempura = kWings?.items.find((item) => item.id === "shrimp-tempura");
+  const kWings = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "k-wings-centreville-dc-metro",
+  );
+  const kWingsBattered = kWings?.items.find(
+    (item) => item.id === "16pcs-wings-bone-in-m",
+  );
+  const kWingsCalamari = kWings?.items.find(
+    (item) => item.id === "fried-calamari",
+  );
+  const kWingsShrimpTempura = kWings?.items.find(
+    (item) => item.id === "shrimp-tempura",
+  );
   const kWingsTakoyaki = kWings?.items.find((item) => item.id === "takoyaki");
-  const kWingsTteokbokki = kWings?.items.find((item) => item.id === "tteokbokki");
-  const kWingsCornDog = kWings?.items.find((item) => item.id === "korean-cheese-corn-dog");
-  const ama = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "ama-dc");
-  const amaLasagna = ama?.items.find((item) => item.id === "borage-lasagna-verdi-con-ragu-alla-bolognese");
+  const kWingsTteokbokki = kWings?.items.find(
+    (item) => item.id === "tteokbokki",
+  );
+  const kWingsCornDog = kWings?.items.find(
+    (item) => item.id === "korean-cheese-corn-dog",
+  );
+  const ama = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "ama-dc",
+  );
+  const amaLasagna = ama?.items.find(
+    (item) => item.id === "borage-lasagna-verdi-con-ragu-alla-bolognese",
+  );
   const amaFocaccia = ama?.items.find((item) => item.id === "classico-fugassa");
   const amaFarinata = ama?.items.find((item) => item.id === "farinata");
-  const amaMortadellaPesto = ama?.items.find((item) => item.id === "mortadella-stracchino-pesto-sandwich");
+  const amaMortadellaPesto = ama?.items.find(
+    (item) => item.id === "mortadella-stracchino-pesto-sandwich",
+  );
   const amaRiceBowl = ama?.items.find((item) => item.id === "rice-bowl");
   const amaInsalata = ama?.items.find((item) => item.id === "insalata-verde");
 
   assert.ok(jinya);
-  assert.equal(jinya.items.some((item) => item.id === "chefs-special" && item.category === "Sashimi"), false);
+  assert.equal(
+    jinya.items.some(
+      (item) => item.id === "chefs-special" && item.category === "Sashimi",
+    ),
+    false,
+  );
   assert.ok(
     jinya.items.some(
       (item) =>
@@ -5980,7 +7429,10 @@ test("generated official manual repair layer keeps source-backed allergens and r
   );
 
   assert.ok(dosToros);
-  assert.equal(dosToros.items.some((item) => item.id === "rise-and-roll"), false);
+  assert.equal(
+    dosToros.items.some((item) => item.id === "rise-and-roll"),
+    false,
+  );
   assert.ok(
     dosToros.items.some(
       (item) =>
@@ -6005,7 +7457,9 @@ test("generated official manual repair layer keeps source-backed allergens and r
   assert.ok(sushiTaro);
   assert.equal(sushiTaro.officialAllergenStatus, "extracted");
   assert.equal(
-    sushiTaro.items.filter((item) => item.allergenSourceType === "official-ingredients").length,
+    sushiTaro.items.filter(
+      (item) => item.allergenSourceType === "official-ingredients",
+    ).length,
     49,
   );
   assert.ok(
@@ -6038,7 +7492,9 @@ test("generated official manual repair layer keeps source-backed allergens and r
 
   assert.ok(neutralGround);
   assert.equal(
-    neutralGround.items.filter((item) => item.allergenSourceType === "official-ingredients").length,
+    neutralGround.items.filter(
+      (item) => item.allergenSourceType === "official-ingredients",
+    ).length,
     19,
   );
   assert.ok(
@@ -6071,7 +7527,9 @@ test("generated official manual repair layer keeps source-backed allergens and r
 
   assert.ok(changChang);
   assert.equal(
-    changChang.items.filter((item) => item.allergenSourceType === "official-ingredients").length,
+    changChang.items.filter(
+      (item) => item.allergenSourceType === "official-ingredients",
+    ).length,
     66,
   );
   assert.ok(
@@ -6104,7 +7562,9 @@ test("generated official manual repair layer keeps source-backed allergens and r
 
   assert.ok(ometeo);
   assert.equal(
-    ometeo.items.filter((item) => item.allergenSourceType === "official-ingredients").length,
+    ometeo.items.filter(
+      (item) => item.allergenSourceType === "official-ingredients",
+    ).length,
     67,
   );
   assert.ok(
@@ -6136,7 +7596,9 @@ test("generated official manual repair layer keeps source-backed allergens and r
 
   assert.ok(riverClub);
   assert.equal(
-    riverClub.items.filter((item) => item.allergenSourceType === "official-ingredients").length,
+    riverClub.items.filter(
+      (item) => item.allergenSourceType === "official-ingredients",
+    ).length,
     42,
   );
   assert.ok(
@@ -6177,13 +7639,30 @@ test("generated official manual repair layer keeps source-backed allergens and r
   );
 
   assert.ok(peterChang);
-  assert.equal(peterChang.sourceStatus?.officialEvidenceBucket, "official-disclosure-only");
-  assert.equal(peterChang.allergenDataStatus?.officialEvidence?.suspiciousOfficialParserFragments, 0);
-  assert.equal(peterChang.items.some((item) => item.id === "request-advisory"), false);
-  assert.equal(peterChang.items.some((item) => item.id === "spicy"), false);
-  assert.equal(peterChang.items.some((item) => item.id === "togo-seafood"), false);
   assert.equal(
-    peterChang.items.filter((item) => item.allergenSourceType !== "unavailable").length,
+    peterChang.sourceStatus?.officialEvidenceBucket,
+    "official-disclosure-only",
+  );
+  assert.equal(
+    peterChang.allergenDataStatus?.officialEvidence
+      ?.suspiciousOfficialParserFragments,
+    0,
+  );
+  assert.equal(
+    peterChang.items.some((item) => item.id === "request-advisory"),
+    false,
+  );
+  assert.equal(
+    peterChang.items.some((item) => item.id === "spicy"),
+    false,
+  );
+  assert.equal(
+    peterChang.items.some((item) => item.id === "togo-seafood"),
+    false,
+  );
+  assert.equal(
+    peterChang.items.filter((item) => item.allergenSourceType !== "unavailable")
+      .length,
     77,
   );
   assert.ok(
@@ -6218,15 +7697,21 @@ test("generated official manual repair layer keeps source-backed allergens and r
   );
 
   assert.ok(baanMae);
-  assert.equal(baanMae.items.some((item) => item.id === "lighter"), false);
+  assert.equal(
+    baanMae.items.some((item) => item.id === "lighter"),
+    false,
+  );
   assert.equal(
     baanMae.items.filter(
-      (item) => item.allergenSourceType === "restaurant-linked-menu-ingredients",
+      (item) =>
+        item.allergenSourceType === "restaurant-linked-menu-ingredients",
     ).length,
     16,
   );
   assert.equal(
-    baanMae.items.filter((item) => item.allergenSourceType === "official-ingredients").length,
+    baanMae.items.filter(
+      (item) => item.allergenSourceType === "official-ingredients",
+    ).length,
     0,
   );
   assert.ok(
@@ -6235,7 +7720,7 @@ test("generated official manual repair layer keeps source-backed allergens and r
         item.id === "cha-mak-now" &&
         item.allergenSourceType === "unavailable" &&
         (item.allergens ?? []).length === 0,
-      ),
+    ),
   );
   assert.ok(
     baanMae.items.some(
@@ -6280,10 +7765,17 @@ test("generated official manual repair layer keeps source-backed allergens and r
   );
 
   assert.ok(rakuya);
-  assert.equal(rakuya.items.some((item) => item.id === "kirin-ichiban"), false);
-  assert.equal(rakuya.items.some((item) => item.id === "substitution"), false);
   assert.equal(
-    rakuya.items.filter((item) => item.allergenSourceType !== "unavailable").length,
+    rakuya.items.some((item) => item.id === "kirin-ichiban"),
+    false,
+  );
+  assert.equal(
+    rakuya.items.some((item) => item.id === "substitution"),
+    false,
+  );
+  assert.equal(
+    rakuya.items.filter((item) => item.allergenSourceType !== "unavailable")
+      .length,
     52,
   );
   assert.ok(
@@ -6317,7 +7809,9 @@ test("generated official manual repair layer keeps source-backed allergens and r
 
   assert.ok(northsideSocial);
   assert.equal(
-    northsideSocial.items.filter((item) => item.allergenSourceType !== "unavailable").length,
+    northsideSocial.items.filter(
+      (item) => item.allergenSourceType !== "unavailable",
+    ).length,
     147,
   );
   assert.ok(
@@ -6360,7 +7854,9 @@ test("generated official manual repair layer keeps source-backed allergens and r
 
   assert.ok(harth);
   assert.equal(
-    harth.items.filter((item) => item.allergenSourceType === "official-ingredients").length,
+    harth.items.filter(
+      (item) => item.allergenSourceType === "official-ingredients",
+    ).length,
     41,
   );
   assert.ok(
@@ -6400,10 +7896,18 @@ test("generated official manual repair layer keeps source-backed allergens and r
   );
 
   assert.ok(kizuna);
-  assert.equal(kizuna.items.some((item) => item.id === "everyday-rolls"), false);
-  assert.equal(kizuna.items.some((item) => item.id === "ramen"), false);
   assert.equal(
-    kizuna.items.filter((item) => item.allergenSourceType === "official-ingredients").length,
+    kizuna.items.some((item) => item.id === "everyday-rolls"),
+    false,
+  );
+  assert.equal(
+    kizuna.items.some((item) => item.id === "ramen"),
+    false,
+  );
+  assert.equal(
+    kizuna.items.filter(
+      (item) => item.allergenSourceType === "official-ingredients",
+    ).length,
     155,
   );
   assert.ok(
@@ -6444,7 +7948,9 @@ test("generated official manual repair layer keeps source-backed allergens and r
 
   assert.ok(phoHaiDuong);
   assert.equal(
-    phoHaiDuong.items.filter((item) => item.allergenSourceType === "official-ingredients").length,
+    phoHaiDuong.items.filter(
+      (item) => item.allergenSourceType === "official-ingredients",
+    ).length,
     11,
   );
   assert.ok(
@@ -6484,10 +7990,18 @@ test("generated official manual repair layer keeps source-backed allergens and r
   );
 
   assert.ok(mandnsPizza);
-  assert.equal(mandnsPizza.items.some((item) => item.id === "calzones"), false);
-  assert.equal(mandnsPizza.items.some((item) => item.id === "curries"), false);
   assert.equal(
-    mandnsPizza.items.filter((item) => item.allergenSourceType === "official-ingredients").length,
+    mandnsPizza.items.some((item) => item.id === "calzones"),
+    false,
+  );
+  assert.equal(
+    mandnsPizza.items.some((item) => item.id === "curries"),
+    false,
+  );
+  assert.equal(
+    mandnsPizza.items.filter(
+      (item) => item.allergenSourceType === "official-ingredients",
+    ).length,
     110,
   );
   assert.ok(
@@ -6526,9 +8040,14 @@ test("generated official manual repair layer keeps source-backed allergens and r
   );
 
   assert.ok(medina);
-  assert.equal(medina.items.some((item) => item.id === "parsley-scallions"), false);
   assert.equal(
-    medina.items.filter((item) => item.allergenSourceType === "official-ingredients").length,
+    medina.items.some((item) => item.id === "parsley-scallions"),
+    false,
+  );
+  assert.equal(
+    medina.items.filter(
+      (item) => item.allergenSourceType === "official-ingredients",
+    ).length,
     17,
   );
   assert.ok(
@@ -6559,15 +8078,21 @@ test("generated official manual repair layer keeps source-backed allergens and r
   );
 
   assert.ok(huTieuMiLacay);
-  assert.equal(huTieuMiLacay.items.some((item) => item.id === "general-info"), false);
   assert.equal(
-    huTieuMiLacay.items.filter((item) => item.allergenSourceType === "official-ingredients").length,
+    huTieuMiLacay.items.some((item) => item.id === "general-info"),
+    false,
+  );
+  assert.equal(
+    huTieuMiLacay.items.filter(
+      (item) => item.allergenSourceType === "official-ingredients",
+    ).length,
     29,
   );
   assert.ok(
     huTieuMiLacay.items.some(
       (item) =>
-        item.id === "concentrated-vietnamese-coffee-with-condensed-milk-i-am-very-rich-in-flavor" &&
+        item.id ===
+          "concentrated-vietnamese-coffee-with-condensed-milk-i-am-very-rich-in-flavor" &&
         item.description == null &&
         item.allergens.includes("milk") &&
         !item.allergens.includes("shellfish"),
@@ -6593,11 +8118,22 @@ test("generated official manual repair layer keeps source-backed allergens and r
   );
 
   assert.ok(rareBird);
-  assert.equal(rareBird.items.some((item) => String(item.id).startsWith("wholesale-")), false);
-  assert.equal(rareBird.items.some((item) => item.id === "employee-aeropress-filters"), false);
-  assert.equal(rareBird.items.some((item) => item.id === "barkies-dog-biscuits"), false);
   assert.equal(
-    rareBird.items.filter((item) => item.allergenSourceType === "official-ingredients").length,
+    rareBird.items.some((item) => String(item.id).startsWith("wholesale-")),
+    false,
+  );
+  assert.equal(
+    rareBird.items.some((item) => item.id === "employee-aeropress-filters"),
+    false,
+  );
+  assert.equal(
+    rareBird.items.some((item) => item.id === "barkies-dog-biscuits"),
+    false,
+  );
+  assert.equal(
+    rareBird.items.filter(
+      (item) => item.allergenSourceType === "official-ingredients",
+    ).length,
     46,
   );
   assert.ok(
@@ -6640,9 +8176,22 @@ test("generated official manual repair layer keeps source-backed allergens and r
   );
 
   assert.ok(elPolloRico);
-  assert.equal(elPolloRico.items.some((item) => item.id === "arlington-virginia"), false);
-  assert.equal(elPolloRico.items.some((item) => item.id === "scroll-to-top-scroll-to-top-scroll-to-top"), false);
-  assert.equal(elPolloRico.items.filter((item) => item.allergenSourceType !== "unavailable").length, 10);
+  assert.equal(
+    elPolloRico.items.some((item) => item.id === "arlington-virginia"),
+    false,
+  );
+  assert.equal(
+    elPolloRico.items.some(
+      (item) => item.id === "scroll-to-top-scroll-to-top-scroll-to-top",
+    ),
+    false,
+  );
+  assert.equal(
+    elPolloRico.items.filter(
+      (item) => item.allergenSourceType !== "unavailable",
+    ).length,
+    10,
+  );
   assert.ok(
     elPolloRico.items.some(
       (item) =>
@@ -6671,14 +8220,16 @@ test("generated official manual repair layer keeps source-backed allergens and r
     ),
   );
   assert.equal(
-    elPolloRico.items.find((item) => item.id === "party-size-coleslaw")?.description,
+    elPolloRico.items.find((item) => item.id === "party-size-coleslaw")
+      ?.description,
     "Party-Size Coleslaw, 32 oz (feeds 7-10).",
   );
 
   assert.ok(dogon);
   assert.equal(dogon.officialAllergenStatus, "extracted");
   assert.equal(
-    dogon.items.filter((item) => item.allergenSourceType !== "unavailable").length,
+    dogon.items.filter((item) => item.allergenSourceType !== "unavailable")
+      .length,
     12,
   );
   assert.ok(
@@ -6719,7 +8270,8 @@ test("generated official manual repair layer keeps source-backed allergens and r
   assert.ok(arrels);
   assert.equal(arrels.officialAllergenStatus, "extracted");
   assert.equal(
-    arrels.items.filter((item) => item.allergenSourceType !== "unavailable").length,
+    arrels.items.filter((item) => item.allergenSourceType !== "unavailable")
+      .length,
     4,
   );
   assert.ok(
@@ -6759,7 +8311,8 @@ test("generated official manual repair layer keeps source-backed allergens and r
   assert.ok(chaoBan);
   assert.equal(chaoBan.officialAllergenStatus, "extracted");
   assert.equal(
-    chaoBan.items.filter((item) => item.allergenSourceType !== "unavailable").length,
+    chaoBan.items.filter((item) => item.allergenSourceType !== "unavailable")
+      .length,
     13,
   );
   assert.ok(
@@ -6801,7 +8354,8 @@ test("generated official manual repair layer keeps source-backed allergens and r
   assert.ok(amparo);
   assert.equal(amparo.officialAllergenStatus, "extracted");
   assert.equal(
-    amparo.items.filter((item) => item.allergenSourceType !== "unavailable").length,
+    amparo.items.filter((item) => item.allergenSourceType !== "unavailable")
+      .length,
     6,
   );
   assert.ok(
@@ -6841,7 +8395,8 @@ test("generated official manual repair layer keeps source-backed allergens and r
   assert.ok(xiquet);
   assert.equal(xiquet.officialAllergenStatus, "extracted");
   assert.equal(
-    xiquet.items.filter((item) => item.allergenSourceType !== "unavailable").length,
+    xiquet.items.filter((item) => item.allergenSourceType !== "unavailable")
+      .length,
     5,
   );
   assert.ok(
@@ -6881,7 +8436,9 @@ test("generated official manual repair layer keeps source-backed allergens and r
   assert.ok(providencia);
   assert.equal(providencia.officialAllergenStatus, "extracted");
   assert.equal(
-    providencia.items.filter((item) => item.allergenSourceType !== "unavailable").length,
+    providencia.items.filter(
+      (item) => item.allergenSourceType !== "unavailable",
+    ).length,
     4,
   );
   assert.ok(
@@ -6913,7 +8470,8 @@ test("generated official manual repair layer keeps source-backed allergens and r
   assert.ok(azteca);
   assert.equal(azteca.officialAllergenStatus, "extracted");
   assert.equal(
-    azteca.items.filter((item) => item.allergenSourceType !== "unavailable").length,
+    azteca.items.filter((item) => item.allergenSourceType !== "unavailable")
+      .length,
     3,
   );
   assert.ok(
@@ -6936,7 +8494,8 @@ test("generated official manual repair layer keeps source-backed allergens and r
   assert.ok(primrose);
   assert.equal(primrose.officialAllergenStatus, "extracted");
   assert.equal(
-    primrose.items.filter((item) => item.allergenSourceType !== "unavailable").length,
+    primrose.items.filter((item) => item.allergenSourceType !== "unavailable")
+      .length,
     3,
   );
   assert.ok(
@@ -6966,10 +8525,14 @@ test("generated official manual repair layer keeps source-backed allergens and r
   );
 
   assert.ok(marvsDogs);
-  assert.equal(marvsDogs.items.some((item) => item.id === "additional-pint-vanilla"), false);
+  assert.equal(
+    marvsDogs.items.some((item) => item.id === "additional-pint-vanilla"),
+    false,
+  );
   assert.equal(marvsDogs.officialAllergenStatus, "extracted");
   assert.equal(
-    marvsDogs.items.filter((item) => item.allergenSourceType !== "unavailable").length,
+    marvsDogs.items.filter((item) => item.allergenSourceType !== "unavailable")
+      .length,
     4,
   );
   assert.ok(
@@ -7001,7 +8564,9 @@ test("generated official manual repair layer keeps source-backed allergens and r
   assert.ok(bumblebirds);
   assert.equal(bumblebirds.officialAllergenStatus, "extracted");
   assert.equal(
-    bumblebirds.items.filter((item) => item.allergenSourceType !== "unavailable").length,
+    bumblebirds.items.filter(
+      (item) => item.allergenSourceType !== "unavailable",
+    ).length,
     8,
   );
   assert.ok(
@@ -7032,7 +8597,8 @@ test("generated official manual repair layer keeps source-backed allergens and r
   assert.ok(fossette);
   assert.equal(fossette.officialAllergenStatus, "extracted");
   assert.equal(
-    fossette.items.filter((item) => item.allergenSourceType !== "unavailable").length,
+    fossette.items.filter((item) => item.allergenSourceType !== "unavailable")
+      .length,
     10,
   );
   assert.ok(
@@ -7067,7 +8633,8 @@ test("generated official manual repair layer keeps source-backed allergens and r
     assert.ok(julii);
     assert.equal(julii.officialAllergenStatus, "extracted");
     assert.equal(
-      julii.items.filter((item) => item.allergenSourceType !== "unavailable").length,
+      julii.items.filter((item) => item.allergenSourceType !== "unavailable")
+        .length,
       9,
     );
     assert.ok(
@@ -7104,7 +8671,8 @@ test("generated official manual repair layer keeps source-backed allergens and r
   assert.ok(greenhouse);
   assert.equal(greenhouse.officialAllergenStatus, "extracted");
   assert.equal(
-    greenhouse.items.filter((item) => item.allergenSourceType !== "unavailable").length,
+    greenhouse.items.filter((item) => item.allergenSourceType !== "unavailable")
+      .length,
     9,
   );
   assert.ok(
@@ -7147,7 +8715,9 @@ test("generated official manual repair layer keeps source-backed allergens and r
   assert.ok(lighthouseTofu);
   assert.equal(lighthouseTofu.officialAllergenStatus, "extracted");
   assert.equal(
-    lighthouseTofu.items.filter((item) => item.allergenSourceType !== "unavailable").length,
+    lighthouseTofu.items.filter(
+      (item) => item.allergenSourceType !== "unavailable",
+    ).length,
     7,
   );
   assert.ok(
@@ -7186,7 +8756,9 @@ test("generated official manual repair layer keeps source-backed allergens and r
   assert.ok(tigerDumplings);
   assert.equal(tigerDumplings.officialAllergenStatus, "extracted");
   assert.equal(
-    tigerDumplings.items.filter((item) => item.allergenSourceType !== "unavailable").length,
+    tigerDumplings.items.filter(
+      (item) => item.allergenSourceType !== "unavailable",
+    ).length,
     66,
   );
   assert.ok(
@@ -7224,7 +8796,10 @@ test("generated official manual repair layer keeps source-backed allergens and r
   );
 
   assert.ok(rasikaPenn);
-  assert.equal(rasikaPenn.items.some((item) => item.id === "kelt-vsop"), false);
+  assert.equal(
+    rasikaPenn.items.some((item) => item.id === "kelt-vsop"),
+    false,
+  );
   assert.equal(rasikaPenn.officialAllergenStatus, "not-found");
 
   assert.ok(bartaco);
@@ -7233,7 +8808,9 @@ test("generated official manual repair layer keeps source-backed allergens and r
   assert.equal(bartaco.sourceProfile, "everybite-widget:bartaco");
   assert.equal(bartaco.items.length, 107);
   assert.equal(
-    bartaco.items.filter((item) => item.allergenSourceType === "official-allergen-widget").length,
+    bartaco.items.filter(
+      (item) => item.allergenSourceType === "official-allergen-widget",
+    ).length,
     107,
   );
   assert.ok(
@@ -7259,7 +8836,9 @@ test("generated official manual repair layer keeps source-backed allergens and r
     bartaco.items.some(
       (item) =>
         item.id === "tacos-mushroom-w-queso-fresco" &&
-        item.knownIngredients?.some((ingredient) => /queso fresco/i.test(ingredient)) &&
+        item.knownIngredients?.some((ingredient) =>
+          /queso fresco/i.test(ingredient),
+        ) &&
         item.allergens.includes("milk"),
     ),
   );
@@ -7292,37 +8871,107 @@ test("generated official manual repair layer keeps source-backed allergens and r
   assert.ok(laCasina);
   assert.ok((laCasina.allergenDataStatus?.officialItemCount ?? 0) >= 30);
   assert.ok(laCasinaBufalina);
-  assert.deepEqual(laCasinaBufalina.allergens?.sort(), ["gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual(laCasinaBufalina.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.ok(laCasinaCarbonara);
-  assert.deepEqual(laCasinaCarbonara.allergens?.sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual(laCasinaCarbonara.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(laCasinaMarinare);
-  assert.deepEqual(laCasinaMarinare.allergens?.sort(), ["fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual(laCasinaMarinare.allergens?.sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(laCasinaPistachioTiramisu);
-  assert.equal(laCasinaPistachioTiramisu.allergenSourceType, "official-ingredients");
-  assert.deepEqual(laCasinaPistachioTiramisu.allergens?.sort(), ["egg", "gluten", "milk", "tree-nut", "wheat"]);
+  assert.equal(
+    laCasinaPistachioTiramisu.allergenSourceType,
+    "official-ingredients",
+  );
+  assert.deepEqual(laCasinaPistachioTiramisu.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.ok(laCasinaVesuvio);
-  assert.deepEqual(laCasinaVesuvio.allergens?.sort(), ["fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual(laCasinaVesuvio.allergens?.sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
 
   assert.ok(boogy);
   assert.ok((boogy.allergenDataStatus?.officialItemCount ?? 0) >= 20);
-  assert.equal(boogy.items.some((item) => item.id === "boogy-magnet"), false);
-  assert.equal(boogy.items.some((item) => item.id === "white-claw-mango"), false);
+  assert.equal(
+    boogy.items.some((item) => item.id === "boogy-magnet"),
+    false,
+  );
+  assert.equal(
+    boogy.items.some((item) => item.id === "white-claw-mango"),
+    false,
+  );
   assert.ok(boogyMachaRoni);
-  assert.deepEqual(boogyMachaRoni.allergens?.sort(), ["gluten", "milk", "peanut", "sesame", "wheat"]);
+  assert.deepEqual(boogyMachaRoni.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "peanut",
+    "sesame",
+    "wheat",
+  ]);
   assert.ok(boogyPatricia);
-  assert.deepEqual(boogyPatricia.allergens?.sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual(boogyPatricia.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(boogyPimentoCheese);
-  assert.deepEqual(boogyPimentoCheese.allergens?.sort(), ["egg", "gluten", "milk", "peanut", "sesame", "wheat"]);
+  assert.deepEqual(boogyPimentoCheese.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "peanut",
+    "sesame",
+    "wheat",
+  ]);
   assert.ok(boogyKellyRuben);
-  assert.deepEqual(boogyKellyRuben.allergens?.sort(), ["egg", "gluten", "milk", "mustard", "wheat"]);
+  assert.deepEqual(boogyKellyRuben.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "mustard",
+    "wheat",
+  ]);
 
   assert.ok(thompson);
-  assert.equal(thompson.items.some((item) => ["for-orders-of", "includes"].includes(item.id)), false);
+  assert.equal(
+    thompson.items.some((item) =>
+      ["for-orders-of", "includes"].includes(item.id),
+    ),
+    false,
+  );
   assert.ok(thompsonAlexandria);
-  assert.equal(thompsonAlexandria.items.some((item) => item.id === "includes"), false);
+  assert.equal(
+    thompsonAlexandria.items.some((item) => item.id === "includes"),
+    false,
+  );
   assert.ok(
     thompson.items.some(
-      (item) => item.id === "lemon-cheesecake" && item.allergens.includes("milk") && item.allergens.includes("tree-nut"),
+      (item) =>
+        item.id === "lemon-cheesecake" &&
+        item.allergens.includes("milk") &&
+        item.allergens.includes("tree-nut"),
     ),
   );
 
@@ -7336,34 +8985,73 @@ test("generated official manual repair layer keeps source-backed allergens and r
   assert.equal(sonnysGlutenFreeTomato.allergenSourceType, "unavailable");
   assert.deepEqual(sonnysGlutenFreeTomato.allergens ?? [], []);
   assert.ok(sonnysLongShot);
-  assert.deepEqual(sonnysLongShot.allergens?.sort(), ["gluten", "milk", "sesame", "wheat"]);
+  assert.deepEqual(sonnysLongShot.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "sesame",
+    "wheat",
+  ]);
 
   assert.ok(kWings);
   assert.ok((kWings.allergenDataStatus?.officialItemCount ?? 0) >= 30);
   assert.ok(kWingsBattered);
   assert.deepEqual(kWingsBattered.allergens?.sort(), ["gluten", "wheat"]);
   assert.ok(kWingsCalamari);
-  assert.deepEqual(kWingsCalamari.allergens?.sort(), ["egg", "gluten", "shellfish", "wheat"]);
+  assert.deepEqual(kWingsCalamari.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok(kWingsShrimpTempura);
-  assert.deepEqual(kWingsShrimpTempura.allergens?.sort(), ["gluten", "shellfish", "wheat"]);
+  assert.deepEqual(kWingsShrimpTempura.allergens?.sort(), [
+    "gluten",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok(kWingsTakoyaki);
-  assert.deepEqual(kWingsTakoyaki.allergens?.sort(), ["egg", "fish", "gluten", "shellfish", "wheat"]);
+  assert.deepEqual(kWingsTakoyaki.allergens?.sort(), [
+    "egg",
+    "fish",
+    "gluten",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok(kWingsTteokbokki);
-  assert.deepEqual(kWingsTteokbokki.allergens?.sort(), ["fish", "gluten", "sesame", "wheat"]);
+  assert.deepEqual(kWingsTteokbokki.allergens?.sort(), [
+    "fish",
+    "gluten",
+    "sesame",
+    "wheat",
+  ]);
   assert.ok(kWingsCornDog);
-  assert.deepEqual(kWingsCornDog.allergens?.sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual(kWingsCornDog.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
 
   assert.ok(ama);
   assert.ok((ama.allergenDataStatus?.officialItemCount ?? 0) >= 25);
   assert.ok(amaLasagna);
-  assert.deepEqual(amaLasagna.allergens?.sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual(amaLasagna.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(amaFocaccia);
   assert.deepEqual(amaFocaccia.allergens?.sort(), ["gluten", "wheat"]);
   assert.ok(amaFarinata);
   assert.equal(amaFarinata.allergenSourceType, "unavailable");
   assert.deepEqual(amaFarinata.allergens ?? [], []);
   assert.ok(amaMortadellaPesto);
-  assert.deepEqual(amaMortadellaPesto.allergens?.sort(), ["gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual(amaMortadellaPesto.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.ok(amaRiceBowl);
   assert.deepEqual(amaRiceBowl.allergens?.sort(), ["fish"]);
   assert.ok(amaInsalata);
@@ -7374,7 +9062,12 @@ test("generated official manual repair layer keeps source-backed allergens and r
   assert.ok(zinniaMac);
   assert.deepEqual(zinniaMac.allergens?.sort(), ["gluten", "milk", "wheat"]);
   assert.ok(zinniaSeafoodChowder);
-  assert.deepEqual(zinniaSeafoodChowder.allergens?.sort(), ["gluten", "milk", "shellfish", "wheat"]);
+  assert.deepEqual(zinniaSeafoodChowder.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok(zinniaSpicedCauliflower);
   assert.deepEqual(zinniaSpicedCauliflower.allergens?.sort(), ["milk"]);
   assert.deepEqual(zinniaSpicedCauliflower.mayContain ?? [], []);
@@ -7392,7 +9085,9 @@ test("generated Silver and Sons does not treat gluten-free legend markers as con
   const silver = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "silver-and-sons-bbq-bethesda-md",
   );
-  const merguez = silver?.items.find((item) => item.id === "merguez-sausage-kabob");
+  const merguez = silver?.items.find(
+    (item) => item.id === "merguez-sausage-kabob",
+  );
 
   assert.ok(silver);
   assert.ok(merguez);
@@ -7404,41 +9099,72 @@ test("generated Silver and Sons does not treat gluten-free legend markers as con
 });
 
 test("generated reviewed official corrections avoid global legend and raw-warning smears", () => {
-  const silverDiner = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "silver-diner-dc");
+  const silverDiner = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "silver-diner-dc",
+  );
   const miVida = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "mi-vida-washington-dc-dc-metro",
   );
   const zanahorias = miVida?.items.find((item) => item.id === "zanahorias");
   const redrocks = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "replacement-redrocks-pizza-washington-dc",
+    (restaurant) =>
+      restaurant.id === "replacement-redrocks-pizza-washington-dc",
   );
-  const steakAndCheese = redrocks?.items.find((item) => item.id === "ny-steak-and-cheese");
+  const steakAndCheese = redrocks?.items.find(
+    (item) => item.id === "ny-steak-and-cheese",
+  );
   const nue = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "replacement-nue-elegantly-vietnamese-falls-church-va",
+    (restaurant) =>
+      restaurant.id === "replacement-nue-elegantly-vietnamese-falls-church-va",
   );
-  const tofuNoodleBowl = nue?.items.find((item) => item.id === "tofu-noodle-bowl-v");
-  const gemini = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "gemini-dc");
-  const sesameCookie = gemini?.items.find((item) => item.id === "sesame-and-chocolate-chip-cookie");
+  const tofuNoodleBowl = nue?.items.find(
+    (item) => item.id === "tofu-noodle-bowl-v",
+  );
+  const gemini = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "gemini-dc",
+  );
+  const sesameCookie = gemini?.items.find(
+    (item) => item.id === "sesame-and-chocolate-chip-cookie",
+  );
   const rareBird = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "rare-bird-coffee-roasters-falls-church-va",
+    (restaurant) =>
+      restaurant.id === "rare-bird-coffee-roasters-falls-church-va",
   );
   const pullApart = rareBird?.items.find((item) => item.id === "pull-apart");
   const heidelberg = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "heidelberg-pastry-shoppe-arlington-va",
   );
   const brownie = heidelberg?.items.find((item) => item.id === "brownie");
-  const heidelbergBagels = heidelberg?.items.find((item) => item.id === "bagels");
-  const heidelbergDeliPlatter = heidelberg?.items.find((item) => item.id === "all-american-deli-platter");
-  const heidelbergFingerTeaSandwiches = heidelberg?.items.find((item) => item.id === "finger-tea-sandwiches");
-  const heidelbergObstTorte = heidelberg?.items.find((item) => item.id === "obst-torte");
-  const heidelbergVegetableTray = heidelberg?.items.find((item) => item.id === "vegetable-tray");
+  const heidelbergBagels = heidelberg?.items.find(
+    (item) => item.id === "bagels",
+  );
+  const heidelbergDeliPlatter = heidelberg?.items.find(
+    (item) => item.id === "all-american-deli-platter",
+  );
+  const heidelbergFingerTeaSandwiches = heidelberg?.items.find(
+    (item) => item.id === "finger-tea-sandwiches",
+  );
+  const heidelbergObstTorte = heidelberg?.items.find(
+    (item) => item.id === "obst-torte",
+  );
+  const heidelbergVegetableTray = heidelberg?.items.find(
+    (item) => item.id === "vegetable-tray",
+  );
   const yardbird = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "yardbird-washington-dc-dc-metro",
   );
-  const yardbirdHoneyButter = yardbird?.items.find((item) => item.id === "honey-butter");
-  const yardbirdAhiTuna = yardbird?.items.find((item) => item.id === "ahi-tuna-avocado-stack");
-  const yardbirdAppleCobbler = yardbird?.items.find((item) => item.id === "apple-cobbler");
-  const yardbirdCrabCake = yardbird?.items.find((item) => item.id === "jumbo-lump-crab-cake");
+  const yardbirdHoneyButter = yardbird?.items.find(
+    (item) => item.id === "honey-butter",
+  );
+  const yardbirdAhiTuna = yardbird?.items.find(
+    (item) => item.id === "ahi-tuna-avocado-stack",
+  );
+  const yardbirdAppleCobbler = yardbird?.items.find(
+    (item) => item.id === "apple-cobbler",
+  );
+  const yardbirdCrabCake = yardbird?.items.find(
+    (item) => item.id === "jumbo-lump-crab-cake",
+  );
   const yardbirdBacon = yardbird?.items.find((item) => item.id === "bacon-gf");
   const capitalGrille = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "the-capital-grille-dc",
@@ -7447,7 +9173,10 @@ test("generated reviewed official corrections avoid global legend and raw-warnin
   assert.ok(silverDiner);
   assert.equal(silverDiner.allergenDataStatus.officialItemCount, 0);
   assert.equal(
-    silverDiner.items.some((item) => item.allergenSourceType && item.allergenSourceType !== "unavailable"),
+    silverDiner.items.some(
+      (item) =>
+        item.allergenSourceType && item.allergenSourceType !== "unavailable",
+    ),
     false,
   );
 
@@ -7466,7 +9195,12 @@ test("generated reviewed official corrections avoid global legend and raw-warnin
   assert.equal(tofuNoodleBowl.mayContain?.includes("egg"), false);
 
   assert.ok(sesameCookie);
-  assert.deepEqual(sesameCookie.allergens?.sort(), ["egg", "gluten", "milk", "sesame"]);
+  assert.deepEqual(sesameCookie.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "sesame",
+  ]);
   assert.equal(sesameCookie.allergens?.includes("soy"), false);
   assert.equal(sesameCookie.allergens?.includes("tree-nut"), false);
   assert.equal(sesameCookie.mayContain?.includes("soy"), true);
@@ -7477,36 +9211,88 @@ test("generated reviewed official corrections avoid global legend and raw-warnin
   assert.equal(pullApart.mayContain?.includes("tree-nut"), true);
 
   assert.ok(brownie);
-  assert.equal(heidelberg.items.some((item) => item.id === "cake-sizing-guide"), false);
-  assert.equal(heidelberg.items.some((item) => /^group-[a-f]-breads-1-lb-dollar\d+-2-lb$/i.test(item.id)), false);
-  assert.equal(heidelberg.items.filter((item) => item.allergenSourceType !== "unavailable").length, 123);
-  assert.deepEqual([...brownie.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.equal(
+    heidelberg.items.some((item) => item.id === "cake-sizing-guide"),
+    false,
+  );
+  assert.equal(
+    heidelberg.items.some((item) =>
+      /^group-[a-f]-breads-1-lb-dollar\d+-2-lb$/i.test(item.id),
+    ),
+    false,
+  );
+  assert.equal(
+    heidelberg.items.filter((item) => item.allergenSourceType !== "unavailable")
+      .length,
+    123,
+  );
+  assert.deepEqual([...brownie.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.equal(brownie.allergens?.includes("tree-nut"), false);
   assert.equal(brownie.mayContain?.includes("tree-nut"), true);
   assert.ok(heidelbergBagels);
-  assert.deepEqual([...heidelbergBagels.allergens].sort(), ["gluten", "sesame", "wheat"]);
+  assert.deepEqual([...heidelbergBagels.allergens].sort(), [
+    "gluten",
+    "sesame",
+    "wheat",
+  ]);
   assert.equal(heidelbergBagels.allergens?.includes("milk"), false);
   assert.ok(heidelbergDeliPlatter);
-  assert.deepEqual([...heidelbergDeliPlatter.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...heidelbergDeliPlatter.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(heidelbergFingerTeaSandwiches);
-  assert.deepEqual([...heidelbergFingerTeaSandwiches.allergens].sort(), ["fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...heidelbergFingerTeaSandwiches.allergens].sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(heidelbergObstTorte);
-  assert.deepEqual([...heidelbergObstTorte.allergens].sort(), ["egg", "gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual([...heidelbergObstTorte.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.ok(heidelbergVegetableTray);
   assert.deepEqual(heidelbergVegetableTray.allergens ?? [], ["milk"]);
 
   assert.ok(yardbirdHoneyButter);
   assert.equal(yardbird?.items.length, 79);
-  assert.equal(yardbird?.items.some((item) => item.id === "miami"), false);
-  assert.equal(yardbird?.items.some((item) => item.id === "yardbird-old-fashioned"), false);
-  assert.equal(yardbird?.items.filter((item) => item.allergenSourceType !== "unavailable").length, 55);
+  assert.equal(
+    yardbird?.items.some((item) => item.id === "miami"),
+    false,
+  );
+  assert.equal(
+    yardbird?.items.some((item) => item.id === "yardbird-old-fashioned"),
+    false,
+  );
+  assert.equal(
+    yardbird?.items.filter((item) => item.allergenSourceType !== "unavailable")
+      .length,
+    55,
+  );
   assert.deepEqual([...yardbirdHoneyButter.allergens].sort(), ["milk"]);
   assert.equal(yardbirdHoneyButter.allergens?.includes("tree-nut"), false);
   assert.equal(yardbirdHoneyButter.mayContain?.includes("tree-nut"), false);
   assert.ok(yardbirdAhiTuna);
   assert.deepEqual([...yardbirdAhiTuna.allergens].sort(), ["fish", "milk"]);
   assert.ok(yardbirdAppleCobbler);
-  assert.deepEqual([...yardbirdAppleCobbler.allergens].sort(), ["gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual([...yardbirdAppleCobbler.allergens].sort(), [
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.ok(yardbirdCrabCake);
   assert.deepEqual(yardbirdCrabCake.allergens ?? [], ["shellfish"]);
   assert.ok(yardbirdBacon);
@@ -7523,10 +9309,18 @@ test("generated reviewed official corrections avoid global legend and raw-warnin
 });
 
 test("generated P.F. Chang's strict official matrix remains source-backed and reviewed", () => {
-  const pfChangs = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "pf-changs");
-  const whiteRice = pfChangs?.items.find((item) => item.id === "white-rice-steamed");
-  const brownRice = pfChangs?.items.find((item) => item.id === "brown-rice-steamed");
-  const gfFriedRice = pfChangs?.items.find((item) => item.id === "gf-fried-rice");
+  const pfChangs = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "pf-changs",
+  );
+  const whiteRice = pfChangs?.items.find(
+    (item) => item.id === "white-rice-steamed",
+  );
+  const brownRice = pfChangs?.items.find(
+    (item) => item.id === "brown-rice-steamed",
+  );
+  const gfFriedRice = pfChangs?.items.find(
+    (item) => item.id === "gf-fried-rice",
+  );
 
   assert.ok(pfChangs);
   assert.equal(
@@ -7539,7 +9333,10 @@ test("generated P.F. Chang's strict official matrix remains source-backed and re
   );
   assert.ok(whiteRice);
   assert.deepEqual(whiteRice.allergens, ["wheat"]);
-  assert.match(JSON.stringify(whiteRice.evidence ?? []), /Official P\.F\. Chang's allergen matrix row/);
+  assert.match(
+    JSON.stringify(whiteRice.evidence ?? []),
+    /Official P\.F\. Chang's allergen matrix row/,
+  );
   assert.ok(brownRice);
   assert.deepEqual(brownRice.allergens, ["wheat"]);
   assert.ok(gfFriedRice);
@@ -7548,10 +9345,13 @@ test("generated P.F. Chang's strict official matrix remains source-backed and re
 
 test("generated reviewed parser-artifact repairs split Italian appetizer section rows", () => {
   const tupelo = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "tupelo-honey-southern-kitchen-and-bar-arlington-va-dc-metro",
+    (restaurant) =>
+      restaurant.id ===
+      "tupelo-honey-southern-kitchen-and-bar-arlington-va-dc-metro",
   );
   const ironGate = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "iron-gate-restaurant-washington-dc-dc-metro",
+    (restaurant) =>
+      restaurant.id === "iron-gate-restaurant-washington-dc-dc-metro",
   );
   const ilPizzico = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "osm-il-pizzico-6595475668",
@@ -7560,23 +9360,54 @@ test("generated reviewed parser-artifact repairs split Italian appetizer section
     (restaurant) => restaurant.id === "osm-il-porto-ristorante-160692021",
   );
 
-  assert.equal(tupelo?.items.some((item) => item.id === "dollar1799-970-cal"), false);
-  assert.equal(ironGate?.items.some((item) => item.id === "non-alcoholic"), false);
-  assert.equal(ilPizzico?.items.some((item) => item.id === "antipasti"), false);
-  assert.equal(ilPorto?.items.some((item) => item.id === "antipasti"), false);
-  assert.ok(ilPizzico?.items.some((item) => item.id === "calamari-piccanti" && item.category === "Antipasti"));
-  assert.ok(ilPizzico?.items.some((item) => item.id === "cozze" && item.category === "Antipasti"));
-  assert.ok(ilPorto?.items.some((item) => item.id === "calamari-fritti" && item.category === "Antipasti"));
-  assert.ok(ilPorto?.items.some((item) => item.id === "cozze" && item.category === "Antipasti"));
+  assert.equal(
+    tupelo?.items.some((item) => item.id === "dollar1799-970-cal"),
+    false,
+  );
+  assert.equal(
+    ironGate?.items.some((item) => item.id === "non-alcoholic"),
+    false,
+  );
+  assert.equal(
+    ilPizzico?.items.some((item) => item.id === "antipasti"),
+    false,
+  );
+  assert.equal(
+    ilPorto?.items.some((item) => item.id === "antipasti"),
+    false,
+  );
+  assert.ok(
+    ilPizzico?.items.some(
+      (item) =>
+        item.id === "calamari-piccanti" && item.category === "Antipasti",
+    ),
+  );
+  assert.ok(
+    ilPizzico?.items.some(
+      (item) => item.id === "cozze" && item.category === "Antipasti",
+    ),
+  );
+  assert.ok(
+    ilPorto?.items.some(
+      (item) => item.id === "calamari-fritti" && item.category === "Antipasti",
+    ),
+  );
+  assert.ok(
+    ilPorto?.items.some(
+      (item) => item.id === "cozze" && item.category === "Antipasti",
+    ),
+  );
 });
 
 test("generated reviewed menu bleed corrections keep source-backed item fields", () => {
   const texas = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "texas-de-brazil-fairfax-fairfax-va-dc-metro",
+    (restaurant) =>
+      restaurant.id === "texas-de-brazil-fairfax-fairfax-va-dc-metro",
   );
   const texasCaesar = texas?.items.find((item) => item.id === "caesar-salad");
   const blueRidge = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "blue-ridge-seafood-restaurant-gainesville-va",
+    (restaurant) =>
+      restaurant.id === "blue-ridge-seafood-restaurant-gainesville-va",
   );
   const hamilton = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "the-hamilton-dc",
@@ -7589,12 +9420,19 @@ test("generated reviewed menu bleed corrections keep source-backed item fields",
   );
   assert.equal(texasCaesar.allergenSourceType, "official-ingredients");
   assert.deepEqual(texasCaesar.allergens?.sort(), ["gluten", "milk", "wheat"]);
-  assert.equal(/Brazilian Cheese Bread|Lobster Bisque|See next page/i.test(texasCaesar.description ?? ""), false);
+  assert.equal(
+    /Brazilian Cheese Bread|Lobster Bisque|See next page/i.test(
+      texasCaesar.description ?? "",
+    ),
+    false,
+  );
 
   assert.ok(blueRidge?.items.some((item) => item.id === "stuffed-shrimp"));
   assert.equal(
     blueRidge?.items.some(
-      (item) => item.id === "four-jumbo-shrimp-topped-with-our-homemade-crabmeat-stuffing",
+      (item) =>
+        item.id ===
+        "four-jumbo-shrimp-topped-with-our-homemade-crabmeat-stuffing",
     ),
     false,
   );
@@ -7608,124 +9446,301 @@ test("generated reviewed official bleed repairs keep real item evidence and remo
   const planta = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "planta-bethesda-bethesda-md-dc-metro",
   );
-  const pappe = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "pappe-dc");
+  const pappe = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "pappe-dc",
+  );
   const northside = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "northside-social-va",
   );
-  const medina = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "medina-dc");
-  const maydan = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "maydan-dc");
+  const medina = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "medina-dc",
+  );
+  const maydan = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "maydan-dc",
+  );
   const seray = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "replacement-seray-vienna-va",
   );
   const nue = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "replacement-nue-elegantly-vietnamese-falls-church-va",
+    (restaurant) =>
+      restaurant.id === "replacement-nue-elegantly-vietnamese-falls-church-va",
   );
-  const sweetLeaf = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "sweet-leaf-arlington");
+  const sweetLeaf = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "sweet-leaf-arlington",
+  );
   const eddieMerlots = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "eddie-merlots-ashburn-va-dc-metro",
   );
-  const trueFood = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "true-food-kitchen-arlington");
-  const laCasita = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "la-casita-pupusas-dc");
+  const trueFood = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "true-food-kitchen-arlington",
+  );
+  const laCasita = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "la-casita-pupusas-dc",
+  );
   const laCasitaGaithersburg = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "la-casita-gaithersburg-dc-metro",
   );
-  const elTamarindo = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "el-tamarindo-dc");
-  const rocklands = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "rocklands-bbq-dc");
-  const nomaPizza = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "noma-pizza-dc");
+  const elTamarindo = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "el-tamarindo-dc",
+  );
+  const rocklands = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "rocklands-bbq-dc",
+  );
+  const nomaPizza = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "noma-pizza-dc",
+  );
   const takumiNavyYard = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "takumi-navy-yard-dc",
   );
   const toutDeSweet = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "tout-de-sweet-bethesda-dc-metro",
   );
-  const vanLeeuwen = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "van-leeuwen-dc");
-  const maggianos = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "maggiano-s-little-italy-springfield-va-dc-metro",
+  const vanLeeuwen = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "van-leeuwen-dc",
   );
-  const fishTaco = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "fish-taco-bethesda-md");
-  const chopt = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "chopt-dc");
-  const rasa = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "rasa-dc");
-  const sweetgreen = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "sweetgreen-dc");
-  const whiteBeanSoup = northside?.items.find((item) => item.id === "white-bean-and-pesto-soup");
+  const maggianos = generatedRestaurants.restaurants.find(
+    (restaurant) =>
+      restaurant.id === "maggiano-s-little-italy-springfield-va-dc-metro",
+  );
+  const fishTaco = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "fish-taco-bethesda-md",
+  );
+  const chopt = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "chopt-dc",
+  );
+  const rasa = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "rasa-dc",
+  );
+  const sweetgreen = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "sweetgreen-dc",
+  );
+  const whiteBeanSoup = northside?.items.find(
+    (item) => item.id === "white-bean-and-pesto-soup",
+  );
   const medinaLamb = medina?.items.find((item) => item.id === "lamb-shish");
   const nueTofu = nue?.items.find((item) => item.id === "tofu-noodle-bowl-v");
-  const sweetLeafFarmers = sweetLeaf?.items.find((item) => item.id === "farmers");
-  const sweetLeafCitrusSesame = sweetLeaf?.items.find((item) => item.id === "citrus-sesame-chicken");
-  const eddiePeanutButterCup = eddieMerlots?.items.find((item) => item.id === "peanut-butter-cup");
-  const eddieAhiTunaWontons = eddieMerlots?.items.find((item) => item.id === "ahi-tuna-wontons");
-  const laCasitaPlantainBowl = laCasita?.items.find((item) => item.id === "plantain-and-avocado-bowl");
-  const laCasitaShrimpBowl = laCasita?.items.find((item) => item.id === "bowl-fresh-shrimp");
-  const laCasitaCeviche = laCasita?.items.find((item) => item.id === "ceviche-mixto");
-  const laCasitaSteakCheese = laCasita?.items.find((item) => item.id === "chicken-steak-and-cheese");
-  const laCasitaPanDeDia = laCasita?.items.find((item) => item.id === "pan-de-dia");
-  const laCasitaSoyChorizo = laCasita?.items.find((item) => item.id === "pupusa-soy-chorizo-rice-flour");
-  const laCasitaCornMasa = laCasita?.items.find((item) => item.id === "pupusas-maiz-corn-masa");
-  const laCasitaRiceMasa = laCasita?.items.find((item) => item.id === "pupusas-arroz-rice-flour");
-  const laCasitaGaithersburgBaleada = laCasitaGaithersburg?.items.find((item) => item.id === "baleada-sencilla");
-  const laCasitaGaithersburgCeviche = laCasitaGaithersburg?.items.find((item) => item.id === "ceviche-americas");
-  const laCasitaGaithersburgPanPollo = laCasitaGaithersburg?.items.find((item) => item.id === "pan-de-pollo");
-  const laCasitaGaithersburgMixtoLeche = laCasitaGaithersburg?.items.find((item) => item.id === "mixto-leche");
-  const elTamarindoBreakfastBurrito = elTamarindo?.items.find((item) => item.id === "breakfast-burrito");
-  const elTamarindoCeviche = elTamarindo?.items.find((item) => item.id === "ceviche");
-  const elTamarindoMariscada = elTamarindo?.items.find((item) => item.id === "mariscada");
-  const elTamarindoVegano = elTamarindo?.items.find((item) => item.id === "el-vegano");
-  const elTamarindoSoftTacos = elTamarindo?.items.find((item) => item.id === "soft-tacos");
-  const rocklandsBurger = rocklands?.items.find((item) => item.id === "4-oz-grilled-burger");
-  const rocklandsCatfishSandwich = rocklands?.items.find((item) => item.id === "grilled-catfish-sandwich");
-  const rocklandsMacCheese = rocklands?.items.find((item) => item.id === "mac-and-cheese");
-  const rocklandsPecanPie = rocklands?.items.find((item) => item.id === "slice-of-pecan-pie");
-  const rocklandsPlainRibs = rocklands?.items.find((item) => item.id === "baby-back-ribs-half-rack");
+  const sweetLeafFarmers = sweetLeaf?.items.find(
+    (item) => item.id === "farmers",
+  );
+  const sweetLeafCitrusSesame = sweetLeaf?.items.find(
+    (item) => item.id === "citrus-sesame-chicken",
+  );
+  const eddiePeanutButterCup = eddieMerlots?.items.find(
+    (item) => item.id === "peanut-butter-cup",
+  );
+  const eddieAhiTunaWontons = eddieMerlots?.items.find(
+    (item) => item.id === "ahi-tuna-wontons",
+  );
+  const laCasitaPlantainBowl = laCasita?.items.find(
+    (item) => item.id === "plantain-and-avocado-bowl",
+  );
+  const laCasitaShrimpBowl = laCasita?.items.find(
+    (item) => item.id === "bowl-fresh-shrimp",
+  );
+  const laCasitaCeviche = laCasita?.items.find(
+    (item) => item.id === "ceviche-mixto",
+  );
+  const laCasitaSteakCheese = laCasita?.items.find(
+    (item) => item.id === "chicken-steak-and-cheese",
+  );
+  const laCasitaPanDeDia = laCasita?.items.find(
+    (item) => item.id === "pan-de-dia",
+  );
+  const laCasitaSoyChorizo = laCasita?.items.find(
+    (item) => item.id === "pupusa-soy-chorizo-rice-flour",
+  );
+  const laCasitaCornMasa = laCasita?.items.find(
+    (item) => item.id === "pupusas-maiz-corn-masa",
+  );
+  const laCasitaRiceMasa = laCasita?.items.find(
+    (item) => item.id === "pupusas-arroz-rice-flour",
+  );
+  const laCasitaGaithersburgBaleada = laCasitaGaithersburg?.items.find(
+    (item) => item.id === "baleada-sencilla",
+  );
+  const laCasitaGaithersburgCeviche = laCasitaGaithersburg?.items.find(
+    (item) => item.id === "ceviche-americas",
+  );
+  const laCasitaGaithersburgPanPollo = laCasitaGaithersburg?.items.find(
+    (item) => item.id === "pan-de-pollo",
+  );
+  const laCasitaGaithersburgMixtoLeche = laCasitaGaithersburg?.items.find(
+    (item) => item.id === "mixto-leche",
+  );
+  const elTamarindoBreakfastBurrito = elTamarindo?.items.find(
+    (item) => item.id === "breakfast-burrito",
+  );
+  const elTamarindoCeviche = elTamarindo?.items.find(
+    (item) => item.id === "ceviche",
+  );
+  const elTamarindoMariscada = elTamarindo?.items.find(
+    (item) => item.id === "mariscada",
+  );
+  const elTamarindoVegano = elTamarindo?.items.find(
+    (item) => item.id === "el-vegano",
+  );
+  const elTamarindoSoftTacos = elTamarindo?.items.find(
+    (item) => item.id === "soft-tacos",
+  );
+  const rocklandsBurger = rocklands?.items.find(
+    (item) => item.id === "4-oz-grilled-burger",
+  );
+  const rocklandsCatfishSandwich = rocklands?.items.find(
+    (item) => item.id === "grilled-catfish-sandwich",
+  );
+  const rocklandsMacCheese = rocklands?.items.find(
+    (item) => item.id === "mac-and-cheese",
+  );
+  const rocklandsPecanPie = rocklands?.items.find(
+    (item) => item.id === "slice-of-pecan-pie",
+  );
+  const rocklandsPlainRibs = rocklands?.items.find(
+    (item) => item.id === "baby-back-ribs-half-rack",
+  );
   const nomaTurkey = nomaPizza?.items.find((item) => item.id === "turkey");
-  const nomaShrimpPestoWrap = nomaPizza?.items.find((item) => item.id === "shrimp-pesto-wrap");
-  const nomaChickenParmesan = nomaPizza?.items.find((item) => item.id === "chicken-parmesan");
+  const nomaShrimpPestoWrap = nomaPizza?.items.find(
+    (item) => item.id === "shrimp-pesto-wrap",
+  );
+  const nomaChickenParmesan = nomaPizza?.items.find(
+    (item) => item.id === "chicken-parmesan",
+  );
   const nomaHummus = nomaPizza?.items.find((item) => item.id === "hummus");
-  const nomaLargePizza = nomaPizza?.items.find((item) => item.id === "large-pizza-14");
-  const nomaCheesePizza = nomaPizza?.items.find((item) => item.id === "2-large-cheese-pizzas");
-  const nomaWings = nomaPizza?.items.find((item) => item.id === "chicken-wings");
-  const takumiTeriyaki = takumiNavyYard?.items.find((item) => item.id === "japanese-teriyaki");
-  const takumiFriedRice = takumiNavyYard?.items.find((item) => item.id === "fried-rice");
-  const takumiDcRoll = takumiNavyYard?.items.find((item) => item.id === "dc-roll");
-  const takumiUdon = takumiNavyYard?.items.find((item) => item.id === "spicy-seafood-udon-noodle");
-  const takumiSalad = takumiNavyYard?.items.find((item) => item.id === "takumi-salad");
-  const takumiAvocadoSalad = takumiNavyYard?.items.find((item) => item.id === "avocado-salad");
-  const toutAlmondCroissant = toutDeSweet?.items.find((item) => item.id === "almond-croissant");
+  const nomaLargePizza = nomaPizza?.items.find(
+    (item) => item.id === "large-pizza-14",
+  );
+  const nomaCheesePizza = nomaPizza?.items.find(
+    (item) => item.id === "2-large-cheese-pizzas",
+  );
+  const nomaWings = nomaPizza?.items.find(
+    (item) => item.id === "chicken-wings",
+  );
+  const takumiTeriyaki = takumiNavyYard?.items.find(
+    (item) => item.id === "japanese-teriyaki",
+  );
+  const takumiFriedRice = takumiNavyYard?.items.find(
+    (item) => item.id === "fried-rice",
+  );
+  const takumiDcRoll = takumiNavyYard?.items.find(
+    (item) => item.id === "dc-roll",
+  );
+  const takumiUdon = takumiNavyYard?.items.find(
+    (item) => item.id === "spicy-seafood-udon-noodle",
+  );
+  const takumiSalad = takumiNavyYard?.items.find(
+    (item) => item.id === "takumi-salad",
+  );
+  const takumiAvocadoSalad = takumiNavyYard?.items.find(
+    (item) => item.id === "avocado-salad",
+  );
+  const toutAlmondCroissant = toutDeSweet?.items.find(
+    (item) => item.id === "almond-croissant",
+  );
   const toutBrownie = toutDeSweet?.items.find((item) => item.id === "brownie");
-  const toutNougatPassion = toutDeSweet?.items.find((item) => item.id === "nougat-passion");
-  const toutMacarons = toutDeSweet?.items.find((item) => item.id === "macarons");
-  const toutMousseSesame = toutDeSweet?.items.find((item) => item.id === "milk-chocolate-mousse-and-sesame");
-  const toutSalmonBoard = toutDeSweet?.items.find((item) => item.id === "smoked-salmon-and-naan-bread-board");
-  const toutFreshFruit = toutDeSweet?.items.find((item) => item.id === "fresh-fruit");
-  const toutOvernightOats = toutDeSweet?.items.find((item) => item.id === "strawberry-overnight-oats");
-  const vanLeeuwenHotFudge = vanLeeuwen?.items.find((item) => item.id === "hot-fudge");
-  const vanLeeuwenVeganCookieDough = vanLeeuwen?.items.find((item) => item.id === "vegan-choc-chip-cookie-dough");
-  const sweetLeafCageFreeEgg = sweetLeaf?.items.find((item) => item.id === "cage-free-egg");
-  const sweetLeafBerryBlanco = sweetLeaf?.items.find((item) => item.id === "berry-blanco");
-  const maggianosKidsMilk = maggianos?.items.find((item) => item.id === "kids-milk-skim");
-  const maggianosRavioli = maggianos?.items.find((item) => item.id === "four-cheese-ravioli-large");
-  const maggianosNoCheeseAsparagus = maggianos?.items.find((item) => item.id === "fresh-grilled-asparagus-wo-cheese");
-  const fishTacoQueso = fishTaco?.items.find((item) => item.id === "chips-and-queso");
-  const fishTacoFlourQuesadilla = fishTaco?.items.find((item) => item.id === "small-cheese-quesadilla-flour-tortilla");
-  const choptCoconutChiller = chopt?.items.find((item) => item.id === "blueberry-coconut-chiller");
-  const choptBlueCheese = chopt?.items.find((item) => item.id === "blue-cheese");
-  const rasaCoconutGinger = rasa?.items.find((item) => item.id === "coconut-ginger-sauce");
-  const maydanKebabPlatter = maydan?.items.find((item) => item.id === "kebab-platter");
+  const toutNougatPassion = toutDeSweet?.items.find(
+    (item) => item.id === "nougat-passion",
+  );
+  const toutMacarons = toutDeSweet?.items.find(
+    (item) => item.id === "macarons",
+  );
+  const toutMousseSesame = toutDeSweet?.items.find(
+    (item) => item.id === "milk-chocolate-mousse-and-sesame",
+  );
+  const toutSalmonBoard = toutDeSweet?.items.find(
+    (item) => item.id === "smoked-salmon-and-naan-bread-board",
+  );
+  const toutFreshFruit = toutDeSweet?.items.find(
+    (item) => item.id === "fresh-fruit",
+  );
+  const toutOvernightOats = toutDeSweet?.items.find(
+    (item) => item.id === "strawberry-overnight-oats",
+  );
+  const vanLeeuwenHotFudge = vanLeeuwen?.items.find(
+    (item) => item.id === "hot-fudge",
+  );
+  const vanLeeuwenVeganCookieDough = vanLeeuwen?.items.find(
+    (item) => item.id === "vegan-choc-chip-cookie-dough",
+  );
+  const sweetLeafCageFreeEgg = sweetLeaf?.items.find(
+    (item) => item.id === "cage-free-egg",
+  );
+  const sweetLeafBerryBlanco = sweetLeaf?.items.find(
+    (item) => item.id === "berry-blanco",
+  );
+  const maggianosKidsMilk = maggianos?.items.find(
+    (item) => item.id === "kids-milk-skim",
+  );
+  const maggianosRavioli = maggianos?.items.find(
+    (item) => item.id === "four-cheese-ravioli-large",
+  );
+  const maggianosNoCheeseAsparagus = maggianos?.items.find(
+    (item) => item.id === "fresh-grilled-asparagus-wo-cheese",
+  );
+  const fishTacoQueso = fishTaco?.items.find(
+    (item) => item.id === "chips-and-queso",
+  );
+  const fishTacoFlourQuesadilla = fishTaco?.items.find(
+    (item) => item.id === "small-cheese-quesadilla-flour-tortilla",
+  );
+  const choptCoconutChiller = chopt?.items.find(
+    (item) => item.id === "blueberry-coconut-chiller",
+  );
+  const choptBlueCheese = chopt?.items.find(
+    (item) => item.id === "blue-cheese",
+  );
+  const rasaCoconutGinger = rasa?.items.find(
+    (item) => item.id === "coconut-ginger-sauce",
+  );
+  const maydanKebabPlatter = maydan?.items.find(
+    (item) => item.id === "kebab-platter",
+  );
   const maydanShakshuka = maydan?.items.find((item) => item.id === "shakshuka");
   const maydanTahina = maydan?.items.find((item) => item.id === "tahina");
   const maydanSayyadiah = maydan?.items.find((item) => item.id === "sayyadiah");
   const maydanHalloumi = maydan?.items.find((item) => item.id === "halloumi");
 
-  assert.equal(planta?.items.some((item) => item.id === "kids-menufor-children"), false);
-  assert.equal(pappe?.items.some((item) => /foodborneillness|riskoffoodborneillness/i.test(item.id)), false);
-  assert.equal(maydan?.items.some((item) => item.id === "lamb-shish"), false);
-  assert.equal(maydan?.items.some((item) => item.id === "egg-feta"), false);
-  assert.equal(maydan?.items.some((item) => /foodborne|service fee/i.test(`${item.name} ${item.description ?? ""}`)), false);
-  assert.equal(seray?.items.some((item) => item.id === "baked-cheese-gf"), false);
-  assert.equal(seray?.items.some((item) => item.id === "salad-toppings"), false);
-  assert.equal(trueFood?.items.some((item) => item.id === "v1a0"), false);
+  assert.equal(
+    planta?.items.some((item) => item.id === "kids-menufor-children"),
+    false,
+  );
+  assert.equal(
+    pappe?.items.some((item) =>
+      /foodborneillness|riskoffoodborneillness/i.test(item.id),
+    ),
+    false,
+  );
+  assert.equal(
+    maydan?.items.some((item) => item.id === "lamb-shish"),
+    false,
+  );
+  assert.equal(
+    maydan?.items.some((item) => item.id === "egg-feta"),
+    false,
+  );
+  assert.equal(
+    maydan?.items.some((item) =>
+      /foodborne|service fee/i.test(`${item.name} ${item.description ?? ""}`),
+    ),
+    false,
+  );
+  assert.equal(
+    seray?.items.some((item) => item.id === "baked-cheese-gf"),
+    false,
+  );
+  assert.equal(
+    seray?.items.some((item) => item.id === "salad-toppings"),
+    false,
+  );
+  assert.equal(
+    trueFood?.items.some((item) => item.id === "v1a0"),
+    false,
+  );
 
   assert.ok(maydanKebabPlatter);
   assert.equal(maydanKebabPlatter.allergenSourceType, "official-ingredients");
-  assert.deepEqual([...maydanKebabPlatter.allergens].sort(), ["milk", "shellfish"]);
+  assert.deepEqual([...maydanKebabPlatter.allergens].sort(), [
+    "milk",
+    "shellfish",
+  ]);
 
   assert.ok(maydanShakshuka);
   assert.equal(maydanShakshuka.allergenSourceType, "official-ingredients");
@@ -7744,38 +9759,75 @@ test("generated reviewed official bleed repairs keep real item evidence and remo
   assert.deepEqual([...maydanHalloumi.allergens].sort(), ["milk", "peanut"]);
 
   assert.ok(whiteBeanSoup);
-  assert.equal(whiteBeanSoup.description, "Puree of white bean, hint of cream, basil pesto. Contains nuts.");
+  assert.equal(
+    whiteBeanSoup.description,
+    "Puree of white bean, hint of cream, basil pesto. Contains nuts.",
+  );
   assert.equal(whiteBeanSoup.allergenSourceType, "official-ingredients");
   assert.deepEqual(whiteBeanSoup.allergens?.sort(), ["milk", "tree-nut"]);
 
   assert.ok(medinaLamb);
-  assert.equal(medinaLamb.description, "Kefir labne, cumin, peppers, and onions.");
+  assert.equal(
+    medinaLamb.description,
+    "Kefir labne, cumin, peppers, and onions.",
+  );
   assert.equal(medinaLamb.allergenSourceType, "official-ingredients");
   assert.deepEqual(medinaLamb.allergens, ["milk"]);
 
   assert.ok(nueTofu);
   assert.equal(nueTofu.category, "Lunch");
-  assert.equal(nueTofu.description, "Fresh herbs, summer vegetables, and tamari.");
+  assert.equal(
+    nueTofu.description,
+    "Fresh herbs, summer vegetables, and tamari.",
+  );
   assert.equal(nueTofu.allergenSourceType, "official-ingredients");
   assert.deepEqual(nueTofu.allergens, ["soy"]);
 
   assert.ok(sweetLeafFarmers);
-  assert.equal(sweetLeafFarmers.description, "Cage-free egg, sausage, cheddar cheese, tomato, roasted shallots, spicy aioli on brioche.");
+  assert.equal(
+    sweetLeafFarmers.description,
+    "Cage-free egg, sausage, cheddar cheese, tomato, roasted shallots, spicy aioli on brioche.",
+  );
   assert.equal(sweetLeafFarmers.allergenSourceType, "official-ingredients");
-  assert.deepEqual([...sweetLeafFarmers.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...sweetLeafFarmers.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
 
   assert.ok(sweetLeafCitrusSesame);
-  assert.equal(/GREEK GARDEN/i.test(sweetLeafCitrusSesame.description ?? ""), false);
-  assert.deepEqual([...sweetLeafCitrusSesame.allergens].sort(), ["sesame", "tree-nut"]);
+  assert.equal(
+    /GREEK GARDEN/i.test(sweetLeafCitrusSesame.description ?? ""),
+    false,
+  );
+  assert.deepEqual([...sweetLeafCitrusSesame.allergens].sort(), [
+    "sesame",
+    "tree-nut",
+  ]);
 
   assert.ok(eddiePeanutButterCup);
-  assert.deepEqual([...eddiePeanutButterCup.allergens].sort(), ["gluten", "milk", "peanut", "wheat"]);
+  assert.deepEqual([...eddiePeanutButterCup.allergens].sort(), [
+    "gluten",
+    "milk",
+    "peanut",
+    "wheat",
+  ]);
 
   assert.ok(eddieAhiTunaWontons);
-  assert.deepEqual([...eddieAhiTunaWontons.allergens].sort(), ["fish", "gluten", "milk", "soy", "wheat"]);
+  assert.deepEqual([...eddieAhiTunaWontons.allergens].sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "soy",
+    "wheat",
+  ]);
 
   assert.ok(laCasitaPlantainBowl);
-  assert.equal(/ALLERGEN INFORMATION/i.test(laCasitaPlantainBowl.description ?? ""), false);
+  assert.equal(
+    /ALLERGEN INFORMATION/i.test(laCasitaPlantainBowl.description ?? ""),
+    false,
+  );
   assert.deepEqual(laCasitaPlantainBowl.allergens ?? [], []);
   assert.deepEqual(laCasitaPlantainBowl.mayContain ?? [], ["milk"]);
 
@@ -7784,13 +9836,25 @@ test("generated reviewed official bleed repairs keep real item evidence and remo
   assert.deepEqual(laCasitaShrimpBowl.allergens ?? [], ["shellfish"]);
 
   assert.ok(laCasitaCeviche);
-  assert.deepEqual([...laCasitaCeviche.allergens].sort(), ["fish", "shellfish"]);
+  assert.deepEqual([...laCasitaCeviche.allergens].sort(), [
+    "fish",
+    "shellfish",
+  ]);
 
   assert.ok(laCasitaSteakCheese);
-  assert.deepEqual([...laCasitaSteakCheese.allergens].sort(), ["egg", "milk", "mustard"]);
+  assert.deepEqual([...laCasitaSteakCheese.allergens].sort(), [
+    "egg",
+    "milk",
+    "mustard",
+  ]);
 
   assert.ok(laCasitaPanDeDia);
-  assert.deepEqual([...laCasitaPanDeDia.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...laCasitaPanDeDia.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
 
   assert.ok(laCasitaSoyChorizo);
   assert.deepEqual(laCasitaSoyChorizo.allergens ?? [], ["soy"]);
@@ -7804,29 +9868,77 @@ test("generated reviewed official bleed repairs keep real item evidence and remo
   assert.deepEqual(laCasitaRiceMasa.allergens ?? [], []);
 
   assert.ok(laCasitaGaithersburg);
-  assert.ok((laCasitaGaithersburg.allergenDataStatus?.officialItemCount ?? 0) >= 80);
+  assert.ok(
+    (laCasitaGaithersburg.allergenDataStatus?.officialItemCount ?? 0) >= 80,
+  );
   assert.ok(laCasitaGaithersburgBaleada);
-  assert.deepEqual([...laCasitaGaithersburgBaleada.allergens].sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual([...laCasitaGaithersburgBaleada.allergens].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(laCasitaGaithersburgCeviche);
-  assert.deepEqual([...laCasitaGaithersburgCeviche.allergens].sort(), ["fish", "shellfish"]);
+  assert.deepEqual([...laCasitaGaithersburgCeviche.allergens].sort(), [
+    "fish",
+    "shellfish",
+  ]);
   assert.ok(laCasitaGaithersburgPanPollo);
-  assert.deepEqual([...laCasitaGaithersburgPanPollo.allergens].sort(), ["egg", "gluten", "mustard", "wheat"]);
+  assert.deepEqual([...laCasitaGaithersburgPanPollo.allergens].sort(), [
+    "egg",
+    "gluten",
+    "mustard",
+    "wheat",
+  ]);
   assert.ok(laCasitaGaithersburgMixtoLeche);
-  assert.deepEqual([...laCasitaGaithersburgMixtoLeche.allergens].sort(), ["gluten", "milk", "tree-nut"]);
+  assert.deepEqual([...laCasitaGaithersburgMixtoLeche.allergens].sort(), [
+    "gluten",
+    "milk",
+    "tree-nut",
+  ]);
 
-  assert.equal(elTamarindo?.items.some((item) => item.id === "ultra-moist-spongecake-soaked-in"), false);
-  assert.equal(elTamarindo?.items.some((item) => item.id === "salvadoran-and-mexican-restaurant"), false);
-  assert.equal(elTamarindo?.items.some((item) => item.id === "salvadoran-punch-with-fresh-chopped"), false);
+  assert.equal(
+    elTamarindo?.items.some(
+      (item) => item.id === "ultra-moist-spongecake-soaked-in",
+    ),
+    false,
+  );
+  assert.equal(
+    elTamarindo?.items.some(
+      (item) => item.id === "salvadoran-and-mexican-restaurant",
+    ),
+    false,
+  );
+  assert.equal(
+    elTamarindo?.items.some(
+      (item) => item.id === "salvadoran-punch-with-fresh-chopped",
+    ),
+    false,
+  );
 
   assert.ok(elTamarindoBreakfastBurrito);
-  assert.equal(elTamarindoBreakfastBurrito.allergenSourceType, "official-ingredients");
-  assert.deepEqual([...elTamarindoBreakfastBurrito.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.equal(
+    elTamarindoBreakfastBurrito.allergenSourceType,
+    "official-ingredients",
+  );
+  assert.deepEqual([...elTamarindoBreakfastBurrito.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
 
   assert.ok(elTamarindoCeviche);
-  assert.deepEqual([...elTamarindoCeviche.allergens].sort(), ["fish", "shellfish"]);
+  assert.deepEqual([...elTamarindoCeviche.allergens].sort(), [
+    "fish",
+    "shellfish",
+  ]);
 
   assert.ok(elTamarindoMariscada);
-  assert.deepEqual([...elTamarindoMariscada.allergens].sort(), ["fish", "milk", "shellfish"]);
+  assert.deepEqual([...elTamarindoMariscada.allergens].sort(), [
+    "fish",
+    "milk",
+    "shellfish",
+  ]);
 
   assert.ok(elTamarindoVegano);
   assert.equal(elTamarindoVegano.allergenSourceType, "unavailable");
@@ -7841,13 +9953,27 @@ test("generated reviewed official bleed repairs keep real item evidence and remo
   assert.deepEqual([...rocklandsBurger.allergens].sort(), ["gluten", "wheat"]);
 
   assert.ok(rocklandsCatfishSandwich);
-  assert.deepEqual([...rocklandsCatfishSandwich.allergens].sort(), ["fish", "gluten", "wheat"]);
+  assert.deepEqual([...rocklandsCatfishSandwich.allergens].sort(), [
+    "fish",
+    "gluten",
+    "wheat",
+  ]);
 
   assert.ok(rocklandsMacCheese);
-  assert.deepEqual([...rocklandsMacCheese.allergens].sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual([...rocklandsMacCheese.allergens].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
 
   assert.ok(rocklandsPecanPie);
-  assert.deepEqual([...rocklandsPecanPie.allergens].sort(), ["egg", "gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual([...rocklandsPecanPie.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
 
   assert.ok(rocklandsPlainRibs);
   assert.equal(rocklandsPlainRibs.allergenSourceType, "unavailable");
@@ -7859,20 +9985,39 @@ test("generated reviewed official bleed repairs keep real item evidence and remo
 
   assert.ok(nomaShrimpPestoWrap);
   assert.equal(nomaShrimpPestoWrap.allergenSourceType, "official-ingredients");
-  assert.deepEqual([...nomaShrimpPestoWrap.allergens].sort(), ["gluten", "milk", "shellfish", "tree-nut", "wheat"]);
+  assert.deepEqual([...nomaShrimpPestoWrap.allergens].sort(), [
+    "gluten",
+    "milk",
+    "shellfish",
+    "tree-nut",
+    "wheat",
+  ]);
 
   assert.ok(nomaChickenParmesan);
-  assert.deepEqual([...nomaChickenParmesan.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...nomaChickenParmesan.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
 
   assert.ok(nomaHummus);
-  assert.deepEqual([...nomaHummus.allergens].sort(), ["gluten", "sesame", "wheat"]);
+  assert.deepEqual([...nomaHummus.allergens].sort(), [
+    "gluten",
+    "sesame",
+    "wheat",
+  ]);
 
   assert.ok(nomaLargePizza);
   assert.equal(nomaLargePizza.allergenSourceType, "unavailable");
   assert.deepEqual(nomaLargePizza.allergens ?? [], []);
 
   assert.ok(nomaCheesePizza);
-  assert.deepEqual([...nomaCheesePizza.allergens].sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual([...nomaCheesePizza.allergens].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
 
   assert.ok(nomaWings);
   assert.equal(nomaWings.allergenSourceType, "unavailable");
@@ -7880,19 +10025,39 @@ test("generated reviewed official bleed repairs keep real item evidence and remo
 
   assert.ok(takumiTeriyaki);
   assert.equal(takumiTeriyaki.allergenSourceType, "official-ingredients");
-  assert.deepEqual([...takumiTeriyaki.allergens].sort(), ["gluten", "soy", "wheat"]);
+  assert.deepEqual([...takumiTeriyaki.allergens].sort(), [
+    "gluten",
+    "soy",
+    "wheat",
+  ]);
 
   assert.ok(takumiFriedRice);
   assert.deepEqual(takumiFriedRice.allergens ?? [], ["egg"]);
 
   assert.ok(takumiDcRoll);
-  assert.deepEqual([...takumiDcRoll.allergens].sort(), ["egg", "fish", "gluten", "milk", "shellfish", "wheat"]);
+  assert.deepEqual([...takumiDcRoll.allergens].sort(), [
+    "egg",
+    "fish",
+    "gluten",
+    "milk",
+    "shellfish",
+    "wheat",
+  ]);
 
   assert.ok(takumiUdon);
-  assert.deepEqual([...takumiUdon.allergens].sort(), ["gluten", "shellfish", "wheat"]);
+  assert.deepEqual([...takumiUdon.allergens].sort(), [
+    "gluten",
+    "shellfish",
+    "wheat",
+  ]);
 
   assert.ok(takumiSalad);
-  assert.deepEqual([...takumiSalad.allergens].sort(), ["fish", "gluten", "sesame", "wheat"]);
+  assert.deepEqual([...takumiSalad.allergens].sort(), [
+    "fish",
+    "gluten",
+    "sesame",
+    "wheat",
+  ]);
 
   assert.ok(takumiAvocadoSalad);
   assert.equal(takumiAvocadoSalad.allergenSourceType, "unavailable");
@@ -7900,13 +10065,27 @@ test("generated reviewed official bleed repairs keep real item evidence and remo
 
   assert.ok(toutAlmondCroissant);
   assert.equal(toutAlmondCroissant.allergenSourceType, "official-ingredients");
-  assert.deepEqual([...toutAlmondCroissant.allergens].sort(), ["egg", "gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual([...toutAlmondCroissant.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
 
   assert.ok(toutBrownie);
-  assert.deepEqual([...toutBrownie.allergens].sort(), ["egg", "gluten", "wheat"]);
+  assert.deepEqual([...toutBrownie.allergens].sort(), [
+    "egg",
+    "gluten",
+    "wheat",
+  ]);
 
   assert.ok(toutNougatPassion);
-  assert.deepEqual([...toutNougatPassion.allergens].sort(), ["egg", "milk", "tree-nut"]);
+  assert.deepEqual([...toutNougatPassion.allergens].sort(), [
+    "egg",
+    "milk",
+    "tree-nut",
+  ]);
 
   assert.ok(toutMacarons);
   assert.deepEqual([...toutMacarons.allergens].sort(), ["egg", "tree-nut"]);
@@ -7922,14 +10101,22 @@ test("generated reviewed official bleed repairs keep real item evidence and remo
   ]);
 
   assert.ok(toutSalmonBoard);
-  assert.deepEqual([...toutSalmonBoard.allergens].sort(), ["fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...toutSalmonBoard.allergens].sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
 
   assert.ok(toutFreshFruit);
   assert.equal(toutFreshFruit.allergenSourceType, "unavailable");
   assert.deepEqual(toutFreshFruit.allergens ?? [], []);
 
   assert.ok(toutOvernightOats);
-  assert.deepEqual([...toutOvernightOats.allergens].sort(), ["gluten", "tree-nut"]);
+  assert.deepEqual([...toutOvernightOats.allergens].sort(), [
+    "gluten",
+    "tree-nut",
+  ]);
 
   assert.ok(vanLeeuwenHotFudge);
   assert.equal(vanLeeuwenHotFudge.description, undefined);
@@ -7938,20 +10125,32 @@ test("generated reviewed official bleed repairs keep real item evidence and remo
 
   assert.ok(vanLeeuwenVeganCookieDough);
   assert.equal(vanLeeuwenVeganCookieDough.description, undefined);
-  assert.deepEqual([...vanLeeuwenVeganCookieDough.allergens].sort(), ["soy", "tree-nut", "wheat"]);
+  assert.deepEqual([...vanLeeuwenVeganCookieDough.allergens].sort(), [
+    "soy",
+    "tree-nut",
+    "wheat",
+  ]);
 
   assert.ok(sweetLeafCageFreeEgg);
   assert.deepEqual(sweetLeafCageFreeEgg.allergens ?? [], ["egg"]);
 
   assert.ok(sweetLeafBerryBlanco);
-  assert.equal(/Order Now/i.test(sweetLeafBerryBlanco.description ?? ""), false);
+  assert.equal(
+    /Order Now/i.test(sweetLeafBerryBlanco.description ?? ""),
+    false,
+  );
   assert.deepEqual(sweetLeafBerryBlanco.allergens ?? [], ["tree-nut"]);
 
   assert.ok(maggianosKidsMilk);
   assert.deepEqual(maggianosKidsMilk.allergens ?? [], ["milk"]);
 
   assert.ok(maggianosRavioli);
-  assert.deepEqual([...maggianosRavioli.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...maggianosRavioli.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
 
   assert.ok(maggianosNoCheeseAsparagus);
   assert.deepEqual(maggianosNoCheeseAsparagus.allergens ?? [], []);
@@ -7960,7 +10159,11 @@ test("generated reviewed official bleed repairs keep real item evidence and remo
   assert.deepEqual(fishTacoQueso.allergens ?? [], ["milk"]);
 
   assert.ok(fishTacoFlourQuesadilla);
-  assert.deepEqual([...fishTacoFlourQuesadilla.allergens].sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual([...fishTacoFlourQuesadilla.allergens].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
 
   assert.ok(choptCoconutChiller);
   assert.deepEqual(choptCoconutChiller.allergens ?? [], ["tree-nut"]);
@@ -7971,14 +10174,22 @@ test("generated reviewed official bleed repairs keep real item evidence and remo
   assert.ok(rasaCoconutGinger);
   assert.deepEqual(rasaCoconutGinger.allergens ?? [], ["tree-nut"]);
 
-  assert.equal(sweetgreen?.items.some((item) => item.id === "contains-tree-nuts"), false);
+  assert.equal(
+    sweetgreen?.items.some((item) => item.id === "contains-tree-nuts"),
+    false,
+  );
 });
 
 test("generated second-pass reviewed repairs remove template prose and global allergen smears", () => {
-  const stJames = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "st-james-dc");
-  const mangoSorbet = stJames?.items.find((item) => item.id === "desserts-mango-sorbet");
+  const stJames = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "st-james-dc",
+  );
+  const mangoSorbet = stJames?.items.find(
+    (item) => item.id === "desserts-mango-sorbet",
+  );
   const huTieu = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "hu-tieu-mi-lacay-cho-lon-falls-church-va",
+    (restaurant) =>
+      restaurant.id === "hu-tieu-mi-lacay-cho-lon-falls-church-va",
   );
   const huTieuLacay = huTieu?.items.find((item) => item.id === "hu-tieu-lacay");
   const fourSisters = generatedRestaurants.restaurants.find(
@@ -7988,575 +10199,1304 @@ test("generated second-pass reviewed repairs remove template prose and global al
     (restaurant) => restaurant.id === "northside-social-va",
   );
   const charley = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "charley-chesapeake-chophouse-gaithersburg-md",
+    (restaurant) =>
+      restaurant.id === "charley-chesapeake-chophouse-gaithersburg-md",
   );
   const mamaTigre = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "mama-tigre-oakton-va",
   );
-  const masalaFries = mamaTigre?.items.find((item) => item.id === "masala-fries");
-
-  assert.equal(stJames?.items.some((item) => item.id === "espresso-singledouble"), false);
-  assert.ok(mangoSorbet);
-  assert.deepEqual(mangoSorbet.allergens ?? [], []);
-  assert.deepEqual(
-    mangoSorbet.mayContain?.sort(),
-    ["egg", "fish", "gluten", "milk", "peanut", "shellfish", "soy", "tree-nut", "wheat"],
+  const masalaFries = mamaTigre?.items.find(
+    (item) => item.id === "masala-fries",
   );
 
+  assert.equal(
+    stJames?.items.some((item) => item.id === "espresso-singledouble"),
+    false,
+  );
+  assert.ok(mangoSorbet);
+  assert.deepEqual(mangoSorbet.allergens ?? [], []);
+  assert.deepEqual(mangoSorbet.mayContain?.sort(), [
+    "egg",
+    "fish",
+    "gluten",
+    "milk",
+    "peanut",
+    "shellfish",
+    "soy",
+    "tree-nut",
+    "wheat",
+  ]);
+
   assert.ok(huTieuLacay);
-  assert.equal(/reviewer|well-rounded selection/i.test(huTieuLacay.description ?? ""), false);
+  assert.equal(
+    /reviewer|well-rounded selection/i.test(huTieuLacay.description ?? ""),
+    false,
+  );
   assert.equal(
     fourSisters?.items.some((item) =>
-      ["rice", "soups", "traditional-vietnamese-noodle-soup-with-a-delicate-broth"].includes(item.id),
+      [
+        "rice",
+        "soups",
+        "traditional-vietnamese-noodle-soup-with-a-delicate-broth",
+      ].includes(item.id),
     ),
     false,
   );
-  assert.equal(northside?.items.some((item) => ["dog-bones", "pesto"].includes(item.id)), false);
   assert.equal(
-    charley?.items.some((item) => item.id === "5-spice-pork-shoulder-and-crispy-rice-3"),
+    northside?.items.some((item) => ["dog-bones", "pesto"].includes(item.id)),
+    false,
+  );
+  assert.equal(
+    charley?.items.some(
+      (item) => item.id === "5-spice-pork-shoulder-and-crispy-rice-3",
+    ),
     false,
   );
   assert.ok(masalaFries);
-  assert.equal(/WHITE WINE|RED WINE/i.test(masalaFries.description ?? ""), false);
-  assert.equal(masalaFries.inferredAllergenSignals?.some((signal) => signal.id === "milk"), true);
+  assert.equal(
+    /WHITE WINE|RED WINE/i.test(masalaFries.description ?? ""),
+    false,
+  );
+  assert.equal(
+    masalaFries.inferredAllergenSignals?.some((signal) => signal.id === "milk"),
+    true,
+  );
 });
 
 test("generated low-official-coverage repairs keep only row-backed official allergens", () => {
   const busboys = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "busboys-and-poets-dc",
   );
-  const busboysCaesar = busboys?.items.find((item) => item.id === "caesar-salad");
-  const busboysBrussels = busboys?.items.find((item) => item.id === "crispy-brussels-sprouts");
-  const busboysBagelLox = busboys?.items.find((item) => item.id === "bagel-w-lox");
-  const busboysCrabCakes = busboys?.items.find((item) => item.id === "crab-cakes");
+  const busboysCaesar = busboys?.items.find(
+    (item) => item.id === "caesar-salad",
+  );
+  const busboysBrussels = busboys?.items.find(
+    (item) => item.id === "crispy-brussels-sprouts",
+  );
+  const busboysBagelLox = busboys?.items.find(
+    (item) => item.id === "bagel-w-lox",
+  );
+  const busboysCrabCakes = busboys?.items.find(
+    (item) => item.id === "crab-cakes",
+  );
   const busboysFalafel = busboys?.items.find((item) => item.id === "falafel");
-  const busboysVeganTuna = busboys?.items.find((item) => item.id === "vegan-tuna-salad");
-  const busboysVeganBurger = busboys?.items.find((item) => item.id === "vegan-burger");
-  const busboysShrimpCrabFritters = busboys?.items.find((item) => item.id === "shrimp-and-crab-fritters");
-  const busboysPecanPie = busboys?.items.find((item) => item.id === "mini-pecan-pie");
-  const busboysVeganBbqBeef = busboys?.items.find((item) => item.id === "vegan-bbq-beef-sandwich");
-  const busboysShrimpGrits = busboys?.items.find((item) => item.id === "shrimp-and-grits");
-  const busboysVeganEggWrap = busboys?.items.find((item) => item.id === "vegan-egg-wrap");
-  const dukes = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "dukes-grocery-dupont-dc");
-  const dukesWings = dukes?.items.find((item) => item.id === "12-dozen-hackney-chicken-wings");
+  const busboysVeganTuna = busboys?.items.find(
+    (item) => item.id === "vegan-tuna-salad",
+  );
+  const busboysVeganBurger = busboys?.items.find(
+    (item) => item.id === "vegan-burger",
+  );
+  const busboysShrimpCrabFritters = busboys?.items.find(
+    (item) => item.id === "shrimp-and-crab-fritters",
+  );
+  const busboysPecanPie = busboys?.items.find(
+    (item) => item.id === "mini-pecan-pie",
+  );
+  const busboysVeganBbqBeef = busboys?.items.find(
+    (item) => item.id === "vegan-bbq-beef-sandwich",
+  );
+  const busboysShrimpGrits = busboys?.items.find(
+    (item) => item.id === "shrimp-and-grits",
+  );
+  const busboysVeganEggWrap = busboys?.items.find(
+    (item) => item.id === "vegan-egg-wrap",
+  );
+  const dukes = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "dukes-grocery-dupont-dc",
+  );
+  const dukesWings = dukes?.items.find(
+    (item) => item.id === "12-dozen-hackney-chicken-wings",
+  );
   const dukesBanhMi = dukes?.items.find((item) => item.id === "banh-mi");
-  const dukesCubano = dukes?.items.find((item) => item.id === "cubano-torta-milanesa");
-  const dukesFishChips = dukes?.items.find((item) => item.id === "fish-and-chips");
-  const dukesImpossibleBurger = dukes?.items.find((item) => item.id === "impossible-burger");
-  const dukesTunaMelt = dukes?.items.find((item) => item.id === "mums-tuna-melt");
-  const dukesSalmonCroquettes = dukes?.items.find((item) => item.id === "salmon-croquettes");
-  const dukesSpicyAubergine = dukes?.items.find((item) => item.id === "spicy-aubergine");
-  const dukesMacCheese = dukes?.items.find((item) => item.id === "white-truffle-mac-and-cheese");
-  const lapis = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "lapis-dc");
+  const dukesCubano = dukes?.items.find(
+    (item) => item.id === "cubano-torta-milanesa",
+  );
+  const dukesFishChips = dukes?.items.find(
+    (item) => item.id === "fish-and-chips",
+  );
+  const dukesImpossibleBurger = dukes?.items.find(
+    (item) => item.id === "impossible-burger",
+  );
+  const dukesTunaMelt = dukes?.items.find(
+    (item) => item.id === "mums-tuna-melt",
+  );
+  const dukesSalmonCroquettes = dukes?.items.find(
+    (item) => item.id === "salmon-croquettes",
+  );
+  const dukesSpicyAubergine = dukes?.items.find(
+    (item) => item.id === "spicy-aubergine",
+  );
+  const dukesMacCheese = dukes?.items.find(
+    (item) => item.id === "white-truffle-mac-and-cheese",
+  );
+  const lapis = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "lapis-dc",
+  );
   const lapisAushak = lapis?.items.find((item) => item.id === "aushak");
   const lapisBeets = lapis?.items.find((item) => item.id === "beets");
   const lapisBolani = lapis?.items.find((item) => item.id === "bolani-brunch");
   const lapisHalwa = lapis?.items.find((item) => item.id === "halwa-soji");
   const lapisMahee = lapis?.items.find((item) => item.id === "mahee");
   const lapisShrimp = lapis?.items.find((item) => item.id === "mantoo-shrimp");
-  const lapisPistachioCake = lapis?.items.find((item) => item.id === "pistachio-cake");
+  const lapisPistachioCake = lapis?.items.find(
+    (item) => item.id === "pistachio-cake",
+  );
   const lapisSambosa = lapis?.items.find((item) => item.id === "sambosa-trio");
-  const lapisSheerBerenj = lapis?.items.find((item) => item.id === "sheer-berenj");
+  const lapisSheerBerenj = lapis?.items.find(
+    (item) => item.id === "sheer-berenj",
+  );
   const lapisDumplings = lapis?.items.find((item) => item.id === "dumplings");
   const yellow = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "yellow-georgetown-dc",
   );
-  const yellowLambShoulder = yellow?.items.find((item) => item.id === "bbq-lamb-shoulder");
-  const yellowSpringOnionLabne = yellow?.items.find((item) => item.id === "charred-spring-onion-labne");
-  const yellowClassicHummus = yellow?.items.find((item) => item.id === "classic-hummus");
-  const yellowFalafel = yellow?.items.find((item) => item.id === "crispy-falafel");
+  const yellowLambShoulder = yellow?.items.find(
+    (item) => item.id === "bbq-lamb-shoulder",
+  );
+  const yellowSpringOnionLabne = yellow?.items.find(
+    (item) => item.id === "charred-spring-onion-labne",
+  );
+  const yellowClassicHummus = yellow?.items.find(
+    (item) => item.id === "classic-hummus",
+  );
+  const yellowFalafel = yellow?.items.find(
+    (item) => item.id === "crispy-falafel",
+  );
   const yellowFattoush = yellow?.items.find((item) => item.id === "fattoush");
   const yellowPitas = yellow?.items.find((item) => item.id === "pitas");
-  const yellowPainSuisse = yellow?.items.find((item) => item.id === "potato-kashkaval-pain-suisse");
-  const yellowSmokedFishLabne = yellow?.items.find((item) => item.id === "smoked-fish-labne");
-  const yellowDanish = yellow?.items.find((item) => item.id === "spinach-pine-nut-danish");
-  const yellowTroutKaak = yellow?.items.find((item) => item.id === "urfa-thing-smoked-trout-kaak");
-  const yellowPitaPack = yellow?.items.find((item) => item.id === "wood-fired-pita-6-pk");
-  const baanSiamReviewed = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "baan-siam-dc");
-  const baanPadChaShrimp = baanSiamReviewed?.items.find((item) => item.id === "pad-cha-shrimp");
-  const baanMassaman = baanSiamReviewed?.items.find((item) => item.id === "beef-massaman-curry");
+  const yellowPainSuisse = yellow?.items.find(
+    (item) => item.id === "potato-kashkaval-pain-suisse",
+  );
+  const yellowSmokedFishLabne = yellow?.items.find(
+    (item) => item.id === "smoked-fish-labne",
+  );
+  const yellowDanish = yellow?.items.find(
+    (item) => item.id === "spinach-pine-nut-danish",
+  );
+  const yellowTroutKaak = yellow?.items.find(
+    (item) => item.id === "urfa-thing-smoked-trout-kaak",
+  );
+  const yellowPitaPack = yellow?.items.find(
+    (item) => item.id === "wood-fired-pita-6-pk",
+  );
+  const baanSiamReviewed = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "baan-siam-dc",
+  );
+  const baanPadChaShrimp = baanSiamReviewed?.items.find(
+    (item) => item.id === "pad-cha-shrimp",
+  );
+  const baanMassaman = baanSiamReviewed?.items.find(
+    (item) => item.id === "beef-massaman-curry",
+  );
   const baanFriedRiceEgg = baanSiamReviewed?.items.find(
     (item) => item.id === "chicken-and-basil-fried-rice-w-thai-style-fried-egg",
   );
-  const baanTapiocaDumplings = baanSiamReviewed?.items.find((item) => item.id === "chicken-tapioca-dumplings");
-  const baanCoconutGriddle = baanSiamReviewed?.items.find((item) => item.id === "coconut-milk-griddle-snac");
-  const baanCoconutSoup = baanSiamReviewed?.items.find((item) => item.id === "coconut-soup-with-chicken");
-  const baanCrabRice = baanSiamReviewed?.items.find((item) => item.id === "crab-paste-fried-rice-with-crab-meat");
-  const baanTempuraPumpkin = baanSiamReviewed?.items.find((item) => item.id === "deep-fried-asian-pumpkin");
-  const baanBranzino = baanSiamReviewed?.items.find((item) => item.id === "ginger-branzino");
-  const baanGreenMango = baanSiamReviewed?.items.find((item) => item.id === "green-mango-salad");
-  const baanKhaoSoi = baanSiamReviewed?.items.find((item) => item.id === "khao-soi-gai");
+  const baanTapiocaDumplings = baanSiamReviewed?.items.find(
+    (item) => item.id === "chicken-tapioca-dumplings",
+  );
+  const baanCoconutGriddle = baanSiamReviewed?.items.find(
+    (item) => item.id === "coconut-milk-griddle-snac",
+  );
+  const baanCoconutSoup = baanSiamReviewed?.items.find(
+    (item) => item.id === "coconut-soup-with-chicken",
+  );
+  const baanCrabRice = baanSiamReviewed?.items.find(
+    (item) => item.id === "crab-paste-fried-rice-with-crab-meat",
+  );
+  const baanTempuraPumpkin = baanSiamReviewed?.items.find(
+    (item) => item.id === "deep-fried-asian-pumpkin",
+  );
+  const baanBranzino = baanSiamReviewed?.items.find(
+    (item) => item.id === "ginger-branzino",
+  );
+  const baanGreenMango = baanSiamReviewed?.items.find(
+    (item) => item.id === "green-mango-salad",
+  );
+  const baanKhaoSoi = baanSiamReviewed?.items.find(
+    (item) => item.id === "khao-soi-gai",
+  );
   const baanFriedRiceTofu = baanSiamReviewed?.items.find(
     (item) => item.id === "mixed-vegetable-fried-rice-with-tofu-vegetarian",
   );
   const baanTomYumSoup = baanSiamReviewed?.items.find(
-    (item) => item.id === "tom-yum-noodle-soup-wroasted-pork-and-ground-chicken",
+    (item) =>
+      item.id === "tom-yum-noodle-soup-wroasted-pork-and-ground-chicken",
   );
-  const purplePatch = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "purple-patch-dc");
-  const purpleLechon = purplePatch?.items.find((item) => item.id === "lechon-kawali");
+  const purplePatch = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "purple-patch-dc",
+  );
+  const purpleLechon = purplePatch?.items.find(
+    (item) => item.id === "lechon-kawali",
+  );
   const purpleBiko = purplePatch?.items.find((item) => item.id === "biko");
-  const purpleCassavaCake = purplePatch?.items.find((item) => item.id === "cassava-cake");
-  const purpleBrazo = purplePatch?.items.find((item) => item.id === "brazo-de-mercedes");
-  const purpleAlimasagRice = purplePatch?.items.find((item) => item.id === "alimasag-fried-rice");
-  const purpleCauliflowerAdobo = purplePatch?.items.find((item) => item.id === "cauliflower-adobo");
-  const purpleBicolExpress = purplePatch?.items.find((item) => item.id === "bicol-express");
-  const daikaya = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "daikaya-dc");
-  const daikayaFriedGarlic = daikaya?.items.find((item) => item.id === "fried-confit-garlic-cloves");
-  const daikayaHarami = daikaya?.items.find((item) => item.id === "harami-beef-dollar16-2-skewers");
+  const purpleCassavaCake = purplePatch?.items.find(
+    (item) => item.id === "cassava-cake",
+  );
+  const purpleBrazo = purplePatch?.items.find(
+    (item) => item.id === "brazo-de-mercedes",
+  );
+  const purpleAlimasagRice = purplePatch?.items.find(
+    (item) => item.id === "alimasag-fried-rice",
+  );
+  const purpleCauliflowerAdobo = purplePatch?.items.find(
+    (item) => item.id === "cauliflower-adobo",
+  );
+  const purpleBicolExpress = purplePatch?.items.find(
+    (item) => item.id === "bicol-express",
+  );
+  const daikaya = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "daikaya-dc",
+  );
+  const daikayaFriedGarlic = daikaya?.items.find(
+    (item) => item.id === "fried-confit-garlic-cloves",
+  );
+  const daikayaHarami = daikaya?.items.find(
+    (item) => item.id === "harami-beef-dollar16-2-skewers",
+  );
   const daikayaNatto = daikaya?.items.find((item) => item.id === "natto-gohan");
-  const daikayaSpicySesame = daikaya?.items.find((item) => item.id === "spicy-seseame-hiyashi-chuka");
-  const daikayaCatfish = daikaya?.items.find((item) => item.id === "catfish-karaage");
+  const daikayaSpicySesame = daikaya?.items.find(
+    (item) => item.id === "spicy-seseame-hiyashi-chuka",
+  );
+  const daikayaCatfish = daikaya?.items.find(
+    (item) => item.id === "catfish-karaage",
+  );
   const daikayaShoyu = daikaya?.items.find((item) => item.id === "shoyu");
-  const daikayaSoftServe = daikaya?.items.find((item) => item.id === "soft-serve-with-matcha-mochi");
-  const bantamKing = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "bantam-king-dc");
+  const daikayaSoftServe = daikaya?.items.find(
+    (item) => item.id === "soft-serve-with-matcha-mochi",
+  );
+  const bantamKing = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "bantam-king-dc",
+  );
   const bantamKohi = bantamKing?.items.find((item) => item.id === "kohi-time");
-  const bantamCookie = bantamKing?.items.find((item) => item.id === "big-fat-chocolate-chip-cookie");
+  const bantamCookie = bantamKing?.items.find(
+    (item) => item.id === "big-fat-chocolate-chip-cookie",
+  );
   const bantamNaruto = bantamKing?.items.find((item) => item.id === "naruto");
-  const bantamNitamago = bantamKing?.items.find((item) => item.id === "nitamago");
+  const bantamNitamago = bantamKing?.items.find(
+    (item) => item.id === "nitamago",
+  );
   const bantamGyoza = bantamKing?.items.find((item) => item.id === "gyoza");
-  const bantamDrippings = bantamKing?.items.find((item) => item.id === "rice-with-chicken-drippings");
-  const bantamOnsenRice = bantamKing?.items.find((item) => item.id === "rice-with-onsen-egg");
-  const bantamSpicyMiso = bantamKing?.items.find((item) => item.id === "spicy-miso");
-  const bantamVeggieTantanmen = bantamKing?.items.find((item) => item.id === "veggie-tantanmen");
-  const bantamMochiIceCream = bantamKing?.items.find((item) => item.id === "mochi-ice-cream");
-  const bantamCurrySnowPlate = bantamKing?.items.find((item) => item.id === "curry-snow-fried-chicken-plate");
-  const yourOnlyFriend = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "your-only-friend-dc");
-  const yofAtlanticBeachPie = yourOnlyFriend?.items.find((item) => item.id === "atlantic-beach-pie");
-  const yofButterfinger = yourOnlyFriend?.items.find((item) => item.id === "butterfinger-banana-puddin");
-  const yofDopeBeetz = yourOnlyFriend?.items.find((item) => item.id === "dope-beetz-sort-a-salad");
-  const yofFishFryday = yourOnlyFriend?.items.find((item) => item.id === "fish-fryday");
-  const yofHotFish = yourOnlyFriend?.items.find((item) => item.id === "hot-fish");
+  const bantamDrippings = bantamKing?.items.find(
+    (item) => item.id === "rice-with-chicken-drippings",
+  );
+  const bantamOnsenRice = bantamKing?.items.find(
+    (item) => item.id === "rice-with-onsen-egg",
+  );
+  const bantamSpicyMiso = bantamKing?.items.find(
+    (item) => item.id === "spicy-miso",
+  );
+  const bantamVeggieTantanmen = bantamKing?.items.find(
+    (item) => item.id === "veggie-tantanmen",
+  );
+  const bantamMochiIceCream = bantamKing?.items.find(
+    (item) => item.id === "mochi-ice-cream",
+  );
+  const bantamCurrySnowPlate = bantamKing?.items.find(
+    (item) => item.id === "curry-snow-fried-chicken-plate",
+  );
+  const yourOnlyFriend = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "your-only-friend-dc",
+  );
+  const yofAtlanticBeachPie = yourOnlyFriend?.items.find(
+    (item) => item.id === "atlantic-beach-pie",
+  );
+  const yofButterfinger = yourOnlyFriend?.items.find(
+    (item) => item.id === "butterfinger-banana-puddin",
+  );
+  const yofDopeBeetz = yourOnlyFriend?.items.find(
+    (item) => item.id === "dope-beetz-sort-a-salad",
+  );
+  const yofFishFryday = yourOnlyFriend?.items.find(
+    (item) => item.id === "fish-fryday",
+  );
+  const yofHotFish = yourOnlyFriend?.items.find(
+    (item) => item.id === "hot-fish",
+  );
   const yofHotNug = yourOnlyFriend?.items.find((item) => item.id === "hot-nug");
-  const yofSpicyPavo = yourOnlyFriend?.items.find((item) => item.id === "spicy-panes-con-pavo");
-  const taqueriaHabanero = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "taqueria-habanero-dc");
-  const thCamarones = taqueriaHabanero?.items.find((item) => item.id === "camarones-enchipotlados");
-  const thChilaquiles = taqueriaHabanero?.items.find((item) => item.id === "chilaquiles");
-  const thChileRelleno = taqueriaHabanero?.items.find((item) => item.id === "chile-relleno-burrito");
-  const thChoriqueso = taqueriaHabanero?.items.find((item) => item.id === "choriqueso-torta");
-  const thFajitaMixta = taqueriaHabanero?.items.find((item) => item.id === "fajita-mixta");
-  const thScallopTaco = taqueriaHabanero?.items.find((item) => item.id === "scallop-taco-3-per-order");
-  const thSideMole = taqueriaHabanero?.items.find((item) => item.id === "side-of-mole");
-  const thSideShrimp = taqueriaHabanero?.items.find((item) => item.id === "side-of-shrimp");
-  const thTacoTray = taqueriaHabanero?.items.find((item) => item.id === "taco-tray");
-  const thTresLeches = taqueriaHabanero?.items.find((item) => item.id === "tres-leches-con-pina");
+  const yofSpicyPavo = yourOnlyFriend?.items.find(
+    (item) => item.id === "spicy-panes-con-pavo",
+  );
+  const taqueriaHabanero = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "taqueria-habanero-dc",
+  );
+  const thCamarones = taqueriaHabanero?.items.find(
+    (item) => item.id === "camarones-enchipotlados",
+  );
+  const thChilaquiles = taqueriaHabanero?.items.find(
+    (item) => item.id === "chilaquiles",
+  );
+  const thChileRelleno = taqueriaHabanero?.items.find(
+    (item) => item.id === "chile-relleno-burrito",
+  );
+  const thChoriqueso = taqueriaHabanero?.items.find(
+    (item) => item.id === "choriqueso-torta",
+  );
+  const thFajitaMixta = taqueriaHabanero?.items.find(
+    (item) => item.id === "fajita-mixta",
+  );
+  const thScallopTaco = taqueriaHabanero?.items.find(
+    (item) => item.id === "scallop-taco-3-per-order",
+  );
+  const thSideMole = taqueriaHabanero?.items.find(
+    (item) => item.id === "side-of-mole",
+  );
+  const thSideShrimp = taqueriaHabanero?.items.find(
+    (item) => item.id === "side-of-shrimp",
+  );
+  const thTacoTray = taqueriaHabanero?.items.find(
+    (item) => item.id === "taco-tray",
+  );
+  const thTresLeches = taqueriaHabanero?.items.find(
+    (item) => item.id === "tres-leches-con-pina",
+  );
   const baklawa = yellow?.items.find((item) => item.id === "baklawa");
-  const playa = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "playa-bowls-dc");
-  const pastis = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "pastis-dc");
-  const pastisBarSteak = pastis?.items.find((item) => item.id === "steak-frites-bar-steak");
-  const pastisSeafoodPlateau = pastis?.items.find((item) => item.id === "fruits-de-mer-plat-de-fruits-de-mer");
-  const pastisCroissant = pastis?.items.find((item) => item.id === "viennoiserie-croissant");
-  const pastisChickenSandwich = pastis?.items.find((item) => item.id === "salades-et-sandwiches-grilled-chicken-sandwich");
-  const pastisStickyToffee = pastis?.items.find((item) => item.id === "dessert-sticky-toffee-pudding");
-  const elPresidente = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "el-presidente-dc");
-  const tacosAlCarbon = elPresidente?.items.find((item) => item.id === "tacos-al-carbon");
+  const playa = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "playa-bowls-dc",
+  );
+  const pastis = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "pastis-dc",
+  );
+  const pastisBarSteak = pastis?.items.find(
+    (item) => item.id === "steak-frites-bar-steak",
+  );
+  const pastisSeafoodPlateau = pastis?.items.find(
+    (item) => item.id === "fruits-de-mer-plat-de-fruits-de-mer",
+  );
+  const pastisCroissant = pastis?.items.find(
+    (item) => item.id === "viennoiserie-croissant",
+  );
+  const pastisChickenSandwich = pastis?.items.find(
+    (item) => item.id === "salades-et-sandwiches-grilled-chicken-sandwich",
+  );
+  const pastisStickyToffee = pastis?.items.find(
+    (item) => item.id === "dessert-sticky-toffee-pudding",
+  );
+  const elPresidente = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "el-presidente-dc",
+  );
+  const tacosAlCarbon = elPresidente?.items.find(
+    (item) => item.id === "tacos-al-carbon",
+  );
   const elPresidenteCrabGuacamole = elPresidente?.items.find(
     (item) => item.category === "Guacamole" && item.name === "El Presidente",
   );
   const elPresidenteCaesar = elPresidente?.items.find(
-    (item) => item.category === "Appetizers" && item.name === "Tijuana Caesar Salad",
+    (item) =>
+      item.category === "Appetizers" && item.name === "Tijuana Caesar Salad",
   );
   const elPresidenteQuesoFundido = elPresidente?.items.find(
     (item) => item.category === "Appetizers" && item.name === "Queso Fundido",
   );
   const elPresidenteFriedChickenTorta = elPresidente?.items.find(
-    (item) => item.category === "Especialidades" && item.name === "Fried Chicken Torta",
+    (item) =>
+      item.category === "Especialidades" && item.name === "Fried Chicken Torta",
   );
   const elPresidenteSundae = elPresidente?.items.find(
-    (item) => item.category === "Desserts" && item.name === "El Presidente Sundae",
+    (item) =>
+      item.category === "Desserts" && item.name === "El Presidente Sundae",
   );
-  const cane = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "cane-dc");
-  const banditTaco = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "bandit-taco-dc");
-  const banditQueso = banditTaco?.items.find((item) => item.id === "chips-and-queso");
-  const banditNachos = banditTaco?.items.find((item) => item.id === "nachoschoose-protein");
-  const banditBreakfastTaco = banditTaco?.items.find((item) => item.id === "bacon-and-egg-taco-until-3pm");
-  const banditFishTaco = banditTaco?.items.find((item) => item.id === "baja-fish-taco");
-  const banditShrimpTaco = banditTaco?.items.find((item) => item.id === "crispy-shrimp-taco");
-  const banditTorta = banditTaco?.items.find((item) => item.id === "adobo-chicken-torta");
-  const banditTresLeches = banditTaco?.items.find((item) => item.id === "tres-leches");
-  const banditVeggieTaco = banditTaco?.items.find((item) => item.id === "veggie-taco");
-  const maman = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "maman-georgetown-dc");
-  const mamanCaitlinsWrap = maman?.items.find((item) => item.id === "caitlins-breakfast-wrap");
-  const mamanLalitasWrap = maman?.items.find((item) => item.id === "lalitas-garden-wrap");
-  const mamanCaesarWrap = maman?.items.find((item) => item.id === "maries-chicken-caesar-wrap");
+  const cane = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "cane-dc",
+  );
+  const banditTaco = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "bandit-taco-dc",
+  );
+  const banditQueso = banditTaco?.items.find(
+    (item) => item.id === "chips-and-queso",
+  );
+  const banditNachos = banditTaco?.items.find(
+    (item) => item.id === "nachoschoose-protein",
+  );
+  const banditBreakfastTaco = banditTaco?.items.find(
+    (item) => item.id === "bacon-and-egg-taco-until-3pm",
+  );
+  const banditFishTaco = banditTaco?.items.find(
+    (item) => item.id === "baja-fish-taco",
+  );
+  const banditShrimpTaco = banditTaco?.items.find(
+    (item) => item.id === "crispy-shrimp-taco",
+  );
+  const banditTorta = banditTaco?.items.find(
+    (item) => item.id === "adobo-chicken-torta",
+  );
+  const banditTresLeches = banditTaco?.items.find(
+    (item) => item.id === "tres-leches",
+  );
+  const banditVeggieTaco = banditTaco?.items.find(
+    (item) => item.id === "veggie-taco",
+  );
+  const maman = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "maman-georgetown-dc",
+  );
+  const mamanCaitlinsWrap = maman?.items.find(
+    (item) => item.id === "caitlins-breakfast-wrap",
+  );
+  const mamanLalitasWrap = maman?.items.find(
+    (item) => item.id === "lalitas-garden-wrap",
+  );
+  const mamanCaesarWrap = maman?.items.find(
+    (item) => item.id === "maries-chicken-caesar-wrap",
+  );
   const mamanSalmonCroissant = maman?.items.find(
     (item) => item.id === "andreas-smoked-salmon-croissant-sandwich",
   );
-  const mamanGreenGoddess = maman?.items.find((item) => item.id === "olivias-green-goddess-bowl");
-  const mamanBreakfastSandwich = maman?.items.find((item) => item.id === "mamans-breakfast-sandwich");
-  const mamanTahiniLatte = maman?.items.find((item) => item.id === "hot-salted-tahini-honeycomb-latte");
-  const mamanVeganGfZucchini = maman?.items.find((item) => item.id === "vegan-gluten-free-zucchini-bread");
-  const baanSiam = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "baan-siam-dc");
-  const cuttlefish = baanSiam?.items.find((item) => item.id === "stir-fried-cuttlefish-with-chili-paste");
-  const ilCanale = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "il-canale-dc");
-  const branzino = ilCanale?.items.find((item) => item.id === "branzino-al-cartoccio-siciliano");
-  const calamari = ilCanale?.items.find((item) => item.id === "calamari-fritti");
-  const rolleDiPollo = ilCanale?.items.find((item) => item.id === "rolle-di-pollo");
-  const ilCanaleMarinara = ilCanale?.items.find((item) => item.id === "marinara-no-cheese");
-  const ilCanaleGlutenFreePizza = ilCanale?.items.find((item) => item.id === "gluten-free-margherita-pizza");
-  const ilCanaleUovo = ilCanale?.items.find((item) => item.id === "uovo-al-tegamino");
-  const ilCanaleFocaccia = ilCanale?.items.find((item) => item.id === "focaccia-del-pizzaiolo");
-  const ilCanaleLobsterRavioli = ilCanale?.items.find((item) => item.id === "lobster-ravioli");
-  const ilCanaleTortaSiciliana = ilCanale?.items.find((item) => item.id === "torta-siciliana");
-  const ilCanaleTunnarella = ilCanale?.items.find((item) => item.id === "tunnarella");
-  const osteriaMozza = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "osteria-mozza-dc");
-  const coniDiPizza = osteriaMozza?.items.find((item) => item.id === "coni-di-pizza");
-  const mozzarella = osteriaMozza?.items.find((item) => item.id === "mozzarella");
-  const kizuna = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "kizuna-sushi-ramen-tysons-va");
-  const chiko = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "chiko-dc");
-  const chikoNoodles = chiko?.items.find((item) => item.id === "cumin-lamb-stir-fry");
-  const chikoShrimp = chiko?.items.find((item) => item.id === "garlic-shrimp-dumpling");
+  const mamanGreenGoddess = maman?.items.find(
+    (item) => item.id === "olivias-green-goddess-bowl",
+  );
+  const mamanBreakfastSandwich = maman?.items.find(
+    (item) => item.id === "mamans-breakfast-sandwich",
+  );
+  const mamanTahiniLatte = maman?.items.find(
+    (item) => item.id === "hot-salted-tahini-honeycomb-latte",
+  );
+  const mamanVeganGfZucchini = maman?.items.find(
+    (item) => item.id === "vegan-gluten-free-zucchini-bread",
+  );
+  const baanSiam = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "baan-siam-dc",
+  );
+  const cuttlefish = baanSiam?.items.find(
+    (item) => item.id === "stir-fried-cuttlefish-with-chili-paste",
+  );
+  const ilCanale = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "il-canale-dc",
+  );
+  const branzino = ilCanale?.items.find(
+    (item) => item.id === "branzino-al-cartoccio-siciliano",
+  );
+  const calamari = ilCanale?.items.find(
+    (item) => item.id === "calamari-fritti",
+  );
+  const rolleDiPollo = ilCanale?.items.find(
+    (item) => item.id === "rolle-di-pollo",
+  );
+  const ilCanaleMarinara = ilCanale?.items.find(
+    (item) => item.id === "marinara-no-cheese",
+  );
+  const ilCanaleGlutenFreePizza = ilCanale?.items.find(
+    (item) => item.id === "gluten-free-margherita-pizza",
+  );
+  const ilCanaleUovo = ilCanale?.items.find(
+    (item) => item.id === "uovo-al-tegamino",
+  );
+  const ilCanaleFocaccia = ilCanale?.items.find(
+    (item) => item.id === "focaccia-del-pizzaiolo",
+  );
+  const ilCanaleLobsterRavioli = ilCanale?.items.find(
+    (item) => item.id === "lobster-ravioli",
+  );
+  const ilCanaleTortaSiciliana = ilCanale?.items.find(
+    (item) => item.id === "torta-siciliana",
+  );
+  const ilCanaleTunnarella = ilCanale?.items.find(
+    (item) => item.id === "tunnarella",
+  );
+  const osteriaMozza = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "osteria-mozza-dc",
+  );
+  const coniDiPizza = osteriaMozza?.items.find(
+    (item) => item.id === "coni-di-pizza",
+  );
+  const mozzarella = osteriaMozza?.items.find(
+    (item) => item.id === "mozzarella",
+  );
+  const kizuna = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "kizuna-sushi-ramen-tysons-va",
+  );
+  const chiko = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "chiko-dc",
+  );
+  const chikoNoodles = chiko?.items.find(
+    (item) => item.id === "cumin-lamb-stir-fry",
+  );
+  const chikoShrimp = chiko?.items.find(
+    (item) => item.id === "garlic-shrimp-dumpling",
+  );
   const chikoPop = chiko?.items.find((item) => item.id === "chiko-pop");
   const chikoFullMonty = chiko?.items.find((item) => item.id === "full-monty");
-  const chikoGfGarden = chiko?.items.find((item) => item.id === "gf-korean-garden-noodles");
-  const muncheez = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "muncheez-dc");
+  const chikoGfGarden = chiko?.items.find(
+    (item) => item.id === "gf-korean-garden-noodles",
+  );
+  const muncheez = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "muncheez-dc",
+  );
   const muncheezAdwani = muncheez?.items.find((item) => item.id === "adwani");
   const muncheezHummus = muncheez?.items.find((item) => item.id === "hummus");
   const muncheezKibbeh = muncheez?.items.find((item) => item.id === "kibbeh");
-  const muncheezNutellaCrepe = muncheez?.items.find((item) => item.id === "nutella-crepe");
-  const muncheezGrapeLeaves = muncheez?.items.find((item) => item.id === "grape-leaves");
-  const peetsDmv = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "peets-coffee-dmv");
-  const peetsChain = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "chain-peet-s-coffee");
-  const peetsBrioche = peetsDmv?.items.find((item) => item.id === "bacon-and-cheddar-brioche");
-  const peetsOatLatte = peetsDmv?.items.find((item) => item.id === "protein-banana-cold-brew-oat-latte");
-  const peetsMatchaProtein = peetsDmv?.items.find((item) => item.id === "protein-banana-matcha-oat-latte");
-  const peetsPlantBased = peetsDmv?.items.find((item) => item.id === "everything-plant-based-sandwich");
+  const muncheezNutellaCrepe = muncheez?.items.find(
+    (item) => item.id === "nutella-crepe",
+  );
+  const muncheezGrapeLeaves = muncheez?.items.find(
+    (item) => item.id === "grape-leaves",
+  );
+  const peetsDmv = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "peets-coffee-dmv",
+  );
+  const peetsChain = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "chain-peet-s-coffee",
+  );
+  const peetsBrioche = peetsDmv?.items.find(
+    (item) => item.id === "bacon-and-cheddar-brioche",
+  );
+  const peetsOatLatte = peetsDmv?.items.find(
+    (item) => item.id === "protein-banana-cold-brew-oat-latte",
+  );
+  const peetsMatchaProtein = peetsDmv?.items.find(
+    (item) => item.id === "protein-banana-matcha-oat-latte",
+  );
+  const peetsPlantBased = peetsDmv?.items.find(
+    (item) => item.id === "everything-plant-based-sandwich",
+  );
   const dailyProvisions = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "daily-provisions-dupont-dc",
   );
-  const dailyBroccoliMelt = dailyProvisions?.items.find((item) => item.id === "broccoli-mushroom-melt");
+  const dailyBroccoliMelt = dailyProvisions?.items.find(
+    (item) => item.id === "broccoli-mushroom-melt",
+  );
   const dailyChickenSausageEgg = dailyProvisions?.items.find(
     (item) => item.id === "chicken-sausage-egg-and-cheese",
   );
-  const dailyChefyMarket = dailyProvisions?.items.find((item) => item.id === "the-chefy-market-salad");
-  const dailyGoldilox = dailyProvisions?.items.find((item) => item.id === "the-goldilox");
-  const dailyTunaMelt = dailyProvisions?.items.find((item) => item.id === "tuna-melt");
-  const dailyCaesar = dailyProvisions?.items.find((item) => item.id === "kale-caesar-salad");
-  const twoFifty = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "two-fifty-bbq-dc");
-  const zestyGarden = twoFifty?.items.find((item) => item.id === "zesty-garden-mix");
-  const twoFiftyMac = twoFifty?.items.find((item) => item.id === "mac-n-cheese");
-  const twoFiftyChimichurri = twoFifty?.items.find((item) => item.id === "chimichurri-sauce");
-  const twoFiftyRiceBeans = twoFifty?.items.find((item) => item.id === "rice-and-beans");
-  const twoFiftyToast = twoFifty?.items.find((item) => item.id === "4-slices-of-texas-toast");
-  const twoFiftyPorkSandwich = twoFifty?.items.find((item) => item.id === "pulled-pork-sandwich");
-  const filomena = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "filomena-dc");
-  const filomenaOil = filomena?.items.find((item) => item.id === "virgin-olive-oil-and-balsamic");
-  const dosToros = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "dos-toros-dc");
-  const sourCream = dosToros?.items.find((item) => item.id === "toppings-sour-cream");
-  const elViejo = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "el-viejo-silver-spring");
-  const horchata = elViejo?.items.find((item) => item.id === "central-american-horchata");
-  const elViejoBaleada = elViejo?.items.find((item) => item.id === "central-american-baleada");
-  const elViejoPanGuanaco = elViejo?.items.find((item) => item.id === "central-american-pan-guanaco");
-  const elViejoPescado = elViejo?.items.find((item) => item.id === "central-american-pescado-frito");
-  const elViejoTamalElote = elViejo?.items.find((item) => item.id === "central-american-tamal-de-elote");
-  const tapori = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "tapori-dc");
-  const taporiButterChicken = tapori?.items.find((item) => item.id === "rice-entrees-butter-chicken");
-  const taporiCheesecake = tapori?.items.find((item) => item.id === "desserts-rasmalai-cheesecake");
-  const taporiCrabIdli = tapori?.items.find((item) => item.id === "rice-entrees-maryland-blue-crab-idli");
-  const taporiNaan = tapori?.items.find((item) => item.id === "rice-entrees-tapori-naan");
-  const taporiShrimp = tapori?.items.find((item) => item.id === "small-plates-tiger-shrimp-khichdi");
-  const taporiVadaPav = tapori?.items.find((item) => item.id === "rice-entrees-vada-pav");
-  const gregorys = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "gregorys-coffee-dc");
-  const gregorysDeluxe = gregorys?.items.find((item) => item.id === "food-the-deluxe");
-  const gregorysVeganDeluxe = gregorys?.items.find((item) => item.id === "food-vegan-deluxe-v");
-  const gregorysVeganBar = gregorys?.items.find((item) => item.id === "food-vegan-bar-gf-v");
-  const gregorysProteinCoffee = gregorys?.items.find((item) => item.id === "coffee-protein-coffee");
+  const dailyChefyMarket = dailyProvisions?.items.find(
+    (item) => item.id === "the-chefy-market-salad",
+  );
+  const dailyGoldilox = dailyProvisions?.items.find(
+    (item) => item.id === "the-goldilox",
+  );
+  const dailyTunaMelt = dailyProvisions?.items.find(
+    (item) => item.id === "tuna-melt",
+  );
+  const dailyCaesar = dailyProvisions?.items.find(
+    (item) => item.id === "kale-caesar-salad",
+  );
+  const twoFifty = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "two-fifty-bbq-dc",
+  );
+  const zestyGarden = twoFifty?.items.find(
+    (item) => item.id === "zesty-garden-mix",
+  );
+  const twoFiftyMac = twoFifty?.items.find(
+    (item) => item.id === "mac-n-cheese",
+  );
+  const twoFiftyChimichurri = twoFifty?.items.find(
+    (item) => item.id === "chimichurri-sauce",
+  );
+  const twoFiftyRiceBeans = twoFifty?.items.find(
+    (item) => item.id === "rice-and-beans",
+  );
+  const twoFiftyToast = twoFifty?.items.find(
+    (item) => item.id === "4-slices-of-texas-toast",
+  );
+  const twoFiftyPorkSandwich = twoFifty?.items.find(
+    (item) => item.id === "pulled-pork-sandwich",
+  );
+  const filomena = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "filomena-dc",
+  );
+  const filomenaOil = filomena?.items.find(
+    (item) => item.id === "virgin-olive-oil-and-balsamic",
+  );
+  const dosToros = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "dos-toros-dc",
+  );
+  const sourCream = dosToros?.items.find(
+    (item) => item.id === "toppings-sour-cream",
+  );
+  const elViejo = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "el-viejo-silver-spring",
+  );
+  const horchata = elViejo?.items.find(
+    (item) => item.id === "central-american-horchata",
+  );
+  const elViejoBaleada = elViejo?.items.find(
+    (item) => item.id === "central-american-baleada",
+  );
+  const elViejoPanGuanaco = elViejo?.items.find(
+    (item) => item.id === "central-american-pan-guanaco",
+  );
+  const elViejoPescado = elViejo?.items.find(
+    (item) => item.id === "central-american-pescado-frito",
+  );
+  const elViejoTamalElote = elViejo?.items.find(
+    (item) => item.id === "central-american-tamal-de-elote",
+  );
+  const tapori = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "tapori-dc",
+  );
+  const taporiButterChicken = tapori?.items.find(
+    (item) => item.id === "rice-entrees-butter-chicken",
+  );
+  const taporiCheesecake = tapori?.items.find(
+    (item) => item.id === "desserts-rasmalai-cheesecake",
+  );
+  const taporiCrabIdli = tapori?.items.find(
+    (item) => item.id === "rice-entrees-maryland-blue-crab-idli",
+  );
+  const taporiNaan = tapori?.items.find(
+    (item) => item.id === "rice-entrees-tapori-naan",
+  );
+  const taporiShrimp = tapori?.items.find(
+    (item) => item.id === "small-plates-tiger-shrimp-khichdi",
+  );
+  const taporiVadaPav = tapori?.items.find(
+    (item) => item.id === "rice-entrees-vada-pav",
+  );
+  const gregorys = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "gregorys-coffee-dc",
+  );
+  const gregorysDeluxe = gregorys?.items.find(
+    (item) => item.id === "food-the-deluxe",
+  );
+  const gregorysVeganDeluxe = gregorys?.items.find(
+    (item) => item.id === "food-vegan-deluxe-v",
+  );
+  const gregorysVeganBar = gregorys?.items.find(
+    (item) => item.id === "food-vegan-bar-gf-v",
+  );
+  const gregorysProteinCoffee = gregorys?.items.find(
+    (item) => item.id === "coffee-protein-coffee",
+  );
   const bonFresco = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "bon-fresco-rockville-dc-metro",
   );
-  const bonFrescoCaesar = bonFresco?.items.find((item) => item.id === "salads-caesar-salad");
-  const bonFrescoMozz = bonFresco?.items.find((item) => item.id === "sandwiches-mozzarella-and-tomato");
-  const bonFrescoTuna = bonFresco?.items.find((item) => item.id === "sandwiches-tuna-salad-sandwich");
-  const bonFrescoVeggie = bonFresco?.items.find((item) => item.id === "sandwiches-grilled-veggie");
-  const bonFrescoMediterranean = bonFresco?.items.find((item) => item.id === "salads-mediterranean-salad");
-  const occidental = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "occidental-dc");
-  const caviar = occidental?.items.find((item) => item.id === "caviar-petrossian-tsar-imperial-baika");
-  const iceCream = occidental?.items.find((item) => item.id === "desserts-ice-cream-sherbert-and-sorbet");
-  const burtons = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "burtons-grill-and-bar-washington-dc-dc-metro",
+  const bonFrescoCaesar = bonFresco?.items.find(
+    (item) => item.id === "salads-caesar-salad",
   );
-  const burtonsFirecracker = burtons?.items.find((item) => item.id === "firecracker-shrimp");
+  const bonFrescoMozz = bonFresco?.items.find(
+    (item) => item.id === "sandwiches-mozzarella-and-tomato",
+  );
+  const bonFrescoTuna = bonFresco?.items.find(
+    (item) => item.id === "sandwiches-tuna-salad-sandwich",
+  );
+  const bonFrescoVeggie = bonFresco?.items.find(
+    (item) => item.id === "sandwiches-grilled-veggie",
+  );
+  const bonFrescoMediterranean = bonFresco?.items.find(
+    (item) => item.id === "salads-mediterranean-salad",
+  );
+  const occidental = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "occidental-dc",
+  );
+  const caviar = occidental?.items.find(
+    (item) => item.id === "caviar-petrossian-tsar-imperial-baika",
+  );
+  const iceCream = occidental?.items.find(
+    (item) => item.id === "desserts-ice-cream-sherbert-and-sorbet",
+  );
+  const burtons = generatedRestaurants.restaurants.find(
+    (restaurant) =>
+      restaurant.id === "burtons-grill-and-bar-washington-dc-dc-metro",
+  );
+  const burtonsFirecracker = burtons?.items.find(
+    (item) => item.id === "firecracker-shrimp",
+  );
   const ikea = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "ikea-restaurant-college-park-md-dc-metro",
+    (restaurant) =>
+      restaurant.id === "ikea-restaurant-college-park-md-dc-metro",
   );
   const planta = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "planta-bethesda-bethesda-md-dc-metro",
   );
-  const guajillo = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "osm-guajillo-2563891113");
+  const guajillo = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "osm-guajillo-2563891113",
+  );
   const guajilloMole = guajillo?.items.find(
     (item) => item.id === "award-winning-mole-poblano-with-grilled-chicken",
   );
-  const karahi = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "osm-karahi-boys-13475305897");
+  const karahi = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "osm-karahi-boys-13475305897",
+  );
   const butterNaan = karahi?.items.find((item) => item.id === "butter-naan");
-  const northside = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "northside-social-va");
-  const northsideGranola = northside?.items.find((item) => item.id === "house-made-granola");
-  const stJames = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "st-james-dc");
-  const macaroniPie = stJames?.items.find((item) => item.id === "sides-macaroni-pie");
+  const northside = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "northside-social-va",
+  );
+  const northsideGranola = northside?.items.find(
+    (item) => item.id === "house-made-granola",
+  );
+  const stJames = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "st-james-dc",
+  );
+  const macaroniPie = stJames?.items.find(
+    (item) => item.id === "sides-macaroni-pie",
+  );
   const phoHaiDuong = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "pho-hai-duong-tysons-va",
   );
   const goiCuon = phoHaiDuong?.items.find((item) => item.id === "goi-cuon");
   const chaGio = phoHaiDuong?.items.find((item) => item.id === "cha-gio");
-  const soko = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "soko-butcher-dc-metro");
+  const soko = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "soko-butcher-dc-metro",
+  );
   const sokoYellowfin = soko?.items.find((item) => item.id === "yellowfin");
   const sokoMurrays = soko?.items.find((item) => item.id === "murrays");
   const sokoCowboy = soko?.items.find((item) => item.id === "the-cowboy");
-  const sokoPlainPatty = soko?.items.find((item) => item.id === "beef-hamburger-patty-8oz");
+  const sokoPlainPatty = soko?.items.find(
+    (item) => item.id === "beef-hamburger-patty-8oz",
+  );
   const gracesMandarin = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "grace-s-mandarin-washington-dc-dc-metro",
   );
-  const gracesCaliforniaRoll = gracesMandarin?.items.find((item) => item.id === "california-roll");
-  const gracesChesapeakeRoll = gracesMandarin?.items.find((item) => item.id === "chesapeake-roll");
-  const gracesGoldenShrimpRoll = gracesMandarin?.items.find((item) => item.id === "golden-shrimp-roll");
-  const gracesThaiStreetNoodle = gracesMandarin?.items.find((item) => item.id === "thai-street-noodle");
-  const gracesVegetarianMedley = gracesMandarin?.items.find((item) => item.id === "vegetarian-medley");
-  const gracesWhiteRice = gracesMandarin?.items.find((item) => item.id === "white-rice");
-  const boulangerieChristophe = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "boulangerie-christophe-washington-dc-dc-metro",
+  const gracesCaliforniaRoll = gracesMandarin?.items.find(
+    (item) => item.id === "california-roll",
   );
-  const boulangerieAppleTartelette = boulangerieChristophe?.items.find((item) => item.id === "apple-tartelette");
-  const boulangerieCafeAuLait = boulangerieChristophe?.items.find((item) => item.id === "cafe-au-lait-12-oz");
-  const boulangerieMacaron = boulangerieChristophe?.items.find((item) => item.id === "macaron");
-  const boulangerieDripCoffee = boulangerieChristophe?.items.find((item) => item.id === "drip-coffee-12-oz");
-  const boulangerieQuicheLorraine = boulangerieChristophe?.items.find((item) => item.id === "quiche-lorraine");
+  const gracesChesapeakeRoll = gracesMandarin?.items.find(
+    (item) => item.id === "chesapeake-roll",
+  );
+  const gracesGoldenShrimpRoll = gracesMandarin?.items.find(
+    (item) => item.id === "golden-shrimp-roll",
+  );
+  const gracesThaiStreetNoodle = gracesMandarin?.items.find(
+    (item) => item.id === "thai-street-noodle",
+  );
+  const gracesVegetarianMedley = gracesMandarin?.items.find(
+    (item) => item.id === "vegetarian-medley",
+  );
+  const gracesWhiteRice = gracesMandarin?.items.find(
+    (item) => item.id === "white-rice",
+  );
+  const boulangerieChristophe = generatedRestaurants.restaurants.find(
+    (restaurant) =>
+      restaurant.id === "boulangerie-christophe-washington-dc-dc-metro",
+  );
+  const boulangerieAppleTartelette = boulangerieChristophe?.items.find(
+    (item) => item.id === "apple-tartelette",
+  );
+  const boulangerieCafeAuLait = boulangerieChristophe?.items.find(
+    (item) => item.id === "cafe-au-lait-12-oz",
+  );
+  const boulangerieMacaron = boulangerieChristophe?.items.find(
+    (item) => item.id === "macaron",
+  );
+  const boulangerieDripCoffee = boulangerieChristophe?.items.find(
+    (item) => item.id === "drip-coffee-12-oz",
+  );
+  const boulangerieQuicheLorraine = boulangerieChristophe?.items.find(
+    (item) => item.id === "quiche-lorraine",
+  );
   const genkiIzakaya = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "genki-izakaya-fairfax-va-dc-metro",
   );
-  const genkiWagyu = genkiIzakaya?.items.find((item) => item.id === "a5-wagyu-1-pc");
-  const genkiAlaskaRoll = genkiIzakaya?.items.find((item) => item.id === "alaska-roll");
-  const genkiShrimpTempuraRoll = genkiIzakaya?.items.find((item) => item.id === "shrimp-tempura-roll");
-  const genkiPhillyRoll = genkiIzakaya?.items.find((item) => item.id === "philly-roll");
-  const genkiTonkotsuRamen = genkiIzakaya?.items.find((item) => item.id === "tonkotsu-ramen");
-  const genkiYakiUdon = genkiIzakaya?.items.find((item) => item.id === "yaki-udon");
-  const genkiAacRoll = genkiIzakaya?.items.find((item) => item.id === "aac-roll");
+  const genkiWagyu = genkiIzakaya?.items.find(
+    (item) => item.id === "a5-wagyu-1-pc",
+  );
+  const genkiAlaskaRoll = genkiIzakaya?.items.find(
+    (item) => item.id === "alaska-roll",
+  );
+  const genkiShrimpTempuraRoll = genkiIzakaya?.items.find(
+    (item) => item.id === "shrimp-tempura-roll",
+  );
+  const genkiPhillyRoll = genkiIzakaya?.items.find(
+    (item) => item.id === "philly-roll",
+  );
+  const genkiTonkotsuRamen = genkiIzakaya?.items.find(
+    (item) => item.id === "tonkotsu-ramen",
+  );
+  const genkiYakiUdon = genkiIzakaya?.items.find(
+    (item) => item.id === "yaki-udon",
+  );
+  const genkiAacRoll = genkiIzakaya?.items.find(
+    (item) => item.id === "aac-roll",
+  );
   const dogwoodTavern = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "dogwood-tavern-falls-church-va-dc-metro",
   );
-  const dogwoodBuddhaBowl = dogwoodTavern?.items.find((item) => item.id === "buddha-bowl");
-  const dogwoodNachos = dogwoodTavern?.items.find((item) => item.id === "heaping-nachos");
-  const dogwoodCarneAsada = dogwoodTavern?.items.find((item) => item.id === "carne-asada-platter");
-  const dogwoodAppleChickenSalad = dogwoodTavern?.items.find((item) => item.id === "apple-and-chicken-salad");
+  const dogwoodBuddhaBowl = dogwoodTavern?.items.find(
+    (item) => item.id === "buddha-bowl",
+  );
+  const dogwoodNachos = dogwoodTavern?.items.find(
+    (item) => item.id === "heaping-nachos",
+  );
+  const dogwoodCarneAsada = dogwoodTavern?.items.find(
+    (item) => item.id === "carne-asada-platter",
+  );
+  const dogwoodAppleChickenSalad = dogwoodTavern?.items.find(
+    (item) => item.id === "apple-and-chicken-salad",
+  );
   const dogwoodFriedChickenSandwich = dogwoodTavern?.items.find(
     (item) => item.id === "buttermilk-fried-chicken-sandwich",
   );
   const helloBetty = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "hello-betty-north-bethesda-md",
   );
-  const helloBettyAlfredo = helloBetty?.items.find((item) => item.id === "alfredo-pasta");
-  const helloBettyAvocadoToast = helloBetty?.items.find((item) => item.id === "avocado-toast");
-  const helloBettySoftshellCrab = helloBetty?.items.find((item) => item.id === "softshell-crab-bahn-mi");
-  const helloBettyCoffee = helloBetty?.items.find((item) => item.id === "coffee-or-tea");
-  const helloBettyVanillaGelato = helloBetty?.items.find((item) => item.id === "vanilla-gelato");
-  const moes = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "moes-southwest-grill");
+  const helloBettyAlfredo = helloBetty?.items.find(
+    (item) => item.id === "alfredo-pasta",
+  );
+  const helloBettyAvocadoToast = helloBetty?.items.find(
+    (item) => item.id === "avocado-toast",
+  );
+  const helloBettySoftshellCrab = helloBetty?.items.find(
+    (item) => item.id === "softshell-crab-bahn-mi",
+  );
+  const helloBettyCoffee = helloBetty?.items.find(
+    (item) => item.id === "coffee-or-tea",
+  );
+  const helloBettyVanillaGelato = helloBetty?.items.find(
+    (item) => item.id === "vanilla-gelato",
+  );
+  const moes = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "moes-southwest-grill",
+  );
   const moesQueso = moes?.items.find((item) => item.id === "moes-famous-queso");
-  const moesDippers = moes?.items.find((item) => item.id === "grilled-burrito-dippers-2-ct");
-  const moesChipsDips = moes?.items.find((item) => item.id === "chips-and-dips-trio");
+  const moesDippers = moes?.items.find(
+    (item) => item.id === "grilled-burrito-dippers-2-ct",
+  );
+  const moesChipsDips = moes?.items.find(
+    (item) => item.id === "chips-and-dips-trio",
+  );
   const moesKidsMilk = moes?.items.find((item) => item.id === "kids-milk");
   const moesKidsTaco = moes?.items.find((item) => item.id === "kids-taco");
-  const moesCookie = moes?.items.find((item) => item.id === "sweet-street-chocolate-chunk-cookie");
+  const moesCookie = moes?.items.find(
+    (item) => item.id === "sweet-street-chocolate-chunk-cookie",
+  );
   const moesWater = moes?.items.find((item) => item.id === "bottled-water");
-  const moesTacoValuePack = moes?.items.find((item) => item.id === "taco-value-pack");
-  const gemini = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "gemini-dc");
-  const geminiChocolateCake = gemini?.items.find((item) => item.id === "chocolate-cake");
+  const moesTacoValuePack = moes?.items.find(
+    (item) => item.id === "taco-value-pack",
+  );
+  const gemini = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "gemini-dc",
+  );
+  const geminiChocolateCake = gemini?.items.find(
+    (item) => item.id === "chocolate-cake",
+  );
   const geminiCashewBrittle = gemini?.items.find(
     (item) => item.id === "dark-chocolate-and-cashew-honeycomb-brittle",
   );
   const geminiMintChip = gemini?.items.find((item) => item.id === "mint-chip");
-  const geminiPuppyChow = gemini?.items.find((item) => item.id === "chocobanana-and-puppy-chow");
-  const peterChang = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "peter-chang-mclean-va");
-  const peterSesameNoodle = peterChang?.items.find((item) => item.id === "tg-sesame-paste-cold-rice-noodle");
-  const peterEggTofu = peterChang?.items.find((item) => item.id === "basil-eggplant-w-egg-tofu");
+  const geminiPuppyChow = gemini?.items.find(
+    (item) => item.id === "chocobanana-and-puppy-chow",
+  );
+  const peterChang = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "peter-chang-mclean-va",
+  );
+  const peterSesameNoodle = peterChang?.items.find(
+    (item) => item.id === "tg-sesame-paste-cold-rice-noodle",
+  );
+  const peterEggTofu = peterChang?.items.find(
+    (item) => item.id === "basil-eggplant-w-egg-tofu",
+  );
   const tigerDumplings = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "tiger-dumplings-arlington-va",
   );
-  const chengduChicken = tigerDumplings?.items.find((item) => item.id === "chengdu-chili-oil-chicken");
-  const hawaiianFriedRice = tigerDumplings?.items.find((item) => item.id === "hawaiian-style-fried-rice");
+  const chengduChicken = tigerDumplings?.items.find(
+    (item) => item.id === "chengdu-chili-oil-chicken",
+  );
+  const hawaiianFriedRice = tigerDumplings?.items.find(
+    (item) => item.id === "hawaiian-style-fried-rice",
+  );
   const elPolloRico = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "el-pollo-rico-arlington-va",
   );
-  const partyColeslaw = elPolloRico?.items.find((item) => item.id === "party-size-coleslaw");
-  const partyRedBeans = elPolloRico?.items.find((item) => item.id === "party-size-red-beans");
-  const carvelIceCream = elPolloRico?.items.find((item) => item.id === "carvel-ice-cream");
-  const firenzesGelato = elPolloRico?.items.find((item) => item.id === "firenzes-artisanal-gelato");
-  const mediumGreenSauce = elPolloRico?.items.find((item) => item.id === "medium-green-sauce-cup");
-  const wholeChickenWhiteMeat = elPolloRico?.items.find((item) => item.id === "whole-chicken-white-meat-only");
+  const partyColeslaw = elPolloRico?.items.find(
+    (item) => item.id === "party-size-coleslaw",
+  );
+  const partyRedBeans = elPolloRico?.items.find(
+    (item) => item.id === "party-size-red-beans",
+  );
+  const carvelIceCream = elPolloRico?.items.find(
+    (item) => item.id === "carvel-ice-cream",
+  );
+  const firenzesGelato = elPolloRico?.items.find(
+    (item) => item.id === "firenzes-artisanal-gelato",
+  );
+  const mediumGreenSauce = elPolloRico?.items.find(
+    (item) => item.id === "medium-green-sauce-cup",
+  );
+  const wholeChickenWhiteMeat = elPolloRico?.items.find(
+    (item) => item.id === "whole-chicken-white-meat-only",
+  );
   const flan = elPolloRico?.items.find((item) => item.id === "flan");
-  const baanMae = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "baan-mae-dc");
+  const baanMae = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "baan-mae-dc",
+  );
   const punYaw = baanMae?.items.find((item) => item.id === "pun-yaw");
   const plantaDc = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "replacement-planta-washington-dc-washington-dc",
+    (restaurant) =>
+      restaurant.id === "replacement-planta-washington-dc-washington-dc",
   );
-  const seasonalCheesecakePlatter = plantaDc?.items.find((item) => item.id === "dessert-platters");
+  const seasonalCheesecakePlatter = plantaDc?.items.find(
+    (item) => item.id === "dessert-platters",
+  );
   const laFamosa = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "replacement-la-famosa-washington-dc",
   );
-  const riceAndPigeonPeas = laFamosa?.items.find((item) => item.id === "rice-and-pigeon-peas");
-  const arrozConGandules = laFamosa?.items.find((item) => item.id === "arroz-con-gandules");
+  const riceAndPigeonPeas = laFamosa?.items.find(
+    (item) => item.id === "rice-and-pigeon-peas",
+  );
+  const arrozConGandules = laFamosa?.items.find(
+    (item) => item.id === "arroz-con-gandules",
+  );
   const marleys = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "replacement-marley-s-bar-and-grill-hyattsville-md",
+    (restaurant) =>
+      restaurant.id === "replacement-marley-s-bar-and-grill-hyattsville-md",
   );
-  const cajunSeafoodPasta = marleys?.items.find((item) => item.id === "cajun-seafood-pasta");
-  const shrimpAndGrits = marleys?.items.find((item) => item.id === "shrimp-and-grits");
-  const catfishAndGrits = marleys?.items.find((item) => item.id === "catfish-and-grits");
+  const cajunSeafoodPasta = marleys?.items.find(
+    (item) => item.id === "cajun-seafood-pasta",
+  );
+  const shrimpAndGrits = marleys?.items.find(
+    (item) => item.id === "shrimp-and-grits",
+  );
+  const catfishAndGrits = marleys?.items.find(
+    (item) => item.id === "catfish-and-grits",
+  );
   const dailyDish = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "replacement-the-daily-dish-silver-spring-md",
+    (restaurant) =>
+      restaurant.id === "replacement-the-daily-dish-silver-spring-md",
   );
-  const dailyDishSteak = dailyDish?.items.find((item) => item.id === "10-oz-prime-new-york-strip-steak");
-  const dailyDishCrabCake = dailyDish?.items.find((item) => item.id === "crab-cake");
-  const dailyDishShrimp = dailyDish?.items.find((item) => item.id === "shrimp-al-ajillo");
+  const dailyDishSteak = dailyDish?.items.find(
+    (item) => item.id === "10-oz-prime-new-york-strip-steak",
+  );
+  const dailyDishCrabCake = dailyDish?.items.find(
+    (item) => item.id === "crab-cake",
+  );
+  const dailyDishShrimp = dailyDish?.items.find(
+    (item) => item.id === "shrimp-al-ajillo",
+  );
   const donsak = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "replacement-donsak-thai-restaurant-washington-dc",
+    (restaurant) =>
+      restaurant.id === "replacement-donsak-thai-restaurant-washington-dc",
   );
-  const donsakButterRice = donsak?.items.find((item) => item.id === "butter-rice-or-regular");
-  const donsakCrispyChicken = donsak?.items.find((item) => item.id === "crispy-chicken-over-rice");
-  const donsakCrab = donsak?.items.find((item) => item.id === "pad-kra-pao-crab");
+  const donsakButterRice = donsak?.items.find(
+    (item) => item.id === "butter-rice-or-regular",
+  );
+  const donsakCrispyChicken = donsak?.items.find(
+    (item) => item.id === "crispy-chicken-over-rice",
+  );
+  const donsakCrab = donsak?.items.find(
+    (item) => item.id === "pad-kra-pao-crab",
+  );
   const donsakIsland = donsak?.items.find((item) => item.id === "100-island");
-  const donsakRangoon = donsak?.items.find((item) => item.id === "crab-rangoon");
+  const donsakRangoon = donsak?.items.find(
+    (item) => item.id === "crab-rangoon",
+  );
   const redrocks = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "replacement-redrocks-pizza-washington-dc",
+    (restaurant) =>
+      restaurant.id === "replacement-redrocks-pizza-washington-dc",
   );
-  const redrocksSteak = redrocks?.items.find((item) => item.id === "ny-steak-and-cheese");
+  const redrocksSteak = redrocks?.items.find(
+    (item) => item.id === "ny-steak-and-cheese",
+  );
   const purePasty = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "replacement-pure-pasty-vienna-shop-vienna-va",
+    (restaurant) =>
+      restaurant.id === "replacement-pure-pasty-vienna-shop-vienna-va",
   );
-  const sausageRoll = purePasty?.items.find((item) => item.id === "sausage-roll");
+  const sausageRoll = purePasty?.items.find(
+    (item) => item.id === "sausage-roll",
+  );
   const tiki = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "replacement-tiki-on-18th-washington-dc",
   );
   const friedSiomai = tiki?.items.find((item) => item.id === "fried-siomai");
   const sunflower = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "replacement-sunflower-vegetarian-restaurant-vienna-va",
+    (restaurant) =>
+      restaurant.id === "replacement-sunflower-vegetarian-restaurant-vienna-va",
   );
-  const sunflowerEdamame = sunflower?.items.find((item) => item.id === "a13organic-edamame-soybeans-cold");
-  const sunflowerFriedChicken = sunflower?.items.find((item) => item.id === "a5fried-chicken");
+  const sunflowerEdamame = sunflower?.items.find(
+    (item) => item.id === "a13organic-edamame-soybeans-cold",
+  );
+  const sunflowerFriedChicken = sunflower?.items.find(
+    (item) => item.id === "a5fried-chicken",
+  );
   const sunflowerWonton = sunflower?.items.find(
     (item) => item.id === "a9spicy-organic-spinach-wonton-in-red-sauce6",
   );
-  const sunflowerWontonSoup = sunflower?.items.find((item) => item.id === "b2organic-spinach-wonton-soup");
-  const sunflowerMushrooms = sunflower?.items.find((item) => item.id === "s16amazing-mushrooms-palate");
+  const sunflowerWontonSoup = sunflower?.items.find(
+    (item) => item.id === "b2organic-spinach-wonton-soup",
+  );
+  const sunflowerMushrooms = sunflower?.items.find(
+    (item) => item.id === "s16amazing-mushrooms-palate",
+  );
   const cocineros = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "replacement-cocineros-hyattsville-md",
   );
-  const cocinerosEmpanadas = cocineros?.items.find((item) => item.id === "empanadas-box");
-  const cocinerosFlautasTray = cocineros?.items.find((item) => item.id === "flautas-doradas-tray");
-  const cocinerosChipsGuac = cocineros?.items.find((item) => item.id === "large-chips-and-guac-tray");
-  const cocinerosSmallChips = cocineros?.items.find((item) => item.id === "small-chips-and-salsa-tray");
-  const cocinerosSmallGuac = cocineros?.items.find((item) => item.id === "small-tray-of-chips-and-guac");
-  const cocinerosTostonesTray = cocineros?.items.find((item) => item.id === "tostones-tray");
+  const cocinerosEmpanadas = cocineros?.items.find(
+    (item) => item.id === "empanadas-box",
+  );
+  const cocinerosFlautasTray = cocineros?.items.find(
+    (item) => item.id === "flautas-doradas-tray",
+  );
+  const cocinerosChipsGuac = cocineros?.items.find(
+    (item) => item.id === "large-chips-and-guac-tray",
+  );
+  const cocinerosSmallChips = cocineros?.items.find(
+    (item) => item.id === "small-chips-and-salsa-tray",
+  );
+  const cocinerosSmallGuac = cocineros?.items.find(
+    (item) => item.id === "small-tray-of-chips-and-guac",
+  );
+  const cocinerosTostonesTray = cocineros?.items.find(
+    (item) => item.id === "tostones-tray",
+  );
   const lostDog = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "lost-dog-cafe-dunn-loring-fairfax-va-dc-metro",
+    (restaurant) =>
+      restaurant.id === "lost-dog-cafe-dunn-loring-fairfax-va-dc-metro",
   );
-  const lostDogHolyCowLess = lostDog?.items.find((item) => item.id === "37-holy-cow-less");
+  const lostDogHolyCowLess = lostDog?.items.find(
+    (item) => item.id === "37-holy-cow-less",
+  );
   const chefTony = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "replacement-chef-tony-s-fresh-seafood-rockville-md",
+    (restaurant) =>
+      restaurant.id === "replacement-chef-tony-s-fresh-seafood-rockville-md",
   );
-  const chefTonyChoppedSalad = chefTony?.items.find((item) => item.id === "chopped-salad");
-  const chefTonyPepperoniHemi = chefTony?.items.find((item) => item.id === "cupper-pepperoni-hemi");
-  const chefTonyCreamOfCrab = chefTony?.items.find((item) => item.id === "soup-cream-of-crab");
+  const chefTonyChoppedSalad = chefTony?.items.find(
+    (item) => item.id === "chopped-salad",
+  );
+  const chefTonyPepperoniHemi = chefTony?.items.find(
+    (item) => item.id === "cupper-pepperoni-hemi",
+  );
+  const chefTonyCreamOfCrab = chefTony?.items.find(
+    (item) => item.id === "soup-cream-of-crab",
+  );
   const chefTonySeafoodPaellaFamily = chefTony?.items.find(
     (item) => item.id === "fm-seafood-paella-family-carry-out-only",
   );
-  const chefTonyCodParmesan = chefTony?.items.find((item) => item.id === "cod-parmesan");
-  const boardAndBrew = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "the-board-and-brew-college-park-dc-metro",
+  const chefTonyCodParmesan = chefTony?.items.find(
+    (item) => item.id === "cod-parmesan",
   );
-  const boardAmbi = boardAndBrew?.items.find((item) => item.id === "ambis-adventure");
-  const boardBens = boardAndBrew?.items.find((item) => item.id === "bens-abomination-sandwich");
+  const boardAndBrew = generatedRestaurants.restaurants.find(
+    (restaurant) =>
+      restaurant.id === "the-board-and-brew-college-park-dc-metro",
+  );
+  const boardAmbi = boardAndBrew?.items.find(
+    (item) => item.id === "ambis-adventure",
+  );
+  const boardBens = boardAndBrew?.items.find(
+    (item) => item.id === "bens-abomination-sandwich",
+  );
   const boardCheesecake = boardAndBrew?.items.find(
     (item) => item.id === "bnb-peanut-butter-white-chocolate-cheesecake",
   );
-  const boardChickenQuinoa = boardAndBrew?.items.find((item) => item.id === "chicken-and-quinoa-bowl");
-  const boardKanzu = boardAndBrew?.items.find((item) => item.id === "kanzu");
-  const boardSalmon = boardAndBrew?.items.find((item) => item.id === "smoked-salmon-sandwich");
-  const redstone = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "redstone-american-grill-washington-dc-dc-metro",
+  const boardChickenQuinoa = boardAndBrew?.items.find(
+    (item) => item.id === "chicken-and-quinoa-bowl",
   );
-  const redstoneBananaCreamPie = redstone?.items.find((item) => item.id === "banana-cream-pie");
-  const redstoneBuffaloShrimp = redstone?.items.find((item) => item.id === "buffalo-jumbo-shrimp");
-  const redstoneChickenLettuceWraps = redstone?.items.find((item) => item.id === "chicken-lettuce-wraps");
-  const redstoneCheesecake = redstone?.items.find((item) => item.id === "ny-style-cheesecake");
-  const redstoneAhiTuna = redstone?.items.find((item) => item.id === "seared-ahi-tuna");
-  const redstoneRiceNoodles = redstone?.items.find((item) => item.id === "spicy-thai-noodles");
-  const redstoneTempuraChicken = redstone?.items.find((item) => item.id === "tempura-teriyaki-chicken");
-  const menomale = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "menomale-dc");
-  const menomaleAffettati = menomale?.items.find((item) => item.id === "affettati-misti");
-  const menomaleTiramisu = menomale?.items.find((item) => item.id === "tiramisu");
-  const menomaleRoastedEggplantTray = menomale?.items.find((item) => item.id === "roasted-eggplant-full-tray");
-  const menomaleInsalataPesce = menomale?.items.find((item) => item.id === "insalata-di-pesce");
-  const menomaleVerdone = menomale?.items.find((item) => item.id === "verdone-pizza");
-  const menomaleRomanaFull = menomale?.items.find((item) => item.id === "romana-alla-romana-full-tray");
-  const menomaleFarro = menomale?.items.find((item) => item.id === "farro-with-your-choice-of-protein");
-  const menomalePolloVerde = menomale?.items.find((item) => item.id === "pollo-verde-panuozzo");
-  const menomaleEggplantParm = menomale?.items.find((item) => item.id === "eggplant-parm");
-  const menomaleFrittoMare = menomale?.items.find((item) => item.id === "fritto-di-mare");
-  const northsideMenu = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "northside-social-va");
-  const northsideChips = northsideMenu?.items.find((item) => item.id === "bag-of-chips");
-  const northsideCrackers = northsideMenu?.items.find((item) => item.id === "bag-of-sesame-crackers");
-  const northsideAvocadoToast = northsideMenu?.items.find((item) => item.id === "avocado-toast");
-  const northsideSalmonSalad = northsideMenu?.items.find((item) => item.id === "baked-salmon-salad");
-  const northsideBlt = northsideMenu?.items.find((item) => item.id === "the-blt");
-  const northsideGrilledCheese = northsideMenu?.items.find((item) => item.id === "the-grilled-cheese");
-  const northsideArnoldPalmer = northsideMenu?.items.find((item) => item.id === "arnold-palmer");
-  const northsideMatchaLatte = northsideMenu?.items.find((item) => item.id === "matcha-latte");
-  const northsideNosoMatcha = northsideMenu?.items.find((item) => item.id === "noso-signature-matcha-latte");
-  const northsideHotCoffee = northsideMenu?.items.find((item) => item.id === "hot-coffee-with-steamed-milk");
-  const northsideSaladBowl = northsideMenu?.items.find((item) => item.id === "take-home-large-salad-bowl");
+  const boardKanzu = boardAndBrew?.items.find((item) => item.id === "kanzu");
+  const boardSalmon = boardAndBrew?.items.find(
+    (item) => item.id === "smoked-salmon-sandwich",
+  );
+  const redstone = generatedRestaurants.restaurants.find(
+    (restaurant) =>
+      restaurant.id === "redstone-american-grill-washington-dc-dc-metro",
+  );
+  const redstoneBananaCreamPie = redstone?.items.find(
+    (item) => item.id === "banana-cream-pie",
+  );
+  const redstoneBuffaloShrimp = redstone?.items.find(
+    (item) => item.id === "buffalo-jumbo-shrimp",
+  );
+  const redstoneChickenLettuceWraps = redstone?.items.find(
+    (item) => item.id === "chicken-lettuce-wraps",
+  );
+  const redstoneCheesecake = redstone?.items.find(
+    (item) => item.id === "ny-style-cheesecake",
+  );
+  const redstoneAhiTuna = redstone?.items.find(
+    (item) => item.id === "seared-ahi-tuna",
+  );
+  const redstoneRiceNoodles = redstone?.items.find(
+    (item) => item.id === "spicy-thai-noodles",
+  );
+  const redstoneTempuraChicken = redstone?.items.find(
+    (item) => item.id === "tempura-teriyaki-chicken",
+  );
+  const menomale = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "menomale-dc",
+  );
+  const menomaleAffettati = menomale?.items.find(
+    (item) => item.id === "affettati-misti",
+  );
+  const menomaleTiramisu = menomale?.items.find(
+    (item) => item.id === "tiramisu",
+  );
+  const menomaleRoastedEggplantTray = menomale?.items.find(
+    (item) => item.id === "roasted-eggplant-full-tray",
+  );
+  const menomaleInsalataPesce = menomale?.items.find(
+    (item) => item.id === "insalata-di-pesce",
+  );
+  const menomaleVerdone = menomale?.items.find(
+    (item) => item.id === "verdone-pizza",
+  );
+  const menomaleRomanaFull = menomale?.items.find(
+    (item) => item.id === "romana-alla-romana-full-tray",
+  );
+  const menomaleFarro = menomale?.items.find(
+    (item) => item.id === "farro-with-your-choice-of-protein",
+  );
+  const menomalePolloVerde = menomale?.items.find(
+    (item) => item.id === "pollo-verde-panuozzo",
+  );
+  const menomaleEggplantParm = menomale?.items.find(
+    (item) => item.id === "eggplant-parm",
+  );
+  const menomaleFrittoMare = menomale?.items.find(
+    (item) => item.id === "fritto-di-mare",
+  );
+  const northsideMenu = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "northside-social-va",
+  );
+  const northsideChips = northsideMenu?.items.find(
+    (item) => item.id === "bag-of-chips",
+  );
+  const northsideCrackers = northsideMenu?.items.find(
+    (item) => item.id === "bag-of-sesame-crackers",
+  );
+  const northsideAvocadoToast = northsideMenu?.items.find(
+    (item) => item.id === "avocado-toast",
+  );
+  const northsideSalmonSalad = northsideMenu?.items.find(
+    (item) => item.id === "baked-salmon-salad",
+  );
+  const northsideBlt = northsideMenu?.items.find(
+    (item) => item.id === "the-blt",
+  );
+  const northsideGrilledCheese = northsideMenu?.items.find(
+    (item) => item.id === "the-grilled-cheese",
+  );
+  const northsideArnoldPalmer = northsideMenu?.items.find(
+    (item) => item.id === "arnold-palmer",
+  );
+  const northsideMatchaLatte = northsideMenu?.items.find(
+    (item) => item.id === "matcha-latte",
+  );
+  const northsideNosoMatcha = northsideMenu?.items.find(
+    (item) => item.id === "noso-signature-matcha-latte",
+  );
+  const northsideHotCoffee = northsideMenu?.items.find(
+    (item) => item.id === "hot-coffee-with-steamed-milk",
+  );
+  const northsideSaladBowl = northsideMenu?.items.find(
+    (item) => item.id === "take-home-large-salad-bowl",
+  );
   const hisAndHers = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "replacement-his-and-hers-washington-dc",
   );
-  const hisAndHersAvocadoToast = hisAndHers?.items.find((item) => item.id === "avocado-toast");
-  const hisAndHersFriedRice = hisAndHers?.items.find((item) => item.id === "fried-rice");
-  const hisAndHersQuesadilla = hisAndHers?.items.find((item) => item.id === "loaded-quesadila");
-  const hisAndHersCrabStuffedSalmon = hisAndHers?.items.find((item) => item.id === "crab-stuffed-salmon");
-  const hisAndHersCheesecake = hisAndHers?.items.find((item) => item.id === "berry-cheesecake");
-  const hisAndHersMac = hisAndHers?.items.find((item) => item.id === "mac-and-cheese");
+  const hisAndHersAvocadoToast = hisAndHers?.items.find(
+    (item) => item.id === "avocado-toast",
+  );
+  const hisAndHersFriedRice = hisAndHers?.items.find(
+    (item) => item.id === "fried-rice",
+  );
+  const hisAndHersQuesadilla = hisAndHers?.items.find(
+    (item) => item.id === "loaded-quesadila",
+  );
+  const hisAndHersCrabStuffedSalmon = hisAndHers?.items.find(
+    (item) => item.id === "crab-stuffed-salmon",
+  );
+  const hisAndHersCheesecake = hisAndHers?.items.find(
+    (item) => item.id === "berry-cheesecake",
+  );
+  const hisAndHersMac = hisAndHers?.items.find(
+    (item) => item.id === "mac-and-cheese",
+  );
   const moxies = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "replacement-moxies-washington-dc-restaurant-washington-dc",
+    (restaurant) =>
+      restaurant.id ===
+      "replacement-moxies-washington-dc-restaurant-washington-dc",
   );
-  const moxiesBlackenedShrimp = moxies?.items.find((item) => item.id === "blackened-shrimp-skewer");
-  const moxiesTacoStation = moxies?.items.find((item) => item.id === "taco-station");
-  const moxiesChipotleChicken = moxies?.items.find((item) => item.id === "chipotle-mango-chicken");
-  const moxiesLemonQuinoa = moxies?.items.find((item) => item.id === "lemon-quinoa");
+  const moxiesBlackenedShrimp = moxies?.items.find(
+    (item) => item.id === "blackened-shrimp-skewer",
+  );
+  const moxiesTacoStation = moxies?.items.find(
+    (item) => item.id === "taco-station",
+  );
+  const moxiesChipotleChicken = moxies?.items.find(
+    (item) => item.id === "chipotle-mango-chicken",
+  );
+  const moxiesLemonQuinoa = moxies?.items.find(
+    (item) => item.id === "lemon-quinoa",
+  );
   const harbour = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "the-harbour-grille-woodbridge-va-dc-metro",
+    (restaurant) =>
+      restaurant.id === "the-harbour-grille-woodbridge-va-dc-metro",
   );
-  const harbourSouthwestEggRolls = harbour?.items.find((item) => item.id === "southwest-egg-rolls");
-  const harbourCrabCakeSandwich = harbour?.items.find((item) => item.id === "crab-cake-sandwich");
-  const harbourSeafoodCarbonara = harbour?.items.find((item) => item.id === "seafood-carbonara");
-  const harbourFishAndChips = harbour?.items.find((item) => item.id === "fish-and-chips");
+  const harbourSouthwestEggRolls = harbour?.items.find(
+    (item) => item.id === "southwest-egg-rolls",
+  );
+  const harbourCrabCakeSandwich = harbour?.items.find(
+    (item) => item.id === "crab-cake-sandwich",
+  );
+  const harbourSeafoodCarbonara = harbour?.items.find(
+    (item) => item.id === "seafood-carbonara",
+  );
+  const harbourFishAndChips = harbour?.items.find(
+    (item) => item.id === "fish-and-chips",
+  );
   const harbourHotTea = harbour?.items.find((item) => item.id === "hot-tea");
   const huncho = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "replacement-huncho-house-hyattsville-md",
   );
-  const hunchoAhiTuna = huncho?.items.find((item) => item.id === "yellowtail-ahi-tuna");
-  const hunchoSeafoodGravy = huncho?.items.find((item) => item.id === "african-seafood-gravy-with-mussels-and-shrimp");
-  const hunchoChickenParm = huncho?.items.find((item) => item.id === "bucatini-chicken-parmesan");
-  const hunchoCheesecake = huncho?.items.find((item) => item.id === "flaming-banana-foster-cheesecake");
-  const hunchoMac = huncho?.items.find((item) => item.id === "huncho-mac-and-cheese");
-  const hunchoStickyRibs = huncho?.items.find((item) => item.id === "sticky-ribs-suya");
-  const provost = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "replacement-provost-restaurant-washington-dc",
+  const hunchoAhiTuna = huncho?.items.find(
+    (item) => item.id === "yellowtail-ahi-tuna",
   );
-  const provostMoscato = provost?.items.find((item) => item.id === "branzini-moscato-nv");
-  const provostShrimpPasta = provost?.items.find((item) => item.id === "cajun-chicken-and-shrimp-pasta");
-  const provostCrabCake = provost?.items.find((item) => item.id === "crab-cake");
-  const provostMacBalls = provost?.items.find((item) => item.id === "four-cheese-mac-and-cheese-balls");
-  const provostCoffee = provost?.items.find((item) => item.id === "coffee-and-assorted-teas");
-  const inca = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "inca-social-vienna-va-dc-metro");
-  const incaAcevichado = inca?.items.find((item) => item.id === "acevichado-roll");
-  const incaPescado = inca?.items.find((item) => item.id === "pescado-a-lo-macho");
-  const incaPanCon = inca?.items.find((item) => item.id === "pan-con-chicharron");
-  const incaSweetSampler = inca?.items.find((item) => item.id === "sweet-sampler");
+  const hunchoSeafoodGravy = huncho?.items.find(
+    (item) => item.id === "african-seafood-gravy-with-mussels-and-shrimp",
+  );
+  const hunchoChickenParm = huncho?.items.find(
+    (item) => item.id === "bucatini-chicken-parmesan",
+  );
+  const hunchoCheesecake = huncho?.items.find(
+    (item) => item.id === "flaming-banana-foster-cheesecake",
+  );
+  const hunchoMac = huncho?.items.find(
+    (item) => item.id === "huncho-mac-and-cheese",
+  );
+  const hunchoStickyRibs = huncho?.items.find(
+    (item) => item.id === "sticky-ribs-suya",
+  );
+  const provost = generatedRestaurants.restaurants.find(
+    (restaurant) =>
+      restaurant.id === "replacement-provost-restaurant-washington-dc",
+  );
+  const provostMoscato = provost?.items.find(
+    (item) => item.id === "branzini-moscato-nv",
+  );
+  const provostShrimpPasta = provost?.items.find(
+    (item) => item.id === "cajun-chicken-and-shrimp-pasta",
+  );
+  const provostCrabCake = provost?.items.find(
+    (item) => item.id === "crab-cake",
+  );
+  const provostMacBalls = provost?.items.find(
+    (item) => item.id === "four-cheese-mac-and-cheese-balls",
+  );
+  const provostCoffee = provost?.items.find(
+    (item) => item.id === "coffee-and-assorted-teas",
+  );
+  const inca = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "inca-social-vienna-va-dc-metro",
+  );
+  const incaAcevichado = inca?.items.find(
+    (item) => item.id === "acevichado-roll",
+  );
+  const incaPescado = inca?.items.find(
+    (item) => item.id === "pescado-a-lo-macho",
+  );
+  const incaPanCon = inca?.items.find(
+    (item) => item.id === "pan-con-chicharron",
+  );
+  const incaSweetSampler = inca?.items.find(
+    (item) => item.id === "sweet-sampler",
+  );
   const incaIncaBowl = inca?.items.find((item) => item.id === "inca-bowl");
   const delhi = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "replacement-delhi-spice-bethesda-md",
   );
   const delhiSamosas = delhi?.items.find((item) => item.id === "samosas");
-  const delhiSamosaChaat = delhi?.items.find((item) => item.id === "vegetable-samosa-chaat");
-  const delhiButterNaan = delhi?.items.find((item) => item.id === "butter-naan");
-  const delhiPrawnMasala = delhi?.items.find((item) => item.id === "prawn-masala");
-  const delhiGulabJamun = delhi?.items.find((item) => item.id === "gulab-jamun");
-  const delhiMumbaiBreeze = delhi?.items.find((item) => item.id === "mumbai-breeze");
-  const delhiFigKofta = delhi?.items.find((item) => item.id === "fig-kofta-curry");
+  const delhiSamosaChaat = delhi?.items.find(
+    (item) => item.id === "vegetable-samosa-chaat",
+  );
+  const delhiButterNaan = delhi?.items.find(
+    (item) => item.id === "butter-naan",
+  );
+  const delhiPrawnMasala = delhi?.items.find(
+    (item) => item.id === "prawn-masala",
+  );
+  const delhiGulabJamun = delhi?.items.find(
+    (item) => item.id === "gulab-jamun",
+  );
+  const delhiMumbaiBreeze = delhi?.items.find(
+    (item) => item.id === "mumbai-breeze",
+  );
+  const delhiFigKofta = delhi?.items.find(
+    (item) => item.id === "fig-kofta-curry",
+  );
   const plaka = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "plaka-grill-vienna-va-dc-metro",
   );
@@ -8568,367 +11508,889 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   const plakaBaklava = plaka?.items.find((item) => item.id === "baklava");
   const plakaKidsPizza = plaka?.items.find((item) => item.id === "kids-pizza");
   const oohhs = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "oohh-s-and-aahh-s-washington-dc-dc-metro",
+    (restaurant) =>
+      restaurant.id === "oohh-s-and-aahh-s-washington-dc-dc-metro",
   );
-  const oohhsFriedCroaker = oohhs?.items.find((item) => item.id === "fried-croaker");
-  const oohhsCatfishTaco = oohhs?.items.find((item) => item.id === "catfish-taco");
-  const oohhsShortRibsGrits = oohhs?.items.find((item) => item.id === "bbq-beef-short-ribs-and-grits");
+  const oohhsFriedCroaker = oohhs?.items.find(
+    (item) => item.id === "fried-croaker",
+  );
+  const oohhsCatfishTaco = oohhs?.items.find(
+    (item) => item.id === "catfish-taco",
+  );
+  const oohhsShortRibsGrits = oohhs?.items.find(
+    (item) => item.id === "bbq-beef-short-ribs-and-grits",
+  );
   const oohhsCaesar = oohhs?.items.find((item) => item.id === "caesar-salad");
-  const oohhsTurkeyWings = oohhs?.items.find((item) => item.id === "turkey-wings-2-no-sides");
-  const oohhsHalfAndHalf = oohhs?.items.find((item) => item.id === "halfandhalf");
-  const oohhsMac = oohhs?.items.find((item) => item.id === "four-cheese-mac-and-cheese-large");
+  const oohhsTurkeyWings = oohhs?.items.find(
+    (item) => item.id === "turkey-wings-2-no-sides",
+  );
+  const oohhsHalfAndHalf = oohhs?.items.find(
+    (item) => item.id === "halfandhalf",
+  );
+  const oohhsMac = oohhs?.items.find(
+    (item) => item.id === "four-cheese-mac-and-cheese-large",
+  );
   const flowerChildBethesda = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "flower-child-bethesda",
   );
   const flowerChildOsm = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "osm-flower-child-6327602834",
   );
-  const flowerChildForbiddenRice = flowerChildBethesda?.items.find((item) => item.id === "forbidden-rice");
-  const flowerChildAvocadoCaesar = flowerChildBethesda?.items.find((item) => item.id === "avocado-caesar");
-  const flowerChildClassicHummus = flowerChildBethesda?.items.find((item) => item.id === "classic-hummus");
-  const flowerChildMac = flowerChildBethesda?.items.find((item) => item.id === "gluten-free-mac-and-cheese");
-  const flowerChildShrimp = flowerChildBethesda?.items.find((item) => item.id === "large-shrimp");
-  const flowerChildHotTea = flowerChildBethesda?.items.find((item) => item.id === "hot-tea");
-  const trueFood = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "true-food-kitchen");
+  const flowerChildForbiddenRice = flowerChildBethesda?.items.find(
+    (item) => item.id === "forbidden-rice",
+  );
+  const flowerChildAvocadoCaesar = flowerChildBethesda?.items.find(
+    (item) => item.id === "avocado-caesar",
+  );
+  const flowerChildClassicHummus = flowerChildBethesda?.items.find(
+    (item) => item.id === "classic-hummus",
+  );
+  const flowerChildMac = flowerChildBethesda?.items.find(
+    (item) => item.id === "gluten-free-mac-and-cheese",
+  );
+  const flowerChildShrimp = flowerChildBethesda?.items.find(
+    (item) => item.id === "large-shrimp",
+  );
+  const flowerChildHotTea = flowerChildBethesda?.items.find(
+    (item) => item.id === "hot-tea",
+  );
+  const trueFood = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "true-food-kitchen",
+  );
   const trueFoodArlington = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "true-food-kitchen-arlington",
   );
-  const trueFoodAncientGrain = trueFood?.items.find((item) => item.id === "ancient-grain-bowl");
-  const trueFoodBurger = trueFood?.items.find((item) => item.id === "all-american-burger");
-  const trueFoodGuacamole = trueFood?.items.find((item) => item.id === "guacamole");
-  const trueFoodPanang = trueFood?.items.find((item) => item.id === "spicy-panang-curry-bowl");
-  const trueFoodFries = trueFood?.items.find((item) => item.id === "true-crispd-air-fried-french-fries");
-  const trueFoodBlueberry = trueFood?.items.find((item) => item.id === "blueberry");
-  const jimmys = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "jimmys-old-town-tavern-herndon-va-dc-metro",
+  const trueFoodAncientGrain = trueFood?.items.find(
+    (item) => item.id === "ancient-grain-bowl",
   );
-  const jimmysBeefOnWeck = jimmys?.items.find((item) => item.id === "beef-on-weck");
-  const jimmysGrilledCheese = jimmys?.items.find((item) => item.id === "grilled-cheese");
-  const jimmysHotHamSwiss = jimmys?.items.find((item) => item.id === "hot-ham-and-swiss");
+  const trueFoodBurger = trueFood?.items.find(
+    (item) => item.id === "all-american-burger",
+  );
+  const trueFoodGuacamole = trueFood?.items.find(
+    (item) => item.id === "guacamole",
+  );
+  const trueFoodPanang = trueFood?.items.find(
+    (item) => item.id === "spicy-panang-curry-bowl",
+  );
+  const trueFoodFries = trueFood?.items.find(
+    (item) => item.id === "true-crispd-air-fried-french-fries",
+  );
+  const trueFoodBlueberry = trueFood?.items.find(
+    (item) => item.id === "blueberry",
+  );
+  const jimmys = generatedRestaurants.restaurants.find(
+    (restaurant) =>
+      restaurant.id === "jimmys-old-town-tavern-herndon-va-dc-metro",
+  );
+  const jimmysBeefOnWeck = jimmys?.items.find(
+    (item) => item.id === "beef-on-weck",
+  );
+  const jimmysGrilledCheese = jimmys?.items.find(
+    (item) => item.id === "grilled-cheese",
+  );
+  const jimmysHotHamSwiss = jimmys?.items.find(
+    (item) => item.id === "hot-ham-and-swiss",
+  );
   const jimmysJottTots = jimmys?.items.find((item) => item.id === "jott-tots");
-  const jimmysRibEye = jimmys?.items.find((item) => item.id === "rib-eye-steak");
-  const jimmysPineappleJuice = jimmys?.items.find((item) => item.id === "pineapple-juice");
+  const jimmysRibEye = jimmys?.items.find(
+    (item) => item.id === "rib-eye-steak",
+  );
+  const jimmysPineappleJuice = jimmys?.items.find(
+    (item) => item.id === "pineapple-juice",
+  );
   const teddy = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "teddy-and-the-bully-bar-washington-dc-dc-metro",
+    (restaurant) =>
+      restaurant.id === "teddy-and-the-bully-bar-washington-dc-dc-metro",
   );
   const teddyStations = teddy?.items.find((item) => item.id === "stations");
-  const teddyIceCream = teddy?.items.find((item) => item.id === "ice-cream-sorbet");
-  const teddyGrilledCheese = teddy?.items.find((item) => item.id === "grilled-cheese-sandwich");
-  const teddyMatzohBallSoup = teddy?.items.find((item) => item.id === "matzoh-ball-soup");
-  const teddyCoffee = teddy?.items.find((item) => item.id === "coffee-decaf-coffee");
-  const joon = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "joon-dc");
-  const joonCucumberSalad = joon?.items.find((item) => item.id === "cucumber-salad");
-  const joonGilaniKabob = joon?.items.find((item) => item.id === "gilani-kabob-platter");
-  const joonDuckFesenjoon = joon?.items.find((item) => item.id === "duck-fesenjoon");
-  const joonGrilledPrawns = joon?.items.find((item) => item.id === "grilled-prawns");
-  const joonHummusLamb = joon?.items.find((item) => item.id === "hummus-with-lamb");
-  const joonKabobPlatter = joon?.items.find((item) => item.id === "joon-kabob-platter");
-  const joonLoveCake = joon?.items.find((item) => item.id === "mday-persian-love-cake");
-  const joonThanksgivingMeal = joon?.items.find((item) => item.id === "thanksgiving-meal");
-  const joonCoffeeService = joon?.items.find((item) => item.id === "coffee-servi-ce");
-  const society = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "society-seafood-house-silver-spring-md-dc-metro",
+  const teddyIceCream = teddy?.items.find(
+    (item) => item.id === "ice-cream-sorbet",
   );
-  const societyCatfishSandwich = society?.items.find((item) => item.id === "catfish-sandwich");
-  const societyFriedShrimp = society?.items.find((item) => item.id === "fried-shrimp-and-fries");
-  const societyChickenSandwich = society?.items.find((item) => item.id === "scotch-bonnet-fried-chicken");
-  const societyCaesar = society?.items.find((item) => item.id === "caesar-salad");
-  const societyShrimp = society?.items.find((item) => item.id === "society-shrimp");
-  const societyBisque = society?.items.find((item) => item.id === "seafood-bisque");
-  const societyCatfishPoboy = society?.items.find((item) => item.id === "catfish-poboy");
-  const societyHoneyBiscuit = society?.items.find((item) => item.id === "honey-biscuit");
+  const teddyGrilledCheese = teddy?.items.find(
+    (item) => item.id === "grilled-cheese-sandwich",
+  );
+  const teddyMatzohBallSoup = teddy?.items.find(
+    (item) => item.id === "matzoh-ball-soup",
+  );
+  const teddyCoffee = teddy?.items.find(
+    (item) => item.id === "coffee-decaf-coffee",
+  );
+  const joon = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "joon-dc",
+  );
+  const joonCucumberSalad = joon?.items.find(
+    (item) => item.id === "cucumber-salad",
+  );
+  const joonGilaniKabob = joon?.items.find(
+    (item) => item.id === "gilani-kabob-platter",
+  );
+  const joonDuckFesenjoon = joon?.items.find(
+    (item) => item.id === "duck-fesenjoon",
+  );
+  const joonGrilledPrawns = joon?.items.find(
+    (item) => item.id === "grilled-prawns",
+  );
+  const joonHummusLamb = joon?.items.find(
+    (item) => item.id === "hummus-with-lamb",
+  );
+  const joonKabobPlatter = joon?.items.find(
+    (item) => item.id === "joon-kabob-platter",
+  );
+  const joonLoveCake = joon?.items.find(
+    (item) => item.id === "mday-persian-love-cake",
+  );
+  const joonThanksgivingMeal = joon?.items.find(
+    (item) => item.id === "thanksgiving-meal",
+  );
+  const joonCoffeeService = joon?.items.find(
+    (item) => item.id === "coffee-servi-ce",
+  );
+  const society = generatedRestaurants.restaurants.find(
+    (restaurant) =>
+      restaurant.id === "society-seafood-house-silver-spring-md-dc-metro",
+  );
+  const societyCatfishSandwich = society?.items.find(
+    (item) => item.id === "catfish-sandwich",
+  );
+  const societyFriedShrimp = society?.items.find(
+    (item) => item.id === "fried-shrimp-and-fries",
+  );
+  const societyChickenSandwich = society?.items.find(
+    (item) => item.id === "scotch-bonnet-fried-chicken",
+  );
+  const societyCaesar = society?.items.find(
+    (item) => item.id === "caesar-salad",
+  );
+  const societyShrimp = society?.items.find(
+    (item) => item.id === "society-shrimp",
+  );
+  const societyBisque = society?.items.find(
+    (item) => item.id === "seafood-bisque",
+  );
+  const societyCatfishPoboy = society?.items.find(
+    (item) => item.id === "catfish-poboy",
+  );
+  const societyHoneyBiscuit = society?.items.find(
+    (item) => item.id === "honey-biscuit",
+  );
   const silverBethesda = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "silver-bethesda-md-dc-metro",
   );
-  const silverAhiTunaPoke = silverBethesda?.items.find((item) => item.id === "ahi-tuna-poke-bowl");
-  const silverBeyondBaja = silverBethesda?.items.find((item) => item.id === "beyond-baja-burger");
-  const silverKidsAppleJuice = silverBethesda?.items.find((item) => item.id === "kids-apple-juice");
-  const silverLambMeatballs = silverBethesda?.items.find((item) => item.id === "lamb-meatballs-sharting-plate");
+  const silverAhiTunaPoke = silverBethesda?.items.find(
+    (item) => item.id === "ahi-tuna-poke-bowl",
+  );
+  const silverBeyondBaja = silverBethesda?.items.find(
+    (item) => item.id === "beyond-baja-burger",
+  );
+  const silverKidsAppleJuice = silverBethesda?.items.find(
+    (item) => item.id === "kids-apple-juice",
+  );
+  const silverLambMeatballs = silverBethesda?.items.find(
+    (item) => item.id === "lamb-meatballs-sharting-plate",
+  );
   const tastyNook = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "osm-tasty-nook-12663327602",
   );
-  const tastyBurger = tastyNook?.items.find((item) => item.id === "classic-burger");
-  const tastyPancakes = tastyNook?.items.find((item) => item.id === "3-buttermilk-pancakes");
-  const tastyCarneAsada = tastyNook?.items.find((item) => item.id === "carne-asada");
-  const tastyChickenAlfredo = tastyNook?.items.find((item) => item.id === "chicken-alfredo");
-  const tastyCapuccino = tastyNook?.items.find((item) => item.id === "capuccino");
-  const tastyPattySausage = tastyNook?.items.find((item) => item.id === "2-patty-sausage");
-  const clydesGallery = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "clydes-gallery-place-dc");
-  const clydesBurger = clydesGallery?.items.find((item) => item.id === "clydes-classic-burger");
-  const clydesCrabCake = clydesGallery?.items.find((item) => item.id === "jumbo-lump-crab-cake");
-  const clydesSalmonSalad = clydesGallery?.items.find((item) => item.id === "faroe-islands-salmon-salad");
-  const clydesCrabSoup = clydesGallery?.items.find((item) => item.id === "crab-soup");
-  const clydesCheesecake = clydesGallery?.items.find((item) => item.id === "baileys-cheesecake");
-  const clydesBreakfast = clydesGallery?.items.find((item) => item.id === "all-american-breakfast");
-  const clydesGreenBeans = clydesGallery?.items.find((item) => item.id === "greasy-green-beans");
-  const ilili = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "ilili-dc");
-  const ililiHotTea = ilili?.items.find((item) => item.id === "specialty-hot-tea-plain-t");
-  const ililiCoffee = ilili?.items.find((item) => item.id === "afficionado-coffee");
-  const ililiMintTea = ilili?.items.find((item) => item.id === "fresh-mint-tea");
+  const tastyBurger = tastyNook?.items.find(
+    (item) => item.id === "classic-burger",
+  );
+  const tastyPancakes = tastyNook?.items.find(
+    (item) => item.id === "3-buttermilk-pancakes",
+  );
+  const tastyCarneAsada = tastyNook?.items.find(
+    (item) => item.id === "carne-asada",
+  );
+  const tastyChickenAlfredo = tastyNook?.items.find(
+    (item) => item.id === "chicken-alfredo",
+  );
+  const tastyCapuccino = tastyNook?.items.find(
+    (item) => item.id === "capuccino",
+  );
+  const tastyPattySausage = tastyNook?.items.find(
+    (item) => item.id === "2-patty-sausage",
+  );
+  const clydesGallery = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "clydes-gallery-place-dc",
+  );
+  const clydesBurger = clydesGallery?.items.find(
+    (item) => item.id === "clydes-classic-burger",
+  );
+  const clydesCrabCake = clydesGallery?.items.find(
+    (item) => item.id === "jumbo-lump-crab-cake",
+  );
+  const clydesSalmonSalad = clydesGallery?.items.find(
+    (item) => item.id === "faroe-islands-salmon-salad",
+  );
+  const clydesCrabSoup = clydesGallery?.items.find(
+    (item) => item.id === "crab-soup",
+  );
+  const clydesCheesecake = clydesGallery?.items.find(
+    (item) => item.id === "baileys-cheesecake",
+  );
+  const clydesBreakfast = clydesGallery?.items.find(
+    (item) => item.id === "all-american-breakfast",
+  );
+  const clydesGreenBeans = clydesGallery?.items.find(
+    (item) => item.id === "greasy-green-beans",
+  );
+  const ilili = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "ilili-dc",
+  );
+  const ililiHotTea = ilili?.items.find(
+    (item) => item.id === "specialty-hot-tea-plain-t",
+  );
+  const ililiCoffee = ilili?.items.find(
+    (item) => item.id === "afficionado-coffee",
+  );
+  const ililiMintTea = ilili?.items.find(
+    (item) => item.id === "fresh-mint-tea",
+  );
   const ililiIceCream = ilili?.items.find((item) => item.id === "ice-cream");
-  const sunflowerVeggieShrimpTempura = sunflower?.items.find((item) => item.id === "veggie-shrimp-tempura-roll-8-pc");
-  const sunflowerTornado = sunflower?.items.find((item) => item.id === "tornado-roll-una-maki-8-pc");
-  const sunflowerMockEel = sunflower?.items.find((item) => item.id === "teriyaki-mock-sesame-eel-4");
-  const sunflowerShrimpGarden = sunflower?.items.find((item) => item.id === "s4shrimp-garden-sizzling-rice");
-  const sunflowerOrganicSpinachWontonSoup = sunflower?.items.find((item) => item.id === "organic-spinach-wonton-soup");
-  const sunflowerGfCheesecake = sunflower?.items.find((item) => item.id === "gf-raspberry-white-chocolate-cheese-cake");
-  const sunflowerChocolateMousse = sunflower?.items.find((item) => item.id === "vt-chocolate-mousse");
+  const sunflowerVeggieShrimpTempura = sunflower?.items.find(
+    (item) => item.id === "veggie-shrimp-tempura-roll-8-pc",
+  );
+  const sunflowerTornado = sunflower?.items.find(
+    (item) => item.id === "tornado-roll-una-maki-8-pc",
+  );
+  const sunflowerMockEel = sunflower?.items.find(
+    (item) => item.id === "teriyaki-mock-sesame-eel-4",
+  );
+  const sunflowerShrimpGarden = sunflower?.items.find(
+    (item) => item.id === "s4shrimp-garden-sizzling-rice",
+  );
+  const sunflowerOrganicSpinachWontonSoup = sunflower?.items.find(
+    (item) => item.id === "organic-spinach-wonton-soup",
+  );
+  const sunflowerGfCheesecake = sunflower?.items.find(
+    (item) => item.id === "gf-raspberry-white-chocolate-cheese-cake",
+  );
+  const sunflowerChocolateMousse = sunflower?.items.find(
+    (item) => item.id === "vt-chocolate-mousse",
+  );
   const foundingFarmersFamily = [
     "farmers-and-distillers-dc",
     "founding-farmers-dc",
     "founding-farmers-reston-station-va",
     "founding-farmers-tysons-va",
-  ].map((id) => generatedRestaurants.restaurants.find((restaurant) => restaurant.id === id));
-  const maggie = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "maggie-mcfly-s-springfield-springfield-va-dc-metro",
+  ].map((id) =>
+    generatedRestaurants.restaurants.find((restaurant) => restaurant.id === id),
   );
-  const maggieBurgerSliders = maggie?.items.find((item) => item.id === "bacon-cheeseburger-sliders");
-  const maggieAhiTaco = maggie?.items.find((item) => item.id === "ahi-tuna-taco");
-  const maggieFettuccine = maggie?.items.find((item) => item.id === "fettuccine-alfredo");
-  const maggieBrownie = maggie?.items.find((item) => item.id === "brownie-sundae");
-  const maggieGrilledCheese = maggie?.items.find((item) => item.id === "grilled-cheese-and-fries");
-  const maggieCalamari = maggie?.items.find((item) => item.id === "fried-calamari");
+  const maggie = generatedRestaurants.restaurants.find(
+    (restaurant) =>
+      restaurant.id === "maggie-mcfly-s-springfield-springfield-va-dc-metro",
+  );
+  const maggieBurgerSliders = maggie?.items.find(
+    (item) => item.id === "bacon-cheeseburger-sliders",
+  );
+  const maggieAhiTaco = maggie?.items.find(
+    (item) => item.id === "ahi-tuna-taco",
+  );
+  const maggieFettuccine = maggie?.items.find(
+    (item) => item.id === "fettuccine-alfredo",
+  );
+  const maggieBrownie = maggie?.items.find(
+    (item) => item.id === "brownie-sundae",
+  );
+  const maggieGrilledCheese = maggie?.items.find(
+    (item) => item.id === "grilled-cheese-and-fries",
+  );
+  const maggieCalamari = maggie?.items.find(
+    (item) => item.id === "fried-calamari",
+  );
   const maggieSmoothie = maggie?.items.find((item) => item.id === "smoothie");
   const afghania = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "replacement-afghania-washington-dc",
   );
-  const afghaniaBurger = afghania?.items.find((item) => item.id === "afghania-burger");
-  const afghaniaBistroBurger = afghania?.items.find((item) => item.id === "bistro-burger");
-  const afghaniaNakhoudChalou = afghania?.items.find((item) => item.id === "nakhoud-chalou");
-  const afghaniaBaadenjaanChalou = afghania?.items.find((item) => item.id === "baadenjaan-chalou");
+  const afghaniaBurger = afghania?.items.find(
+    (item) => item.id === "afghania-burger",
+  );
+  const afghaniaBistroBurger = afghania?.items.find(
+    (item) => item.id === "bistro-burger",
+  );
+  const afghaniaNakhoudChalou = afghania?.items.find(
+    (item) => item.id === "nakhoud-chalou",
+  );
+  const afghaniaBaadenjaanChalou = afghania?.items.find(
+    (item) => item.id === "baadenjaan-chalou",
+  );
   const afghaniaChalou = afghania?.items.find((item) => item.id === "chalou");
   const afghaniaSalmon = afghania?.items.find((item) => item.id === "salmon");
-  const afghaniaChickenLawaan = afghania?.items.find((item) => item.id === "chicken-lawaan");
-  const afghaniaLambTenderloinKabob = afghania?.items.find((item) => item.id === "lamb-tenderloin-kabob");
-  const aracosia = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "osm-aracosia-3584164912");
-  const aracosiaBistroBurger = aracosia?.items.find((item) => item.id === "bistro-burger");
-  const aracosiaAushak = aracosia?.items.find((item) => item.id === "leek-and-scallion-dumplings-aushak-entree");
-  const aracosiaSalmonWrap = aracosia?.items.find((item) => item.id === "salmon-wrap");
-  const aracosiaQabuli = aracosia?.items.find((item) => item.id === "qabuli-rice");
-  const aracosiaBaklava = aracosia?.items.find((item) => item.id === "baklava");
-  const aracosiaChickenLawaan = aracosia?.items.find((item) => item.id === "chicken-lawaan");
-  const botanero = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "osm-botanero-11895212138");
-  const botaneroCalamari = botanero?.items.find((item) => item.name === "Fried Calamari");
-  const botaneroCrabCakeSandwich = botanero?.items.find((item) => item.name === "Crab Cake Sandwich");
-  const botaneroBurger = botanero?.items.find((item) => item.name === "Botanero Burger");
-  const botaneroFlatbread = botanero?.items.find((item) => item.name === "BBQ Chicken Flatbread");
-  const botaneroSalmonBenedict = botanero?.items.find((item) => item.name === "Smoked Salmon Eggs Benedict");
-  const uzu = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "uzu-revolving-sushi-rockville-md-dc-metro",
+  const afghaniaChickenLawaan = afghania?.items.find(
+    (item) => item.id === "chicken-lawaan",
   );
-  const uzuAsparagusTempura = uzu?.items.find((item) => item.id === "asparagus-tempura");
+  const afghaniaLambTenderloinKabob = afghania?.items.find(
+    (item) => item.id === "lamb-tenderloin-kabob",
+  );
+  const aracosia = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "osm-aracosia-3584164912",
+  );
+  const aracosiaBistroBurger = aracosia?.items.find(
+    (item) => item.id === "bistro-burger",
+  );
+  const aracosiaAushak = aracosia?.items.find(
+    (item) => item.id === "leek-and-scallion-dumplings-aushak-entree",
+  );
+  const aracosiaSalmonWrap = aracosia?.items.find(
+    (item) => item.id === "salmon-wrap",
+  );
+  const aracosiaQabuli = aracosia?.items.find(
+    (item) => item.id === "qabuli-rice",
+  );
+  const aracosiaBaklava = aracosia?.items.find((item) => item.id === "baklava");
+  const aracosiaChickenLawaan = aracosia?.items.find(
+    (item) => item.id === "chicken-lawaan",
+  );
+  const botanero = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "osm-botanero-11895212138",
+  );
+  const botaneroCalamari = botanero?.items.find(
+    (item) => item.name === "Fried Calamari",
+  );
+  const botaneroCrabCakeSandwich = botanero?.items.find(
+    (item) => item.name === "Crab Cake Sandwich",
+  );
+  const botaneroBurger = botanero?.items.find(
+    (item) => item.name === "Botanero Burger",
+  );
+  const botaneroFlatbread = botanero?.items.find(
+    (item) => item.name === "BBQ Chicken Flatbread",
+  );
+  const botaneroSalmonBenedict = botanero?.items.find(
+    (item) => item.name === "Smoked Salmon Eggs Benedict",
+  );
+  const uzu = generatedRestaurants.restaurants.find(
+    (restaurant) =>
+      restaurant.id === "uzu-revolving-sushi-rockville-md-dc-metro",
+  );
+  const uzuAsparagusTempura = uzu?.items.find(
+    (item) => item.id === "asparagus-tempura",
+  );
   const uzuAvocadoRoll = uzu?.items.find((item) => item.id === "avocado-roll");
-  const uzuHawaiianTruffle = uzu?.items.find((item) => item.id === "hawaiian-truffle-roll");
-  const uzuOysterPonzu = uzu?.items.find((item) => item.id === "oyster-w-ikura-and-ponzu");
-  const uzuBossCoffee = uzu?.items.find((item) => item.id === "boss-black-coffee");
+  const uzuHawaiianTruffle = uzu?.items.find(
+    (item) => item.id === "hawaiian-truffle-roll",
+  );
+  const uzuOysterPonzu = uzu?.items.find(
+    (item) => item.id === "oyster-w-ikura-and-ponzu",
+  );
+  const uzuBossCoffee = uzu?.items.find(
+    (item) => item.id === "boss-black-coffee",
+  );
   const uzuMochi = uzu?.items.find((item) => item.id === "mochi-ice-cream");
   const secretGarden = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "the-secret-garden-cafe-washington-dc-dc-metro",
+    (restaurant) =>
+      restaurant.id === "the-secret-garden-cafe-washington-dc-dc-metro",
   );
-  const secretGardenAsparagus = secretGarden?.items.find((item) => item.id === "asparagus");
-  const secretGardenBahnMi = secretGarden?.items.find((item) => item.id === "bahn-mi");
-  const secretGardenCrabCake = secretGarden?.items.find((item) => item.id === "lump-crab-cake-sandwich");
-  const secretGardenHalfTea = secretGarden?.items.find((item) => item.id === "halfhalf-tea");
-  const secretGardenSalmon = secretGarden?.items.find((item) => item.id === "fresh-atlantic-salmon");
-  const secretGardenFrenchToast = secretGarden?.items.find((item) => item.id === "traditional-french-toast");
-  const jukeBox = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "osm-juke-box-diner-3925447512");
-  const jukeBoxBurger = jukeBox?.items.find((item) => item.id === "bacon-n-bacon-cheeseburger");
-  const jukeBoxChickenParm = jukeBox?.items.find((item) => item.id === "chicken-parmigiana");
-  const jukeBoxFishChips = jukeBox?.items.find((item) => item.id === "fish-and-chips");
-  const jukeBoxBlackAngus = jukeBox?.items.find((item) => item.id === "10oz-black-angus-steak");
-  const jukeBoxCoffee = jukeBox?.items.find((item) => item.id === "freshly-brewed-coffee");
-  const jukeBoxWaffleSundae = jukeBox?.items.find((item) => item.id === "waffle-sundae");
-  const redHotBlue = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "osm-red-hot-blue-1448579525");
-  const redHotBlueClassicBurger = redHotBlue?.items.find((item) => item.id === "the-classic-burger");
-  const redHotBlueHickoryBurger = redHotBlue?.items.find((item) => item.id === "hickory-bacon-burger");
-  const redHotBluePulledPork = redHotBlue?.items.find((item) => item.id === "pulled-pork-plate");
-  const redHotBlueCatfish = redHotBlue?.items.find((item) => item.id === "delta-catfish-plate");
-  const redHotBlueNachos = redHotBlue?.items.find((item) => item.id === "bbq-nachos");
-  const redHotBlueWingsTray = redHotBlue?.items.find((item) => item.id === "40-wings-tray");
+  const secretGardenAsparagus = secretGarden?.items.find(
+    (item) => item.id === "asparagus",
+  );
+  const secretGardenBahnMi = secretGarden?.items.find(
+    (item) => item.id === "bahn-mi",
+  );
+  const secretGardenCrabCake = secretGarden?.items.find(
+    (item) => item.id === "lump-crab-cake-sandwich",
+  );
+  const secretGardenHalfTea = secretGarden?.items.find(
+    (item) => item.id === "halfhalf-tea",
+  );
+  const secretGardenSalmon = secretGarden?.items.find(
+    (item) => item.id === "fresh-atlantic-salmon",
+  );
+  const secretGardenFrenchToast = secretGarden?.items.find(
+    (item) => item.id === "traditional-french-toast",
+  );
+  const jukeBox = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "osm-juke-box-diner-3925447512",
+  );
+  const jukeBoxBurger = jukeBox?.items.find(
+    (item) => item.id === "bacon-n-bacon-cheeseburger",
+  );
+  const jukeBoxChickenParm = jukeBox?.items.find(
+    (item) => item.id === "chicken-parmigiana",
+  );
+  const jukeBoxFishChips = jukeBox?.items.find(
+    (item) => item.id === "fish-and-chips",
+  );
+  const jukeBoxBlackAngus = jukeBox?.items.find(
+    (item) => item.id === "10oz-black-angus-steak",
+  );
+  const jukeBoxCoffee = jukeBox?.items.find(
+    (item) => item.id === "freshly-brewed-coffee",
+  );
+  const jukeBoxWaffleSundae = jukeBox?.items.find(
+    (item) => item.id === "waffle-sundae",
+  );
+  const redHotBlue = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "osm-red-hot-blue-1448579525",
+  );
+  const redHotBlueClassicBurger = redHotBlue?.items.find(
+    (item) => item.id === "the-classic-burger",
+  );
+  const redHotBlueHickoryBurger = redHotBlue?.items.find(
+    (item) => item.id === "hickory-bacon-burger",
+  );
+  const redHotBluePulledPork = redHotBlue?.items.find(
+    (item) => item.id === "pulled-pork-plate",
+  );
+  const redHotBlueCatfish = redHotBlue?.items.find(
+    (item) => item.id === "delta-catfish-plate",
+  );
+  const redHotBlueNachos = redHotBlue?.items.find(
+    (item) => item.id === "bbq-nachos",
+  );
+  const redHotBlueWingsTray = redHotBlue?.items.find(
+    (item) => item.id === "40-wings-tray",
+  );
   const novaEuropa = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "replacement-nova-europa-restaurant-silver-spring-md",
+    (restaurant) =>
+      restaurant.id === "replacement-nova-europa-restaurant-silver-spring-md",
   );
-  const novaEuropaCalamari = novaEuropa?.items.find((item) => item.id === "calamari");
-  const novaEuropaSeafoodPot = novaEuropa?.items.find((item) => item.id === "caldeirda-nova-europa");
-  const novaEuropaChickenParm = novaEuropa?.items.find((item) => item.id === "chicken-parmigiana");
+  const novaEuropaCalamari = novaEuropa?.items.find(
+    (item) => item.id === "calamari",
+  );
+  const novaEuropaSeafoodPot = novaEuropa?.items.find(
+    (item) => item.id === "caldeirda-nova-europa",
+  );
+  const novaEuropaChickenParm = novaEuropa?.items.find(
+    (item) => item.id === "chicken-parmigiana",
+  );
   const novaEuropaSteakPortuguese = novaEuropa?.items.find(
-    (item) => item.id === "steak-portuguese-topped-with-egg-and-ham-in-wine-sauce",
+    (item) =>
+      item.id === "steak-portuguese-topped-with-egg-and-ham-in-wine-sauce",
   );
-  const novaEuropaCheesecake = novaEuropa?.items.find((item) => item.id === "cheese-cake");
-  const novaEuropaHouseSalad = novaEuropa?.items.find((item) => item.id === "house-salad");
-  const novaEuropaAlfredo = novaEuropa?.items.find((item) => item.id === "fettucini-alfredo");
-  const novaEuropaBrie = novaEuropa?.items.find((item) => item.id === "baked-brie-cheese");
-  const cuates = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "osm-cuates-12207964801");
-  const cuatesAztecaSalad = cuates?.items.find((item) => item.id === "azteca-salad");
-  const cuatesSeafoodSoup = cuates?.items.find((item) => item.id === "casuela-de-mariscos");
-  const cuatesCheesecakeChimichanga = cuates?.items.find((item) => item.id === "cheesecake-chimichanga");
-  const cuatesChickenTenders = cuates?.items.find((item) => item.id === "chicken-tenders");
-  const cuatesTacoSalad = cuates?.items.find((item) => item.id === "lunch-taco-salad");
-  const cuatesParillada = cuates?.items.find((item) => item.id === "parillada-cuates-grill");
-  const cuatesTacosCarbon = cuates?.items.find((item) => item.id === "tacos-al-carbon");
-  const cuatesFlourTortillas = cuates?.items.find((item) => item.id === "so-flour-tortillas-3");
-  const cuatesMargaritas = cuates?.items.find((item) => item.id === "cuates-famous-margaritas");
-  const urbano = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "osm-urbano-9821308296");
-  const urbanoSoftTacos = urbano?.items.find((item) => item.id === "2-crispy-or-soft-tacos");
-  const urbanoPorkBelly = urbano?.items.find((item) => item.id === "ancho-grilled-pork-belly");
-  const urbanoTortillaSoup = urbano?.items.find((item) => item.id === "chicken-tortilla-soup");
-  const urbanoFajitaFiesta = urbano?.items.find((item) => item.id === "fajita-fiesta-4-guests");
-  const urbanoHalibut = urbano?.items.find((item) => item.id === "grilled-halibut-al-pastor");
-  const urbanoShrimp = urbano?.items.find((item) => item.id === "grilled-shrimp");
-  const urbanoRitas = urbano?.items.find((item) => item.id === "top-shelf-ritas");
-  const urbanoTresLeches = urbano?.items.find((item) => item.id === "tres-leches");
+  const novaEuropaCheesecake = novaEuropa?.items.find(
+    (item) => item.id === "cheese-cake",
+  );
+  const novaEuropaHouseSalad = novaEuropa?.items.find(
+    (item) => item.id === "house-salad",
+  );
+  const novaEuropaAlfredo = novaEuropa?.items.find(
+    (item) => item.id === "fettucini-alfredo",
+  );
+  const novaEuropaBrie = novaEuropa?.items.find(
+    (item) => item.id === "baked-brie-cheese",
+  );
+  const cuates = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "osm-cuates-12207964801",
+  );
+  const cuatesAztecaSalad = cuates?.items.find(
+    (item) => item.id === "azteca-salad",
+  );
+  const cuatesSeafoodSoup = cuates?.items.find(
+    (item) => item.id === "casuela-de-mariscos",
+  );
+  const cuatesCheesecakeChimichanga = cuates?.items.find(
+    (item) => item.id === "cheesecake-chimichanga",
+  );
+  const cuatesChickenTenders = cuates?.items.find(
+    (item) => item.id === "chicken-tenders",
+  );
+  const cuatesTacoSalad = cuates?.items.find(
+    (item) => item.id === "lunch-taco-salad",
+  );
+  const cuatesParillada = cuates?.items.find(
+    (item) => item.id === "parillada-cuates-grill",
+  );
+  const cuatesTacosCarbon = cuates?.items.find(
+    (item) => item.id === "tacos-al-carbon",
+  );
+  const cuatesFlourTortillas = cuates?.items.find(
+    (item) => item.id === "so-flour-tortillas-3",
+  );
+  const cuatesMargaritas = cuates?.items.find(
+    (item) => item.id === "cuates-famous-margaritas",
+  );
+  const urbano = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "osm-urbano-9821308296",
+  );
+  const urbanoSoftTacos = urbano?.items.find(
+    (item) => item.id === "2-crispy-or-soft-tacos",
+  );
+  const urbanoPorkBelly = urbano?.items.find(
+    (item) => item.id === "ancho-grilled-pork-belly",
+  );
+  const urbanoTortillaSoup = urbano?.items.find(
+    (item) => item.id === "chicken-tortilla-soup",
+  );
+  const urbanoFajitaFiesta = urbano?.items.find(
+    (item) => item.id === "fajita-fiesta-4-guests",
+  );
+  const urbanoHalibut = urbano?.items.find(
+    (item) => item.id === "grilled-halibut-al-pastor",
+  );
+  const urbanoShrimp = urbano?.items.find(
+    (item) => item.id === "grilled-shrimp",
+  );
+  const urbanoRitas = urbano?.items.find(
+    (item) => item.id === "top-shelf-ritas",
+  );
+  const urbanoTresLeches = urbano?.items.find(
+    (item) => item.id === "tres-leches",
+  );
   const eugenia = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "osm-our-mom-eugenia-2578773395",
   );
-  const eugeniaCoffee = eugenia?.items.find((item) => item.id === "loumidis-greek-coffee");
-  const eugeniaArni = eugenia?.items.find((item) => item.id === "arni-riganato");
-  const eugeniaKantaifi = eugenia?.items.find((item) => item.id === "ekmek-kantaifi");
-  const eugeniaLavraki = eugenia?.items.find((item) => item.id === "lavraki-gemisto");
-  const eugeniaAvgolemono = eugenia?.items.find((item) => item.id === "avgolemono");
-  const eugeniaBakaliaros = eugenia?.items.find((item) => item.id === "bakaliaros-and-skordalia");
+  const eugeniaCoffee = eugenia?.items.find(
+    (item) => item.id === "loumidis-greek-coffee",
+  );
+  const eugeniaArni = eugenia?.items.find(
+    (item) => item.id === "arni-riganato",
+  );
+  const eugeniaKantaifi = eugenia?.items.find(
+    (item) => item.id === "ekmek-kantaifi",
+  );
+  const eugeniaLavraki = eugenia?.items.find(
+    (item) => item.id === "lavraki-gemisto",
+  );
+  const eugeniaAvgolemono = eugenia?.items.find(
+    (item) => item.id === "avgolemono",
+  );
+  const eugeniaBakaliaros = eugenia?.items.find(
+    (item) => item.id === "bakaliaros-and-skordalia",
+  );
   const eugeniaFeta = eugenia?.items.find((item) => item.id === "feta-psiti");
-  const eugeniaGreekSalad = eugenia?.items.find((item) => item.id === "greek-salad");
-  const eugeniaLamburger = eugenia?.items.find((item) => item.id === "lamburger");
-  const eugeniaSpanakopita = eugenia?.items.find((item) => item.id === "spanakopita");
+  const eugeniaGreekSalad = eugenia?.items.find(
+    (item) => item.id === "greek-salad",
+  );
+  const eugeniaLamburger = eugenia?.items.find(
+    (item) => item.id === "lamburger",
+  );
+  const eugeniaSpanakopita = eugenia?.items.find(
+    (item) => item.id === "spanakopita",
+  );
   const elPatio = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "el-patio-randolph-rockville-md-dc-metro",
   );
   const elPatioChivito = elPatio?.items.find((item) => item.id === "chivito");
-  const elPatioChivitoAlPlato = elPatio?.items.find((item) => item.id === "chivito-al-plato-top-seller");
-  const elPatioEmpanada = elPatio?.items.find((item) => item.id === "empanada-tucumana");
-  const elPatioMilanesa = elPatio?.items.find((item) => item.id === "milanesa-carne");
-  const elPatioShrimpPasta = elPatio?.items.find((item) => item.id === "shrimp-fettuccini");
-  const elPatioJuices = elPatio?.items.find((item) => item.id === "all-natural-juices");
-  const elPatioCake = elPatio?.items.find((item) => item.id === "torta-de-chocolate-7-layer-v");
-  const elPatioSalmon = elPatio?.items.find((item) => item.id === "salmon-a-la-parrilla-grilled-salmon");
-  const elPatioChimichurri = elPatio?.items.find((item) => item.id === "chimichurri-sauce");
-  const openCity = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "open-city-dc");
-  const openCityCroissant = openCity?.items.find((item) => item.id === "bacon-egg-and-cheese-croissant");
-  const openCityPancakes = openCity?.items.find((item) => item.id === "buttermilk-pancakes");
-  const openCityClub = openCity?.items.find((item) => item.id === "calvert-club-sandwich");
-  const openCityHummus = openCity?.items.find((item) => item.id === "hummus-plate");
-  const openCitySalmon = openCity?.items.find((item) => item.id === "blackened-salmon");
-  const openCityShrimpSide = openCity?.items.find((item) => item.id === "side-shrimp");
-  const openCitySmallCaesar = openCity?.items.find((item) => item.id === "small-caesar-salad");
-  const organicButcher = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "replacement-the-organic-butcher-mclean-va",
+  const elPatioChivitoAlPlato = elPatio?.items.find(
+    (item) => item.id === "chivito-al-plato-top-seller",
   );
-  const organicBurgerBlend = organicButcher?.items.find((item) => item.id === "deluxe-custom-burger-blend");
-  const organicWings = organicButcher?.items.find((item) => item.id === "chicken-wings-fresh-uncooked");
-  const organicSalmon = organicButcher?.items.find((item) => item.id === "organic-salmon");
-  const organicGroundLamb = organicButcher?.items.find((item) => item.id === "ground-lamb");
-  const organicCasamara = organicButcher?.items.find((item) => item.id === "casamara-club-alta");
-  const organicMeatballs = organicButcher?.items.find((item) => item.id === "italian-meatballs-gluten-free");
-  const organicBlackCod = organicButcher?.items.find((item) => item.id === "black-cod-fillet");
-  const organicSmokedSalmonDip = organicButcher?.items.find((item) => item.id === "house-made-smoked-salmon-dip");
+  const elPatioEmpanada = elPatio?.items.find(
+    (item) => item.id === "empanada-tucumana",
+  );
+  const elPatioMilanesa = elPatio?.items.find(
+    (item) => item.id === "milanesa-carne",
+  );
+  const elPatioShrimpPasta = elPatio?.items.find(
+    (item) => item.id === "shrimp-fettuccini",
+  );
+  const elPatioJuices = elPatio?.items.find(
+    (item) => item.id === "all-natural-juices",
+  );
+  const elPatioCake = elPatio?.items.find(
+    (item) => item.id === "torta-de-chocolate-7-layer-v",
+  );
+  const elPatioSalmon = elPatio?.items.find(
+    (item) => item.id === "salmon-a-la-parrilla-grilled-salmon",
+  );
+  const elPatioChimichurri = elPatio?.items.find(
+    (item) => item.id === "chimichurri-sauce",
+  );
+  const openCity = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "open-city-dc",
+  );
+  const openCityCroissant = openCity?.items.find(
+    (item) => item.id === "bacon-egg-and-cheese-croissant",
+  );
+  const openCityPancakes = openCity?.items.find(
+    (item) => item.id === "buttermilk-pancakes",
+  );
+  const openCityClub = openCity?.items.find(
+    (item) => item.id === "calvert-club-sandwich",
+  );
+  const openCityHummus = openCity?.items.find(
+    (item) => item.id === "hummus-plate",
+  );
+  const openCitySalmon = openCity?.items.find(
+    (item) => item.id === "blackened-salmon",
+  );
+  const openCityShrimpSide = openCity?.items.find(
+    (item) => item.id === "side-shrimp",
+  );
+  const openCitySmallCaesar = openCity?.items.find(
+    (item) => item.id === "small-caesar-salad",
+  );
+  const organicButcher = generatedRestaurants.restaurants.find(
+    (restaurant) =>
+      restaurant.id === "replacement-the-organic-butcher-mclean-va",
+  );
+  const organicBurgerBlend = organicButcher?.items.find(
+    (item) => item.id === "deluxe-custom-burger-blend",
+  );
+  const organicWings = organicButcher?.items.find(
+    (item) => item.id === "chicken-wings-fresh-uncooked",
+  );
+  const organicSalmon = organicButcher?.items.find(
+    (item) => item.id === "organic-salmon",
+  );
+  const organicGroundLamb = organicButcher?.items.find(
+    (item) => item.id === "ground-lamb",
+  );
+  const organicCasamara = organicButcher?.items.find(
+    (item) => item.id === "casamara-club-alta",
+  );
+  const organicMeatballs = organicButcher?.items.find(
+    (item) => item.id === "italian-meatballs-gluten-free",
+  );
+  const organicBlackCod = organicButcher?.items.find(
+    (item) => item.id === "black-cod-fillet",
+  );
+  const organicSmokedSalmonDip = organicButcher?.items.find(
+    (item) => item.id === "house-made-smoked-salmon-dip",
+  );
   const organicHummus = organicButcher?.items.find(
     (item) => item.id === "little-sesame-smooth-classic-hummus-large",
   );
-  const organicNewYorkStrip = organicButcher?.items.find((item) => item.id === "100percent-grass-fed-new-york-strip");
-  const organicMalaySauce = organicButcher?.items.find((item) => item.id === "spicy-malay-grilling-sauce");
+  const organicNewYorkStrip = organicButcher?.items.find(
+    (item) => item.id === "100percent-grass-fed-new-york-strip",
+  );
+  const organicMalaySauce = organicButcher?.items.find(
+    (item) => item.id === "spicy-malay-grilling-sauce",
+  );
   const pleroma = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "pleroma-cuisine-laurel-md-dc-metro",
   );
-  const pleromaFufu = pleroma?.items.find((item) => item.id === "any-fufu-of-choice-per-wrap");
-  const pleromaShrimpRoll = pleroma?.items.find((item) => item.id === "african-shrimp-roll");
-  const pleromaPompano = pleroma?.items.find((item) => item.id === "grilled-pompano");
+  const pleromaFufu = pleroma?.items.find(
+    (item) => item.id === "any-fufu-of-choice-per-wrap",
+  );
+  const pleromaShrimpRoll = pleroma?.items.find(
+    (item) => item.id === "african-shrimp-roll",
+  );
+  const pleromaPompano = pleroma?.items.find(
+    (item) => item.id === "grilled-pompano",
+  );
   const pleromaPlantain = pleroma?.items.find((item) => item.id === "plantain");
-  const pleromaChickenWrap = pleroma?.items.find((item) => item.id === "chicken-spiced-wrap");
+  const pleromaChickenWrap = pleroma?.items.find(
+    (item) => item.id === "chicken-spiced-wrap",
+  );
   const pleromaAsaro = pleroma?.items.find((item) => item.id === "asaro");
   const spacebar = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "spacebar-falls-church-va-dc-metro",
   );
-  const spacebarAndromeda = spacebar?.items.find((item) => item.id === "andromeda-melt");
-  const spacebarVeganGrilledCheese = spacebar?.items.find((item) => item.id === "vegan-grilled-cheese");
-  const spacebarSpacebarBq = spacebar?.items.find((item) => item.id === "spacebar-b-q");
-  const spacebarPestoTurko = spacebar?.items.find((item) => item.id === "pesto-turko");
-  const spacebarTaterTots = spacebar?.items.find((item) => item.id === "tater-tots");
-  const bayou = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "bayou-bakery-arlington-va");
-  const bayouCheddaRoast = bayou?.items.find((item) => item.id === "bayou-chedda-roast");
-  const bayouMeatballs = bayou?.items.find((item) => item.id === "blackened-turkey-meatballs");
-  const bayouVeggieVille = bayou?.items.find((item) => item.id === "veggie-ville");
+  const spacebarAndromeda = spacebar?.items.find(
+    (item) => item.id === "andromeda-melt",
+  );
+  const spacebarVeganGrilledCheese = spacebar?.items.find(
+    (item) => item.id === "vegan-grilled-cheese",
+  );
+  const spacebarSpacebarBq = spacebar?.items.find(
+    (item) => item.id === "spacebar-b-q",
+  );
+  const spacebarPestoTurko = spacebar?.items.find(
+    (item) => item.id === "pesto-turko",
+  );
+  const spacebarTaterTots = spacebar?.items.find(
+    (item) => item.id === "tater-tots",
+  );
+  const bayou = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "bayou-bakery-arlington-va",
+  );
+  const bayouCheddaRoast = bayou?.items.find(
+    (item) => item.id === "bayou-chedda-roast",
+  );
+  const bayouMeatballs = bayou?.items.find(
+    (item) => item.id === "blackened-turkey-meatballs",
+  );
+  const bayouVeggieVille = bayou?.items.find(
+    (item) => item.id === "veggie-ville",
+  );
   const bayouGreens = bayou?.items.find((item) => item.id === "greens");
-  const bayouBenedict = bayou?.items.find((item) => item.id === "avocado-benedict");
+  const bayouBenedict = bayou?.items.find(
+    (item) => item.id === "avocado-benedict",
+  );
   const bayouBlt = bayou?.items.find((item) => item.id === "bayou-blt");
-  const bayouColdPimento = bayou?.items.find((item) => item.id === "cold-pimento-cheese-sandwich");
-  const bayouFishSandwich = bayou?.items.find((item) => item.id === "fillet-o-blue-cat-fish-sandwich-mkt-price");
+  const bayouColdPimento = bayou?.items.find(
+    (item) => item.id === "cold-pimento-cheese-sandwich",
+  );
+  const bayouFishSandwich = bayou?.items.find(
+    (item) => item.id === "fillet-o-blue-cat-fish-sandwich-mkt-price",
+  );
   const bayouFlan = bayou?.items.find((item) => item.id === "cuban-flan");
-  const bayouQuiche = bayou?.items.find((item) => item.id === "daily-quiche-plate-spinach-goat-cheese");
-  const bayouSpinachMadeline = bayou?.items.find((item) => item.id === "spinach-madeline");
-  const bayouPecanWaffle = bayou?.items.find((item) => item.id === "roasted-pecan-and-brown-butter-waffle");
-  const bayouMuffalotta = bayou?.items.find((item) => item.id === "the-muff-a-lotta");
-  const miVida = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "mi-vida-washington-dc-dc-metro");
-  const miVidaDeviledEggs = miVida?.items.find((item) => item.id === "green-pipian-deviled-eggs");
+  const bayouQuiche = bayou?.items.find(
+    (item) => item.id === "daily-quiche-plate-spinach-goat-cheese",
+  );
+  const bayouSpinachMadeline = bayou?.items.find(
+    (item) => item.id === "spinach-madeline",
+  );
+  const bayouPecanWaffle = bayou?.items.find(
+    (item) => item.id === "roasted-pecan-and-brown-butter-waffle",
+  );
+  const bayouMuffalotta = bayou?.items.find(
+    (item) => item.id === "the-muff-a-lotta",
+  );
+  const miVida = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "mi-vida-washington-dc-dc-metro",
+  );
+  const miVidaDeviledEggs = miVida?.items.find(
+    (item) => item.id === "green-pipian-deviled-eggs",
+  );
   const miVidaAtun = miVida?.items.find((item) => item.id === "de-atun");
   const miVidaTropical = miVida?.items.find((item) => item.id === "tropical");
   const miVidaPescado = miVida?.items.find((item) => item.id === "pescado");
-  const miVidaSmashburger = miVida?.items.find((item) => item.id === "lb-smashburger");
-  const miVidaEnchiladasJaiba = miVida?.items.find((item) => item.id === "enchiladas-jaiba");
-  const miVidaJaibaConQueso = miVida?.items.find((item) => item.id === "jaiba-con-queso");
+  const miVidaSmashburger = miVida?.items.find(
+    (item) => item.id === "lb-smashburger",
+  );
+  const miVidaEnchiladasJaiba = miVida?.items.find(
+    (item) => item.id === "enchiladas-jaiba",
+  );
+  const miVidaJaibaConQueso = miVida?.items.find(
+    (item) => item.id === "jaiba-con-queso",
+  );
   const dogfish = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "dogfish-head-alehouse-gaithersburg-md-dc-metro",
+    (restaurant) =>
+      restaurant.id === "dogfish-head-alehouse-gaithersburg-md-dc-metro",
   );
   const dogfishAhi = dogfish?.items.find((item) => item.id === "ahi-tuna");
   const dogfishCrabDip = dogfish?.items.find((item) => item.id === "crab-dip");
-  const dogfishFishChips = dogfish?.items.find((item) => item.id === "crispy-fish-and-chips");
-  const dogfishJambalaya = dogfish?.items.find((item) => item.id === "jambalaya");
-  const dogfishPotstickers = dogfish?.items.find((item) => item.id === "potstickers");
-  const dogfishFarmFresh = dogfish?.items.find((item) => item.id === "the-farm-fresh-burger");
-  const dogfishTurkeyClub = dogfish?.items.find((item) => item.id === "turkey-club-with-avocado");
-  const allPurpose = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "all-purpose-shaw-dc");
-  const allPurposeCaesar = allPurpose?.items.find((item) => item.id === "antipasti-ap-caesar-salad");
+  const dogfishFishChips = dogfish?.items.find(
+    (item) => item.id === "crispy-fish-and-chips",
+  );
+  const dogfishJambalaya = dogfish?.items.find(
+    (item) => item.id === "jambalaya",
+  );
+  const dogfishPotstickers = dogfish?.items.find(
+    (item) => item.id === "potstickers",
+  );
+  const dogfishFarmFresh = dogfish?.items.find(
+    (item) => item.id === "the-farm-fresh-burger",
+  );
+  const dogfishTurkeyClub = dogfish?.items.find(
+    (item) => item.id === "turkey-club-with-avocado",
+  );
+  const allPurpose = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "all-purpose-shaw-dc",
+  );
+  const allPurposeCaesar = allPurpose?.items.find(
+    (item) => item.id === "antipasti-ap-caesar-salad",
+  );
   const allPurposeBreakfastSandwich = allPurpose?.items.find(
     (item) => item.id === "brunch-specialties-breakfast-sandwich",
   );
-  const allPurposeTripper = allPurpose?.items.find((item) => item.id === "pizza-tripper");
-  const allPurposeBakedCookie = allPurpose?.items.find((item) => item.id === "desserts-baked-cookie");
-  const blueDuck = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "blue-duck-tavern-dc");
-  const blueDuckPorridge = blueDuck?.items.find((item) => item.id === "cereals-10-grain-porridge");
-  const blueDuckBagel = blueDuck?.items.find((item) => item.id === "pastries-and-breads-bagel");
-  const blueDuckCheeseburger = blueDuck?.items.find((item) => item.id === "lounge-food-bdt-cheeseburger");
-  const blueDuckCrabCakes = blueDuck?.items.find((item) => item.id === "lounge-food-jumbo-lump-crab-cakes");
-  const blueDuckTrout = blueDuck?.items.find((item) => item.id === "meat-poultry-and-fish-trout");
-  const occidentalReviewed = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "occidental-dc");
-  const occidentalCaviar = occidentalReviewed?.items.find((item) => item.id === "caviar-petrossian-tsar-imperial-baika");
-  const occidentalCrabRoll = occidentalReviewed?.items.find((item) => item.id === "sandwiches-king-crab-roll");
-  const occidentalCaesar = occidentalReviewed?.items.find((item) => item.id === "salads-caesar-salad");
-  const occidentalBurger = occidentalReviewed?.items.find((item) => item.id === "sandwiches-the-occidental-burger");
-  const occidentalSeaBass = occidentalReviewed?.items.find((item) => item.id === "entrees-chilean-sea-bass");
-  const occidentalFrenchToast = occidentalReviewed?.items.find((item) => item.id === "brunch-caramelized-french-toast");
-  const occidentalCheesecake = occidentalReviewed?.items.find((item) => item.id === "desserts-ny-cheesecake");
-  const etVoila = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "et-voila-dc");
-  const etVoilaBurger = etVoila?.items.find((item) => item.id === "main-courses-et-voila-burger");
-  const etVoilaBeetSalad = etVoila?.items.find((item) => item.id === "starters-beet-salad");
+  const allPurposeTripper = allPurpose?.items.find(
+    (item) => item.id === "pizza-tripper",
+  );
+  const allPurposeBakedCookie = allPurpose?.items.find(
+    (item) => item.id === "desserts-baked-cookie",
+  );
+  const blueDuck = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "blue-duck-tavern-dc",
+  );
+  const blueDuckPorridge = blueDuck?.items.find(
+    (item) => item.id === "cereals-10-grain-porridge",
+  );
+  const blueDuckBagel = blueDuck?.items.find(
+    (item) => item.id === "pastries-and-breads-bagel",
+  );
+  const blueDuckCheeseburger = blueDuck?.items.find(
+    (item) => item.id === "lounge-food-bdt-cheeseburger",
+  );
+  const blueDuckCrabCakes = blueDuck?.items.find(
+    (item) => item.id === "lounge-food-jumbo-lump-crab-cakes",
+  );
+  const blueDuckTrout = blueDuck?.items.find(
+    (item) => item.id === "meat-poultry-and-fish-trout",
+  );
+  const occidentalReviewed = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "occidental-dc",
+  );
+  const occidentalCaviar = occidentalReviewed?.items.find(
+    (item) => item.id === "caviar-petrossian-tsar-imperial-baika",
+  );
+  const occidentalCrabRoll = occidentalReviewed?.items.find(
+    (item) => item.id === "sandwiches-king-crab-roll",
+  );
+  const occidentalCaesar = occidentalReviewed?.items.find(
+    (item) => item.id === "salads-caesar-salad",
+  );
+  const occidentalBurger = occidentalReviewed?.items.find(
+    (item) => item.id === "sandwiches-the-occidental-burger",
+  );
+  const occidentalSeaBass = occidentalReviewed?.items.find(
+    (item) => item.id === "entrees-chilean-sea-bass",
+  );
+  const occidentalFrenchToast = occidentalReviewed?.items.find(
+    (item) => item.id === "brunch-caramelized-french-toast",
+  );
+  const occidentalCheesecake = occidentalReviewed?.items.find(
+    (item) => item.id === "desserts-ny-cheesecake",
+  );
+  const etVoila = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "et-voila-dc",
+  );
+  const etVoilaBurger = etVoila?.items.find(
+    (item) => item.id === "main-courses-et-voila-burger",
+  );
+  const etVoilaBeetSalad = etVoila?.items.find(
+    (item) => item.id === "starters-beet-salad",
+  );
   const etVoilaBenedictSalmon = etVoila?.items.find(
     (item) => item.id === "brunch-benedict-eggs-with-smoked-salmon",
   );
-  const etVoilaCaesar = etVoila?.items.find((item) => item.id === "starters-caesar-salad");
-  const etVoilaCroqueMadame = etVoila?.items.find((item) => item.id === "brunch-croque-madame");
-  const etVoilaMoules = etVoila?.items.find((item) => item.id === "main-courses-moules-mariniere");
-  const etVoilaProfiteroles = etVoila?.items.find((item) => item.id === "desserts-profiteroles");
+  const etVoilaCaesar = etVoila?.items.find(
+    (item) => item.id === "starters-caesar-salad",
+  );
+  const etVoilaCroqueMadame = etVoila?.items.find(
+    (item) => item.id === "brunch-croque-madame",
+  );
+  const etVoilaMoules = etVoila?.items.find(
+    (item) => item.id === "main-courses-moules-mariniere",
+  );
+  const etVoilaProfiteroles = etVoila?.items.find(
+    (item) => item.id === "desserts-profiteroles",
+  );
 
   assert.equal(
-    busboys?.items.some((item) => item.id === "gluten-free-friendly-vegan-caesar-salad"),
+    busboys?.items.some(
+      (item) => item.id === "gluten-free-friendly-vegan-caesar-salad",
+    ),
     false,
   );
   assert.equal(
-    busboys?.items.some((item) => item.id === "jyna-maeng-presents-queen-of-whispers-a-book-release-and-reading"),
+    busboys?.items.some(
+      (item) =>
+        item.id ===
+        "jyna-maeng-presents-queen-of-whispers-a-book-release-and-reading",
+    ),
     false,
   );
-  assert.equal(busboys?.items.some((item) => item.id === "get-tickets"), false);
+  assert.equal(
+    busboys?.items.some((item) => item.id === "get-tickets"),
+    false,
+  );
   assert.ok(busboysCaesar);
-  assert.equal(busboysCaesar.allergenSourceType, "official-product-allergen-section");
-  assert.deepEqual(busboysCaesar.allergens?.sort(), ["fish", "gluten", "milk", "wheat"]);
+  assert.equal(
+    busboysCaesar.allergenSourceType,
+    "official-product-allergen-section",
+  );
+  assert.deepEqual(busboysCaesar.allergens?.sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(busboysBrussels);
   assert.deepEqual(busboysBrussels.allergens, ["peanut"]);
   assert.deepEqual(busboysBrussels.mayContain ?? [], []);
   assert.ok(busboysBagelLox);
   assert.equal(busboysBagelLox.allergenSourceType, "official-ingredients");
-  assert.deepEqual(busboysBagelLox.allergens?.sort(), ["fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual(busboysBagelLox.allergens?.sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(busboysCrabCakes);
-  assert.deepEqual(busboysCrabCakes.allergens?.sort(), ["egg", "gluten", "shellfish", "wheat"]);
+  assert.deepEqual(busboysCrabCakes.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok(busboysFalafel);
-  assert.deepEqual(busboysFalafel.allergens?.sort(), ["gluten", "sesame", "wheat"]);
+  assert.deepEqual(busboysFalafel.allergens?.sort(), [
+    "gluten",
+    "sesame",
+    "wheat",
+  ]);
   assert.ok(busboysVeganTuna);
   assert.deepEqual(busboysVeganTuna.allergens?.sort(), ["gluten", "wheat"]);
   assert.equal(busboysVeganTuna.allergens?.includes("fish"), false);
@@ -8939,16 +12401,35 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.equal(busboysVeganBurger.allergens?.includes("soy"), false);
   assert.equal(busboysVeganBurger.allergens?.includes("milk"), false);
   assert.ok(busboysShrimpCrabFritters);
-  assert.deepEqual(busboysShrimpCrabFritters.allergens?.sort(), ["egg", "gluten", "milk", "shellfish", "wheat"]);
+  assert.deepEqual(busboysShrimpCrabFritters.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok(busboysPecanPie);
-  assert.deepEqual(busboysPecanPie.allergens?.sort(), ["gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual(busboysPecanPie.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.ok(busboysVeganBbqBeef);
-  assert.deepEqual(busboysVeganBbqBeef.allergens?.sort(), ["gluten", "soy", "wheat"]);
+  assert.deepEqual(busboysVeganBbqBeef.allergens?.sort(), [
+    "gluten",
+    "soy",
+    "wheat",
+  ]);
   assert.equal(busboysVeganBbqBeef.allergens?.includes("milk"), false);
   assert.ok(busboysShrimpGrits);
   assert.deepEqual(busboysShrimpGrits.allergens?.sort(), ["milk", "shellfish"]);
   assert.ok(busboysVeganEggWrap);
-  assert.deepEqual(busboysVeganEggWrap.allergens?.sort(), ["gluten", "soy", "wheat"]);
+  assert.deepEqual(busboysVeganEggWrap.allergens?.sort(), [
+    "gluten",
+    "soy",
+    "wheat",
+  ]);
   assert.equal(dukes?.officialAllergenRemediationBucket, "official-partial");
   assert.ok((dukes?.allergenDataStatus?.officialItemCount ?? 0) >= 28);
   assert.ok(dukesWings);
@@ -8957,20 +12438,57 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(dukesBanhMi);
   assert.deepEqual(dukesBanhMi.allergens?.sort(), ["egg", "gluten", "wheat"]);
   assert.ok(dukesCubano);
-  assert.deepEqual(dukesCubano.allergens?.sort(), ["egg", "gluten", "milk", "mustard", "wheat"]);
+  assert.deepEqual(dukesCubano.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "mustard",
+    "wheat",
+  ]);
   assert.ok(dukesFishChips);
-  assert.deepEqual(dukesFishChips.allergens?.sort(), ["egg", "fish", "gluten", "wheat"]);
+  assert.deepEqual(dukesFishChips.allergens?.sort(), [
+    "egg",
+    "fish",
+    "gluten",
+    "wheat",
+  ]);
   assert.ok(dukesImpossibleBurger);
-  assert.deepEqual(dukesImpossibleBurger.allergens?.sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual(dukesImpossibleBurger.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.equal(dukesImpossibleBurger.allergens?.includes("soy"), false);
   assert.ok(dukesTunaMelt);
-  assert.deepEqual(dukesTunaMelt.allergens?.sort(), ["fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual(dukesTunaMelt.allergens?.sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(dukesSalmonCroquettes);
-  assert.deepEqual(dukesSalmonCroquettes.allergens?.sort(), ["egg", "fish", "gluten", "milk", "mustard", "wheat"]);
+  assert.deepEqual(dukesSalmonCroquettes.allergens?.sort(), [
+    "egg",
+    "fish",
+    "gluten",
+    "milk",
+    "mustard",
+    "wheat",
+  ]);
   assert.ok(dukesSpicyAubergine);
-  assert.deepEqual(dukesSpicyAubergine.allergens?.sort(), ["gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual(dukesSpicyAubergine.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.ok(dukesMacCheese);
-  assert.deepEqual(dukesMacCheese.allergens?.sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual(dukesMacCheese.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.equal(lapis?.officialAllergenRemediationBucket, "official-partial");
   assert.ok((lapis?.allergenDataStatus?.officialItemCount ?? 0) >= 20);
   assert.ok(lapisAushak);
@@ -8980,14 +12498,24 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(lapisBolani);
   assert.deepEqual(lapisBolani.allergens?.sort(), ["gluten", "wheat"]);
   assert.ok(lapisHalwa);
-  assert.deepEqual(lapisHalwa.allergens?.sort(), ["gluten", "tree-nut", "wheat"]);
+  assert.deepEqual(lapisHalwa.allergens?.sort(), [
+    "gluten",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.match(JSON.stringify(lapisHalwa.evidence ?? []), /sliced almonds/i);
   assert.ok(lapisMahee);
   assert.deepEqual(lapisMahee.allergens?.sort(), ["fish"]);
   assert.ok(lapisShrimp);
   assert.deepEqual(lapisShrimp.allergens?.sort(), ["shellfish"]);
   assert.ok(lapisPistachioCake);
-  assert.deepEqual(lapisPistachioCake.allergens?.sort(), ["egg", "gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual(lapisPistachioCake.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.ok(lapisSambosa);
   assert.deepEqual(lapisSambosa.allergens?.sort(), ["gluten", "wheat"]);
   assert.ok(lapisSheerBerenj);
@@ -8999,27 +12527,60 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(yellowLambShoulder);
   assert.deepEqual(yellowLambShoulder.allergens?.sort(), ["milk"]);
   assert.ok(yellowSpringOnionLabne);
-  assert.deepEqual(yellowSpringOnionLabne.allergens?.sort(), ["milk", "tree-nut"]);
+  assert.deepEqual(yellowSpringOnionLabne.allergens?.sort(), [
+    "milk",
+    "tree-nut",
+  ]);
   assert.ok(yellowClassicHummus);
   assert.equal(yellowClassicHummus.allergenSourceType, "unavailable");
   assert.ok(yellowFalafel);
   assert.deepEqual(yellowFalafel.allergens?.sort(), ["milk"]);
   assert.ok(yellowFattoush);
-  assert.deepEqual(yellowFattoush.allergens?.sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual(yellowFattoush.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(yellowPitas);
-  assert.deepEqual(yellowPitas.allergens?.sort(), ["gluten", "sesame", "wheat"]);
+  assert.deepEqual(yellowPitas.allergens?.sort(), [
+    "gluten",
+    "sesame",
+    "wheat",
+  ]);
   assert.ok(yellowPainSuisse);
-  assert.deepEqual(yellowPainSuisse.allergens?.sort(), ["egg", "gluten", "milk", "sesame", "wheat"]);
+  assert.deepEqual(yellowPainSuisse.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "sesame",
+    "wheat",
+  ]);
   assert.ok(yellowSmokedFishLabne);
   assert.deepEqual(yellowSmokedFishLabne.allergens?.sort(), ["fish", "milk"]);
   assert.ok(yellowDanish);
-  assert.deepEqual(yellowDanish.allergens?.sort(), ["egg", "gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual(yellowDanish.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.ok(yellowTroutKaak);
-  assert.deepEqual(yellowTroutKaak.allergens?.sort(), ["fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual(yellowTroutKaak.allergens?.sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(yellowPitaPack);
   assert.deepEqual(yellowPitaPack.allergens?.sort(), ["gluten", "wheat"]);
-  assert.equal(baanSiamReviewed?.officialAllergenRemediationBucket, "official-partial");
-  assert.ok((baanSiamReviewed?.allergenDataStatus?.officialItemCount ?? 0) >= 38);
+  assert.equal(
+    baanSiamReviewed?.officialAllergenRemediationBucket,
+    "official-partial",
+  );
+  assert.ok(
+    (baanSiamReviewed?.allergenDataStatus?.officialItemCount ?? 0) >= 38,
+  );
   assert.ok(baanPadChaShrimp);
   assert.deepEqual(baanPadChaShrimp.allergens?.sort(), ["shellfish"]);
   assert.ok(baanMassaman);
@@ -9049,7 +12610,10 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(baanTomYumSoup);
   assert.deepEqual(baanTomYumSoup.allergens?.sort(), ["peanut"]);
   assert.equal(baanTomYumSoup.allergens?.includes("soy"), false);
-  assert.equal(purplePatch?.officialAllergenRemediationBucket, "official-partial");
+  assert.equal(
+    purplePatch?.officialAllergenRemediationBucket,
+    "official-partial",
+  );
   assert.ok((purplePatch?.allergenDataStatus?.officialItemCount ?? 0) >= 57);
   assert.ok(purpleLechon);
   assert.deepEqual(purpleLechon.allergens?.sort(), ["gluten"]);
@@ -9061,9 +12625,18 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(purpleBrazo);
   assert.deepEqual(purpleBrazo.allergens?.sort(), ["egg", "milk"]);
   assert.ok(purpleAlimasagRice);
-  assert.deepEqual(purpleAlimasagRice.allergens?.sort(), ["gluten", "shellfish", "soy", "wheat"]);
+  assert.deepEqual(purpleAlimasagRice.allergens?.sort(), [
+    "gluten",
+    "shellfish",
+    "soy",
+    "wheat",
+  ]);
   assert.ok(purpleCauliflowerAdobo);
-  assert.deepEqual(purpleCauliflowerAdobo.allergens?.sort(), ["gluten", "soy", "wheat"]);
+  assert.deepEqual(purpleCauliflowerAdobo.allergens?.sort(), [
+    "gluten",
+    "soy",
+    "wheat",
+  ]);
   assert.equal(purpleCauliflowerAdobo.allergens?.includes("milk"), false);
   assert.ok(purpleBicolExpress);
   assert.deepEqual(purpleBicolExpress.allergens?.sort(), ["shellfish"]);
@@ -9071,7 +12644,12 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.equal(daikaya?.officialAllergenRemediationBucket, "official-partial");
   assert.ok((daikaya?.allergenDataStatus?.officialItemCount ?? 0) >= 62);
   assert.ok(daikayaFriedGarlic);
-  assert.deepEqual(daikayaFriedGarlic.allergens?.sort(), ["fish", "gluten", "soy", "wheat"]);
+  assert.deepEqual(daikayaFriedGarlic.allergens?.sort(), [
+    "fish",
+    "gluten",
+    "soy",
+    "wheat",
+  ]);
   assert.equal(daikayaFriedGarlic.allergens?.includes("shellfish"), false);
   assert.ok(daikayaHarami);
   assert.deepEqual(daikayaHarami.allergens?.sort(), ["gluten", "wheat"]);
@@ -9080,26 +12658,59 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.deepEqual(daikayaNatto.allergens?.sort(), ["gluten", "soy", "wheat"]);
   assert.equal(daikayaNatto.allergens?.includes("fish"), false);
   assert.ok(daikayaSpicySesame);
-  assert.deepEqual(daikayaSpicySesame.allergens?.sort(), ["gluten", "peanut", "sesame", "wheat"]);
+  assert.deepEqual(daikayaSpicySesame.allergens?.sort(), [
+    "gluten",
+    "peanut",
+    "sesame",
+    "wheat",
+  ]);
   assert.equal(daikayaSpicySesame.allergens?.includes("milk"), false);
   assert.ok(daikayaCatfish);
   assert.deepEqual(daikayaCatfish.allergens?.sort(), ["egg", "fish"]);
   assert.ok(daikayaShoyu);
-  assert.deepEqual(daikayaShoyu.allergens?.sort(), ["egg", "gluten", "soy", "wheat"]);
+  assert.deepEqual(daikayaShoyu.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "soy",
+    "wheat",
+  ]);
   assert.ok(daikayaSoftServe);
-  assert.deepEqual(daikayaSoftServe.allergens?.sort(), ["gluten", "milk", "wheat"]);
-  assert.equal(bantamKing?.officialAllergenRemediationBucket, "official-partial");
+  assert.deepEqual(daikayaSoftServe.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
+  assert.equal(
+    bantamKing?.officialAllergenRemediationBucket,
+    "official-partial",
+  );
   assert.ok((bantamKing?.allergenDataStatus?.officialItemCount ?? 0) >= 26);
-  assert.equal(bantamKing?.items.some((item) => item.id === "made-with-valrhona-chocolate-and"), false);
   assert.equal(
     bantamKing?.items.some(
-      (item) => item.id === "valrhona-chocolate-and-rendered-chicken-fat-come-together-to-create-this-decadent-cookie",
+      (item) => item.id === "made-with-valrhona-chocolate-and",
     ),
     false,
   );
-  assert.equal(bantamKing?.items.some((item) => item.id === "weekday-lunch-deal"), false);
-  assert.equal(bantamKing?.items.some((item) => item.id === "ramen"), false);
-  assert.equal(bantamKing?.items.some((item) => item.id === "japanese-fish-cake"), false);
+  assert.equal(
+    bantamKing?.items.some(
+      (item) =>
+        item.id ===
+        "valrhona-chocolate-and-rendered-chicken-fat-come-together-to-create-this-decadent-cookie",
+    ),
+    false,
+  );
+  assert.equal(
+    bantamKing?.items.some((item) => item.id === "weekday-lunch-deal"),
+    false,
+  );
+  assert.equal(
+    bantamKing?.items.some((item) => item.id === "ramen"),
+    false,
+  );
+  assert.equal(
+    bantamKing?.items.some((item) => item.id === "japanese-fish-cake"),
+    false,
+  );
   assert.ok(bantamKohi);
   assert.deepEqual(bantamKohi.allergens?.sort(), ["milk"]);
   assert.ok(bantamCookie);
@@ -9109,27 +12720,61 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(bantamNitamago);
   assert.deepEqual(bantamNitamago.allergens?.sort(), ["egg"]);
   assert.ok(bantamGyoza);
-  assert.deepEqual(bantamGyoza.allergens?.sort(), ["gluten", "sesame", "wheat"]);
+  assert.deepEqual(bantamGyoza.allergens?.sort(), [
+    "gluten",
+    "sesame",
+    "wheat",
+  ]);
   assert.ok(bantamDrippings);
-  assert.deepEqual(bantamDrippings.allergens?.sort(), ["gluten", "milk", "soy", "wheat"]);
+  assert.deepEqual(bantamDrippings.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "soy",
+    "wheat",
+  ]);
   assert.ok(bantamOnsenRice);
-  assert.deepEqual(bantamOnsenRice.allergens?.sort(), ["egg", "gluten", "soy", "wheat"]);
+  assert.deepEqual(bantamOnsenRice.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "soy",
+    "wheat",
+  ]);
   assert.ok(bantamSpicyMiso);
-  assert.deepEqual(bantamSpicyMiso.allergens?.sort(), ["fish", "peanut", "soy"]);
+  assert.deepEqual(bantamSpicyMiso.allergens?.sort(), [
+    "fish",
+    "peanut",
+    "soy",
+  ]);
   assert.ok(bantamVeggieTantanmen);
-  assert.deepEqual(bantamVeggieTantanmen.allergens?.sort(), ["peanut", "sesame", "soy"]);
+  assert.deepEqual(bantamVeggieTantanmen.allergens?.sort(), [
+    "peanut",
+    "sesame",
+    "soy",
+  ]);
   assert.ok(bantamMochiIceCream);
   assert.deepEqual(bantamMochiIceCream.allergens?.sort(), ["milk"]);
   assert.ok(bantamCurrySnowPlate);
   assert.equal(bantamCurrySnowPlate.allergenSourceType, "unavailable");
-  assert.equal(yourOnlyFriend?.officialAllergenRemediationBucket, "official-partial");
+  assert.equal(
+    yourOnlyFriend?.officialAllergenRemediationBucket,
+    "official-partial",
+  );
   assert.ok((yourOnlyFriend?.allergenDataStatus?.officialItemCount ?? 0) >= 20);
   assert.equal(
-    yourOnlyFriend?.items.some((item) => item.id === "a-guide-to-the-best-chicken-sandwiches-in-dc-nomtastic-foods"),
+    yourOnlyFriend?.items.some(
+      (item) =>
+        item.id ===
+        "a-guide-to-the-best-chicken-sandwiches-in-dc-nomtastic-foods",
+    ),
     false,
   );
   assert.ok(yofAtlanticBeachPie);
-  assert.deepEqual(yofAtlanticBeachPie.allergens?.sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual(yofAtlanticBeachPie.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(yofButterfinger);
   assert.deepEqual(yofButterfinger.allergens?.sort(), ["milk", "peanut"]);
   assert.ok(yofDopeBeetz);
@@ -9137,24 +12782,63 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.equal(yofDopeBeetz.allergens?.includes("gluten"), false);
   assert.equal(yofDopeBeetz.allergens?.includes("wheat"), false);
   assert.ok(yofFishFryday);
-  assert.deepEqual(yofFishFryday.allergens?.sort(), ["fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual(yofFishFryday.allergens?.sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(yofHotFish);
-  assert.deepEqual(yofHotFish.allergens?.sort(), ["fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual(yofHotFish.allergens?.sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(yofHotNug);
-  assert.deepEqual(yofHotNug.allergens?.sort(), ["egg", "gluten", "milk", "sesame", "soy", "wheat"]);
+  assert.deepEqual(yofHotNug.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "sesame",
+    "soy",
+    "wheat",
+  ]);
   assert.ok(yofSpicyPavo);
-  assert.deepEqual(yofSpicyPavo.allergens?.sort(), ["egg", "gluten", "mustard", "peanut", "sesame", "soy", "wheat"]);
-  assert.equal(taqueriaHabanero?.officialAllergenRemediationBucket, "official-partial");
-  assert.ok((taqueriaHabanero?.allergenDataStatus?.officialItemCount ?? 0) >= 26);
+  assert.deepEqual(yofSpicyPavo.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "mustard",
+    "peanut",
+    "sesame",
+    "soy",
+    "wheat",
+  ]);
+  assert.equal(
+    taqueriaHabanero?.officialAllergenRemediationBucket,
+    "official-partial",
+  );
+  assert.ok(
+    (taqueriaHabanero?.allergenDataStatus?.officialItemCount ?? 0) >= 26,
+  );
   assert.ok(thCamarones);
   assert.deepEqual(thCamarones.allergens?.sort(), ["shellfish"]);
   assert.ok(thChilaquiles);
   assert.deepEqual(thChilaquiles.allergens?.sort(), ["egg", "milk"]);
   assert.equal(thChilaquiles.allergens?.includes("shellfish"), false);
   assert.ok(thChileRelleno);
-  assert.deepEqual(thChileRelleno.allergens?.sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual(thChileRelleno.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(thChoriqueso);
-  assert.deepEqual(thChoriqueso.allergens?.sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual(thChoriqueso.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(thFajitaMixta);
   assert.deepEqual(thFajitaMixta.allergens?.sort(), ["shellfish"]);
   assert.ok(thScallopTaco);
@@ -9171,11 +12855,23 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(baklawa);
   assert.deepEqual(baklawa.allergens, ["tree-nut"]);
   assert.equal(baklawa.allergens?.includes("milk"), false);
-  assert.equal(/contains dairy/i.test(JSON.stringify(baklawa.evidence ?? [])), false);
+  assert.equal(
+    /contains dairy/i.test(JSON.stringify(baklawa.evidence ?? [])),
+    false,
+  );
 
-  assert.equal(playa?.items.some((item) => item.id === "our"), false);
-  assert.equal(pastis?.items.some((item) => item.name === "lemon, Bordier butter"), false);
-  assert.equal(pastis?.items.some((item) => item.name === "passionfruit, hazelnut"), false);
+  assert.equal(
+    playa?.items.some((item) => item.id === "our"),
+    false,
+  );
+  assert.equal(
+    pastis?.items.some((item) => item.name === "lemon, Bordier butter"),
+    false,
+  );
+  assert.equal(
+    pastis?.items.some((item) => item.name === "passionfruit, hazelnut"),
+    false,
+  );
   assert.ok((pastis?.allergenDataStatus?.officialItemCount ?? 0) >= 70);
   assert.ok(pastisBarSteak);
   assert.equal(pastisBarSteak.allergenSourceType, "official-ingredients");
@@ -9184,15 +12880,42 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(pastisSeafoodPlateau);
   assert.deepEqual(pastisSeafoodPlateau.allergens ?? [], ["shellfish"]);
   assert.ok(pastisCroissant);
-  assert.deepEqual(pastisCroissant.allergens?.sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual(pastisCroissant.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(pastisChickenSandwich);
-  assert.deepEqual(pastisChickenSandwich.allergens?.sort(), ["egg", "gluten", "wheat"]);
+  assert.deepEqual(pastisChickenSandwich.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "wheat",
+  ]);
   assert.ok(pastisStickyToffee);
-  assert.deepEqual(pastisStickyToffee.allergens?.sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual(pastisStickyToffee.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
 
-  assert.equal(elPresidente?.items.some((item) => /^poquito dinero/i.test(item.name ?? "")), false);
-  assert.equal(elPresidente?.items.some((item) => item.name === "charred habanero, jicama, mint, basil"), false);
-  assert.equal(elPresidente?.items.some((item) => item.name === "(DESSERT)"), false);
+  assert.equal(
+    elPresidente?.items.some((item) =>
+      /^poquito dinero/i.test(item.name ?? ""),
+    ),
+    false,
+  );
+  assert.equal(
+    elPresidente?.items.some(
+      (item) => item.name === "charred habanero, jicama, mint, basil",
+    ),
+    false,
+  );
+  assert.equal(
+    elPresidente?.items.some((item) => item.name === "(DESSERT)"),
+    false,
+  );
   assert.ok((elPresidente?.allergenDataStatus?.officialItemCount ?? 0) >= 40);
   assert.ok(tacosAlCarbon);
   assert.equal(tacosAlCarbon.allergenSourceType, "official-ingredients");
@@ -9200,18 +12923,51 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(elPresidenteCrabGuacamole);
   assert.deepEqual(elPresidenteCrabGuacamole.allergens ?? [], ["shellfish"]);
   assert.ok(elPresidenteCaesar);
-  assert.deepEqual(elPresidenteCaesar.allergens?.sort(), ["egg", "fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual(elPresidenteCaesar.allergens?.sort(), [
+    "egg",
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(elPresidenteQuesoFundido);
-  assert.deepEqual(elPresidenteQuesoFundido.allergens?.sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual(elPresidenteQuesoFundido.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(elPresidenteFriedChickenTorta);
-  assert.deepEqual(elPresidenteFriedChickenTorta.allergens?.sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual(elPresidenteFriedChickenTorta.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(elPresidenteSundae);
-  assert.deepEqual(elPresidenteSundae.allergens?.sort(), ["milk", "peanut", "tree-nut"]);
+  assert.deepEqual(elPresidenteSundae.allergens?.sort(), [
+    "milk",
+    "peanut",
+    "tree-nut",
+  ]);
 
-  assert.equal(cane?.items.some((item) => item.id === "sorrel-limeade"), false);
-  assert.equal(cane?.items.some((item) => item.id === "with-chaser-or-neat"), false);
-  assert.equal(cane?.items.some((item) => item.id === "12-hour-marinated"), false);
-  assert.equal(cane?.items.some((item) => item.id === "personal-omnivore-serves-1-choose-1-protein-beef"), false);
+  assert.equal(
+    cane?.items.some((item) => item.id === "sorrel-limeade"),
+    false,
+  );
+  assert.equal(
+    cane?.items.some((item) => item.id === "with-chaser-or-neat"),
+    false,
+  );
+  assert.equal(
+    cane?.items.some((item) => item.id === "12-hour-marinated"),
+    false,
+  );
+  assert.equal(
+    cane?.items.some(
+      (item) => item.id === "personal-omnivore-serves-1-choose-1-protein-beef",
+    ),
+    false,
+  );
   assert.equal(
     cane?.items.some(
       (item) =>
@@ -9220,20 +12976,58 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     ),
     false,
   );
-  assert.equal(cane?.items.some((item) => item.name === "Fried drums glazed in oyster sauce"), false);
-  assert.equal(cane?.items.some((item) => item.name === "Jasmine rice gently cooked in coconut milk and spices"), false);
-  assert.equal(cane?.items.some((item) => item.name === "Trini pastry layered with currants/ coconut"), false);
   assert.equal(
-    cane?.items.some((item) => item.name === "Trini-style wonton stuffed with spicy shrimp and served with a culantro-soy sauce"),
+    cane?.items.some(
+      (item) => item.name === "Fried drums glazed in oyster sauce",
+    ),
     false,
   );
-  assert.equal(cane?.items.some((item) => item.name === "Trini-Chinese Chicken"), true);
-  assert.equal(cane?.items.some((item) => item.name === "Coconut Rice"), true);
-  assert.equal(cane?.items.some((item) => item.name === "Currant Roll"), true);
-  assert.equal(cane?.items.some((item) => item.name === "Shrimp Wontons"), true);
-  assert.match(cane?.items.find((item) => item.id === "jerk-wings")?.description ?? "", /^Twelve-hour marinated/);
+  assert.equal(
+    cane?.items.some(
+      (item) =>
+        item.name === "Jasmine rice gently cooked in coconut milk and spices",
+    ),
+    false,
+  );
+  assert.equal(
+    cane?.items.some(
+      (item) => item.name === "Trini pastry layered with currants/ coconut",
+    ),
+    false,
+  );
+  assert.equal(
+    cane?.items.some(
+      (item) =>
+        item.name ===
+        "Trini-style wonton stuffed with spicy shrimp and served with a culantro-soy sauce",
+    ),
+    false,
+  );
+  assert.equal(
+    cane?.items.some((item) => item.name === "Trini-Chinese Chicken"),
+    true,
+  );
+  assert.equal(
+    cane?.items.some((item) => item.name === "Coconut Rice"),
+    true,
+  );
+  assert.equal(
+    cane?.items.some((item) => item.name === "Currant Roll"),
+    true,
+  );
+  assert.equal(
+    cane?.items.some((item) => item.name === "Shrimp Wontons"),
+    true,
+  );
+  assert.match(
+    cane?.items.find((item) => item.id === "jerk-wings")?.description ?? "",
+    /^Twelve-hour marinated/,
+  );
   assert.equal(cane?.officialAllergenStatus, "extracted");
-  assert.equal(cane?.officialAllergenRemediationBucket, "supported-cross-contact");
+  assert.equal(
+    cane?.officialAllergenRemediationBucket,
+    "supported-cross-contact",
+  );
   assert.ok(
     cane?.items.every(
       (item) =>
@@ -9244,20 +13038,51 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   );
 
   assert.ok(banditQueso);
-  assert.deepEqual([...banditQueso.allergens].sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual([...banditQueso.allergens].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(banditNachos);
-  assert.deepEqual([...banditNachos.allergens].sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual([...banditNachos.allergens].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok((banditTaco?.allergenDataStatus?.officialItemCount ?? 0) >= 70);
   assert.ok(banditBreakfastTaco);
-  assert.deepEqual([...banditBreakfastTaco.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...banditBreakfastTaco.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(banditFishTaco);
-  assert.deepEqual([...banditFishTaco.allergens].sort(), ["fish", "gluten", "wheat"]);
+  assert.deepEqual([...banditFishTaco.allergens].sort(), [
+    "fish",
+    "gluten",
+    "wheat",
+  ]);
   assert.ok(banditShrimpTaco);
-  assert.deepEqual([...banditShrimpTaco.allergens].sort(), ["gluten", "shellfish", "wheat"]);
+  assert.deepEqual([...banditShrimpTaco.allergens].sort(), [
+    "gluten",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok(banditTorta);
-  assert.deepEqual([...banditTorta.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...banditTorta.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(banditTresLeches);
-  assert.deepEqual([...banditTresLeches.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...banditTresLeches.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(banditVeggieTaco);
   assert.deepEqual([...banditVeggieTaco.allergens].sort(), ["milk"]);
 
@@ -9270,11 +13095,24 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(mamanCaesarWrap);
   assert.deepEqual([...mamanCaesarWrap.allergens].sort(), ["egg", "milk"]);
   assert.ok(mamanSalmonCroissant);
-  assert.deepEqual([...mamanSalmonCroissant.allergens].sort(), ["fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...mamanSalmonCroissant.allergens].sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(mamanGreenGoddess);
-  assert.deepEqual([...mamanGreenGoddess.allergens].sort(), ["gluten", "sesame", "wheat"]);
+  assert.deepEqual([...mamanGreenGoddess.allergens].sort(), [
+    "gluten",
+    "sesame",
+    "wheat",
+  ]);
   assert.ok(mamanBreakfastSandwich);
-  assert.deepEqual([...mamanBreakfastSandwich.allergens].sort(), ["egg", "gluten", "wheat"]);
+  assert.deepEqual([...mamanBreakfastSandwich.allergens].sort(), [
+    "egg",
+    "gluten",
+    "wheat",
+  ]);
   assert.ok(mamanTahiniLatte);
   assert.deepEqual([...mamanTahiniLatte.allergens].sort(), ["milk", "sesame"]);
   assert.ok(mamanVeganGfZucchini);
@@ -9292,12 +13130,17 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.deepEqual([...rolleDiPollo.allergens].sort(), ["milk", "soy"]);
   assert.equal(ilCanale?.officialAllergenRemediationBucket, "official-partial");
   assert.ok((ilCanale?.allergenDataStatus?.officialItemCount ?? 0) >= 116);
-  assert.equal(ilCanale?.items.some((item) => item.id === "gluten-free-gf"), false);
+  assert.equal(
+    ilCanale?.items.some((item) => item.id === "gluten-free-gf"),
+    false,
+  );
   assert.equal(
     ilCanale?.items.some(
       (item) =>
-        item.id === "organic-bread-with-choice-of-side-house-salad-or-french-fries" ||
-        item.id === "no-san-marzano-tomato-sauce-our-pizza-is-made-with-organic-100percent-italian-wheat-00-flour" ||
+        item.id ===
+          "organic-bread-with-choice-of-side-house-salad-or-french-fries" ||
+        item.id ===
+          "no-san-marzano-tomato-sauce-our-pizza-is-made-with-organic-100percent-italian-wheat-00-flour" ||
         item.id === "penne-made-with-rice-and-corn-with-choice-of-sauce",
     ),
     false,
@@ -9309,17 +13152,39 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.equal(ilCanaleGlutenFreePizza.allergenSourceType, "unavailable");
   assert.deepEqual(ilCanaleGlutenFreePizza.allergens ?? [], []);
   assert.ok(ilCanaleUovo);
-  assert.deepEqual([...ilCanaleUovo.allergens].sort(), ["egg", "gluten", "wheat"]);
+  assert.deepEqual([...ilCanaleUovo.allergens].sort(), [
+    "egg",
+    "gluten",
+    "wheat",
+  ]);
   assert.ok(ilCanaleFocaccia);
-  assert.deepEqual([...ilCanaleFocaccia.allergens].sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual([...ilCanaleFocaccia.allergens].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(ilCanaleLobsterRavioli);
-  assert.deepEqual([...ilCanaleLobsterRavioli.allergens].sort(), ["gluten", "milk", "shellfish", "wheat"]);
+  assert.deepEqual([...ilCanaleLobsterRavioli.allergens].sort(), [
+    "gluten",
+    "milk",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok(ilCanaleTortaSiciliana);
-  assert.deepEqual([...ilCanaleTortaSiciliana.allergens].sort(), ["egg", "gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual([...ilCanaleTortaSiciliana.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.ok(ilCanaleTunnarella);
   assert.deepEqual([...ilCanaleTunnarella.allergens].sort(), ["fish"]);
 
-  assert.equal(osteriaMozza?.items.some((item) => item.id === "from-the-mozzarella-bar"), false);
+  assert.equal(
+    osteriaMozza?.items.some((item) => item.id === "from-the-mozzarella-bar"),
+    false,
+  );
   assert.ok(coniDiPizza);
   assert.equal(coniDiPizza.allergenSourceType, "unavailable");
   assert.deepEqual(coniDiPizza.allergens ?? [], []);
@@ -9327,35 +13192,81 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.equal(mozzarella.allergenSourceType, "unavailable");
   assert.equal(osteriaMozza?.officialAllergenStatus, "not-found");
 
-  assert.equal(kizuna?.items.some((item) => item.id === "from-the-sushi-bar"), false);
+  assert.equal(
+    kizuna?.items.some((item) => item.id === "from-the-sushi-bar"),
+    false,
+  );
 
   assert.ok(chiko);
   assert.ok((chiko.allergenDataStatus?.officialItemCount ?? 0) >= 25);
   assert.ok(chikoNoodles);
   assert.deepEqual([...chikoNoodles.allergens].sort(), ["gluten", "wheat"]);
   assert.ok(chikoShrimp);
-  assert.deepEqual([...chikoShrimp.allergens].sort(), ["gluten", "shellfish", "soy", "wheat"]);
+  assert.deepEqual([...chikoShrimp.allergens].sort(), [
+    "gluten",
+    "shellfish",
+    "soy",
+    "wheat",
+  ]);
   assert.ok(chikoPop);
-  assert.deepEqual([...chikoPop.allergens].sort(), ["peanut", "sesame", "tree-nut"]);
+  assert.deepEqual([...chikoPop.allergens].sort(), [
+    "peanut",
+    "sesame",
+    "tree-nut",
+  ]);
   assert.ok(chikoFullMonty);
-  assert.deepEqual([...chikoFullMonty.allergens].sort(), ["egg", "fish", "milk"]);
+  assert.deepEqual([...chikoFullMonty.allergens].sort(), [
+    "egg",
+    "fish",
+    "milk",
+  ]);
   assert.ok(chikoGfGarden);
   assert.equal(chikoGfGarden.allergenSourceType, "unavailable");
   assert.deepEqual(chikoGfGarden.allergens ?? [], []);
 
   assert.ok(muncheez);
   assert.ok((muncheez.allergenDataStatus?.officialItemCount ?? 0) >= 30);
-  assert.equal(muncheez.items.some((item) => item.id === "crafted-fresh-open-late-made-to-order"), false);
-  assert.equal(muncheez.items.some((item) => item.id === "silky-authentic-lebanese-hummus-with-premium-tahini"), false);
-  assert.equal(muncheez.items.some((item) => item.id === "tomatoes-pickled-turnips-lettuce-tahini"), false);
+  assert.equal(
+    muncheez.items.some(
+      (item) => item.id === "crafted-fresh-open-late-made-to-order",
+    ),
+    false,
+  );
+  assert.equal(
+    muncheez.items.some(
+      (item) =>
+        item.id === "silky-authentic-lebanese-hummus-with-premium-tahini",
+    ),
+    false,
+  );
+  assert.equal(
+    muncheez.items.some(
+      (item) => item.id === "tomatoes-pickled-turnips-lettuce-tahini",
+    ),
+    false,
+  );
   assert.ok(muncheezAdwani);
-  assert.deepEqual([...muncheezAdwani.allergens].sort(), ["egg", "gluten", "wheat"]);
+  assert.deepEqual([...muncheezAdwani.allergens].sort(), [
+    "egg",
+    "gluten",
+    "wheat",
+  ]);
   assert.ok(muncheezHummus);
   assert.deepEqual([...muncheezHummus.allergens].sort(), ["sesame"]);
   assert.ok(muncheezKibbeh);
-  assert.deepEqual([...muncheezKibbeh.allergens].sort(), ["gluten", "tree-nut", "wheat"]);
+  assert.deepEqual([...muncheezKibbeh.allergens].sort(), [
+    "gluten",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.ok(muncheezNutellaCrepe);
-  assert.deepEqual([...muncheezNutellaCrepe.allergens].sort(), ["egg", "gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual([...muncheezNutellaCrepe.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.ok(muncheezGrapeLeaves);
   assert.equal(muncheezGrapeLeaves.allergenSourceType, "official-ingredients");
   assert.deepEqual(muncheezGrapeLeaves.allergens ?? [], []);
@@ -9364,13 +13275,37 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(peetsChain);
   assert.ok((peetsDmv.allergenDataStatus?.officialItemCount ?? 0) >= 35);
   assert.ok((peetsChain.allergenDataStatus?.officialItemCount ?? 0) >= 35);
-  assert.equal(peetsChain.items.some((item) => /order now$/i.test(item.name)), false);
-  assert.equal(peetsChain.items.some((item) => item.id === "artisanal-food"), false);
-  assert.equal(peetsChain.items.some((item) => item.id === "visit-a-peets-near-you"), false);
-  assert.equal(peetsChain.items.some((item) => item.id === "sparkling-watermelon-matcha-spritz"), false);
-  assert.equal(peetsDmv.items.some((item) => item.id === "sparkling-watermelon-matcha-spritz"), false);
+  assert.equal(
+    peetsChain.items.some((item) => /order now$/i.test(item.name)),
+    false,
+  );
+  assert.equal(
+    peetsChain.items.some((item) => item.id === "artisanal-food"),
+    false,
+  );
+  assert.equal(
+    peetsChain.items.some((item) => item.id === "visit-a-peets-near-you"),
+    false,
+  );
+  assert.equal(
+    peetsChain.items.some(
+      (item) => item.id === "sparkling-watermelon-matcha-spritz",
+    ),
+    false,
+  );
+  assert.equal(
+    peetsDmv.items.some(
+      (item) => item.id === "sparkling-watermelon-matcha-spritz",
+    ),
+    false,
+  );
   assert.ok(peetsBrioche);
-  assert.deepEqual([...peetsBrioche.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...peetsBrioche.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(peetsOatLatte);
   assert.equal(peetsOatLatte.allergenSourceType, "unavailable");
   assert.deepEqual(peetsOatLatte.allergens ?? [], []);
@@ -9383,15 +13318,39 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok((dailyProvisions.allergenDataStatus?.officialItemCount ?? 0) >= 40);
   assert.ok(dailyBroccoliMelt);
   assert.equal(dailyBroccoliMelt.allergenSourceType, "official-ingredients");
-  assert.deepEqual([...dailyBroccoliMelt.allergens].sort(), ["gluten", "milk", "soy", "wheat"]);
+  assert.deepEqual([...dailyBroccoliMelt.allergens].sort(), [
+    "gluten",
+    "milk",
+    "soy",
+    "wheat",
+  ]);
   assert.ok(dailyChickenSausageEgg);
-  assert.deepEqual([...dailyChickenSausageEgg.allergens].sort(), ["egg", "gluten", "milk"]);
+  assert.deepEqual([...dailyChickenSausageEgg.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+  ]);
   assert.ok(dailyChefyMarket);
-  assert.deepEqual([...dailyChefyMarket.allergens].sort(), ["egg", "gluten", "soy", "wheat"]);
+  assert.deepEqual([...dailyChefyMarket.allergens].sort(), [
+    "egg",
+    "gluten",
+    "soy",
+    "wheat",
+  ]);
   assert.ok(dailyGoldilox);
-  assert.deepEqual([...dailyGoldilox.allergens].sort(), ["fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...dailyGoldilox.allergens].sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(dailyTunaMelt);
-  assert.deepEqual([...dailyTunaMelt.allergens].sort(), ["fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...dailyTunaMelt.allergens].sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(dailyCaesar);
   assert.deepEqual([...dailyCaesar.allergens].sort(), ["egg", "fish", "milk"]);
 
@@ -9400,17 +13359,33 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.deepEqual(zestyGarden.allergens ?? [], []);
   assert.match(zestyGarden.description ?? "", /Nut-Free|Dairy-Free|Egg-Free/i);
   assert.ok((twoFifty?.allergenDataStatus?.officialItemCount ?? 0) >= 25);
-  assert.equal(twoFifty?.allergenDataStatus?.officialEvidence?.bucket, "official-disclosure-only");
+  assert.equal(
+    twoFifty?.allergenDataStatus?.officialEvidence?.bucket,
+    "official-disclosure-only",
+  );
   assert.ok(twoFiftyToast);
   assert.deepEqual([...twoFiftyToast.allergens].sort(), ["gluten", "wheat"]);
   assert.ok(twoFiftyChimichurri);
-  assert.deepEqual([...twoFiftyChimichurri.allergens].sort(), ["milk", "mustard", "tree-nut"]);
+  assert.deepEqual([...twoFiftyChimichurri.allergens].sort(), [
+    "milk",
+    "mustard",
+    "tree-nut",
+  ]);
   assert.ok(twoFiftyRiceBeans);
   assert.deepEqual([...twoFiftyRiceBeans.allergens].sort(), ["tree-nut"]);
   assert.ok(twoFiftyMac);
-  assert.deepEqual([...twoFiftyMac.allergens].sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual([...twoFiftyMac.allergens].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(twoFiftyPorkSandwich);
-  assert.deepEqual([...twoFiftyPorkSandwich.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...twoFiftyPorkSandwich.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
 
   assert.ok(filomenaOil);
   assert.equal(filomenaOil.description, undefined);
@@ -9425,22 +13400,45 @@ test("generated low-official-coverage repairs keep only row-backed official alle
 
   assert.ok(horchata);
   assert.deepEqual([...horchata.allergens].sort(), ["milk", "tree-nut"]);
-  assert.equal(elViejo?.items.some((item) => item.id === "cater-your-next-gathering"), false);
+  assert.equal(
+    elViejo?.items.some((item) => item.id === "cater-your-next-gathering"),
+    false,
+  );
   assert.ok((elViejo?.allergenDataStatus?.officialItemCount ?? 0) >= 10);
   assert.ok(elViejoBaleada);
-  assert.deepEqual(elViejoBaleada.allergens?.sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual(elViejoBaleada.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(elViejoPanGuanaco);
-  assert.deepEqual(elViejoPanGuanaco.allergens?.sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual(elViejoPanGuanaco.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(elViejoPescado);
   assert.deepEqual(elViejoPescado.allergens ?? [], ["fish"]);
   assert.ok(elViejoTamalElote);
   assert.deepEqual(elViejoTamalElote.allergens ?? [], ["milk"]);
 
   assert.ok(taporiCheesecake);
-  assert.deepEqual([...taporiCheesecake.allergens].sort(), ["gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual([...taporiCheesecake.allergens].sort(), [
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.ok((tapori?.allergenDataStatus?.officialItemCount ?? 0) >= 25);
   assert.ok(taporiButterChicken);
-  assert.deepEqual(taporiButterChicken.allergens?.sort(), ["gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual(taporiButterChicken.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.ok(taporiCrabIdli);
   assert.deepEqual(taporiCrabIdli.allergens?.sort(), ["shellfish", "tree-nut"]);
   assert.ok(taporiShrimp);
@@ -9448,72 +13446,176 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(taporiVadaPav);
   assert.deepEqual(taporiVadaPav.allergens?.sort(), ["gluten", "wheat"]);
   assert.ok(taporiNaan);
-  assert.deepEqual([...taporiNaan.allergens].sort(), ["egg", "gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual([...taporiNaan.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
 
   assert.ok((gregorys?.allergenDataStatus?.officialItemCount ?? 0) >= 15);
   assert.ok(gregorysDeluxe);
-  assert.deepEqual(gregorysDeluxe.allergens?.sort(), ["egg", "gluten", "milk", "soy", "wheat"]);
+  assert.deepEqual(gregorysDeluxe.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "soy",
+    "wheat",
+  ]);
   assert.ok(gregorysVeganDeluxe);
-  assert.deepEqual(gregorysVeganDeluxe.allergens?.sort(), ["gluten", "tree-nut", "wheat"]);
+  assert.deepEqual(gregorysVeganDeluxe.allergens?.sort(), [
+    "gluten",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.equal(gregorysVeganDeluxe.allergens?.includes("egg"), false);
   assert.equal(gregorysVeganDeluxe.allergens?.includes("milk"), false);
   assert.ok(gregorysVeganBar);
-  assert.deepEqual(gregorysVeganBar.allergens?.sort(), ["peanut", "sesame", "tree-nut"]);
+  assert.deepEqual(gregorysVeganBar.allergens?.sort(), [
+    "peanut",
+    "sesame",
+    "tree-nut",
+  ]);
   assert.ok(gregorysProteinCoffee);
-  assert.deepEqual(gregorysProteinCoffee.allergens?.sort(), ["peanut", "tree-nut"]);
+  assert.deepEqual(gregorysProteinCoffee.allergens?.sort(), [
+    "peanut",
+    "tree-nut",
+  ]);
 
   assert.ok((bonFresco?.allergenDataStatus?.officialItemCount ?? 0) >= 40);
   assert.ok(bonFrescoCaesar);
-  assert.deepEqual(bonFrescoCaesar.allergens?.sort(), ["egg", "fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual(bonFrescoCaesar.allergens?.sort(), [
+    "egg",
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(bonFrescoMozz);
-  assert.deepEqual(bonFrescoMozz.allergens?.sort(), ["gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual(bonFrescoMozz.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.ok(bonFrescoTuna);
-  assert.deepEqual(bonFrescoTuna.allergens?.sort(), ["fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual(bonFrescoTuna.allergens?.sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(bonFrescoVeggie);
   assert.deepEqual(bonFrescoVeggie.allergens?.sort(), ["gluten", "wheat"]);
   assert.equal(bonFrescoVeggie.allergens?.includes("milk"), false);
   assert.ok(bonFrescoMediterranean);
-  assert.deepEqual(bonFrescoMediterranean.allergens?.sort(), ["gluten", "milk", "sesame", "wheat"]);
+  assert.deepEqual(bonFrescoMediterranean.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "sesame",
+    "wheat",
+  ]);
 
   assert.ok(caviar);
-  assert.deepEqual([...caviar.allergens].sort(), ["egg", "fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...caviar.allergens].sort(), [
+    "egg",
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(iceCream);
   assert.equal(iceCream.allergenSourceType, "official-ingredients");
   assert.deepEqual(iceCream.allergens ?? [], ["milk"]);
 
-  assert.equal(burtons?.items.some((item) => item.id === "burgers-and-sandwiches"), false);
-  assert.equal(burtons?.items.some((item) => item.id === "gluten-free-burgers-and-sandwiches"), false);
+  assert.equal(
+    burtons?.items.some((item) => item.id === "burgers-and-sandwiches"),
+    false,
+  );
+  assert.equal(
+    burtons?.items.some(
+      (item) => item.id === "gluten-free-burgers-and-sandwiches",
+    ),
+    false,
+  );
   assert.ok(burtonsFirecracker);
-  assert.deepEqual([...burtonsFirecracker.allergens].sort(), ["sesame", "shellfish"]);
+  assert.deepEqual([...burtonsFirecracker.allergens].sort(), [
+    "sesame",
+    "shellfish",
+  ]);
   assert.deepEqual(burtonsFirecracker.mayContain ?? [], ["milk"]);
 
-  assert.equal(ikea?.items.some((item) => item.id === "ikea-college-park"), false);
+  assert.equal(
+    ikea?.items.some((item) => item.id === "ikea-college-park"),
+    false,
+  );
   assert.equal(ikea?.officialAllergenStatus, "not-found");
 
-  assert.equal(planta?.items.some((item) => item.id === "hand-rolls"), false);
-  assert.equal(planta?.items.some((item) => item.id === "signatures-serves"), false);
   assert.equal(
-    planta?.items.some((item) => item.id === "sushithe-sushi-boxenjoy-our-sushi-box-that-includes"),
+    planta?.items.some((item) => item.id === "hand-rolls"),
+    false,
+  );
+  assert.equal(
+    planta?.items.some((item) => item.id === "signatures-serves"),
+    false,
+  );
+  assert.equal(
+    planta?.items.some(
+      (item) =>
+        item.id === "sushithe-sushi-boxenjoy-our-sushi-box-that-includes",
+    ),
     false,
   );
 
   assert.ok(guajilloMole);
   assert.deepEqual(guajilloMole.allergens ?? [], ["tree-nut"]);
 
-  assert.equal(karahi?.items.some((item) => item.id === "cad"), false);
-  assert.equal(karahi?.items.some((item) => item.id === "category-naan-bread-cad"), false);
+  assert.equal(
+    karahi?.items.some((item) => item.id === "cad"),
+    false,
+  );
+  assert.equal(
+    karahi?.items.some((item) => item.id === "category-naan-bread-cad"),
+    false,
+  );
   assert.ok(butterNaan);
-  assert.equal(butterNaan.allergenSourceType, "official-product-allergen-section");
-  assert.deepEqual([...butterNaan.allergens].sort(), ["gluten", "milk", "wheat"]);
+  assert.equal(
+    butterNaan.allergenSourceType,
+    "official-product-allergen-section",
+  );
+  assert.deepEqual([...butterNaan.allergens].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
 
-  assert.equal(northside?.items.some((item) => item.id === "breakfast-served-all-day"), false);
+  assert.equal(
+    northside?.items.some((item) => item.id === "breakfast-served-all-day"),
+    false,
+  );
   assert.ok(northsideGranola);
-  assert.deepEqual([...northsideGranola.allergens].sort(), ["milk", "tree-nut"]);
+  assert.deepEqual([...northsideGranola.allergens].sort(), [
+    "milk",
+    "tree-nut",
+  ]);
 
-  assert.equal(stJames?.items.some((item) => item.id === "pasta-baked-in-cheese-sauce-serves-2"), false);
-  assert.equal(stJames?.items.some((item) => item.id === "brisket-platter"), false);
+  assert.equal(
+    stJames?.items.some(
+      (item) => item.id === "pasta-baked-in-cheese-sauce-serves-2",
+    ),
+    false,
+  );
+  assert.equal(
+    stJames?.items.some((item) => item.id === "brisket-platter"),
+    false,
+  );
   assert.ok(macaroniPie);
-  assert.deepEqual([...macaroniPie.allergens].sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual([...macaroniPie.allergens].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.equal(macaroniPie.mayContain?.includes("shellfish"), true);
 
   assert.ok(goiCuon);
@@ -9522,57 +13624,134 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.deepEqual([...chaGio.allergens].sort(), ["fish", "shellfish"]);
 
   assert.ok(sokoYellowfin);
-  assert.equal(soko?.items.some((item) => item.id === "no-substitutions"), false);
+  assert.equal(
+    soko?.items.some((item) => item.id === "no-substitutions"),
+    false,
+  );
   assert.equal(soko?.officialAllergenStatus, "extracted");
-  assert.equal(soko?.items.filter((item) => item.allergenSourceType !== "unavailable").length, 30);
-  assert.deepEqual([...sokoYellowfin.allergens].sort(), ["egg", "fish", "gluten", "soy", "wheat"]);
+  assert.equal(
+    soko?.items.filter((item) => item.allergenSourceType !== "unavailable")
+      .length,
+    30,
+  );
+  assert.deepEqual([...sokoYellowfin.allergens].sort(), [
+    "egg",
+    "fish",
+    "gluten",
+    "soy",
+    "wheat",
+  ]);
   assert.ok(sokoMurrays);
-  assert.deepEqual([...sokoMurrays.allergens].sort(), ["egg", "gluten", "wheat"]);
+  assert.deepEqual([...sokoMurrays.allergens].sort(), [
+    "egg",
+    "gluten",
+    "wheat",
+  ]);
   assert.ok(sokoCowboy);
-  assert.deepEqual([...sokoCowboy.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...sokoCowboy.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(sokoPlainPatty);
   assert.equal(sokoPlainPatty.allergenSourceType, "unavailable");
   assert.deepEqual(sokoPlainPatty.allergens ?? [], []);
 
   assert.ok(gracesMandarin);
   assert.equal(gracesMandarin.officialAllergenStatus, "extracted");
-  assert.equal(gracesMandarin.items.filter((item) => item.allergenSourceType !== "unavailable").length, 116);
+  assert.equal(
+    gracesMandarin.items.filter(
+      (item) => item.allergenSourceType !== "unavailable",
+    ).length,
+    116,
+  );
   assert.ok(gracesCaliforniaRoll);
   assert.equal(gracesCaliforniaRoll.allergenSourceType, "unavailable");
   assert.deepEqual(gracesCaliforniaRoll.allergens ?? [], []);
   assert.ok(gracesChesapeakeRoll);
-  assert.deepEqual([...gracesChesapeakeRoll.allergens].sort(), ["gluten", "milk", "shellfish", "wheat"]);
+  assert.deepEqual([...gracesChesapeakeRoll.allergens].sort(), [
+    "gluten",
+    "milk",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok(gracesGoldenShrimpRoll);
-  assert.deepEqual([...gracesGoldenShrimpRoll.allergens].sort(), ["gluten", "sesame", "shellfish", "wheat"]);
+  assert.deepEqual([...gracesGoldenShrimpRoll.allergens].sort(), [
+    "gluten",
+    "sesame",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok(gracesThaiStreetNoodle);
-  assert.deepEqual([...gracesThaiStreetNoodle.allergens].sort(), ["egg", "fish", "gluten", "peanut", "wheat"]);
+  assert.deepEqual([...gracesThaiStreetNoodle.allergens].sort(), [
+    "egg",
+    "fish",
+    "gluten",
+    "peanut",
+    "wheat",
+  ]);
   assert.ok(gracesVegetarianMedley);
-  assert.deepEqual([...gracesVegetarianMedley.allergens].sort(), ["soy", "tree-nut"]);
+  assert.deepEqual([...gracesVegetarianMedley.allergens].sort(), [
+    "soy",
+    "tree-nut",
+  ]);
   assert.ok(gracesWhiteRice);
   assert.equal(gracesWhiteRice.allergenSourceType, "unavailable");
   assert.deepEqual(gracesWhiteRice.allergens ?? [], []);
 
   assert.ok(boulangerieChristophe);
-  assert.equal(boulangerieChristophe.items.some((item) => item.id === "boulangerie-christophe-potomac"), false);
-  assert.equal(boulangerieChristophe.items.some((item) => item.id === "item"), false);
+  assert.equal(
+    boulangerieChristophe.items.some(
+      (item) => item.id === "boulangerie-christophe-potomac",
+    ),
+    false,
+  );
+  assert.equal(
+    boulangerieChristophe.items.some((item) => item.id === "item"),
+    false,
+  );
   assert.equal(boulangerieChristophe.officialAllergenStatus, "extracted");
-  assert.equal(boulangerieChristophe.items.filter((item) => item.allergenSourceType !== "unavailable").length, 43);
+  assert.equal(
+    boulangerieChristophe.items.filter(
+      (item) => item.allergenSourceType !== "unavailable",
+    ).length,
+    43,
+  );
   assert.ok(boulangerieAppleTartelette);
-  assert.deepEqual([...boulangerieAppleTartelette.allergens].sort(), ["gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual([...boulangerieAppleTartelette.allergens].sort(), [
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.ok(boulangerieCafeAuLait);
   assert.deepEqual([...boulangerieCafeAuLait.allergens].sort(), ["milk"]);
   assert.ok(boulangerieMacaron);
-  assert.deepEqual([...boulangerieMacaron.allergens].sort(), ["egg", "tree-nut"]);
+  assert.deepEqual([...boulangerieMacaron.allergens].sort(), [
+    "egg",
+    "tree-nut",
+  ]);
   assert.equal(boulangerieMacaron.allergens.includes("gluten"), false);
   assert.ok(boulangerieDripCoffee);
   assert.equal(boulangerieDripCoffee.allergenSourceType, "unavailable");
   assert.deepEqual(boulangerieDripCoffee.allergens ?? [], []);
   assert.ok(boulangerieQuicheLorraine);
-  assert.deepEqual([...boulangerieQuicheLorraine.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...boulangerieQuicheLorraine.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
 
   assert.ok(genkiIzakaya);
   assert.equal(genkiIzakaya.officialAllergenStatus, "extracted");
-  assert.equal(genkiIzakaya.items.filter((item) => item.allergenSourceType !== "unavailable").length, 123);
+  assert.equal(
+    genkiIzakaya.items.filter(
+      (item) => item.allergenSourceType !== "unavailable",
+    ).length,
+    123,
+  );
   assert.ok(genkiWagyu);
   assert.equal(genkiWagyu.allergenSourceType, "unavailable");
   assert.deepEqual(genkiWagyu.allergens ?? [], []);
@@ -9582,63 +13761,139 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(genkiAlaskaRoll);
   assert.deepEqual(genkiAlaskaRoll.allergens ?? [], ["fish"]);
   assert.ok(genkiShrimpTempuraRoll);
-  assert.deepEqual([...genkiShrimpTempuraRoll.allergens].sort(), ["gluten", "shellfish", "wheat"]);
+  assert.deepEqual([...genkiShrimpTempuraRoll.allergens].sort(), [
+    "gluten",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok(genkiPhillyRoll);
   assert.deepEqual([...genkiPhillyRoll.allergens].sort(), ["fish", "milk"]);
   assert.ok(genkiTonkotsuRamen);
-  assert.deepEqual([...genkiTonkotsuRamen.allergens].sort(), ["egg", "gluten", "sesame", "wheat"]);
+  assert.deepEqual([...genkiTonkotsuRamen.allergens].sort(), [
+    "egg",
+    "gluten",
+    "sesame",
+    "wheat",
+  ]);
   assert.ok(genkiYakiUdon);
-  assert.deepEqual([...genkiYakiUdon.allergens].sort(), ["fish", "gluten", "wheat"]);
+  assert.deepEqual([...genkiYakiUdon.allergens].sort(), [
+    "fish",
+    "gluten",
+    "wheat",
+  ]);
 
   assert.ok(dogwoodTavern);
   assert.equal(dogwoodTavern.officialAllergenStatus, "extracted");
-  assert.equal(dogwoodTavern.items.filter((item) => item.allergenSourceType !== "unavailable").length, 49);
+  assert.equal(
+    dogwoodTavern.items.filter(
+      (item) => item.allergenSourceType !== "unavailable",
+    ).length,
+    49,
+  );
   assert.ok(dogwoodBuddhaBowl);
-  assert.deepEqual([...dogwoodBuddhaBowl.allergens].sort(), ["egg", "milk", "tree-nut"]);
+  assert.deepEqual([...dogwoodBuddhaBowl.allergens].sort(), [
+    "egg",
+    "milk",
+    "tree-nut",
+  ]);
   assert.equal(dogwoodBuddhaBowl.allergens.includes("fish"), false);
   assert.equal(dogwoodBuddhaBowl.allergens.includes("shellfish"), false);
   assert.ok(dogwoodNachos);
   assert.deepEqual(dogwoodNachos.allergens ?? [], ["milk"]);
   assert.equal(dogwoodNachos.allergens.includes("gluten"), false);
   assert.ok(dogwoodCarneAsada);
-  assert.deepEqual([...dogwoodCarneAsada.allergens].sort(), ["gluten", "wheat"]);
+  assert.deepEqual([...dogwoodCarneAsada.allergens].sort(), [
+    "gluten",
+    "wheat",
+  ]);
   assert.ok(dogwoodAppleChickenSalad);
-  assert.deepEqual([...dogwoodAppleChickenSalad.allergens].sort(), ["milk", "tree-nut"]);
+  assert.deepEqual([...dogwoodAppleChickenSalad.allergens].sort(), [
+    "milk",
+    "tree-nut",
+  ]);
   assert.ok(dogwoodFriedChickenSandwich);
-  assert.deepEqual([...dogwoodFriedChickenSandwich.allergens].sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual([...dogwoodFriedChickenSandwich.allergens].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
 
   assert.ok(helloBetty);
-  assert.equal(helloBetty.items.some((item) => item.id === "market-price"), false);
-  assert.equal(helloBetty.items.filter((item) => item.allergenSourceType !== "unavailable").length, 65);
+  assert.equal(
+    helloBetty.items.some((item) => item.id === "market-price"),
+    false,
+  );
+  assert.equal(
+    helloBetty.items.filter((item) => item.allergenSourceType !== "unavailable")
+      .length,
+    65,
+  );
   assert.ok(helloBettyAlfredo);
-  assert.deepEqual([...helloBettyAlfredo.allergens].sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual([...helloBettyAlfredo.allergens].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(helloBettyAvocadoToast);
-  assert.deepEqual([...helloBettyAvocadoToast.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...helloBettyAvocadoToast.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.equal(helloBettyAvocadoToast.allergens.includes("shellfish"), false);
   assert.ok(helloBettySoftshellCrab);
-  assert.deepEqual([...helloBettySoftshellCrab.allergens].sort(), ["egg", "gluten", "shellfish", "wheat"]);
+  assert.deepEqual([...helloBettySoftshellCrab.allergens].sort(), [
+    "egg",
+    "gluten",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok(helloBettyCoffee);
   assert.equal(helloBettyCoffee.allergenSourceType, "unavailable");
   assert.deepEqual(helloBettyCoffee.allergens ?? [], []);
   assert.equal(helloBettyCoffee.description, undefined);
   assert.ok(helloBettyVanillaGelato);
   assert.deepEqual(helloBettyVanillaGelato.allergens ?? [], ["milk"]);
-  assert.equal(/Sage Restaurant Concepts|undercooked/i.test(helloBettyVanillaGelato.description ?? ""), false);
+  assert.equal(
+    /Sage Restaurant Concepts|undercooked/i.test(
+      helloBettyVanillaGelato.description ?? "",
+    ),
+    false,
+  );
 
   assert.ok(moes);
-  assert.equal(moes.items.filter((item) => item.allergenSourceType !== "unavailable").length, 28);
+  assert.equal(
+    moes.items.filter((item) => item.allergenSourceType !== "unavailable")
+      .length,
+    28,
+  );
   assert.ok(moesQueso);
   assert.deepEqual(moesQueso.allergens ?? [], ["milk"]);
   assert.ok(moesDippers);
-  assert.deepEqual([...moesDippers.allergens].sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual([...moesDippers.allergens].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(moesChipsDips);
   assert.deepEqual(moesChipsDips.allergens ?? [], ["milk"]);
   assert.ok(moesKidsMilk);
   assert.deepEqual(moesKidsMilk.allergens ?? [], ["milk"]);
   assert.ok(moesKidsTaco);
-  assert.deepEqual([...moesKidsTaco.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...moesKidsTaco.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(moesCookie);
-  assert.deepEqual([...moesCookie.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...moesCookie.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(moesWater);
   assert.equal(moesWater.allergenSourceType, "unavailable");
   assert.deepEqual(moesWater.allergens ?? [], []);
@@ -9646,26 +13901,61 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.deepEqual(moesTacoValuePack.allergens ?? [], ["milk"]);
 
   assert.ok(geminiChocolateCake);
-  assert.deepEqual(geminiChocolateCake.allergens?.sort() ?? [], ["egg", "gluten", "milk", "wheat"]);
-  assert.deepEqual(geminiChocolateCake.mayContain?.sort() ?? [], ["soy", "tree-nut"]);
+  assert.deepEqual(geminiChocolateCake.allergens?.sort() ?? [], [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
+  assert.deepEqual(geminiChocolateCake.mayContain?.sort() ?? [], [
+    "soy",
+    "tree-nut",
+  ]);
   assert.ok(geminiCashewBrittle);
-  assert.deepEqual(geminiCashewBrittle.allergens?.sort() ?? [], ["milk", "tree-nut"]);
-  assert.deepEqual(geminiCashewBrittle.mayContain?.sort() ?? [], ["soy", "tree-nut"]);
+  assert.deepEqual(geminiCashewBrittle.allergens?.sort() ?? [], [
+    "milk",
+    "tree-nut",
+  ]);
+  assert.deepEqual(geminiCashewBrittle.mayContain?.sort() ?? [], [
+    "soy",
+    "tree-nut",
+  ]);
   assert.ok(geminiMintChip);
   assert.deepEqual(geminiMintChip.allergens ?? [], ["milk"]);
-  assert.deepEqual(geminiMintChip.mayContain?.sort() ?? [], ["soy", "tree-nut"]);
+  assert.deepEqual(geminiMintChip.mayContain?.sort() ?? [], [
+    "soy",
+    "tree-nut",
+  ]);
   assert.ok(geminiPuppyChow);
-  assert.deepEqual(geminiPuppyChow.allergens?.sort() ?? [], ["egg", "milk", "peanut"]);
-  assert.deepEqual(geminiPuppyChow.mayContain?.sort() ?? [], ["soy", "tree-nut"]);
+  assert.deepEqual(geminiPuppyChow.allergens?.sort() ?? [], [
+    "egg",
+    "milk",
+    "peanut",
+  ]);
+  assert.deepEqual(geminiPuppyChow.mayContain?.sort() ?? [], [
+    "soy",
+    "tree-nut",
+  ]);
 
-  assert.equal(peterChang?.items.some((item) => item.id === "togo-cold-dish"), false);
-  assert.equal(peterChang?.items.some((item) => item.id === "togo-tapas-veggie"), false);
+  assert.equal(
+    peterChang?.items.some((item) => item.id === "togo-cold-dish"),
+    false,
+  );
+  assert.equal(
+    peterChang?.items.some((item) => item.id === "togo-tapas-veggie"),
+    false,
+  );
   assert.ok(peterSesameNoodle);
   assert.deepEqual(peterSesameNoodle.allergens ?? [], ["sesame"]);
   assert.ok(peterEggTofu);
   assert.deepEqual(peterEggTofu.allergens ?? [], ["egg"]);
 
-  assert.equal(tigerDumplings?.items.some((item) => item.id === "chengdu-spicy-wonton-8-spicy"), false);
+  assert.equal(
+    tigerDumplings?.items.some(
+      (item) => item.id === "chengdu-spicy-wonton-8-spicy",
+    ),
+    false,
+  );
   assert.ok(chengduChicken);
   assert.deepEqual(chengduChicken.allergens ?? [], ["peanut"]);
   assert.ok(hawaiianFriedRice);
@@ -9677,8 +13967,14 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.match(partyColeslaw.description ?? "", /^Party-Size Coleslaw, 32 oz/);
   assert.equal(partyColeslaw.ingredientsText, null);
   assert.equal(partyRedBeans?.description, "Party-size container of beans.");
-  assert.equal(carvelIceCream?.description, "8oz cup of Carvel soft-serve ice cream.");
-  assert.equal(firenzesGelato?.description, "6oz individual cup of Firenzes Artisanal Gelato.");
+  assert.equal(
+    carvelIceCream?.description,
+    "8oz cup of Carvel soft-serve ice cream.",
+  );
+  assert.equal(
+    firenzesGelato?.description,
+    "6oz individual cup of Firenzes Artisanal Gelato.",
+  );
   assert.equal(mediumGreenSauce?.description, "8oz cup of our green sauce.");
   assert.equal(wholeChickenWhiteMeat?.inferredAllergenSignals, undefined);
   assert.ok(flan);
@@ -9689,7 +13985,10 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.deepEqual([...punYaw.allergens].sort(), ["peanut", "shellfish"]);
 
   assert.ok(seasonalCheesecakePlatter);
-  assert.equal(seasonalCheesecakePlatter.name, "Seasonal Cheesecake Dessert Platter");
+  assert.equal(
+    seasonalCheesecakePlatter.name,
+    "Seasonal Cheesecake Dessert Platter",
+  );
   assert.deepEqual(seasonalCheesecakePlatter.allergens ?? [], ["tree-nut"]);
 
   assert.ok(riceAndPigeonPeas);
@@ -9699,21 +13998,41 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.equal(arrozConGandules.allergenSourceType, "unavailable");
   assert.deepEqual(arrozConGandules.allergens ?? [], []);
 
-  assert.equal(marleys?.items.some((item) => item.id === "main-entreesrasta-pasta"), false);
+  assert.equal(
+    marleys?.items.some((item) => item.id === "main-entreesrasta-pasta"),
+    false,
+  );
   assert.ok(cajunSeafoodPasta);
-  assert.deepEqual([...cajunSeafoodPasta.allergens].sort(), ["gluten", "milk", "shellfish", "wheat"]);
+  assert.deepEqual([...cajunSeafoodPasta.allergens].sort(), [
+    "gluten",
+    "milk",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok(shrimpAndGrits);
   assert.deepEqual([...shrimpAndGrits.allergens].sort(), ["milk", "shellfish"]);
   assert.ok(catfishAndGrits);
-  assert.deepEqual([...catfishAndGrits.allergens].sort(), ["fish", "milk", "shellfish"]);
+  assert.deepEqual([...catfishAndGrits.allergens].sort(), [
+    "fish",
+    "milk",
+    "shellfish",
+  ]);
 
-  assert.equal(dailyDish?.items.some((item) => item.id === "wilted-fresh-greens"), false);
+  assert.equal(
+    dailyDish?.items.some((item) => item.id === "wilted-fresh-greens"),
+    false,
+  );
   assert.ok(dailyDishSteak);
   assert.equal(dailyDishSteak.allergenSourceType, "unavailable");
   assert.ok(dailyDishCrabCake);
   assert.deepEqual(dailyDishCrabCake.allergens ?? [], ["shellfish"]);
   assert.ok(dailyDishShrimp);
-  assert.deepEqual([...dailyDishShrimp.allergens].sort(), ["gluten", "milk", "shellfish", "wheat"]);
+  assert.deepEqual([...dailyDishShrimp.allergens].sort(), [
+    "gluten",
+    "milk",
+    "shellfish",
+    "wheat",
+  ]);
 
   assert.ok(donsakButterRice);
   assert.equal(donsakButterRice.allergenSourceType, "unavailable");
@@ -9724,7 +14043,12 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(donsakIsland);
   assert.deepEqual([...donsakIsland.allergens].sort(), ["fish", "shellfish"]);
   assert.ok(donsakRangoon);
-  assert.deepEqual([...donsakRangoon.allergens].sort(), ["gluten", "milk", "shellfish", "wheat"]);
+  assert.deepEqual([...donsakRangoon.allergens].sort(), [
+    "gluten",
+    "milk",
+    "shellfish",
+    "wheat",
+  ]);
 
   assert.ok(redrocksSteak);
   assert.match(redrocksSteak.description ?? "", /^New York strip \(8 oz\)/);
@@ -9734,21 +14058,45 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.deepEqual(sausageRoll.mayContain ?? [], ["sesame"]);
 
   assert.ok(friedSiomai);
-  assert.deepEqual([...friedSiomai.allergens].sort(), ["egg", "gluten", "sesame", "shellfish", "wheat"]);
+  assert.deepEqual([...friedSiomai.allergens].sort(), [
+    "egg",
+    "gluten",
+    "sesame",
+    "shellfish",
+    "wheat",
+  ]);
 
   assert.ok(sunflowerEdamame);
   assert.deepEqual([...sunflowerEdamame.allergens].sort(), ["peanut", "soy"]);
   assert.ok(sunflowerFriedChicken);
-  assert.deepEqual([...sunflowerFriedChicken.allergens].sort(), ["gluten", "peanut", "soy", "wheat"]);
+  assert.deepEqual([...sunflowerFriedChicken.allergens].sort(), [
+    "gluten",
+    "peanut",
+    "soy",
+    "wheat",
+  ]);
   assert.ok(sunflowerWonton);
-  assert.deepEqual([...sunflowerWonton.allergens].sort(), ["gluten", "peanut", "soy", "wheat"]);
+  assert.deepEqual([...sunflowerWonton.allergens].sort(), [
+    "gluten",
+    "peanut",
+    "soy",
+    "wheat",
+  ]);
   assert.ok(sunflowerWontonSoup);
-  assert.deepEqual([...sunflowerWontonSoup.allergens].sort(), ["gluten", "peanut", "soy", "wheat"]);
+  assert.deepEqual([...sunflowerWontonSoup.allergens].sort(), [
+    "gluten",
+    "peanut",
+    "soy",
+    "wheat",
+  ]);
   assert.ok(sunflowerMushrooms);
   assert.deepEqual([...sunflowerMushrooms.allergens].sort(), ["peanut", "soy"]);
 
   assert.ok(cocinerosEmpanadas);
-  assert.deepEqual([...cocinerosEmpanadas.allergens].sort(), ["gluten", "milk"]);
+  assert.deepEqual([...cocinerosEmpanadas.allergens].sort(), [
+    "gluten",
+    "milk",
+  ]);
   assert.ok(cocinerosFlautasTray);
   assert.deepEqual(cocinerosFlautasTray.allergens ?? [], ["milk"]);
   assert.deepEqual(cocinerosFlautasTray.mayContain ?? [], ["gluten"]);
@@ -9765,28 +14113,69 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.deepEqual(cocinerosTostonesTray.allergens ?? [], ["milk"]);
   assert.deepEqual(cocinerosTostonesTray.mayContain ?? [], ["gluten"]);
 
-  assert.equal(lostDog?.items.some((item) => item.id === "for-kids-under-12"), false);
-  assert.equal(lostDog?.items.some((item) => item.id === "all-merchandise"), false);
-  assert.equal(lostDog?.items.some((item) => item.id === "join-the-pack"), false);
-  assert.equal(lostDog?.items.some((item) => item.id === "no-cutlery"), false);
-  assert.equal(lostDog?.items.some((item) => item.id === "allergy-guide"), false);
-  assert.equal(lostDog?.items.some((item) => item.id === "lost-dog-gourmet-pizzas"), false);
+  assert.equal(
+    lostDog?.items.some((item) => item.id === "for-kids-under-12"),
+    false,
+  );
+  assert.equal(
+    lostDog?.items.some((item) => item.id === "all-merchandise"),
+    false,
+  );
+  assert.equal(
+    lostDog?.items.some((item) => item.id === "join-the-pack"),
+    false,
+  );
+  assert.equal(
+    lostDog?.items.some((item) => item.id === "no-cutlery"),
+    false,
+  );
+  assert.equal(
+    lostDog?.items.some((item) => item.id === "allergy-guide"),
+    false,
+  );
+  assert.equal(
+    lostDog?.items.some((item) => item.id === "lost-dog-gourmet-pizzas"),
+    false,
+  );
   assert.ok(lostDogHolyCowLess);
   assert.equal(lostDogHolyCowLess.category, "Sandwiches");
-  assert.deepEqual([...lostDogHolyCowLess.allergens].sort(), ["gluten", "milk", "soy", "wheat"]);
+  assert.deepEqual([...lostDogHolyCowLess.allergens].sort(), [
+    "gluten",
+    "milk",
+    "soy",
+    "wheat",
+  ]);
 
-  assert.equal(chefTony?.items.some((item) => item.id === "seafood"), false);
-  assert.equal(chefTony?.items.some((item) => item.id === "culinary-journal-book"), false);
-  assert.equal(chefTony?.items.some((item) => item.id === "doordash"), false);
-  assert.equal(chefTony?.items.some((item) => item.id === "flying-fish"), false);
+  assert.equal(
+    chefTony?.items.some((item) => item.id === "seafood"),
+    false,
+  );
+  assert.equal(
+    chefTony?.items.some((item) => item.id === "culinary-journal-book"),
+    false,
+  );
+  assert.equal(
+    chefTony?.items.some((item) => item.id === "doordash"),
+    false,
+  );
+  assert.equal(
+    chefTony?.items.some((item) => item.id === "flying-fish"),
+    false,
+  );
   assert.ok(chefTonyChoppedSalad);
   assert.equal(chefTonyChoppedSalad.category, "Salads");
-  assert.deepEqual([...chefTonyChoppedSalad.allergens].sort(), ["milk", "tree-nut"]);
+  assert.deepEqual([...chefTonyChoppedSalad.allergens].sort(), [
+    "milk",
+    "tree-nut",
+  ]);
   assert.ok(chefTonyPepperoniHemi);
   assert.equal(chefTonyPepperoniHemi.category, "Pizza");
   assert.ok(chefTonyCreamOfCrab);
   assert.equal(chefTonyCreamOfCrab.category, "Soups");
-  assert.deepEqual([...chefTonyCreamOfCrab.allergens].sort(), ["milk", "shellfish"]);
+  assert.deepEqual([...chefTonyCreamOfCrab.allergens].sort(), [
+    "milk",
+    "shellfish",
+  ]);
   assert.ok(chefTonySeafoodPaellaFamily);
   assert.equal(chefTonySeafoodPaellaFamily.category, "Family Meals");
   assert.deepEqual([...chefTonySeafoodPaellaFamily.allergens].sort(), [
@@ -9809,111 +14198,255 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(boardAndBrew);
   assert.ok((boardAndBrew.allergenDataStatus?.officialItemCount ?? 0) >= 60);
   assert.ok(boardAmbi);
-  assert.deepEqual([...boardAmbi.allergens].sort(), ["gluten", "sulfites", "wheat"]);
+  assert.deepEqual([...boardAmbi.allergens].sort(), [
+    "gluten",
+    "sulfites",
+    "wheat",
+  ]);
   assert.ok(boardBens);
-  assert.deepEqual([...boardBens.allergens].sort(), ["egg", "gluten", "milk", "sesame", "wheat"]);
+  assert.deepEqual([...boardBens.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "sesame",
+    "wheat",
+  ]);
   assert.ok(boardCheesecake);
-  assert.deepEqual([...boardCheesecake.allergens].sort(), ["gluten", "milk", "peanut", "wheat"]);
+  assert.deepEqual([...boardCheesecake.allergens].sort(), [
+    "gluten",
+    "milk",
+    "peanut",
+    "wheat",
+  ]);
   assert.ok(boardChickenQuinoa);
-  assert.deepEqual([...boardChickenQuinoa.allergens].sort(), ["mustard", "soy", "sulfites"]);
+  assert.deepEqual([...boardChickenQuinoa.allergens].sort(), [
+    "mustard",
+    "soy",
+    "sulfites",
+  ]);
   assert.ok(boardKanzu);
   assert.equal(boardKanzu.allergenSourceType, "unavailable");
   assert.deepEqual(boardKanzu.allergens ?? [], []);
   assert.ok(boardSalmon);
-  assert.deepEqual([...boardSalmon.allergens].sort(), ["fish", "gluten", "milk", "sesame", "wheat"]);
+  assert.deepEqual([...boardSalmon.allergens].sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "sesame",
+    "wheat",
+  ]);
 
   assert.ok(redstone);
   assert.ok((redstone.allergenDataStatus?.officialItemCount ?? 0) >= 90);
-  assert.equal(redstone.items.some((item) => item.id === "wood-fired-flavor-without-the-wait"), false);
-  assert.equal(redstone.items.some((item) => item.id === "celebrate-with-redstone"), false);
+  assert.equal(
+    redstone.items.some(
+      (item) => item.id === "wood-fired-flavor-without-the-wait",
+    ),
+    false,
+  );
+  assert.equal(
+    redstone.items.some((item) => item.id === "celebrate-with-redstone"),
+    false,
+  );
   assert.ok(redstoneBananaCreamPie);
-  assert.deepEqual([...redstoneBananaCreamPie.allergens].sort(), ["egg", "gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual([...redstoneBananaCreamPie.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.ok(redstoneBuffaloShrimp);
-  assert.deepEqual([...redstoneBuffaloShrimp.allergens].sort(), ["milk", "shellfish"]);
+  assert.deepEqual([...redstoneBuffaloShrimp.allergens].sort(), [
+    "milk",
+    "shellfish",
+  ]);
   assert.ok(redstoneChickenLettuceWraps);
   assert.deepEqual(redstoneChickenLettuceWraps.allergens, ["tree-nut"]);
   assert.ok(redstoneCheesecake);
-  assert.deepEqual([...redstoneCheesecake.allergens].sort(), ["egg", "gluten", "milk", "peanut", "wheat"]);
+  assert.deepEqual([...redstoneCheesecake.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "peanut",
+    "wheat",
+  ]);
   assert.ok(redstoneAhiTuna);
-  assert.deepEqual([...redstoneAhiTuna.allergens].sort(), ["fish", "soy", "sulfites"]);
+  assert.deepEqual([...redstoneAhiTuna.allergens].sort(), [
+    "fish",
+    "soy",
+    "sulfites",
+  ]);
   assert.ok(redstoneRiceNoodles);
   assert.equal(redstoneRiceNoodles.allergenSourceType, "unavailable");
   assert.deepEqual(redstoneRiceNoodles.allergens ?? [], []);
   assert.ok(redstoneTempuraChicken);
-  assert.deepEqual([...redstoneTempuraChicken.allergens].sort(), ["gluten", "soy", "wheat"]);
+  assert.deepEqual([...redstoneTempuraChicken.allergens].sort(), [
+    "gluten",
+    "soy",
+    "wheat",
+  ]);
 
-  assert.equal(menomale?.items.some((item) => item.id === "anchovies"), false);
-  assert.equal(menomale?.items.some((item) => item.id === "feta"), false);
-  assert.equal(menomale?.items.some((item) => item.id === "balsamic-glaze"), false);
-  assert.equal(menomale?.items.some((item) => item.id === "gluten-free-crust"), false);
-  assert.equal(menomale?.items.some((item) => item.id === "anchovies-full"), false);
-  assert.equal(menomale?.items.some((item) => item.id === "anchovies-12"), false);
+  assert.equal(
+    menomale?.items.some((item) => item.id === "anchovies"),
+    false,
+  );
+  assert.equal(
+    menomale?.items.some((item) => item.id === "feta"),
+    false,
+  );
+  assert.equal(
+    menomale?.items.some((item) => item.id === "balsamic-glaze"),
+    false,
+  );
+  assert.equal(
+    menomale?.items.some((item) => item.id === "gluten-free-crust"),
+    false,
+  );
+  assert.equal(
+    menomale?.items.some((item) => item.id === "anchovies-full"),
+    false,
+  );
+  assert.equal(
+    menomale?.items.some((item) => item.id === "anchovies-12"),
+    false,
+  );
   assert.ok(menomaleAffettati);
   assert.equal(menomaleAffettati.category, "Antipasti");
-  assert.deepEqual([...menomaleAffettati.allergens].sort(), ["gluten", "milk", "shellfish", "wheat"]);
+  assert.deepEqual([...menomaleAffettati.allergens].sort(), [
+    "gluten",
+    "milk",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok(menomaleTiramisu);
-  assert.deepEqual([...menomaleTiramisu.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...menomaleTiramisu.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(menomaleRoastedEggplantTray);
   assert.equal(menomaleRoastedEggplantTray.category, "Catering");
   assert.ok((menomale?.allergenDataStatus?.officialItemCount ?? 0) >= 110);
-  assert.deepEqual([...menomaleInsalataPesce.allergens].sort(), ["fish", "shellfish"]);
-  assert.deepEqual([...menomaleVerdone.allergens].sort(), ["gluten", "milk", "tree-nut", "wheat"]);
-  assert.deepEqual([...menomaleRomanaFull.allergens].sort(), ["fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...menomaleInsalataPesce.allergens].sort(), [
+    "fish",
+    "shellfish",
+  ]);
+  assert.deepEqual([...menomaleVerdone.allergens].sort(), [
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
+  assert.deepEqual([...menomaleRomanaFull.allergens].sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.deepEqual([...menomaleFarro.allergens].sort(), ["gluten", "wheat"]);
-  assert.deepEqual([...menomalePolloVerde.allergens].sort(), ["gluten", "milk", "tree-nut", "wheat"]);
-  assert.deepEqual([...menomaleEggplantParm.allergens].sort(), ["gluten", "milk", "wheat"]);
-  assert.deepEqual([...menomaleFrittoMare.allergens].sort(), ["fish", "shellfish"]);
+  assert.deepEqual([...menomalePolloVerde.allergens].sort(), [
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
+  assert.deepEqual([...menomaleEggplantParm.allergens].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
+  assert.deepEqual([...menomaleFrittoMare.allergens].sort(), [
+    "fish",
+    "shellfish",
+  ]);
 
-  assert.equal(northsideMenu?.items.some((item) => item.id === "austin-eastcider"), false);
-  assert.equal(northsideMenu?.items.some((item) => item.id === "brooklyn-brewery"), false);
-  assert.equal(northsideMenu?.items.some((item) => item.id === "breakfast-sandwiches-served-all-day"), false);
-  assert.equal(northsideMenu?.items.some((item) => item.id === "x-large"), false);
+  assert.equal(
+    northsideMenu?.items.some((item) => item.id === "austin-eastcider"),
+    false,
+  );
+  assert.equal(
+    northsideMenu?.items.some((item) => item.id === "brooklyn-brewery"),
+    false,
+  );
+  assert.equal(
+    northsideMenu?.items.some(
+      (item) => item.id === "breakfast-sandwiches-served-all-day",
+    ),
+    false,
+  );
+  assert.equal(
+    northsideMenu?.items.some((item) => item.id === "x-large"),
+    false,
+  );
   assert.deepEqual(
     [...new Set(northsideMenu?.items.map((item) => item.category))]
-      .filter((category) => ["Espresso", "Hot Tea", "ICED", "Large", "Menu", "TEA LATTE"].includes(category))
+      .filter((category) =>
+        ["Espresso", "Hot Tea", "ICED", "Large", "Menu", "TEA LATTE"].includes(
+          category,
+        ),
+      )
       .sort(),
     [],
   );
   assert.ok(northsideChips);
   assert.equal(northsideChips.category, "Sides");
   assert.equal(northsideChips.description, undefined);
-  assert.match(northsideChips.evidence?.[0]?.text ?? "", /removed neighboring category\/menu text/i);
+  assert.match(
+    northsideChips.evidence?.[0]?.text ?? "",
+    /removed neighboring category\/menu text/i,
+  );
   assert.ok(northsideCrackers);
   assert.equal(northsideCrackers.category, "Sides");
   assert.equal(northsideCrackers.description, undefined);
-  assert.deepEqual(
-    [...(northsideCrackers.allergens ?? [])].sort(),
-    ["gluten", "sesame", "wheat"],
-  );
+  assert.deepEqual([...(northsideCrackers.allergens ?? [])].sort(), [
+    "gluten",
+    "sesame",
+    "wheat",
+  ]);
   assert.ok(northsideAvocadoToast);
   assert.equal(northsideAvocadoToast.category, "Breakfast");
-  assert.deepEqual(
-    [...(northsideAvocadoToast.allergens ?? [])].sort(),
-    ["egg", "gluten", "sesame", "wheat"],
-  );
+  assert.deepEqual([...(northsideAvocadoToast.allergens ?? [])].sort(), [
+    "egg",
+    "gluten",
+    "sesame",
+    "wheat",
+  ]);
   assert.ok(northsideSalmonSalad);
   assert.equal(northsideSalmonSalad.category, "Salads");
-  assert.deepEqual(
-    [...(northsideSalmonSalad.allergens ?? [])].sort(),
-    ["fish", "sesame"],
-  );
+  assert.deepEqual([...(northsideSalmonSalad.allergens ?? [])].sort(), [
+    "fish",
+    "sesame",
+  ]);
   assert.ok(northsideBlt);
   assert.equal(northsideBlt.category, "Sandwiches");
-  assert.deepEqual(
-    [...(northsideBlt.allergens ?? [])].sort(),
-    ["egg", "gluten", "wheat"],
-  );
+  assert.deepEqual([...(northsideBlt.allergens ?? [])].sort(), [
+    "egg",
+    "gluten",
+    "wheat",
+  ]);
   assert.ok(northsideGrilledCheese);
   assert.equal(northsideGrilledCheese.category, "Sandwiches");
-  assert.deepEqual(
-    [...(northsideGrilledCheese.allergens ?? [])].sort(),
-    ["gluten", "milk", "wheat"],
-  );
+  assert.deepEqual([...(northsideGrilledCheese.allergens ?? [])].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.equal(northsideArnoldPalmer?.category, "Beverages");
-  assert.equal(northsideArnoldPalmer?.description, "Half black iced tea, half house-made lemonade.");
+  assert.equal(
+    northsideArnoldPalmer?.description,
+    "Half black iced tea, half house-made lemonade.",
+  );
   assert.equal(northsideMatchaLatte?.category, "Beverages");
-  assert.equal(northsideMatchaLatte?.description, "Rishi matcha tea blended with your choice of milk. Hot or iced.");
-  assert.equal(northsideNosoMatcha?.description, "Fresh matcha combined with steamed milk and house-made Northside signature matcha syrup.");
+  assert.equal(
+    northsideMatchaLatte?.description,
+    "Rishi matcha tea blended with your choice of milk. Hot or iced.",
+  );
+  assert.equal(
+    northsideNosoMatcha?.description,
+    "Fresh matcha combined with steamed milk and house-made Northside signature matcha syrup.",
+  );
   assert.equal(northsideHotCoffee?.description, undefined);
   assert.equal(northsideSaladBowl?.description, undefined);
 
@@ -9924,17 +14457,31 @@ test("generated low-official-coverage repairs keep only row-backed official alle
       .sort(),
     [],
   );
-  for (const id of ["bbq", "mayo", "ranch", "thai-chili", "chicken-add-on", "shrimp-add-on"]) {
-    assert.equal(hisAndHers.items.some((item) => item.id === id), false);
+  for (const id of [
+    "bbq",
+    "mayo",
+    "ranch",
+    "thai-chili",
+    "chicken-add-on",
+    "shrimp-add-on",
+  ]) {
+    assert.equal(
+      hisAndHers.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(hisAndHersAvocadoToast?.category, "Breakfast");
   assert.deepEqual(
-    [...(hisAndHersAvocadoToast?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(hisAndHersAvocadoToast?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "milk", "wheat"],
   );
   assert.equal(hisAndHersFriedRice?.category, "Sides");
   assert.deepEqual(
-    [...(hisAndHersFriedRice?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(hisAndHersFriedRice?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "sesame", "soy", "wheat"],
   );
   assert.equal(hisAndHersQuesadilla?.category, "Appetizers");
@@ -9959,7 +14506,10 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "brioche-bun-side-super-greens-salad",
     "fresh-flavours",
   ]) {
-    assert.equal(moxies.items.some((item) => item.id === id), false);
+    assert.equal(
+      moxies.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(moxiesBlackenedShrimp?.category, "Seafood");
   assert.deepEqual(moxiesBlackenedShrimp?.allergens ?? [], ["shellfish"]);
@@ -9970,7 +14520,11 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(harbour);
   assert.deepEqual(
     [...new Set(harbour.items.map((item) => item.category))]
-      .filter((category) => ["Menu", "Restaurant", "The Harbour Grille 13188 Marina Way"].includes(category))
+      .filter((category) =>
+        ["Menu", "Restaurant", "The Harbour Grille 13188 Marina Way"].includes(
+          category,
+        ),
+      )
       .sort(),
     [],
   );
@@ -9983,21 +14537,30 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "rachel-thorne",
     "the-harbour-grille",
   ]) {
-    assert.equal(harbour.items.some((item) => item.id === id), false);
+    assert.equal(
+      harbour.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(harbourSouthwestEggRolls?.category, "Appetizers");
   assert.deepEqual(
-    [...(harbourSouthwestEggRolls?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(harbourSouthwestEggRolls?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "wheat"],
   );
   assert.equal(harbourCrabCakeSandwich?.category, "Sandwiches");
   assert.deepEqual(
-    [...(harbourCrabCakeSandwich?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(harbourCrabCakeSandwich?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "shellfish", "wheat"],
   );
   assert.equal(harbourSeafoodCarbonara?.category, "Pastas");
   assert.deepEqual(
-    [...(harbourSeafoodCarbonara?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(harbourSeafoodCarbonara?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["fish", "milk", "shellfish"],
   );
   assert.equal(harbourFishAndChips?.category, "Seafood");
@@ -10011,21 +14574,30 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     [],
   );
   for (const id of ["african-pepper-sauce", "crab-oscar", "hot-honey"]) {
-    assert.equal(huncho.items.some((item) => item.id === id), false);
+    assert.equal(
+      huncho.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(hunchoAhiTuna?.category, "Sushi");
   assert.deepEqual(
-    [...(hunchoAhiTuna?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(hunchoAhiTuna?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["fish", "shellfish"],
   );
   assert.equal(hunchoSeafoodGravy?.category, "Seafood");
   assert.deepEqual(
-    [...(hunchoSeafoodGravy?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(hunchoSeafoodGravy?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["fish", "shellfish"],
   );
   assert.equal(hunchoChickenParm?.category, "Entrees");
   assert.deepEqual(
-    [...(hunchoChickenParm?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(hunchoChickenParm?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "wheat"],
   );
   assert.equal(hunchoCheesecake?.category, "Desserts & Brunch");
@@ -10050,17 +14622,24 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "pinot-grigio-simonetti",
     "signature-drinks",
   ]) {
-    assert.equal(provost.items.some((item) => item.id === id), false);
+    assert.equal(
+      provost.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(provostMoscato, undefined);
   assert.equal(provostShrimpPasta?.category, "Pastas & Rice");
   assert.deepEqual(
-    [...(provostShrimpPasta?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(provostShrimpPasta?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "milk", "shellfish", "wheat"],
   );
   assert.equal(provostCrabCake?.category, "Seafood");
   assert.deepEqual(
-    [...(provostCrabCake?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(provostCrabCake?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "shellfish", "wheat"],
   );
   assert.equal(provostMacBalls?.category, "Starters");
@@ -10069,7 +14648,14 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(inca);
   assert.deepEqual(
     [...new Set(inca.items.map((item) => item.category))]
-      .filter((category) => ["Birthday Dinner Reservations", "Menu", "Restaurant", "Sides"].includes(category))
+      .filter((category) =>
+        [
+          "Birthday Dinner Reservations",
+          "Menu",
+          "Restaurant",
+          "Sides",
+        ].includes(category),
+      )
       .sort(),
     [],
   );
@@ -10084,21 +14670,30 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "party-sticks-add-on-dollar25-available-only-with-the-birthday-package",
     "two-beef-empanadas-filled",
   ]) {
-    assert.equal(inca.items.some((item) => item.id === id), false);
+    assert.equal(
+      inca.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(incaAcevichado?.category, "Sushi");
   assert.deepEqual(
-    [...(incaAcevichado?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(incaAcevichado?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "fish", "gluten", "milk", "shellfish", "wheat"],
   );
   assert.equal(incaPescado?.category, "Seafood");
   assert.deepEqual(
-    [...(incaPescado?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(incaPescado?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["fish", "milk", "shellfish"],
   );
   assert.equal(incaPanCon?.category, "Sandwiches");
   assert.deepEqual(
-    [...(incaPanCon?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(incaPanCon?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "wheat"],
   );
   assert.equal(incaSweetSampler?.category, "Desserts & Brunch");
@@ -10118,26 +14713,37 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "las-perdices",
     "use-html",
   ]) {
-    assert.equal(delhi.items.some((item) => item.id === id), false);
+    assert.equal(
+      delhi.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(delhiSamosas?.category, "Appetizers & Sides");
   assert.deepEqual(
-    [...(delhiSamosas?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(delhiSamosas?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "wheat"],
   );
   assert.equal(delhiSamosaChaat?.category, "Appetizers & Sides");
   assert.deepEqual(
-    [...(delhiSamosaChaat?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(delhiSamosaChaat?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "milk", "wheat"],
   );
   assert.equal(delhiButterNaan?.category, "Breads");
   assert.deepEqual(
-    [...(delhiButterNaan?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(delhiButterNaan?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "milk", "wheat"],
   );
   assert.equal(delhiPrawnMasala?.category, "Seafood");
   assert.deepEqual(
-    [...(delhiPrawnMasala?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(delhiPrawnMasala?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["mustard", "shellfish"],
   );
   assert.equal(delhiGulabJamun?.category, "Desserts");
@@ -10161,16 +14767,23 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "soups-and-salads",
     "wraps",
   ]) {
-    assert.equal(plaka.items.some((item) => item.id === id), false);
+    assert.equal(
+      plaka.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(plakaAvgolemeno?.category, "Soups & Salads");
   assert.deepEqual(
-    [...(plakaAvgolemeno?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(plakaAvgolemeno?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "wheat"],
   );
   assert.equal(plakaCalamari?.category, "Appetizers");
   assert.deepEqual(
-    [...(plakaCalamari?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(plakaCalamari?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "shellfish"],
   );
   assert.equal(plakaMoussaka?.category, "Entrees");
@@ -10182,7 +14795,14 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(oohhs);
   assert.deepEqual(
     [...new Set(oohhs.items.map((item) => item.category))]
-      .filter((category) => ["Menu", "Restaurant", "Oohhs Aahhs U Street", "Oohhs And Aahhs Fells Point 616 South Broadway"].includes(category))
+      .filter((category) =>
+        [
+          "Menu",
+          "Restaurant",
+          "Oohhs Aahhs U Street",
+          "Oohhs And Aahhs Fells Point 616 South Broadway",
+        ].includes(category),
+      )
       .sort(),
     [],
   );
@@ -10200,16 +14820,23 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "side-sauces",
     "your-event-our-feast",
   ]) {
-    assert.equal(oohhs.items.some((item) => item.id === id), false);
+    assert.equal(
+      oohhs.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(oohhsFriedCroaker?.category, "Seafood");
   assert.deepEqual(
-    [...(oohhsFriedCroaker?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(oohhsFriedCroaker?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "fish", "gluten", "wheat"],
   );
   assert.equal(oohhsCatfishTaco?.category, "Soul Tacos");
   assert.deepEqual(
-    [...(oohhsCatfishTaco?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(oohhsCatfishTaco?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "fish", "gluten", "milk", "wheat"],
   );
   assert.equal(oohhsShortRibsGrits?.category, "Brunch");
@@ -10250,16 +14877,32 @@ test("generated low-official-coverage repairs keep only row-backed official alle
       "restaurant-hours",
       "rose",
     ]) {
-      assert.equal(flowerChild.items.some((item) => item.id === id), false);
+      assert.equal(
+        flowerChild.items.some((item) => item.id === id),
+        false,
+      );
     }
   }
   assert.equal(flowerChildForbiddenRice?.category, "Bowls");
-  assert.equal(flowerChildForbiddenRice?.allergenSourceType, "official-allergen-menu");
-  assert.deepEqual([...(flowerChildForbiddenRice?.allergens ?? [])].sort(), ["sesame", "soy"]);
+  assert.equal(
+    flowerChildForbiddenRice?.allergenSourceType,
+    "official-allergen-menu",
+  );
+  assert.deepEqual([...(flowerChildForbiddenRice?.allergens ?? [])].sort(), [
+    "sesame",
+    "soy",
+  ]);
   assert.equal(flowerChildAvocadoCaesar?.category, "Salads");
-  assert.deepEqual([...(flowerChildAvocadoCaesar?.allergens ?? [])].sort(), ["milk", "sesame", "wheat"]);
+  assert.deepEqual([...(flowerChildAvocadoCaesar?.allergens ?? [])].sort(), [
+    "milk",
+    "sesame",
+    "wheat",
+  ]);
   assert.equal(flowerChildClassicHummus?.category, "Starters");
-  assert.deepEqual([...(flowerChildClassicHummus?.allergens ?? [])].sort(), ["sesame", "wheat"]);
+  assert.deepEqual([...(flowerChildClassicHummus?.allergens ?? [])].sort(), [
+    "sesame",
+    "wheat",
+  ]);
   assert.equal(flowerChildMac?.category, "Sides");
   assert.deepEqual(flowerChildMac?.allergens ?? [], ["milk"]);
   assert.equal(flowerChildShrimp?.category, "Proteins");
@@ -10269,7 +14912,9 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     assert.ok(trueFoodRestaurant);
     assert.deepEqual(
       [...new Set(trueFoodRestaurant.items.map((item) => item.category))]
-        .filter((category) => ["Dessert", "Healthy", "Menu", "Whats New"].includes(category))
+        .filter((category) =>
+          ["Dessert", "Healthy", "Menu", "Whats New"].includes(category),
+        )
         .sort(),
       [],
     );
@@ -10281,21 +14926,40 @@ test("generated low-official-coverage repairs keep only row-backed official alle
       "v1a0",
       "whats-new",
     ]) {
-      assert.equal(trueFoodRestaurant.items.some((item) => item.id === id), false);
+      assert.equal(
+        trueFoodRestaurant.items.some((item) => item.id === id),
+        false,
+      );
     }
   }
   assert.equal(trueFoodAncientGrain?.category, "Bowls & Entrees");
-  assert.equal(trueFoodAncientGrain?.allergenSourceType, "official-allergen-menu");
-  assert.deepEqual(
-    [...(trueFoodAncientGrain?.allergens ?? [])].sort(),
-    ["gluten", "sesame", "soy", "tree-nut", "wheat"],
+  assert.equal(
+    trueFoodAncientGrain?.allergenSourceType,
+    "official-allergen-menu",
   );
+  assert.deepEqual([...(trueFoodAncientGrain?.allergens ?? [])].sort(), [
+    "gluten",
+    "sesame",
+    "soy",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.equal(trueFoodBurger?.category, "Burgers & Sandwiches");
-  assert.deepEqual([...(trueFoodBurger?.allergens ?? [])].sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual([...(trueFoodBurger?.allergens ?? [])].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.equal(trueFoodGuacamole?.category, "Starters");
-  assert.deepEqual([...(trueFoodGuacamole?.allergens ?? [])].sort(), ["gluten", "wheat"]);
+  assert.deepEqual([...(trueFoodGuacamole?.allergens ?? [])].sort(), [
+    "gluten",
+    "wheat",
+  ]);
   assert.equal(trueFoodPanang?.category, "Bowls & Entrees");
-  assert.deepEqual([...(trueFoodPanang?.allergens ?? [])].sort(), ["fish", "shellfish"]);
+  assert.deepEqual([...(trueFoodPanang?.allergens ?? [])].sort(), [
+    "fish",
+    "shellfish",
+  ]);
   assert.equal(trueFoodFries?.category, "Sides & Sauces");
   assert.equal(trueFoodFries?.allergenSourceType, "official-allergen-menu");
   assert.equal(trueFoodBlueberry?.category, "Beverages");
@@ -10318,21 +14982,30 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "weekly-events",
     "whats-new",
   ]) {
-    assert.equal(jimmys.items.some((item) => item.id === id), false);
+    assert.equal(
+      jimmys.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(jimmysBeefOnWeck?.category, "Burgers & Sandwiches");
   assert.deepEqual(
-    [...(jimmysBeefOnWeck?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(jimmysBeefOnWeck?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "wheat"],
   );
   assert.equal(jimmysGrilledCheese?.category, "Burgers & Sandwiches");
   assert.deepEqual(
-    [...(jimmysGrilledCheese?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(jimmysGrilledCheese?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "milk", "wheat"],
   );
   assert.equal(jimmysHotHamSwiss?.category, "Burgers & Sandwiches");
   assert.deepEqual(
-    [...(jimmysHotHamSwiss?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(jimmysHotHamSwiss?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "milk", "wheat"],
   );
   assert.equal(jimmysJottTots?.category, "Appetizers");
@@ -10344,20 +15017,37 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(teddy);
   assert.deepEqual(
     [...new Set(teddy.items.map((item) => item.category))]
-      .filter((category) => ["Coffee & Tea", "Dessert", "Food", "Menu", "Passover Menu.Pdf", "Soups from Scratch", "Tasty Things to Eat"].includes(category))
+      .filter((category) =>
+        [
+          "Coffee & Tea",
+          "Dessert",
+          "Food",
+          "Menu",
+          "Passover Menu.Pdf",
+          "Soups from Scratch",
+          "Tasty Things to Eat",
+        ].includes(category),
+      )
       .sort(),
     [],
   );
-  assert.equal(teddy.items.some((item) => item.id === "passover-menu-opens-a-pdf"), false);
+  assert.equal(
+    teddy.items.some((item) => item.id === "passover-menu-opens-a-pdf"),
+    false,
+  );
   assert.equal(teddyStations, undefined);
   assert.equal(teddyIceCream?.category, "Desserts");
   assert.deepEqual(
-    [...(teddyIceCream?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(teddyIceCream?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["milk"],
   );
   assert.equal(teddyGrilledCheese?.category, "Kids");
   assert.deepEqual(
-    [...(teddyGrilledCheese?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(teddyGrilledCheese?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "milk", "wheat"],
   );
   assert.equal(teddyMatzohBallSoup?.category, "Soups");
@@ -10370,16 +15060,26 @@ test("generated low-official-coverage repairs keep only row-backed official alle
       .sort(),
     [],
   );
-  assert.equal(joon.items.some((item) => item.id === "sumac"), false);
-  assert.equal(joon.items.some((item) => item.id === "upgrade-cucumber-salad"), false);
+  assert.equal(
+    joon.items.some((item) => item.id === "sumac"),
+    false,
+  );
+  assert.equal(
+    joon.items.some((item) => item.id === "upgrade-cucumber-salad"),
+    false,
+  );
   assert.equal(joonCucumberSalad?.category, "Salads");
   assert.deepEqual(
-    [...(joonCucumberSalad?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(joonCucumberSalad?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["milk", "tree-nut"],
   );
   assert.equal(joonGilaniKabob?.category, "Seafood");
   assert.deepEqual(
-    [...(joonGilaniKabob?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(joonGilaniKabob?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["fish", "shellfish"],
   );
   assert.equal(joonDuckFesenjoon?.category, "Mains");
@@ -10393,7 +15093,9 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(society);
   assert.deepEqual(
     [...new Set(society.items.map((item) => item.category))]
-      .filter((category) => ["Food", "Menu", "Poboys", "Restaurant", "Soup"].includes(category))
+      .filter((category) =>
+        ["Food", "Menu", "Poboys", "Restaurant", "Soup"].includes(category),
+      )
       .sort(),
     [],
   );
@@ -10404,16 +15106,23 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "wednesday-friday-400-pm-700-pm",
     "your-seat-awaits-at-silver-springs-society-restaurant-and-lounge",
   ]) {
-    assert.equal(society.items.some((item) => item.id === id), false);
+    assert.equal(
+      society.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(societyCatfishSandwich?.category, "Sandwiches");
   assert.deepEqual(
-    [...(societyCatfishSandwich?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(societyCatfishSandwich?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "fish", "gluten", "milk", "wheat"],
   );
   assert.equal(societyFriedShrimp?.category, "Baskets");
   assert.deepEqual(
-    [...(societyFriedShrimp?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(societyFriedShrimp?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "shellfish", "wheat"],
   );
   assert.equal(societyChickenSandwich?.category, "Sandwiches");
@@ -10422,14 +15131,21 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.equal(societyShrimp?.category, "Appetizers");
   assert.equal(societyBisque?.category, "Soups");
   assert.deepEqual(
-    [...(societyBisque?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(societyBisque?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["fish", "milk", "shellfish"],
   );
   assert.equal(societyCatfishPoboy?.category, "Sandwiches");
   assert.equal(societyHoneyBiscuit?.category, "Sides & Additions");
 
   assert.ok(silverBethesda);
-  assert.deepEqual([...new Set(silverBethesda.items.map((item) => item.category))].filter((category) => category === "Restaurant"), []);
+  assert.deepEqual(
+    [...new Set(silverBethesda.items.map((item) => item.category))].filter(
+      (category) => category === "Restaurant",
+    ),
+    [],
+  );
   for (const id of [
     "breakfast-brunch-entrees",
     "chimichurri-chicken-wings-caramel-french-toast-and-eggs",
@@ -10438,30 +15154,58 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "goat-cheese-bruschetta-caramel-french-toast",
     "lamb-meatballs-sharting-plate-bison-huevos-rancheros",
   ]) {
-    assert.equal(silverBethesda.items.some((item) => item.id === id), false);
+    assert.equal(
+      silverBethesda.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(silverAhiTunaPoke?.category, "Salads + Bowls");
   assert.equal(silverAhiTunaPoke?.allergenSourceType, "official-allergen-menu");
-  assert.deepEqual([...(silverAhiTunaPoke?.allergens ?? [])].sort(), ["fish", "milk", "peanut", "sesame", "soy", "wheat"]);
+  assert.deepEqual([...(silverAhiTunaPoke?.allergens ?? [])].sort(), [
+    "fish",
+    "milk",
+    "peanut",
+    "sesame",
+    "soy",
+    "wheat",
+  ]);
   assert.equal(silverBeyondBaja?.category, "Burgers + Sandwiches");
   assert.equal(silverBeyondBaja?.allergenSourceType, "official-allergen-menu");
-  assert.deepEqual([...(silverBeyondBaja?.allergens ?? [])].sort(), ["milk", "peanut", "wheat"]);
+  assert.deepEqual([...(silverBeyondBaja?.allergens ?? [])].sort(), [
+    "milk",
+    "peanut",
+    "wheat",
+  ]);
   assert.equal(silverKidsAppleJuice?.category, "Kids");
-  assert.equal(silverKidsAppleJuice?.allergenSourceType, "official-allergen-menu");
+  assert.equal(
+    silverKidsAppleJuice?.allergenSourceType,
+    "official-allergen-menu",
+  );
   assert.deepEqual(silverKidsAppleJuice?.allergens ?? [], ["milk"]);
   assert.equal(silverLambMeatballs?.name, "Lamb Meatballs Sharing Plate");
   assert.equal(silverLambMeatballs?.category, "Sharing Plates");
-  assert.equal(silverLambMeatballs?.allergenSourceType, "official-allergen-menu");
+  assert.equal(
+    silverLambMeatballs?.allergenSourceType,
+    "official-allergen-menu",
+  );
 
   assert.ok(tastyNook);
   assert.deepEqual(
     [...new Set(tastyNook.items.map((item) => item.category))]
-      .filter((category) => ["Items", "mexican;coffee_shop;breakfast"].includes(category))
+      .filter((category) =>
+        ["Items", "mexican;coffee_shop;breakfast"].includes(category),
+      )
       .sort(),
     [],
   );
-  assert.equal(tastyNook.items.some((item) => item.id === "omelettes"), false);
-  assert.equal(tastyNook.items.some((item) => item.id === "escialty-coffees"), false);
+  assert.equal(
+    tastyNook.items.some((item) => item.id === "omelettes"),
+    false,
+  );
+  assert.equal(
+    tastyNook.items.some((item) => item.id === "escialty-coffees"),
+    false,
+  );
   assert.equal(tastyBurger?.category, "Burgers & Sandwiches");
   assert.equal(tastyPancakes?.category, "Sweet Breakfast");
   assert.equal(tastyCarneAsada?.category, "Latin Plates");
@@ -10470,7 +15214,12 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.equal(tastyPattySausage?.category, "Sides & Add-ons");
 
   assert.ok(clydesGallery);
-  assert.deepEqual([...new Set(clydesGallery.items.map((item) => item.category))].filter((category) => category === "American"), []);
+  assert.deepEqual(
+    [...new Set(clydesGallery.items.map((item) => item.category))].filter(
+      (category) => category === "American",
+    ),
+    [],
+  );
   for (const id of [
     "cans",
     "chipotle-buttermilk-dressing-parmesan",
@@ -10480,7 +15229,10 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "mustard-dipping-sauce",
     "q-is-parking-available-nearby",
   ]) {
-    assert.equal(clydesGallery.items.some((item) => item.id === id), false);
+    assert.equal(
+      clydesGallery.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(clydesBurger?.category, "Burgers & Sandwiches");
   assert.equal(clydesCrabCake?.category, "Raw Bar & Seafood");
@@ -10493,66 +15245,114 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(ilili);
   assert.deepEqual(
     [...new Set(ilili.items.map((item) => item.category))]
-      .filter((category) => ["Coffee & Tea", "Dessert", "Ililis Menu Dc", "Menu Dc"].includes(category))
+      .filter((category) =>
+        ["Coffee & Tea", "Dessert", "Ililis Menu Dc", "Menu Dc"].includes(
+          category,
+        ),
+      )
       .sort(),
     [],
   );
-  assert.equal(ilili.items.some((item) => item.id === "velvety"), false);
+  assert.equal(
+    ilili.items.some((item) => item.id === "velvety"),
+    false,
+  );
   assert.equal(ililiHotTea?.category, "Beverages");
   assert.equal(ililiCoffee?.category, "Beverages");
   assert.equal(ililiMintTea?.category, "Beverages");
   assert.equal(ililiIceCream?.category, "Desserts");
   assert.deepEqual(
-    [...(ililiIceCream?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(ililiIceCream?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["milk", "sesame"],
   );
 
   assert.ok(sunflower);
   assert.deepEqual(
     [...new Set(sunflower.items.map((item) => item.category))]
-      .filter((category) => ["Dessert", "Items", "Salad", "Soup"].includes(category))
+      .filter((category) =>
+        ["Dessert", "Items", "Salad", "Soup"].includes(category),
+      )
       .sort(),
     [],
   );
-  assert.equal(sunflower.items.some((item) => item.id === "x7-sauce"), false);
+  assert.equal(
+    sunflower.items.some((item) => item.id === "x7-sauce"),
+    false,
+  );
   assert.equal(sunflowerEdamame?.category, "Small Bites");
   assert.equal(sunflowerEdamame?.allergenSourceType, "official-ingredients");
-  assert.deepEqual([...(sunflowerEdamame?.allergens ?? [])].sort(), ["peanut", "soy"]);
+  assert.deepEqual([...(sunflowerEdamame?.allergens ?? [])].sort(), [
+    "peanut",
+    "soy",
+  ]);
   assert.equal(sunflowerMushrooms?.category, "Sunflower Specialties");
   assert.equal(sunflowerMushrooms?.allergenSourceType, "official-ingredients");
-  assert.deepEqual([...(sunflowerMushrooms?.allergens ?? [])].sort(), ["peanut", "soy"]);
+  assert.deepEqual([...(sunflowerMushrooms?.allergens ?? [])].sort(), [
+    "peanut",
+    "soy",
+  ]);
   assert.equal(sunflowerOrganicSpinachWontonSoup?.category, "Soups");
-  assert.equal(sunflowerOrganicSpinachWontonSoup?.allergenSourceType, "official-ingredients");
-  assert.deepEqual([...(sunflowerOrganicSpinachWontonSoup?.allergens ?? [])].sort(), ["gluten", "tree-nut", "wheat"]);
+  assert.equal(
+    sunflowerOrganicSpinachWontonSoup?.allergenSourceType,
+    "official-ingredients",
+  );
+  assert.deepEqual(
+    [...(sunflowerOrganicSpinachWontonSoup?.allergens ?? [])].sort(),
+    ["gluten", "tree-nut", "wheat"],
+  );
   assert.equal(sunflowerVeggieShrimpTempura?.category, "Sushi");
   assert.deepEqual(
-    [...(sunflowerVeggieShrimpTempura?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(sunflowerVeggieShrimpTempura?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "wheat"],
   );
   assert.equal(
-    sunflowerVeggieShrimpTempura?.inferenceSuppressions?.some((suppression) => suppression.id === "shellfish"),
+    sunflowerVeggieShrimpTempura?.inferenceSuppressions?.some(
+      (suppression) => suppression.id === "shellfish",
+    ),
     true,
   );
   assert.deepEqual(
-    [...(sunflowerTornado?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(sunflowerTornado?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "sesame", "wheat"],
   );
-  assert.equal(sunflowerTornado?.inferenceSuppressions?.some((suppression) => suppression.id === "fish"), true);
-  assert.equal(sunflowerTornado?.inferenceSuppressions?.some((suppression) => suppression.id === "shellfish"), true);
+  assert.equal(
+    sunflowerTornado?.inferenceSuppressions?.some(
+      (suppression) => suppression.id === "fish",
+    ),
+    true,
+  );
+  assert.equal(
+    sunflowerTornado?.inferenceSuppressions?.some(
+      (suppression) => suppression.id === "shellfish",
+    ),
+    true,
+  );
   assert.deepEqual(
-    [...(sunflowerMockEel?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(sunflowerMockEel?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["sesame"],
   );
   assert.equal(sunflowerShrimpGarden?.category, "Sunflower Specialties");
   assert.deepEqual(sunflowerShrimpGarden?.inferredAllergenSignals ?? [], []);
   assert.equal(sunflowerGfCheesecake?.category, "Desserts");
   assert.deepEqual(
-    [...(sunflowerGfCheesecake?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(sunflowerGfCheesecake?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["milk"],
   );
   assert.equal(sunflowerChocolateMousse?.category, "Desserts");
   assert.deepEqual(
-    [...(sunflowerChocolateMousse?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(sunflowerChocolateMousse?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "soy", "wheat"],
   );
 
@@ -10560,30 +15360,52 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     assert.ok(farmersRestaurant);
     assert.deepEqual(
       [...new Set(farmersRestaurant.items.map((item) => item.category))]
-        .filter((category) => ["American", "American / Farm-to-table", "Dessert", "Menu"].includes(category))
+        .filter((category) =>
+          ["American", "American / Farm-to-table", "Dessert", "Menu"].includes(
+            category,
+          ),
+        )
         .sort(),
       [],
     );
-    assert.equal(farmersRestaurant.items.some((item) => item.id === "chocolate" && item.category === "Menu"), false);
+    assert.equal(
+      farmersRestaurant.items.some(
+        (item) => item.id === "chocolate" && item.category === "Menu",
+      ),
+      false,
+    );
 
-    const bananaCreamPie = farmersRestaurant.items.find((item) => item.id === "banana-cream-pie");
-    const decaf = farmersRestaurant.items.find((item) => item.id === "farmers-decaf");
+    const bananaCreamPie = farmersRestaurant.items.find(
+      (item) => item.id === "banana-cream-pie",
+    );
+    const decaf = farmersRestaurant.items.find(
+      (item) => item.id === "farmers-decaf",
+    );
 
     assert.equal(bananaCreamPie?.category, "Desserts");
     assert.equal(bananaCreamPie?.description, undefined);
     assert.deepEqual(
-      [...(bananaCreamPie?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+      [...(bananaCreamPie?.inferredAllergenSignals ?? [])]
+        .map((signal) => signal.id)
+        .sort(),
       ["egg", "gluten", "milk", "wheat"],
     );
     assert.equal(decaf?.category, "Beverages");
-    assert.equal(/milk chocolate|creamy/i.test(decaf?.description ?? ""), false);
+    assert.equal(
+      /milk chocolate|creamy/i.test(decaf?.description ?? ""),
+      false,
+    );
     assert.deepEqual(decaf?.inferredAllergenSignals ?? [], []);
   }
 
   assert.ok(maggie);
   assert.deepEqual(
     [...new Set(maggie.items.map((item) => item.category))]
-      .filter((category) => ["American", "Menu", "Menus", "Our Story", "Springfield Va"].includes(category))
+      .filter((category) =>
+        ["American", "Menu", "Menus", "Our Story", "Springfield Va"].includes(
+          category,
+        ),
+      )
       .sort(),
     [],
   );
@@ -10603,16 +15425,23 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "take-out",
     "team-portal",
   ]) {
-    assert.equal(maggie.items.some((item) => item.id === id), false);
+    assert.equal(
+      maggie.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(maggieBurgerSliders?.category, "Burgers & Sandwiches");
   assert.deepEqual(
-    [...(maggieBurgerSliders?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(maggieBurgerSliders?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "milk", "sesame", "wheat"],
   );
   assert.equal(maggieAhiTaco?.category, "Tacos & Fajitas");
   assert.deepEqual(
-    [...(maggieAhiTaco?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(maggieAhiTaco?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["fish"],
   );
   assert.equal(maggieFettuccine?.category, "Pastas, Rice & Bowls");
@@ -10624,21 +15453,34 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(afghania);
   assert.deepEqual(
     [...new Set(afghania.items.map((item) => item.category))]
-      .filter((category) => ["Items", "Menu 1", "Restaurant"].includes(category))
+      .filter((category) =>
+        ["Items", "Menu 1", "Restaurant"].includes(category),
+      )
       .sort(),
     [],
   );
-  for (const id of ["chops-and-kabobs", "raw-beef-tenderloin-1lb", "raw-salmon-1lb"]) {
-    assert.equal(afghania.items.some((item) => item.id === id), false);
+  for (const id of [
+    "chops-and-kabobs",
+    "raw-beef-tenderloin-1lb",
+    "raw-salmon-1lb",
+  ]) {
+    assert.equal(
+      afghania.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(afghaniaBurger?.category, "Burgers & Sandwiches");
   assert.deepEqual(
-    [...(afghaniaBurger?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(afghaniaBurger?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "sesame", "wheat"],
   );
   assert.equal(afghaniaBistroBurger?.category, "Burgers & Sandwiches");
   assert.deepEqual(
-    [...(afghaniaBistroBurger?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(afghaniaBistroBurger?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "sesame", "wheat"],
   );
   assert.equal(afghaniaNakhoudChalou?.category, "Vegetarian Entrees");
@@ -10646,7 +15488,9 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.equal(afghaniaChalou?.category, "Sides & Sauces");
   assert.equal(afghaniaSalmon?.category, "Seafood");
   assert.deepEqual(
-    [...(afghaniaSalmon?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(afghaniaSalmon?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["fish"],
   );
   assert.equal(afghaniaChickenLawaan?.category, "Entrees");
@@ -10655,7 +15499,9 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(aracosia);
   assert.deepEqual(
     [...new Set(aracosia.items.map((item) => item.category))]
-      .filter((category) => ["afghan", "Items", "Restaurant"].includes(category))
+      .filter((category) =>
+        ["afghan", "Items", "Restaurant"].includes(category),
+      )
       .sort(),
     [],
   );
@@ -10664,21 +15510,30 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "billecart-salmon-rose-champagne-nv",
     "mothers-day-special",
   ]) {
-    assert.equal(aracosia.items.some((item) => item.id === id), false);
+    assert.equal(
+      aracosia.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(aracosiaBistroBurger?.category, "Burgers & Sandwiches");
   assert.deepEqual(
-    [...(aracosiaBistroBurger?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(aracosiaBistroBurger?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "sesame", "wheat"],
   );
   assert.equal(aracosiaAushak?.category, "Dumplings & Turnovers");
   assert.deepEqual(
-    [...(aracosiaAushak?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(aracosiaAushak?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "milk", "wheat"],
   );
   assert.equal(aracosiaSalmonWrap?.category, "Seafood");
   assert.deepEqual(
-    [...(aracosiaSalmonWrap?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(aracosiaSalmonWrap?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["fish", "gluten", "milk", "wheat"],
   );
   assert.equal(aracosiaQabuli?.category, "Sides & Sauces");
@@ -10692,28 +15547,47 @@ test("generated low-official-coverage repairs keep only row-backed official alle
       .sort(),
     [],
   );
-  for (const id of ["details", "go-to-top", "purchase-tickets", "page-load-link"]) {
-    assert.equal(botanero.items.some((item) => item.id === id), false);
+  for (const id of [
+    "details",
+    "go-to-top",
+    "purchase-tickets",
+    "page-load-link",
+  ]) {
+    assert.equal(
+      botanero.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.ok(botanero.items.length >= 65);
   assert.equal(botaneroCalamari?.category, "Seafood");
   assert.deepEqual(
-    [...(botaneroCalamari?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(botaneroCalamari?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "shellfish", "wheat"],
   );
   assert.equal(botaneroCrabCakeSandwich?.category, "Weekend Brunch");
   assert.deepEqual(
-    [...(botaneroCrabCakeSandwich?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(botaneroCrabCakeSandwich?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "sesame", "shellfish", "wheat"],
   );
   assert.equal(botaneroBurger?.category, "Weekend Brunch");
   assert.deepEqual(
-    [...(botaneroBurger?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(botaneroBurger?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "mustard", "sesame", "wheat"],
   );
   assert.equal(botaneroFlatbread?.category, "Flatbreads & Dips");
   assert.equal(botaneroSalmonBenedict?.category, "Weekend Brunch");
-  assert.equal(/SEARED SCALLOPS|WEEKEND BRUNCH|WHITE RED|PURCHASE TICKETS/i.test(botaneroCalamari?.description ?? ""), false);
+  assert.equal(
+    /SEARED SCALLOPS|WEEKEND BRUNCH|WHITE RED|PURCHASE TICKETS/i.test(
+      botaneroCalamari?.description ?? "",
+    ),
+    false,
+  );
 
   assert.ok(uzu);
   assert.deepEqual(
@@ -10722,47 +15596,75 @@ test("generated low-official-coverage repairs keep only row-backed official alle
       .sort(),
     [],
   );
-  for (const id of ["chunin", "genin", "jonin", "number-of-captions", "responsive-support", "shuffle-slides", "user-friendly-interface"]) {
-    assert.equal(uzu.items.some((item) => item.id === id), false);
+  for (const id of [
+    "chunin",
+    "genin",
+    "jonin",
+    "number-of-captions",
+    "responsive-support",
+    "shuffle-slides",
+    "user-friendly-interface",
+  ]) {
+    assert.equal(
+      uzu.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(uzuAsparagusTempura?.category, "Side Dishes / Soups");
   assert.deepEqual(
-    [...(uzuAsparagusTempura?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(uzuAsparagusTempura?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "fish", "gluten", "wheat"],
   );
   assert.equal(uzuAvocadoRoll?.category, "Vegan");
   assert.deepEqual(uzuAvocadoRoll?.inferredAllergenSignals ?? [], []);
   assert.equal(uzuHawaiianTruffle?.category, "Special Rolls");
   assert.deepEqual(
-    [...(uzuHawaiianTruffle?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(uzuHawaiianTruffle?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "fish", "gluten", "shellfish", "wheat"],
   );
   assert.equal(uzuOysterPonzu?.category, "Nigiri");
   assert.deepEqual(
-    [...(uzuOysterPonzu?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(uzuOysterPonzu?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["fish", "gluten", "shellfish", "soy", "wheat"],
   );
   assert.equal(uzuBossCoffee?.category, "Beverages");
   assert.deepEqual(uzuBossCoffee?.inferredAllergenSignals ?? [], []);
   assert.equal(uzuMochi?.category, "Desserts");
   assert.deepEqual(
-    [...(uzuMochi?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(uzuMochi?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["milk"],
   );
 
   assert.ok(secretGarden);
-  assert.deepEqual([...new Set(secretGarden.items.map((item) => item.category))].filter((category) => category === "American"), []);
+  assert.deepEqual(
+    [...new Set(secretGarden.items.map((item) => item.category))].filter(
+      (category) => category === "American",
+    ),
+    [],
+  );
   assert.equal(secretGardenAsparagus?.category, "Sides");
   assert.equal(secretGardenAsparagus?.description, undefined);
   assert.deepEqual(secretGardenAsparagus?.inferredAllergenSignals ?? [], []);
   assert.equal(secretGardenBahnMi?.category, "Burgers & Sandwiches");
   assert.deepEqual(
-    [...(secretGardenBahnMi?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(secretGardenBahnMi?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "soy", "wheat"],
   );
   assert.equal(secretGardenCrabCake?.category, "Burgers & Sandwiches");
   assert.deepEqual(
-    [...(secretGardenCrabCake?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(secretGardenCrabCake?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "sesame", "shellfish", "wheat"],
   );
   assert.equal(secretGardenHalfTea?.category, "Beverages");
@@ -10770,12 +15672,16 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.deepEqual(secretGardenHalfTea?.inferredAllergenSignals ?? [], []);
   assert.equal(secretGardenSalmon?.category, "Seafood");
   assert.deepEqual(
-    [...(secretGardenSalmon?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(secretGardenSalmon?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["fish", "sesame"],
   );
   assert.equal(secretGardenFrenchToast?.category, "Breakfast");
   assert.deepEqual(
-    [...(secretGardenFrenchToast?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(secretGardenFrenchToast?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "wheat"],
   );
 
@@ -10783,9 +15689,15 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.deepEqual(
     [...new Set(jukeBox.items.map((item) => item.category))]
       .filter((category) =>
-        ["american", "Menu", "Jbd Interactive Cc Auth Form.Pdf", "Desserts Ice Cream", "Outreach", "Community Impact", "The Basics"].includes(
-          category,
-        ),
+        [
+          "american",
+          "Menu",
+          "Jbd Interactive Cc Auth Form.Pdf",
+          "Desserts Ice Cream",
+          "Outreach",
+          "Community Impact",
+          "The Basics",
+        ].includes(category),
       )
       .sort(),
     [],
@@ -10801,21 +15713,30 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "lettuce-tomato-and-mayo",
     "topped-with-brown-beef-gravy",
   ]) {
-    assert.equal(jukeBox.items.some((item) => item.id === id), false);
+    assert.equal(
+      jukeBox.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(jukeBoxBurger?.category, "Burgers & Sandwiches");
   assert.deepEqual(
-    [...(jukeBoxBurger?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(jukeBoxBurger?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "milk", "sesame", "wheat"],
   );
   assert.equal(jukeBoxChickenParm?.category, "Entrees");
   assert.deepEqual(
-    [...(jukeBoxChickenParm?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(jukeBoxChickenParm?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "wheat"],
   );
   assert.equal(jukeBoxFishChips?.category, "Seafood");
   assert.deepEqual(
-    [...(jukeBoxFishChips?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(jukeBoxFishChips?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "fish", "gluten", "wheat"],
   );
   assert.equal(jukeBoxBlackAngus?.category, "Entrees");
@@ -10824,12 +15745,19 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.deepEqual(jukeBoxCoffee?.inferredAllergenSignals ?? [], []);
   assert.equal(jukeBoxWaffleSundae?.category, "Desserts");
   assert.deepEqual(
-    [...(jukeBoxWaffleSundae?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(jukeBoxWaffleSundae?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "wheat"],
   );
 
   assert.ok(redHotBlue);
-  assert.deepEqual([...new Set(redHotBlue.items.map((item) => item.category))].filter((category) => category === "american"), []);
+  assert.deepEqual(
+    [...new Set(redHotBlue.items.map((item) => item.category))].filter(
+      (category) => category === "american",
+    ),
+    [],
+  );
   for (const id of [
     "bbq-plates",
     "favorites",
@@ -10842,40 +15770,64 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "the-kettle",
     "to-go-drinks",
   ]) {
-    assert.equal(redHotBlue.items.some((item) => item.id === id), false);
+    assert.equal(
+      redHotBlue.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(redHotBlueWingsTray?.category, "Catering & Bulk");
   assert.deepEqual(
-    [...(redHotBlueWingsTray?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(redHotBlueWingsTray?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "milk"],
   );
   assert.equal(redHotBlueNachos?.category, "Starters");
   assert.deepEqual(
-    [...(redHotBlueNachos?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(redHotBlueNachos?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["milk"],
   );
   assert.equal(redHotBlueCatfish?.category, "Seafood");
-  assert.equal(/Garden or Caesar Side Salad/i.test(redHotBlueCatfish?.description ?? ""), false);
+  assert.equal(
+    /Garden or Caesar Side Salad/i.test(redHotBlueCatfish?.description ?? ""),
+    false,
+  );
   assert.deepEqual(
-    [...(redHotBlueCatfish?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(redHotBlueCatfish?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "fish", "gluten", "wheat"],
   );
   assert.equal(redHotBluePulledPork?.category, "BBQ Plates & Ribs");
   assert.deepEqual(redHotBluePulledPork?.inferredAllergenSignals ?? [], []);
   assert.equal(redHotBlueClassicBurger?.category, "Sandwiches & Burgers");
-  assert.equal(/Add cheese/i.test(redHotBlueClassicBurger?.description ?? ""), false);
+  assert.equal(
+    /Add cheese/i.test(redHotBlueClassicBurger?.description ?? ""),
+    false,
+  );
   assert.deepEqual(
-    [...(redHotBlueClassicBurger?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(redHotBlueClassicBurger?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "sesame", "wheat"],
   );
   assert.equal(redHotBlueHickoryBurger?.category, "Sandwiches & Burgers");
   assert.deepEqual(
-    [...(redHotBlueHickoryBurger?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(redHotBlueHickoryBurger?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "milk", "sesame", "wheat"],
   );
 
   assert.ok(novaEuropa);
-  assert.deepEqual([...new Set(novaEuropa.items.map((item) => item.category))].filter((category) => category === "Restaurant"), []);
+  assert.deepEqual(
+    [...new Set(novaEuropa.items.map((item) => item.category))].filter(
+      (category) => category === "Restaurant",
+    ),
+    [],
+  );
   for (const id of [
     "a-selection-of-complete-dinners-for-4-offered-for-carryout",
     "coffeetea-295-espresso",
@@ -10885,31 +15837,44 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "served-tuesday-sunday-5-pm-930pm",
     "stuffed-with-cheese-in-marinara-sauce",
   ]) {
-    assert.equal(novaEuropa.items.some((item) => item.id === id), false);
+    assert.equal(
+      novaEuropa.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(novaEuropaCalamari?.category, "Seafood");
   assert.deepEqual(
-    [...(novaEuropaCalamari?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(novaEuropaCalamari?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["shellfish"],
   );
   assert.equal(novaEuropaSeafoodPot?.category, "Seafood");
   assert.deepEqual(
-    [...(novaEuropaSeafoodPot?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(novaEuropaSeafoodPot?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["fish", "gluten", "shellfish", "wheat"],
   );
   assert.equal(novaEuropaChickenParm?.category, "Chicken");
   assert.deepEqual(
-    [...(novaEuropaChickenParm?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(novaEuropaChickenParm?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "wheat"],
   );
   assert.equal(novaEuropaSteakPortuguese?.category, "Steaks & Chops");
   assert.deepEqual(
-    [...(novaEuropaSteakPortuguese?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(novaEuropaSteakPortuguese?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "sulfites"],
   );
   assert.equal(novaEuropaCheesecake?.category, "Desserts");
   assert.deepEqual(
-    [...(novaEuropaCheesecake?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(novaEuropaCheesecake?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "wheat"],
   );
   assert.equal(novaEuropaHouseSalad?.category, "Salads");
@@ -10918,14 +15883,18 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.equal(novaEuropaAlfredo?.category, "Pasta");
   assert.equal(novaEuropaBrie?.category, "Starters");
   assert.deepEqual(
-    [...(novaEuropaBrie?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(novaEuropaBrie?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["milk"],
   );
 
   assert.ok(cuates);
   assert.deepEqual(
     [...new Set(cuates.items.map((item) => item.category))]
-      .filter((category) => ["Items", "mexican", "Restaurant"].includes(category))
+      .filter((category) =>
+        ["Items", "mexican", "Restaurant"].includes(category),
+      )
       .sort(),
     [],
   );
@@ -10940,54 +15909,81 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "sides-tray",
     "street-tacos-a-la-carte",
   ]) {
-    assert.equal(cuates.items.some((item) => item.id === id), false);
+    assert.equal(
+      cuates.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(cuatesAztecaSalad?.category, "Salads");
-  assert.equal(/Romain lettuce|sheered cheese/i.test(cuatesAztecaSalad?.description ?? ""), false);
+  assert.equal(
+    /Romain lettuce|sheered cheese/i.test(cuatesAztecaSalad?.description ?? ""),
+    false,
+  );
   assert.deepEqual(
-    [...(cuatesAztecaSalad?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(cuatesAztecaSalad?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg"],
   );
   assert.equal(cuatesSeafoodSoup?.category, "Soups");
   assert.deepEqual(
-    [...(cuatesSeafoodSoup?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(cuatesSeafoodSoup?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["fish", "shellfish"],
   );
   assert.equal(cuatesCheesecakeChimichanga?.category, "Desserts");
   assert.deepEqual(
-    [...(cuatesCheesecakeChimichanga?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(cuatesCheesecakeChimichanga?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "wheat"],
   );
   assert.equal(cuatesChickenTenders?.category, "Entrees");
   assert.deepEqual(
-    [...(cuatesChickenTenders?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(cuatesChickenTenders?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "wheat"],
   );
   assert.equal(cuatesTacoSalad?.category, "Salads");
   assert.deepEqual(
-    [...(cuatesTacoSalad?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(cuatesTacoSalad?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "milk", "wheat"],
   );
   assert.equal(cuatesParillada?.category, "Fajitas & Grilled Plates");
   assert.deepEqual(
-    [...(cuatesParillada?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(cuatesParillada?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "milk", "shellfish", "wheat"],
   );
   assert.equal(cuatesTacosCarbon?.category, "Tacos & Tamales");
   assert.deepEqual(
-    [...(cuatesTacosCarbon?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(cuatesTacosCarbon?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "milk", "wheat"],
   );
   assert.equal(cuatesFlourTortillas?.category, "Sides");
   assert.deepEqual(
-    [...(cuatesFlourTortillas?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(cuatesFlourTortillas?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "wheat"],
   );
   assert.equal(cuatesMargaritas?.category, "Beverages");
   assert.deepEqual(cuatesMargaritas?.inferredAllergenSignals ?? [], []);
 
   assert.ok(urbano);
-  assert.deepEqual([...new Set(urbano.items.map((item) => item.category))].filter((category) => category === "mexican"), []);
+  assert.deepEqual(
+    [...new Set(urbano.items.map((item) => item.category))].filter(
+      (category) => category === "mexican",
+    ),
+    [],
+  );
   for (const id of [
     "5-de-mayo-taco-sep-ut",
     "burger-tortas",
@@ -11000,45 +15996,70 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "shrimp",
     "soup-salad-and",
   ]) {
-    assert.equal(urbano.items.some((item) => item.id === id), false);
+    assert.equal(
+      urbano.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(urbanoSoftTacos?.category, "Tacos & Tortas");
   assert.deepEqual(
-    [...(urbanoSoftTacos?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(urbanoSoftTacos?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "fish", "gluten", "shellfish", "wheat"],
   );
   assert.equal(urbanoPorkBelly?.category, "Fajitas & Grill");
-  assert.equal(/MEZCAL MARINATED RIBEYE|panela cheese/i.test(urbanoPorkBelly?.description ?? ""), false);
+  assert.equal(
+    /MEZCAL MARINATED RIBEYE|panela cheese/i.test(
+      urbanoPorkBelly?.description ?? "",
+    ),
+    false,
+  );
   assert.deepEqual(
-    [...(urbanoPorkBelly?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(urbanoPorkBelly?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["tree-nut"],
   );
   assert.equal(urbanoTortillaSoup?.category, "Soups");
   assert.deepEqual(
-    [...(urbanoTortillaSoup?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(urbanoTortillaSoup?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "milk", "wheat"],
   );
   assert.equal(urbanoFajitaFiesta?.category, "Family Meals");
-  assert.equal(/sangria|margarita|wine/i.test(urbanoFajitaFiesta?.description ?? ""), false);
+  assert.equal(
+    /sangria|margarita|wine/i.test(urbanoFajitaFiesta?.description ?? ""),
+    false,
+  );
   assert.deepEqual(
-    [...(urbanoFajitaFiesta?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(urbanoFajitaFiesta?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["milk"],
   );
   assert.equal(urbanoHalibut?.category, "Seafood");
   assert.deepEqual(
-    [...(urbanoHalibut?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(urbanoHalibut?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["fish", "gluten", "wheat"],
   );
   assert.equal(urbanoShrimp?.category, "Seafood");
   assert.deepEqual(
-    [...(urbanoShrimp?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(urbanoShrimp?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["shellfish"],
   );
   assert.equal(urbanoRitas?.category, "Beverages");
   assert.deepEqual(urbanoRitas?.inferredAllergenSignals ?? [], []);
   assert.equal(urbanoTresLeches?.category, "Desserts");
   assert.deepEqual(
-    [...(urbanoTresLeches?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(urbanoTresLeches?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "wheat"],
   );
 
@@ -11062,7 +16083,10 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "cosmopolitan",
     "the-odyssey",
   ]) {
-    assert.equal(eugenia.items.some((item) => item.id === id), false);
+    assert.equal(
+      eugenia.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(eugeniaCoffee?.category, "Beverages");
   assert.deepEqual(eugeniaCoffee?.inferredAllergenSignals ?? [], []);
@@ -11070,42 +16094,58 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.equal(eugeniaArni?.category, "Entrees");
   assert.equal(eugeniaKantaifi?.category, "Desserts");
   assert.deepEqual(
-    [...(eugeniaKantaifi?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(eugeniaKantaifi?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "tree-nut", "wheat"],
   );
   assert.equal(eugeniaLavraki?.category, "Seafood");
   assert.deepEqual(
-    [...(eugeniaLavraki?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(eugeniaLavraki?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["fish", "shellfish"],
   );
   assert.equal(eugeniaAvgolemono?.category, "Soups");
   assert.deepEqual(
-    [...(eugeniaAvgolemono?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(eugeniaAvgolemono?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg"],
   );
   assert.equal(eugeniaBakaliaros?.category, "Seafood");
   assert.deepEqual(
-    [...(eugeniaBakaliaros?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(eugeniaBakaliaros?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "fish", "gluten", "wheat"],
   );
   assert.equal(eugeniaFeta?.category, "Meze & Spreads");
   assert.deepEqual(
-    [...(eugeniaFeta?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(eugeniaFeta?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "milk", "sesame", "wheat"],
   );
   assert.equal(eugeniaGreekSalad?.category, "Salads");
   assert.deepEqual(
-    [...(eugeniaGreekSalad?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(eugeniaGreekSalad?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["milk"],
   );
   assert.equal(eugeniaLamburger?.category, "Entrees");
   assert.deepEqual(
-    [...(eugeniaLamburger?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(eugeniaLamburger?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "milk", "sesame", "wheat"],
   );
   assert.equal(eugeniaSpanakopita?.category, "Meze & Spreads");
   assert.deepEqual(
-    [...(eugeniaSpanakopita?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(eugeniaSpanakopita?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "wheat"],
   );
 
@@ -11123,16 +16163,23 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "easy-to-add",
     "make-it-a-combo-fries-and-drink",
   ]) {
-    assert.equal(elPatio.items.some((item) => item.id === id), false);
+    assert.equal(
+      elPatio.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(elPatioChivito?.category, "Sandwiches");
   assert.deepEqual(
-    [...(elPatioChivito?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(elPatioChivito?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "gluten", "milk", "wheat"],
   );
   assert.equal(elPatioChivitoAlPlato?.category, "Grill & Steaks");
   assert.deepEqual(
-    [...(elPatioChivitoAlPlato?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(elPatioChivitoAlPlato?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["egg", "milk"],
   );
   assert.equal(elPatioEmpanada?.category, "Empanadas");
@@ -11144,56 +16191,121 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.equal(elPatioChimichurri?.category, "Sides");
 
   assert.ok(openCity);
-  assert.deepEqual([...new Set(openCity.items.map((item) => item.category))].filter((category) => category === "American"), []);
+  assert.deepEqual(
+    [...new Set(openCity.items.map((item) => item.category))].filter(
+      (category) => category === "American",
+    ),
+    [],
+  );
   for (const id of ["burgers-and-sandwiches", "earn", "hearth-oven-pizza"]) {
-    assert.equal(openCity.items.some((item) => item.id === id), false);
+    assert.equal(
+      openCity.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(openCityCroissant?.category, "Breakfast");
   assert.equal(openCityCroissant?.allergenSourceType, "official-ingredients");
-  assert.deepEqual([...(openCityCroissant?.allergens ?? [])].sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual([...(openCityCroissant?.allergens ?? [])].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.equal(openCityPancakes?.category, "Breakfast");
-  assert.deepEqual([...(openCityPancakes?.allergens ?? [])].sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual([...(openCityPancakes?.allergens ?? [])].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.equal(openCityClub?.category, "Burgers & Sandwiches");
-  assert.deepEqual([...(openCityClub?.allergens ?? [])].sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual([...(openCityClub?.allergens ?? [])].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.equal(openCityHummus?.category, "Starters");
   assert.equal(openCitySalmon?.category, "Bowls & Entrees");
-  assert.deepEqual([...(openCitySalmon?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(), ["fish"]);
+  assert.deepEqual(
+    [...(openCitySalmon?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
+    ["fish"],
+  );
   assert.equal(openCityShrimpSide?.category, "Sides");
-  assert.deepEqual([...(openCityShrimpSide?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(), ["shellfish"]);
+  assert.deepEqual(
+    [...(openCityShrimpSide?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
+    ["shellfish"],
+  );
   assert.equal(openCitySmallCaesar?.category, "Salads");
 
   assert.ok(organicButcher);
-  assert.deepEqual([...new Set(organicButcher.items.map((item) => item.category))].filter((category) => category === "Restaurant"), []);
+  assert.deepEqual(
+    [...new Set(organicButcher.items.map((item) => item.category))].filter(
+      (category) => category === "Restaurant",
+    ),
+    [],
+  );
   assert.equal(organicBurgerBlend?.category, "Meat & Poultry");
   assert.deepEqual(organicBurgerBlend?.inferredAllergenSignals ?? [], []);
   assert.equal(organicWings?.category, "Meat & Poultry");
   assert.deepEqual(organicWings?.inferredAllergenSignals ?? [], []);
   assert.equal(organicSalmon?.category, "Seafood");
-  assert.deepEqual([...(organicSalmon?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(), ["fish"]);
+  assert.deepEqual(
+    [...(organicSalmon?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
+    ["fish"],
+  );
   assert.equal(organicGroundLamb?.category, "Meat & Poultry");
   assert.deepEqual(organicGroundLamb?.inferredAllergenSignals ?? [], []);
   assert.equal(organicCasamara?.category, "Beverages");
   assert.deepEqual(organicCasamara?.inferredAllergenSignals ?? [], []);
   assert.equal(organicMeatballs?.category, "Prepared Foods");
   assert.equal(organicMeatballs?.allergenSourceType, "official-ingredients");
-  assert.deepEqual([...(organicMeatballs?.allergens ?? [])].sort(), ["egg", "milk"]);
-  assert.equal(organicBlackCod?.category, "Seafood");
-  assert.deepEqual([...(organicBlackCod?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(), ["fish"]);
-  assert.equal(organicSmokedSalmonDip?.category, "Seafood");
-  assert.deepEqual([...(organicSmokedSalmonDip?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(), [
+  assert.deepEqual([...(organicMeatballs?.allergens ?? [])].sort(), [
     "egg",
-    "fish",
     "milk",
   ]);
+  assert.equal(organicBlackCod?.category, "Seafood");
+  assert.deepEqual(
+    [...(organicBlackCod?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
+    ["fish"],
+  );
+  assert.equal(organicSmokedSalmonDip?.category, "Seafood");
+  assert.deepEqual(
+    [...(organicSmokedSalmonDip?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
+    ["egg", "fish", "milk"],
+  );
   assert.equal(organicHummus?.category, "Prepared Foods");
-  assert.deepEqual([...(organicHummus?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(), ["sesame"]);
+  assert.deepEqual(
+    [...(organicHummus?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
+    ["sesame"],
+  );
   assert.equal(organicNewYorkStrip?.category, "Meat & Poultry");
   assert.deepEqual(organicNewYorkStrip?.inferredAllergenSignals ?? [], []);
   assert.equal(organicMalaySauce?.category, "Sauces & Condiments");
-  assert.deepEqual([...(organicMalaySauce?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(), ["fish"]);
+  assert.deepEqual(
+    [...(organicMalaySauce?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
+    ["fish"],
+  );
 
   assert.ok(pleroma);
-  assert.deepEqual([...new Set(pleroma.items.map((item) => item.category))].filter((category) => category === "Restaurant"), []);
+  assert.deepEqual(
+    [...new Set(pleroma.items.map((item) => item.category))].filter(
+      (category) => category === "Restaurant",
+    ),
+    [],
+  );
   for (const id of [
     "brunch-reservations",
     "fathers-day-brunch-reservation",
@@ -11201,101 +16313,179 @@ test("generated low-official-coverage repairs keep only row-backed official alle
     "weekly-meal-prep-service",
     "eef",
   ]) {
-    assert.equal(pleroma.items.some((item) => item.id === id), false);
+    assert.equal(
+      pleroma.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(pleromaFufu?.category, "Sides & Vegetables");
   assert.deepEqual(pleromaFufu?.inferredAllergenSignals ?? [], []);
   assert.equal(pleromaShrimpRoll?.category, "Small Chops & Snacks");
-  assert.deepEqual([...(pleromaShrimpRoll?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(), [
-    "gluten",
-    "shellfish",
-    "wheat",
-  ]);
+  assert.deepEqual(
+    [...(pleromaShrimpRoll?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
+    ["gluten", "shellfish", "wheat"],
+  );
   assert.equal(pleromaPompano?.category, "Seafood");
-  assert.deepEqual([...(pleromaPompano?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(), ["fish"]);
+  assert.deepEqual(
+    [...(pleromaPompano?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
+    ["fish"],
+  );
   assert.equal(pleromaPlantain?.category, "Sides & Vegetables");
   assert.deepEqual(pleromaPlantain?.inferredAllergenSignals ?? [], []);
   assert.equal(pleromaChickenWrap?.category, "Rice & Combos");
-  assert.deepEqual([...(pleromaChickenWrap?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(), [
-    "gluten",
-    "wheat",
-  ]);
+  assert.deepEqual(
+    [...(pleromaChickenWrap?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
+    ["gluten", "wheat"],
+  );
   assert.equal(pleromaAsaro?.category, "Rice & Combos");
   assert.deepEqual(pleromaAsaro?.inferredAllergenSignals ?? [], []);
 
   assert.ok(spacebar);
   assert.equal(spacebar.items.length, 26);
-  assert.deepEqual([...new Set(spacebar.items.map((item) => item.category))].filter((category) => category === "Restaurant"), []);
-  for (const id of ["450-north-slushie-xl", "great-lakes-strawberry-wheat", "lost-coast-pb-milk"]) {
-    assert.equal(spacebar.items.some((item) => item.id === id), false);
+  assert.deepEqual(
+    [...new Set(spacebar.items.map((item) => item.category))].filter(
+      (category) => category === "Restaurant",
+    ),
+    [],
+  );
+  for (const id of [
+    "450-north-slushie-xl",
+    "great-lakes-strawberry-wheat",
+    "lost-coast-pb-milk",
+  ]) {
+    assert.equal(
+      spacebar.items.some((item) => item.id === id),
+      false,
+    );
   }
   assert.equal(spacebarAndromeda?.category, "Grilled Cheese & Melts");
-  assert.deepEqual([...(spacebarAndromeda?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(), [
-    "gluten",
-    "milk",
-    "wheat",
-  ]);
+  assert.deepEqual(
+    [...(spacebarAndromeda?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
+    ["gluten", "milk", "wheat"],
+  );
   assert.equal(spacebarVeganGrilledCheese?.category, "Grilled Cheese & Melts");
   assert.deepEqual(
-    [...(spacebarVeganGrilledCheese?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(),
+    [...(spacebarVeganGrilledCheese?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
     ["gluten", "tree-nut", "wheat"],
   );
   assert.deepEqual(
-    [...(spacebarVeganGrilledCheese?.inferenceSuppressions ?? [])].map((suppression) => suppression.id).sort(),
+    [...(spacebarVeganGrilledCheese?.inferenceSuppressions ?? [])]
+      .map((suppression) => suppression.id)
+      .sort(),
     ["egg", "milk"],
   );
   assert.equal(spacebarSpacebarBq?.category, "Sandwiches");
-  assert.deepEqual([...(spacebarSpacebarBq?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(), [
-    "gluten",
-    "milk",
-    "sesame",
-    "soy",
-    "wheat",
-  ]);
+  assert.deepEqual(
+    [...(spacebarSpacebarBq?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
+    ["gluten", "milk", "sesame", "soy", "wheat"],
+  );
   assert.equal(spacebarPestoTurko?.category, "Sandwiches");
-  assert.deepEqual([...(spacebarPestoTurko?.inferredAllergenSignals ?? [])].map((signal) => signal.id).sort(), [
-    "gluten",
-    "milk",
-    "soy",
-    "tree-nut",
-    "wheat",
-  ]);
+  assert.deepEqual(
+    [...(spacebarPestoTurko?.inferredAllergenSignals ?? [])]
+      .map((signal) => signal.id)
+      .sort(),
+    ["gluten", "milk", "soy", "tree-nut", "wheat"],
+  );
   assert.equal(spacebarTaterTots?.category, "Sides & Snacks");
   assert.deepEqual(spacebarTaterTots?.inferredAllergenSignals ?? [], []);
 
   assert.ok(bayouCheddaRoast);
   assert.equal(/Fillet O'/.test(bayouCheddaRoast.description ?? ""), false);
-  assert.deepEqual([...bayouCheddaRoast.allergens].sort(), ["gluten", "milk", "sesame", "wheat"]);
+  assert.deepEqual([...bayouCheddaRoast.allergens].sort(), [
+    "gluten",
+    "milk",
+    "sesame",
+    "wheat",
+  ]);
   assert.ok(bayouMeatballs);
   assert.equal(/Mac & Cheese/.test(bayouMeatballs.description ?? ""), false);
-  assert.deepEqual([...bayouMeatballs.allergens].sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual([...bayouMeatballs.allergens].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(bayouVeggieVille);
-  assert.deepEqual([...bayouVeggieVille.allergens].sort(), ["gluten", "milk", "sesame", "wheat"]);
+  assert.deepEqual([...bayouVeggieVille.allergens].sort(), [
+    "gluten",
+    "milk",
+    "sesame",
+    "wheat",
+  ]);
   assert.ok(bayouGreens);
   assert.equal(/HAM MELT/i.test(bayouGreens.description ?? ""), false);
   assert.deepEqual(bayouGreens.inferredAllergenSignals ?? [], []);
   assert.ok(bayouBenedict);
-  assert.deepEqual(bayouBenedict.allergens?.sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual(bayouBenedict.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(bayouBlt);
   assert.deepEqual(bayouBlt.allergens?.sort(), ["egg", "gluten", "wheat"]);
   assert.ok(bayouColdPimento);
-  assert.deepEqual(bayouColdPimento.allergens?.sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual(bayouColdPimento.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(bayouFishSandwich);
-  assert.deepEqual(bayouFishSandwich.allergens?.sort(), ["fish", "gluten", "wheat"]);
+  assert.deepEqual(bayouFishSandwich.allergens?.sort(), [
+    "fish",
+    "gluten",
+    "wheat",
+  ]);
   assert.ok(bayouFlan);
   assert.deepEqual(bayouFlan.allergens?.sort(), ["egg", "milk"]);
   assert.ok(bayouQuiche);
-  assert.deepEqual(bayouQuiche.allergens?.sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual(bayouQuiche.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(bayouSpinachMadeline);
-  assert.deepEqual(bayouSpinachMadeline.allergens?.sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual(bayouSpinachMadeline.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(bayouPecanWaffle);
-  assert.deepEqual(bayouPecanWaffle.allergens?.sort(), ["gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual(bayouPecanWaffle.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.ok(bayouMuffalotta);
-  assert.deepEqual(bayouMuffalotta.allergens?.sort(), ["gluten", "milk", "sesame", "wheat"]);
+  assert.deepEqual(bayouMuffalotta.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "sesame",
+    "wheat",
+  ]);
 
-  assert.equal(miVida?.items.some((item) => item.id === "choice-of"), false);
+  assert.equal(
+    miVida?.items.some((item) => item.id === "choice-of"),
+    false,
+  );
   assert.ok(miVidaDeviledEggs);
-  assert.equal(/NARANJAS ENCHILADAS/i.test(miVidaDeviledEggs.description ?? ""), false);
+  assert.equal(
+    /NARANJAS ENCHILADAS/i.test(miVidaDeviledEggs.description ?? ""),
+    false,
+  );
   assert.deepEqual(miVidaDeviledEggs.allergens ?? [], ["egg"]);
   assert.ok(miVidaAtun);
   assert.equal(miVidaAtun.allergenSourceType, "official-ingredients");
@@ -11303,96 +16493,274 @@ test("generated low-official-coverage repairs keep only row-backed official alle
   assert.ok(miVidaTropical);
   assert.deepEqual(miVidaTropical.allergens ?? [], ["shellfish"]);
   assert.ok(miVidaPescado);
-  assert.deepEqual(miVidaPescado.allergens?.sort(), ["egg", "fish", "gluten", "wheat"]);
+  assert.deepEqual(miVidaPescado.allergens?.sort(), [
+    "egg",
+    "fish",
+    "gluten",
+    "wheat",
+  ]);
   assert.ok(miVidaSmashburger);
-  assert.deepEqual(miVidaSmashburger.allergens?.sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual(miVidaSmashburger.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(miVidaEnchiladasJaiba);
-  assert.deepEqual(miVidaEnchiladasJaiba.allergens?.sort(), ["milk", "shellfish"]);
+  assert.deepEqual(miVidaEnchiladasJaiba.allergens?.sort(), [
+    "milk",
+    "shellfish",
+  ]);
   assert.ok(miVidaJaibaConQueso);
-  assert.deepEqual(miVidaJaibaConQueso.allergens?.sort(), ["gluten", "milk", "shellfish", "wheat"]);
+  assert.deepEqual(miVidaJaibaConQueso.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok((miVida?.allergenDataStatus?.officialItemCount ?? 0) > 20);
 
   assert.ok(dogfish);
-  assert.equal(dogfish.items.some((item) => item.id === "email"), false);
-  assert.equal(dogfish.items.some((item) => item.id === "request-a-party"), false);
-  assert.equal(dogfish.items.some((item) => item.id === "trivia-tuesday-night"), false);
-  assert.equal(dogfish.items.some((item) => item.id === "apps"), false);
+  assert.equal(
+    dogfish.items.some((item) => item.id === "email"),
+    false,
+  );
+  assert.equal(
+    dogfish.items.some((item) => item.id === "request-a-party"),
+    false,
+  );
+  assert.equal(
+    dogfish.items.some((item) => item.id === "trivia-tuesday-night"),
+    false,
+  );
+  assert.equal(
+    dogfish.items.some((item) => item.id === "apps"),
+    false,
+  );
   assert.ok(dogfishAhi);
   assert.deepEqual(dogfishAhi.allergens ?? [], ["fish", "soy"]);
   assert.ok(dogfishCrabDip);
-  assert.deepEqual(dogfishCrabDip.allergens?.sort(), ["gluten", "milk", "shellfish", "wheat"]);
+  assert.deepEqual(dogfishCrabDip.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok(dogfishFishChips);
-  assert.deepEqual(dogfishFishChips.allergens?.sort(), ["egg", "fish", "gluten", "wheat"]);
+  assert.deepEqual(dogfishFishChips.allergens?.sort(), [
+    "egg",
+    "fish",
+    "gluten",
+    "wheat",
+  ]);
   assert.ok(dogfishJambalaya);
-  assert.deepEqual(dogfishJambalaya.allergens?.sort(), ["gluten", "shellfish", "wheat"]);
+  assert.deepEqual(dogfishJambalaya.allergens?.sort(), [
+    "gluten",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok(dogfishPotstickers);
-  assert.deepEqual(dogfishPotstickers.allergens?.sort(), ["gluten", "soy", "wheat"]);
+  assert.deepEqual(dogfishPotstickers.allergens?.sort(), [
+    "gluten",
+    "soy",
+    "wheat",
+  ]);
   assert.ok(dogfishFarmFresh);
   assert.deepEqual(dogfishFarmFresh.allergens ?? [], ["milk"]);
   assert.ok(dogfishTurkeyClub);
-  assert.deepEqual(dogfishTurkeyClub.allergens?.sort(), ["egg", "gluten", "wheat"]);
+  assert.deepEqual(dogfishTurkeyClub.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "wheat",
+  ]);
   assert.ok((dogfish.allergenDataStatus?.officialItemCount ?? 0) > 35);
 
-  assert.equal(allPurpose?.items.some((item) => item.id === "back-to-shaw-home"), false);
-  assert.equal(allPurpose?.items.some((item) => item.id === "bottomless"), false);
-  assert.equal(allPurpose?.items.some((item) => item.id === "tues-thu-5pm-10pm"), false);
+  assert.equal(
+    allPurpose?.items.some((item) => item.id === "back-to-shaw-home"),
+    false,
+  );
+  assert.equal(
+    allPurpose?.items.some((item) => item.id === "bottomless"),
+    false,
+  );
+  assert.equal(
+    allPurpose?.items.some((item) => item.id === "tues-thu-5pm-10pm"),
+    false,
+  );
   assert.ok((allPurpose?.allergenDataStatus?.officialItemCount ?? 0) >= 30);
   assert.ok(allPurposeCaesar);
-  assert.deepEqual(allPurposeCaesar.allergens?.sort(), ["fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual(allPurposeCaesar.allergens?.sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(allPurposeBreakfastSandwich);
-  assert.deepEqual(allPurposeBreakfastSandwich.allergens?.sort(), ["egg", "fish", "gluten", "milk", "sesame", "wheat"]);
+  assert.deepEqual(allPurposeBreakfastSandwich.allergens?.sort(), [
+    "egg",
+    "fish",
+    "gluten",
+    "milk",
+    "sesame",
+    "wheat",
+  ]);
   assert.ok(allPurposeTripper);
-  assert.deepEqual(allPurposeTripper.allergens?.sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual(allPurposeTripper.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(allPurposeBakedCookie);
-  assert.deepEqual(allPurposeBakedCookie.allergens?.sort(), ["egg", "gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual(allPurposeBakedCookie.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
 
-  assert.equal(blueDuck?.items.some((item) => item.id === "nuts"), false);
+  assert.equal(
+    blueDuck?.items.some((item) => item.id === "nuts"),
+    false,
+  );
   assert.ok((blueDuck?.allergenDataStatus?.officialItemCount ?? 0) >= 45);
   assert.ok(blueDuckPorridge);
-  assert.deepEqual(blueDuckPorridge.allergens?.sort(), ["gluten", "soy", "wheat"]);
+  assert.deepEqual(blueDuckPorridge.allergens?.sort(), [
+    "gluten",
+    "soy",
+    "wheat",
+  ]);
   assert.ok(blueDuckBagel);
-  assert.deepEqual(blueDuckBagel.allergens?.sort(), ["gluten", "milk", "sesame", "wheat"]);
+  assert.deepEqual(blueDuckBagel.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "sesame",
+    "wheat",
+  ]);
   assert.ok(blueDuckCheeseburger);
-  assert.deepEqual(blueDuckCheeseburger.allergens?.sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual(blueDuckCheeseburger.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(blueDuckCrabCakes);
-  assert.deepEqual(blueDuckCrabCakes.allergens?.sort(), ["egg", "gluten", "shellfish", "wheat"]);
+  assert.deepEqual(blueDuckCrabCakes.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok(blueDuckTrout);
-  assert.deepEqual(blueDuckTrout.allergens?.sort(), ["fish", "gluten", "tree-nut", "wheat"]);
+  assert.deepEqual(blueDuckTrout.allergens?.sort(), [
+    "fish",
+    "gluten",
+    "tree-nut",
+    "wheat",
+  ]);
 
-  assert.equal(occidentalReviewed?.items.some((item) => item.name === "baika caviar, potato, creme fraiche"), false);
-  assert.equal(occidentalReviewed?.items.some((item) => item.name === "cocktail sauce"), false);
-  assert.ok((occidentalReviewed?.allergenDataStatus?.officialItemCount ?? 0) >= 70);
+  assert.equal(
+    occidentalReviewed?.items.some(
+      (item) => item.name === "baika caviar, potato, creme fraiche",
+    ),
+    false,
+  );
+  assert.equal(
+    occidentalReviewed?.items.some((item) => item.name === "cocktail sauce"),
+    false,
+  );
+  assert.ok(
+    (occidentalReviewed?.allergenDataStatus?.officialItemCount ?? 0) >= 70,
+  );
   assert.ok(occidentalCaviar);
-  assert.deepEqual(occidentalCaviar.allergens?.sort(), ["egg", "fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual(occidentalCaviar.allergens?.sort(), [
+    "egg",
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(occidentalCrabRoll);
-  assert.deepEqual(occidentalCrabRoll.allergens?.sort(), ["gluten", "milk", "shellfish", "wheat"]);
+  assert.deepEqual(occidentalCrabRoll.allergens?.sort(), [
+    "gluten",
+    "milk",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok(occidentalCaesar);
-  assert.deepEqual(occidentalCaesar.allergens?.sort(), ["fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual(occidentalCaesar.allergens?.sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(occidentalBurger);
-  assert.deepEqual(occidentalBurger.allergens?.sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual(occidentalBurger.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(occidentalSeaBass);
   assert.deepEqual(occidentalSeaBass.allergens?.sort(), ["fish", "soy"]);
   assert.ok(occidentalFrenchToast);
-  assert.deepEqual(occidentalFrenchToast.allergens?.sort(), ["egg", "gluten", "milk", "wheat"]);
+  assert.deepEqual(occidentalFrenchToast.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(occidentalCheesecake);
-  assert.deepEqual(occidentalCheesecake.allergens?.sort(), ["egg", "gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual(occidentalCheesecake.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
 
-  assert.equal(etVoila?.items.some((item) => item.id === "automatic-lightbox-pop-up"), false);
+  assert.equal(
+    etVoila?.items.some((item) => item.id === "automatic-lightbox-pop-up"),
+    false,
+  );
   assert.ok((etVoila?.allergenDataStatus?.officialItemCount ?? 0) >= 30);
   assert.ok(etVoilaBurger);
   assert.deepEqual(etVoilaBurger.allergens ?? [], ["milk"]);
   assert.ok(etVoilaBeetSalad);
   assert.deepEqual(etVoilaBeetSalad.allergens?.sort(), ["milk", "tree-nut"]);
   assert.ok(etVoilaBenedictSalmon);
-  assert.deepEqual(etVoilaBenedictSalmon.allergens?.sort(), ["egg", "fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual(etVoilaBenedictSalmon.allergens?.sort(), [
+    "egg",
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(etVoilaCaesar);
-  assert.deepEqual(etVoilaCaesar.allergens?.sort(), ["egg", "fish", "gluten", "milk", "wheat"]);
+  assert.deepEqual(etVoilaCaesar.allergens?.sort(), [
+    "egg",
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.ok(etVoilaCroqueMadame);
-  assert.deepEqual(etVoilaCroqueMadame.allergens?.sort(), ["egg", "gluten", "milk", "mustard", "wheat"]);
+  assert.deepEqual(etVoilaCroqueMadame.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "mustard",
+    "wheat",
+  ]);
   assert.ok(etVoilaMoules);
   assert.deepEqual(etVoilaMoules.allergens ?? [], ["shellfish"]);
   assert.ok(etVoilaProfiteroles);
-  assert.deepEqual(etVoilaProfiteroles.allergens?.sort(), ["egg", "gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual(etVoilaProfiteroles.allergens?.sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
 });
 
 test("generated Fleming's official matrix excludes dangling add-on boundary rows", () => {
@@ -11402,7 +16770,9 @@ test("generated Fleming's official matrix excludes dangling add-on boundary rows
 
   assert.ok(flemings);
   assert.equal(
-    flemings.items.some((item) => item.id === "add" && /^Add$/i.test(item.name ?? "")),
+    flemings.items.some(
+      (item) => item.id === "add" && /^Add$/i.test(item.name ?? ""),
+    ),
     false,
   );
   assert.ok(flemings.items.some((item) => item.id === "add-filet-4-oz"));
@@ -11410,7 +16780,9 @@ test("generated Fleming's official matrix excludes dangling add-on boundary rows
 });
 
 test("generated Bonefish official matrix excludes recovered generic matrix artifacts", () => {
-  const bonefish = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "bonefish-grill");
+  const bonefish = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "bonefish-grill",
+  );
 
   assert.ok(bonefish);
   assert.ok(
@@ -11426,44 +16798,108 @@ test("generated Bonefish official matrix excludes recovered generic matrix artif
     bonefish.items.some(
       (item) =>
         item.sourceSummary === "Official Bonefish Grill allergen matrix." &&
-        (item.evidence ?? []).some((entry) => entry?.source === "reviewed-portfolio-row-recovery"),
+        (item.evidence ?? []).some(
+          (entry) => entry?.source === "reviewed-portfolio-row-recovery",
+        ),
     ),
     false,
   );
-  assert.equal(bonefish.items.some((item) => item.id === "bourbon-glaze"), false);
-  assert.equal(bonefish.items.some((item) => item.id === "bourbon-glaze-serves"), false);
+  assert.equal(
+    bonefish.items.some((item) => item.id === "bourbon-glaze"),
+    false,
+  );
+  assert.equal(
+    bonefish.items.some((item) => item.id === "bourbon-glaze-serves"),
+    false,
+  );
 });
 
 test("generated reviewed menu repairs keep Marx Cafe and Pizza Boli's from publishing parser artifacts", () => {
   const marx = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "replacement-marx-cafe-revolutionary-cuisine-washington-dc",
+    (restaurant) =>
+      restaurant.id ===
+      "replacement-marx-cafe-revolutionary-cuisine-washington-dc",
   );
-  const pizzaBolis = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "chain-pizza-boli-s");
+  const pizzaBolis = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "chain-pizza-boli-s",
+  );
 
   assert.ok(marx);
   assert.equal(marx.items.length, 52);
-  assert.ok(marx.items.some((item) => item.name === "Calamari Fritti" && item.category === "Starters"));
-  assert.ok(marx.items.some((item) => item.name === "Tiramisú" && item.category === "Desserts"));
-  assert.equal(marx.items.some((item) => /^\$/.test(item.name ?? "")), false);
-  assert.equal(marx.items.some((item) => /^(?:brunch items|dinner items|weekly|whites)$/i.test(item.name ?? "")), false);
-  assert.equal(marx.items.some((item) => /\bShowing all \d+ results\b/i.test(item.name ?? "")), false);
+  assert.ok(
+    marx.items.some(
+      (item) => item.name === "Calamari Fritti" && item.category === "Starters",
+    ),
+  );
+  assert.ok(
+    marx.items.some(
+      (item) => item.name === "Tiramisú" && item.category === "Desserts",
+    ),
+  );
+  assert.equal(
+    marx.items.some((item) => /^\$/.test(item.name ?? "")),
+    false,
+  );
+  assert.equal(
+    marx.items.some((item) =>
+      /^(?:brunch items|dinner items|weekly|whites)$/i.test(item.name ?? ""),
+    ),
+    false,
+  );
+  assert.equal(
+    marx.items.some((item) =>
+      /\bShowing all \d+ results\b/i.test(item.name ?? ""),
+    ),
+    false,
+  );
 
   assert.ok(pizzaBolis);
   assert.equal(pizzaBolis.items.length, 179);
-  assert.ok(pizzaBolis.items.some((item) => item.name === "Cheese Pizza" && item.category === "Pizza"));
-  assert.ok(pizzaBolis.items.some((item) => item.name === "Chicken Fetuccine Alfredo" && item.category === "Pastas"));
-  assert.ok(pizzaBolis.items.some((item) => item.name === "Crispy Fry Tray" && item.category === "Catering"));
-  assert.equal(pizzaBolis.items.some((item) => /\b(?:S|M|L|XL)\s+(?:10|12|14|16)in\b/i.test(item.name ?? "")), false);
-  assert.equal(pizzaBolis.items.some((item) => /\b\d{2,4}\s+300\s+n\/a\b/i.test(`${item.name ?? ""} ${item.description ?? ""}`)), false);
+  assert.ok(
+    pizzaBolis.items.some(
+      (item) => item.name === "Cheese Pizza" && item.category === "Pizza",
+    ),
+  );
+  assert.ok(
+    pizzaBolis.items.some(
+      (item) =>
+        item.name === "Chicken Fetuccine Alfredo" && item.category === "Pastas",
+    ),
+  );
+  assert.ok(
+    pizzaBolis.items.some(
+      (item) => item.name === "Crispy Fry Tray" && item.category === "Catering",
+    ),
+  );
   assert.equal(
-    pizzaBolis.items.some((item) => ["Plain", "BBQ", "Build Your Own", "Caesar"].includes(item.name ?? "")),
+    pizzaBolis.items.some((item) =>
+      /\b(?:S|M|L|XL)\s+(?:10|12|14|16)in\b/i.test(item.name ?? ""),
+    ),
+    false,
+  );
+  assert.equal(
+    pizzaBolis.items.some((item) =>
+      /\b\d{2,4}\s+300\s+n\/a\b/i.test(
+        `${item.name ?? ""} ${item.description ?? ""}`,
+      ),
+    ),
+    false,
+  );
+  assert.equal(
+    pizzaBolis.items.some((item) =>
+      ["Plain", "BBQ", "Build Your Own", "Caesar"].includes(item.name ?? ""),
+    ),
     false,
   );
 });
 
 test("generated reviewed low-coverage repairs keep source-backed allergens and remove official-page blobs", () => {
-  const lardente = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "lardente-dc");
-  const twoFifty = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "two-fifty-bbq-dc");
+  const lardente = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "lardente-dc",
+  );
+  const twoFifty = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "two-fifty-bbq-dc",
+  );
   const thompsonFallsChurch = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "thompson-italian-falls-church-dc-metro",
   );
@@ -11471,16 +16907,20 @@ test("generated reviewed low-coverage repairs keep source-backed allergens and r
     (restaurant) => restaurant.id === "osm-thompson-italian-11874404375",
   );
   const jackRose = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "jack-rose-dining-saloon-washington-dc-dc-metro",
+    (restaurant) =>
+      restaurant.id === "jack-rose-dining-saloon-washington-dc-dc-metro",
   );
   const burtons = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "burtons-grill-and-bar-washington-dc-dc-metro",
+    (restaurant) =>
+      restaurant.id === "burtons-grill-and-bar-washington-dc-dc-metro",
   );
   const lostDog = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "lost-dog-cafe-dunn-loring-fairfax-va-dc-metro",
+    (restaurant) =>
+      restaurant.id === "lost-dog-cafe-dunn-loring-fairfax-va-dc-metro",
   );
   const nyaj = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "not-your-average-joe-s-reston-reston-va-dc-metro",
+    (restaurant) =>
+      restaurant.id === "not-your-average-joe-s-reston-reston-va-dc-metro",
   );
   const karahiBoys = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "osm-karahi-boys-13475305897",
@@ -11492,10 +16932,12 @@ test("generated reviewed low-coverage repairs keep source-backed allergens and r
     (restaurant) => restaurant.id === "good-company-doughnuts-ballston-va",
   );
   const pubAndPeople = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "the-pub-and-the-people-washington-dc-dc-metro",
+    (restaurant) =>
+      restaurant.id === "the-pub-and-the-people-washington-dc-dc-metro",
   );
   const lacay = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "hu-tieu-mi-lacay-cho-lon-falls-church-va",
+    (restaurant) =>
+      restaurant.id === "hu-tieu-mi-lacay-cho-lon-falls-church-va",
   );
   const kizuna = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "kizuna-sushi-ramen-tysons-va",
@@ -11506,7 +16948,9 @@ test("generated reviewed low-coverage repairs keep source-backed allergens and r
   const shawsTavern = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "shaw-s-tavern-washington-dc-dc-metro",
   );
-  const toastique = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "chain-toastique");
+  const toastique = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "chain-toastique",
+  );
 
   assert.ok(lardente);
   assert.ok(twoFifty);
@@ -11516,9 +16960,18 @@ test("generated reviewed low-coverage repairs keep source-backed allergens and r
   assert.ok(burtons);
   assert.ok(lostDog);
   assert.equal(lostDog.sourceStatus?.officialGuideParsed, true);
-  assert.equal(lostDog.sourceStatus?.officialGuideParserProfile, "flipsnack-official-guide");
-  assert.equal(lostDog.sourceStatus?.officialAllergenRemediationBucket, "official-accommodation-guide-parsed");
-  assert.equal(lostDog.sourceStatus?.reviewedOfficialGuides?.[0]?.title, "Lost Dog Cafe Allergen Guide 2024");
+  assert.equal(
+    lostDog.sourceStatus?.officialGuideParserProfile,
+    "flipsnack-official-guide",
+  );
+  assert.equal(
+    lostDog.sourceStatus?.officialAllergenRemediationBucket,
+    "official-accommodation-guide-parsed",
+  );
+  assert.equal(
+    lostDog.sourceStatus?.reviewedOfficialGuides?.[0]?.title,
+    "Lost Dog Cafe Allergen Guide 2024",
+  );
   assert.match(
     lostDog.sourceStatus?.reviewedOfficialGuides?.[0]?.summary ?? "",
     /not a full direct-allergen matrix/i,
@@ -11536,10 +16989,15 @@ test("generated reviewed low-coverage repairs keep source-backed allergens and r
   assert.equal(toastique.parserProfile, "shopify-allergen-guide");
   assert.equal(toastique.officialAllergenStatus, "extracted");
   assert.equal(toastique.allergenDataStatus?.officialItemCount, 74);
-  assert.equal(toastique.allergenDataStatus?.officialEvidence?.bucket, "official-full");
+  assert.equal(
+    toastique.allergenDataStatus?.officialEvidence?.bucket,
+    "official-full",
+  );
   assert.equal(toastique.items.length, 74);
 
-  const toastiqueByName = new Map(toastique.items.map((item) => [item.name, item]));
+  const toastiqueByName = new Map(
+    toastique.items.map((item) => [item.name, item]),
+  );
   assert.deepEqual([...toastiqueByName.get("Avocado Smash").allergens].sort(), [
     "gluten",
     "sesame",
@@ -11560,12 +17018,22 @@ test("generated reviewed low-coverage repairs keep source-backed allergens and r
     "soy",
     "wheat",
   ]);
-  assert.equal(toastique.items.some((item) => /^Nutritional information is based/i.test(item.name)), false);
-  assert.equal(toastique.items.some((item) => /Collection$/i.test(item.name)), false);
+  assert.equal(
+    toastique.items.some((item) =>
+      /^Nutritional information is based/i.test(item.name),
+    ),
+    false,
+  );
+  assert.equal(
+    toastique.items.some((item) => /Collection$/i.test(item.name)),
+    false,
+  );
 
   const hamachi = lardente.items.find((item) => item.id === "hamachi-crudo");
   const cesare = lardente.items.find((item) => item.id === "cesare");
-  const linguine = lardente.items.find((item) => item.id === "linguine-ai-frutti-di-mare");
+  const linguine = lardente.items.find(
+    (item) => item.id === "linguine-ai-frutti-di-mare",
+  );
   const burrata = lardente.items.find((item) => item.id === "burrata");
 
   assert.ok(hamachi);
@@ -11573,165 +17041,416 @@ test("generated reviewed low-coverage repairs keep source-backed allergens and r
   assert.ok(cesare);
   assert.deepEqual([...cesare.allergens].sort(), ["fish", "gluten", "wheat"]);
   assert.ok(linguine);
-  assert.deepEqual([...linguine.allergens].sort(), ["gluten", "shellfish", "wheat"]);
+  assert.deepEqual([...linguine.allergens].sort(), [
+    "gluten",
+    "shellfish",
+    "wheat",
+  ]);
   assert.ok(burrata);
-  assert.deepEqual([...burrata.allergens].sort(), ["gluten", "milk", "tree-nut", "wheat"]);
+  assert.deepEqual([...burrata.allergens].sort(), [
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
 
-  assert.equal(twoFifty.items.some((item) => item.id === "sausage"), false);
+  assert.equal(
+    twoFifty.items.some((item) => item.id === "sausage"),
+    false,
+  );
   assert.ok(twoFifty.items.some((item) => item.id === "chimichurri-sauce"));
   assert.ok(twoFifty.items.some((item) => item.id === "zesty-garden-mix"));
 
   assert.deepEqual(
-    [...thompsonFallsChurch.items.find((item) => item.id === "kids-pizza-sticks-tray").allergens].sort(),
+    [
+      ...thompsonFallsChurch.items.find(
+        (item) => item.id === "kids-pizza-sticks-tray",
+      ).allergens,
+    ].sort(),
     ["gluten", "milk", "wheat"],
   );
   assert.deepEqual(
-    [...thompsonFallsChurch.items.find((item) => item.id === "mac-and-cheese-tray").allergens].sort(),
+    [
+      ...thompsonFallsChurch.items.find(
+        (item) => item.id === "mac-and-cheese-tray",
+      ).allergens,
+    ].sort(),
     ["gluten", "milk", "wheat"],
   );
   assert.deepEqual(
-    [...thompsonAlexandria.items.find((item) => item.id === "lamb-meatballs-tray").allergens].sort(),
+    [
+      ...thompsonAlexandria.items.find(
+        (item) => item.id === "lamb-meatballs-tray",
+      ).allergens,
+    ].sort(),
     ["gluten", "tree-nut", "wheat"],
   );
 
   assert.deepEqual(
-    [...jackRose.items.find((item) => item.id === "fried-mac-and-cheese").allergens].sort(),
+    [
+      ...jackRose.items.find((item) => item.id === "fried-mac-and-cheese")
+        .allergens,
+    ].sort(),
     ["egg", "gluten", "milk", "wheat"],
   );
-  const firecrackerShrimp = burtons.items.find((item) => item.id === "firecracker-shrimp");
-  assert.deepEqual([...firecrackerShrimp.allergens].sort(), ["sesame", "shellfish"]);
+  const firecrackerShrimp = burtons.items.find(
+    (item) => item.id === "firecracker-shrimp",
+  );
+  assert.deepEqual([...firecrackerShrimp.allergens].sort(), [
+    "sesame",
+    "shellfish",
+  ]);
   assert.deepEqual(firecrackerShrimp.mayContain ?? [], ["milk"]);
   assert.deepEqual(
-    [...lostDog.items.find((item) => item.id === "italian-fries").allergens].sort(),
+    [
+      ...lostDog.items.find((item) => item.id === "italian-fries").allergens,
+    ].sort(),
     ["gluten", "wheat"],
   );
   assert.deepEqual(
-    [...lostDog.items.find((item) => item.id === "vegan-meatball-sub").allergens].sort(),
+    [
+      ...lostDog.items.find((item) => item.id === "vegan-meatball-sub")
+        .allergens,
+    ].sort(),
     ["gluten", "soy", "wheat"],
   );
-  assert.equal(nyaj.items.some((item) => item.id === "burgers-and-more"), false);
-  assert.equal(nyaj.items.some((item) => item.id === "gluten-sensitive"), false);
+  assert.equal(
+    nyaj.items.some((item) => item.id === "burgers-and-more"),
+    false,
+  );
+  assert.equal(
+    nyaj.items.some((item) => item.id === "gluten-sensitive"),
+    false,
+  );
 
   assert.deepEqual(
-    [...karahiBoys.items.find((item) => item.id === "butter-naan").allergens].sort(),
+    [
+      ...karahiBoys.items.find((item) => item.id === "butter-naan").allergens,
+    ].sort(),
     ["gluten", "milk", "wheat"],
   );
   assert.deepEqual(
-    [...neutralGround.items.find((item) => item.id === "ng-caesar-salad").allergens].sort(),
+    [
+      ...neutralGround.items.find((item) => item.id === "ng-caesar-salad")
+        .allergens,
+    ].sort(),
     ["fish", "milk"],
   );
-  const mangoHibiscus = goodCompany.items.find((item) => item.id === "mango-hibiscus-vegan");
-  const stellasVeggie = goodCompany.items.find((item) => item.id === "stellas-veggie-and-cheese-sandwich");
-  const veggieEggCheese = goodCompany.items.find((item) => item.id === "veggie-egg-and-cheese-sandwich");
-  const steakCheese = goodCompany.items.find((item) => item.id === "steak-and-cheese-sandwich");
-  const veggieSoupBowl = goodCompany.items.find((item) => item.id === "veggie-and-rice-soup-bowl");
-  const veggieSoupCup = goodCompany.items.find((item) => item.id === "veggie-and-rice-soup-cup");
-  const stellasLunchBox = goodCompany.items.find((item) => item.id === "stellas-veggie-lunch-box");
-  const goodCompanyAppleBrieToast = goodCompany.items.find((item) => item.id === "apple-and-brie-toast");
-  const goodCompanyAppleScone = goodCompany.items.find((item) => item.id === "apple-cinnamon-scone-gf");
-  const goodCompanyBagelLox = goodCompany.items.find((item) => item.id === "bagel-and-lox");
-  const goodCompanyBlT = goodCompany.items.find((item) => item.id === "blt-sandwich");
-  const goodCompanyBombPork = goodCompany.items.find((item) => item.id === "bomb-pork-belly-sandwich");
-  const goodCompanyGreenSmoothie = goodCompany.items.find((item) => item.id === "green-smoothie");
-  const goodCompanyPbJ = goodCompany.items.find((item) => item.id === "pbandj-sandwich");
-  const goodCompanyPulledChicken = goodCompany.items.find((item) => item.id === "pulled-bbq-chicken");
-  const goodCompanyProteinSmoothie = goodCompany.items.find((item) => item.id === "protein-smoothie");
-  const goodCompanyVeganDoughnut = goodCompany.items.find((item) => item.id === "mango-hibiscus-vegan");
-  assert.deepEqual([...mangoHibiscus.allergens].sort(), ["gluten", "soy", "wheat"]);
-  assert.equal(/OUT OF STOCK/i.test(`${mangoHibiscus.description ?? ""} ${mangoHibiscus.ingredientsText ?? ""}`), false);
-  assert.deepEqual([...stellasVeggie.allergens].sort(), ["egg", "gluten", "milk", "mustard", "wheat"]);
-  assert.deepEqual([...veggieEggCheese.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
-  assert.deepEqual([...steakCheese.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
-  assert.deepEqual([...goodCompanyAppleBrieToast.allergens].sort(), ["gluten", "milk", "mustard", "wheat"]);
+  const mangoHibiscus = goodCompany.items.find(
+    (item) => item.id === "mango-hibiscus-vegan",
+  );
+  const stellasVeggie = goodCompany.items.find(
+    (item) => item.id === "stellas-veggie-and-cheese-sandwich",
+  );
+  const veggieEggCheese = goodCompany.items.find(
+    (item) => item.id === "veggie-egg-and-cheese-sandwich",
+  );
+  const steakCheese = goodCompany.items.find(
+    (item) => item.id === "steak-and-cheese-sandwich",
+  );
+  const veggieSoupBowl = goodCompany.items.find(
+    (item) => item.id === "veggie-and-rice-soup-bowl",
+  );
+  const veggieSoupCup = goodCompany.items.find(
+    (item) => item.id === "veggie-and-rice-soup-cup",
+  );
+  const stellasLunchBox = goodCompany.items.find(
+    (item) => item.id === "stellas-veggie-lunch-box",
+  );
+  const goodCompanyAppleBrieToast = goodCompany.items.find(
+    (item) => item.id === "apple-and-brie-toast",
+  );
+  const goodCompanyAppleScone = goodCompany.items.find(
+    (item) => item.id === "apple-cinnamon-scone-gf",
+  );
+  const goodCompanyBagelLox = goodCompany.items.find(
+    (item) => item.id === "bagel-and-lox",
+  );
+  const goodCompanyBlT = goodCompany.items.find(
+    (item) => item.id === "blt-sandwich",
+  );
+  const goodCompanyBombPork = goodCompany.items.find(
+    (item) => item.id === "bomb-pork-belly-sandwich",
+  );
+  const goodCompanyGreenSmoothie = goodCompany.items.find(
+    (item) => item.id === "green-smoothie",
+  );
+  const goodCompanyPbJ = goodCompany.items.find(
+    (item) => item.id === "pbandj-sandwich",
+  );
+  const goodCompanyPulledChicken = goodCompany.items.find(
+    (item) => item.id === "pulled-bbq-chicken",
+  );
+  const goodCompanyProteinSmoothie = goodCompany.items.find(
+    (item) => item.id === "protein-smoothie",
+  );
+  const goodCompanyVeganDoughnut = goodCompany.items.find(
+    (item) => item.id === "mango-hibiscus-vegan",
+  );
+  assert.deepEqual([...mangoHibiscus.allergens].sort(), [
+    "gluten",
+    "soy",
+    "wheat",
+  ]);
+  assert.equal(
+    /OUT OF STOCK/i.test(
+      `${mangoHibiscus.description ?? ""} ${mangoHibiscus.ingredientsText ?? ""}`,
+    ),
+    false,
+  );
+  assert.deepEqual([...stellasVeggie.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "mustard",
+    "wheat",
+  ]);
+  assert.deepEqual([...veggieEggCheese.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
+  assert.deepEqual([...steakCheese.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
+  assert.deepEqual([...goodCompanyAppleBrieToast.allergens].sort(), [
+    "gluten",
+    "milk",
+    "mustard",
+    "wheat",
+  ]);
   assert.deepEqual([...goodCompanyAppleScone.allergens].sort(), ["milk"]);
-  assert.deepEqual([...goodCompanyBagelLox.allergens].sort(), ["fish", "gluten", "milk", "wheat"]);
-  assert.deepEqual([...goodCompanyBlT.allergens].sort(), ["egg", "gluten", "wheat"]);
-  assert.deepEqual([...goodCompanyBombPork.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
-  assert.deepEqual([...goodCompanyGreenSmoothie.allergens].sort(), ["tree-nut"]);
-  assert.deepEqual([...goodCompanyPbJ.allergens].sort(), ["gluten", "peanut", "wheat"]);
-  assert.deepEqual([...goodCompanyPulledChicken.allergens].sort(), ["gluten", "milk", "wheat"]);
-  assert.deepEqual([...goodCompanyProteinSmoothie.allergens].sort(), ["peanut", "tree-nut"]);
+  assert.deepEqual([...goodCompanyBagelLox.allergens].sort(), [
+    "fish",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
+  assert.deepEqual([...goodCompanyBlT.allergens].sort(), [
+    "egg",
+    "gluten",
+    "wheat",
+  ]);
+  assert.deepEqual([...goodCompanyBombPork.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
+  assert.deepEqual([...goodCompanyGreenSmoothie.allergens].sort(), [
+    "tree-nut",
+  ]);
+  assert.deepEqual([...goodCompanyPbJ.allergens].sort(), [
+    "gluten",
+    "peanut",
+    "wheat",
+  ]);
+  assert.deepEqual([...goodCompanyPulledChicken.allergens].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
+  assert.deepEqual([...goodCompanyProteinSmoothie.allergens].sort(), [
+    "peanut",
+    "tree-nut",
+  ]);
   assert.equal(goodCompanyVeganDoughnut.allergens.includes("milk"), false);
   assert.equal(goodCompanyVeganDoughnut.allergens.includes("egg"), false);
   assert.ok((goodCompany.allergenDataStatus?.officialItemCount ?? 0) > 60);
-  assert.equal(/Quesadillas/i.test(`${veggieSoupBowl.description ?? ""} ${veggieSoupBowl.sourceSummary ?? ""}`), false);
-  assert.equal(/Quesadillas/i.test(`${veggieSoupCup.description ?? ""} ${veggieSoupCup.sourceSummary ?? ""}`), false);
-  assert.equal(/Turkey Swiss|GOCO Locations/i.test(`${stellasLunchBox.sourceSummary ?? ""}`), false);
+  assert.equal(
+    /Quesadillas/i.test(
+      `${veggieSoupBowl.description ?? ""} ${veggieSoupBowl.sourceSummary ?? ""}`,
+    ),
+    false,
+  );
+  assert.equal(
+    /Quesadillas/i.test(
+      `${veggieSoupCup.description ?? ""} ${veggieSoupCup.sourceSummary ?? ""}`,
+    ),
+    false,
+  );
+  assert.equal(
+    /Turkey Swiss|GOCO Locations/i.test(
+      `${stellasLunchBox.sourceSummary ?? ""}`,
+    ),
+    false,
+  );
 
-  const pubHeidi = pubAndPeople.items.find((item) => item.id === "the-heidi-sandwich");
-  const pubBiscuits = pubAndPeople.items.find((item) => item.id === "biscuits-and-gravy");
-  const pubHotWings = pubAndPeople.items.find((item) => item.id === "hot-wings");
-  const pubSalmon = pubAndPeople.items.find((item) => item.id === "citrus-salmon-with-risotto");
-  const pubRigatoni = pubAndPeople.items.find((item) => item.id === "creamy-rigatoni-mac-and-cheese");
-  const pubBlackBeanBurger = pubAndPeople.items.find((item) => item.id === "seasoned-black-bean-and-rice-burger");
-  const pubShrimpTostadas = pubAndPeople.items.find((item) => item.id === "shrimp-tostadas");
-  const pubTempuraCauliflower = pubAndPeople.items.find((item) => item.id === "tempura-cauliflower");
-  assert.deepEqual([...pubHeidi.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
-  assert.deepEqual([...pubBiscuits.allergens].sort(), ["egg", "gluten", "milk", "wheat"]);
+  const pubHeidi = pubAndPeople.items.find(
+    (item) => item.id === "the-heidi-sandwich",
+  );
+  const pubBiscuits = pubAndPeople.items.find(
+    (item) => item.id === "biscuits-and-gravy",
+  );
+  const pubHotWings = pubAndPeople.items.find(
+    (item) => item.id === "hot-wings",
+  );
+  const pubSalmon = pubAndPeople.items.find(
+    (item) => item.id === "citrus-salmon-with-risotto",
+  );
+  const pubRigatoni = pubAndPeople.items.find(
+    (item) => item.id === "creamy-rigatoni-mac-and-cheese",
+  );
+  const pubBlackBeanBurger = pubAndPeople.items.find(
+    (item) => item.id === "seasoned-black-bean-and-rice-burger",
+  );
+  const pubShrimpTostadas = pubAndPeople.items.find(
+    (item) => item.id === "shrimp-tostadas",
+  );
+  const pubTempuraCauliflower = pubAndPeople.items.find(
+    (item) => item.id === "tempura-cauliflower",
+  );
+  assert.deepEqual([...pubHeidi.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
+  assert.deepEqual([...pubBiscuits.allergens].sort(), [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.deepEqual([...pubHotWings.allergens].sort(), ["milk"]);
   assert.deepEqual([...pubSalmon.allergens].sort(), ["fish", "milk"]);
-  assert.deepEqual([...pubRigatoni.allergens].sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual([...pubRigatoni.allergens].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assert.deepEqual([...pubBlackBeanBurger.allergens].sort(), ["egg", "milk"]);
-  assert.deepEqual([...pubShrimpTostadas.allergens].sort(), ["milk", "shellfish"]);
-  assert.deepEqual([...pubTempuraCauliflower.allergens].sort(), ["gluten", "sesame", "wheat"]);
+  assert.deepEqual([...pubShrimpTostadas.allergens].sort(), [
+    "milk",
+    "shellfish",
+  ]);
+  assert.deepEqual([...pubTempuraCauliflower.allergens].sort(), [
+    "gluten",
+    "sesame",
+    "wheat",
+  ]);
   assert.ok((pubAndPeople.allergenDataStatus?.officialItemCount ?? 0) > 35);
   assert.deepEqual(
     [...lacay.items.find((item) => item.id === "wonton-soup").allergens].sort(),
     ["gluten", "shellfish", "wheat"],
   );
   assert.deepEqual(
-    [...kizuna.items.find((item) => item.id === "vegetable-tempura-app").allergens].sort(),
+    [
+      ...kizuna.items.find((item) => item.id === "vegetable-tempura-app")
+        .allergens,
+    ].sort(),
     ["gluten", "soy", "wheat"],
   );
 
-  const stickyBostonCream = stickyFingers.items.find((item) => item.id === "boston-cream");
-  const stickyCarrotWalnut = stickyFingers.items.find((item) => item.id === "bunny-huggers-carrot-walnut");
-  const stickyAllFallBars = stickyFingers.items.find((item) => item.id === "all-fall-bars");
-  const stickyAlmondCroissants = stickyFingers.items.find((item) => item.id === "almond-croissant-tray");
-  const stickyGlutenFreeLittleDevils = stickyFingers.items.find((item) => item.id === "gluten-free-little-devils");
-  const stickySoyFreeChocolateLove = stickyFingers.items.find((item) => item.id === "soy-free-chocolate-love-cupcakes");
-  const stickyStromboli = stickyFingers.items.find((item) => item.id === "pepperoni-stromboli");
-  assert.deepEqual([...stickyBostonCream.allergens].sort(), ["gluten", "soy", "wheat"]);
-  assert.deepEqual([...stickyCarrotWalnut.allergens].sort(), ["gluten", "soy", "tree-nut", "wheat"]);
+  const stickyBostonCream = stickyFingers.items.find(
+    (item) => item.id === "boston-cream",
+  );
+  const stickyCarrotWalnut = stickyFingers.items.find(
+    (item) => item.id === "bunny-huggers-carrot-walnut",
+  );
+  const stickyAllFallBars = stickyFingers.items.find(
+    (item) => item.id === "all-fall-bars",
+  );
+  const stickyAlmondCroissants = stickyFingers.items.find(
+    (item) => item.id === "almond-croissant-tray",
+  );
+  const stickyGlutenFreeLittleDevils = stickyFingers.items.find(
+    (item) => item.id === "gluten-free-little-devils",
+  );
+  const stickySoyFreeChocolateLove = stickyFingers.items.find(
+    (item) => item.id === "soy-free-chocolate-love-cupcakes",
+  );
+  const stickyStromboli = stickyFingers.items.find(
+    (item) => item.id === "pepperoni-stromboli",
+  );
+  assert.deepEqual([...stickyBostonCream.allergens].sort(), [
+    "gluten",
+    "soy",
+    "wheat",
+  ]);
+  assert.deepEqual([...stickyCarrotWalnut.allergens].sort(), [
+    "gluten",
+    "soy",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.ok((stickyFingers.allergenDataStatus?.officialItemCount ?? 0) >= 140);
-  assert.deepEqual([...stickyAllFallBars.allergens].sort(), ["gluten", "soy", "tree-nut", "wheat"]);
-  assert.deepEqual([...stickyAlmondCroissants.allergens].sort(), ["gluten", "soy", "tree-nut", "wheat"]);
+  assert.deepEqual([...stickyAllFallBars.allergens].sort(), [
+    "gluten",
+    "soy",
+    "tree-nut",
+    "wheat",
+  ]);
+  assert.deepEqual([...stickyAlmondCroissants.allergens].sort(), [
+    "gluten",
+    "soy",
+    "tree-nut",
+    "wheat",
+  ]);
   assert.deepEqual([...stickyGlutenFreeLittleDevils.allergens].sort(), ["soy"]);
-  assert.deepEqual([...stickySoyFreeChocolateLove.allergens].sort(), ["gluten", "wheat"]);
-  assert.deepEqual([...stickyStromboli.allergens].sort(), ["gluten", "soy", "wheat"]);
+  assert.deepEqual([...stickySoyFreeChocolateLove.allergens].sort(), [
+    "gluten",
+    "wheat",
+  ]);
+  assert.deepEqual([...stickyStromboli.allergens].sort(), [
+    "gluten",
+    "soy",
+    "wheat",
+  ]);
   assert.equal(
     stickyFingers.items.some(
       (item) =>
         /official/i.test(String(item.allergenSourceType ?? "")) &&
-        ((item.allergens ?? []).includes("milk") || (item.allergens ?? []).includes("egg")),
+        ((item.allergens ?? []).includes("milk") ||
+          (item.allergens ?? []).includes("egg")),
     ),
     false,
   );
 
-  const rowTextOnlyOfficialMappings = generatedRestaurants.restaurants.flatMap((restaurant) =>
-    (restaurant.items ?? [])
-      .filter((item) =>
-        /Reviewed official row text: obvious ingredient terms were mapped to app allergens/i.test(
-          String(item.sourceSummary ?? ""),
-        ),
-      )
-      .map((item) => ({ restaurantId: restaurant.id, item })),
+  const rowTextOnlyOfficialMappings = generatedRestaurants.restaurants.flatMap(
+    (restaurant) =>
+      (restaurant.items ?? [])
+        .filter((item) =>
+          /Reviewed official row text: obvious ingredient terms were mapped to app allergens/i.test(
+            String(item.sourceSummary ?? ""),
+          ),
+        )
+        .map((item) => ({ restaurantId: restaurant.id, item })),
   );
   assert.ok(rowTextOnlyOfficialMappings.length > 0);
   assert.equal(
-    rowTextOnlyOfficialMappings.every(({ item }) => item.allergenSourceType === "official-ingredients"),
+    rowTextOnlyOfficialMappings.every(
+      ({ item }) => item.allergenSourceType === "official-ingredients",
+    ),
     true,
   );
 
   assert.deepEqual(
-    [...shawsTavern.items.find((item) => item.id === "kale-and-beet-salad").allergens].sort(),
+    [
+      ...shawsTavern.items.find((item) => item.id === "kale-and-beet-salad")
+        .allergens,
+    ].sort(),
     ["milk", "tree-nut"],
   );
   assert.deepEqual(
-    [...shawsTavern.items.find((item) => item.id === "shaved-brussels-and-kale-salad").allergens].sort(),
+    [
+      ...shawsTavern.items.find(
+        (item) => item.id === "shaved-brussels-and-kale-salad",
+      ).allergens,
+    ].sort(),
     ["milk", "tree-nut"],
   );
-  assert.deepEqual([...shawsTavern.items.find((item) => item.id === "watermelon-salad").allergens].sort(), ["milk"]);
+  assert.deepEqual(
+    [
+      ...shawsTavern.items.find((item) => item.id === "watermelon-salad")
+        .allergens,
+    ].sort(),
+    ["milk"],
+  );
 });
 
 test("generated restaurant menus do not include operational catalog artifacts", () => {
@@ -11772,11 +17491,13 @@ test("generated restaurant menus do not include operational catalog artifacts", 
     "replacement-j-hollinger-s-waterman-s-chophouse-silver-spring-md:All Night Happy Hour",
     "replacement-j-hollinger-s-waterman-s-chophouse-silver-spring-md:Father’s Day Brunch",
   ]);
-  const offenders = generatedRestaurants.restaurants.flatMap((restaurant) =>
-    restaurant.items
-      .filter((item) => !isProbablyMenuCatalogRecord(item))
-      .map((item) => `${restaurant.id}:${item.name}`),
-  ).filter((offender) => !staleGeneratedArtifactAllowlist.has(offender));
+  const offenders = generatedRestaurants.restaurants
+    .flatMap((restaurant) =>
+      restaurant.items
+        .filter((item) => !isProbablyMenuCatalogRecord(item))
+        .map((item) => `${restaurant.id}:${item.name}`),
+    )
+    .filter((offender) => !staleGeneratedArtifactAllowlist.has(offender));
 
   assert.deepEqual(offenders, []);
 });
@@ -11813,7 +17534,9 @@ test("generated restaurant menus contain only rows accepted by the shared row cl
 
       return classified.kind === "menu-item"
         ? []
-        : [`${restaurant.id}:${item.name}:${classified.kind}:${classified.reasons.join(",")}`];
+        : [
+            `${restaurant.id}:${item.name}:${classified.kind}:${classified.reasons.join(",")}`,
+          ];
     }),
   );
 
@@ -11823,11 +17546,17 @@ test("generated restaurant menus contain only rows accepted by the shared row cl
 test("generated official allergen rows with concerns do not use no-concern source summaries", () => {
   const offenders = generatedRestaurants.restaurants.flatMap((restaurant) =>
     restaurant.items.flatMap((item) => {
-      const hasOfficialConcern = /official/i.test(String(item.allergenSourceType ?? "")) &&
-        ((item.allergens?.length ?? 0) > 0 || (item.mayContain?.length ?? 0) > 0);
-      const hasNoConcernSummary = /no major concern marked/i.test(String(item.sourceSummary ?? ""));
+      const hasOfficialConcern =
+        /official/i.test(String(item.allergenSourceType ?? "")) &&
+        ((item.allergens?.length ?? 0) > 0 ||
+          (item.mayContain?.length ?? 0) > 0);
+      const hasNoConcernSummary = /no major concern marked/i.test(
+        String(item.sourceSummary ?? ""),
+      );
 
-      return hasOfficialConcern && hasNoConcernSummary ? [`${restaurant.id}:${item.name}`] : [];
+      return hasOfficialConcern && hasNoConcernSummary
+        ? [`${restaurant.id}:${item.name}`]
+        : [];
     }),
   );
 
@@ -11856,7 +17585,8 @@ test("generated Beteseb menu excludes Wix widget rows while preserving food rows
 
 test("generated AllSpice menu excludes social login legal rows", () => {
   const restaurant = generatedRestaurants.restaurants.find(
-    (nextRestaurant) => nextRestaurant.id === "osm-allspice-catering-3397462219",
+    (nextRestaurant) =>
+      nextRestaurant.id === "osm-allspice-catering-3397462219",
   );
   const names = new Set((restaurant?.items ?? []).map((item) => item.name));
 
@@ -11871,10 +17601,12 @@ test("generated reviewed wing-tail repairs add cautious inference only where tex
     (restaurant) => restaurant.id === "replacement-barrel-washington-dc",
   );
   const awakening = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "replacement-awakening-bar-and-grill-washington-dc",
+    (restaurant) =>
+      restaurant.id === "replacement-awakening-bar-and-grill-washington-dc",
   );
   const tristate = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "replacement-tristate-indian-cuisine-herndon-va",
+    (restaurant) =>
+      restaurant.id === "replacement-tristate-indian-cuisine-herndon-va",
   );
   const ruthies = generatedRestaurants.restaurants.find(
     (restaurant) => restaurant.id === "ruthie-s-all-day-arlington-va-dc-metro",
@@ -11882,8 +17614,12 @@ test("generated reviewed wing-tail repairs add cautious inference only where tex
 
   const barrelWings = barrel?.items.find((item) => item.id === "wings");
   const awakeningWings = awakening?.items.find((item) => item.id === "wings");
-  const tristateWings = tristate?.items.find((item) => item.id === "tristate-spl-chicken-wings");
-  const ruthiesSmokedWings = ruthies?.items.find((item) => item.id === "crispy-smoked-wings-gf");
+  const tristateWings = tristate?.items.find(
+    (item) => item.id === "tristate-spl-chicken-wings",
+  );
+  const ruthiesSmokedWings = ruthies?.items.find(
+    (item) => item.id === "crispy-smoked-wings-gf",
+  );
 
   assert.ok(barrelWings);
   assert.ok(awakeningWings);
@@ -11896,21 +17632,44 @@ test("generated reviewed wing-tail repairs add cautious inference only where tex
 });
 
 test("generated oversized chain repairs remove regional and modifier catalog artifacts", () => {
-  const potbelly = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "potbelly-dc");
-  const quiznos = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "quiznos");
-  const silverDiner = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "silver-diner-dc");
-  const cornerBakery = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "corner-bakery-cafe");
-  const rubyTuesday = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "ruby-tuesday");
-  const burgerKing = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "burger-king");
-  const popeyes = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "popeyes");
-  const dairyQueen = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "dairy-queen");
-  const applebees = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "applebees");
-  const mirchDhamaka = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "mirch-dhamaka-indian-fine-dine-cafe-and-bar-herndon-va-dc-metro",
+  const potbelly = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "potbelly-dc",
   );
-  const asianGrill = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "osm-asian-2393478597");
+  const quiznos = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "quiznos",
+  );
+  const silverDiner = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "silver-diner-dc",
+  );
+  const cornerBakery = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "corner-bakery-cafe",
+  );
+  const rubyTuesday = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "ruby-tuesday",
+  );
+  const burgerKing = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "burger-king",
+  );
+  const popeyes = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "popeyes",
+  );
+  const dairyQueen = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "dairy-queen",
+  );
+  const applebees = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "applebees",
+  );
+  const mirchDhamaka = generatedRestaurants.restaurants.find(
+    (restaurant) =>
+      restaurant.id ===
+      "mirch-dhamaka-indian-fine-dine-cafe-and-bar-herndon-va-dc-metro",
+  );
+  const asianGrill = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "osm-asian-2393478597",
+  );
   const armettas = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "osm-armetta-s-italian-pizzeria-3935138350",
+    (restaurant) =>
+      restaurant.id === "osm-armetta-s-italian-pizzeria-3935138350",
   );
 
   assert.ok(potbelly);
@@ -11926,28 +17685,68 @@ test("generated oversized chain repairs remove regional and modifier catalog art
   assert.ok(asianGrill);
   assert.ok(armettas);
   assert.equal(
-    potbelly.items.some((item) => /\b(?:Cincinnati|Dallas|Houston)\b/i.test(`${item.name} ${item.category ?? ""}`)),
+    potbelly.items.some((item) =>
+      /\b(?:Cincinnati|Dallas|Houston)\b/i.test(
+        `${item.name} ${item.category ?? ""}`,
+      ),
+    ),
     false,
   );
-  assert.equal(potbelly.items.some((item) => /\bINM only\b/i.test(item.category ?? "")), false);
-  assert.ok(potbelly.items.length < 250, `expected Potbelly cleaned menu below 250 items, got ${potbelly.items.length}`);
-  assert.equal(potbelly.allergenDataStatus?.officialItemCount, potbelly.items.length);
-
-  const quiznosModifierCategories = /^(?:Condiments, Toppings, & Veggies|Dressings & Sauces|Proteins|Breads|Cheese|Fountain Drinks)$/i;
-  assert.equal(quiznos.items.some((item) => quiznosModifierCategories.test(item.category ?? "")), false);
-  assert.ok(quiznos.items.length < 200, `expected Quiznos orderable menu below 200 items, got ${quiznos.items.length}`);
-
-  assert.ok(silverDiner.items.length < 250, `expected Silver Diner cleaned menu below 250 items, got ${silverDiner.items.length}`);
-  assert.ok(silverDiner.items.some((item) => item.id === "avocado-toast-and-eggs-v"));
-  assert.ok(silverDiner.items.some((item) => item.id === "crab-cake-melt-and-lobster-au-jus"));
-  assert.equal(silverDiner.items.some((item) => item.id === "allergenindex"), false);
-  assert.equal(silverDiner.items.some((item) => /\bBWI Airport\b/i.test(item.name)), false);
   assert.equal(
-    silverDiner.items.some((item) =>
-      !(item.sourceUrls ?? []).some((url) =>
-        /silverdiner\.com\/(?:menu-|kids-menu|flexitarian-menu)/i.test(String(url)) &&
-        !/menu-cocktails/i.test(String(url)),
-      ),
+    potbelly.items.some((item) => /\bINM only\b/i.test(item.category ?? "")),
+    false,
+  );
+  assert.ok(
+    potbelly.items.length < 250,
+    `expected Potbelly cleaned menu below 250 items, got ${potbelly.items.length}`,
+  );
+  assert.equal(
+    potbelly.allergenDataStatus?.officialItemCount,
+    potbelly.items.length,
+  );
+
+  const quiznosModifierCategories =
+    /^(?:Condiments, Toppings, & Veggies|Dressings & Sauces|Proteins|Breads|Cheese|Fountain Drinks)$/i;
+  assert.equal(
+    quiznos.items.some((item) =>
+      quiznosModifierCategories.test(item.category ?? ""),
+    ),
+    false,
+  );
+  assert.ok(
+    quiznos.items.length < 200,
+    `expected Quiznos orderable menu below 200 items, got ${quiznos.items.length}`,
+  );
+
+  assert.ok(
+    silverDiner.items.length < 250,
+    `expected Silver Diner cleaned menu below 250 items, got ${silverDiner.items.length}`,
+  );
+  assert.ok(
+    silverDiner.items.some((item) => item.id === "avocado-toast-and-eggs-v"),
+  );
+  assert.ok(
+    silverDiner.items.some(
+      (item) => item.id === "crab-cake-melt-and-lobster-au-jus",
+    ),
+  );
+  assert.equal(
+    silverDiner.items.some((item) => item.id === "allergenindex"),
+    false,
+  );
+  assert.equal(
+    silverDiner.items.some((item) => /\bBWI Airport\b/i.test(item.name)),
+    false,
+  );
+  assert.equal(
+    silverDiner.items.some(
+      (item) =>
+        !(item.sourceUrls ?? []).some(
+          (url) =>
+            /silverdiner\.com\/(?:menu-|kids-menu|flexitarian-menu)/i.test(
+              String(url),
+            ) && !/menu-cocktails/i.test(String(url)),
+        ),
     ),
     false,
   );
@@ -11956,8 +17755,16 @@ test("generated oversized chain repairs remove regional and modifier catalog art
     cornerBakery.items.length < 250,
     `expected Corner Bakery cleaned menu below 250 items, got ${cornerBakery.items.length}`,
   );
-  assert.equal(cornerBakery.items.some((item) => /\b(?:Coffee|Beverages?)\b/i.test(item.category ?? "")), false);
-  assert.equal(cornerBakery.items.some((item) => (item.sourceUrls ?? []).length === 0), false);
+  assert.equal(
+    cornerBakery.items.some((item) =>
+      /\b(?:Coffee|Beverages?)\b/i.test(item.category ?? ""),
+    ),
+    false,
+  );
+  assert.equal(
+    cornerBakery.items.some((item) => (item.sourceUrls ?? []).length === 0),
+    false,
+  );
 
   assert.ok(
     rubyTuesday.items.length < 250,
@@ -11965,21 +17772,53 @@ test("generated oversized chain repairs remove regional and modifier catalog art
   );
   assert.equal(
     rubyTuesday.items.some((item) =>
-      /^(?:Beverages|Promotions|Utensils|Family Bundle Meals)$/i.test(item.category ?? ""),
+      /^(?:Beverages|Promotions|Utensils|Family Bundle Meals)$/i.test(
+        item.category ?? "",
+      ),
     ),
     false,
   );
 
-  assert.equal(burgerKing.items.some((item) => /^(?:Drinks & Coffee|Condiments)$/i.test(item.category ?? "")), false);
-  assert.equal(popeyes.items.some((item) => /^(?:Beverages|Family)$/i.test(item.category ?? "")), false);
   assert.equal(
-    dairyQueen.items.some((item) => /^(?:Mobile Add Ons|Dressing, Sauces, and Dips)$/i.test(item.category ?? "")),
+    burgerKing.items.some((item) =>
+      /^(?:Drinks & Coffee|Condiments)$/i.test(item.category ?? ""),
+    ),
     false,
   );
-  assert.equal(dairyQueen.items.some((item) => /^AO\d/i.test(item.name ?? "")), false);
-  assert.equal(applebees.items.some((item) => /\bINM Only\b/i.test(item.category ?? "")), false);
-  assert.equal(applebees.items.some((item) => /\b(?:Dipping Sauce|Flavor -)\b/i.test(item.name ?? "")), false);
-  assert.equal(mirchDhamaka.items.some((item) => /^Large Group Dining & Private Gatherings$/i.test(item.name ?? "")), false);
+  assert.equal(
+    popeyes.items.some((item) =>
+      /^(?:Beverages|Family)$/i.test(item.category ?? ""),
+    ),
+    false,
+  );
+  assert.equal(
+    dairyQueen.items.some((item) =>
+      /^(?:Mobile Add Ons|Dressing, Sauces, and Dips)$/i.test(
+        item.category ?? "",
+      ),
+    ),
+    false,
+  );
+  assert.equal(
+    dairyQueen.items.some((item) => /^AO\d/i.test(item.name ?? "")),
+    false,
+  );
+  assert.equal(
+    applebees.items.some((item) => /\bINM Only\b/i.test(item.category ?? "")),
+    false,
+  );
+  assert.equal(
+    applebees.items.some((item) =>
+      /\b(?:Dipping Sauce|Flavor -)\b/i.test(item.name ?? ""),
+    ),
+    false,
+  );
+  assert.equal(
+    mirchDhamaka.items.some((item) =>
+      /^Large Group Dining & Private Gatherings$/i.test(item.name ?? ""),
+    ),
+    false,
+  );
   assert.equal(mirchDhamaka.expectedLargeMenu, true);
   assert.equal(asianGrill.sourceFamily, "toast");
   assert.equal(asianGrill.parserProfile, "toast-menu");
@@ -11992,7 +17831,10 @@ test("generated oversized chain repairs remove regional and modifier catalog art
     ),
     false,
   );
-  assert.equal(armettas.items.some((item) => /^(?:1st|2nd) Half\b/i.test(item.name ?? "")), false);
+  assert.equal(
+    armettas.items.some((item) => /^(?:1st|2nd) Half\b/i.test(item.name ?? "")),
+    false,
+  );
 });
 
 test("Asian Grill preserves direct menu disclosures without culinary-name inference", () => {
@@ -12010,31 +17852,55 @@ test("Asian Grill preserves direct menu disclosures without culinary-name infere
     "wonton-soup",
     "wonton-soup-large",
   ]) {
-    assert.deepEqual(items.get(itemId)?.allergens, [], `${itemId} should not use culinary-name inference`);
+    assert.deepEqual(
+      items.get(itemId)?.allergens,
+      [],
+      `${itemId} should not use culinary-name inference`,
+    );
     assert.equal(items.get(itemId)?.allergenSourceType, "unavailable");
   }
 
   assert.deepEqual(items.get("crab-cake")?.allergens, ["shellfish"]);
-  assert.deepEqual(items.get("vietnamese-garden-rolls-2")?.allergens, ["shellfish", "peanut"]);
-  assert.deepEqual(items.get("d-cashew-nuts-shrimp")?.allergens, ["shellfish", "tree-nut"]);
+  assert.deepEqual(items.get("vietnamese-garden-rolls-2")?.allergens, [
+    "shellfish",
+    "peanut",
+  ]);
+  assert.deepEqual(items.get("d-cashew-nuts-shrimp")?.allergens, [
+    "shellfish",
+    "tree-nut",
+  ]);
   assert.equal(asianGrill.allergenDataStatus?.officialItemCount, 87);
 });
 
 test("Astro DC reconciles current specials and explicit allergen disclosures", () => {
-  const astro = generatedRestaurants.restaurants.find((restaurant) => restaurant.id === "astro-doughnuts-dc");
+  const astro = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "astro-doughnuts-dc",
+  );
   assert.ok(astro);
   const items = new Map(astro.items.map((item) => [item.id, item]));
 
-  for (const staleId of ["chocolate-smores", "peach-melba", "strawberry-shortcake"]) {
+  for (const staleId of [
+    "chocolate-smores",
+    "peach-melba",
+    "strawberry-shortcake",
+  ]) {
     assert.equal(items.has(staleId), false);
   }
-  for (const currentId of ["peach-cobbler", "chocolate-birthday-cake", "cherry-pie", "classic-cruller"]) {
+  for (const currentId of [
+    "peach-cobbler",
+    "chocolate-birthday-cake",
+    "cherry-pie",
+    "classic-cruller",
+  ]) {
     assert.equal(items.has(currentId), true);
     assert.equal(items.get(currentId)?.allergenSourceType, "unavailable");
   }
 
   assert.deepEqual(items.get("apollo-smashburger")?.allergens, ["milk"]);
-  assert.deepEqual(items.get("breakfast-quesadilla")?.allergens, ["milk", "egg"]);
+  assert.deepEqual(items.get("breakfast-quesadilla")?.allergens, [
+    "milk",
+    "egg",
+  ]);
   assert.deepEqual(items.get("chocolate-peanut-butter")?.allergens, ["peanut"]);
   assert.deepEqual(items.get("creme-brulee")?.allergens, ["milk"]);
   assert.deepEqual(items.get("double-chocolate-chip")?.allergens, ["milk"]);
@@ -12076,16 +17942,34 @@ test("Atlacatl rebuilds the current official menu with direct positive disclosur
     "steak-entrees",
     "steak-or-grilled-chicken-taco",
   ]) {
-    assert.equal(items.has(artifactId), false, `${artifactId} should not be a menu item`);
+    assert.equal(
+      items.has(artifactId),
+      false,
+      `${artifactId} should not be a menu item`,
+    );
   }
 
   assert.equal(items.get("taquitos-de-lengua")?.name, "Taquitos de Lengua");
-  assert.equal(items.get("side-of-fried-yucca")?.description, "Comes with spicy red dipping sauce.");
-  assert.deepEqual(items.get("salvadoran-style-sandwich-de-pollo")?.allergens, ["egg", "gluten", "wheat"]);
-  assert.deepEqual(items.get("fried-shrimp")?.allergens, ["gluten", "shellfish", "wheat"]);
+  assert.equal(
+    items.get("side-of-fried-yucca")?.description,
+    "Comes with spicy red dipping sauce.",
+  );
+  assert.deepEqual(items.get("salvadoran-style-sandwich-de-pollo")?.allergens, [
+    "egg",
+    "gluten",
+    "wheat",
+  ]);
+  assert.deepEqual(items.get("fried-shrimp")?.allergens, [
+    "gluten",
+    "shellfish",
+    "wheat",
+  ]);
   assert.deepEqual(items.get("salmon")?.allergens, ["fish", "milk"]);
   assert.deepEqual(items.get("lengua-empanizada")?.allergens, ["egg", "milk"]);
-  assert.equal(items.get("seafood-empanada")?.allergenSourceType, "unavailable");
+  assert.equal(
+    items.get("seafood-empanada")?.allergenSourceType,
+    "unavailable",
+  );
   assert.deepEqual(items.get("seafood-empanada")?.allergens, []);
   assert.equal(items.get("tacos-al-carbon")?.allergenSourceType, "unavailable");
   assert.equal(items.get("tortilla")?.allergenSourceType, "unavailable");
@@ -12102,30 +17986,53 @@ test("Atlas and Andy's reconciles the current Navy Yard menu", () => {
 
   assert.equal(atlas.items.length, 38);
   assert.equal(new Set(atlas.items.map((item) => item.id)).size, 38);
-  assert.deepEqual([...new Set(atlas.items.map((item) => item.category))], [
-    "Starters + Salads",
-    "Specialty Pies",
-    "Standard Pies & Slices",
-    "Extra Sauce",
-  ]);
+  assert.deepEqual(
+    [...new Set(atlas.items.map((item) => item.category))],
+    [
+      "Starters + Salads",
+      "Specialty Pies",
+      "Standard Pies & Slices",
+      "Extra Sauce",
+    ],
+  );
   for (const removedId of [
     "thu-the-garden-pie-vegan",
     "underberg-bitters",
     "wings-buffalo",
     "wings-old-bay",
   ]) {
-    assert.equal(items.has(removedId), false, `${removedId} should be excluded`);
+    assert.equal(
+      items.has(removedId),
+      false,
+      `${removedId} should be excluded`,
+    );
   }
   assert.equal(items.get("fried-cauliflower")?.name, "Fried Cauliflower");
   assert.equal(items.get("old-bay-fries")?.name, "Old Bay Fries");
   assert.equal(items.get("side-of-ranch")?.category, "Extra Sauce");
-  assert.deepEqual([...items.get("dairy-free-margherita").allergens].sort(), ["gluten", "tree-nut", "wheat"]);
-  assert.deepEqual([...items.get("8-makes-a-pie").allergens].sort(), ["gluten", "milk", "wheat"]);
+  assert.deepEqual([...items.get("dairy-free-margherita").allergens].sort(), [
+    "gluten",
+    "tree-nut",
+    "wheat",
+  ]);
+  assert.deepEqual([...items.get("8-makes-a-pie").allergens].sort(), [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   for (const item of atlas.items.filter((item) =>
-    ["Specialty Pies", "Standard Pies & Slices"].includes(item.category)
+    ["Specialty Pies", "Standard Pies & Slices"].includes(item.category),
   )) {
-    assert.equal(item.allergens.includes("wheat"), true, `${item.id} should include wheat`);
-    assert.equal(item.allergens.includes("gluten"), true, `${item.id} should include gluten`);
+    assert.equal(
+      item.allergens.includes("wheat"),
+      true,
+      `${item.id} should include wheat`,
+    );
+    assert.equal(
+      item.allergens.includes("gluten"),
+      true,
+      `${item.id} should include gluten`,
+    );
   }
   assert.equal(atlas.allergenDataStatus?.officialItemCount, 32);
   assert.equal(atlas.allergenDataStatus?.officialEvidence?.unavailable, 6);
@@ -12134,7 +18041,8 @@ test("Atlas and Andy's reconciles the current Navy Yard menu", () => {
 test("Augie's Alexandria restores the current catalog and preserves source authority", () => {
   const augies = generatedRestaurants.restaurants.find(
     (restaurant) =>
-      restaurant.id === "augie-s-mussel-house-and-beer-garden-alexandria-va-dc-metro",
+      restaurant.id ===
+      "augie-s-mussel-house-and-beer-garden-alexandria-va-dc-metro",
   );
   assert.ok(augies);
   const items = new Map(augies.items.map((item) => [item.id, item]));
@@ -12158,11 +18066,17 @@ test("Augie's Alexandria restores the current catalog and preserves source autho
     assert.equal(items.has(removedId), false, removedId);
   }
 
-  assert.ok(augies.items.every((item) =>
-    item.mayContain?.length === 1 && item.mayContain[0] === "gluten"
-  ));
+  assert.ok(
+    augies.items.every(
+      (item) =>
+        item.mayContain?.length === 1 && item.mayContain[0] === "gluten",
+    ),
+  );
   assert.deepEqual(items.get("cheese-fries").allergens, ["gluten", "milk"]);
-  assert.deepEqual(items.get("steak-and-cheese-egg-rolls").allergens, ["gluten", "milk"]);
+  assert.deepEqual(items.get("steak-and-cheese-egg-rolls").allergens, [
+    "gluten",
+    "milk",
+  ]);
   assert.deepEqual(items.get("tuna-tartare").allergens, [
     "egg",
     "fish",
@@ -12187,10 +18101,23 @@ test("Augie's Alexandria restores the current catalog and preserves source autho
   assert.equal(items.get("american-sliced").allergenSourceType, "unavailable");
 
   assert.equal(augies.allergenDataStatus?.officialItemCount, 82);
-  assert.equal(augies.allergenDataStatus?.officialEvidence?.officialIngredientDisclosure, 68);
-  assert.equal(augies.allergenDataStatus?.officialEvidence?.globalCrossContactNote, 14);
-  assert.equal(augies.allergenDataStatus?.officialEvidence?.restaurantLinkedIngredientDisclosure, 5);
-  assert.equal(augies.allergenDataStatus?.officialEvidence?.restaurantLinkedProductSection, 7);
+  assert.equal(
+    augies.allergenDataStatus?.officialEvidence?.officialIngredientDisclosure,
+    68,
+  );
+  assert.equal(
+    augies.allergenDataStatus?.officialEvidence?.globalCrossContactNote,
+    14,
+  );
+  assert.equal(
+    augies.allergenDataStatus?.officialEvidence
+      ?.restaurantLinkedIngredientDisclosure,
+    5,
+  );
+  assert.equal(
+    augies.allergenDataStatus?.officialEvidence?.restaurantLinkedProductSection,
+    7,
+  );
   assert.equal(augies.allergenDataStatus?.officialEvidence?.unavailable, 28);
   assert.equal(augies.sourceStatus?.canonicalProductCount, 122);
   assert.equal(augies.sourceStatus?.frozenLocationMismatchCount, 9);
@@ -12220,32 +18147,50 @@ test("Auntie Anne's uses the current U.S. guide and preserves global cross-conta
 
   assert.equal(auntieAnnes.items.length, 46);
   assert.equal(new Set(auntieAnnes.items.map((item) => item.id)).size, 46);
-  assert.deepEqual([...new Set(auntieAnnes.items.map((item) => item.category))], [
-    "Classic Pretzels",
-    "Pretzel Dogs",
-    "Pretzel Nuggets",
-    "Dips",
-    "Breakfast Sandwiches",
-    "Lemonade & Frozen Lemonade",
-    "Spritz",
-    "Smoothies",
-    "Coffee",
-    "Fountain Drinks",
-  ]);
+  assert.deepEqual(
+    [...new Set(auntieAnnes.items.map((item) => item.category))],
+    [
+      "Classic Pretzels",
+      "Pretzel Dogs",
+      "Pretzel Nuggets",
+      "Dips",
+      "Breakfast Sandwiches",
+      "Lemonade & Frozen Lemonade",
+      "Spritz",
+      "Smoothies",
+      "Coffee",
+      "Fountain Drinks",
+    ],
+  );
   assert.equal(
-    auntieAnnes.items.filter((item) => item.allergenSourceType === "official-allergen-menu").length,
+    auntieAnnes.items.filter(
+      (item) => item.allergenSourceType === "official-allergen-menu",
+    ).length,
     39,
   );
   assert.equal(
     auntieAnnes.items.filter(
-      (item) => item.allergenSourceType === "official-global-cross-contact-note",
+      (item) =>
+        item.allergenSourceType === "official-global-cross-contact-note",
     ).length,
     7,
   );
   for (const item of auntieAnnes.items) {
-    assert.deepEqual(item.mayContain, commonMayContain, `${item.id} global warning`);
-    assert.equal(item.allergens.includes("gluten"), false, `${item.id} fixed gluten`);
-    assert.equal(item.mayContain.includes("gluten"), false, `${item.id} may-contain gluten`);
+    assert.deepEqual(
+      item.mayContain,
+      commonMayContain,
+      `${item.id} global warning`,
+    );
+    assert.equal(
+      item.allergens.includes("gluten"),
+      false,
+      `${item.id} fixed gluten`,
+    );
+    assert.equal(
+      item.mayContain.includes("gluten"),
+      false,
+      `${item.id} may-contain gluten`,
+    );
   }
 
   assert.deepEqual(items.get("sweet-almond-pretzel")?.allergens, [
@@ -12269,7 +18214,11 @@ test("Auntie Anne's uses the current U.S. guide and preserves global cross-conta
   ]) {
     assert.equal(items.get(id)?.category, "Fountain Drinks", id);
     assert.deepEqual(items.get(id)?.allergens, [], id);
-    assert.equal(items.get(id)?.allergenSourceType, "official-global-cross-contact-note", id);
+    assert.equal(
+      items.get(id)?.allergenSourceType,
+      "official-global-cross-contact-note",
+      id,
+    );
   }
   for (const removedId of [
     "clarified-butter",
@@ -12285,9 +18234,18 @@ test("Auntie Anne's uses the current U.S. guide and preserves global cross-conta
   }
 
   assert.equal(auntieAnnes.allergenDataStatus?.officialItemCount, 46);
-  assert.equal(auntieAnnes.allergenDataStatus?.officialEvidence?.officialFullMatrixOrApi, 39);
-  assert.equal(auntieAnnes.allergenDataStatus?.officialEvidence?.globalCrossContactNote, 7);
-  assert.equal(auntieAnnes.allergenDataStatus?.officialEvidence?.unavailable, 0);
+  assert.equal(
+    auntieAnnes.allergenDataStatus?.officialEvidence?.officialFullMatrixOrApi,
+    39,
+  );
+  assert.equal(
+    auntieAnnes.allergenDataStatus?.officialEvidence?.globalCrossContactNote,
+    7,
+  );
+  assert.equal(
+    auntieAnnes.allergenDataStatus?.officialEvidence?.unavailable,
+    0,
+  );
   assert.equal(auntieAnnes.sourceStatus?.canonicalProductCount, 46);
   assert.deepEqual(auntieAnnes.sourceUrls, [
     "https://assets.ctfassets.net/zqt8tllj2cy0/2jjVNaTNGDoMGd4QVucpSy/0f94c0d0541ec11a334dba7ce6fc56b0/Auntie-Annes-Nutrition-Guide.pdf",
@@ -12305,20 +18263,25 @@ test("Awakening preserves current service presentations and conservative source 
   assert.equal(awakening.items.length, 50);
   assert.equal(new Set(awakening.items.map((item) => item.id)).size, 50);
   assert.equal(
-    awakening.items.filter((item) => item.allergenSourceType === "official-ingredients").length,
+    awakening.items.filter(
+      (item) => item.allergenSourceType === "official-ingredients",
+    ).length,
     31,
   );
   assert.equal(
-    awakening.items.filter((item) => item.allergenSourceType === "unavailable").length,
+    awakening.items.filter((item) => item.allergenSourceType === "unavailable")
+      .length,
     19,
   );
   assert.ok(awakening.items.every((item) => item.mayContain.length === 0));
   assert.ok(awakening.items.every((item) => !item.allergens.includes("wheat")));
-  assert.ok(awakening.items.every((item) => !item.allergens.includes("gluten")));
-  assert.deepEqual(awakening.items.slice(-2).map((item) => item.name), [
-    "Select Draft Beers",
-    "House Mixed Drinks",
-  ]);
+  assert.ok(
+    awakening.items.every((item) => !item.allergens.includes("gluten")),
+  );
+  assert.deepEqual(
+    awakening.items.slice(-2).map((item) => item.name),
+    ["Select Draft Beers", "House Mixed Drinks"],
+  );
 
   assert.equal(items.get("chicken-waffles")?.category, "Mains");
   assert.deepEqual(items.get("chicken-waffles")?.allergens, ["milk"]);
@@ -12352,7 +18315,11 @@ test("Awakening preserves current service presentations and conservative source 
   }
 
   assert.equal(awakening.allergenDataStatus?.officialItemCount, 31);
-  assert.equal(awakening.allergenDataStatus?.officialEvidence?.officialIngredientDisclosure, 31);
+  assert.equal(
+    awakening.allergenDataStatus?.officialEvidence
+      ?.officialIngredientDisclosure,
+    31,
+  );
   assert.equal(awakening.allergenDataStatus?.officialEvidence?.unavailable, 19);
   assert.equal(awakening.sourceStatus?.canonicalProductCount, 50);
   assert.deepEqual(awakening.sourceUrls, [
@@ -12368,40 +18335,89 @@ test("Aventino preserves service formulations and linked-source authority", () =
   assert.ok(aventino);
   assert.equal(
     generatedRestaurants.restaurants.some(
-      (restaurant) => restaurant.id === "osm-aventino-cucina-romana-12342520793",
+      (restaurant) =>
+        restaurant.id === "osm-aventino-cucina-romana-12342520793",
     ),
     false,
   );
   const items = new Map(aventino.items.map((item) => [item.id, item]));
-  assert.deepEqual(aventino.items.map((item) => item.id), [
-    "pizza-rossa", "acciughe-e-burro", "suppli-al-telefono", "ricotta", "crostini",
-    "fiori", "prosciutto", "misticanza", "piselli", "funghi", "caprese", "fritto",
-    "capesante", "tonnarelli", "lumache", "bucatini", "rigatoni", "fettucine",
-    "pappardelle", "pesce-secondi", "pollo", "brasato", "prosciutto-antipasti",
-    "rigatoni-carbonara", "prosciutto-panino", "aventino-burger", "milanese",
-    "pesce-pranzo", "chocolate-nemesis-cake", "gelato-selection", "affogato",
-    "bombolini", "blueberry-coffee-cake", "breakfast-panino", "lemon-ricotta-pancakes",
-    "omelette-del-giorno", "eggs-allamatriciana", "aventino-tiramisu",
-    "mascarpone-cheesecake", "chocolate-nemesis", "angel-food-cake", "cookie-plate",
-    "gelato-e-sorbetto", "pasta-al-zozzone", "pizza-bianca", "italian-olives",
-    "rosemary-taralli", "prosciutto-di-parma", "aventino-burger-happy-hour",
-    "chocolate-chip-cookies", "sourdough-bread", "pesce-online-ordering",
-  ]);
+  assert.deepEqual(
+    aventino.items.map((item) => item.id),
+    [
+      "pizza-rossa",
+      "acciughe-e-burro",
+      "suppli-al-telefono",
+      "ricotta",
+      "crostini",
+      "fiori",
+      "prosciutto",
+      "misticanza",
+      "piselli",
+      "funghi",
+      "caprese",
+      "fritto",
+      "capesante",
+      "tonnarelli",
+      "lumache",
+      "bucatini",
+      "rigatoni",
+      "fettucine",
+      "pappardelle",
+      "pesce-secondi",
+      "pollo",
+      "brasato",
+      "prosciutto-antipasti",
+      "rigatoni-carbonara",
+      "prosciutto-panino",
+      "aventino-burger",
+      "milanese",
+      "pesce-pranzo",
+      "chocolate-nemesis-cake",
+      "gelato-selection",
+      "affogato",
+      "bombolini",
+      "blueberry-coffee-cake",
+      "breakfast-panino",
+      "lemon-ricotta-pancakes",
+      "omelette-del-giorno",
+      "eggs-allamatriciana",
+      "aventino-tiramisu",
+      "mascarpone-cheesecake",
+      "chocolate-nemesis",
+      "angel-food-cake",
+      "cookie-plate",
+      "gelato-e-sorbetto",
+      "pasta-al-zozzone",
+      "pizza-bianca",
+      "italian-olives",
+      "rosemary-taralli",
+      "prosciutto-di-parma",
+      "aventino-burger-happy-hour",
+      "chocolate-chip-cookies",
+      "sourdough-bread",
+      "pesce-online-ordering",
+    ],
+  );
 
   assert.equal(aventino.items.length, 52);
   assert.equal(new Set(aventino.items.map((item) => item.id)).size, 52);
   assert.equal(
-    aventino.items.filter((item) => item.allergenSourceType === "official-ingredients").length,
+    aventino.items.filter(
+      (item) => item.allergenSourceType === "official-ingredients",
+    ).length,
     27,
   );
   assert.equal(
     aventino.items.filter(
-      (item) => item.allergenSourceType === "restaurant-linked-product-allergen-section",
+      (item) =>
+        item.allergenSourceType ===
+        "restaurant-linked-product-allergen-section",
     ).length,
     12,
   );
   assert.equal(
-    aventino.items.filter((item) => item.allergenSourceType === "unavailable").length,
+    aventino.items.filter((item) => item.allergenSourceType === "unavailable")
+      .length,
     13,
   );
   assert.ok(aventino.items.every((item) => item.mayContain.length === 0));
@@ -12421,9 +18437,18 @@ test("Aventino preserves service formulations and linked-source authority", () =
     "tree-nut",
     "wheat",
   ]);
-  assert.match(items.get("prosciutto-panino")?.variantGroup ?? "", /Lunch.*Brunch/);
-  assert.deepEqual(items.get("aventino-burger")?.allergens, ["gluten", "milk", "wheat"]);
-  assert.deepEqual(items.get("aventino-burger-happy-hour")?.allergens, ["milk"]);
+  assert.match(
+    items.get("prosciutto-panino")?.variantGroup ?? "",
+    /Lunch.*Brunch/,
+  );
+  assert.deepEqual(items.get("aventino-burger")?.allergens, [
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
+  assert.deepEqual(items.get("aventino-burger-happy-hour")?.allergens, [
+    "milk",
+  ]);
   assert.deepEqual(items.get("pesce-secondi")?.allergens, ["fish"]);
   assert.deepEqual(items.get("pesce-pranzo")?.allergens, ["fish"]);
   assert.deepEqual(items.get("pesce-online-ordering")?.allergens, [
@@ -12462,8 +18487,15 @@ test("Aventino preserves service formulations and linked-source authority", () =
   }
 
   assert.equal(aventino.allergenDataStatus?.officialItemCount, 27);
-  assert.equal(aventino.allergenDataStatus?.officialEvidence?.officialIngredientDisclosure, 27);
-  assert.equal(aventino.allergenDataStatus?.officialEvidence?.restaurantLinkedProductSection, 12);
+  assert.equal(
+    aventino.allergenDataStatus?.officialEvidence?.officialIngredientDisclosure,
+    27,
+  );
+  assert.equal(
+    aventino.allergenDataStatus?.officialEvidence
+      ?.restaurantLinkedProductSection,
+    12,
+  );
   assert.equal(aventino.allergenDataStatus?.officialEvidence?.unavailable, 13);
   assert.equal(aventino.sourceStatus?.canonicalProductCount, 52);
   assert.deepEqual(aventino.sourceStatus?.removedDuplicateRestaurantIds, [
@@ -12471,7 +18503,7 @@ test("Aventino preserves service formulations and linked-source authority", () =
   ]);
   assert.equal(
     aventino.sourceStatus?.reviewedMenuQualityRepairs?.filter(({ note }) =>
-      String(note ?? "").startsWith("Verified repair: rebuilt Aventino Cucina")
+      String(note ?? "").startsWith("Verified repair: rebuilt Aventino Cucina"),
     ).length,
     1,
   );
@@ -12490,42 +18522,107 @@ test("AYŞE preserves the full current service boundary and narrow source author
   const items = new Map(ayse.items.map((item) => [item.id, item]));
   assert.equal(ayse.items.length, 151);
   assert.equal(new Set(ayse.items.map((item) => item.id)).size, 151);
-  assert.equal(ayse.items.filter((item) => item.allergenSourceType === "official-ingredients").length, 109);
-  assert.equal(ayse.items.filter((item) => item.allergenSourceType === "restaurant-linked-product-allergen-section").length, 4);
-  assert.equal(ayse.items.filter((item) => item.allergenSourceType === "restaurant-linked-menu-ingredients").length, 1);
-  assert.equal(ayse.items.filter((item) => item.allergenSourceType === "unavailable").length, 37);
+  assert.equal(
+    ayse.items.filter(
+      (item) => item.allergenSourceType === "official-ingredients",
+    ).length,
+    109,
+  );
+  assert.equal(
+    ayse.items.filter(
+      (item) =>
+        item.allergenSourceType ===
+        "restaurant-linked-product-allergen-section",
+    ).length,
+    4,
+  );
+  assert.equal(
+    ayse.items.filter(
+      (item) =>
+        item.allergenSourceType === "restaurant-linked-menu-ingredients",
+    ).length,
+    1,
+  );
+  assert.equal(
+    ayse.items.filter((item) => item.allergenSourceType === "unavailable")
+      .length,
+    37,
+  );
   assert.ok(ayse.items.every((item) => item.mayContain.length === 0));
-  assert.deepEqual(items.get("fried-green-tomatoes")?.allergens, ["egg", "gluten", "milk", "wheat"]);
-  assert.deepEqual(items.get("baklava")?.allergens, ["gluten", "milk", "tree-nut", "wheat"]);
-  assert.equal(items.get("baklava")?.allergenSourceType, "restaurant-linked-product-allergen-section");
-  assert.equal(items.get("strawberry-sundae")?.allergenSourceType, "restaurant-linked-menu-ingredients");
-  assert.deepEqual(items.get("side-ayse-aioli")?.sourceUrls, ["https://order.toasttab.com/online/ayse"]);
-  assert.deepEqual(items.get("kids-cheese-pizza")?.sourceUrls, ["https://aysemeze.com/wp-content/uploads/2026/03/KIDS-MENU.pdf"]);
-  assert.equal(items.get("todays-lunch-feature")?.allergenSourceType, "unavailable");
+  assert.deepEqual(items.get("fried-green-tomatoes")?.allergens, [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
+  assert.deepEqual(items.get("baklava")?.allergens, [
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
+  assert.equal(
+    items.get("baklava")?.allergenSourceType,
+    "restaurant-linked-product-allergen-section",
+  );
+  assert.equal(
+    items.get("strawberry-sundae")?.allergenSourceType,
+    "restaurant-linked-menu-ingredients",
+  );
+  assert.deepEqual(items.get("side-ayse-aioli")?.sourceUrls, [
+    "https://order.toasttab.com/online/ayse",
+  ]);
+  assert.deepEqual(items.get("kids-cheese-pizza")?.sourceUrls, [
+    "https://aysemeze.com/wp-content/uploads/2026/03/KIDS-MENU.pdf",
+  ]);
+  assert.equal(
+    items.get("todays-lunch-feature")?.allergenSourceType,
+    "unavailable",
+  );
   assert.equal(items.get("todays-lunch-feature")?.isConfigurable, true);
   for (const removedId of [
-    "caesar-salad-hummus-bowl", "cheese-pizza-pepperoni-pizza", "crabcake-fritters",
-    "ice-cream-sundae", "linguini-pomodoro", "macaroni-and-cheese", "muhammara",
-    "new-york-strip-steak", "salad-add-ons-chicken-dollar7-gulf-shrimp-dollar11-faroe-islands-salmon-dollar16-white-anchovies",
+    "caesar-salad-hummus-bowl",
+    "cheese-pizza-pepperoni-pizza",
+    "crabcake-fritters",
+    "ice-cream-sundae",
+    "linguini-pomodoro",
+    "macaroni-and-cheese",
+    "muhammara",
+    "new-york-strip-steak",
+    "salad-add-ons-chicken-dollar7-gulf-shrimp-dollar11-faroe-islands-salmon-dollar16-white-anchovies",
     "warm-pita",
-  ]) assert.equal(items.has(removedId), false, removedId);
+  ])
+    assert.equal(items.has(removedId), false, removedId);
   assert.equal(ayse.sourceStatus?.canonicalProductCount, 151);
   assert.equal(ayse.sourceStatus?.frozenAllergenOrProvenanceMismatchCount, 48);
   assert.equal(
     ayse.sourceStatus?.reviewedMenuQualityRepairs?.filter(({ note }) =>
-      String(note ?? "").startsWith("Verified repair: rebuilt AYŞE Meze Lounge")
+      String(note ?? "").startsWith(
+        "Verified repair: rebuilt AYŞE Meze Lounge",
+      ),
     ).length,
     1,
   );
-  assert.equal(ayse.allergenDataStatus?.officialEvidence?.officialIngredientDisclosure, 109);
-  assert.equal(ayse.allergenDataStatus?.officialEvidence?.restaurantLinkedIngredientDisclosure, 1);
-  assert.equal(ayse.allergenDataStatus?.officialEvidence?.restaurantLinkedProductSection, 4);
+  assert.equal(
+    ayse.allergenDataStatus?.officialEvidence?.officialIngredientDisclosure,
+    109,
+  );
+  assert.equal(
+    ayse.allergenDataStatus?.officialEvidence
+      ?.restaurantLinkedIngredientDisclosure,
+    1,
+  );
+  assert.equal(
+    ayse.allergenDataStatus?.officialEvidence?.restaurantLinkedProductSection,
+    4,
+  );
   assert.equal(ayse.allergenDataStatus?.officialEvidence?.unavailable, 37);
 });
 
 test("Azteca College Park preserves the full linked ordering catalog and authority", () => {
   const azteca = generatedRestaurants.restaurants.find(
-    (restaurant) => restaurant.id === "azteca-restaurant-college-park-md-dc-metro",
+    (restaurant) =>
+      restaurant.id === "azteca-restaurant-college-park-md-dc-metro",
   );
   assert.ok(azteca);
   const items = new Map(azteca.items.map((item) => [item.id, item]));
@@ -12561,25 +18658,42 @@ test("Azteca College Park preserves the full linked ordering catalog and authori
   });
   assert.equal(
     azteca.items.filter(
-      (item) => item.allergenSourceType === "restaurant-linked-menu-ingredients",
+      (item) =>
+        item.allergenSourceType === "restaurant-linked-menu-ingredients",
     ).length,
     65,
   );
   assert.equal(
-    azteca.items.filter((item) => item.allergenSourceType === "unavailable").length,
+    azteca.items.filter((item) => item.allergenSourceType === "unavailable")
+      .length,
     29,
   );
-  assert.ok(azteca.items.every((item) => !/official/i.test(item.allergenSourceType)));
+  assert.ok(
+    azteca.items.every((item) => !/official/i.test(item.allergenSourceType)),
+  );
   assert.ok(azteca.items.every((item) => item.mayContain.length === 0));
   assert.ok(azteca.items.every((item) => !item.allergens.includes("wheat")));
   assert.ok(azteca.items.every((item) => !item.allergens.includes("gluten")));
-  assert.deepEqual(items.get("ceviche-mixto-peruano")?.allergens, ["fish", "shellfish"]);
-  assert.deepEqual(items.get("grilled-chicken-quesadilla")?.allergens, ["milk"]);
-  assert.deepEqual(items.get("mariscada-soup")?.allergens, ["egg", "fish", "shellfish"]);
+  assert.deepEqual(items.get("ceviche-mixto-peruano")?.allergens, [
+    "fish",
+    "shellfish",
+  ]);
+  assert.deepEqual(items.get("grilled-chicken-quesadilla")?.allergens, [
+    "milk",
+  ]);
+  assert.deepEqual(items.get("mariscada-soup")?.allergens, [
+    "egg",
+    "fish",
+    "shellfish",
+  ]);
   assert.equal(items.get("mariscada-soup")?.isConfigurable, true);
   assert.equal(items.get("plato-picadera-especial")?.evidence.length, 2);
   assert.equal(azteca.allergenDataStatus?.officialItemCount, 0);
-  assert.equal(azteca.allergenDataStatus?.officialEvidence?.restaurantLinkedIngredientDisclosure, 65);
+  assert.equal(
+    azteca.allergenDataStatus?.officialEvidence
+      ?.restaurantLinkedIngredientDisclosure,
+    65,
+  );
   assert.equal(azteca.allergenDataStatus?.officialEvidence?.unavailable, 29);
   assert.equal(azteca.sourceStatus?.canonicalProductCount, 94);
   assert.equal(azteca.sourceStatus?.rawMenuPresentationCount, 103);
@@ -12597,52 +18711,100 @@ test("B Side preserves all rendered owner-menu boundaries and linked authority",
   assert.ok(bSide);
   const items = new Map(bSide.items.map((item) => [item.id, item]));
 
-  assert.deepEqual(bSide.items.slice(0, 31).map((item) => item.id), [
-    "smoked-pimento-cheese", "pickled-deviled-eggs", "48-hour-fermented-focaccia",
-    "brussels-sprouts", "caesar-salad", "heirloom-tomato-salad", "charred-asparagus",
-    "grilled-artichokes", "sicilian-anchovies", "grilled-shishitos", "swedish-meatballs",
-    "bbqd-carrots", "smoked-wings", "crispy-chesapeake-oysters", "spam", "lettuce-wraps",
-    "ahi-tuna-poke", "smoked-olives", "sour-cream-and-onion-chicharrones",
-    "chili-spiced-nuts", "trio-of-the-above-3-snacks", "beef-fat-fries",
-    "b-side-smashburger", "rambos-spice-bag", "steak-frites", "hickory-smoked-brisket",
-    "mixtape", "samples", "flourless-brownie", "choco-flan", "lemon-ricotta-donuts",
-  ]);
+  assert.deepEqual(
+    bSide.items.slice(0, 31).map((item) => item.id),
+    [
+      "smoked-pimento-cheese",
+      "pickled-deviled-eggs",
+      "48-hour-fermented-focaccia",
+      "brussels-sprouts",
+      "caesar-salad",
+      "heirloom-tomato-salad",
+      "charred-asparagus",
+      "grilled-artichokes",
+      "sicilian-anchovies",
+      "grilled-shishitos",
+      "swedish-meatballs",
+      "bbqd-carrots",
+      "smoked-wings",
+      "crispy-chesapeake-oysters",
+      "spam",
+      "lettuce-wraps",
+      "ahi-tuna-poke",
+      "smoked-olives",
+      "sour-cream-and-onion-chicharrones",
+      "chili-spiced-nuts",
+      "trio-of-the-above-3-snacks",
+      "beef-fat-fries",
+      "b-side-smashburger",
+      "rambos-spice-bag",
+      "steak-frites",
+      "hickory-smoked-brisket",
+      "mixtape",
+      "samples",
+      "flourless-brownie",
+      "choco-flan",
+      "lemon-ricotta-donuts",
+    ],
+  );
   assert.equal(bSide.items.length, 58);
   assert.equal(new Set(bSide.items.map((item) => item.id)).size, 58);
   assert.equal(
-    bSide.items.filter((item) => item.allergenSourceType === "official-ingredients").length,
+    bSide.items.filter(
+      (item) => item.allergenSourceType === "official-ingredients",
+    ).length,
     30,
   );
   assert.equal(
     bSide.items.filter(
-      (item) => item.allergenSourceType === "restaurant-linked-menu-ingredients",
+      (item) =>
+        item.allergenSourceType === "restaurant-linked-menu-ingredients",
     ).length,
     2,
   );
   assert.equal(
     bSide.items.filter(
-      (item) => item.allergenSourceType === "restaurant-linked-product-allergen-section",
+      (item) =>
+        item.allergenSourceType ===
+        "restaurant-linked-product-allergen-section",
     ).length,
     2,
   );
   assert.equal(
-    bSide.items.filter((item) => item.allergenSourceType === "unavailable").length,
+    bSide.items.filter((item) => item.allergenSourceType === "unavailable")
+      .length,
     24,
   );
   assert.deepEqual(
-    bSide.items.filter((item) => item.mayContain.length > 0).map((item) => item.id),
+    bSide.items
+      .filter((item) => item.mayContain.length > 0)
+      .map((item) => item.id),
     ["sour-cream-and-onion-chicharrones"],
   );
   for (const id of [
-    "swedish-meatballs", "smoked-wings", "crispy-chesapeake-oysters", "spam",
-    "lettuce-wraps", "ahi-tuna-poke",
-  ]) assert.equal(items.get(id)?.category, "Small Plates", id);
+    "swedish-meatballs",
+    "smoked-wings",
+    "crispy-chesapeake-oysters",
+    "spam",
+    "lettuce-wraps",
+    "ahi-tuna-poke",
+  ])
+    assert.equal(items.get(id)?.category, "Small Plates", id);
   assert.equal(items.get("mixtape")?.isConfigurable, true);
   assert.equal(items.get("samples")?.isConfigurable, true);
-  assert.deepEqual(items.get("charred-asparagus")?.allergens, ["milk", "sesame"]);
-  assert.deepEqual(items.get("sicilian-anchovies")?.allergens, ["fish", "milk"]);
+  assert.deepEqual(items.get("charred-asparagus")?.allergens, [
+    "milk",
+    "sesame",
+  ]);
+  assert.deepEqual(items.get("sicilian-anchovies")?.allergens, [
+    "fish",
+    "milk",
+  ]);
   assert.deepEqual(items.get("rambos-spice-bag")?.allergens, [
-    "gluten", "milk", "sesame", "soy",
+    "gluten",
+    "milk",
+    "sesame",
+    "soy",
   ]);
   assert.equal(
     items.get("rambos-spice-bag")?.allergenSourceType,
@@ -12658,22 +18820,40 @@ test("B Side preserves all rendered owner-menu boundaries and linked authority",
     items.get("b-side-smashburger")?.allergenSourceType,
     "restaurant-linked-menu-ingredients",
   );
-  assert.deepEqual(
-    items.get("sour-cream-and-onion-chicharrones")?.mayContain,
-    ["gluten", "milk"],
-  );
+  assert.deepEqual(items.get("sour-cream-and-onion-chicharrones")?.mayContain, [
+    "gluten",
+    "milk",
+  ]);
   assert.deepEqual(items.get("beef-fat-fries")?.allergens, []);
   assert.ok(items.has("smoked-salmon-eggs-benedict"));
   assert.ok(items.has("kids-quesadilla"));
   assert.ok(items.has("pig-wings"));
-  assert.deepEqual(bSide.items.slice(-7).map((item) => item.id), [
-    "french-press-coffee", "hot-tea", "martinellis-apple-juice",
-    "topo-chico-mineral-12-oz", "canned-soda", "orange-juice", "whole-milk",
-  ]);
+  assert.deepEqual(
+    bSide.items.slice(-7).map((item) => item.id),
+    [
+      "french-press-coffee",
+      "hot-tea",
+      "martinellis-apple-juice",
+      "topo-chico-mineral-12-oz",
+      "canned-soda",
+      "orange-juice",
+      "whole-milk",
+    ],
+  );
   assert.equal(bSide.allergenDataStatus?.officialItemCount, 30);
-  assert.equal(bSide.allergenDataStatus?.officialEvidence?.officialIngredientDisclosure, 30);
-  assert.equal(bSide.allergenDataStatus?.officialEvidence?.restaurantLinkedIngredientDisclosure, 2);
-  assert.equal(bSide.allergenDataStatus?.officialEvidence?.restaurantLinkedProductSection, 2);
+  assert.equal(
+    bSide.allergenDataStatus?.officialEvidence?.officialIngredientDisclosure,
+    30,
+  );
+  assert.equal(
+    bSide.allergenDataStatus?.officialEvidence
+      ?.restaurantLinkedIngredientDisclosure,
+    2,
+  );
+  assert.equal(
+    bSide.allergenDataStatus?.officialEvidence?.restaurantLinkedProductSection,
+    2,
+  );
   assert.equal(bSide.allergenDataStatus?.officialEvidence?.unavailable, 24);
   assert.equal(bSide.sourceStatus?.canonicalProductCount, 58);
   assert.equal(bSide.sourceStatus?.rawMenuPresentationCount, 66);
@@ -12690,7 +18870,12 @@ test("B Side preserves all rendered owner-menu boundaries and linked authority",
 
 test("generated restaurants include logo metadata", () => {
   const missing = generatedRestaurants.restaurants
-    .filter((restaurant) => !restaurant.logoUrl && !restaurant.logoSvgUrl && !restaurant.logoMonogram)
+    .filter(
+      (restaurant) =>
+        !restaurant.logoUrl &&
+        !restaurant.logoSvgUrl &&
+        !restaurant.logoMonogram,
+    )
     .map((restaurant) => `${restaurant.id}:${restaurant.name}`);
 
   assert.deepEqual(missing, []);
@@ -12761,7 +18946,8 @@ test("coverage gate reconciles official contains and may-contain evidence withou
             allergens: [],
             mayContain: [],
             officialSource: true,
-            sourceSummary: "Official source row reviewed; no major concern marked in source row.",
+            sourceSummary:
+              "Official source row reviewed; no major concern marked in source row.",
             evidence: [
               {
                 sourceKind: "pdf-ingredients",
@@ -12776,15 +18962,30 @@ test("coverage gate reconciles official contains and may-contain evidence withou
   };
 
   const gated = applyCoverageGate(repository);
-  const byId = new Map(gated.repository.restaurants[0].items.map((item) => [item.id, item]));
+  const byId = new Map(
+    gated.repository.restaurants[0].items.map((item) => [item.id, item]),
+  );
 
   assert.deepEqual(byId.get("portuguese-roll").allergens, ["wheat"]);
-  assert.deepEqual(byId.get("portuguese-roll").mayContain, ["egg", "milk", "sesame", "soy", "sulfites"]);
+  assert.deepEqual(byId.get("portuguese-roll").mayContain, [
+    "egg",
+    "milk",
+    "sesame",
+    "soy",
+    "sulfites",
+  ]);
   assert.deepEqual(byId.get("boneless-breast").allergens, []);
-  assert.deepEqual(byId.get("boneless-breast").mayContain, ["egg", "mustard", "soy", "wheat"]);
+  assert.deepEqual(byId.get("boneless-breast").mayContain, [
+    "egg",
+    "mustard",
+    "soy",
+    "wheat",
+  ]);
   assert.equal(byId.get("boneless-breast").officialSource, true);
   assert.deepEqual(byId.get("vegan-fried-tofu-bento-box").allergens, []);
-  assert.deepEqual(byId.get("vegan-fried-tofu-bento-box").mayContain, ["gluten"]);
+  assert.deepEqual(byId.get("vegan-fried-tofu-bento-box").mayContain, [
+    "gluten",
+  ]);
   assert.equal(
     byId.get("vegan-fried-tofu-bento-box").sourceSummary,
     "Official dietary matrix note: gluten - cross contamination - same fryer as panko chicken",
@@ -12830,9 +19031,13 @@ test("coverage gate keeps previous complete chain when refresh is incomplete", (
   assert.equal(gated.repository.restaurants[0].items[0].name, "Known Good");
   assert.equal(gated.repository.restaurants[0].brandKey, "current-chain");
   assert.equal(gated.repository.restaurants[0].sourceFamily, "generic-website");
-  assert.equal(gated.repository.restaurants[0].parserProfile, "current-parser-profile");
   assert.equal(
-    gated.repository.restaurants[0].failedRefresh.attemptedSourceMetadata.sourceProfile,
+    gated.repository.restaurants[0].parserProfile,
+    "current-parser-profile",
+  );
+  assert.equal(
+    gated.repository.restaurants[0].failedRefresh.attemptedSourceMetadata
+      .sourceProfile,
     "generic-website:current-parser-profile",
   );
 });
@@ -12847,7 +19052,8 @@ test("coverage gate keeps previous when complete refresh regresses with unparsed
         items: Array.from({ length: 37 }, (_value, index) => ({
           name: `Known Good ${index + 1}`,
           allergens: index === 0 ? ["milk"] : [],
-          allergenSourceType: index === 0 ? "official-allergen-menu" : "unavailable",
+          allergenSourceType:
+            index === 0 ? "official-allergen-menu" : "unavailable",
         })),
         officialAllergenStatus: "extracted",
         sourceUpdatedAt: "2026-06-02T08:17:00.000Z",
@@ -12886,12 +19092,19 @@ test("coverage gate keeps previous when complete refresh regresses with unparsed
   assert.equal(gated.repository.restaurants[0].coverageStatus, "kept-previous");
   assert.equal(gated.repository.restaurants[0].items.length, 37);
   assert.equal(gated.repository.restaurants[0].items[0].name, "Known Good 1");
-  assert.equal(gated.repository.restaurants[0].officialAllergenStatus, "extracted");
   assert.equal(
-    gated.repository.restaurants[0].failedRefresh.attemptedSourceMetadata.officialAllergenStatus,
+    gated.repository.restaurants[0].officialAllergenStatus,
+    "extracted",
+  );
+  assert.equal(
+    gated.repository.restaurants[0].failedRefresh.attemptedSourceMetadata
+      .officialAllergenStatus,
     "source-found-unparsed",
   );
-  assert.match(gated.repository.restaurants[0].failedRefresh.reason, /official source/);
+  assert.match(
+    gated.repository.restaurants[0].failedRefresh.reason,
+    /official source/,
+  );
 });
 
 test("coverage gate can seed previous known-good chains from bundled data", () => {
@@ -12928,12 +19141,18 @@ test("coverage gate can seed previous known-good chains from bundled data", () =
     snapshotVersion: 1,
   };
 
-  const previous = combinePreviousKnownGoodRepositories(bundledSeed, s3Previous);
+  const previous = combinePreviousKnownGoodRepositories(
+    bundledSeed,
+    s3Previous,
+  );
   const gated = applyCoverageGate(repository, previous);
 
   assert.equal(gated.manifest.keptPrevious.length, 1);
   assert.equal(gated.repository.restaurants[0].coverageStatus, "kept-previous");
-  assert.equal(gated.repository.restaurants[0].items[0].name, "Known Good Pasta");
+  assert.equal(
+    gated.repository.restaurants[0].items[0].name,
+    "Known Good Pasta",
+  );
 });
 
 test("coverage metadata stores only the non-derived official item count", () => {
@@ -12941,7 +19160,10 @@ test("coverage metadata stores only the non-derived official item count", () => 
     {
       id: "chain",
       items: [
-        { name: "Official Pasta", allergenSourceType: "official-allergen-menu" },
+        {
+          name: "Official Pasta",
+          allergenSourceType: "official-allergen-menu",
+        },
         { name: "Fallback Pasta", allergenSourceType: "unavailable" },
       ],
     },
@@ -12950,8 +19172,14 @@ test("coverage metadata stores only the non-derived official item count", () => 
   );
 
   assert.equal(restaurant.allergenDataStatus.officialItemCount, 1);
-  assert.equal(restaurant.allergenDataStatus.officialEvidence.bucket, "official-disclosure-only");
-  assert.equal(restaurant.sourceStatus.officialEvidenceBucket, "official-disclosure-only");
+  assert.equal(
+    restaurant.allergenDataStatus.officialEvidence.bucket,
+    "official-disclosure-only",
+  );
+  assert.equal(
+    restaurant.sourceStatus.officialEvidenceBucket,
+    "official-disclosure-only",
+  );
 });
 
 test("coverage metadata labels single item official disclosures without dropping them", () => {
@@ -12975,8 +19203,14 @@ test("coverage metadata labels single item official disclosures without dropping
   );
 
   assert.equal(restaurant.allergenDataStatus.officialItemCount, 1);
-  assert.equal(restaurant.allergenDataStatus.officialEvidence.officialIngredientDisclosure, 1);
-  assert.equal(restaurant.allergenDataStatus.officialEvidence.bucket, "official-disclosure-only");
+  assert.equal(
+    restaurant.allergenDataStatus.officialEvidence.officialIngredientDisclosure,
+    1,
+  );
+  assert.equal(
+    restaurant.allergenDataStatus.officialEvidence.bucket,
+    "official-disclosure-only",
+  );
 });
 
 test("coverage metadata blocks tiny menu-only fallback restaurants without explicit approval", () => {
@@ -13005,7 +19239,10 @@ test("coverage metadata blocks tiny menu-only fallback restaurants without expli
   assert.equal(restaurant.coverageStatus, "blocked");
   assert.equal(restaurant.coveragePercent, 0);
   assert.equal(restaurant.allergenDataStatus.officialItemCount, 0);
-  assert.equal(restaurant.allergenDataStatus.officialEvidence.bucket, "source-found-unparsed");
+  assert.equal(
+    restaurant.allergenDataStatus.officialEvidence.bucket,
+    "source-found-unparsed",
+  );
   assert.equal("allowUnavailableAllergenFallback" in restaurant, false);
 });
 
@@ -13064,7 +19301,10 @@ test("coverage metadata can publish explicitly expected small menu fallback rest
   assert.equal(restaurant.coverageStatus, "complete");
   assert.equal(restaurant.coveragePercent, 0);
   assert.equal(restaurant.allergenDataStatus.officialItemCount, 0);
-  assert.equal(restaurant.allergenDataStatus.officialEvidence.bucket, "source-found-unparsed");
+  assert.equal(
+    restaurant.allergenDataStatus.officialEvidence.bucket,
+    "source-found-unparsed",
+  );
   assert.equal("allowUnavailableAllergenFallback" in restaurant, false);
   assert.equal("expectedSmallMenu" in restaurant, false);
 });
@@ -13075,10 +19315,10 @@ test("coverage metadata can publish explicitly opted-in chain menu-only fallback
       allowUnavailableAllergenFallback: true,
       id: "chain-menu-only",
       items: Array.from({ length: 20 }, (_value, index) => ({
-          allergenSourceType: "unavailable",
-          allergens: [],
-          name: `Chicken Pesto Bowl ${index + 1}`,
-        })),
+        allergenSourceType: "unavailable",
+        allergens: [],
+        name: `Chicken Pesto Bowl ${index + 1}`,
+      })),
     },
     {
       approvedMenuOnlyParser: true,
@@ -13092,7 +19332,10 @@ test("coverage metadata can publish explicitly opted-in chain menu-only fallback
   assert.equal(restaurant.coverageStatus, "complete");
   assert.equal(restaurant.coveragePercent, 0);
   assert.equal(restaurant.allergenDataStatus.officialItemCount, 0);
-  assert.equal(restaurant.allergenDataStatus.officialEvidence.bucket, "source-found-unparsed");
+  assert.equal(
+    restaurant.allergenDataStatus.officialEvidence.bucket,
+    "source-found-unparsed",
+  );
   assert.equal("allowUnavailableAllergenFallback" in restaurant, false);
 });
 
@@ -13119,7 +19362,10 @@ test("coverage metadata can publish approved menu-only restaurants when official
   assert.equal(restaurant.coverageStatus, "complete");
   assert.equal(restaurant.coveragePercent, 0);
   assert.equal(restaurant.allergenDataStatus.officialItemCount, 0);
-  assert.equal(restaurant.allergenDataStatus.officialEvidence.bucket, "source-found-unparsed");
+  assert.equal(
+    restaurant.allergenDataStatus.officialEvidence.bucket,
+    "source-found-unparsed",
+  );
   assert.equal("allowUnavailableAllergenFallback" in restaurant, false);
 });
 
@@ -13130,7 +19376,8 @@ test("coverage metadata can publish useful partial official extraction with fall
       id: "local-partial-official",
       officialAllergenStatus: officialAllergenStatuses.extracted,
       items: Array.from({ length: 50 }, (_value, index) => ({
-        allergenSourceType: index < 12 ? "official-allergen-menu" : "unavailable",
+        allergenSourceType:
+          index < 12 ? "official-allergen-menu" : "unavailable",
         name: `Item ${index + 1}`,
       })),
     },
@@ -13145,7 +19392,10 @@ test("coverage metadata can publish useful partial official extraction with fall
   assert.equal(restaurant.coverageStatus, "complete");
   assert.equal(restaurant.coveragePercent, 24);
   assert.equal(restaurant.allergenDataStatus.officialItemCount, 12);
-  assert.equal(restaurant.allergenDataStatus.officialEvidence.bucket, "official-disclosure-only");
+  assert.equal(
+    restaurant.allergenDataStatus.officialEvidence.bucket,
+    "official-disclosure-only",
+  );
   assert.equal("allowUnavailableAllergenFallback" in restaurant, false);
 });
 
@@ -13179,9 +19429,13 @@ test("coverage gate backfills resolved official source status onto kept previous
   const gated = applyCoverageGate(repository, previous);
 
   assert.equal(gated.manifest.keptPrevious.length, 1);
-  assert.equal(gated.repository.restaurants[0].officialAllergenStatus, "not-found");
   assert.equal(
-    gated.repository.restaurants[0].failedRefresh.attemptedSourceMetadata.officialAllergenStatus,
+    gated.repository.restaurants[0].officialAllergenStatus,
+    "not-found",
+  );
+  assert.equal(
+    gated.repository.restaurants[0].failedRefresh.attemptedSourceMetadata
+      .officialAllergenStatus,
     "not-found",
   );
 });
@@ -13223,10 +19477,36 @@ test("restaurant search index emits metadata, popularity, token, and geo rows", 
   assert.equal(Boolean(meta), true);
   assert.equal(meta?.domain, "localtest.example");
   assert.equal(meta?.logoUrl, "https://cdn.example/logo.png");
-  assert.equal(rows.some((row) => row.pk === "POPULAR#GLOBAL"), true);
-  assert.equal(rows.some((row) => row.pk === "TOKEN#local"), true);
-  assert.equal(rows.some((row) => String(row.pk).startsWith("GEO#")), true);
-  assert.equal(rows.some((row) => String(row.pk).includes("SCAN")), false);
+  assert.equal(
+    rows.some((row) => row.pk === "POPULAR#GLOBAL"),
+    true,
+  );
+  assert.equal(
+    rows.some((row) => row.pk === "TOKEN#local"),
+    true,
+  );
+  assert.equal(
+    rows.some((row) => String(row.pk).startsWith("GEO#")),
+    true,
+  );
+  assert.equal(
+    rows.some((row) => String(row.pk).includes("SCAN")),
+    false,
+  );
+  for (const row of rows.filter((row) => !String(row.pk).startsWith("META#"))) {
+    assert.deepEqual(
+      Object.keys(row).sort(),
+      [
+        ...(String(row.pk).startsWith("GEO#") ? ["geohash"] : []),
+        ...(String(row.pk).startsWith("TOKEN#") ? ["matchToken"] : []),
+        "locationId",
+        "pk",
+        "rank",
+        "restaurantId",
+        "sk",
+      ].sort(),
+    );
+  }
 });
 
 test("restaurant compatibility summary stores exact item indexes", () => {
@@ -13242,6 +19522,28 @@ test("restaurant compatibility summary stores exact item indexes", () => {
   assert.deepEqual(summary.directAllergenItemIndexes.wheat, [0, 1]);
   assert.deepEqual(summary.mayContainAllergenItemIndexes.soy, [1]);
   assert.deepEqual(summary.unavailableItemIndexes, [2]);
+});
+
+test("restaurant compatibility summary keeps official negative coverage allergy-specific", () => {
+  const summary = compatibilitySummaryForRestaurant({
+    officialAllergenProfiles: {
+      m1: { coveredAllergenIds: ["egg", "milk", "wheat"] },
+    },
+    items: [
+      {
+        allergenSourceType: "official-allergen-menu",
+        allergens: [],
+        mayContain: [],
+        name: "Salt Packet",
+        officialAllergenProfileId: "m1",
+      },
+    ],
+  });
+
+  assert.deepEqual(summary.unavailableAllergenItemIndexes.milk, []);
+  assert.deepEqual(summary.unavailableAllergenItemIndexes.gluten, []);
+  assert.deepEqual(summary.unavailableAllergenItemIndexes.peanut, [0]);
+  assert.deepEqual(summary.unavailableItemIndexes, []);
 });
 
 test("refresh metadata defaults chains to manual and locals to user-demand", () => {
@@ -13263,20 +19565,35 @@ test("refresh metadata defaults chains to manual and locals to user-demand", () 
 
 test("automatic restaurant refresh schedules are disabled by default", () => {
   const fullRefreshResource = readFileSync(
-    new URL("../amplify/functions/refresh-restaurant-data/resource.ts", import.meta.url),
+    new URL(
+      "../amplify/functions/refresh-restaurant-data/resource.ts",
+      import.meta.url,
+    ),
     "utf8",
   );
   const refreshJobResource = readFileSync(
-    new URL("../amplify/functions/process-restaurant-refresh-jobs/resource.ts", import.meta.url),
+    new URL(
+      "../amplify/functions/process-restaurant-refresh-jobs/resource.ts",
+      import.meta.url,
+    ),
     "utf8",
   );
   const searchResource = readFileSync(
-    new URL("../amplify/functions/search-restaurants/resource.ts", import.meta.url),
+    new URL(
+      "../amplify/functions/search-restaurants/resource.ts",
+      import.meta.url,
+    ),
     "utf8",
   );
 
-  assert.match(fullRefreshResource, /DISABLE_RESTAURANT_FULL_REFRESH:\s*"true"/);
-  assert.match(refreshJobResource, /DISABLE_RESTAURANT_REFRESH_JOB_PROCESSING:\s*"true"/);
+  assert.match(
+    fullRefreshResource,
+    /DISABLE_RESTAURANT_FULL_REFRESH:\s*"true"/,
+  );
+  assert.match(
+    refreshJobResource,
+    /DISABLE_RESTAURANT_REFRESH_JOB_PROCESSING:\s*"true"/,
+  );
   assert.match(searchResource, /DISABLE_RESTAURANT_REFRESH_JOBS:\s*"true"/);
 });
 
@@ -13372,7 +19689,9 @@ test("restaurant search index rows include refresh metadata", () => {
       },
     ],
   });
-  const meta = rows.find((row) => row.pk === "META#local-freshness-test#national");
+  const meta = rows.find(
+    (row) => row.pk === "META#local-freshness-test#national",
+  );
 
   assert.equal(meta.refreshTier, refreshTiers.userDemandLocal);
   assert.equal(meta.lastRefreshedAt, "2026-06-01T08:17:00.000Z");
@@ -13388,16 +19707,43 @@ test("restaurant search index preserves location-specific snapshot paths", () =>
         items: [{ allergens: [], name: "Soup" }],
         locationId: "charlotte-nc",
         name: "Location Test",
-        snapshotPath: "restaurant-data/restaurants/local-location-test/locations/charlotte-nc/latest.json",
+        snapshotPath:
+          "restaurant-data/restaurants/local-location-test/locations/charlotte-nc/latest.json",
         type: "local",
       },
     ],
   });
-  const meta = rows.find((row) => row.pk === "META#local-location-test#charlotte-nc");
+  const meta = rows.find(
+    (row) => row.pk === "META#local-location-test#charlotte-nc",
+  );
 
   assert.equal(
     meta.snapshotPath,
     "restaurant-data/restaurants/local-location-test/locations/charlotte-nc/latest.json",
+  );
+});
+
+test("restaurant search index normalizes blank location ids to national", () => {
+  const rows = buildRestaurantSearchIndexRows({
+    restaurants: [
+      {
+        id: "blank-location-test",
+        items: [{ allergens: [], name: "Soup" }],
+        locationId: "",
+        name: "Blank Location Test",
+      },
+    ],
+  });
+
+  assert.equal(
+    rows.some((row) => row.pk === "META#blank-location-test#national"),
+    true,
+  );
+  assert.equal(
+    rows.some(
+      (row) => row.pk === "POPULAR#GLOBAL" && row.locationId === "national",
+    ),
+    true,
   );
 });
 
@@ -13463,7 +19809,134 @@ test("ingredient intelligence infers cheeseburger milk wheat and gluten signals"
 
   assertAllergenSignalsInclude(inference, ["gluten", "milk", "wheat"]);
   assert.deepEqual(inference.inferredIngredients, ["burger_bun", "cheese"]);
-  assert.equal(inference.inferenceQuestions.includes("Is this served on a wheat bun or bread?"), true);
+  assert.equal(
+    inference.inferenceQuestions.includes(
+      "Is this served on a wheat bun or bread?",
+    ),
+    true,
+  );
+});
+
+test("ingredient intelligence only emits signals outside official profile coverage", async () => {
+  const manifest = await getDefaultIngredientIntelligenceManifest();
+  const inference = inferMenuItemIngredientIntelligence(
+    {
+      allergenSourceType: "official-allergen-menu",
+      allergens: [],
+      category: "Burgers",
+      description: "",
+      name: "Cheeseburger",
+      officialAllergenProfileId: "m1",
+    },
+    {
+      manifest,
+      officialAllergenProfiles: {
+        m1: { coveredAllergenIds: ["milk"] },
+      },
+    },
+  );
+
+  assertAllergenSignalsInclude(inference, ["gluten", "wheat"]);
+  assert.equal(
+    inference.inferredAllergenSignals.some((signal) => signal.id === "milk"),
+    false,
+  );
+});
+
+test("restaurant-issued allergen terms are promoted out of Ingredient Intelligence", async () => {
+  const manifest = await getDefaultIngredientIntelligenceManifest();
+  const item = annotateMenuItemWithIngredientIntelligence(
+    {
+      allergenSourceType: "official-allergen-menu",
+      allergens: [],
+      category: "Sauces",
+      description: "Restaurant honey mustard dipping sauce.",
+      id: "honey-mustard",
+      mayContain: [],
+      name: "Honey Mustard",
+      officialAllergenProfileId: "m1",
+      sourceType: "pdf-matrix",
+    },
+    {
+      manifest,
+      officialAllergenProfiles: { m1: { coveredAllergenIds: ["milk"] } },
+    },
+  );
+
+  assert.deepEqual(item.allergens, ["mustard"]);
+  assert.equal(
+    item.inferredAllergenSignals?.some((signal) => signal.id === "mustard") ??
+      false,
+    false,
+  );
+});
+
+test("official API may-contain clauses become canonical cross-contact data", async () => {
+  const manifest = await getDefaultIngredientIntelligenceManifest();
+  const item = annotateMenuItemWithIngredientIntelligence(
+    {
+      allergenSourceType: "official-allergen-menu",
+      allergens: ["milk"],
+      category: "Desserts",
+      id: "candy-dessert",
+      ingredientsText: "Ingredients: Milk chocolate. May Contain: Peanuts.",
+      mayContain: [],
+      name: "Candy Dessert",
+      officialAllergenProfileId: "m1",
+      sourceType: "official-api",
+    },
+    {
+      comprehensiveOfficialIngredients: true,
+      manifest,
+      officialAllergenProfiles: { m1: { coveredAllergenIds: ["milk"] } },
+    },
+  );
+
+  assert.deepEqual(item.mayContain, ["peanut"]);
+  assert.equal(
+    item.inferredAllergenSignals?.some((signal) => signal.id === "peanut") ??
+      false,
+    false,
+  );
+});
+
+test("culinary aliases and negated ingredients remain outside official promotion", async () => {
+  const manifest = await getDefaultIngredientIntelligenceManifest();
+  const profiles = { m1: { coveredAllergenIds: ["milk"] } };
+  const bao = annotateMenuItemWithIngredientIntelligence(
+    {
+      allergenSourceType: "official-allergen-menu",
+      allergens: [],
+      category: "Dim Sum",
+      id: "bao",
+      mayContain: [],
+      name: "Bao - BBQ Pork",
+      officialAllergenProfileId: "m1",
+      sourceType: "pdf-matrix",
+    },
+    { manifest, officialAllergenProfiles: profiles },
+  );
+  const withoutCheese = annotateMenuItemWithIngredientIntelligence(
+    {
+      allergenSourceType: "official-allergen-menu",
+      allergens: [],
+      category: "Salads",
+      description: "House salad without cheese.",
+      id: "salad",
+      mayContain: [],
+      name: "House Salad",
+      officialAllergenProfileId: "m1",
+      sourceType: "pdf-matrix",
+    },
+    { manifest, officialAllergenProfiles: profiles },
+  );
+
+  assert.deepEqual(bao.allergens, []);
+  assert.equal(
+    bao.inferredAllergenSignals?.some((signal) => signal.id === "wheat"),
+    true,
+  );
+  assert.deepEqual(withoutCheese.allergens, []);
 });
 
 test("ingredient intelligence extracts menu-text mentions from descriptions", async () => {
@@ -13478,16 +19951,31 @@ test("ingredient intelligence extracts menu-text mentions from descriptions", as
     { manifest },
   );
 
-  assertAllergenSignalsInclude(inference, ["gluten", "milk", "shellfish", "sulfites", "wheat"]);
+  assertAllergenSignalsInclude(inference, [
+    "gluten",
+    "milk",
+    "shellfish",
+    "sulfites",
+    "wheat",
+  ]);
   assert.deepEqual(
     inference.extractedIngredientMentions
-      .filter((mention) => ["butter", "pasta", "shrimp"].includes(mention.ingredientId))
+      .filter((mention) =>
+        ["butter", "pasta", "shrimp"].includes(mention.ingredientId),
+      )
       .map((mention) => `${mention.ingredientId}:${mention.sourceField}`)
       .sort(),
-    ["butter:description", "pasta:description", "shrimp:description", "shrimp:name"],
+    [
+      "butter:description",
+      "pasta:description",
+      "shrimp:description",
+      "shrimp:name",
+    ],
   );
   assert.equal(
-    inference.inferenceQuestions.includes("Does this contain shrimp, crab, lobster, or shellfish stock?"),
+    inference.inferenceQuestions.includes(
+      "Does this contain shrimp, crab, lobster, or shellfish stock?",
+    ),
     true,
   );
 });
@@ -13526,7 +20014,9 @@ test("ingredient intelligence avoids category-only, sauce, and allergen-free phr
   assert.equal(sauceInference, null);
   assert.deepEqual(allergenFreeInference?.inferredAllergenSignals ?? [], []);
   assert.deepEqual(
-    [...(allergenFreeInference?.inferenceSuppressions ?? [])].map((suppression) => suppression.id).sort(),
+    [...(allergenFreeInference?.inferenceSuppressions ?? [])]
+      .map((suppression) => suppression.id)
+      .sort(),
     ["milk"],
   );
 });
@@ -13601,20 +20091,22 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
     },
     { manifest },
   );
-  const glutenFreeAvailableChickenSandwich = inferMenuItemIngredientIntelligence(
-    {
-      allergenSourceType: "unavailable",
-      category: "Sandwiches",
-      description: "Gluten-free bun available.",
-      name: "Chicken Sandwich",
-    },
-    { manifest },
-  );
+  const glutenFreeAvailableChickenSandwich =
+    inferMenuItemIngredientIntelligence(
+      {
+        allergenSourceType: "unavailable",
+        category: "Sandwiches",
+        description: "Gluten-free bun available.",
+        name: "Chicken Sandwich",
+      },
+      { manifest },
+    );
   const singularSpringRoll = inferMenuItemIngredientIntelligence(
     {
       allergenSourceType: "unavailable",
       category: "Appetizers",
-      description: "Crispy fried veggie roll filled with cellophane noodle, cabbage, and carrot.",
+      description:
+        "Crispy fried veggie roll filled with cellophane noodle, cabbage, and carrot.",
       name: "Spring Roll",
     },
     { manifest },
@@ -13830,7 +20322,8 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
     {
       allergenSourceType: "unavailable",
       category: "Huevos",
-      description: "A traditional sandwich with fresh tomato and Spanish omelette.",
+      description:
+        "A traditional sandwich with fresh tomato and Spanish omelette.",
       name: "Bocata de Tortilla de Patatas",
     },
     { manifest },
@@ -13839,7 +20332,8 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
     {
       allergenSourceType: "unavailable",
       category: "Sandwiches",
-      description: "Neapolitan-style meatball sandwich served with house greens.",
+      description:
+        "Neapolitan-style meatball sandwich served with house greens.",
       name: "Meatball Panuozzo",
     },
     { manifest },
@@ -13929,7 +20423,8 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
     {
       allergenSourceType: "unavailable",
       category: "Dolci",
-      description: "Flourless chocolate torta, whipped creme fraiche, candied hazelnuts.",
+      description:
+        "Flourless chocolate torta, whipped creme fraiche, candied hazelnuts.",
       name: "Chocolate Nemesis",
     },
     { manifest },
@@ -14064,7 +20559,8 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
     {
       allergenSourceType: "unavailable",
       category: "Indian",
-      description: "Trio vegetables coated in spiced chick pea batter and golden fried.",
+      description:
+        "Trio vegetables coated in spiced chick pea batter and golden fried.",
       name: "Sabzi Ke Pakode",
     },
     { manifest },
@@ -14109,7 +20605,8 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
     {
       allergenSourceType: "unavailable",
       category: "Vegetarian",
-      description: "Made with marinated veggie-chicken, mushrooms, sea salt, and black pepper.",
+      description:
+        "Made with marinated veggie-chicken, mushrooms, sea salt, and black pepper.",
       name: "Fried Chick'n",
     },
     { manifest },
@@ -14145,7 +20642,8 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
     {
       allergenSourceType: "unavailable",
       category: "Appetizers",
-      description: "Order of 6. Shredded beef, deep-fried. Served with green chile sauce.",
+      description:
+        "Order of 6. Shredded beef, deep-fried. Served with green chile sauce.",
       name: "Beef Flautas",
     },
     { manifest },
@@ -14154,7 +20652,8 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
     {
       allergenSourceType: "unavailable",
       category: "Platters",
-      description: "Two boneless skinless double chicken breasts served fried, grilled, or blackened with two signature sides.",
+      description:
+        "Two boneless skinless double chicken breasts served fried, grilled, or blackened with two signature sides.",
       name: "Chicken Breast",
     },
     { manifest },
@@ -14163,7 +20662,8 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
     {
       allergenSourceType: "unavailable",
       category: "Appetizer",
-      description: "Seasoned mashed potato with spices, deep fried srved with homemade chutney",
+      description:
+        "Seasoned mashed potato with spices, deep fried srved with homemade chutney",
       name: "Aloo Chop",
     },
     { manifest },
@@ -14172,7 +20672,8 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
     {
       allergenSourceType: "unavailable",
       category: "Piqueos",
-      description: "Stir-fry chicken, Kung Pao sauce, lettuce cups, crispy sweet potato.",
+      description:
+        "Stir-fry chicken, Kung Pao sauce, lettuce cups, crispy sweet potato.",
       name: "Ji Song Chifero",
     },
     { manifest },
@@ -14262,7 +20763,8 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
     {
       allergenSourceType: "unavailable",
       category: "Burgers & Sandwiches",
-      description: "Our signature ground beef burger is marinated with fresh herbs and spices.",
+      description:
+        "Our signature ground beef burger is marinated with fresh herbs and spices.",
       name: "Kids Beef Bistro Burger",
     },
     { manifest },
@@ -14280,7 +20782,8 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
     {
       allergenSourceType: "unavailable",
       category: "Bites",
-      description: "Bold jalapeno meets creamy filling for the ultimate crispy snack.",
+      description:
+        "Bold jalapeno meets creamy filling for the ultimate crispy snack.",
       name: "Pop Start Poppers",
     },
     { manifest },
@@ -14289,7 +20792,8 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
     {
       allergenSourceType: "unavailable",
       category: "Home Style Meals",
-      description: "Three tender chunks of chicken breast, fried to golden perfection.",
+      description:
+        "Three tender chunks of chicken breast, fried to golden perfection.",
       name: "Spicy Chicken Chunks",
     },
     { manifest },
@@ -14298,7 +20802,8 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
     {
       allergenSourceType: "unavailable",
       category: "Chicken",
-      description: "Whole chicken, made up of white meat only (breasts and wings). Includes sides and sauces.",
+      description:
+        "Whole chicken, made up of white meat only (breasts and wings). Includes sides and sauces.",
       name: "Whole Chicken (WHITE MEAT ONLY)",
     },
     { manifest },
@@ -14316,7 +20821,8 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
     {
       allergenSourceType: "unavailable",
       category: "Meat & Poultry",
-      description: "A daily butcher's blend including hanger, short rib, and brisket. Ground beef sold online.",
+      description:
+        "A daily butcher's blend including hanger, short rib, and brisket. Ground beef sold online.",
       name: "Deluxe / Custom Burger Blend",
     },
     { manifest },
@@ -14327,8 +20833,14 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
   assertAllergenSignalsInclude(ahiTuna, ["fish"]);
   assertAllergenSignalsInclude(cheesecake, ["egg", "gluten", "milk", "wheat"]);
   assertAllergenSignalsInclude(chickenSandwich, ["gluten", "wheat"]);
-  assert.equal(glutenFreeChickenSandwich, null);
-  assertAllergenSignalsInclude(glutenFreeAvailableChickenSandwich, ["gluten", "wheat"]);
+  assert.deepEqual(
+    glutenFreeChickenSandwich?.inferenceSuppressions?.map((entry) => entry.id).sort(),
+    ["gluten", "wheat"],
+  );
+  assertAllergenSignalsInclude(glutenFreeAvailableChickenSandwich, [
+    "gluten",
+    "wheat",
+  ]);
   assertAllergenSignalsInclude(singularSpringRoll, ["gluten", "wheat"]);
   assertAllergenSignalsInclude(reuben, ["gluten", "wheat"]);
   assertAllergenSignalsInclude(bao, ["gluten", "wheat"]);
@@ -14342,7 +20854,13 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
   assertAllergenSignalsInclude(hamSwiss, ["milk"]);
   assertAllergenSignalsInclude(labneChicken, ["milk"]);
   assertAllergenSignalsInclude(flan, ["egg", "milk"]);
-  assertAllergenSignalsInclude(custardDessert, ["egg", "gluten", "milk", "tree-nut", "wheat"]);
+  assertAllergenSignalsInclude(custardDessert, [
+    "egg",
+    "gluten",
+    "milk",
+    "tree-nut",
+    "wheat",
+  ]);
   assertAllergenSignalsInclude(panFriedNoodle, ["gluten", "wheat"]);
   assert.equal(riceNoodle, null);
   assertAllergenSignalsInclude(genericNoodleSoup, ["gluten", "wheat"]);
@@ -14361,20 +20879,30 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
   assertAllergenSignalsInclude(creamedSpinach, ["milk"]);
   assertAllergenSignalsInclude(butteredCorn, ["milk"]);
   assertAllergenSignalsInclude(concatenatedCalamari, ["shellfish"]);
-  assertAllergenSignalsInclude(calamaresFritos, ["gluten", "shellfish", "wheat"]);
+  assertAllergenSignalsInclude(calamaresFritos, [
+    "gluten",
+    "shellfish",
+    "wheat",
+  ]);
   assertAllergenSignalsInclude(flourlessCake, ["egg", "milk"]);
   assert.equal(
-    flourlessCake?.inferredAllergenSignals?.some((signal) => ["gluten", "wheat"].includes(signal.id)),
+    flourlessCake?.inferredAllergenSignals?.some((signal) =>
+      ["gluten", "wheat"].includes(signal.id),
+    ),
     false,
   );
   assertAllergenSignalsInclude(flourlessWaffle, ["egg", "milk"]);
   assert.equal(
-    flourlessWaffle?.inferredAllergenSignals?.some((signal) => ["gluten", "wheat"].includes(signal.id)),
+    flourlessWaffle?.inferredAllergenSignals?.some((signal) =>
+      ["gluten", "wheat"].includes(signal.id),
+    ),
     false,
   );
   assertAllergenSignalsInclude(flourlessTorta, ["milk", "tree-nut"]);
   assert.equal(
-    flourlessTorta?.inferredAllergenSignals?.some((signal) => ["gluten", "wheat"].includes(signal.id)),
+    flourlessTorta?.inferredAllergenSignals?.some((signal) =>
+      ["gluten", "wheat"].includes(signal.id),
+    ),
     false,
   );
   assertAllergenSignalsInclude(bearnaise, ["egg", "milk"]);
@@ -14391,12 +20919,16 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
   assertAllergenSignalsInclude(chickenTendies, ["gluten", "wheat"]);
   assertAllergenSignalsInclude(oysterVariety, ["shellfish"]);
   assert.equal(
-    oysterVariety?.inferredAllergenSignals?.some((signal) => signal.id === "fish"),
+    oysterVariety?.inferredAllergenSignals?.some(
+      (signal) => signal.id === "fish",
+    ),
     false,
   );
   assertAllergenSignalsInclude(oysterButterTopping, ["milk"]);
   assert.equal(
-    oysterButterTopping?.inferredAllergenSignals?.some((signal) => signal.id === "shellfish"),
+    oysterButterTopping?.inferredAllergenSignals?.some(
+      (signal) => signal.id === "shellfish",
+    ),
     false,
   );
   assertAllergenSignalsInclude(pakode, ["gluten", "wheat"]);
@@ -14405,7 +20937,9 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
   assertAllergenSignalsInclude(gnudi, ["egg", "gluten", "milk", "wheat"]);
   assertAllergenSignalsInclude(soyBean, ["soy"]);
   assert.equal(
-    soyBean?.inferredAllergenSignals?.some((signal) => ["gluten", "wheat"].includes(signal.id)),
+    soyBean?.inferredAllergenSignals?.some((signal) =>
+      ["gluten", "wheat"].includes(signal.id),
+    ),
     false,
   );
   assertAllergenSignalsInclude(veggieChicken, ["gluten", "soy", "wheat"]);
@@ -14418,28 +20952,44 @@ test("ingredient intelligence v2 covers shellfish fish dessert and sandwich miss
   assertAllergenSignalsInclude(kungPaoChicken, ["peanut", "soy"]);
   assertAllergenSignalsInclude(tartareWorcestershire, ["fish"]);
   assertAllergenSignalsInclude(amatriciana, ["gluten", "wheat"]);
-  assertAllergenSignalsInclude(painAuChocolat, ["egg", "gluten", "milk", "wheat"]);
+  assertAllergenSignalsInclude(painAuChocolat, [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assertAllergenSignalsInclude(savoryPastry, ["gluten", "wheat"]);
   assert.equal(
-    savoryPastry?.inferredAllergenSignals?.some((signal) => ["egg", "milk"].includes(signal.id)),
+    savoryPastry?.inferredAllergenSignals?.some((signal) =>
+      ["egg", "milk"].includes(signal.id),
+    ),
     false,
   );
   assertAllergenSignalsInclude(pastryCream, ["egg", "milk"]);
   assert.equal(
-    pastryCream?.inferredAllergenSignals?.some((signal) => ["gluten", "wheat"].includes(signal.id)),
+    pastryCream?.inferredAllergenSignals?.some((signal) =>
+      ["gluten", "wheat"].includes(signal.id),
+    ),
     false,
   );
   assertAllergenSignalsInclude(baklava, ["gluten", "tree-nut", "wheat"]);
   assertAllergenSignalsInclude(sopapillas, ["gluten", "wheat"]);
   assertAllergenSignalsInclude(shepherdsPie, ["milk"]);
   assert.equal(
-    shepherdsPie?.inferredAllergenSignals?.some((signal) => ["gluten", "wheat"].includes(signal.id)),
+    shepherdsPie?.inferredAllergenSignals?.some((signal) =>
+      ["gluten", "wheat"].includes(signal.id),
+    ),
     false,
   );
   assertAllergenSignalsInclude(wagyuMelt, ["gluten", "wheat"]);
   assertAllergenSignalsInclude(kidsBistroBurger, ["gluten", "wheat"]);
   assertAllergenSignalsInclude(meatPie, ["gluten", "wheat"]);
-  assertAllergenSignalsInclude(jalapenoPoppers, ["egg", "gluten", "milk", "wheat"]);
+  assertAllergenSignalsInclude(jalapenoPoppers, [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assertAllergenSignalsInclude(chickenChunks, ["egg", "gluten", "wheat"]);
   assert.equal(plainRotisserieWhiteMeat, null);
   assertAllergenSignalsInclude(buffaloWings, ["egg", "milk"]);
@@ -14469,11 +21019,20 @@ test("ingredient intelligence v2 keeps shape rules lower confidence and provenan
 
   assert.equal(manifest.version, "ingredient-intelligence-v2");
   assert.equal(
-    (manifest.dishShapeRules ?? []).every((rule) => Array.isArray(rule.provenance) && rule.provenance.length > 0),
+    (manifest.dishShapeRules ?? []).every(
+      (rule) => Array.isArray(rule.provenance) && rule.provenance.length > 0,
+    ),
     true,
   );
-  assert.equal(directTuna.inferredAllergenSignals.find((signal) => signal.id === "fish")?.c, "high");
-  assert.equal(sandwich.inferredAllergenSignals.find((signal) => signal.id === "wheat")?.c, "medium");
+  assert.equal(
+    directTuna.inferredAllergenSignals.find((signal) => signal.id === "fish")
+      ?.c,
+    "high",
+  );
+  assert.equal(
+    sandwich.inferredAllergenSignals.find((signal) => signal.id === "wheat")?.c,
+    "medium",
+  );
 });
 
 test("ingredient intelligence context rules suppress vegan, gluten-free, and sushi false positives", async () => {
@@ -14509,7 +21068,8 @@ test("ingredient intelligence context rules suppress vegan, gluten-free, and sus
     {
       allergenSourceType: "unavailable",
       category: "Gluten Free Bakery",
-      description: "Dedicated gluten-free bakery cookie with oat milk chocolate.",
+      description:
+        "Dedicated gluten-free bakery cookie with oat milk chocolate.",
       name: "Chocolate Chip Cookie",
     },
     { manifest },
@@ -14527,7 +21087,8 @@ test("ingredient intelligence context rules suppress vegan, gluten-free, and sus
     {
       allergenSourceType: "unavailable",
       category: "Bakery",
-      description: "Lemon cakecup with fresh blueberries and lemon buttercream frosting.",
+      description:
+        "Lemon cakecup with fresh blueberries and lemon buttercream frosting.",
       name: "Smurfette Cupcake",
     },
     { manifest },
@@ -14545,7 +21106,8 @@ test("ingredient intelligence context rules suppress vegan, gluten-free, and sus
     {
       allergenSourceType: "unavailable",
       category: "Bakery",
-      description: "Our gluten free banana bread is ultra-moist and rich in flavor.",
+      description:
+        "Our gluten free banana bread is ultra-moist and rich in flavor.",
       name: "Banana Bread",
     },
     { manifest },
@@ -14572,7 +21134,8 @@ test("ingredient intelligence context rules suppress vegan, gluten-free, and sus
     {
       allergenSourceType: "unavailable",
       category: "Burgers",
-      description: "Sautéed spinach, red wine onions, bacon, and mixed green salad.",
+      description:
+        "Sautéed spinach, red wine onions, bacon, and mixed green salad.",
       name: "Bunless Burger",
     },
     { manifest },
@@ -14581,7 +21144,8 @@ test("ingredient intelligence context rules suppress vegan, gluten-free, and sus
     {
       allergenSourceType: "unavailable",
       category: "Burgers",
-      description: "Grass-fed beef, American cheese, lettuce, onion, and pickle.",
+      description:
+        "Grass-fed beef, American cheese, lettuce, onion, and pickle.",
       name: "Cheese Burger Lettuce Wrap",
     },
     { manifest },
@@ -14590,7 +21154,8 @@ test("ingredient intelligence context rules suppress vegan, gluten-free, and sus
     {
       allergenSourceType: "unavailable",
       category: "Sandwiches & Wraps",
-      description: "Tomato and lettuce wrapped in Mediterranean tortilla bread.",
+      description:
+        "Tomato and lettuce wrapped in Mediterranean tortilla bread.",
       name: "Adana Wrap",
     },
     { manifest },
@@ -14608,7 +21173,8 @@ test("ingredient intelligence context rules suppress vegan, gluten-free, and sus
     {
       allergenSourceType: "unavailable",
       category: "Entrees",
-      description: "Served with qabulirice and contains non-dairy garlic yogurt.",
+      description:
+        "Served with qabulirice and contains non-dairy garlic yogurt.",
       name: "Afghania Combination",
     },
     { manifest },
@@ -14617,7 +21183,8 @@ test("ingredient intelligence context rules suppress vegan, gluten-free, and sus
     {
       allergenSourceType: "unavailable",
       category: "Thai",
-      description: "Chicken, young coconut meat, coconut milk, mushrooms, tomatoes, lemongrass, and lime leaves.",
+      description:
+        "Chicken, young coconut meat, coconut milk, mushrooms, tomatoes, lemongrass, and lime leaves.",
       name: "Coconut Soup with Chicken",
     },
     { manifest },
@@ -14655,7 +21222,8 @@ test("ingredient intelligence context rules suppress vegan, gluten-free, and sus
     {
       allergenSourceType: "unavailable",
       category: "Cakes",
-      description: "Gluten-free option available. Allergens: Contains wheat, almonds and soy.",
+      description:
+        "Gluten-free option available. Allergens: Contains wheat, almonds and soy.",
       name: "Almond Creme",
     },
     { manifest },
@@ -14692,7 +21260,8 @@ test("ingredient intelligence context rules suppress vegan, gluten-free, and sus
     {
       allergenSourceType: "unavailable",
       category: "Beef & Lamb",
-      description: "Slow cooked in a homemade shallot red chili sauce and Ethiopian spices.",
+      description:
+        "Slow cooked in a homemade shallot red chili sauce and Ethiopian spices.",
       name: "Ye Beg Wet",
     },
     { manifest },
@@ -14701,7 +21270,8 @@ test("ingredient intelligence context rules suppress vegan, gluten-free, and sus
     {
       allergenSourceType: "unavailable",
       category: "Thai",
-      description: "Boneless duck deep fried in a light batter, topped with basil in spicy chili garlic sauce.",
+      description:
+        "Boneless duck deep fried in a light batter, topped with basil in spicy chili garlic sauce.",
       name: "Crispy Duck Ka Prow",
     },
     { manifest },
@@ -14715,33 +21285,84 @@ test("ingredient intelligence context rules suppress vegan, gluten-free, and sus
     },
     { manifest },
   );
+  const leadingGfItem = inferMenuItemIngredientIntelligence(
+    {
+      allergenSourceType: "unavailable",
+      category: "Indian",
+      description: "",
+      name: "(GF) Lamb Seekh Kabob",
+    },
+    { manifest },
+  );
+  const leadingGlutenFreeItem = inferMenuItemIngredientIntelligence(
+    {
+      allergenSourceType: "unavailable",
+      category: "Entrees",
+      description: "",
+      name: "Gluten-Free Garden Plate",
+    },
+    { manifest },
+  );
+  const contradictoryGfItem = inferMenuItemIngredientIntelligence(
+    {
+      allergenSourceType: "restaurant_issued_positive",
+      allergens: ["wheat"],
+      category: "Bakery",
+      description: "Official disclosure contains wheat.",
+      mayContain: [],
+      name: "(GF) Seasonal Bread",
+    },
+    { manifest },
+  );
 
   assertAllergenSignalsInclude(avocadoRoll, ["sesame"]);
   assertNoAllergenSignalsInclude(avocadoRoll, ["gluten", "wheat"]);
-  assertAllergenSignalsInclude(shrimpTempuraRoll, ["gluten", "shellfish", "wheat"]);
+  assertAllergenSignalsInclude(shrimpTempuraRoll, [
+    "gluten",
+    "shellfish",
+    "wheat",
+  ]);
   assertAllergenSignalsInclude(veganCheeseburger, ["gluten", "wheat"]);
   assertNoAllergenSignalsInclude(veganCheeseburger, ["milk"]);
   assertNoAllergenSignalsInclude(glutenFreeCookie, ["gluten", "wheat"]);
   assertAllergenSignalsInclude(normalCookie, ["gluten", "wheat"]);
-  assertAllergenSignalsInclude(normalCupcake, ["egg", "gluten", "milk", "wheat"]);
+  assertAllergenSignalsInclude(normalCupcake, [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
   assertNoAllergenSignalsInclude(glutenFreeCupcake, ["gluten", "wheat"]);
   assertNoAllergenSignalsInclude(itemLevelGlutenFreeBread, ["gluten", "wheat"]);
-  assertNoAllergenSignalsInclude(itemLevelGlutenFreeCookie, ["gluten", "wheat"]);
+  assertNoAllergenSignalsInclude(itemLevelGlutenFreeCookie, [
+    "gluten",
+    "wheat",
+  ]);
   assertNoAllergenSignalsInclude(noGlutenCookie, ["gluten", "wheat"]);
   assertNoAllergenSignalsInclude(bunlessBurger, ["gluten", "sesame", "wheat"]);
   assertAllergenSignalsInclude(lettuceWrapCheeseburger, ["milk"]);
-  assertNoAllergenSignalsInclude(lettuceWrapCheeseburger, ["gluten", "sesame", "wheat"]);
+  assertNoAllergenSignalsInclude(lettuceWrapCheeseburger, [
+    "gluten",
+    "sesame",
+    "wheat",
+  ]);
   assertAllergenSignalsInclude(pitaWrapWithLettuce, ["gluten", "wheat"]);
   assertNoAllergenSignalsInclude(withoutDairyTea, ["milk"]);
   assertNoAllergenSignalsInclude(nonDairyYogurt, ["milk"]);
   assertNoAllergenSignalsInclude(coconutSoup, ["milk"]);
-  assertAllergenSignalsInclude(glutenFreeOptionWithContainsWheat, ["gluten", "wheat"]);
+  assertAllergenSignalsInclude(glutenFreeOptionWithContainsWheat, [
+    "gluten",
+    "wheat",
+  ]);
   assertNoAllergenSignalsInclude(soyFreeCookie, ["soy"]);
   assertAllergenSignalsInclude(wrapperMarkerCupcake, ["gluten", "wheat"]);
   assertNoAllergenSignalsInclude(wrapperMarkerCupcake, ["soy"]);
   assertAllergenSignalsInclude(containsSoyCake, ["soy"]);
   assertNoAllergenSignalsInclude(mockCrab, ["egg", "shellfish"]);
-  assert.equal(mockCrab?.inferenceSuppressions?.some((entry) => entry.id === "shellfish"), true);
+  assert.equal(
+    mockCrab?.inferenceSuppressions?.some((entry) => entry.id === "shellfish"),
+    true,
+  );
   assert.equal(mockCrab?.inferenceSummary.includes("crab"), false);
   assertAllergenSignalsInclude(fishWithVeganOption, ["fish"]);
   assertAllergenSignalsInclude(cherriesAndCream, ["egg", "milk"]);
@@ -14749,6 +21370,15 @@ test("ingredient intelligence context rules suppress vegan, gluten-free, and sus
   assert.equal(ethiopianRedChiliSauce, null);
   assertAllergenSignalsInclude(lightBatterDuck, ["egg", "gluten", "wheat"]);
   assertAllergenSignalsInclude(saffronOrzo, ["gluten", "wheat"]);
+  assert.deepEqual(
+    leadingGfItem?.inferenceSuppressions?.map((entry) => entry.id).sort(),
+    ["gluten", "wheat"],
+  );
+  assert.deepEqual(
+    leadingGlutenFreeItem?.inferenceSuppressions?.map((entry) => entry.id).sort(),
+    ["gluten", "wheat"],
+  );
+  assert.equal(contradictoryGfItem, null);
 });
 
 test("ingredient intelligence multilingual menu terms map to expected allergens", async () => {
@@ -14763,13 +21393,20 @@ test("ingredient intelligence multilingual menu terms map to expected allergens"
     { manifest },
   );
 
-  assertAllergenSignalsInclude(inference, ["egg", "gluten", "milk", "shellfish", "wheat"]);
+  assertAllergenSignalsInclude(inference, [
+    "egg",
+    "gluten",
+    "milk",
+    "shellfish",
+    "wheat",
+  ]);
 
   const crostini = inferMenuItemIngredientIntelligence(
     {
       allergenSourceType: "unavailable",
       category: "Steakhouse",
-      description: "(4) crostini topped with fresh steak tartare and bearnaise sauce.",
+      description:
+        "(4) crostini topped with fresh steak tartare and bearnaise sauce.",
       name: "Steak Tartare",
     },
     { manifest },
@@ -14812,49 +21449,90 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
   const manifest = await getDefaultIngredientIntelligenceManifest();
   const cases = [
     {
-      item: { category: "Seafood", description: "Seafood from current menu.", name: "SEAFOOD" },
+      item: {
+        category: "Seafood",
+        description: "Seafood from current menu.",
+        name: "SEAFOOD",
+      },
       signals: ["fish", "shellfish"],
     },
     {
-      item: { category: "Brunch", description: "Flash fried, sweet chili sauce.", name: "SHOTGUNSHRIMP" },
+      item: {
+        category: "Brunch",
+        description: "Flash fried, sweet chili sauce.",
+        name: "SHOTGUNSHRIMP",
+      },
       signals: ["shellfish"],
     },
     {
-      item: { category: "Indian", description: "Fried crispy puri filled with potato masala.", name: "Pani Puri" },
+      item: {
+        category: "Indian",
+        description: "Fried crispy puri filled with potato masala.",
+        name: "Pani Puri",
+      },
       signals: ["gluten", "wheat"],
     },
     {
-      item: { category: "Indian", description: "Crispy paneer with bell peppers.", name: "Chilli Paneer" },
+      item: {
+        category: "Indian",
+        description: "Crispy paneer with bell peppers.",
+        name: "Chilli Paneer",
+      },
       signals: ["milk"],
     },
     {
-      item: { category: "Chinese", description: "*Contains Shellfish*", name: "Szechuan String Beans" },
+      item: {
+        category: "Chinese",
+        description: "*Contains Shellfish*",
+        name: "Szechuan String Beans",
+      },
       signals: ["shellfish"],
     },
     {
-      item: { category: "Chinese", description: "Crispy fried beef tossed in house sauce.", name: "Crispy Beef" },
+      item: {
+        category: "Chinese",
+        description: "Crispy fried beef tossed in house sauce.",
+        name: "Crispy Beef",
+      },
       signals: ["gluten", "wheat"],
     },
     {
-      item: { category: "Antipasti", description: "Poached asparagus with tonnato sauce.", name: "ASPARAGI" },
+      item: {
+        category: "Antipasti",
+        description: "Poached asparagus with tonnato sauce.",
+        name: "ASPARAGI",
+      },
       signals: ["egg", "fish"],
     },
     {
-      item: { category: "Snacks", description: "Parmesan, Mornay.", name: "Gougeres Warm Cheese Puffs" },
+      item: {
+        category: "Snacks",
+        description: "Parmesan, Mornay.",
+        name: "Gougeres Warm Cheese Puffs",
+      },
       signals: ["egg", "gluten", "milk", "wheat"],
     },
     {
-      item: { category: "Seafood", description: "Fried black bass.", name: "Fried Black Bass" },
+      item: {
+        category: "Seafood",
+        description: "Fried black bass.",
+        name: "Fried Black Bass",
+      },
       signals: ["fish", "gluten", "wheat"],
     },
     {
-      item: { category: "French", description: "Chicken schnitzel with lemon.", name: "Chicken Schnitzel" },
+      item: {
+        category: "French",
+        description: "Chicken schnitzel with lemon.",
+        name: "Chicken Schnitzel",
+      },
       signals: ["egg", "gluten", "wheat"],
     },
     {
       item: {
         category: "Party Bundles",
-        description: "Double fried with your choice of sauce. Complimentary side of pickled radish or coleslaw.",
+        description:
+          "Double fried with your choice of sauce. Complimentary side of pickled radish or coleslaw.",
         name: "Strips",
       },
       signals: ["gluten", "soy", "wheat"],
@@ -14868,29 +21546,50 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
       signals: ["gluten", "wheat"],
     },
     {
-      item: { category: "Bakery", description: "Apple phyllo pastry.", name: "Apple Strudel" },
+      item: {
+        category: "Bakery",
+        description: "Apple phyllo pastry.",
+        name: "Apple Strudel",
+      },
       signals: ["gluten", "wheat"],
     },
     {
-      item: { category: "Breakfast", description: "Buttermilk pancakes.", name: "Pancake Stack" },
+      item: {
+        category: "Breakfast",
+        description: "Buttermilk pancakes.",
+        name: "Pancake Stack",
+      },
       signals: ["egg", "gluten", "milk", "wheat"],
     },
     {
-      item: { category: "Indian", description: "Whole wheat flatbread.", name: "Paratha" },
+      item: {
+        category: "Indian",
+        description: "Whole wheat flatbread.",
+        name: "Paratha",
+      },
       signals: ["gluten", "wheat"],
     },
     {
-      item: { category: "Grain Bowls", description: "Roasted vegetables, farro, herbs.", name: "Farro Bowl" },
+      item: {
+        category: "Grain Bowls",
+        description: "Roasted vegetables, farro, herbs.",
+        name: "Farro Bowl",
+      },
       signals: ["gluten", "wheat"],
     },
     {
-      item: { category: "Soups", description: "Mushrooms and pearled barley.", name: "Mushroom Barley Soup" },
+      item: {
+        category: "Soups",
+        description: "Mushrooms and pearled barley.",
+        name: "Mushroom Barley Soup",
+      },
       signals: ["gluten", "wheat"],
     },
     {
       item: {
         category: "Thai",
-        description: "Sautéed flat rice noodles with egg and Chinese broccoli in a sweet black soy sauce.",
+        description:
+          "Sautéed flat rice noodles with egg and Chinese broccoli in a sweet black soy sauce.",
         name: "Pad See Ew",
       },
       signals: ["egg", "gluten", "soy", "wheat"],
@@ -14898,7 +21597,8 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
     {
       item: {
         category: "Thai",
-        description: "Create your own wrap with grilled chicken, cucumber, noodles, peanut sauce, sesame sauce, and spicy peanut dip.",
+        description:
+          "Create your own wrap with grilled chicken, cucumber, noodles, peanut sauce, sesame sauce, and spicy peanut dip.",
         name: "Thai Chicken Wrap",
       },
       signals: ["gluten", "peanut", "sesame", "wheat"],
@@ -14906,7 +21606,8 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
     {
       item: {
         category: "Japanese",
-        description: "Tender tofu fried and served with soy dashi, daikon, bonito.",
+        description:
+          "Tender tofu fried and served with soy dashi, daikon, bonito.",
         name: "Agedashi Tofu",
       },
       signals: ["fish", "gluten", "soy", "wheat"],
@@ -14914,7 +21615,8 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
     {
       item: {
         category: "Indian",
-        description: "A spicy deep fried appetizer, garnished with onions and cilantro.",
+        description:
+          "A spicy deep fried appetizer, garnished with onions and cilantro.",
         name: "Babycorn 65",
       },
       signals: ["egg", "gluten", "wheat"],
@@ -14922,7 +21624,8 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
     {
       item: {
         category: "Indian",
-        description: "Mashed potato patties dipped in chickpea batter and deep fried.",
+        description:
+          "Mashed potato patties dipped in chickpea batter and deep fried.",
         name: "Aloo Tikki",
       },
       signals: ["egg", "gluten", "wheat"],
@@ -14930,7 +21633,8 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
     {
       item: {
         category: "Thai",
-        description: "Thin rice noodles with minced chicken, fish balls, crushed peanuts, and crispy wonton skin.",
+        description:
+          "Thin rice noodles with minced chicken, fish balls, crushed peanuts, and crispy wonton skin.",
         name: "Sukhothai",
       },
       signals: ["fish", "gluten", "peanut", "wheat"],
@@ -14954,7 +21658,8 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
     {
       item: {
         category: "Salads",
-        description: "Sweet Grass Asher Blue, Sunflower Seed Vinaigrette, Pickled Vidalia Onion, Crispy Grains",
+        description:
+          "Sweet Grass Asher Blue, Sunflower Seed Vinaigrette, Pickled Vidalia Onion, Crispy Grains",
         name: "Baby Kale Salad",
       },
       signals: ["milk"],
@@ -14970,7 +21675,8 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
     {
       item: {
         category: "Indian",
-        description: "Deep fried with spiced batter topped with chef's special sauce.",
+        description:
+          "Deep fried with spiced batter topped with chef's special sauce.",
         name: "Chicken Lolipop",
       },
       signals: ["egg", "gluten", "wheat"],
@@ -15026,7 +21732,8 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
     {
       item: {
         category: "Indian",
-        description: "Crispy baby corn pieces toasted in tangy Manchurian sauce with bell pepper and onion.",
+        description:
+          "Crispy baby corn pieces toasted in tangy Manchurian sauce with bell pepper and onion.",
         name: "Crispy Baby Corn Manchurian",
       },
       signals: ["gluten", "soy", "wheat"],
@@ -15042,7 +21749,8 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
     {
       item: {
         category: "Ethiopian",
-        description: "Lightly fried chunked whitening fillet cooked in special tomato and berbere sauce.",
+        description:
+          "Lightly fried chunked whitening fillet cooked in special tomato and berbere sauce.",
         name: "Asa Goulshe",
       },
       signals: ["fish"],
@@ -15202,7 +21910,8 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
     {
       item: {
         category: "Thai",
-        description: "Deep fried whole Golden Pompano with one choice of sauce on the side.",
+        description:
+          "Deep fried whole Golden Pompano with one choice of sauce on the side.",
         name: "Crispy Whole Golden Pompano",
       },
       signals: ["fish"],
@@ -15226,7 +21935,8 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
     {
       item: {
         category: "Combo Meals",
-        description: "Crispy, juicy, perfectly seasoned all-white meat chicken bites.",
+        description:
+          "Crispy, juicy, perfectly seasoned all-white meat chicken bites.",
         name: "Chicken Bites Box Combo",
       },
       signals: ["gluten", "wheat"],
@@ -15234,7 +21944,8 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
     {
       item: {
         category: "Salad",
-        description: "Deep fried basa filet topped with hot chili and garlic sauce.",
+        description:
+          "Deep fried basa filet topped with hot chili and garlic sauce.",
         name: "PLA RAD PRIK",
       },
       signals: ["fish"],
@@ -15274,7 +21985,8 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
     {
       item: {
         category: "Vietnamese",
-        description: "Perfectly seasoned fillings encased in a golden, crispy wrapper.",
+        description:
+          "Perfectly seasoned fillings encased in a golden, crispy wrapper.",
         name: "Savory Crispy Eggrolls",
       },
       signals: ["gluten", "wheat"],
@@ -15338,7 +22050,8 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
     {
       item: {
         category: "Indian",
-        description: "Crispy vegetable balls tossed in sweet and spicy Manchurian sauce.",
+        description:
+          "Crispy vegetable balls tossed in sweet and spicy Manchurian sauce.",
         name: "Veg Manchuria",
       },
       signals: ["gluten", "soy", "wheat"],
@@ -15346,7 +22059,8 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
     {
       item: {
         category: "Noodles",
-        description: "Choose veg or chicken. Rice, noodles, vegetables, tangy, crispy noodles, side sauce.",
+        description:
+          "Choose veg or chicken. Rice, noodles, vegetables, tangy, crispy noodles, side sauce.",
         name: "Triple Szechwan",
       },
       signals: ["gluten", "wheat"],
@@ -15354,7 +22068,8 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
     {
       item: {
         category: "Vietnamese",
-        description: "Crunchy eggrolls surrounded by fresh vegetables and rice paper.",
+        description:
+          "Crunchy eggrolls surrounded by fresh vegetables and rice paper.",
         name: "TD Signature Rolls",
       },
       signals: ["gluten", "wheat"],
@@ -15370,7 +22085,8 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
     {
       item: {
         category: "Snacks",
-        description: "Traditional Gujarati kachori with pigeon peas, green peas, and spices.",
+        description:
+          "Traditional Gujarati kachori with pigeon peas, green peas, and spices.",
         name: "Crispy Lilva Bites",
       },
       signals: ["gluten", "wheat"],
@@ -15402,7 +22118,8 @@ test("ingredient intelligence v2 review batch covers sauces wrappers seafood and
     {
       item: {
         category: "Wings",
-        description: "Crispy fried, classic bone-in wings in the flavor of your choice.",
+        description:
+          "Crispy fried, classic bone-in wings in the flavor of your choice.",
         name: "Classic Wings",
       },
       signals: ["gluten", "wheat"],
@@ -15489,14 +22206,16 @@ test("ingredient intelligence audit reports risky uninferred and broad confidenc
           {
             allergenSourceType: "unavailable",
             category: "Entrees",
-            description: "Half Pan (8) Wings $90.00 | Full Pan (12) Wings $135.00",
+            description:
+              "Half Pan (8) Wings $90.00 | Full Pan (12) Wings $135.00",
             id: "fried-turkey-wings",
             name: "Fried Turkey Wings",
           },
           {
             allergenSourceType: "unavailable",
             category: "Thai",
-            description: "Thailand's most popular bar snack, fried, sided w/ cucumber & hot sriracha chili sauce.",
+            description:
+              "Thailand's most popular bar snack, fried, sided w/ cucumber & hot sriracha chili sauce.",
             id: "pork-strip",
             name: "Pork Strip",
           },
@@ -15528,7 +22247,10 @@ test("ingredient intelligence audit reports risky uninferred and broad confidenc
   assert.equal(report.summary.riskyUninferredItems, 1);
   assert.equal(report.scope.selectedRestaurantCount, 1);
   assert.equal(report.scope.repositoryRestaurantCount, 2);
-  assert.equal(report.broadLowConfidenceExamples[0].itemName, "Chicken Sandwich");
+  assert.equal(
+    report.broadLowConfidenceExamples[0].itemName,
+    "Chicken Sandwich",
+  );
 
   const emptyChunk = buildIngredientIntelligenceAudit(repository, manifest, {
     limit: 1,
@@ -15585,7 +22307,9 @@ test("ingredient intelligence aliases from Open Food Facts vocabulary map to app
 
 test("ingredient intelligence preserves Wikidata provenance for reviewed profiles", async () => {
   const manifest = await getDefaultIngredientIntelligenceManifest();
-  const caesarProfile = manifest.dishProfiles.find((profile) => profile.id === "caesar_salad");
+  const caesarProfile = manifest.dishProfiles.find(
+    (profile) => profile.id === "caesar_salad",
+  );
 
   assert.equal(caesarProfile.provenance[0].source, "wikidata");
   assert.equal(caesarProfile.provenance[0].qid, "Q275508");
@@ -15608,7 +22332,10 @@ test("ingredient intelligence annotates review-only fields without official safe
 
   assert.equal(item.allergenSourceType, "unavailable");
   assert.deepEqual(item.allergens, []);
-  assert.equal(item.inferredAllergenSignals.some((signal) => signal.id === "milk"), true);
+  assert.equal(
+    item.inferredAllergenSignals.some((signal) => signal.id === "milk"),
+    true,
+  );
   assert.equal("safetyStatus" in item, false);
 });
 
@@ -15620,7 +22347,11 @@ function assertAllergenSignalsInclude(inference, expectedIds) {
   const ids = signalIds(inference);
 
   for (const expectedId of expectedIds) {
-    assert.equal(ids.includes(expectedId), true, `${ids.join(", ")} should include ${expectedId}`);
+    assert.equal(
+      ids.includes(expectedId),
+      true,
+      `${ids.join(", ")} should include ${expectedId}`,
+    );
   }
 }
 
@@ -15628,6 +22359,10 @@ function assertNoAllergenSignalsInclude(inference, forbiddenIds) {
   const ids = inference ? signalIds(inference) : [];
 
   for (const forbiddenId of forbiddenIds) {
-    assert.equal(ids.includes(forbiddenId), false, `${ids.join(", ")} should not include ${forbiddenId}`);
+    assert.equal(
+      ids.includes(forbiddenId),
+      false,
+      `${ids.join(", ")} should not include ${forbiddenId}`,
+    );
   }
 }

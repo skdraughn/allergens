@@ -1,0 +1,2359 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-batch-05-2026-07-16",
+  "createdAt": "2026-07-16T18:48:15.064Z",
+  "updatedAt": "2026-07-16T19:19:45.153Z",
+  "status": "terra_running",
+  "models": {
+    "scout": {
+      "id": "gpt-5.6-luna",
+      "reasoningEffort": "low"
+    },
+    "verifier": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "reviewer": {
+      "id": "gpt-5.6-sol",
+      "reasoningEffort": "medium"
+    }
+  },
+  "concurrency": {
+    "luna": 3,
+    "terra": 3,
+    "sol": null
+  },
+  "jobs": [
+    {
+      "restaurantId": "belga-cafe-washington-dc-dc-metro",
+      "name": "Belga Cafe",
+      "jobPath": "jobs/belga-cafe-washington-dc-dc-metro.json",
+      "scoutResultPath": "scout-results/belga-cafe-washington-dc-dc-metro.json",
+      "scoutRoutePath": "scout-routes/belga-cafe-washington-dc-dc-metro.json",
+      "verifierPacketPath": "verifier-packets/belga-cafe-washington-dc-dc-metro.json",
+      "resultPath": "results/belga-cafe-washington-dc-dc-metro.json",
+      "routePath": "routes/belga-cafe-washington-dc-dc-metro.json",
+      "reviewPath": "reviews/belga-cafe-washington-dc-dc-metro.json",
+      "reviewValidationPath": "review-validations/belga-cafe-washington-dc-dc-metro.json",
+      "status": "awaiting_terra_retry",
+      "lunaExitCode": 0,
+      "lunaStartedAt": "2026-07-16T18:48:23.243Z",
+      "lunaCompletedAt": "2026-07-16T18:59:51.427Z",
+      "lunaError": null,
+      "lunaAttempts": [
+        {
+          "startedAt": "2026-07-16T18:48:23.243Z",
+          "completedAt": "2026-07-16T18:59:51.427Z",
+          "durationMs": 688184,
+          "model": {
+            "id": "gpt-5.6-luna",
+            "reasoningEffort": "low",
+            "runtimeId": "gpt-5.6-luna",
+            "runtimeReasoningEffort": "low",
+            "exact": true
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-scout-result.schema.json",
+            "sha256": "8d89e3e7f42ad28ffa5bf7b8b7397987a165e11b2247f0ba36433ccff61c5e7e"
+          },
+          "prompt": {
+            "text": "Execute one read-only restaurant discovery and reconciliation scout job.\nJob: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/belga-cafe-washington-dc-dc-metro.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/belga-cafe-washington-dc-dc-metro.luna.attempt-1.json\nRead AGENTS.md and the verification plan named in the job before researching.\nInventory every current food and nonalcoholic menu surface linked by the official homepage, including service-period PDFs, images, ordering vendors, pagination, and location-specific menus.\nEnumerate the complete current product catalog across those surfaces, consolidate duplicate presentations explicitly, and map each candidate product to its source surfaces and evidence.\nFor every current product and every frozen-item group, state the adjudicated contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs; use unavailable rather than inferred negatives when disclosure is incomplete.\nRead the entire frozen item-check file and reconcile every auditItemKey exactly once.\nGroup auditItemKeys that share the same disposition, allergen verdict, and evidence IDs; put shared explanations in findings.\nUse current public web evidence, prefer restaurant-issued sources, and preserve source authority labels.\nApply source semantics precisely: incomplete restaurant-issued menu descriptions cannot establish allergen absence, complete arrays, or cross-contact status, but explicit positive ingredients and unavoidable named food identities can support narrow positive restaurant-issued ingredient evidence.\nKeep culinary formulation assumptions and inferred ingredients separate from direct source-backed positives; never erase an explicit positive merely because the source is not a complete allergen matrix.\nTreat your outcome as a candidate only. Never claim that a restaurant is terminally verified or blocked; every valid scout is independently checked by Terra.\nDo not edit files, mutate the ledger, or repair data.\nReturn only the JSON object required by the output schema.",
+            "sha256": "494741ddc67f6aeda6fb37d07941baaa62f277e5efae08e3667e75a2fbd1020c"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/belga-cafe-washington-dc-dc-metro.json",
+              "exists": true,
+              "sha256": "e78edac0272d816a4fd82f7cd6da6eb1f5cab67cc4557c0875106a35ce310fa2"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/belga-cafe-washington-dc-dc-metro.jsonl",
+              "exists": true,
+              "sha256": "2979ba94b1d5b3a52aabeac35247e7620b61e43076c8655c7274e1c3a056ea57"
+            },
+            {
+              "path": "data/restaurant-verification/restaurants/belga-cafe-washington-dc-dc-metro.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "data/restaurant-verification/evidence/belga-cafe-washington-dc-dc-metro.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "docs/restaurant-verification-plan.md",
+              "exists": true,
+              "sha256": "980c8c3a6a8093b144215304e00ecab485be744718ddcd93fe98ac1cff293b83"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/belga-cafe-washington-dc-dc-metro.luna.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/belga-cafe-washington-dc-dc-metro.json",
+            "written": true,
+            "sha256": "07f47db86dfc89b6e4a0e43eb675893290ceeee7bf82b9912ee7e9e54a702eba"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/belga-cafe-washington-dc-dc-metro.luna.attempt-1.log",
+            "sha256": "e9638f0a3be8a4219de9b746d42a26d4a23a7ab1b6a8f0d7d4bfc850ea0e71b9"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": true,
+            "errors": [],
+            "warnings": []
+          },
+          "tokens": {
+            "available": true,
+            "total": 76721,
+            "source": "runtime_log"
+          }
+        }
+      ],
+      "terraExitCode": 0,
+      "terraStartedAt": "2026-07-16T19:06:39.579Z",
+      "terraCompletedAt": "2026-07-16T19:18:30.396Z",
+      "terraError": null,
+      "terraAttempts": [
+        {
+          "startedAt": "2026-07-16T19:06:39.579Z",
+          "completedAt": "2026-07-16T19:18:30.396Z",
+          "durationMs": 710817,
+          "model": {
+            "id": "gpt-5.6-terra",
+            "reasoningEffort": "low",
+            "runtimeId": null,
+            "runtimeReasoningEffort": null,
+            "exact": null
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-worker-result.schema.json",
+            "sha256": "f2d4af345ffd2ddd31dc6b45fbf1e58efa10d326beaef078ca3170ce8415fa76"
+          },
+          "prompt": {
+            "text": "Independently verify one Luna restaurant scout in read-only mode.\nVerifier packet: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/belga-cafe-washington-dc-dc-metro.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/belga-cafe-washington-dc-dc-metro.terra.attempt-1.json\nRead AGENTS.md and the verification plan before researching.\nRe-open the strongest primary sources. Verify every scout menu surface and every scout current product exactly once, and report any additional surfaces or products Luna missed.\nIndependently enumerate every scout presentation ID and re-state each checked product group's contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs.\nReview every deterministic risk gate in the packet. Do not clear a gate based on Luna confidence or summary prose.\nRead the full frozen item file and reconcile every auditItemKey exactly once, checking menu scope, allergen source authority, cross-contact semantics, and extraction behavior.\nIncomplete menus cannot support negatives, complete arrays, or cross-contact conclusions. Explicit restaurant-issued positives and unavoidable named identities may support narrow positive ingredient evidence.\nPreserve linked-vendor and third-party authority; never promote them to restaurant-issued evidence.\nDo not edit files, mutate the ledger, implement repairs, or mark a terminal state.\nReturn only the JSON object required by the output schema.",
+            "sha256": "f72bd5409e8daed2b79768af0a1c67d2c7c003fc61a1aeac1ede622422d0b745"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/belga-cafe-washington-dc-dc-metro.json",
+              "exists": true,
+              "sha256": "6460f01121e699c8f533f35f86953b847dd9ee651dee888e914e8769f5d22334"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/belga-cafe-washington-dc-dc-metro.json",
+              "exists": true,
+              "sha256": "e78edac0272d816a4fd82f7cd6da6eb1f5cab67cc4557c0875106a35ce310fa2"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/belga-cafe-washington-dc-dc-metro.json",
+              "exists": true,
+              "sha256": "07f47db86dfc89b6e4a0e43eb675893290ceeee7bf82b9912ee7e9e54a702eba"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-routes/belga-cafe-washington-dc-dc-metro.json",
+              "exists": true,
+              "sha256": "f73b07d181df144a883e4696fbcaef97b041b262ad3e8747c3293f08839a1360"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/belga-cafe-washington-dc-dc-metro.jsonl",
+              "exists": true,
+              "sha256": "2979ba94b1d5b3a52aabeac35247e7620b61e43076c8655c7274e1c3a056ea57"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/belga-cafe-washington-dc-dc-metro.terra.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/results/belga-cafe-washington-dc-dc-metro.json",
+            "written": true,
+            "sha256": "27cdf6f27ad45511dffa7dc2d64f1b2d8c73bad61d968050fc1c245ff8b4ae72"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/belga-cafe-washington-dc-dc-metro.terra.attempt-1.log",
+            "sha256": "665cb33356e1038a4b8c5831523e0d3a5da5bd38bf2fa9db74d5e3e4d84de296"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": false,
+            "errors": [
+              "Missing 1 baseline item check(s): 41:928-billecart-salmon-sous-bois-epernay-nv.",
+              "Contains 1 unknown item check(s): 41:928-billecart-salmon-sous-bois-epernay.",
+              "Terra scout result hash is stale or incorrect."
+            ],
+            "warnings": [
+              "Low confidence must be explicitly marked low_confidence.",
+              "Terra must verify every scout product presentation exactly once.",
+              "Terra repeated 2 scout product presentation(s): food-html, drink-html.",
+              "Terra reported a mismatched or unverifiable menu surface.",
+              "Terra confirmed or left unresolved a deterministic risk gate.",
+              "Terra discovered additional menu surfaces.",
+              "Terra discovered additional current products.",
+              "Terra reported findings requiring adjudication."
+            ]
+          },
+          "tokens": {
+            "available": true,
+            "total": 73048,
+            "source": "runtime_log"
+          }
+        }
+      ]
+    },
+    {
+      "restaurantId": "replacement-bella-indian-and-italian-cuisine-laurel-md",
+      "name": "Bella Indian & Italian Cuisine",
+      "jobPath": "jobs/replacement-bella-indian-and-italian-cuisine-laurel-md.json",
+      "scoutResultPath": "scout-results/replacement-bella-indian-and-italian-cuisine-laurel-md.json",
+      "scoutRoutePath": "scout-routes/replacement-bella-indian-and-italian-cuisine-laurel-md.json",
+      "verifierPacketPath": "verifier-packets/replacement-bella-indian-and-italian-cuisine-laurel-md.json",
+      "resultPath": "results/replacement-bella-indian-and-italian-cuisine-laurel-md.json",
+      "routePath": "routes/replacement-bella-indian-and-italian-cuisine-laurel-md.json",
+      "reviewPath": "reviews/replacement-bella-indian-and-italian-cuisine-laurel-md.json",
+      "reviewValidationPath": "review-validations/replacement-bella-indian-and-italian-cuisine-laurel-md.json",
+      "status": "awaiting_sol",
+      "lunaExitCode": 0,
+      "lunaStartedAt": "2026-07-16T18:48:23.243Z",
+      "lunaCompletedAt": "2026-07-16T18:59:51.427Z",
+      "lunaError": null,
+      "lunaAttempts": [
+        {
+          "startedAt": "2026-07-16T18:48:23.243Z",
+          "completedAt": "2026-07-16T18:59:51.427Z",
+          "durationMs": 688184,
+          "model": {
+            "id": "gpt-5.6-luna",
+            "reasoningEffort": "low",
+            "runtimeId": "gpt-5.6-luna",
+            "runtimeReasoningEffort": "low",
+            "exact": true
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-scout-result.schema.json",
+            "sha256": "8d89e3e7f42ad28ffa5bf7b8b7397987a165e11b2247f0ba36433ccff61c5e7e"
+          },
+          "prompt": {
+            "text": "Execute one read-only restaurant discovery and reconciliation scout job.\nJob: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/replacement-bella-indian-and-italian-cuisine-laurel-md.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/replacement-bella-indian-and-italian-cuisine-laurel-md.luna.attempt-1.json\nRead AGENTS.md and the verification plan named in the job before researching.\nInventory every current food and nonalcoholic menu surface linked by the official homepage, including service-period PDFs, images, ordering vendors, pagination, and location-specific menus.\nEnumerate the complete current product catalog across those surfaces, consolidate duplicate presentations explicitly, and map each candidate product to its source surfaces and evidence.\nFor every current product and every frozen-item group, state the adjudicated contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs; use unavailable rather than inferred negatives when disclosure is incomplete.\nRead the entire frozen item-check file and reconcile every auditItemKey exactly once.\nGroup auditItemKeys that share the same disposition, allergen verdict, and evidence IDs; put shared explanations in findings.\nUse current public web evidence, prefer restaurant-issued sources, and preserve source authority labels.\nApply source semantics precisely: incomplete restaurant-issued menu descriptions cannot establish allergen absence, complete arrays, or cross-contact status, but explicit positive ingredients and unavoidable named food identities can support narrow positive restaurant-issued ingredient evidence.\nKeep culinary formulation assumptions and inferred ingredients separate from direct source-backed positives; never erase an explicit positive merely because the source is not a complete allergen matrix.\nTreat your outcome as a candidate only. Never claim that a restaurant is terminally verified or blocked; every valid scout is independently checked by Terra.\nDo not edit files, mutate the ledger, or repair data.\nReturn only the JSON object required by the output schema.",
+            "sha256": "fcbef29f210c31da40c170bc1a020a4bc6e4731b418e95dd0eca3eaf5a5b98d5"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/replacement-bella-indian-and-italian-cuisine-laurel-md.json",
+              "exists": true,
+              "sha256": "30ec44aaea65cbdf8dc07aec68941dbed764822675663a9e37a52e8d394b0b52"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/replacement-bella-indian-and-italian-cuisine-laurel-md.jsonl",
+              "exists": true,
+              "sha256": "78d9a525e0164f3b885fb1cecc47250e2bcc7fa325e5604818978b6c113d1aca"
+            },
+            {
+              "path": "data/restaurant-verification/restaurants/replacement-bella-indian-and-italian-cuisine-laurel-md.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "data/restaurant-verification/evidence/replacement-bella-indian-and-italian-cuisine-laurel-md.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "docs/restaurant-verification-plan.md",
+              "exists": true,
+              "sha256": "980c8c3a6a8093b144215304e00ecab485be744718ddcd93fe98ac1cff293b83"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/replacement-bella-indian-and-italian-cuisine-laurel-md.luna.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/replacement-bella-indian-and-italian-cuisine-laurel-md.json",
+            "written": true,
+            "sha256": "028a1a3630f1c63d8025b1407c6e624348567de65507a557e9e1ce3f0f1c3441"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/replacement-bella-indian-and-italian-cuisine-laurel-md.luna.attempt-1.log",
+            "sha256": "68d1336cd659848038085f822a1bd78e8679059d8a8fa4a605c7429f780beab2"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": true,
+            "errors": [],
+            "warnings": []
+          },
+          "tokens": {
+            "available": true,
+            "total": 96896,
+            "source": "runtime_log"
+          }
+        }
+      ],
+      "terraExitCode": 0,
+      "terraStartedAt": "2026-07-16T19:06:39.579Z",
+      "terraCompletedAt": "2026-07-16T19:18:30.396Z",
+      "terraError": null,
+      "terraAttempts": [
+        {
+          "startedAt": "2026-07-16T19:06:39.579Z",
+          "completedAt": "2026-07-16T19:18:30.396Z",
+          "durationMs": 710817,
+          "model": {
+            "id": "gpt-5.6-terra",
+            "reasoningEffort": "low",
+            "runtimeId": null,
+            "runtimeReasoningEffort": null,
+            "exact": null
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-worker-result.schema.json",
+            "sha256": "f2d4af345ffd2ddd31dc6b45fbf1e58efa10d326beaef078ca3170ce8415fa76"
+          },
+          "prompt": {
+            "text": "Independently verify one Luna restaurant scout in read-only mode.\nVerifier packet: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/replacement-bella-indian-and-italian-cuisine-laurel-md.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/replacement-bella-indian-and-italian-cuisine-laurel-md.terra.attempt-1.json\nRead AGENTS.md and the verification plan before researching.\nRe-open the strongest primary sources. Verify every scout menu surface and every scout current product exactly once, and report any additional surfaces or products Luna missed.\nIndependently enumerate every scout presentation ID and re-state each checked product group's contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs.\nReview every deterministic risk gate in the packet. Do not clear a gate based on Luna confidence or summary prose.\nRead the full frozen item file and reconcile every auditItemKey exactly once, checking menu scope, allergen source authority, cross-contact semantics, and extraction behavior.\nIncomplete menus cannot support negatives, complete arrays, or cross-contact conclusions. Explicit restaurant-issued positives and unavoidable named identities may support narrow positive ingredient evidence.\nPreserve linked-vendor and third-party authority; never promote them to restaurant-issued evidence.\nDo not edit files, mutate the ledger, implement repairs, or mark a terminal state.\nReturn only the JSON object required by the output schema.",
+            "sha256": "126f545cae51ff41b3dbc8d900fb08461d7dad91c011c9ae80970bd3dc87002e"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/replacement-bella-indian-and-italian-cuisine-laurel-md.json",
+              "exists": true,
+              "sha256": "61eba62ee3cbc57020991d7050e5ee6a0c72fd85dc0ad33590eae377ca70d3c6"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/replacement-bella-indian-and-italian-cuisine-laurel-md.json",
+              "exists": true,
+              "sha256": "30ec44aaea65cbdf8dc07aec68941dbed764822675663a9e37a52e8d394b0b52"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/replacement-bella-indian-and-italian-cuisine-laurel-md.json",
+              "exists": true,
+              "sha256": "028a1a3630f1c63d8025b1407c6e624348567de65507a557e9e1ce3f0f1c3441"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-routes/replacement-bella-indian-and-italian-cuisine-laurel-md.json",
+              "exists": true,
+              "sha256": "5b3c5bff8bc8fc965ef7ca526b45bd2afd432fbc0e63c75f7a18e4e331891fd9"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/replacement-bella-indian-and-italian-cuisine-laurel-md.jsonl",
+              "exists": true,
+              "sha256": "78d9a525e0164f3b885fb1cecc47250e2bcc7fa325e5604818978b6c113d1aca"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/replacement-bella-indian-and-italian-cuisine-laurel-md.terra.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/results/replacement-bella-indian-and-italian-cuisine-laurel-md.json",
+            "written": true,
+            "sha256": "a2e839a7b650195d584e4e7a79b4cba144d9e2b26dfa0fb56c42b32d88ee1972"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/replacement-bella-indian-and-italian-cuisine-laurel-md.terra.attempt-1.log",
+            "sha256": "da667a7fc69ceb69b9855d3747b3f9ac7f3be592003479204c6c1c851af7f7a7"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": true,
+            "errors": [],
+            "warnings": [
+              "Terra must verify every scout product presentation exactly once.",
+              "Declared allergen authority restaurant_issued is not supported by its allergen evidence references.",
+              "Terra reported a mismatched or unverifiable menu surface.",
+              "Terra confirmed or left unresolved a deterministic risk gate.",
+              "Terra discovered additional current products.",
+              "Terra reported findings requiring adjudication.",
+              "Terra reported baseline allergen mismatches."
+            ]
+          },
+          "tokens": {
+            "available": true,
+            "total": 67283,
+            "source": "runtime_log"
+          }
+        }
+      ]
+    },
+    {
+      "restaurantId": "ben-and-jerry-s-washington-dc-dc-metro",
+      "name": "Ben & Jerry’s",
+      "jobPath": "jobs/ben-and-jerry-s-washington-dc-dc-metro.json",
+      "scoutResultPath": "scout-results/ben-and-jerry-s-washington-dc-dc-metro.json",
+      "scoutRoutePath": "scout-routes/ben-and-jerry-s-washington-dc-dc-metro.json",
+      "verifierPacketPath": "verifier-packets/ben-and-jerry-s-washington-dc-dc-metro.json",
+      "resultPath": "results/ben-and-jerry-s-washington-dc-dc-metro.json",
+      "routePath": "routes/ben-and-jerry-s-washington-dc-dc-metro.json",
+      "reviewPath": "reviews/ben-and-jerry-s-washington-dc-dc-metro.json",
+      "reviewValidationPath": "review-validations/ben-and-jerry-s-washington-dc-dc-metro.json",
+      "status": "awaiting_terra_retry",
+      "lunaExitCode": 0,
+      "lunaStartedAt": "2026-07-16T19:00:36.242Z",
+      "lunaCompletedAt": "2026-07-16T19:06:18.784Z",
+      "lunaError": null,
+      "lunaAttempts": [
+        {
+          "startedAt": "2026-07-16T18:48:23.243Z",
+          "completedAt": "2026-07-16T18:59:51.427Z",
+          "durationMs": 688184,
+          "model": {
+            "id": "gpt-5.6-luna",
+            "reasoningEffort": "low",
+            "runtimeId": "gpt-5.6-luna",
+            "runtimeReasoningEffort": "low",
+            "exact": true
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-scout-result.schema.json",
+            "sha256": "8d89e3e7f42ad28ffa5bf7b8b7397987a165e11b2247f0ba36433ccff61c5e7e"
+          },
+          "prompt": {
+            "text": "Execute one read-only restaurant discovery and reconciliation scout job.\nJob: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/ben-and-jerry-s-washington-dc-dc-metro.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/ben-and-jerry-s-washington-dc-dc-metro.luna.attempt-1.json\nRead AGENTS.md and the verification plan named in the job before researching.\nInventory every current food and nonalcoholic menu surface linked by the official homepage, including service-period PDFs, images, ordering vendors, pagination, and location-specific menus.\nEnumerate the complete current product catalog across those surfaces, consolidate duplicate presentations explicitly, and map each candidate product to its source surfaces and evidence.\nFor every current product and every frozen-item group, state the adjudicated contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs; use unavailable rather than inferred negatives when disclosure is incomplete.\nRead the entire frozen item-check file and reconcile every auditItemKey exactly once.\nGroup auditItemKeys that share the same disposition, allergen verdict, and evidence IDs; put shared explanations in findings.\nUse current public web evidence, prefer restaurant-issued sources, and preserve source authority labels.\nApply source semantics precisely: incomplete restaurant-issued menu descriptions cannot establish allergen absence, complete arrays, or cross-contact status, but explicit positive ingredients and unavoidable named food identities can support narrow positive restaurant-issued ingredient evidence.\nKeep culinary formulation assumptions and inferred ingredients separate from direct source-backed positives; never erase an explicit positive merely because the source is not a complete allergen matrix.\nTreat your outcome as a candidate only. Never claim that a restaurant is terminally verified or blocked; every valid scout is independently checked by Terra.\nDo not edit files, mutate the ledger, or repair data.\nReturn only the JSON object required by the output schema.",
+            "sha256": "bb6fcf59a1d80f86f9bcff05ba29823c9980d97268ade410e77ec4a21544d55a"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/ben-and-jerry-s-washington-dc-dc-metro.json",
+              "exists": true,
+              "sha256": "e42699e82d542d4c4a41d738b4f5f63e21157a5857301a0acb547128f643b30f"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/ben-and-jerry-s-washington-dc-dc-metro.jsonl",
+              "exists": true,
+              "sha256": "923ce2cdcfad6a0311b10d2e30d80a40b4584fa62da40f896b96a2a9f54cd078"
+            },
+            {
+              "path": "data/restaurant-verification/restaurants/ben-and-jerry-s-washington-dc-dc-metro.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "data/restaurant-verification/evidence/ben-and-jerry-s-washington-dc-dc-metro.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "docs/restaurant-verification-plan.md",
+              "exists": true,
+              "sha256": "980c8c3a6a8093b144215304e00ecab485be744718ddcd93fe98ac1cff293b83"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/ben-and-jerry-s-washington-dc-dc-metro.luna.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/ben-and-jerry-s-washington-dc-dc-metro.json",
+            "written": true,
+            "sha256": "c06977b0289156430a9005c38cafe171c42c83ba1273b2a245f8b0c11afdc34d"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/ben-and-jerry-s-washington-dc-dc-metro.luna.attempt-1.log",
+            "sha256": "fe7aa9bb9c782df43864817ead8ca1459e802d51d15bd642de602f1fd3cb8f8c"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": false,
+            "errors": [
+              "Result runId does not match its job."
+            ],
+            "warnings": [
+              "Unresolved surface currentProductKey: dublin-mudslide",
+              "Unresolved surface currentProductKey: mousse-pie",
+              "Unresolved surface currentProductKey: peanut-butter-world",
+              "Unresolved surface currentProductKey: lemonade-sorbet",
+              "Unresolved surface currentProductKey: sundae-products",
+              "Unresolved surface currentProductKey: shake-products",
+              "Unresolved surface currentProductKey: custom-brownie-sundae-2-scoops",
+              "Unresolved surface currentProductKey: custom-cookie-sundae-2-scoops",
+              "Unresolved surface currentProductKey: custom-ice-cream-sundae-2-scoops",
+              "Unresolved surface currentProductKey: custom-milkshake-20oz",
+              "Unresolved surface currentProductKey: dot-cake",
+              "Unresolved surface currentProductKey: fresh-packed-pint-16oz",
+              "Unresolved surface currentProductKey: large-3-scoops",
+              "Unresolved surface currentProductKey: prepacked",
+              "Unresolved surface currentProductKey: small-2-scoops",
+              "Unresolved surface currentProductKey: national-scoop-shop-flavors",
+              "Unresolved matched currentProductKey: dublin-mudslide",
+              "Unresolved matched currentProductKey: lemonade-sorbet",
+              "Unresolved matched currentProductKey: mousse-pie",
+              "Unresolved matched currentProductKey: peanut-butter-world",
+              "Unresolved matched currentProductKey: non-dairy-category",
+              "Unresolved matched currentProductKey: non-dairy-category",
+              "Unresolved matched currentProductKey: original-ice-cream-category",
+              "Unresolved matched currentProductKey: strawberry-cheesecake",
+              "Unresolved matched currentProductKey: topped-category"
+            ]
+          },
+          "tokens": {
+            "available": true,
+            "total": 74507,
+            "source": "runtime_log"
+          }
+        },
+        {
+          "startedAt": "2026-07-16T19:00:36.242Z",
+          "completedAt": "2026-07-16T19:06:18.784Z",
+          "durationMs": 342542,
+          "model": {
+            "id": "gpt-5.6-luna",
+            "reasoningEffort": "low",
+            "runtimeId": null,
+            "runtimeReasoningEffort": null,
+            "exact": null
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-scout-result.schema.json",
+            "sha256": "8d89e3e7f42ad28ffa5bf7b8b7397987a165e11b2247f0ba36433ccff61c5e7e"
+          },
+          "prompt": {
+            "text": "Execute one read-only restaurant discovery and reconciliation scout job.\nJob: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/ben-and-jerry-s-washington-dc-dc-metro.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/ben-and-jerry-s-washington-dc-dc-metro.luna.attempt-2.json\nThis is correction attempt 2.\nPrior immutable result: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/ben-and-jerry-s-washington-dc-dc-metro.luna.attempt-1.json\nCorrect every prior validation error: Result runId does not match its job.\nCorrect every deterministic retry reason: Result runId does not match its job. | deterministic gate: structural_invalid | deterministic gate: multi_service | deterministic gate: scope_incomplete | deterministic gate: count_drift | deterministic gate: baseline_only | deterministic gate: duplicate_presentations | deterministic gate: non_exact_reconciliation | deterministic gate: cross_contact | deterministic gate: validation_warnings | deterministic gate: low_confidence | deterministic gate: scout_flagged_risk\nThis is a provenance/coverage-only correction. Use the prior immutable result as the base, preserve its research and evidence, and do not restart web research.\nThe response is a full replacement object, never a sparse patch: copy every prior field and array, retain every prior itemCheckGroup, add or correct only the named auditItemKeys, and emit the complete corrected JSON object.\nA response containing only the corrected itemCheckGroups is invalid.\nDo not merely summarize corrections: emit every frozen auditItemKey exactly once, define every referenced currentProductKey in currentProducts, and make every surface/product reference resolve.\nIf a surface references a currentProductKey you cannot define from evidence, remove that dangling reference and mark the affected surface fullyEnumerated=false with scopeStatus=partial; Terra will independently complete the scope. Never invent allergen data to satisfy a reference.\nRead AGENTS.md and the verification plan named in the job before researching.\nInventory every current food and nonalcoholic menu surface linked by the official homepage, including service-period PDFs, images, ordering vendors, pagination, and location-specific menus.\nEnumerate the complete current product catalog across those surfaces, consolidate duplicate presentations explicitly, and map each candidate product to its source surfaces and evidence.\nFor every current product and every frozen-item group, state the adjudicated contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs; use unavailable rather than inferred negatives when disclosure is incomplete.\nRead the entire frozen item-check file and reconcile every auditItemKey exactly once.\nGroup auditItemKeys that share the same disposition, allergen verdict, and evidence IDs; put shared explanations in findings.\nUse current public web evidence, prefer restaurant-issued sources, and preserve source authority labels.\nApply source semantics precisely: incomplete restaurant-issued menu descriptions cannot establish allergen absence, complete arrays, or cross-contact status, but explicit positive ingredients and unavoidable named food identities can support narrow positive restaurant-issued ingredient evidence.\nKeep culinary formulation assumptions and inferred ingredients separate from direct source-backed positives; never erase an explicit positive merely because the source is not a complete allergen matrix.\nTreat your outcome as a candidate only. Never claim that a restaurant is terminally verified or blocked; every valid scout is independently checked by Terra.\nDo not edit files, mutate the ledger, or repair data.\nReturn only the JSON object required by the output schema.",
+            "sha256": "5731cc52167fad4c803bcfe83c72add6015fb6cb0d79500686a3aeb501315d82"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/ben-and-jerry-s-washington-dc-dc-metro.json",
+              "exists": true,
+              "sha256": "e42699e82d542d4c4a41d738b4f5f63e21157a5857301a0acb547128f643b30f"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/ben-and-jerry-s-washington-dc-dc-metro.jsonl",
+              "exists": true,
+              "sha256": "923ce2cdcfad6a0311b10d2e30d80a40b4584fa62da40f896b96a2a9f54cd078"
+            },
+            {
+              "path": "data/restaurant-verification/restaurants/ben-and-jerry-s-washington-dc-dc-metro.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "data/restaurant-verification/evidence/ben-and-jerry-s-washington-dc-dc-metro.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "docs/restaurant-verification-plan.md",
+              "exists": true,
+              "sha256": "980c8c3a6a8093b144215304e00ecab485be744718ddcd93fe98ac1cff293b83"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/ben-and-jerry-s-washington-dc-dc-metro.luna.attempt-1.json",
+              "exists": true,
+              "sha256": "c06977b0289156430a9005c38cafe171c42c83ba1273b2a245f8b0c11afdc34d"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-routes/ben-and-jerry-s-washington-dc-dc-metro.json",
+              "exists": true,
+              "sha256": "a654f0e8811563945229e3f4203a21165a3c71b96f6d88807071d8bd6ffb65de"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/ben-and-jerry-s-washington-dc-dc-metro.luna.attempt-2.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/ben-and-jerry-s-washington-dc-dc-metro.json",
+            "written": true,
+            "sha256": "c1cc0b0df5e49f2b8d693be042b6216cba6ee3dfda8fd0bb61a166e87e5fff23"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/ben-and-jerry-s-washington-dc-dc-metro.luna.attempt-2.log",
+            "sha256": "4459e23b9228e80c454682e870ebec7ac5e4238a596818209f27148ebbc9fd22"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": true,
+            "errors": [],
+            "warnings": []
+          },
+          "tokens": {
+            "available": true,
+            "total": 62139,
+            "source": "runtime_log"
+          }
+        }
+      ],
+      "terraExitCode": 0,
+      "terraStartedAt": "2026-07-16T19:06:39.579Z",
+      "terraCompletedAt": "2026-07-16T19:18:30.396Z",
+      "terraError": null,
+      "terraAttempts": [
+        {
+          "startedAt": "2026-07-16T19:06:39.579Z",
+          "completedAt": "2026-07-16T19:18:30.396Z",
+          "durationMs": 710817,
+          "model": {
+            "id": "gpt-5.6-terra",
+            "reasoningEffort": "low",
+            "runtimeId": null,
+            "runtimeReasoningEffort": null,
+            "exact": null
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-worker-result.schema.json",
+            "sha256": "f2d4af345ffd2ddd31dc6b45fbf1e58efa10d326beaef078ca3170ce8415fa76"
+          },
+          "prompt": {
+            "text": "Independently verify one Luna restaurant scout in read-only mode.\nVerifier packet: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/ben-and-jerry-s-washington-dc-dc-metro.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/ben-and-jerry-s-washington-dc-dc-metro.terra.attempt-1.json\nRead AGENTS.md and the verification plan before researching.\nRe-open the strongest primary sources. Verify every scout menu surface and every scout current product exactly once, and report any additional surfaces or products Luna missed.\nIndependently enumerate every scout presentation ID and re-state each checked product group's contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs.\nReview every deterministic risk gate in the packet. Do not clear a gate based on Luna confidence or summary prose.\nRead the full frozen item file and reconcile every auditItemKey exactly once, checking menu scope, allergen source authority, cross-contact semantics, and extraction behavior.\nIncomplete menus cannot support negatives, complete arrays, or cross-contact conclusions. Explicit restaurant-issued positives and unavoidable named identities may support narrow positive ingredient evidence.\nPreserve linked-vendor and third-party authority; never promote them to restaurant-issued evidence.\nDo not edit files, mutate the ledger, implement repairs, or mark a terminal state.\nReturn only the JSON object required by the output schema.",
+            "sha256": "4f40f242728fff5fde3284aa861730d3f6e5768c4fcd57a57fddf07f732c6e38"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/ben-and-jerry-s-washington-dc-dc-metro.json",
+              "exists": true,
+              "sha256": "e9d4fe152b4f63a36da783fa62a08d4e9974896a60cead040070adacc8b3fc24"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/ben-and-jerry-s-washington-dc-dc-metro.json",
+              "exists": true,
+              "sha256": "e42699e82d542d4c4a41d738b4f5f63e21157a5857301a0acb547128f643b30f"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/ben-and-jerry-s-washington-dc-dc-metro.json",
+              "exists": true,
+              "sha256": "c1cc0b0df5e49f2b8d693be042b6216cba6ee3dfda8fd0bb61a166e87e5fff23"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-routes/ben-and-jerry-s-washington-dc-dc-metro.json",
+              "exists": true,
+              "sha256": "5f8018b4c135c4432ad69c819f422ba2db4b2520bf65f940bcd84905fa320c79"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/ben-and-jerry-s-washington-dc-dc-metro.jsonl",
+              "exists": true,
+              "sha256": "923ce2cdcfad6a0311b10d2e30d80a40b4584fa62da40f896b96a2a9f54cd078"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/ben-and-jerry-s-washington-dc-dc-metro.terra.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/results/ben-and-jerry-s-washington-dc-dc-metro.json",
+            "written": true,
+            "sha256": "5c756c03590b2ca4fb885499bfb6e0c55d2589a4964f64e67954381435714c88"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/ben-and-jerry-s-washington-dc-dc-metro.terra.attempt-1.log",
+            "sha256": "befee124df64ca9d4863cd1e18deaa8ff64ea707a229ea3a525e615cb3d48b39"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": false,
+            "errors": [
+              "Result must reconcile every baseline item exactly once.",
+              "Missing 1 baseline item check(s): 24:strawberry-cheesecake-ice-cream-with-strawberries-and-a-thick-graham-cracker-swirl."
+            ],
+            "warnings": [
+              "Terra reported a mismatched or unverifiable menu surface.",
+              "Terra reported a mismatched or unverifiable current product.",
+              "Terra confirmed or left unresolved a deterministic risk gate.",
+              "Terra discovered additional menu surfaces.",
+              "Terra discovered additional current products.",
+              "Terra reported findings requiring adjudication.",
+              "Terra reported baseline allergen mismatches."
+            ]
+          },
+          "tokens": {
+            "available": true,
+            "total": 67966,
+            "source": "runtime_log"
+          }
+        }
+      ]
+    },
+    {
+      "restaurantId": "osm-ben-yehuda-7078188658",
+      "name": "Ben Yehuda",
+      "jobPath": "jobs/osm-ben-yehuda-7078188658.json",
+      "scoutResultPath": "scout-results/osm-ben-yehuda-7078188658.json",
+      "scoutRoutePath": "scout-routes/osm-ben-yehuda-7078188658.json",
+      "verifierPacketPath": "verifier-packets/osm-ben-yehuda-7078188658.json",
+      "resultPath": "results/osm-ben-yehuda-7078188658.json",
+      "routePath": "routes/osm-ben-yehuda-7078188658.json",
+      "reviewPath": "reviews/osm-ben-yehuda-7078188658.json",
+      "reviewValidationPath": "review-validations/osm-ben-yehuda-7078188658.json",
+      "status": "awaiting_sol",
+      "lunaExitCode": 0,
+      "lunaStartedAt": "2026-07-16T18:51:13.437Z",
+      "lunaCompletedAt": "2026-07-16T18:59:51.428Z",
+      "lunaError": null,
+      "lunaAttempts": [
+        {
+          "startedAt": "2026-07-16T18:51:13.437Z",
+          "completedAt": "2026-07-16T18:59:51.428Z",
+          "durationMs": 517991,
+          "model": {
+            "id": "gpt-5.6-luna",
+            "reasoningEffort": "low",
+            "runtimeId": "gpt-5.6-luna",
+            "runtimeReasoningEffort": "low",
+            "exact": true
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-scout-result.schema.json",
+            "sha256": "8d89e3e7f42ad28ffa5bf7b8b7397987a165e11b2247f0ba36433ccff61c5e7e"
+          },
+          "prompt": {
+            "text": "Execute one read-only restaurant discovery and reconciliation scout job.\nJob: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/osm-ben-yehuda-7078188658.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/osm-ben-yehuda-7078188658.luna.attempt-1.json\nRead AGENTS.md and the verification plan named in the job before researching.\nInventory every current food and nonalcoholic menu surface linked by the official homepage, including service-period PDFs, images, ordering vendors, pagination, and location-specific menus.\nEnumerate the complete current product catalog across those surfaces, consolidate duplicate presentations explicitly, and map each candidate product to its source surfaces and evidence.\nFor every current product and every frozen-item group, state the adjudicated contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs; use unavailable rather than inferred negatives when disclosure is incomplete.\nRead the entire frozen item-check file and reconcile every auditItemKey exactly once.\nGroup auditItemKeys that share the same disposition, allergen verdict, and evidence IDs; put shared explanations in findings.\nUse current public web evidence, prefer restaurant-issued sources, and preserve source authority labels.\nApply source semantics precisely: incomplete restaurant-issued menu descriptions cannot establish allergen absence, complete arrays, or cross-contact status, but explicit positive ingredients and unavoidable named food identities can support narrow positive restaurant-issued ingredient evidence.\nKeep culinary formulation assumptions and inferred ingredients separate from direct source-backed positives; never erase an explicit positive merely because the source is not a complete allergen matrix.\nTreat your outcome as a candidate only. Never claim that a restaurant is terminally verified or blocked; every valid scout is independently checked by Terra.\nDo not edit files, mutate the ledger, or repair data.\nReturn only the JSON object required by the output schema.",
+            "sha256": "2d950fbba1be5d0d08564489776d9a3a3722682b9663701982bde4cc4c4c1dbf"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/osm-ben-yehuda-7078188658.json",
+              "exists": true,
+              "sha256": "b89e5bde518a8e6dcf823b045f3a02c0f36255b81ec8ec6ecfb06547aeccbd92"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/osm-ben-yehuda-7078188658.jsonl",
+              "exists": true,
+              "sha256": "d130f190045422792aa132b8364973e4816ac8f39c7370170a1c8530747471d5"
+            },
+            {
+              "path": "data/restaurant-verification/restaurants/osm-ben-yehuda-7078188658.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "data/restaurant-verification/evidence/osm-ben-yehuda-7078188658.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "docs/restaurant-verification-plan.md",
+              "exists": true,
+              "sha256": "980c8c3a6a8093b144215304e00ecab485be744718ddcd93fe98ac1cff293b83"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/osm-ben-yehuda-7078188658.luna.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/osm-ben-yehuda-7078188658.json",
+            "written": true,
+            "sha256": "ad5efb9759c8221d13f048cbf035aebb42430abc9059207fb970de38402c07f5"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/osm-ben-yehuda-7078188658.luna.attempt-1.log",
+            "sha256": "9d3912756136f12f5ff91a51cdfc5af4a1d90f38df3396923bbb2c92298f1255"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": true,
+            "errors": [],
+            "warnings": [
+              "Evidence src-order-api has no reproducibility anchor.",
+              "Unresolved surface currentProductKey: vegan-pizza",
+              "Unresolved surface currentProductKey: take-bake-pizza"
+            ]
+          },
+          "tokens": {
+            "available": true,
+            "total": 38542,
+            "source": "runtime_log"
+          }
+        }
+      ],
+      "terraExitCode": 0,
+      "terraStartedAt": "2026-07-16T19:09:05.794Z",
+      "terraCompletedAt": "2026-07-16T19:18:30.397Z",
+      "terraError": null,
+      "terraAttempts": [
+        {
+          "startedAt": "2026-07-16T19:09:05.794Z",
+          "completedAt": "2026-07-16T19:18:30.397Z",
+          "durationMs": 564603,
+          "model": {
+            "id": "gpt-5.6-terra",
+            "reasoningEffort": "low",
+            "runtimeId": "gpt-5.6-terra",
+            "runtimeReasoningEffort": "low",
+            "exact": true
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-worker-result.schema.json",
+            "sha256": "f2d4af345ffd2ddd31dc6b45fbf1e58efa10d326beaef078ca3170ce8415fa76"
+          },
+          "prompt": {
+            "text": "Independently verify one Luna restaurant scout in read-only mode.\nVerifier packet: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/osm-ben-yehuda-7078188658.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/osm-ben-yehuda-7078188658.terra.attempt-1.json\nRead AGENTS.md and the verification plan before researching.\nRe-open the strongest primary sources. Verify every scout menu surface and every scout current product exactly once, and report any additional surfaces or products Luna missed.\nIndependently enumerate every scout presentation ID and re-state each checked product group's contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs.\nReview every deterministic risk gate in the packet. Do not clear a gate based on Luna confidence or summary prose.\nRead the full frozen item file and reconcile every auditItemKey exactly once, checking menu scope, allergen source authority, cross-contact semantics, and extraction behavior.\nIncomplete menus cannot support negatives, complete arrays, or cross-contact conclusions. Explicit restaurant-issued positives and unavoidable named identities may support narrow positive ingredient evidence.\nPreserve linked-vendor and third-party authority; never promote them to restaurant-issued evidence.\nDo not edit files, mutate the ledger, implement repairs, or mark a terminal state.\nReturn only the JSON object required by the output schema.",
+            "sha256": "898d3a5c3dfb28803fe6332903ce753f693d34284b87669ce065f390cc054ac2"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/osm-ben-yehuda-7078188658.json",
+              "exists": true,
+              "sha256": "7754b11482b2c5f5ac7ec544cad9fd6c6d16c5fa6ccd0b15edaf241b2e8e7954"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/osm-ben-yehuda-7078188658.json",
+              "exists": true,
+              "sha256": "b89e5bde518a8e6dcf823b045f3a02c0f36255b81ec8ec6ecfb06547aeccbd92"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/osm-ben-yehuda-7078188658.json",
+              "exists": true,
+              "sha256": "ad5efb9759c8221d13f048cbf035aebb42430abc9059207fb970de38402c07f5"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-routes/osm-ben-yehuda-7078188658.json",
+              "exists": true,
+              "sha256": "2a6e42874034da8dd90e4d2f7f01d54ee00b9a98e0720af3e667e6cf740f3056"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/osm-ben-yehuda-7078188658.jsonl",
+              "exists": true,
+              "sha256": "d130f190045422792aa132b8364973e4816ac8f39c7370170a1c8530747471d5"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/osm-ben-yehuda-7078188658.terra.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/results/osm-ben-yehuda-7078188658.json",
+            "written": true,
+            "sha256": "aafdb21f721cae845581577650b92032df8bc17311ffaee68d2e91a530fb5d6e"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/osm-ben-yehuda-7078188658.terra.attempt-1.log",
+            "sha256": "e3b359666269c3200374483143024a6c4779232f8dfd2ebe54176503b1451dd4"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": true,
+            "errors": [],
+            "warnings": [
+              "Terra must verify every scout product presentation exactly once.",
+              "Terra reported a mismatched or unverifiable menu surface.",
+              "Terra confirmed or left unresolved a deterministic risk gate.",
+              "Terra discovered additional menu surfaces.",
+              "Terra discovered additional current products.",
+              "Terra reported findings requiring adjudication."
+            ]
+          },
+          "tokens": {
+            "available": true,
+            "total": 85111,
+            "source": "runtime_log"
+          }
+        }
+      ]
+    },
+    {
+      "restaurantId": "bens-chili-bowl-u-street-dc",
+      "name": "Ben's Chili Bowl U Street",
+      "jobPath": "jobs/bens-chili-bowl-u-street-dc.json",
+      "scoutResultPath": "scout-results/bens-chili-bowl-u-street-dc.json",
+      "scoutRoutePath": "scout-routes/bens-chili-bowl-u-street-dc.json",
+      "verifierPacketPath": "verifier-packets/bens-chili-bowl-u-street-dc.json",
+      "resultPath": "results/bens-chili-bowl-u-street-dc.json",
+      "routePath": "routes/bens-chili-bowl-u-street-dc.json",
+      "reviewPath": "reviews/bens-chili-bowl-u-street-dc.json",
+      "reviewValidationPath": "review-validations/bens-chili-bowl-u-street-dc.json",
+      "status": "awaiting_terra_retry",
+      "lunaExitCode": 0,
+      "lunaStartedAt": "2026-07-16T19:00:36.242Z",
+      "lunaCompletedAt": "2026-07-16T19:06:18.784Z",
+      "lunaError": null,
+      "lunaAttempts": [
+        {
+          "startedAt": "2026-07-16T18:51:57.566Z",
+          "completedAt": "2026-07-16T18:59:51.428Z",
+          "durationMs": 473862,
+          "model": {
+            "id": "gpt-5.6-luna",
+            "reasoningEffort": "low",
+            "runtimeId": null,
+            "runtimeReasoningEffort": null,
+            "exact": null
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-scout-result.schema.json",
+            "sha256": "8d89e3e7f42ad28ffa5bf7b8b7397987a165e11b2247f0ba36433ccff61c5e7e"
+          },
+          "prompt": {
+            "text": "Execute one read-only restaurant discovery and reconciliation scout job.\nJob: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/bens-chili-bowl-u-street-dc.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/bens-chili-bowl-u-street-dc.luna.attempt-1.json\nRead AGENTS.md and the verification plan named in the job before researching.\nInventory every current food and nonalcoholic menu surface linked by the official homepage, including service-period PDFs, images, ordering vendors, pagination, and location-specific menus.\nEnumerate the complete current product catalog across those surfaces, consolidate duplicate presentations explicitly, and map each candidate product to its source surfaces and evidence.\nFor every current product and every frozen-item group, state the adjudicated contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs; use unavailable rather than inferred negatives when disclosure is incomplete.\nRead the entire frozen item-check file and reconcile every auditItemKey exactly once.\nGroup auditItemKeys that share the same disposition, allergen verdict, and evidence IDs; put shared explanations in findings.\nUse current public web evidence, prefer restaurant-issued sources, and preserve source authority labels.\nApply source semantics precisely: incomplete restaurant-issued menu descriptions cannot establish allergen absence, complete arrays, or cross-contact status, but explicit positive ingredients and unavoidable named food identities can support narrow positive restaurant-issued ingredient evidence.\nKeep culinary formulation assumptions and inferred ingredients separate from direct source-backed positives; never erase an explicit positive merely because the source is not a complete allergen matrix.\nTreat your outcome as a candidate only. Never claim that a restaurant is terminally verified or blocked; every valid scout is independently checked by Terra.\nDo not edit files, mutate the ledger, or repair data.\nReturn only the JSON object required by the output schema.",
+            "sha256": "bdf6423ebda0bd517a9d892947a34e0daeefa5cf429c76472710629019c65379"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/bens-chili-bowl-u-street-dc.json",
+              "exists": true,
+              "sha256": "ab63e12188d5a48a9231603e23ee88d3165bf0395c782c8e4152481a04368368"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/bens-chili-bowl-u-street-dc.jsonl",
+              "exists": true,
+              "sha256": "2ca93c28716d85dbf29b8cc0143b168b447fad128e1a9e0eaa094ac395fd010e"
+            },
+            {
+              "path": "data/restaurant-verification/restaurants/bens-chili-bowl-u-street-dc.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "data/restaurant-verification/evidence/bens-chili-bowl-u-street-dc.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "docs/restaurant-verification-plan.md",
+              "exists": true,
+              "sha256": "980c8c3a6a8093b144215304e00ecab485be744718ddcd93fe98ac1cff293b83"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/bens-chili-bowl-u-street-dc.luna.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/bens-chili-bowl-u-street-dc.json",
+            "written": true,
+            "sha256": "0ebdf2be15ac8eb804552367e53ec097bb760c491d0065df5fa510557416884e"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/bens-chili-bowl-u-street-dc.luna.attempt-1.log",
+            "sha256": "681a03e140214b8a4db37811cebc7362f8eab2ecf3927dd94824061b32fdfd4c"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": false,
+            "errors": [
+              "Result runId does not match its job.",
+              "Result must reconcile every baseline item exactly once.",
+              "Missing 2 baseline item check(s): 30:fresh-garden-salad, 31:fries-and-sides."
+            ],
+            "warnings": [
+              "Unresolved surface currentProductKey: chili-cheese-fries",
+              "Unresolved surface currentProductKey: chili-fries",
+              "Unresolved surface currentProductKey: veggie-beyond-burger",
+              "Unresolved surface currentProductKey: veggie-impossible-burger",
+              "Unresolved surface currentProductKey: veggie-burger-sub"
+            ]
+          },
+          "tokens": {
+            "available": true,
+            "total": 58318,
+            "source": "runtime_log"
+          }
+        },
+        {
+          "startedAt": "2026-07-16T19:00:36.242Z",
+          "completedAt": "2026-07-16T19:06:18.784Z",
+          "durationMs": 342542,
+          "model": {
+            "id": "gpt-5.6-luna",
+            "reasoningEffort": "low",
+            "runtimeId": null,
+            "runtimeReasoningEffort": null,
+            "exact": null
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-scout-result.schema.json",
+            "sha256": "8d89e3e7f42ad28ffa5bf7b8b7397987a165e11b2247f0ba36433ccff61c5e7e"
+          },
+          "prompt": {
+            "text": "Execute one read-only restaurant discovery and reconciliation scout job.\nJob: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/bens-chili-bowl-u-street-dc.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/bens-chili-bowl-u-street-dc.luna.attempt-2.json\nThis is correction attempt 2.\nPrior immutable result: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/bens-chili-bowl-u-street-dc.luna.attempt-1.json\nCorrect every prior validation error: Result runId does not match its job. | Result must reconcile every baseline item exactly once. | Missing 2 baseline item check(s): 30:fresh-garden-salad, 31:fries-and-sides.\nCorrect every deterministic retry reason: Result runId does not match its job. | Result must reconcile every baseline item exactly once. | Missing 2 baseline item check(s): 30:fresh-garden-salad, 31:fries-and-sides. | deterministic gate: structural_invalid | deterministic gate: baseline_coverage_incomplete | deterministic gate: multi_service | deterministic gate: scope_incomplete | deterministic gate: unresolved_surface | deterministic gate: count_drift | deterministic gate: duplicate_presentations | deterministic gate: authority_ambiguity | deterministic gate: non_exact_reconciliation | deterministic gate: cross_contact | deterministic gate: validation_warnings | deterministic gate: low_confidence | deterministic gate: scout_flagged_risk\nThis is a provenance/coverage-only correction. Use the prior immutable result as the base, preserve its research and evidence, and do not restart web research.\nThe response is a full replacement object, never a sparse patch: copy every prior field and array, retain every prior itemCheckGroup, add or correct only the named auditItemKeys, and emit the complete corrected JSON object.\nA response containing only the corrected itemCheckGroups is invalid.\nDo not merely summarize corrections: emit every frozen auditItemKey exactly once, define every referenced currentProductKey in currentProducts, and make every surface/product reference resolve.\nIf a surface references a currentProductKey you cannot define from evidence, remove that dangling reference and mark the affected surface fullyEnumerated=false with scopeStatus=partial; Terra will independently complete the scope. Never invent allergen data to satisfy a reference.\nRead AGENTS.md and the verification plan named in the job before researching.\nInventory every current food and nonalcoholic menu surface linked by the official homepage, including service-period PDFs, images, ordering vendors, pagination, and location-specific menus.\nEnumerate the complete current product catalog across those surfaces, consolidate duplicate presentations explicitly, and map each candidate product to its source surfaces and evidence.\nFor every current product and every frozen-item group, state the adjudicated contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs; use unavailable rather than inferred negatives when disclosure is incomplete.\nRead the entire frozen item-check file and reconcile every auditItemKey exactly once.\nGroup auditItemKeys that share the same disposition, allergen verdict, and evidence IDs; put shared explanations in findings.\nUse current public web evidence, prefer restaurant-issued sources, and preserve source authority labels.\nApply source semantics precisely: incomplete restaurant-issued menu descriptions cannot establish allergen absence, complete arrays, or cross-contact status, but explicit positive ingredients and unavoidable named food identities can support narrow positive restaurant-issued ingredient evidence.\nKeep culinary formulation assumptions and inferred ingredients separate from direct source-backed positives; never erase an explicit positive merely because the source is not a complete allergen matrix.\nTreat your outcome as a candidate only. Never claim that a restaurant is terminally verified or blocked; every valid scout is independently checked by Terra.\nDo not edit files, mutate the ledger, or repair data.\nReturn only the JSON object required by the output schema.",
+            "sha256": "1c506ffb459f5f8a4c3f05abe82e1e114ae819cae6c381ae3205f855427f03c8"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/bens-chili-bowl-u-street-dc.json",
+              "exists": true,
+              "sha256": "ab63e12188d5a48a9231603e23ee88d3165bf0395c782c8e4152481a04368368"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/bens-chili-bowl-u-street-dc.jsonl",
+              "exists": true,
+              "sha256": "2ca93c28716d85dbf29b8cc0143b168b447fad128e1a9e0eaa094ac395fd010e"
+            },
+            {
+              "path": "data/restaurant-verification/restaurants/bens-chili-bowl-u-street-dc.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "data/restaurant-verification/evidence/bens-chili-bowl-u-street-dc.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "docs/restaurant-verification-plan.md",
+              "exists": true,
+              "sha256": "980c8c3a6a8093b144215304e00ecab485be744718ddcd93fe98ac1cff293b83"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/bens-chili-bowl-u-street-dc.luna.attempt-1.json",
+              "exists": true,
+              "sha256": "0ebdf2be15ac8eb804552367e53ec097bb760c491d0065df5fa510557416884e"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-routes/bens-chili-bowl-u-street-dc.json",
+              "exists": true,
+              "sha256": "7e059df41471a44f506400015ac24a909a2c13b4b6f31a6a087ca89a1a1951d3"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/bens-chili-bowl-u-street-dc.luna.attempt-2.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/bens-chili-bowl-u-street-dc.json",
+            "written": true,
+            "sha256": "d7999d78604fd9335ac67932d1c68474564b42aaee19a63d6cc1e1de504bd438"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/bens-chili-bowl-u-street-dc.luna.attempt-2.log",
+            "sha256": "02b39b0a71ebf8dea86635dfeddfcb3efb2f8e146fce83bd0276a8089d785ff3"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": true,
+            "errors": [],
+            "warnings": [
+              "Unresolved surface currentProductKey: chili-cheese-fries",
+              "Unresolved surface currentProductKey: chili-fries",
+              "Unresolved surface currentProductKey: veggie-beyond-burger",
+              "Unresolved surface currentProductKey: veggie-impossible-burger",
+              "Unresolved surface currentProductKey: veggie-burger-sub"
+            ]
+          },
+          "tokens": {
+            "available": true,
+            "total": 57758,
+            "source": "runtime_log"
+          }
+        }
+      ],
+      "terraExitCode": 0,
+      "terraStartedAt": "2026-07-16T19:09:12.983Z",
+      "terraCompletedAt": "2026-07-16T19:18:30.397Z",
+      "terraError": null,
+      "terraAttempts": [
+        {
+          "startedAt": "2026-07-16T19:09:12.983Z",
+          "completedAt": "2026-07-16T19:18:30.397Z",
+          "durationMs": 557414,
+          "model": {
+            "id": "gpt-5.6-terra",
+            "reasoningEffort": "low",
+            "runtimeId": null,
+            "runtimeReasoningEffort": null,
+            "exact": null
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-worker-result.schema.json",
+            "sha256": "f2d4af345ffd2ddd31dc6b45fbf1e58efa10d326beaef078ca3170ce8415fa76"
+          },
+          "prompt": {
+            "text": "Independently verify one Luna restaurant scout in read-only mode.\nVerifier packet: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/bens-chili-bowl-u-street-dc.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/bens-chili-bowl-u-street-dc.terra.attempt-1.json\nRead AGENTS.md and the verification plan before researching.\nRe-open the strongest primary sources. Verify every scout menu surface and every scout current product exactly once, and report any additional surfaces or products Luna missed.\nIndependently enumerate every scout presentation ID and re-state each checked product group's contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs.\nReview every deterministic risk gate in the packet. Do not clear a gate based on Luna confidence or summary prose.\nRead the full frozen item file and reconcile every auditItemKey exactly once, checking menu scope, allergen source authority, cross-contact semantics, and extraction behavior.\nIncomplete menus cannot support negatives, complete arrays, or cross-contact conclusions. Explicit restaurant-issued positives and unavoidable named identities may support narrow positive ingredient evidence.\nPreserve linked-vendor and third-party authority; never promote them to restaurant-issued evidence.\nDo not edit files, mutate the ledger, implement repairs, or mark a terminal state.\nReturn only the JSON object required by the output schema.",
+            "sha256": "1ebc11f09bdc4bcfb8f0b839cc3e181c43425a8a68da975b5dda6191f384c77c"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/bens-chili-bowl-u-street-dc.json",
+              "exists": true,
+              "sha256": "36757c56710d51357b5b49d50a26f4d59b39bfd9e649428ce2b8d46a10fe769e"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/bens-chili-bowl-u-street-dc.json",
+              "exists": true,
+              "sha256": "ab63e12188d5a48a9231603e23ee88d3165bf0395c782c8e4152481a04368368"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/bens-chili-bowl-u-street-dc.json",
+              "exists": true,
+              "sha256": "d7999d78604fd9335ac67932d1c68474564b42aaee19a63d6cc1e1de504bd438"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-routes/bens-chili-bowl-u-street-dc.json",
+              "exists": true,
+              "sha256": "516eae8eb87770b668468af72da4f77130e2ef9a2936b7ba9198a863f520a17c"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/bens-chili-bowl-u-street-dc.jsonl",
+              "exists": true,
+              "sha256": "2ca93c28716d85dbf29b8cc0143b168b447fad128e1a9e0eaa094ac395fd010e"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/bens-chili-bowl-u-street-dc.terra.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/results/bens-chili-bowl-u-street-dc.json",
+            "written": true,
+            "sha256": "41b36353249c65b17ad2a7904c3946c30a27a4a8793236bb055f17c4eaac0485"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/bens-chili-bowl-u-street-dc.terra.attempt-1.log",
+            "sha256": "10868660f4c0f765f16bfb4ced34b0769fe9298e6d4cf4cab33dd40b292a122c"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": false,
+            "errors": [
+              "Terra must verify every scout current product exactly once.",
+              "Terra returned 5 unknown scout current product(s): chili-cheese-fries, chili-fries, veggie-beyond-burger, veggie-impossible-burger, veggie-burger-sub."
+            ],
+            "warnings": [
+              "Terra must verify every scout product presentation exactly once.",
+              "Terra repeated 2 scout product presentation(s): official-card, toast-card.",
+              "Terra reported a mismatched or unverifiable menu surface.",
+              "Terra reported a mismatched or unverifiable current product.",
+              "Terra confirmed or left unresolved a deterministic risk gate.",
+              "Terra discovered additional current products.",
+              "Terra reported findings requiring adjudication.",
+              "Terra reported baseline allergen mismatches."
+            ]
+          },
+          "tokens": {
+            "available": true,
+            "total": 87190,
+            "source": "runtime_log"
+          }
+        }
+      ]
+    },
+    {
+      "restaurantId": "ben-s-next-door-washington-dc-dc-metro",
+      "name": "Ben's Next Door",
+      "jobPath": "jobs/ben-s-next-door-washington-dc-dc-metro.json",
+      "scoutResultPath": "scout-results/ben-s-next-door-washington-dc-dc-metro.json",
+      "scoutRoutePath": "scout-routes/ben-s-next-door-washington-dc-dc-metro.json",
+      "verifierPacketPath": "verifier-packets/ben-s-next-door-washington-dc-dc-metro.json",
+      "resultPath": "results/ben-s-next-door-washington-dc-dc-metro.json",
+      "routePath": "routes/ben-s-next-door-washington-dc-dc-metro.json",
+      "reviewPath": "reviews/ben-s-next-door-washington-dc-dc-metro.json",
+      "reviewValidationPath": "review-validations/ben-s-next-door-washington-dc-dc-metro.json",
+      "status": "awaiting_sol",
+      "lunaExitCode": 0,
+      "lunaStartedAt": "2026-07-16T19:00:36.242Z",
+      "lunaCompletedAt": "2026-07-16T19:06:18.784Z",
+      "lunaError": null,
+      "lunaAttempts": [
+        {
+          "startedAt": "2026-07-16T18:52:10.143Z",
+          "completedAt": "2026-07-16T18:59:51.428Z",
+          "durationMs": 461285,
+          "model": {
+            "id": "gpt-5.6-luna",
+            "reasoningEffort": "low",
+            "runtimeId": null,
+            "runtimeReasoningEffort": null,
+            "exact": null
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-scout-result.schema.json",
+            "sha256": "8d89e3e7f42ad28ffa5bf7b8b7397987a165e11b2247f0ba36433ccff61c5e7e"
+          },
+          "prompt": {
+            "text": "Execute one read-only restaurant discovery and reconciliation scout job.\nJob: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/ben-s-next-door-washington-dc-dc-metro.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/ben-s-next-door-washington-dc-dc-metro.luna.attempt-1.json\nRead AGENTS.md and the verification plan named in the job before researching.\nInventory every current food and nonalcoholic menu surface linked by the official homepage, including service-period PDFs, images, ordering vendors, pagination, and location-specific menus.\nEnumerate the complete current product catalog across those surfaces, consolidate duplicate presentations explicitly, and map each candidate product to its source surfaces and evidence.\nFor every current product and every frozen-item group, state the adjudicated contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs; use unavailable rather than inferred negatives when disclosure is incomplete.\nRead the entire frozen item-check file and reconcile every auditItemKey exactly once.\nGroup auditItemKeys that share the same disposition, allergen verdict, and evidence IDs; put shared explanations in findings.\nUse current public web evidence, prefer restaurant-issued sources, and preserve source authority labels.\nApply source semantics precisely: incomplete restaurant-issued menu descriptions cannot establish allergen absence, complete arrays, or cross-contact status, but explicit positive ingredients and unavoidable named food identities can support narrow positive restaurant-issued ingredient evidence.\nKeep culinary formulation assumptions and inferred ingredients separate from direct source-backed positives; never erase an explicit positive merely because the source is not a complete allergen matrix.\nTreat your outcome as a candidate only. Never claim that a restaurant is terminally verified or blocked; every valid scout is independently checked by Terra.\nDo not edit files, mutate the ledger, or repair data.\nReturn only the JSON object required by the output schema.",
+            "sha256": "b247bccc74178b73e757bc8a7a50887213d58df6bde9f41a9e1ed08704d29790"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/ben-s-next-door-washington-dc-dc-metro.json",
+              "exists": true,
+              "sha256": "e695430dd70864d7a39ff9b1bed8820484dca1f94933b5983dab8acd255d14af"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/ben-s-next-door-washington-dc-dc-metro.jsonl",
+              "exists": true,
+              "sha256": "771c6caba6d9d0b0774c64e1b19299c9aad9dfbe985fb1e3e032ab7d852df47f"
+            },
+            {
+              "path": "data/restaurant-verification/restaurants/ben-s-next-door-washington-dc-dc-metro.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "data/restaurant-verification/evidence/ben-s-next-door-washington-dc-dc-metro.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "docs/restaurant-verification-plan.md",
+              "exists": true,
+              "sha256": "980c8c3a6a8093b144215304e00ecab485be744718ddcd93fe98ac1cff293b83"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/ben-s-next-door-washington-dc-dc-metro.luna.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/ben-s-next-door-washington-dc-dc-metro.json",
+            "written": true,
+            "sha256": "b3a39265032bad47f894369700e10a183bedd4985e3dd1707660a5e87836e493"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/ben-s-next-door-washington-dc-dc-metro.luna.attempt-1.log",
+            "sha256": "a7f3a2fec7cffada358591f1d2e86264d2ee72d3bbe77ee5cd3a77c583cce039"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": false,
+            "errors": [
+              "Scout references 3 current product key(s) but defines no currentProducts records."
+            ],
+            "warnings": [
+              "Unresolved surface currentProductKey: daily-specials",
+              "Unresolved surface currentProductKey: burger-monday",
+              "Unresolved surface currentProductKey: taco-specials"
+            ]
+          },
+          "tokens": {
+            "available": true,
+            "total": 61192,
+            "source": "runtime_log"
+          }
+        },
+        {
+          "startedAt": "2026-07-16T19:00:36.242Z",
+          "completedAt": "2026-07-16T19:06:18.784Z",
+          "durationMs": 342542,
+          "model": {
+            "id": "gpt-5.6-luna",
+            "reasoningEffort": "low",
+            "runtimeId": null,
+            "runtimeReasoningEffort": null,
+            "exact": null
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-scout-result.schema.json",
+            "sha256": "8d89e3e7f42ad28ffa5bf7b8b7397987a165e11b2247f0ba36433ccff61c5e7e"
+          },
+          "prompt": {
+            "text": "Execute one read-only restaurant discovery and reconciliation scout job.\nJob: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/ben-s-next-door-washington-dc-dc-metro.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/ben-s-next-door-washington-dc-dc-metro.luna.attempt-2.json\nThis is correction attempt 2.\nPrior immutable result: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/ben-s-next-door-washington-dc-dc-metro.luna.attempt-1.json\nCorrect every prior validation error: Scout references 3 current product key(s) but defines no currentProducts records.\nCorrect every deterministic retry reason: Scout references 3 current product key(s) but defines no currentProducts records. | deterministic gate: structural_invalid | deterministic gate: multi_service | deterministic gate: scope_incomplete | deterministic gate: count_drift | deterministic gate: non_exact_reconciliation | deterministic gate: cross_contact | deterministic gate: validation_warnings | deterministic gate: low_confidence | deterministic gate: scout_flagged_risk\nDo not merely summarize corrections: emit every frozen auditItemKey exactly once, define every referenced currentProductKey in currentProducts, and make every surface/product reference resolve.\nIf a surface references a currentProductKey you cannot define from evidence, remove that dangling reference and mark the affected surface fullyEnumerated=false with scopeStatus=partial; Terra will independently complete the scope. Never invent allergen data to satisfy a reference.\nRead AGENTS.md and the verification plan named in the job before researching.\nInventory every current food and nonalcoholic menu surface linked by the official homepage, including service-period PDFs, images, ordering vendors, pagination, and location-specific menus.\nEnumerate the complete current product catalog across those surfaces, consolidate duplicate presentations explicitly, and map each candidate product to its source surfaces and evidence.\nFor every current product and every frozen-item group, state the adjudicated contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs; use unavailable rather than inferred negatives when disclosure is incomplete.\nRead the entire frozen item-check file and reconcile every auditItemKey exactly once.\nGroup auditItemKeys that share the same disposition, allergen verdict, and evidence IDs; put shared explanations in findings.\nUse current public web evidence, prefer restaurant-issued sources, and preserve source authority labels.\nApply source semantics precisely: incomplete restaurant-issued menu descriptions cannot establish allergen absence, complete arrays, or cross-contact status, but explicit positive ingredients and unavoidable named food identities can support narrow positive restaurant-issued ingredient evidence.\nKeep culinary formulation assumptions and inferred ingredients separate from direct source-backed positives; never erase an explicit positive merely because the source is not a complete allergen matrix.\nTreat your outcome as a candidate only. Never claim that a restaurant is terminally verified or blocked; every valid scout is independently checked by Terra.\nDo not edit files, mutate the ledger, or repair data.\nReturn only the JSON object required by the output schema.",
+            "sha256": "5a15752c746cb6b5951458b12b57f3c36081f06726b9d56886808f3ca30499c2"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/ben-s-next-door-washington-dc-dc-metro.json",
+              "exists": true,
+              "sha256": "e695430dd70864d7a39ff9b1bed8820484dca1f94933b5983dab8acd255d14af"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/ben-s-next-door-washington-dc-dc-metro.jsonl",
+              "exists": true,
+              "sha256": "771c6caba6d9d0b0774c64e1b19299c9aad9dfbe985fb1e3e032ab7d852df47f"
+            },
+            {
+              "path": "data/restaurant-verification/restaurants/ben-s-next-door-washington-dc-dc-metro.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "data/restaurant-verification/evidence/ben-s-next-door-washington-dc-dc-metro.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "docs/restaurant-verification-plan.md",
+              "exists": true,
+              "sha256": "980c8c3a6a8093b144215304e00ecab485be744718ddcd93fe98ac1cff293b83"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/ben-s-next-door-washington-dc-dc-metro.luna.attempt-1.json",
+              "exists": true,
+              "sha256": "b3a39265032bad47f894369700e10a183bedd4985e3dd1707660a5e87836e493"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-routes/ben-s-next-door-washington-dc-dc-metro.json",
+              "exists": true,
+              "sha256": "ac4ae9c88a9b209683ef31698743666cb5368159f903633478c54502345ee767"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/ben-s-next-door-washington-dc-dc-metro.luna.attempt-2.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/ben-s-next-door-washington-dc-dc-metro.json",
+            "written": true,
+            "sha256": "72c73d9677d08201d856f41a919cc56cb01269db760b89800b71b804d96a1a96"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/ben-s-next-door-washington-dc-dc-metro.luna.attempt-2.log",
+            "sha256": "27650c21d62a15b008a0e3486939eb2011d5870e0c99fbebe547c4ecbe92176d"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": true,
+            "errors": [],
+            "warnings": []
+          },
+          "tokens": {
+            "available": true,
+            "total": 110906,
+            "source": "runtime_log"
+          }
+        }
+      ],
+      "terraExitCode": 0,
+      "terraStartedAt": "2026-07-16T19:10:42.298Z",
+      "terraCompletedAt": "2026-07-16T19:18:30.397Z",
+      "terraError": null,
+      "terraAttempts": [
+        {
+          "startedAt": "2026-07-16T19:10:42.298Z",
+          "completedAt": "2026-07-16T19:18:30.397Z",
+          "durationMs": 468099,
+          "model": {
+            "id": "gpt-5.6-terra",
+            "reasoningEffort": "low",
+            "runtimeId": null,
+            "runtimeReasoningEffort": null,
+            "exact": null
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-worker-result.schema.json",
+            "sha256": "f2d4af345ffd2ddd31dc6b45fbf1e58efa10d326beaef078ca3170ce8415fa76"
+          },
+          "prompt": {
+            "text": "Independently verify one Luna restaurant scout in read-only mode.\nVerifier packet: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/ben-s-next-door-washington-dc-dc-metro.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/ben-s-next-door-washington-dc-dc-metro.terra.attempt-1.json\nRead AGENTS.md and the verification plan before researching.\nRe-open the strongest primary sources. Verify every scout menu surface and every scout current product exactly once, and report any additional surfaces or products Luna missed.\nIndependently enumerate every scout presentation ID and re-state each checked product group's contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs.\nReview every deterministic risk gate in the packet. Do not clear a gate based on Luna confidence or summary prose.\nRead the full frozen item file and reconcile every auditItemKey exactly once, checking menu scope, allergen source authority, cross-contact semantics, and extraction behavior.\nIncomplete menus cannot support negatives, complete arrays, or cross-contact conclusions. Explicit restaurant-issued positives and unavoidable named identities may support narrow positive ingredient evidence.\nPreserve linked-vendor and third-party authority; never promote them to restaurant-issued evidence.\nDo not edit files, mutate the ledger, implement repairs, or mark a terminal state.\nReturn only the JSON object required by the output schema.",
+            "sha256": "f6586ff09d03f3972c51929439e76668fe4363f977fd32e29bcf22ab16e748f6"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/ben-s-next-door-washington-dc-dc-metro.json",
+              "exists": true,
+              "sha256": "9d75aad227037fccedf87fd358558c7cae4973ce45e81bade759ab1d06328e9a"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/ben-s-next-door-washington-dc-dc-metro.json",
+              "exists": true,
+              "sha256": "e695430dd70864d7a39ff9b1bed8820484dca1f94933b5983dab8acd255d14af"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/ben-s-next-door-washington-dc-dc-metro.json",
+              "exists": true,
+              "sha256": "72c73d9677d08201d856f41a919cc56cb01269db760b89800b71b804d96a1a96"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-routes/ben-s-next-door-washington-dc-dc-metro.json",
+              "exists": true,
+              "sha256": "570bebe76424bce297b1713a55635ea69e402655b1299170dab35434969ace8b"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/ben-s-next-door-washington-dc-dc-metro.jsonl",
+              "exists": true,
+              "sha256": "771c6caba6d9d0b0774c64e1b19299c9aad9dfbe985fb1e3e032ab7d852df47f"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/ben-s-next-door-washington-dc-dc-metro.terra.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/results/ben-s-next-door-washington-dc-dc-metro.json",
+            "written": true,
+            "sha256": "f49135c99b3a5b12332ee46dd2ba0e1ea498552810aa224553c5af6bb5e9c5c2"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/ben-s-next-door-washington-dc-dc-metro.terra.attempt-1.log",
+            "sha256": "2cb70f480711043c3f70b1a1582255f149670de60c64afb052521522a3b8d589"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": true,
+            "errors": [],
+            "warnings": [
+              "Terra must verify every scout product presentation exactly once.",
+              "Terra reported a mismatched or unverifiable menu surface.",
+              "Terra confirmed or left unresolved a deterministic risk gate.",
+              "Terra discovered additional menu surfaces.",
+              "Terra discovered additional current products.",
+              "Terra reported findings requiring adjudication."
+            ]
+          },
+          "tokens": {
+            "available": true,
+            "total": 55694,
+            "source": "runtime_log"
+          }
+        }
+      ]
+    },
+    {
+      "restaurantId": "osm-berries-bowls-1323149413",
+      "name": "Berries & Bowls",
+      "jobPath": "jobs/osm-berries-bowls-1323149413.json",
+      "scoutResultPath": "scout-results/osm-berries-bowls-1323149413.json",
+      "scoutRoutePath": "scout-routes/osm-berries-bowls-1323149413.json",
+      "verifierPacketPath": "verifier-packets/osm-berries-bowls-1323149413.json",
+      "resultPath": "results/osm-berries-bowls-1323149413.json",
+      "routePath": "routes/osm-berries-bowls-1323149413.json",
+      "reviewPath": "reviews/osm-berries-bowls-1323149413.json",
+      "reviewValidationPath": "review-validations/osm-berries-bowls-1323149413.json",
+      "status": "awaiting_terra_retry",
+      "lunaExitCode": 0,
+      "lunaStartedAt": "2026-07-16T18:53:49.940Z",
+      "lunaCompletedAt": "2026-07-16T18:59:51.428Z",
+      "lunaError": null,
+      "lunaAttempts": [
+        {
+          "startedAt": "2026-07-16T18:53:49.940Z",
+          "completedAt": "2026-07-16T18:59:51.428Z",
+          "durationMs": 361488,
+          "model": {
+            "id": "gpt-5.6-luna",
+            "reasoningEffort": "low",
+            "runtimeId": "gpt-5.6-luna",
+            "runtimeReasoningEffort": "low",
+            "exact": true
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-scout-result.schema.json",
+            "sha256": "8d89e3e7f42ad28ffa5bf7b8b7397987a165e11b2247f0ba36433ccff61c5e7e"
+          },
+          "prompt": {
+            "text": "Execute one read-only restaurant discovery and reconciliation scout job.\nJob: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/osm-berries-bowls-1323149413.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/osm-berries-bowls-1323149413.luna.attempt-1.json\nRead AGENTS.md and the verification plan named in the job before researching.\nInventory every current food and nonalcoholic menu surface linked by the official homepage, including service-period PDFs, images, ordering vendors, pagination, and location-specific menus.\nEnumerate the complete current product catalog across those surfaces, consolidate duplicate presentations explicitly, and map each candidate product to its source surfaces and evidence.\nFor every current product and every frozen-item group, state the adjudicated contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs; use unavailable rather than inferred negatives when disclosure is incomplete.\nRead the entire frozen item-check file and reconcile every auditItemKey exactly once.\nGroup auditItemKeys that share the same disposition, allergen verdict, and evidence IDs; put shared explanations in findings.\nUse current public web evidence, prefer restaurant-issued sources, and preserve source authority labels.\nApply source semantics precisely: incomplete restaurant-issued menu descriptions cannot establish allergen absence, complete arrays, or cross-contact status, but explicit positive ingredients and unavoidable named food identities can support narrow positive restaurant-issued ingredient evidence.\nKeep culinary formulation assumptions and inferred ingredients separate from direct source-backed positives; never erase an explicit positive merely because the source is not a complete allergen matrix.\nTreat your outcome as a candidate only. Never claim that a restaurant is terminally verified or blocked; every valid scout is independently checked by Terra.\nDo not edit files, mutate the ledger, or repair data.\nReturn only the JSON object required by the output schema.",
+            "sha256": "e8bbf374c8f58a4b007e57820626ca1b84d75743961dc1ea4ab8379d0fedc419"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/osm-berries-bowls-1323149413.json",
+              "exists": true,
+              "sha256": "bb4bf1489b7ae5117eb5dd87677baac91c7a52b21650d90aab2e969c8b8066eb"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/osm-berries-bowls-1323149413.jsonl",
+              "exists": true,
+              "sha256": "bd0f0c43d855acd645179785e78234a1eea95149386c9d1bbe4fcc41d69db0d7"
+            },
+            {
+              "path": "data/restaurant-verification/restaurants/osm-berries-bowls-1323149413.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "data/restaurant-verification/evidence/osm-berries-bowls-1323149413.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "docs/restaurant-verification-plan.md",
+              "exists": true,
+              "sha256": "980c8c3a6a8093b144215304e00ecab485be744718ddcd93fe98ac1cff293b83"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/osm-berries-bowls-1323149413.luna.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/osm-berries-bowls-1323149413.json",
+            "written": true,
+            "sha256": "da96d7e563bd4cf7f387e3f97e87b5e564c55e0f515b43eceb72fe2e8165e7e7"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/osm-berries-bowls-1323149413.luna.attempt-1.log",
+            "sha256": "0da3895f36617b7b3495808bdfbaa78a6f6546522697da9e104e254c033edadb"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": true,
+            "errors": [],
+            "warnings": [
+              "Unresolved surface currentProductKey: rise-n-shine",
+              "Unresolved surface currentProductKey: verry-berry",
+              "Unresolved surface currentProductKey: peanut-butter-protein-bites",
+              "Unresolved surface currentProductKey: almond-joy-protein-bites",
+              "Unresolved surface currentProductKey: chocolate-protein-bites",
+              "Unresolved surface currentProductKey: just-water",
+              "Unresolved surface currentProductKey: coconut-water",
+              "Unresolved surface currentProductKey: pomegranate-blueberry-kombucha",
+              "Unresolved surface currentProductKey: pink-lady-apple-kombucha",
+              "Unresolved surface currentProductKey: passion-fruit-tangerine-kombucha",
+              "Unresolved surface currentProductKey: wild-berry-celsius",
+              "Unresolved surface currentProductKey: green-apple-cherry-celsius",
+              "Unresolved surface currentProductKey: lemon-lime-celsius",
+              "Unresolved surface currentProductKey: kiwi-guava",
+              "Unresolved surface currentProductKey: verry-berry",
+              "Unresolved surface currentProductKey: peanut-butter-protein-bites",
+              "Unresolved surface currentProductKey: almond-joy-protein-bites",
+              "Unresolved surface currentProductKey: chocolate-protein-bites",
+              "Unresolved surface currentProductKey: just-water",
+              "Unresolved surface currentProductKey: coconut-water",
+              "Unresolved surface currentProductKey: pomegranate-blueberry-kombucha",
+              "Unresolved surface currentProductKey: pink-lady-apple-kombucha",
+              "Unresolved surface currentProductKey: passion-fruit-tangerine-kombucha",
+              "Unresolved surface currentProductKey: wild-berry-celsius",
+              "Unresolved surface currentProductKey: green-apple-cherry-celsius",
+              "Unresolved surface currentProductKey: lemon-lime-celsius",
+              "Unresolved surface currentProductKey: kiwi-guava",
+              "Unresolved matched currentProductKey: verry-berry",
+              "Unresolved matched currentProductKey: almond-joy-protein-bites",
+              "Unresolved matched currentProductKey: chocolate-protein-bites",
+              "Unresolved matched currentProductKey: peanut-butter-protein-bites",
+              "Unresolved matched currentProductKey: green-apple-cherry-celsius",
+              "Declared allergen authority restaurant_issued is not supported by its allergen evidence references.",
+              "Declared allergen authority restaurant_issued is not supported by its allergen evidence references.",
+              "Declared allergen authority restaurant_issued is not supported by its allergen evidence references.",
+              "Declared allergen authority restaurant_issued is not supported by its allergen evidence references."
+            ]
+          },
+          "tokens": {
+            "available": true,
+            "total": 113555,
+            "source": "runtime_log"
+          }
+        }
+      ],
+      "terraExitCode": 0,
+      "terraStartedAt": "2026-07-16T19:12:38.401Z",
+      "terraCompletedAt": "2026-07-16T19:18:30.397Z",
+      "terraError": null,
+      "terraAttempts": [
+        {
+          "startedAt": "2026-07-16T19:12:38.401Z",
+          "completedAt": "2026-07-16T19:18:30.397Z",
+          "durationMs": 351996,
+          "model": {
+            "id": "gpt-5.6-terra",
+            "reasoningEffort": "low",
+            "runtimeId": null,
+            "runtimeReasoningEffort": null,
+            "exact": null
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-worker-result.schema.json",
+            "sha256": "f2d4af345ffd2ddd31dc6b45fbf1e58efa10d326beaef078ca3170ce8415fa76"
+          },
+          "prompt": {
+            "text": "Independently verify one Luna restaurant scout in read-only mode.\nVerifier packet: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/osm-berries-bowls-1323149413.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/osm-berries-bowls-1323149413.terra.attempt-1.json\nRead AGENTS.md and the verification plan before researching.\nRe-open the strongest primary sources. Verify every scout menu surface and every scout current product exactly once, and report any additional surfaces or products Luna missed.\nIndependently enumerate every scout presentation ID and re-state each checked product group's contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs.\nReview every deterministic risk gate in the packet. Do not clear a gate based on Luna confidence or summary prose.\nRead the full frozen item file and reconcile every auditItemKey exactly once, checking menu scope, allergen source authority, cross-contact semantics, and extraction behavior.\nIncomplete menus cannot support negatives, complete arrays, or cross-contact conclusions. Explicit restaurant-issued positives and unavoidable named identities may support narrow positive ingredient evidence.\nPreserve linked-vendor and third-party authority; never promote them to restaurant-issued evidence.\nDo not edit files, mutate the ledger, implement repairs, or mark a terminal state.\nReturn only the JSON object required by the output schema.",
+            "sha256": "47b41bdd000507bf7bd4642e4195880e56451d7c9e3d61af475d9b047e08fbb5"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/osm-berries-bowls-1323149413.json",
+              "exists": true,
+              "sha256": "663582d6c6192fda12273a483644b8dbc59a3fc3a4c2d949f7f7287f82518498"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/osm-berries-bowls-1323149413.json",
+              "exists": true,
+              "sha256": "bb4bf1489b7ae5117eb5dd87677baac91c7a52b21650d90aab2e969c8b8066eb"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/osm-berries-bowls-1323149413.json",
+              "exists": true,
+              "sha256": "da96d7e563bd4cf7f387e3f97e87b5e564c55e0f515b43eceb72fe2e8165e7e7"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-routes/osm-berries-bowls-1323149413.json",
+              "exists": true,
+              "sha256": "5f3077444ec46ea2ae991b0914310e358262dc02676044a2956925eea70a7edf"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/osm-berries-bowls-1323149413.jsonl",
+              "exists": true,
+              "sha256": "bd0f0c43d855acd645179785e78234a1eea95149386c9d1bbe4fcc41d69db0d7"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/osm-berries-bowls-1323149413.terra.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/results/osm-berries-bowls-1323149413.json",
+            "written": true,
+            "sha256": "48a09d80478ddd6df970392f9f5b24e6cb449d02efbef6c0faa32fa0b8fdcdd0"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/osm-berries-bowls-1323149413.terra.attempt-1.log",
+            "sha256": "675a979f988a27aa836e0b38f618f7169c597029f9740250a847482ef804d4e3"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": false,
+            "errors": [
+              "Terra must verify every scout current product exactly once.",
+              "Terra repeated 1 scout current product(s): nutty-professor."
+            ],
+            "warnings": [
+              "Terra reported a mismatched or unverifiable menu surface.",
+              "Terra reported a mismatched or unverifiable current product.",
+              "Terra confirmed or left unresolved a deterministic risk gate.",
+              "Terra discovered additional current products.",
+              "Terra reported findings requiring adjudication.",
+              "Terra reported baseline allergen mismatches."
+            ]
+          },
+          "tokens": {
+            "available": true,
+            "total": 50237,
+            "source": "runtime_log"
+          }
+        }
+      ]
+    },
+    {
+      "restaurantId": "replacement-best-buns-bakery-and-burgers-springfield-va",
+      "name": "Best Buns Bakery & Burgers",
+      "jobPath": "jobs/replacement-best-buns-bakery-and-burgers-springfield-va.json",
+      "scoutResultPath": "scout-results/replacement-best-buns-bakery-and-burgers-springfield-va.json",
+      "scoutRoutePath": "scout-routes/replacement-best-buns-bakery-and-burgers-springfield-va.json",
+      "verifierPacketPath": "verifier-packets/replacement-best-buns-bakery-and-burgers-springfield-va.json",
+      "resultPath": "results/replacement-best-buns-bakery-and-burgers-springfield-va.json",
+      "routePath": "routes/replacement-best-buns-bakery-and-burgers-springfield-va.json",
+      "reviewPath": "reviews/replacement-best-buns-bakery-and-burgers-springfield-va.json",
+      "reviewValidationPath": "review-validations/replacement-best-buns-bakery-and-burgers-springfield-va.json",
+      "status": "awaiting_sol",
+      "lunaExitCode": 0,
+      "lunaStartedAt": "2026-07-16T18:55:01.048Z",
+      "lunaCompletedAt": "2026-07-16T18:59:51.429Z",
+      "lunaError": null,
+      "lunaAttempts": [
+        {
+          "startedAt": "2026-07-16T18:55:01.048Z",
+          "completedAt": "2026-07-16T18:59:51.429Z",
+          "durationMs": 290381,
+          "model": {
+            "id": "gpt-5.6-luna",
+            "reasoningEffort": "low",
+            "runtimeId": "gpt-5.6-luna",
+            "runtimeReasoningEffort": "low",
+            "exact": true
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-scout-result.schema.json",
+            "sha256": "8d89e3e7f42ad28ffa5bf7b8b7397987a165e11b2247f0ba36433ccff61c5e7e"
+          },
+          "prompt": {
+            "text": "Execute one read-only restaurant discovery and reconciliation scout job.\nJob: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/replacement-best-buns-bakery-and-burgers-springfield-va.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/replacement-best-buns-bakery-and-burgers-springfield-va.luna.attempt-1.json\nRead AGENTS.md and the verification plan named in the job before researching.\nInventory every current food and nonalcoholic menu surface linked by the official homepage, including service-period PDFs, images, ordering vendors, pagination, and location-specific menus.\nEnumerate the complete current product catalog across those surfaces, consolidate duplicate presentations explicitly, and map each candidate product to its source surfaces and evidence.\nFor every current product and every frozen-item group, state the adjudicated contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs; use unavailable rather than inferred negatives when disclosure is incomplete.\nRead the entire frozen item-check file and reconcile every auditItemKey exactly once.\nGroup auditItemKeys that share the same disposition, allergen verdict, and evidence IDs; put shared explanations in findings.\nUse current public web evidence, prefer restaurant-issued sources, and preserve source authority labels.\nApply source semantics precisely: incomplete restaurant-issued menu descriptions cannot establish allergen absence, complete arrays, or cross-contact status, but explicit positive ingredients and unavoidable named food identities can support narrow positive restaurant-issued ingredient evidence.\nKeep culinary formulation assumptions and inferred ingredients separate from direct source-backed positives; never erase an explicit positive merely because the source is not a complete allergen matrix.\nTreat your outcome as a candidate only. Never claim that a restaurant is terminally verified or blocked; every valid scout is independently checked by Terra.\nDo not edit files, mutate the ledger, or repair data.\nReturn only the JSON object required by the output schema.",
+            "sha256": "91e131ea1ab9bfa8e996501eb72f79098a611c4bd626c5e960f490f2347d5c09"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/replacement-best-buns-bakery-and-burgers-springfield-va.json",
+              "exists": true,
+              "sha256": "84f4339ebbcfe1fa9b1ac8b8c67afd714e4178519cfac63d3cd891451fbe3ccd"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/replacement-best-buns-bakery-and-burgers-springfield-va.jsonl",
+              "exists": true,
+              "sha256": "971e90874173a3a90b3218dcfe4436b188fcdd9525fcfc7b1c563f62bd549b62"
+            },
+            {
+              "path": "data/restaurant-verification/restaurants/replacement-best-buns-bakery-and-burgers-springfield-va.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "data/restaurant-verification/evidence/replacement-best-buns-bakery-and-burgers-springfield-va.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "docs/restaurant-verification-plan.md",
+              "exists": true,
+              "sha256": "980c8c3a6a8093b144215304e00ecab485be744718ddcd93fe98ac1cff293b83"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/replacement-best-buns-bakery-and-burgers-springfield-va.luna.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/replacement-best-buns-bakery-and-burgers-springfield-va.json",
+            "written": true,
+            "sha256": "2d4107bb11a029aa070856e57d8d0cf67316e679f202bf4b2a99f4669f06a78c"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/replacement-best-buns-bakery-and-burgers-springfield-va.luna.attempt-1.log",
+            "sha256": "c03ac30131ef13b6f84f6f134214389f6c8f7e3696eae600daa4d46201eb88a1"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": true,
+            "errors": [],
+            "warnings": [
+              "Evidence olo-springfield has no reproducibility anchor."
+            ]
+          },
+          "tokens": {
+            "available": true,
+            "total": 65045,
+            "source": "runtime_log"
+          }
+        }
+      ],
+      "terraExitCode": 0,
+      "terraStartedAt": "2026-07-16T19:13:06.929Z",
+      "terraCompletedAt": "2026-07-16T19:18:30.397Z",
+      "terraError": null,
+      "terraAttempts": [
+        {
+          "startedAt": "2026-07-16T19:13:06.929Z",
+          "completedAt": "2026-07-16T19:18:30.397Z",
+          "durationMs": 323468,
+          "model": {
+            "id": "gpt-5.6-terra",
+            "reasoningEffort": "low",
+            "runtimeId": null,
+            "runtimeReasoningEffort": null,
+            "exact": null
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-worker-result.schema.json",
+            "sha256": "f2d4af345ffd2ddd31dc6b45fbf1e58efa10d326beaef078ca3170ce8415fa76"
+          },
+          "prompt": {
+            "text": "Independently verify one Luna restaurant scout in read-only mode.\nVerifier packet: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/replacement-best-buns-bakery-and-burgers-springfield-va.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/replacement-best-buns-bakery-and-burgers-springfield-va.terra.attempt-1.json\nRead AGENTS.md and the verification plan before researching.\nRe-open the strongest primary sources. Verify every scout menu surface and every scout current product exactly once, and report any additional surfaces or products Luna missed.\nIndependently enumerate every scout presentation ID and re-state each checked product group's contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs.\nReview every deterministic risk gate in the packet. Do not clear a gate based on Luna confidence or summary prose.\nRead the full frozen item file and reconcile every auditItemKey exactly once, checking menu scope, allergen source authority, cross-contact semantics, and extraction behavior.\nIncomplete menus cannot support negatives, complete arrays, or cross-contact conclusions. Explicit restaurant-issued positives and unavoidable named identities may support narrow positive ingredient evidence.\nPreserve linked-vendor and third-party authority; never promote them to restaurant-issued evidence.\nDo not edit files, mutate the ledger, implement repairs, or mark a terminal state.\nReturn only the JSON object required by the output schema.",
+            "sha256": "961d1d90b6a6173c38905057c4a6421655c8f6b1c55cdc8391615e70ca586594"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/replacement-best-buns-bakery-and-burgers-springfield-va.json",
+              "exists": true,
+              "sha256": "4f049be033af5743312a722f2c25d9640e50bcd9e1ed567b3ed1532ca1a5be8b"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/replacement-best-buns-bakery-and-burgers-springfield-va.json",
+              "exists": true,
+              "sha256": "84f4339ebbcfe1fa9b1ac8b8c67afd714e4178519cfac63d3cd891451fbe3ccd"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/replacement-best-buns-bakery-and-burgers-springfield-va.json",
+              "exists": true,
+              "sha256": "2d4107bb11a029aa070856e57d8d0cf67316e679f202bf4b2a99f4669f06a78c"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-routes/replacement-best-buns-bakery-and-burgers-springfield-va.json",
+              "exists": true,
+              "sha256": "76c7aca86af71c111277743ec89fe22fe8cac3ea06ff1dba45ce1b41b919ba77"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/replacement-best-buns-bakery-and-burgers-springfield-va.jsonl",
+              "exists": true,
+              "sha256": "971e90874173a3a90b3218dcfe4436b188fcdd9525fcfc7b1c563f62bd549b62"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/replacement-best-buns-bakery-and-burgers-springfield-va.terra.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/results/replacement-best-buns-bakery-and-burgers-springfield-va.json",
+            "written": true,
+            "sha256": "ebb625169245e1e312a41ffeb4152968846747b519b7292993ec66986d79ed56"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/replacement-best-buns-bakery-and-burgers-springfield-va.terra.attempt-1.log",
+            "sha256": "1987452b52703f0295ed7b3650f8bb2c6d986f1c8585cb9b4b40dda6ce884750"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": true,
+            "errors": [],
+            "warnings": [
+              "Evidence terra-breakfast-pdf has no reproducibility anchor.",
+              "Evidence terra-lunch-pdf has no reproducibility anchor.",
+              "Evidence terra-dinner-pdf has no reproducibility anchor.",
+              "Low confidence must be explicitly marked low_confidence.",
+              "Terra reported a mismatched or unverifiable menu surface.",
+              "Terra confirmed or left unresolved a deterministic risk gate.",
+              "Terra reported findings requiring adjudication."
+            ]
+          },
+          "tokens": {
+            "available": true,
+            "total": 54576,
+            "source": "runtime_log"
+          }
+        }
+      ]
+    },
+    {
+      "restaurantId": "beteseb-silver-spring-md",
+      "name": "Beteseb",
+      "jobPath": "jobs/beteseb-silver-spring-md.json",
+      "scoutResultPath": "scout-results/beteseb-silver-spring-md.json",
+      "scoutRoutePath": "scout-routes/beteseb-silver-spring-md.json",
+      "verifierPacketPath": "verifier-packets/beteseb-silver-spring-md.json",
+      "resultPath": "results/beteseb-silver-spring-md.json",
+      "routePath": "routes/beteseb-silver-spring-md.json",
+      "reviewPath": "reviews/beteseb-silver-spring-md.json",
+      "reviewValidationPath": "review-validations/beteseb-silver-spring-md.json",
+      "status": "awaiting_sol",
+      "lunaExitCode": 0,
+      "lunaStartedAt": "2026-07-16T19:03:36.624Z",
+      "lunaCompletedAt": "2026-07-16T19:06:18.785Z",
+      "lunaError": null,
+      "lunaAttempts": [
+        {
+          "startedAt": "2026-07-16T18:55:11.016Z",
+          "completedAt": "2026-07-16T18:59:51.429Z",
+          "durationMs": 280413,
+          "model": {
+            "id": "gpt-5.6-luna",
+            "reasoningEffort": "low",
+            "runtimeId": "gpt-5.6-luna",
+            "runtimeReasoningEffort": "low",
+            "exact": true
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-scout-result.schema.json",
+            "sha256": "8d89e3e7f42ad28ffa5bf7b8b7397987a165e11b2247f0ba36433ccff61c5e7e"
+          },
+          "prompt": {
+            "text": "Execute one read-only restaurant discovery and reconciliation scout job.\nJob: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/beteseb-silver-spring-md.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/beteseb-silver-spring-md.luna.attempt-1.json\nRead AGENTS.md and the verification plan named in the job before researching.\nInventory every current food and nonalcoholic menu surface linked by the official homepage, including service-period PDFs, images, ordering vendors, pagination, and location-specific menus.\nEnumerate the complete current product catalog across those surfaces, consolidate duplicate presentations explicitly, and map each candidate product to its source surfaces and evidence.\nFor every current product and every frozen-item group, state the adjudicated contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs; use unavailable rather than inferred negatives when disclosure is incomplete.\nRead the entire frozen item-check file and reconcile every auditItemKey exactly once.\nGroup auditItemKeys that share the same disposition, allergen verdict, and evidence IDs; put shared explanations in findings.\nUse current public web evidence, prefer restaurant-issued sources, and preserve source authority labels.\nApply source semantics precisely: incomplete restaurant-issued menu descriptions cannot establish allergen absence, complete arrays, or cross-contact status, but explicit positive ingredients and unavoidable named food identities can support narrow positive restaurant-issued ingredient evidence.\nKeep culinary formulation assumptions and inferred ingredients separate from direct source-backed positives; never erase an explicit positive merely because the source is not a complete allergen matrix.\nTreat your outcome as a candidate only. Never claim that a restaurant is terminally verified or blocked; every valid scout is independently checked by Terra.\nDo not edit files, mutate the ledger, or repair data.\nReturn only the JSON object required by the output schema.",
+            "sha256": "37a02160e245a214f9054e63db05d634dabe99fdc26ae3ad4ae800bbcb6abf89"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/beteseb-silver-spring-md.json",
+              "exists": true,
+              "sha256": "c0f37fc196e778174342ec9d81c0d9b6ad3a5e8c3fa77cac8b85bece218e44a0"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/beteseb-silver-spring-md.jsonl",
+              "exists": true,
+              "sha256": "e9729a6d1931245308183951df74910cd31399807300488810adf7319a5d82a7"
+            },
+            {
+              "path": "data/restaurant-verification/restaurants/beteseb-silver-spring-md.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "data/restaurant-verification/evidence/beteseb-silver-spring-md.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "docs/restaurant-verification-plan.md",
+              "exists": true,
+              "sha256": "980c8c3a6a8093b144215304e00ecab485be744718ddcd93fe98ac1cff293b83"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/beteseb-silver-spring-md.luna.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/beteseb-silver-spring-md.json",
+            "written": true,
+            "sha256": "9b387284bb6587d1698e5cd180549c08e7716ed34f93408146ba9077c0b5ff3e"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/beteseb-silver-spring-md.luna.attempt-1.log",
+            "sha256": "f6538fdfe5a6bbb451f5e587b1527cdf78d463f379350e68da933aaa942871ab"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": false,
+            "errors": [
+              "Result runId does not match its job."
+            ],
+            "warnings": [
+              "Unresolved surface currentProductKey: special-beef-kitfo",
+              "Unresolved surface currentProductKey: beef-kitfo",
+              "Unresolved surface currentProductKey: rib-eye-tibs",
+              "Unresolved surface currentProductKey: beef-tibs-spicy",
+              "Unresolved surface currentProductKey: beef-tibs-mild",
+              "Unresolved surface currentProductKey: beef-tibs-firfir",
+              "Unresolved surface currentProductKey: chicken-wot",
+              "Unresolved surface currentProductKey: non-spicy-beef-wot",
+              "Unresolved surface currentProductKey: spicy-beef-wot",
+              "Unresolved surface currentProductKey: lamb-tibs",
+              "Unresolved surface currentProductKey: fish-gulash",
+              "Unresolved surface currentProductKey: rice-with-tibes-meat",
+              "Unresolved surface currentProductKey: beef-with-chickpeas-bozena",
+              "Unresolved surface currentProductKey: gomen-besiga",
+              "Unresolved surface currentProductKey: pasta-with-tomato",
+              "Unresolved surface currentProductKey: pasta-with-meat",
+              "Unresolved surface currentProductKey: house-special-beef-kitfo",
+              "Unresolved surface currentProductKey: house-special-beef-tibs",
+              "Unresolved surface currentProductKey: house-special-gomen-besiga",
+              "Unresolved surface currentProductKey: firfir-and-kitfo",
+              "Unresolved surface currentProductKey: tibs-with-veggie",
+              "Unresolved surface currentProductKey: doro-wot-with-veggie",
+              "Unresolved surface currentProductKey: fuel",
+              "Unresolved surface currentProductKey: scrambled-eggs",
+              "Unresolved surface currentProductKey: kinche",
+              "Unresolved surface currentProductKey: dullet",
+              "Unresolved surface currentProductKey: chechebsa",
+              "Unresolved surface currentProductKey: firfir",
+              "Unresolved surface currentProductKey: bula",
+              "Unresolved surface currentProductKey: quanta-firfir",
+              "Unresolved surface currentProductKey: kinche-combo",
+              "Unresolved surface currentProductKey: firfir-combo"
+            ]
+          },
+          "tokens": {
+            "available": true,
+            "total": 62672,
+            "source": "runtime_log"
+          }
+        },
+        {
+          "startedAt": "2026-07-16T19:03:36.624Z",
+          "completedAt": "2026-07-16T19:06:18.785Z",
+          "durationMs": 162161,
+          "model": {
+            "id": "gpt-5.6-luna",
+            "reasoningEffort": "low",
+            "runtimeId": null,
+            "runtimeReasoningEffort": null,
+            "exact": null
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-scout-result.schema.json",
+            "sha256": "8d89e3e7f42ad28ffa5bf7b8b7397987a165e11b2247f0ba36433ccff61c5e7e"
+          },
+          "prompt": {
+            "text": "Execute one read-only restaurant discovery and reconciliation scout job.\nJob: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/beteseb-silver-spring-md.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/beteseb-silver-spring-md.luna.attempt-2.json\nThis is correction attempt 2.\nPrior immutable result: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/beteseb-silver-spring-md.luna.attempt-1.json\nCorrect every prior validation error: Result runId does not match its job.\nCorrect every deterministic retry reason: Result runId does not match its job. | deterministic gate: structural_invalid | deterministic gate: multi_service | deterministic gate: count_drift | deterministic gate: current_only | deterministic gate: authority_ambiguity | deterministic gate: non_exact_reconciliation | deterministic gate: cross_contact | deterministic gate: validation_warnings | deterministic gate: low_confidence | deterministic gate: scout_flagged_risk\nThis is a provenance/coverage-only correction. Use the prior immutable result as the base, preserve its research and evidence, and do not restart web research.\nThe response is a full replacement object, never a sparse patch: copy every prior field and array, retain every prior itemCheckGroup, add or correct only the named auditItemKeys, and emit the complete corrected JSON object.\nA response containing only the corrected itemCheckGroups is invalid.\nDo not merely summarize corrections: emit every frozen auditItemKey exactly once, define every referenced currentProductKey in currentProducts, and make every surface/product reference resolve.\nIf a surface references a currentProductKey you cannot define from evidence, remove that dangling reference and mark the affected surface fullyEnumerated=false with scopeStatus=partial; Terra will independently complete the scope. Never invent allergen data to satisfy a reference.\nRead AGENTS.md and the verification plan named in the job before researching.\nInventory every current food and nonalcoholic menu surface linked by the official homepage, including service-period PDFs, images, ordering vendors, pagination, and location-specific menus.\nEnumerate the complete current product catalog across those surfaces, consolidate duplicate presentations explicitly, and map each candidate product to its source surfaces and evidence.\nFor every current product and every frozen-item group, state the adjudicated contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs; use unavailable rather than inferred negatives when disclosure is incomplete.\nRead the entire frozen item-check file and reconcile every auditItemKey exactly once.\nGroup auditItemKeys that share the same disposition, allergen verdict, and evidence IDs; put shared explanations in findings.\nUse current public web evidence, prefer restaurant-issued sources, and preserve source authority labels.\nApply source semantics precisely: incomplete restaurant-issued menu descriptions cannot establish allergen absence, complete arrays, or cross-contact status, but explicit positive ingredients and unavoidable named food identities can support narrow positive restaurant-issued ingredient evidence.\nKeep culinary formulation assumptions and inferred ingredients separate from direct source-backed positives; never erase an explicit positive merely because the source is not a complete allergen matrix.\nTreat your outcome as a candidate only. Never claim that a restaurant is terminally verified or blocked; every valid scout is independently checked by Terra.\nDo not edit files, mutate the ledger, or repair data.\nReturn only the JSON object required by the output schema.",
+            "sha256": "6ef7197480064f61485ddf6e347bff92cc200cceda97ffa28bc03c91c093e9f0"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/beteseb-silver-spring-md.json",
+              "exists": true,
+              "sha256": "c0f37fc196e778174342ec9d81c0d9b6ad3a5e8c3fa77cac8b85bece218e44a0"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/beteseb-silver-spring-md.jsonl",
+              "exists": true,
+              "sha256": "e9729a6d1931245308183951df74910cd31399807300488810adf7319a5d82a7"
+            },
+            {
+              "path": "data/restaurant-verification/restaurants/beteseb-silver-spring-md.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "data/restaurant-verification/evidence/beteseb-silver-spring-md.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "docs/restaurant-verification-plan.md",
+              "exists": true,
+              "sha256": "980c8c3a6a8093b144215304e00ecab485be744718ddcd93fe98ac1cff293b83"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/beteseb-silver-spring-md.luna.attempt-1.json",
+              "exists": true,
+              "sha256": "9b387284bb6587d1698e5cd180549c08e7716ed34f93408146ba9077c0b5ff3e"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-routes/beteseb-silver-spring-md.json",
+              "exists": true,
+              "sha256": "90c9f8d12bdde519c6c33f2968e6bfaed2960b7a42bd0bd36b31cda3cd803366"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/beteseb-silver-spring-md.luna.attempt-2.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/beteseb-silver-spring-md.json",
+            "written": true,
+            "sha256": "0cfc11a51ca08731d155397c535817e5c7b6bee39a9d6dc52cd4b58a6dc4e24b"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/beteseb-silver-spring-md.luna.attempt-2.log",
+            "sha256": "5a4cc5be1080f8335c1dd0c0d69bf933cd06be2f78bb8fd7b275a3bde0bc01f2"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": true,
+            "errors": [],
+            "warnings": [
+              "Unresolved surface currentProductKey: special-beef-kitfo",
+              "Unresolved surface currentProductKey: beef-kitfo",
+              "Unresolved surface currentProductKey: rib-eye-tibs",
+              "Unresolved surface currentProductKey: beef-tibs-spicy",
+              "Unresolved surface currentProductKey: beef-tibs-mild",
+              "Unresolved surface currentProductKey: beef-tibs-firfir",
+              "Unresolved surface currentProductKey: chicken-wot",
+              "Unresolved surface currentProductKey: non-spicy-beef-wot",
+              "Unresolved surface currentProductKey: spicy-beef-wot",
+              "Unresolved surface currentProductKey: lamb-tibs",
+              "Unresolved surface currentProductKey: fish-gulash",
+              "Unresolved surface currentProductKey: rice-with-tibes-meat",
+              "Unresolved surface currentProductKey: beef-with-chickpeas-bozena",
+              "Unresolved surface currentProductKey: gomen-besiga",
+              "Unresolved surface currentProductKey: pasta-with-tomato",
+              "Unresolved surface currentProductKey: pasta-with-meat",
+              "Unresolved surface currentProductKey: house-special-beef-kitfo",
+              "Unresolved surface currentProductKey: house-special-beef-tibs",
+              "Unresolved surface currentProductKey: house-special-gomen-besiga",
+              "Unresolved surface currentProductKey: firfir-and-kitfo",
+              "Unresolved surface currentProductKey: tibs-with-veggie",
+              "Unresolved surface currentProductKey: doro-wot-with-veggie",
+              "Unresolved surface currentProductKey: fuel",
+              "Unresolved surface currentProductKey: scrambled-eggs",
+              "Unresolved surface currentProductKey: kinche",
+              "Unresolved surface currentProductKey: dullet",
+              "Unresolved surface currentProductKey: chechebsa",
+              "Unresolved surface currentProductKey: firfir",
+              "Unresolved surface currentProductKey: bula",
+              "Unresolved surface currentProductKey: quanta-firfir",
+              "Unresolved surface currentProductKey: kinche-combo",
+              "Unresolved surface currentProductKey: firfir-combo"
+            ]
+          },
+          "tokens": {
+            "available": true,
+            "total": 56336,
+            "source": "runtime_log"
+          }
+        }
+      ],
+      "terraExitCode": 0,
+      "terraStartedAt": "2026-07-16T19:13:31.172Z",
+      "terraCompletedAt": "2026-07-16T19:18:30.397Z",
+      "terraError": null,
+      "terraAttempts": [
+        {
+          "startedAt": "2026-07-16T19:13:31.172Z",
+          "completedAt": "2026-07-16T19:18:30.397Z",
+          "durationMs": 299225,
+          "model": {
+            "id": "gpt-5.6-terra",
+            "reasoningEffort": "low",
+            "runtimeId": null,
+            "runtimeReasoningEffort": null,
+            "exact": null
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-worker-result.schema.json",
+            "sha256": "f2d4af345ffd2ddd31dc6b45fbf1e58efa10d326beaef078ca3170ce8415fa76"
+          },
+          "prompt": {
+            "text": "Independently verify one Luna restaurant scout in read-only mode.\nVerifier packet: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/beteseb-silver-spring-md.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/beteseb-silver-spring-md.terra.attempt-1.json\nRead AGENTS.md and the verification plan before researching.\nRe-open the strongest primary sources. Verify every scout menu surface and every scout current product exactly once, and report any additional surfaces or products Luna missed.\nIndependently enumerate every scout presentation ID and re-state each checked product group's contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs.\nReview every deterministic risk gate in the packet. Do not clear a gate based on Luna confidence or summary prose.\nRead the full frozen item file and reconcile every auditItemKey exactly once, checking menu scope, allergen source authority, cross-contact semantics, and extraction behavior.\nIncomplete menus cannot support negatives, complete arrays, or cross-contact conclusions. Explicit restaurant-issued positives and unavoidable named identities may support narrow positive ingredient evidence.\nPreserve linked-vendor and third-party authority; never promote them to restaurant-issued evidence.\nDo not edit files, mutate the ledger, implement repairs, or mark a terminal state.\nReturn only the JSON object required by the output schema.",
+            "sha256": "0da660e37f0e4d8b8bc48bf8081cb6d542a2ea001cb3823a1e45d6818f63dc86"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/beteseb-silver-spring-md.json",
+              "exists": true,
+              "sha256": "3e61b0dd1c822de7096863af349b51cec8c3988d776329655ab1725538ef0ba1"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/beteseb-silver-spring-md.json",
+              "exists": true,
+              "sha256": "c0f37fc196e778174342ec9d81c0d9b6ad3a5e8c3fa77cac8b85bece218e44a0"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/beteseb-silver-spring-md.json",
+              "exists": true,
+              "sha256": "0cfc11a51ca08731d155397c535817e5c7b6bee39a9d6dc52cd4b58a6dc4e24b"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-routes/beteseb-silver-spring-md.json",
+              "exists": true,
+              "sha256": "627213a752ac0599cbc6e528072faddb077369965f46e40151adc7fb3a8eac45"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/beteseb-silver-spring-md.jsonl",
+              "exists": true,
+              "sha256": "e9729a6d1931245308183951df74910cd31399807300488810adf7319a5d82a7"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/beteseb-silver-spring-md.terra.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/results/beteseb-silver-spring-md.json",
+            "written": true,
+            "sha256": "6b26e7fc0edc2767bbfe62d8781ac7472f90bdefaa483df4330d6395315abf21"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/beteseb-silver-spring-md.terra.attempt-1.log",
+            "sha256": "60d92d94060f101976a0c5659773c79382786ff4b1879229d0861c00da32178b"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": true,
+            "errors": [],
+            "warnings": [
+              "Terra must verify every scout product presentation exactly once.",
+              "Terra returned 11 unknown scout product presentation(s): p-lunch-veggie-combo, p-lunch-chickpeas-shiro, p-lunch-atkilt-alicha, p-lunch-lentil-misir-wot, p-lunch-split-peas-kik, p-lunch-collard-greens-wot, p-lunch-tomato-fitfit, p-lunch-black-lentil-difin-misir, p-lunch-gluten-free-injera, p-lunch-salad (+1 more).",
+              "Terra reported a mismatched or unverifiable menu surface.",
+              "Terra confirmed or left unresolved a deterministic risk gate.",
+              "Terra discovered additional current products.",
+              "Terra reported findings requiring adjudication.",
+              "Terra reported baseline allergen mismatches."
+            ]
+          },
+          "tokens": {
+            "available": true,
+            "total": 61667,
+            "source": "runtime_log"
+          }
+        }
+      ]
+    },
+    {
+      "restaurantId": "bethesda-bagels-dc",
+      "name": "Bethesda Bagels",
+      "jobPath": "jobs/bethesda-bagels-dc.json",
+      "scoutResultPath": "scout-results/bethesda-bagels-dc.json",
+      "scoutRoutePath": "scout-routes/bethesda-bagels-dc.json",
+      "verifierPacketPath": "verifier-packets/bethesda-bagels-dc.json",
+      "resultPath": "results/bethesda-bagels-dc.json",
+      "routePath": "routes/bethesda-bagels-dc.json",
+      "reviewPath": "reviews/bethesda-bagels-dc.json",
+      "reviewValidationPath": "review-validations/bethesda-bagels-dc.json",
+      "status": "awaiting_sol",
+      "lunaExitCode": 0,
+      "lunaStartedAt": "2026-07-16T19:03:38.155Z",
+      "lunaCompletedAt": "2026-07-16T19:06:18.785Z",
+      "lunaError": null,
+      "lunaAttempts": [
+        {
+          "startedAt": "2026-07-16T18:57:27.742Z",
+          "completedAt": "2026-07-16T18:59:51.430Z",
+          "durationMs": 143688,
+          "model": {
+            "id": "gpt-5.6-luna",
+            "reasoningEffort": "low",
+            "runtimeId": null,
+            "runtimeReasoningEffort": null,
+            "exact": null
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-scout-result.schema.json",
+            "sha256": "8d89e3e7f42ad28ffa5bf7b8b7397987a165e11b2247f0ba36433ccff61c5e7e"
+          },
+          "prompt": {
+            "text": "Execute one read-only restaurant discovery and reconciliation scout job.\nJob: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/bethesda-bagels-dc.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/bethesda-bagels-dc.luna.attempt-1.json\nRead AGENTS.md and the verification plan named in the job before researching.\nInventory every current food and nonalcoholic menu surface linked by the official homepage, including service-period PDFs, images, ordering vendors, pagination, and location-specific menus.\nEnumerate the complete current product catalog across those surfaces, consolidate duplicate presentations explicitly, and map each candidate product to its source surfaces and evidence.\nFor every current product and every frozen-item group, state the adjudicated contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs; use unavailable rather than inferred negatives when disclosure is incomplete.\nRead the entire frozen item-check file and reconcile every auditItemKey exactly once.\nGroup auditItemKeys that share the same disposition, allergen verdict, and evidence IDs; put shared explanations in findings.\nUse current public web evidence, prefer restaurant-issued sources, and preserve source authority labels.\nApply source semantics precisely: incomplete restaurant-issued menu descriptions cannot establish allergen absence, complete arrays, or cross-contact status, but explicit positive ingredients and unavoidable named food identities can support narrow positive restaurant-issued ingredient evidence.\nKeep culinary formulation assumptions and inferred ingredients separate from direct source-backed positives; never erase an explicit positive merely because the source is not a complete allergen matrix.\nTreat your outcome as a candidate only. Never claim that a restaurant is terminally verified or blocked; every valid scout is independently checked by Terra.\nDo not edit files, mutate the ledger, or repair data.\nReturn only the JSON object required by the output schema.",
+            "sha256": "1a053c564021d404a3eed54afafff9670ab921007e473838bf468a437b49ea92"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/bethesda-bagels-dc.json",
+              "exists": true,
+              "sha256": "051fff91c52b8ccbc8158e10d1921c2e3fd785bdff24b3bf0ed1ae0adf2a9f15"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/bethesda-bagels-dc.jsonl",
+              "exists": true,
+              "sha256": "8f59d8770a21049a9cad34e2bc2e0847e9c08a6199b59db79832f4f46cc1f96b"
+            },
+            {
+              "path": "data/restaurant-verification/restaurants/bethesda-bagels-dc.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "data/restaurant-verification/evidence/bethesda-bagels-dc.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "docs/restaurant-verification-plan.md",
+              "exists": true,
+              "sha256": "980c8c3a6a8093b144215304e00ecab485be744718ddcd93fe98ac1cff293b83"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/bethesda-bagels-dc.luna.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/bethesda-bagels-dc.json",
+            "written": true,
+            "sha256": "b88d47f55dd152de7f6d04aa64231bef0b442886d61ea0271350ef2235e3e7b8"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/bethesda-bagels-dc.luna.attempt-1.log",
+            "sha256": "9184acb3074e86e7da21f7df7853beb4df6670c68e40410025ccccf227615354"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": false,
+            "errors": [
+              "Result runId does not match its job."
+            ],
+            "warnings": []
+          },
+          "tokens": {
+            "available": true,
+            "total": 66523,
+            "source": "runtime_log"
+          }
+        },
+        {
+          "startedAt": "2026-07-16T19:03:38.155Z",
+          "completedAt": "2026-07-16T19:06:18.785Z",
+          "durationMs": 160630,
+          "model": {
+            "id": "gpt-5.6-luna",
+            "reasoningEffort": "low",
+            "runtimeId": "gpt-5.6-luna",
+            "runtimeReasoningEffort": "low",
+            "exact": true
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-scout-result.schema.json",
+            "sha256": "8d89e3e7f42ad28ffa5bf7b8b7397987a165e11b2247f0ba36433ccff61c5e7e"
+          },
+          "prompt": {
+            "text": "Execute one read-only restaurant discovery and reconciliation scout job.\nJob: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/bethesda-bagels-dc.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/bethesda-bagels-dc.luna.attempt-2.json\nThis is correction attempt 2.\nPrior immutable result: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/bethesda-bagels-dc.luna.attempt-1.json\nCorrect every prior validation error: Result runId does not match its job.\nCorrect every deterministic retry reason: Result runId does not match its job. | deterministic gate: structural_invalid | deterministic gate: multi_service | deterministic gate: pdf_or_image | deterministic gate: inaccessible_source | deterministic gate: scope_incomplete | deterministic gate: count_drift | deterministic gate: non_exact_reconciliation | deterministic gate: cross_contact | deterministic gate: parser_or_repair_finding | deterministic gate: low_confidence | deterministic gate: scout_flagged_risk\nThis is a provenance/coverage-only correction. Use the prior immutable result as the base, preserve its research and evidence, and do not restart web research.\nThe response is a full replacement object, never a sparse patch: copy every prior field and array, retain every prior itemCheckGroup, add or correct only the named auditItemKeys, and emit the complete corrected JSON object.\nA response containing only the corrected itemCheckGroups is invalid.\nDo not merely summarize corrections: emit every frozen auditItemKey exactly once, define every referenced currentProductKey in currentProducts, and make every surface/product reference resolve.\nIf a surface references a currentProductKey you cannot define from evidence, remove that dangling reference and mark the affected surface fullyEnumerated=false with scopeStatus=partial; Terra will independently complete the scope. Never invent allergen data to satisfy a reference.\nRead AGENTS.md and the verification plan named in the job before researching.\nInventory every current food and nonalcoholic menu surface linked by the official homepage, including service-period PDFs, images, ordering vendors, pagination, and location-specific menus.\nEnumerate the complete current product catalog across those surfaces, consolidate duplicate presentations explicitly, and map each candidate product to its source surfaces and evidence.\nFor every current product and every frozen-item group, state the adjudicated contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs; use unavailable rather than inferred negatives when disclosure is incomplete.\nRead the entire frozen item-check file and reconcile every auditItemKey exactly once.\nGroup auditItemKeys that share the same disposition, allergen verdict, and evidence IDs; put shared explanations in findings.\nUse current public web evidence, prefer restaurant-issued sources, and preserve source authority labels.\nApply source semantics precisely: incomplete restaurant-issued menu descriptions cannot establish allergen absence, complete arrays, or cross-contact status, but explicit positive ingredients and unavoidable named food identities can support narrow positive restaurant-issued ingredient evidence.\nKeep culinary formulation assumptions and inferred ingredients separate from direct source-backed positives; never erase an explicit positive merely because the source is not a complete allergen matrix.\nTreat your outcome as a candidate only. Never claim that a restaurant is terminally verified or blocked; every valid scout is independently checked by Terra.\nDo not edit files, mutate the ledger, or repair data.\nReturn only the JSON object required by the output schema.",
+            "sha256": "6d3ef301c46640405327d6b4c10a6d67fb8d3a300b5b61827ecae1cf2b2307ab"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/bethesda-bagels-dc.json",
+              "exists": true,
+              "sha256": "051fff91c52b8ccbc8158e10d1921c2e3fd785bdff24b3bf0ed1ae0adf2a9f15"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/bethesda-bagels-dc.jsonl",
+              "exists": true,
+              "sha256": "8f59d8770a21049a9cad34e2bc2e0847e9c08a6199b59db79832f4f46cc1f96b"
+            },
+            {
+              "path": "data/restaurant-verification/restaurants/bethesda-bagels-dc.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "data/restaurant-verification/evidence/bethesda-bagels-dc.json",
+              "exists": false,
+              "sha256": null
+            },
+            {
+              "path": "docs/restaurant-verification-plan.md",
+              "exists": true,
+              "sha256": "980c8c3a6a8093b144215304e00ecab485be744718ddcd93fe98ac1cff293b83"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/bethesda-bagels-dc.luna.attempt-1.json",
+              "exists": true,
+              "sha256": "b88d47f55dd152de7f6d04aa64231bef0b442886d61ea0271350ef2235e3e7b8"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-routes/bethesda-bagels-dc.json",
+              "exists": true,
+              "sha256": "7d64b4087857752390c173901f9299887e73207914a8431ba33e644534a656d9"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/bethesda-bagels-dc.luna.attempt-2.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/bethesda-bagels-dc.json",
+            "written": true,
+            "sha256": "3f83e4fc86058206f50a428b1672169d5673a80107a434d68ce82141e5896aba"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/bethesda-bagels-dc.luna.attempt-2.log",
+            "sha256": "1946ca430539e51c8562343015c96d203d86b3027a1c20e20318c5ead94c981c"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": true,
+            "errors": [],
+            "warnings": []
+          },
+          "tokens": {
+            "available": true,
+            "total": 45434,
+            "source": "runtime_log"
+          }
+        }
+      ],
+      "terraExitCode": 0,
+      "terraStartedAt": "2026-07-16T19:15:35.065Z",
+      "terraCompletedAt": "2026-07-16T19:18:30.397Z",
+      "terraError": null,
+      "terraAttempts": [
+        {
+          "startedAt": "2026-07-16T19:15:35.065Z",
+          "completedAt": "2026-07-16T19:18:30.397Z",
+          "durationMs": 175332,
+          "model": {
+            "id": "gpt-5.6-terra",
+            "reasoningEffort": "low",
+            "runtimeId": null,
+            "runtimeReasoningEffort": null,
+            "exact": null
+          },
+          "schema": {
+            "path": "scripts/schemas/restaurant-verification-worker-result.schema.json",
+            "sha256": "f2d4af345ffd2ddd31dc6b45fbf1e58efa10d326beaef078ca3170ce8415fa76"
+          },
+          "prompt": {
+            "text": "Independently verify one Luna restaurant scout in read-only mode.\nVerifier packet: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/bethesda-bagels-dc.json\nRequired result destination is managed by the coordinator: /Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/bethesda-bagels-dc.terra.attempt-1.json\nRead AGENTS.md and the verification plan before researching.\nRe-open the strongest primary sources. Verify every scout menu surface and every scout current product exactly once, and report any additional surfaces or products Luna missed.\nIndependently enumerate every scout presentation ID and re-state each checked product group's contains/may-contain arrays, allergen source type, authority tier, and allergen-specific evidence IDs.\nReview every deterministic risk gate in the packet. Do not clear a gate based on Luna confidence or summary prose.\nRead the full frozen item file and reconcile every auditItemKey exactly once, checking menu scope, allergen source authority, cross-contact semantics, and extraction behavior.\nIncomplete menus cannot support negatives, complete arrays, or cross-contact conclusions. Explicit restaurant-issued positives and unavoidable named identities may support narrow positive ingredient evidence.\nPreserve linked-vendor and third-party authority; never promote them to restaurant-issued evidence.\nDo not edit files, mutate the ledger, implement repairs, or mark a terminal state.\nReturn only the JSON object required by the output schema.",
+            "sha256": "82f8b661f45b816ff202b6b678aaa1c996e5043a1ba881c2515ba491902af943"
+          },
+          "inputs": [
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/verifier-packets/bethesda-bagels-dc.json",
+              "exists": true,
+              "sha256": "52ff0a89209f793c28a4bd07b347f8770b973a191a3a79c176e4ad688c4f3a47"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/jobs/bethesda-bagels-dc.json",
+              "exists": true,
+              "sha256": "051fff91c52b8ccbc8158e10d1921c2e3fd785bdff24b3bf0ed1ae0adf2a9f15"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-results/bethesda-bagels-dc.json",
+              "exists": true,
+              "sha256": "3f83e4fc86058206f50a428b1672169d5673a80107a434d68ce82141e5896aba"
+            },
+            {
+              "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/scout-routes/bethesda-bagels-dc.json",
+              "exists": true,
+              "sha256": "3f4fc62098e86e9ddcb0c7187decf618d258ada8f25afafceb6d8a83f9a77f4c"
+            },
+            {
+              "path": "data/restaurant-verification/item-checks/bethesda-bagels-dc.jsonl",
+              "exists": true,
+              "sha256": "8f59d8770a21049a9cad34e2bc2e0847e9c08a6199b59db79832f4f46cc1f96b"
+            }
+          ],
+          "result": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/attempt-results/bethesda-bagels-dc.terra.attempt-1.json",
+            "canonicalPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/results/bethesda-bagels-dc.json",
+            "written": true,
+            "sha256": "87f4ad16df0d80194f2cab142e8468d5f49ff237f5e12b94438d5a25285d238d"
+          },
+          "log": {
+            "path": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-05-2026-07-16/logs/bethesda-bagels-dc.terra.attempt-1.log",
+            "sha256": "5bbc258704f28430aab5cd50464f0d7adabe26d5b11069695fe04c3fd059eaa6"
+          },
+          "exitCode": 0,
+          "error": null,
+          "systemicFailure": null,
+          "validation": {
+            "state": "completed",
+            "valid": true,
+            "errors": [],
+            "warnings": [
+              "Evidence E2 has no reproducibility anchor.",
+              "Evidence E6 has no reproducibility anchor.",
+              "Evidence E7 has no reproducibility anchor.",
+              "Terra reported a mismatched or unverifiable menu surface.",
+              "Terra confirmed or left unresolved a deterministic risk gate.",
+              "Terra discovered additional menu surfaces.",
+              "Terra reported findings requiring adjudication."
+            ]
+          },
+          "tokens": {
+            "available": true,
+            "total": 82367,
+            "source": "runtime_log"
+          }
+        }
+      ]
+    }
+  ],
+  "systemicFailure": null
+}

@@ -1,0 +1,718 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260810220728",
+  "restaurantId": "the-saga-dc",
+  "packetValidation": {
+    "baselineItemCount": 20,
+    "baselineFingerprint": "e833afc10b74126b27f84e83b7ee814aaf6d1be1926b1ba23625151ee61be04e"
+  },
+  "identity": {
+    "name": "The Saga",
+    "locationId": "washington",
+    "address": "1190 22nd St NW, Washington, DC 20037",
+    "domain": "sevenreasonsgroup.com",
+    "identityAmbiguous": false
+  },
+  "sources": [
+    {
+      "evidenceId": "official-home",
+      "url": "https://www.sevenreasonsgroup.com/saga",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity and menu navigation",
+      "retrievedAt": "2026-08-10"
+    },
+    {
+      "evidenceId": "dinner-pdf",
+      "url": "https://www.sevenreasonsgroup.com/menus/saga/dinner.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current dinner menu and direct allergen labels",
+      "retrievedAt": "2026-08-10"
+    },
+    {
+      "evidenceId": "brunch-pdf",
+      "url": "https://www.sevenreasonsgroup.com/menus/saga/brunch.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current brunch and breakfast/lunch surface",
+      "retrievedAt": "2026-08-10"
+    },
+    {
+      "evidenceId": "beverage-pdf",
+      "url": "https://www.sevenreasonsgroup.com/menus/saga/beverage-list.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current beverage and nonalcoholic surface",
+      "retrievedAt": "2026-08-10"
+    },
+    {
+      "evidenceId": "toast-vendor",
+      "url": "https://www.toasttab.com/quadrant-1190-22nd-street-northwest",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "linked ordering/gift-card vendor inspected",
+      "retrievedAt": "2026-08-10"
+    },
+    {
+      "evidenceId": "targeted-search",
+      "url": "https://www.google.com/search?q=site%3Asevenreasonsgroup.com+The+Saga+allergen+nutrition+ingredients+menu+PDF",
+      "authorityTier": "restaurant_issued",
+      "purpose": "targeted web search",
+      "retrievedAt": "2026-08-10"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "dinner",
+      "url": "https://www.sevenreasonsgroup.com/menus/saga/dinner.pdf",
+      "authority": "restaurant_issued",
+      "locationScope": "The Saga DC",
+      "servicePeriod": "dinner/tapas bar, Mon-Sat",
+      "scopeStatus": "complete",
+      "retrievalOutcome": "retrieved"
+    },
+    {
+      "surfaceId": "brunch",
+      "url": "https://www.sevenreasonsgroup.com/menus/saga/brunch.pdf",
+      "authority": "restaurant_issued",
+      "locationScope": "The Saga DC",
+      "servicePeriod": "weekend brunch and weekday breakfast/lunch",
+      "scopeStatus": "complete",
+      "retrievalOutcome": "linked official PDF"
+    },
+    {
+      "surfaceId": "beverages",
+      "url": "https://www.sevenreasonsgroup.com/menus/saga/beverage-list.pdf",
+      "authority": "restaurant_issued",
+      "locationScope": "The Saga DC",
+      "servicePeriod": "all service periods",
+      "scopeStatus": "complete",
+      "retrievalOutcome": "linked official PDF"
+    },
+    {
+      "surfaceId": "linked-vendor",
+      "url": "https://www.toasttab.com/quadrant-1190-22nd-street-northwest",
+      "authority": "linked_vendor",
+      "locationScope": "Saga/Quadrant location",
+      "servicePeriod": "vendor surface",
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; no food allergen matrix"
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "query": "official The Saga site menu/navigation",
+        "urls": [
+          "https://www.sevenreasonsgroup.com/saga"
+        ],
+        "outcome": "official menu links found",
+        "evidenceIds": [
+          "official-home"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "query": "official PDFs, nutrition, allergen, ingredients, FAQ, sitemap/CDN",
+        "urls": [
+          "https://www.sevenreasonsgroup.com/menus/saga/dinner.pdf",
+          "https://www.sevenreasonsgroup.com/menus/saga/brunch.pdf",
+          "https://www.sevenreasonsgroup.com/menus/saga/beverage-list.pdf"
+        ],
+        "outcome": "dinner PDF includes item-level direct allergen labels; no separate matrix found",
+        "evidenceIds": [
+          "dinner-pdf",
+          "brunch-pdf",
+          "beverage-pdf"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "query": "restaurant-linked Toast vendor",
+        "urls": [
+          "https://www.toasttab.com/quadrant-1190-22nd-street-northwest"
+        ],
+        "outcome": "vendor inspected; no allergen matrix",
+        "evidenceIds": [
+          "toast-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "The Saga DC sevenreasons allergen allergy nutrition ingredients PDF menu",
+        "urls": [
+          "https://www.google.com/search?q=site%3Asevenreasonsgroup.com+The+Saga+allergen+nutrition+ingredients+menu+PDF"
+        ],
+        "outcome": "official dinner PDF located; no separate matrix",
+        "evidenceIds": [
+          "targeted-search",
+          "dinner-pdf"
+        ]
+      }
+    ]
+  },
+  "currentProducts": [
+    {
+      "currentProductKey": "charcuterie-board",
+      "name": "CHARCUTERIE BOARD",
+      "category": "Spanish / Latin Fine Dining",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "pa-amb-tomaquet-spanish-tomato-and-bread",
+      "name": "PA AMB TOMAQUET (Spanish Tomato & Bread)",
+      "category": "Tapas",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "eggplant-hummus",
+      "name": "EGGPLANT HUMMUS",
+      "category": "Tapas",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "mussels-escabeche",
+      "name": "MUSSELS ESCABECHE",
+      "category": "Tapas",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "hamachi-crudo",
+      "name": "HAMACHI CRUDO",
+      "category": "Tapas",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "patata-brava-our-style",
+      "name": "PATATA BRAVA OUR STYLE",
+      "category": "Tapas",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "croquetas-of-the-day",
+      "name": "CROQUETAS OF THE DAY",
+      "category": "Tapas",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "green-salad",
+      "name": "GREEN SALAD",
+      "category": "Tapas",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "roasted-baby-carrots",
+      "name": "ROASTED BABY CARROTS",
+      "category": "Tapas",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "gambas-al-ajillo",
+      "name": "GAMBAS AL AJILLO",
+      "category": "Tapas",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "crispy-rice-terrine-with-mussels",
+      "name": "CRISPY RICE TERRINE WITH MUSSELS",
+      "category": "Tapas",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "galician-octopus",
+      "name": "GALICIAN OCTOPUS",
+      "category": "Tapas",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "steak-tartare",
+      "name": "STEAK TARTARE",
+      "category": "Tapas",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "roasted-cauliflower",
+      "name": "ROASTED CAULIFLOWER",
+      "category": "Fuertes",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "sagas-branzino-filet",
+      "name": "SAGA’S BRANZINO FILET",
+      "category": "Fuertes",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "hokkaido-scallops-with-artichokes-and-peas",
+      "name": "HOKKAIDO SCALLOPS WITH ARTICHOKES & PEAS",
+      "category": "Fuertes",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "lamb-loin",
+      "name": "LAMB LOIN",
+      "category": "Fuertes",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "new-york-strip",
+      "name": "NEW YORK STRIP",
+      "category": "Fuertes",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "iberico-pork-chop",
+      "name": "IBERICO PORK CHOP",
+      "category": "Fuertes",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "fideua-angel-hair-paella",
+      "name": "FIDEUÁ (Angel Hair Paella)",
+      "category": "Paella Style",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "from-the-garden",
+      "name": "FROM THE GARDEN (Vegetarian)",
+      "category": "Paella Style",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "seafood-paella",
+      "name": "SEAFOOD",
+      "category": "Paella Style",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "duck-and-mushrooms",
+      "name": "DUCK & MUSHROOMS",
+      "category": "Paella Style",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "whole-branzino",
+      "name": "WHOLE BRANZINO",
+      "category": "Table Side On The Cart",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "lamb-shank",
+      "name": "LAMB SHANK",
+      "category": "Table Side On The Cart",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    },
+    {
+      "currentProductKey": "45-days-dry-aged-ribeye",
+      "name": "45 DAYS DRY AGED RIBEYE",
+      "category": "Table Side On The Cart",
+      "sourceEvidenceIds": [
+        "dinner-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": []
+    }
+  ],
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:charcuterie-board",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "charcuterie-board"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "2:crispy-rice-terrine-with-mussels",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "crispy-rice-terrine-with-mussels"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "3:duck-and-mushrooms",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "duck-and-mushrooms"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "4:eggplant-hummus",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "eggplant-hummus"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "5:fideua-angel-hair-paella",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "fideua-angel-hair-paella"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "6:galician-octopus",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "galician-octopus"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "7:gambas-al-ajillo",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "gambas-al-ajillo"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "8:green-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "green-salad"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "9:hamachi-crudo",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "hamachi-crudo"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "10:hokkaido-scallops-with-artichokes-and-peas",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "hokkaido-scallops-with-artichokes-and-peas"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "11:iberico-pork-chop",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "iberico-pork-chop"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "12:lamb-loin",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lamb-loin"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "13:lamb-shank",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lamb-shank"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "14:mussels-escabeche",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mussels-escabeche"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "15:pa-amb-tomaquet-spanish-tomato-and-bread",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pa-amb-tomaquet-spanish-tomato-and-bread"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "16:roasted-baby-carrots",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roasted-baby-carrots"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "17:roasted-cauliflower",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roasted-cauliflower"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "18:sagas-branzino-filet",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sagas-branzino-filet"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "19:steak-tartare",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "steak-tartare"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      },
+      {
+        "auditItemKey": "20:whole-branzino",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "whole-branzino"
+        ],
+        "sourceEvidenceIds": [
+          "dinner-pdf"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify"
+}

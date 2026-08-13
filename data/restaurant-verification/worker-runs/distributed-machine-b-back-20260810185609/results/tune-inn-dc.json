@@ -1,0 +1,260 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260810185609",
+  "restaurantId": "tune-inn-dc",
+  "packetValidation": {
+    "baselineItemCount": 43,
+    "baselineFingerprint": "5893d017779d9a9f707753d40a12014e4ba317eeecd966f1d2133cc0ebc0b177",
+    "itemCheckCount": 43,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "Tune Inn Restaurant & Bar",
+    "locationId": "capitol-hill-dc",
+    "address": "331 1/2 Pennsylvania Ave SE, Washington, DC 20003",
+    "domain": "tuneinndc.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "e-home",
+      "e-toast"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "e-home",
+      "url": "https://tuneinndc.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and location identity",
+      "retrievedAt": "2026-08-10T19:00:00Z"
+    },
+    {
+      "evidenceId": "e-toast",
+      "url": "https://order.toasttab.com/online/tune-inn-restaurant-and-bar",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current food, breakfast, nonalcoholic and pickup menu surfaces",
+      "retrievedAt": "2026-08-10T19:00:00Z"
+    },
+    {
+      "evidenceId": "e-search",
+      "url": "https://www.google.com/search?q=site%3Atuneinndc.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted official-domain allergen search",
+      "retrievedAt": "2026-08-10T19:00:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://tuneinndc.com/",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "capitol-hill-dc",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; pickup ordering link and open-hours notice",
+      "sourceEvidenceIds": [
+        "e-home"
+      ]
+    },
+    {
+      "surfaceId": "toast-appetizers-sides",
+      "url": "https://order.toasttab.com/online/tune-inn-restaurant-and-bar",
+      "authority": "linked vendor",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "capitol-hill-dc",
+      "servicePeriod": "appetizers and sides",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "e-toast"
+      ]
+    },
+    {
+      "surfaceId": "toast-breakfast",
+      "url": "https://order.toasttab.com/online/tune-inn-restaurant-and-bar",
+      "authority": "linked vendor",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "capitol-hill-dc",
+      "servicePeriod": "breakfast",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "e-toast"
+      ]
+    },
+    {
+      "surfaceId": "toast-grill-sandwiches-salads",
+      "url": "https://order.toasttab.com/online/tune-inn-restaurant-and-bar",
+      "authority": "linked vendor",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "capitol-hill-dc",
+      "servicePeriod": "grill, sandwiches and salads",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "e-toast"
+      ]
+    },
+    {
+      "surfaceId": "toast-combos",
+      "url": "https://order.toasttab.com/online/tune-inn-restaurant-and-bar",
+      "authority": "linked vendor",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "capitol-hill-dc",
+      "servicePeriod": "combos",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; alcohol-only offerings excluded",
+      "sourceEvidenceIds": [
+        "e-toast"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "tune-inn-current-menu-catalog",
+      "name": "Tune Inn current food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "e-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "productCount": 76,
+      "boundary": "76 distinct current food and nonalcoholic products across featured, appetizers and sides, breakfast, grill, sandwich/entree, salads, and combos; repeated presentations consolidated; alcohol-only bar offerings excluded"
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "tuneinndc.com homepage, navigation and ordering link",
+        "outcome": "No official allergen matrix or cross-contact statement found",
+        "sourceEvidenceIds": [
+          "e-home"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "official site document, PDF, image, FAQ, nutrition, ingredient and sitemap surfaces",
+        "outcome": "No official allergen or nutrition document found",
+        "sourceEvidenceIds": [
+          "e-home"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Toast Tune Inn menu and item pages",
+        "outcome": "Current menu descriptions present; no complete allergen matrix or cross-contact statement found",
+        "sourceEvidenceIds": [
+          "e-toast"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "site:tuneinndc.com allergen allergy nutrition ingredients PDF menu",
+        "outcome": "No authoritative complete allergen matrix found",
+        "sourceEvidenceIds": [
+          "e-search"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "expectedCount": 43,
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:bacon-and-bleu",
+          "2:bacon-cheeseburger",
+          "3:beer-battered-burger",
+          "4:boneless-wings",
+          "5:bowl-of-chili-and-garden-salad",
+          "6:bowl-of-chili-and-grilled-cheese",
+          "7:breakfast-sandwich",
+          "8:buffalo-chicken-sandwich",
+          "9:caesar-salad",
+          "10:capitol-crunch-burger",
+          "11:cheese-omelet",
+          "12:chef-salad",
+          "13:chicken-and-waffle",
+          "14:chicken-philly-cheesesteak",
+          "15:chili-and-grilled-cheese",
+          "16:chili-cheese-burger",
+          "17:chili-cheese-omelet",
+          "18:cobb-salad",
+          "19:country-fried-steak-and-eggs",
+          "20:cup-chili-and-grilled-cheese",
+          "21:cup-of-chili-and-garden-salad",
+          "22:fish-and-chips",
+          "23:french-fries",
+          "24:french-toast",
+          "25:fried-shrimp-basket",
+          "26:grilled-cheese",
+          "27:large-house-salad",
+          "28:meat-and-cheese-omelet",
+          "29:mozzarella-sticks",
+          "30:salmon-platter",
+          "31:sandwichentree",
+          "32:side-home-fries",
+          "33:side-toast",
+          "34:small-house-salad",
+          "35:soup-of-the-day",
+          "36:spinach-and-cheese-omelet",
+          "37:steak-and-eggs",
+          "38:sweet-fries",
+          "39:swiss-mush-onion-burger",
+          "40:tuna-melt",
+          "41:tune-inn-burger",
+          "42:waffle",
+          "43:wings"
+        ],
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tune-inn-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-toast"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify",
+  "outcome": "researched",
+  "processLog": [
+    "packet_validated",
+    "identity_verified",
+    "menu_surfaces_inventoried",
+    "matrix_search_completed",
+    "products_reconciled",
+    "catalog_repair_applied",
+    "validator_passed"
+  ]
+}

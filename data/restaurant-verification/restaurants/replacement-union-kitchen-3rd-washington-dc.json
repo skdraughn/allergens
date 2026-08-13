@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "verificationContractVersion": 2,
+  "restaurantId": "replacement-union-kitchen-3rd-washington-dc",
+  "name": "Union Kitchen 3rd",
+  "status": "codex_verified",
+  "identity": {
+    "name": "Union Kitchen 3rd",
+    "location": "538 3rd St NE, Washington, DC 20002",
+    "domain": "unionkitchen.com",
+    "officialHomepage": "https://www.unionkitchen.com/",
+    "status": "confirmed",
+    "sourceEvidenceIds": [
+      "src-official-home",
+      "src-third-party-location",
+      "src-vendor-history"
+    ]
+  },
+  "currentCatalog": {
+    "status": "verified",
+    "reviewedBaselineItemCount": 12,
+    "currentProductCount": 0,
+    "reconciledCurrentProductCount": 0,
+    "inventoryFingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "surfaces": [
+      {
+        "surfaceId": "official-home",
+        "title": null,
+        "url": "https://www.unionkitchen.com/",
+        "current": true,
+        "scopeStatus": "complete",
+        "verified": true,
+        "evidenceIds": [
+          "src-official-home"
+        ],
+        "notes": [
+          "current"
+        ]
+      },
+      {
+        "surfaceId": "official-resources",
+        "title": null,
+        "url": "https://www.unionkitchen.com/resources",
+        "current": true,
+        "scopeStatus": "complete",
+        "verified": true,
+        "evidenceIds": [
+          "src-official-resources"
+        ],
+        "notes": [
+          "current"
+        ]
+      }
+    ],
+    "products": [],
+    "notes": [
+      "Coordinator terminal catalog derived from validated Luna research and serialized APPLY output."
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [],
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 12,
+      "sourceItemCount": 0,
+      "notes": [
+        "POC catalog and every frozen item were coordinator-reconciled."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "accurately_unavailable",
+      "directPositiveCount": 0,
+      "directAssertionCount": 0,
+      "highestAuthorityTier": null,
+      "notes": [
+        "All four official-matrix search classes completed; direct positives are retained and missing disclosure remains unavailable."
+      ]
+    },
+    "extraction": {
+      "verdict": "not_applicable",
+      "parserReviewed": false,
+      "semanticsVerified": true,
+      "notes": [
+        "POC closeout uses a verified target-specific catalog transformation; shared-parser review is deferred."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "class": "official_site",
+      "queryOrLocation": "official homepage and navigation",
+      "outcome": "no current 3rd Street food/nonalcoholic menu or allergen matrix",
+      "sourceEvidenceIds": [
+        "src-official-home"
+      ]
+    },
+    {
+      "class": "official_documents",
+      "queryOrLocation": "official resources, documents, PDFs, sitemap-linked surfaces",
+      "outcome": "no 3rd Street allergen, nutrition, ingredient, or menu document",
+      "sourceEvidenceIds": [
+        "src-official-resources"
+      ]
+    },
+    {
+      "class": "linked_vendor",
+      "queryOrLocation": "Uber Eats Union Kitchen 538 3rd St",
+      "outcome": "historical vendor menu is closed; no current allergen matrix",
+      "sourceEvidenceIds": [
+        "src-vendor-history"
+      ]
+    },
+    {
+      "class": "targeted_web_search",
+      "queryOrLocation": "Union Kitchen 3rd Washington DC allergen allergy nutrition ingredients PDF menu",
+      "outcome": "no authoritative current allergen matrix found",
+      "sourceEvidenceIds": [
+        "src-targeted-search"
+      ]
+    }
+  ],
+  "findings": [],
+  "reconciliation": {
+    "artifact": 12,
+    "unresolved": 0
+  },
+  "adjudication": {
+    "type": "coordinator",
+    "runId": "distributed-machine-b-back-20260810184453",
+    "decidedAt": "2026-08-12T14:26:13.045Z",
+    "recommendation": "codex_verified",
+    "model": {
+      "id": "codex-poc-coordinator",
+      "reasoningEffort": "high"
+    },
+    "rationale": "Research structure, current product mappings, direct allergen authority, target repair, Ingredient Intelligence timing, focused validation, and idempotency passed the POC terminal gates.",
+    "artifactHashes": []
+  },
+  "workerHandoff": {
+    "runId": "distributed-machine-b-back-20260810184453",
+    "restaurantId": "replacement-union-kitchen-3rd-washington-dc",
+    "preparedAt": "2026-08-12T14:26:13.043Z",
+    "routeDestination": "coordinator",
+    "solRequired": false,
+    "artifacts": [
+      {
+        "kind": "poc_job",
+        "path": "distributed-runs/distributed-machine-b-back-20260810184453/jobs/replacement-union-kitchen-3rd-washington-dc.json",
+        "sha256": "7d7bb8331be68a3ee3c5050793ed6a09397e341e86a123602717a70a47a36d08"
+      },
+      {
+        "kind": "poc_research",
+        "path": "worker-runs/distributed-machine-b-back-20260810184453/results/replacement-union-kitchen-3rd-washington-dc.json",
+        "sha256": "35bbe0119ff59eabfa803634b9dc3fa7776afcc7e1327524a794c66fab5e7c48"
+      },
+      {
+        "kind": "poc_apply",
+        "path": "worker-runs/distributed-machine-b-back-20260810184453/apply-results/replacement-union-kitchen-3rd-washington-dc.json",
+        "sha256": "a41caede207c01af9463dd6962dbb702414151362e57a7fa8b8d2da011d983f4"
+      }
+    ],
+    "notes": [
+      "POC worker artifacts persisted by the root coordinator."
+    ]
+  },
+  "repairs": [
+    {
+      "id": "distributed-machine-b-back-20260810184453-replacement-union-kitchen-3rd-washington-dc-target-repair",
+      "status": "verified",
+      "summary": "Applied and validated the restaurant-specific POC catalog repair.",
+      "files": [
+        "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+        "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/replacement-union-kitchen-3rd-washington-dc.json",
+        "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/replacement-union-kitchen-3rd-washington-dc.json",
+        "/Users/skdraughn/software/allergy-app/data/restaurant-verification/distributed-runs/distributed-machine-b-back-20260810184453/apply-results/replacement-union-kitchen-3rd-washington-dc.json",
+        "/Users/skdraughn/software/allergy-app/scripts/apply-batch40-poc.mjs"
+      ],
+      "fixturePaths": [
+        "data\\restaurant-verification\\distributed-runs\\distributed-machine-b-back-20260810184453\\results\\replacement-union-kitchen-3rd-washington-dc.json"
+      ],
+      "verificationCommands": [
+        "fingerprint gate",
+        "validatePocResearchFiles",
+        "exact current-surface preflight",
+        "target-only canonical apply",
+        "recompute Ingredient Intelligence after direct finalization",
+        "run twice and compare owned bytes"
+      ]
+    }
+  ],
+  "notes": [
+    "Coordinator-only POC closeout packet generated after serialized APPLY."
+  ],
+  "updatedAt": "2026-08-12T14:26:13.681Z",
+  "completedAt": "2026-08-12T14:26:13.681Z"
+}

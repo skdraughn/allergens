@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-a-front-5-front-20260811173845",
+  "restaurantId": "minibar-dc",
+  "name": "minibar by Jose Andres",
+  "packetValidation": {
+    "baselineItemCount": 0,
+    "baselineFingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "itemChecksRead": 0,
+    "itemChecksBelongToRestaurant": true
+  },
+  "identity": {
+    "status": "confirmed",
+    "location": "855 E St NW, Washington, DC 20004",
+    "locationId": null,
+    "officialHomepage": "https://www.minibarbyjoseandres.com/",
+    "sourceEvidenceIds": ["src-official-location", "src-jose-location"],
+    "notes": ["The official Minibar location page identifies the Washington DC restaurant and address."]
+  },
+  "sources": [
+    {"evidenceId":"src-official-location","url":"https://www.minibarbyjoseandres.com/location/minibar-by-jose-andres/","authorityTier":"restaurant_issued","purpose":"official identity, hours, tasting-menu scope, and location page","retrievedAt":"2026-08-11T18:00:00.000Z"},
+    {"evidenceId":"src-official-faq","url":"https://www.minibarbyjoseandres.com/faq-minibar/","authorityTier":"restaurant_issued","purpose":"official menu boundary, allergy accommodation, and beverage scope","retrievedAt":"2026-08-11T18:01:00.000Z"},
+    {"evidenceId":"src-jose-location","url":"https://www.joseandres.com/location/minibar-washington-dc/","authorityTier":"restaurant_issued","purpose":"parent restaurant-group identity/location surface","retrievedAt":"2026-08-11T18:02:00.000Z"},
+    {"evidenceId":"src-official-home","url":"https://www.minibarbyjoseandres.com/","authorityTier":"restaurant_issued","purpose":"official homepage and navigation inventory","retrievedAt":"2026-08-11T18:03:00.000Z"},
+    {"evidenceId":"src-opentable","url":"https://www.opentable.com/minibar-by-jose-andres?rid=3212","authorityTier":"restaurant_linked_vendor","purpose":"linked reservation vendor inspected for menu/product surface","retrievedAt":"2026-08-11T18:04:00.000Z"},
+    {"evidenceId":"src-targeted-search","url":"https://www.google.com/search?q=site%3Aminibarbyjoseandres.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF+OR+menu","authorityTier":"third_party","purpose":"targeted web search for official allergen and menu material","retrievedAt":"2026-08-11T18:05:00.000Z"}
+  ],
+  "menuSurfaces": [
+    {"surfaceId":"official-location","title":"Official Minibar location page","url":"https://www.minibarbyjoseandres.com/location/minibar-by-jose-andres/","current":true,"scopeStatus":"complete","authority":"restaurant_issued","servicePeriod":"dinner","sourceEvidenceIds":["src-official-location"],"notes":["Describes a multi-course tasting menu but publishes no itemized food or nonalcoholic products."]},
+    {"surfaceId":"official-faq","title":"Official Minibar FAQ","url":"https://www.minibarbyjoseandres.com/faq-minibar/","current":true,"scopeStatus":"complete","authority":"restaurant_issued","servicePeriod":"dinner","sourceEvidenceIds":["src-official-faq"],"notes":["States the tasting menu is enjoyed as a whole and items are not available à la carte; beverage pairings are offered separately."]},
+    {"surfaceId":"linked-opentable","title":"OpenTable reservation surface","url":"https://www.opentable.com/minibar-by-jose-andres?rid=3212","current":true,"scopeStatus":"complete","authority":"restaurant_linked_vendor","servicePeriod":"dinner","sourceEvidenceIds":["src-opentable"],"notes":["Reservation/product surface inspected; no itemized current food or nonalcoholic menu was available."]}
+  ],
+  "currentProducts": [
+    {"currentProductKey":"minibar-tasting-menu","name":"Minibar tasting menu","category":"tasting_menu","description":"Multi-course tasting menu served as a whole; not available à la carte.","presentationIds":["official-location","official-faq"],"sourceEvidenceIds":["src-official-location","src-official-faq"],"containsAllergens":[],"mayContainAllergens":[],"allergenSourceType":"unavailable","allergenAuthorityTier":null,"allergenSourceEvidenceIds":[],"notes":["The restaurant does not publish item-level ingredients or an allergen matrix. Alcoholic beverage pairings are out of food/nonalcoholic product scope."]}
+  ],
+  "matrixSearch": {
+    "attempted":["official_site","official_documents","linked_vendor","targeted_web_search"],
+    "status":"accurately_unavailable",
+    "attempts":[
+      {"class":"official_site","locationInspected":"Official homepage, Minibar location page, About/Discover/FAQ navigation","urls":["https://www.minibarbyjoseandres.com/","https://www.minibarbyjoseandres.com/location/minibar-by-jose-andres/","https://www.minibarbyjoseandres.com/faq-minibar/"],"outcome":"No allergen, nutrition, ingredient, or itemized menu document found.","evidenceIds":["src-official-home","src-official-location","src-official-faq"]},
+      {"class":"official_documents","locationInspected":"Official site document/navigation and linked downloadable-document surfaces","urls":["https://www.minibarbyjoseandres.com/"],"outcome":"No official allergen PDF, nutrition sheet, ingredient list, sitemap-linked menu file, or menu image found.","evidenceIds":["src-official-home"]},
+      {"class":"linked_vendor","locationInspected":"Restaurant-linked OpenTable reservation surface","urls":["https://www.opentable.com/minibar-by-jose-andres?rid=3212"],"outcome":"Reservation surface inspected; no allergen matrix or itemized food/nonalcoholic menu found.","evidenceIds":["src-opentable"]},
+      {"class":"targeted_web_search","locationInspected":"Targeted site-restricted search for allergen, allergy, nutrition, ingredients, PDF, and menu","urls":["https://www.google.com/search?q=site%3Aminibarbyjoseandres.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF+OR+menu"],"outcome":"Search returned official location/FAQ pages but no official allergen matrix or itemized current menu.","evidenceIds":["src-targeted-search","src-official-location","src-official-faq"]}
+    ]
+  },
+  "restaurantLevelAllergenEvidence":[
+    {"evidenceId":"allergen-policy-faq","statement":"Allergy or dietary restrictions must be communicated early; due to preparation complexity, ability to accommodate certain restrictions may be limited without sufficient notice.","sourceEvidenceIds":["src-official-faq"],"authorityTier":"restaurant_issued","scope":"restaurant_level","notes":["Conservative accommodation/caution statement; not an allergen absence claim and not a cross-contact guarantee."]}
+  ],
+  "reconciliation":{"items":[]},
+  "changes":{"identityAmbiguous":false,"menuScopeUnresolved":false,"officialAllergenConflict":false,"crossContactConflict":false,"unsupportedNegativeClaim":false,"sourceAuthorityAmbiguous":false,"duplicateItems":false,"catalogDrift":true,"staleItems":false,"newItems":true,"nameOrCategoryCleanup":false,"restaurantSpecificExtraction":false,"parserIssue":false},
+  "findings":[{"type":"official_allergen_data_unavailable","summary":"All four required official allergen searches completed without finding a matrix; direct allergen fields remain unavailable.","sourceEvidenceIds":["src-official-faq","src-targeted-search"]}],
+  "recommendedLane":"luna_fix",
+  "notes":["Frozen baseline contains zero item checks. Current scope is one orderable tasting-menu experience represented by official restaurant pages; no itemized food or nonalcoholic menu surface is published."]
+}

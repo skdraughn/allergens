@@ -1,0 +1,1151 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-batch-02-2026-07-16",
+  "restaurant": {
+    "restaurantId": "replacement-bandoola-bowl-washington-dc",
+    "name": "Bandoola Bowl",
+    "domain": "bandoola-bowl.com",
+    "locationId": "washington-dc",
+    "baselineItemCount": 13,
+    "baselineItemFingerprint": "4357a979c52fb064f63537ec8f2c3dff69196cb8707dc3399cfa74b0a88295a8",
+    "officialItemCount": 2,
+    "officialAllergenStatus": "extracted",
+    "sourceFamily": "generic-website",
+    "parserProfile": "generic-website",
+    "guideUrl": "https://bandoola-bowl.com/",
+    "sourceUrls": [
+      "https://bandoola-bowl.com/",
+      "https://bandoola-bowl.com/bandoola-bowl-dc/about/",
+      "https://bandoola-bowl.com/bandoola-bowl-dc/menu/",
+      "https://bandoola-bowl.com/bandoola-bowl-dc/bandoola/",
+      "https://bandoola-bowl.com/bandoola-bowl-dc/location/"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "validationWarnings": [
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "inaccessible_source",
+      "count_drift",
+      "current_only",
+      "name_collision",
+      "non_exact_reconciliation",
+      "allergen_mismatch",
+      "cross_contact",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 13,
+      "reconciledItemCount": 13,
+      "uniqueReconciledItemCount": 13,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 1,
+      "activeMenuSurfaceCount": 1,
+      "accessibleMenuSurfaceCount": 1,
+      "serviceCount": 0,
+      "pdfImageSurfaceCount": 0,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 1,
+      "incompleteSurfaceCount": 0,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 26,
+      "currentOnlyCount": 11,
+      "baselineOnlyCount": 0,
+      "countDrift": true,
+      "duplicatePresentationCount": 0,
+      "nameCollisionCount": 4,
+      "authorityAmbiguityCount": 0,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 13,
+      "allergenMismatchItemCount": 10,
+      "crossContactCount": 12,
+      "parserRepairFindingCount": 0,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 0,
+      "validationErrorCount": 0,
+      "lowConfidence": false
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "high",
+      "overall": 0.91,
+      "menu": 0.96,
+      "allergenSource": 0.83,
+      "extraction": 0.93,
+      "rationale": "The official DC menu and location are accessible and independently re-enumerated. Menu scope is complete for the visible official catalog, but allergen disclosure is explicitly partial and the official linked DoorDash destination does not expose an enumerable Bandoola catalog."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Bandoola Bowl at Western Market Food Hall, 2000 Pennsylvania Avenue NW, Washington, DC 20006.",
+      "confidence": 0.99,
+      "sourceEvidenceIds": [
+        "terra-official-home",
+        "terra-official-location"
+      ],
+      "notes": "Official home and location pages agree on name, telephone, address, and operating scope. The Allmenus listing is for a different address and is excluded from current-location scope."
+    },
+    "sources": [
+      {
+        "evidenceId": "terra-official-home",
+        "url": "https://bandoola-bowl.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Bandoola Bowl DC",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": "Official site calls itself a Southeast Asian salad shop and identifies Western Market Food Hall, 2000 Pennsylvania Avenue NW, Washington, DC 20006.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "html"
+      },
+      {
+        "evidenceId": "terra-official-location",
+        "url": "https://bandoola-bowl.com/bandoola-bowl-dc/location/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Location - Bandoola Bowl",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": "Foggy Bottom; located in Western Market Food Hall in Washington, DC, at 2000 Pennsylvania Avenue NW, Washington, D.C. 20006.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "html"
+      },
+      {
+        "evidenceId": "terra-official-menu",
+        "url": "https://bandoola-bowl.com/bandoola-bowl-dc/menu/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Menu - Bandoola Bowl",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": "Six dressings, seven add-ons, ten salads, two warm bowls, seasonal offerings by inquiry, and Shweji. It states salads contain peanuts and some ingredients may have contacted peanuts; two dressings contain fish sauce.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "html"
+      },
+      {
+        "evidenceId": "terra-official-order",
+        "url": "https://bandoola-bowl.com/bandoola-bowl-dc/order-online/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Order Online - Bandoola Bowl",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": "Official page links its online ordering to DoorDash but contains no separate item catalog.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "html"
+      },
+      {
+        "evidenceId": "terra-linked-doordash",
+        "url": "https://www.doordash.com/search/store/bandoola%20bowl/?event_type=search",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "DoorDash search results for Bandoola Bowl",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": "The official link resolves to a generic DoorDash search page that does not display a Bandoola Bowl result or an enumerable menu.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "html"
+      },
+      {
+        "evidenceId": "terra-third-party-allmenus",
+        "url": "https://www.allmenus.com/dc/washington/634707-bandoola-bowl/menu/",
+        "authorityTier": "third_party",
+        "purpose": "menu",
+        "title": "Bandoola Bowl menu - Washington DC",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": "Lists 1069 Wisconsin Avenue NW, a different address from the official current location, and warns information may not reflect recent changes.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "html"
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://bandoola-bowl.com/bandoola-bowl-dc/menu/",
+        "notes": "Official home, location, menu, and ordering pages reopened."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://bandoola-bowl.com/bandoola-bowl-dc/order-online/",
+        "notes": "Accessible official page; it links to DoorDash and contains no standalone catalog."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "blocked",
+        "url": "https://www.doordash.com/search/store/bandoola%20bowl/?event_type=search",
+        "notes": "Resolved official vendor link is a generic search response with no enumerable Bandoola Bowl catalog."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": "https://bandoola-bowl.com/bandoola-bowl-dc/menu/",
+        "notes": "Official DC menu located and fully re-enumerated."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No current official archived menu surface found that added a current catalog."
+      },
+      {
+        "kind": "third_party",
+        "status": "accessible",
+        "url": "https://www.allmenus.com/dc/washington/634707-bandoola-bowl/menu/",
+        "notes": "Reviewed only as third-party corroboration; address conflicts with official location and page warns of possible staleness."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "inaccessible_source",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-order",
+          "terra-linked-doordash"
+        ],
+        "notes": "The restaurant-linked DoorDash destination is not enumerable."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Visible official catalog has 26 consolidated products versus 13 frozen baseline rows."
+      },
+      {
+        "gateId": "current_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Dressings, pork, egg, vegetables, chickpeas, and several other current products have no baseline row."
+      },
+      {
+        "gateId": "name_collision",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Chicken, shrimp, tofu, and pork occur as add-ons and salad presentations; the groups preserve those distinctions."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Frozen names omit current category/presentation context and require normalized reconciliation."
+      },
+      {
+        "gateId": "allergen_mismatch",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Frozen rows omit official salad peanut/cross-contact disclosures and narrow named-ingredient positives."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Official menu expressly says some salad ingredients may have contacted peanuts in the kitchen."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-menu",
+          "terra-official-order",
+          "terra-linked-doordash",
+          "terra-third-party-allmenus"
+        ],
+        "notes": "Independent review confirms partial allergen disclosure, configurable bowls, inaccessible linked vendor catalog, and third-party location conflict."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "surface-official-dc-menu",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Accessible current restaurant-issued HTML menu. Independently enumerated six dressings, seven add-ons, ten salads, two warm-bowl bases, seasonal inquiry text, and one dessert; no pagination or separate official meal-period menu is exposed."
+      }
+    ],
+    "currentProductCheckGroups": [
+      {
+        "currentProductKeys": [
+          "dressing-bandoola-burmese"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [
+          "fish"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Asterisk legend explicitly says contains fish sauce."
+      },
+      {
+        "currentProductKeys": [
+          "dressing-spicy-thai"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [
+          "fish"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Asterisk legend explicitly says contains fish sauce."
+      },
+      {
+        "currentProductKeys": [
+          "dressing-bandoola-spicy"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "No complete or item-specific allergen disclosure."
+      },
+      {
+        "currentProductKeys": [
+          "dressing-bandoola-lemon"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "No complete or item-specific allergen disclosure."
+      },
+      {
+        "currentProductKeys": [
+          "dressing-peanut-soya"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [
+          "peanut",
+          "soy"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Named peanut and soya identities support only positive evidence."
+      },
+      {
+        "currentProductKeys": [
+          "dressing-garden-herb"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Vegan marking does not establish negative or cross-contact claims."
+      },
+      {
+        "currentProductKeys": [
+          "addon-shrimp"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [
+          "shellfish"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Named shrimp supports narrow shellfish positive."
+      },
+      {
+        "currentProductKeys": [
+          "addon-pork"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "No complete allergen disclosure."
+      },
+      {
+        "currentProductKeys": [
+          "addon-chicken"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "No complete allergen disclosure."
+      },
+      {
+        "currentProductKeys": [
+          "addon-tofu"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [
+          "soy"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Named tofu supports narrow soy positive."
+      },
+      {
+        "currentProductKeys": [
+          "addon-soft-boiled-egg"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Named egg supports narrow egg positive."
+      },
+      {
+        "currentProductKeys": [
+          "addon-vegetables"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Generic add-on, formulation undisclosed."
+      },
+      {
+        "currentProductKeys": [
+          "addon-chickpeas"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "No complete allergen disclosure."
+      },
+      {
+        "currentProductKeys": [
+          "salad-ginger"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [
+          "peanut"
+        ],
+        "mayContainAllergens": [
+          "peanut"
+        ],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_allergen_document",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Official salad-wide statement applies."
+      },
+      {
+        "currentProductKeys": [
+          "salad-mango"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [
+          "peanut"
+        ],
+        "mayContainAllergens": [
+          "peanut"
+        ],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_allergen_document",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Official salad-wide statement applies; menu calls it seasonal."
+      },
+      {
+        "currentProductKeys": [
+          "salad-green-bean"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [
+          "peanut"
+        ],
+        "mayContainAllergens": [
+          "peanut"
+        ],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_allergen_document",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Official salad-wide statement applies."
+      },
+      {
+        "currentProductKeys": [
+          "salad-chickpea-curry"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [
+          "peanut"
+        ],
+        "mayContainAllergens": [
+          "peanut"
+        ],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_allergen_document",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Official salad-wide statement applies."
+      },
+      {
+        "currentProductKeys": [
+          "salad-tomato"
+        ],
+        "presentationIds": [
+          "salad-tomato"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "peanut"
+        ],
+        "mayContainAllergens": [
+          "peanut"
+        ],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_allergen_document",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Scout presentation ID independently accounted for; official salad-wide statement applies."
+      },
+      {
+        "currentProductKeys": [
+          "salad-papaya"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [
+          "peanut"
+        ],
+        "mayContainAllergens": [
+          "peanut"
+        ],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_allergen_document",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Official salad-wide statement applies."
+      },
+      {
+        "currentProductKeys": [
+          "salad-tofu"
+        ],
+        "presentationIds": [
+          "addon-tofu"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "soy",
+          "peanut"
+        ],
+        "mayContainAllergens": [
+          "peanut"
+        ],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_allergen_document",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Scout add-on presentation ID independently accounted for; tofu identity and official salad-wide statement apply."
+      },
+      {
+        "currentProductKeys": [
+          "salad-shrimp"
+        ],
+        "presentationIds": [
+          "addon-shrimp"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "shellfish",
+          "peanut"
+        ],
+        "mayContainAllergens": [
+          "peanut"
+        ],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_allergen_document",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Scout add-on presentation ID independently accounted for; shrimp identity and official salad-wide statement apply."
+      },
+      {
+        "currentProductKeys": [
+          "salad-chicken"
+        ],
+        "presentationIds": [
+          "addon-chicken"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "peanut"
+        ],
+        "mayContainAllergens": [
+          "peanut"
+        ],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_allergen_document",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Scout add-on presentation ID independently accounted for; official salad-wide statement applies."
+      },
+      {
+        "currentProductKeys": [
+          "salad-pork"
+        ],
+        "presentationIds": [
+          "addon-pork"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "peanut"
+        ],
+        "mayContainAllergens": [
+          "peanut"
+        ],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_allergen_document",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Scout add-on presentation ID independently accounted for; official salad-wide statement applies."
+      },
+      {
+        "currentProductKeys": [
+          "warm-spicy-rice-noodles"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Menu states noodles may be wheat or spicy rice noodles and permits protein/dressing choices; no full variant/allergen catalog."
+      },
+      {
+        "currentProductKeys": [
+          "warm-brown-rice"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Protein and dressing choices make this configurable; no full variant/allergen catalog."
+      },
+      {
+        "currentProductKeys": [
+          "dessert-shweji"
+        ],
+        "presentationIds": [],
+        "verdict": "verified",
+        "containsAllergens": [
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "notes": "Burmese semolina coconut cake supports a narrow wheat positive only."
+      }
+    ],
+    "additionalMenuSurfaces": [],
+    "additionalCurrentProducts": [],
+    "reconciliationSummary": {
+      "reconciledItemCount": 13,
+      "counts": {
+        "normalized_match/accurately_unavailable": 2,
+        "normalized_match/mismatch": 10,
+        "artifact/not_applicable": 1
+      }
+    },
+    "findings": [
+      {
+        "findingId": "terra-allergen-disclosure-partial-and-baseline-mismatch",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "The official menu expressly says salads contain peanuts and some ingredients may have contacted peanuts, but the frozen salad-derived rows omit both arrays. It supplies only narrow positives, not a complete matrix or negatives.",
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "affectedAuditItemKeys": [
+          "2:chicken",
+          "3:chickpea-curry",
+          "5:ginger",
+          "6:green-bean",
+          "7:mango",
+          "8:papaya",
+          "9:shrimp",
+          "12:tofu",
+          "13:tomato"
+        ]
+      },
+      {
+        "findingId": "terra-named-ingredient-positives",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "The frozen baseline omits supported positives for Shweji (wheat from semolina), shrimp (shellfish), and tofu (soy); salad products additionally inherit the official peanut and possible-contact statement.",
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "affectedAuditItemKeys": [
+          "9:shrimp",
+          "10:shweji",
+          "12:tofu"
+        ]
+      },
+      {
+        "findingId": "terra-configurable-warm-bowls",
+        "severity": "medium",
+        "kind": "scope",
+        "summary": "Warm bowls allow noodle/base, protein, and dressing choices, but the official page does not enumerate each resulting presentation or a full allergen matrix.",
+        "sourceEvidenceIds": [
+          "terra-official-menu"
+        ],
+        "affectedAuditItemKeys": [
+          "1:brown-rice",
+          "11:spicy-rice-noodles"
+        ]
+      },
+      {
+        "findingId": "terra-linked-vendor-unverifiable",
+        "severity": "medium",
+        "kind": "scope",
+        "summary": "The official order page links to DoorDash, but its resolved public search response contains no Bandoola Bowl catalog; it cannot support menu negatives or complete variant coverage.",
+        "sourceEvidenceIds": [
+          "terra-official-order",
+          "terra-linked-doordash"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "terra-third-party-location-mismatch",
+        "severity": "medium",
+        "kind": "identity",
+        "summary": "Allmenus lists a different Washington address and warns its information may be stale; it remains third-party corroboration only and is excluded from current official scope.",
+        "sourceEvidenceIds": [
+          "terra-official-location",
+          "terra-third-party-allmenus"
+        ],
+        "affectedAuditItemKeys": []
+      }
+    ],
+    "summary": "Verified official identity and re-enumerated the single visible official DC menu surface and all 26 scout current products. No additional current official food surface or product was found. The frozen baseline has material allergen mismatches: official salads contain peanuts and may have contacted peanuts; shrimp, tofu, and semolina-based Shweji support narrow positives. All other undisclosed allergens, negatives, and cross-contact conclusions remain unavailable. Linked DoorDash is non-enumerable and third-party Allmenus conflicts with official location.",
+    "coordinatorNotes": [
+      "Read-only Terra result only; no ledger, frozen item, generated data, or coordinator artifact was changed.",
+      "This outcome requires Sol review under deterministic gates and must not be terminalized by a worker."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "1:brown-rice",
+      "baseline": {
+        "itemId": "brown-rice",
+        "name": "Brown Rice",
+        "category": "Bandoola Bowl Dc",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://bandoola-bowl.com/bandoola-bowl-dc/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "2:chicken",
+      "baseline": {
+        "itemId": "chicken",
+        "name": "Chicken",
+        "category": "Bandoola Bowl Dc",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://bandoola-bowl.com/bandoola-bowl-dc/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "3:chickpea-curry",
+      "baseline": {
+        "itemId": "chickpea-curry",
+        "name": "Chickpea Curry",
+        "category": "Bandoola Bowl Dc",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://bandoola-bowl.com/bandoola-bowl-dc/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "5:ginger",
+      "baseline": {
+        "itemId": "ginger",
+        "name": "Ginger",
+        "category": "Bandoola Bowl Dc",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://bandoola-bowl.com/bandoola-bowl-dc/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "6:green-bean",
+      "baseline": {
+        "itemId": "green-bean",
+        "name": "Green Bean",
+        "category": "Bandoola Bowl Dc",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://bandoola-bowl.com/bandoola-bowl-dc/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "7:mango",
+      "baseline": {
+        "itemId": "mango",
+        "name": "Mango",
+        "category": "Bandoola Bowl Dc",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://bandoola-bowl.com/bandoola-bowl-dc/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "8:papaya",
+      "baseline": {
+        "itemId": "papaya",
+        "name": "Papaya",
+        "category": "Bandoola Bowl Dc",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://bandoola-bowl.com/bandoola-bowl-dc/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "9:shrimp",
+      "baseline": {
+        "itemId": "shrimp",
+        "name": "Shrimp",
+        "category": "Bandoola Bowl Dc",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://bandoola-bowl.com/bandoola-bowl-dc/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "10:shweji",
+      "baseline": {
+        "itemId": "shweji",
+        "name": "Shweji",
+        "category": "Bandoola Bowl Dc",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://bandoola-bowl.com/bandoola-bowl-dc/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "11:spicy-rice-noodles",
+      "baseline": {
+        "itemId": "spicy-rice-noodles",
+        "name": "Spicy Rice Noodles",
+        "category": "Bandoola Bowl Dc",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://bandoola-bowl.com/bandoola-bowl-dc/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "12:tofu",
+      "baseline": {
+        "itemId": "tofu",
+        "name": "Tofu",
+        "category": "Bandoola Bowl Dc",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://bandoola-bowl.com/bandoola-bowl-dc/menu/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "13:tomato",
+      "baseline": {
+        "itemId": "tomato",
+        "name": "Tomato",
+        "category": "Bandoola Bowl Dc",
+        "variantGroup": "Restaurant",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://bandoola-bowl.com/bandoola-bowl-dc/menu/"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-02-2026-07-16/jobs/replacement-bandoola-bowl-washington-dc.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-02-2026-07-16/results/replacement-bandoola-bowl-washington-dc.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/replacement-bandoola-bowl-washington-dc.jsonl"
+  }
+}

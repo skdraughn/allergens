@@ -70,7 +70,12 @@ re-enabled.
 - `META#{restaurantId}#{locationId}` rows for canonical chain/location metadata.
 - `TOKEN#{token}` rows for normalized restaurant-name and alias prefix search.
 - `POPULAR#GLOBAL` rows for empty-query popular restaurants.
-- `GEO#{geohashPrefix}` rows for physical locations with `lat`/`lng`.
+- `GEO#{geohashPrefix}` lookup rows for physical locations.
+
+Only `META` rows contain restaurant metadata and compatibility summaries. Popularity,
+token, and geographic rows contain lightweight lookup keys; the search Lambda batch-loads
+the matching `META` rows before returning a page. This keeps each allergy summary stored
+once instead of duplicating it across every search token.
 
 National chain records use `locationId = "national"` and do not require address fields. Local restaurants and physical chain locations should store `lat`, `lng`, and address fields when known.
 

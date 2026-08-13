@@ -1,0 +1,902 @@
+{
+  "schemaVersion": 1,
+  "runId": "2026-07-15T16-39-15-203Z-477384",
+  "restaurant": {
+    "restaurantId": "auntie-annes",
+    "name": "Auntie Anne's",
+    "domain": "auntieannes.com",
+    "locationId": null,
+    "baselineItemCount": 37,
+    "baselineItemFingerprint": "20999741aeff31e2b0856306f5ed29b2fc3efbfaf1d482c636170b6f82182f03",
+    "officialItemCount": 37,
+    "officialAllergenStatus": "extracted",
+    "sourceFamily": "pdf-allergen-matrix",
+    "parserProfile": "pdf-allergen-matrix",
+    "guideUrl": "https://www.auntieannes.com/nutrition",
+    "sourceUrls": [
+      "https://www.auntieannes.com/menu",
+      "https://www.auntieannes.com/nutrition",
+      "https://assets.ctfassets.net/zqt8tllj2cy0/2jjVNaTNGDoMGd4QVucpSy/0f94c0d0541ec11a334dba7ce6fc56b0/Auntie-Annes-Nutrition-Guide.pdf",
+      "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found.",
+    "Evidence official-us-menu has no reproducibility anchor."
+  ],
+  "validationWarnings": [
+    "Evidence official-us-menu has no reproducibility anchor."
+  ],
+  "terra": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "medium",
+      "overall": 0.82,
+      "menu": 0.86,
+      "allergenSource": 0.82,
+      "extraction": 0.9,
+      "rationale": "Current U.S. Auntie Anne's nutrition/allergen guide is restaurant-issued and identifies U.S. menu items and an allergen matrix. The frozen baseline instead derives from a Mexico-domain chart marked confidential and revised 05.13.16; its location and vintage do not support the U.S. national restaurant scope. Every baseline key is therefore reconciled as a location mismatch, with the frozen allergen attribution mismatched for this scope."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Auntie Anne's U.S. national brand/menu scope at auntieannes.com; no locationId was supplied.",
+      "confidence": 0.95,
+      "sourceEvidenceIds": [
+        "official-us-nutrition-guide"
+      ],
+      "notes": "The current guide identifies auntieannes.com, copyright 2025 Auntie Anne's Franchisor SPV LLC, and a U.S. guest-relations phone number."
+    },
+    "sources": [
+      {
+        "evidenceId": "official-us-nutrition-guide",
+        "url": "https://assets.ctfassets.net/zqt8tllj2cy0/2jjVNaTNGDoMGd4QVucpSy/0f94c0d0541ec11a334dba7ce6fc56b0/Auntie-Annes-Nutrition-Guide.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "allergen",
+        "title": "Auntie Anne's Nutritional Guide",
+        "retrievedAt": "2026-07-15T16:41:00Z",
+        "excerpt": "The guide identifies auntieannes.com and ©2025 Auntie Anne's Franchisor SPV LLC. Its allergen statement says all food and beverage items may contain or come into contact with allergens; its matrix lists current U.S. pretzels, dogs, breakfast sandwiches, dips, lemonade products, smoothies, spritzes, and coffee.",
+        "stableRowId": "pages 1-8; allergen matrix pages 7-8",
+        "contentHash": null,
+        "artifactSuggested": "official-us-nutrition-guide.pdf"
+      },
+      {
+        "evidenceId": "legacy-mexico-allergen-chart",
+        "url": "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "allergen",
+        "title": "Food Allergens and Sensitivities for Auntie Anne's Pretzels & Products",
+        "retrievedAt": "2026-07-15T16:41:00Z",
+        "excerpt": "The one-page chart is hosted on auntieannes.com.mx, says “Confidential Revised 05.13.16,” and lists the 37 frozen baseline product labels. It warns that products may share equipment and that the chart does not guarantee products are allergen-free.",
+        "stableRowId": "page 1, product matrix and footer",
+        "contentHash": null,
+        "artifactSuggested": "legacy-mexico-allergen-chart.pdf"
+      },
+      {
+        "evidenceId": "official-us-menu",
+        "url": "https://www.auntieannes.com/menu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Auntie Anne's Menu",
+        "retrievedAt": "2026-07-15T16:41:00Z",
+        "excerpt": null,
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://www.auntieannes.com/menu",
+        "notes": "Official menu page was accessible, but the rendered response did not expose stable menu text."
+      },
+      {
+        "kind": "official_site",
+        "status": "error",
+        "url": "https://www.auntieannes.com/nutrition",
+        "notes": "Direct nutrition landing-page fetch returned a non-retryable safe-open error."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://assets.ctfassets.net/zqt8tllj2cy0/2jjVNaTNGDoMGd4QVucpSy/0f94c0d0541ec11a334dba7ce6fc56b0/Auntie-Annes-Nutrition-Guide.pdf",
+        "notes": "Current restaurant-issued U.S. nutrition and allergen PDF was accessible."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf",
+        "notes": "Frozen-source chart was accessible; its footer marks it confidential and revised 05.13.16."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "not_found",
+        "url": null,
+        "notes": "Targeted official-domain searches returned no additional indexed source."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 37,
+      "counts": {
+        "location_mismatch/mismatch": 37
+      }
+    },
+    "findings": [
+      {
+        "findingId": "scope-legacy-mexico-chart",
+        "severity": "high",
+        "kind": "scope",
+        "summary": "All 37 frozen baseline items and their allergen fields trace to a Mexico-domain matrix marked confidential and revised 05.13.16, while this job identifies the U.S. national Auntie Anne's scope. The current U.S. official guide has a different current product structure and allergen matrix. The frozen source cannot verify U.S.-scope allergen claims.",
+        "sourceEvidenceIds": [
+          "legacy-mexico-allergen-chart",
+          "official-us-nutrition-guide"
+        ],
+        "affectedAuditItemKeys": [
+          "1:almond",
+          "2:blue-raspberry-beverages",
+          "3:breakfast-sandwich",
+          "4:caramel",
+          "5:cheddar-cheese-stuffed-nuggets",
+          "6:cheese-sauce",
+          "7:cinnamon-sugar",
+          "8:clarified-butter",
+          "9:coke-products",
+          "10:frozen-lemonade",
+          "11:frozen-mocha",
+          "12:heated-cheese-sauce",
+          "13:hot-salsa-cheese-sauce",
+          "14:iced-tea-bag-in-box",
+          "15:iced-tea-brewed",
+          "16:jalapeno",
+          "17:latte-products",
+          "18:lemonade-mixers",
+          "19:light-cream-cheese",
+          "20:mango-beverages",
+          "21:marinara-sauce",
+          "22:non-stick-spray",
+          "23:original",
+          "24:pepperoni",
+          "25:pina-colada-beverages",
+          "26:pretzel-dog",
+          "27:pretzels-without-butter",
+          "28:pretzels-with-butter",
+          "29:raisin",
+          "30:roasted-garlic-parmesan",
+          "31:shake-products",
+          "32:sour-cream-and-onion",
+          "33:stabilizer",
+          "34:strawberry-beverages",
+          "35:sweet-mustard",
+          "36:sweet-pretzel-dip",
+          "37:wild-cherry-beverages"
+        ]
+      }
+    ],
+    "summary": "Discrepancy found: the complete frozen baseline is a legacy Mexico-chart extraction, not a verified current U.S. Auntie Anne's menu/allergen source. All 37 audit items were reconciled once as location mismatches and their frozen allergen attribution is mismatched for the job scope.",
+    "coordinatorNotes": [
+      "Route to Sol for adjudication. Do not repair the generated data from this worker result; determine whether the restaurant record should use the current U.S. official guide or be re-scoped to the source location."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "1:almond",
+      "baseline": {
+        "itemId": "almond",
+        "name": "Almond",
+        "category": "Snack",
+        "variantGroup": "Snack",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "soy",
+          "peanut",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "2:blue-raspberry-beverages",
+      "baseline": {
+        "itemId": "blue-raspberry-beverages",
+        "name": "Blue Raspberry Beverages",
+        "category": "Beverages",
+        "variantGroup": "Beverages",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "3:breakfast-sandwich",
+      "baseline": {
+        "itemId": "breakfast-sandwich",
+        "name": "Breakfast Sandwich",
+        "category": "Snack",
+        "variantGroup": "Snack",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg",
+          "wheat",
+          "soy",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "4:caramel",
+      "baseline": {
+        "itemId": "caramel",
+        "name": "Caramel",
+        "category": "Dips",
+        "variantGroup": "Dips",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "5:cheddar-cheese-stuffed-nuggets",
+      "baseline": {
+        "itemId": "cheddar-cheese-stuffed-nuggets",
+        "name": "Cheddar Cheese Stuffed Nuggets",
+        "category": "Snack",
+        "variantGroup": "Snack",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "6:cheese-sauce",
+      "baseline": {
+        "itemId": "cheese-sauce",
+        "name": "Cheese Sauce",
+        "category": "Dips",
+        "variantGroup": "Dips",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "7:cinnamon-sugar",
+      "baseline": {
+        "itemId": "cinnamon-sugar",
+        "name": "Cinnamon Sugar",
+        "category": "Snack",
+        "variantGroup": "Snack",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "8:clarified-butter",
+      "baseline": {
+        "itemId": "clarified-butter",
+        "name": "Clarified Butter",
+        "category": "Miscellaneous",
+        "variantGroup": "Miscellaneous",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "9:coke-products",
+      "baseline": {
+        "itemId": "coke-products",
+        "name": "Coke Products",
+        "category": "Beverages",
+        "variantGroup": "Beverages",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "10:frozen-lemonade",
+      "baseline": {
+        "itemId": "frozen-lemonade",
+        "name": "Frozen Lemonade",
+        "category": "Beverages",
+        "variantGroup": "Beverages",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "11:frozen-mocha",
+      "baseline": {
+        "itemId": "frozen-mocha",
+        "name": "Frozen Mocha",
+        "category": "Beverages",
+        "variantGroup": "Beverages",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "soy",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "12:heated-cheese-sauce",
+      "baseline": {
+        "itemId": "heated-cheese-sauce",
+        "name": "Heated Cheese Sauce",
+        "category": "Dips",
+        "variantGroup": "Dips",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "13:hot-salsa-cheese-sauce",
+      "baseline": {
+        "itemId": "hot-salsa-cheese-sauce",
+        "name": "Hot Salsa Cheese Sauce",
+        "category": "Dips",
+        "variantGroup": "Dips",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "14:iced-tea-bag-in-box",
+      "baseline": {
+        "itemId": "iced-tea-bag-in-box",
+        "name": "Iced Tea (Bag-In-Box)",
+        "category": "Beverages",
+        "variantGroup": "Beverages",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "15:iced-tea-brewed",
+      "baseline": {
+        "itemId": "iced-tea-brewed",
+        "name": "Iced Tea (Brewed)",
+        "category": "Beverages",
+        "variantGroup": "Beverages",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "16:jalapeno",
+      "baseline": {
+        "itemId": "jalapeno",
+        "name": "Jalapeno",
+        "category": "Snack",
+        "variantGroup": "Snack",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "17:latte-products",
+      "baseline": {
+        "itemId": "latte-products",
+        "name": "Latte Products",
+        "category": "Beverages",
+        "variantGroup": "Beverages",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "soy",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "18:lemonade-mixers",
+      "baseline": {
+        "itemId": "lemonade-mixers",
+        "name": "Lemonade Mixers",
+        "category": "Beverages",
+        "variantGroup": "Beverages",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "19:light-cream-cheese",
+      "baseline": {
+        "itemId": "light-cream-cheese",
+        "name": "Light Cream Cheese",
+        "category": "Dips",
+        "variantGroup": "Dips",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "20:mango-beverages",
+      "baseline": {
+        "itemId": "mango-beverages",
+        "name": "Mango Beverages",
+        "category": "Beverages",
+        "variantGroup": "Beverages",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "21:marinara-sauce",
+      "baseline": {
+        "itemId": "marinara-sauce",
+        "name": "Marinara Sauce",
+        "category": "Dips",
+        "variantGroup": "Dips",
+        "isConfigurable": false,
+        "allergens": [
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "22:non-stick-spray",
+      "baseline": {
+        "itemId": "non-stick-spray",
+        "name": "Non-Stick Spray",
+        "category": "Miscellaneous",
+        "variantGroup": "Miscellaneous",
+        "isConfigurable": false,
+        "allergens": [
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "23:original",
+      "baseline": {
+        "itemId": "original",
+        "name": "Original",
+        "category": "Snack",
+        "variantGroup": "Snack",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "24:pepperoni",
+      "baseline": {
+        "itemId": "pepperoni",
+        "name": "Pepperoni",
+        "category": "Snack",
+        "variantGroup": "Snack",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "25:pina-colada-beverages",
+      "baseline": {
+        "itemId": "pina-colada-beverages",
+        "name": "Pina Colada Beverages",
+        "category": "Beverages",
+        "variantGroup": "Beverages",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "26:pretzel-dog",
+      "baseline": {
+        "itemId": "pretzel-dog",
+        "name": "Pretzel Dog",
+        "category": "Snack",
+        "variantGroup": "Snack",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "27:pretzels-without-butter",
+      "baseline": {
+        "itemId": "pretzels-without-butter",
+        "name": "Pretzels (Without Butter)",
+        "category": "Snack",
+        "variantGroup": "Snack",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "28:pretzels-with-butter",
+      "baseline": {
+        "itemId": "pretzels-with-butter",
+        "name": "Pretzels With Butter",
+        "category": "Snack",
+        "variantGroup": "Snack",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "29:raisin",
+      "baseline": {
+        "itemId": "raisin",
+        "name": "Raisin",
+        "category": "Snack",
+        "variantGroup": "Snack",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "30:roasted-garlic-parmesan",
+      "baseline": {
+        "itemId": "roasted-garlic-parmesan",
+        "name": "Roasted Garlic Parmesan",
+        "category": "Snack",
+        "variantGroup": "Snack",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "31:shake-products",
+      "baseline": {
+        "itemId": "shake-products",
+        "name": "Shake Products",
+        "category": "Beverages",
+        "variantGroup": "Beverages",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "32:sour-cream-and-onion",
+      "baseline": {
+        "itemId": "sour-cream-and-onion",
+        "name": "Sour Cream & Onion",
+        "category": "Snack",
+        "variantGroup": "Snack",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "33:stabilizer",
+      "baseline": {
+        "itemId": "stabilizer",
+        "name": "Stabilizer",
+        "category": "Beverages",
+        "variantGroup": "Beverages",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "34:strawberry-beverages",
+      "baseline": {
+        "itemId": "strawberry-beverages",
+        "name": "Strawberry Beverages",
+        "category": "Beverages",
+        "variantGroup": "Beverages",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "35:sweet-mustard",
+      "baseline": {
+        "itemId": "sweet-mustard",
+        "name": "Sweet Mustard",
+        "category": "Dips",
+        "variantGroup": "Dips",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "egg",
+          "wheat",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "36:sweet-pretzel-dip",
+      "baseline": {
+        "itemId": "sweet-pretzel-dip",
+        "name": "Sweet Pretzel Dip",
+        "category": "Dips",
+        "variantGroup": "Dips",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "37:wild-cherry-beverages",
+      "baseline": {
+        "itemId": "wild-cherry-beverages",
+        "name": "Wild Cherry Beverages",
+        "category": "Beverages",
+        "variantGroup": "Beverages",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "official-allergen-menu",
+        "sourceType": "pdf-matrix",
+        "sourceUrls": [
+          "https://auntieannes.com.mx/wp-content/uploads/2025/07/Food-Allergens-and-Sensitivities-Chart.pdf"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/2026-07-15T16-39-15-203Z-477384/jobs/auntie-annes.json",
+    "workerResultPath": "data/restaurant-verification/worker-runs/2026-07-15T16-39-15-203Z-477384/results/auntie-annes.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/auntie-annes.jsonl"
+  }
+}

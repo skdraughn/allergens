@@ -1,0 +1,424 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260810181741",
+  "restaurantId": "wildfire-mclean-va-dc-metro",
+  "outcome": "researched",
+  "packetValidation": {
+    "baselineItemCount": 210,
+    "baselineFingerprint": "caf33ad502a6889130d595617ef7cfae3aafe69e67e88ad9fbebfce1bf5d07a9",
+    "itemChecksRead": 210,
+    "packetRestaurantMatch": true
+  },
+  "identity": {
+    "name": "Wildfire",
+    "locationId": "mclean-va",
+    "address": "2001 International Dr, McLean, VA 22102",
+    "domain": "wildfirerestaurant.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "src-official-home",
+      "src-official-menus",
+      "src-linked-ordering"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "src-official-home",
+      "url": "https://www.wildfirerestaurant.com/tysons",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity and location",
+      "retrievedAt": "2026-08-10T18:30:00.000Z"
+    },
+    {
+      "evidenceId": "src-official-menus",
+      "url": "https://www.wildfirerestaurant.com/tysons/menus",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current menu hub and service-period surfaces",
+      "retrievedAt": "2026-08-10T18:30:00.000Z"
+    },
+    {
+      "evidenceId": "src-official-dining",
+      "url": "https://www.wildfirerestaurant.com/tysons/menus/dining-menus",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current dining menu",
+      "retrievedAt": "2026-08-10T18:30:00.000Z"
+    },
+    {
+      "evidenceId": "src-linked-ordering",
+      "url": "https://wildfire.order.online/store/Wildfire-17295",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current ordering catalog and nonalcoholic products",
+      "retrievedAt": "2026-08-10T18:30:00.000Z"
+    },
+    {
+      "evidenceId": "src-targeted-search",
+      "url": "https://www.wildfirerestaurant.com/tysons/blogs/gluten-free-restaurant-tysons",
+      "authorityTier": "restaurant_issued",
+      "purpose": "targeted allergen and gluten-free search",
+      "retrievedAt": "2026-08-10T18:30:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-menu-hub",
+      "url": "https://www.wildfirerestaurant.com/tysons/menus",
+      "authorityTier": "restaurant_issued",
+      "scopeStatus": "complete",
+      "current": true,
+      "servicePeriod": "all listed menus",
+      "sourceEvidenceIds": [
+        "src-official-menus"
+      ]
+    },
+    {
+      "surfaceId": "official-dining",
+      "url": "https://www.wildfirerestaurant.com/tysons/menus/dining-menus",
+      "authorityTier": "restaurant_issued",
+      "scopeStatus": "complete",
+      "current": true,
+      "servicePeriod": "lunch and dinner",
+      "sourceEvidenceIds": [
+        "src-official-dining"
+      ]
+    },
+    {
+      "surfaceId": "linked-ordering",
+      "url": "https://wildfire.order.online/store/Wildfire-17295",
+      "authorityTier": "restaurant_linked_vendor",
+      "scopeStatus": "complete",
+      "current": true,
+      "servicePeriod": "online ordering",
+      "sourceEvidenceIds": [
+        "src-linked-ordering"
+      ]
+    },
+    {
+      "surfaceId": "official-gluten-free",
+      "url": "https://www.wildfirerestaurant.com/tysons/blogs/gluten-free-restaurant-tysons",
+      "authorityTier": "restaurant_issued",
+      "scopeStatus": "complete",
+      "current": true,
+      "servicePeriod": "gluten-free menu",
+      "sourceEvidenceIds": [
+        "src-targeted-search"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "wildfire-current-menu-catalog",
+      "name": "Wildfire current food and nonalcoholic menu catalog",
+      "category": "restaurant-menu",
+      "sourceEvidenceIds": [
+        "src-official-menus",
+        "src-official-dining",
+        "src-linked-ordering"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable"
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "official Tysons homepage and menus",
+        "locationInspected": "official Tysons homepage and menus",
+        "outcome": "no official allergen matrix located",
+        "sourceEvidenceIds": [
+          "src-official-home",
+          "src-official-menus"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "menu hub, dining menu, downloadable/document links and gluten-free page",
+        "locationInspected": "menu hub, dining menu, downloadable/document links and gluten-free page",
+        "outcome": "no official allergen matrix located",
+        "sourceEvidenceIds": [
+          "src-official-dining",
+          "src-targeted-search"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Wildfire linked ordering catalog",
+        "locationInspected": "Wildfire linked ordering catalog",
+        "outcome": "menu products present; no allergen matrix located",
+        "sourceEvidenceIds": [
+          "src-linked-ordering"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "queryOrLocation": "restaurant/domain searches for allergen, allergy, nutrition, ingredients, PDF, and menu",
+        "locationInspected": "restaurant/domain searches for allergen, allergy, nutrition, ingredients, PDF, and menu",
+        "outcome": "no authoritative allergen matrix located",
+        "sourceEvidenceIds": [
+          "src-targeted-search"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "statement": "Restaurant describes a dedicated gluten-free menu; this does not establish absence of other allergens or cross-contact safety.",
+      "sourceEvidenceIds": [
+        "src-targeted-search"
+      ],
+      "authorityTier": "restaurant_issued"
+    }
+  ],
+  "reconciliation": {
+    "dispositions": [
+      {
+        "disposition": "equivalent_presentation",
+        "auditItemKeys": [
+          "1:10oz-regular-cut-prime-rib",
+          "2:16oz-queen-cut-prime-rib",
+          "3:22oz-king-cut-prime-rib",
+          "4:8oz-lunch-cut-prime-rib",
+          "5:all-natural-turkey-burger",
+          "6:applewood-smoked-bacon-wrapped-sea-scallops",
+          "7:apricot-sauce",
+          "8:au-gratin-potatoes",
+          "9:baked-french-onion-soup",
+          "10:baked-goat-cheese",
+          "11:baked-idaho-potato",
+          "12:baked-mac-and-cheese",
+          "13:barbecued-baby-back-ribs",
+          "14:barbecued-chicken",
+          "15:bbq-rubbed-sweet-potato",
+          "16:bison-burger",
+          "17:bison-meatballs",
+          "18:blackened-new-york-strip-steak-sandwich",
+          "19:blackened-ny-strip-steak-sandwich",
+          "20:bowl-baked-french-onion-soup",
+          "21:bowl-shrimp-and-crab-bisque",
+          "22:broccoli-and-lemon-vinaigrette",
+          "23:can-of-coke",
+          "24:can-of-sprite",
+          "25:cedar-planked-salmon",
+          "26:char-crust-bone-in-rib-eye",
+          "27:cheeseburger-and-fries",
+          "28:chicken-600",
+          "29:chicken-and-baby-back-ribs-combo",
+          "30:chicken-and-rib-combo",
+          "31:chicken-fingers-and-fries",
+          "32:chicken-moreno-with-artichokes",
+          "33:classic-blueberry-pie",
+          "34:coconut-shrimp",
+          "35:cole-slaw",
+          "36:cottage-fries-and-ranch-dressing",
+          "37:creamed-spinach",
+          "38:creamy-cheesecake",
+          "39:crispy-fried-calamari",
+          "40:crispy-fried-fresh-calamari",
+          "41:crispy-hot-honey-chicken-sandwich",
+          "42:crusts",
+          "43:cup-baked-french-onion-soup",
+          "44:cup-shrimp-and-crab-bisque",
+          "45:d-cedar-planked-salmon",
+          "46:d-chicken-moreno-with-artichokes",
+          "47:d-coconut-shrimp",
+          "48:d-macadamia-nut-crusted-halibut",
+          "49:d-mushroom-crusted-pork-chops",
+          "50:dinner-specials",
+          "51:door-county-cherry-pie",
+          "52:east-coast-sea-scallops-de-jonghe",
+          "53:field-greens",
+          "54:filet-medallion-trio",
+          "55:filet-mignon",
+          "56:flourless-chocolate-cake",
+          "57:french-fries",
+          "58:friday-and-saturday-filet-mignon-wellington",
+          "59:full-slab-baby-back-ribs",
+          "60:gf-10oz-regular-cut-prime-rib",
+          "61:gf-16oz-queen-cut-prime-rib",
+          "62:gf-22oz-king-cut-prime-rib",
+          "63:gf-8oz-lunch-cut-prime-rib",
+          "64:gf-all-natural-turkey-burger",
+          "65:gf-applesauce",
+          "66:gf-au-gratin-potatoes",
+          "67:gf-baked-goat-cheese",
+          "68:gf-baked-idaho-potato",
+          "69:gf-barbecued-chicken",
+          "70:gf-bbq-rubbed-sweet-potato",
+          "71:gf-bison-burger",
+          "72:gf-blackened-ny-strip-steak-sandwich",
+          "73:gf-bowl-baked-french-onion-soup",
+          "74:gf-broccoli-and-lemon-vinaigrette",
+          "75:gf-cheeseburger",
+          "76:gf-chicken-and-rib-combo",
+          "77:gf-cole-slaw",
+          "78:gf-cup-baked-french-onion-soup",
+          "79:gf-flourless-choc-cake",
+          "80:gf-full-slab-baby-back-ribs",
+          "81:gf-grilled-chicken-club",
+          "82:gf-half-slab-baby-back-ribs",
+          "83:gf-hamburger",
+          "84:gf-l-cedar-planked-salmon",
+          "85:gf-l-chicken-moreno-with-artichokes",
+          "86:gf-l-pork-chop",
+          "87:gf-large-caesar",
+          "88:gf-large-field-greens",
+          "89:gf-large-greek",
+          "90:gf-large-tuscan-kale-and-spinach",
+          "91:gf-large-wildfire-chopped-salad",
+          "92:gf-loaded-giant-baked-potato",
+          "93:gf-loaded-mashed-potatoes",
+          "94:gf-mediterranean-chicken-skewers",
+          "95:gf-open-faced-mediterranean-salmon-sandwich",
+          "96:gf-petite-filet-mignon",
+          "97:gf-prime-angus-burger",
+          "98:gf-prime-angus-cheeseburger",
+          "99:gf-prime-rib-french-dip",
+          "100:gf-red-skin-mashed-potatoes",
+          "101:gf-roasted-asparagus",
+          "102:gf-roasted-herb-chicken",
+          "103:gf-roasted-market-vegetables",
+          "104:gf-roasted-mushroom-caps",
+          "105:gf-roumanian-skirt-steak",
+          "106:gf-sea-scallop-skewers",
+          "107:gf-seasonal-berries-crisp",
+          "108:gf-side-caesar",
+          "109:gf-side-field-greens",
+          "110:gf-side-greek",
+          "111:gf-side-tuscan-kale-and-spinach",
+          "112:gf-sliced-turkey-sandwich",
+          "113:gf-small-caesar",
+          "114:gf-small-field-greens",
+          "115:gf-small-greek",
+          "116:gf-small-tuscan-kale-and-spinach",
+          "117:gf-small-wildfire-chopped-salad",
+          "118:gf-steak-and-blue-cheese",
+          "119:gluten-free-at-wildfire",
+          "120:greek",
+          "121:grilled-cheese-and-fries",
+          "122:grilled-chicken-club",
+          "123:half-platter-cornbread",
+          "124:half-slab-baby-back-ribs",
+          "125:hamburger-and-fries",
+          "126:horseradish-crusted-filet",
+          "127:key-lime-pie",
+          "128:l-cedar-planked-salmon",
+          "129:l-chicken-moreno-with-artichokes",
+          "130:l-coconut-shrimp",
+          "131:l-herb-marinated-wild-sockeye-salmon",
+          "132:l-macadamia-nut-crusted-halibut",
+          "133:l-mushroom-crusted-pork-chop",
+          "134:l-oven-roasted-lump-crab-cake",
+          "135:lamb-porterhouse-chops",
+          "136:large-caesar",
+          "137:large-field-greens",
+          "138:large-greek",
+          "139:large-tuscan-kale-and-spinach",
+          "140:large-wildfire-chopped-salad",
+          "141:loaded-cottage-fries",
+          "142:loaded-giant-baked-potato",
+          "143:loaded-mashed-potatoes",
+          "144:lump-crab-cake-sandwich",
+          "145:lunch-specials",
+          "146:mac-and-cheese",
+          "147:macadamia-nut-crusted-halibut",
+          "148:mediterranean-chicken-skewers",
+          "149:minnesota",
+          "150:monday-and-tuesday-southern-fried-chicken",
+          "151:new-york-strip-steak",
+          "152:open-faced-mediterranean-salmon-sandwich",
+          "153:oven-roasted-crab-cakes",
+          "154:oven-roasted-lump-crab-cake-dinner",
+          "155:oven-roasted-lump-crab-cakes",
+          "156:party-platter-baked-mac-and-cheese",
+          "157:party-platter-broccoli-and-lemon-vinaigrette",
+          "158:party-platter-caesar",
+          "159:party-platter-cole-slaw",
+          "160:party-platter-creamed-spinach",
+          "161:party-platter-greek-salad",
+          "162:party-platter-mashed-potatoes",
+          "163:party-platter-roasted-market-vegetables",
+          "164:party-platter-roasted-mushroom-caps",
+          "165:party-platter-tuscan-kale-and-spinach",
+          "166:party-platter-wildfire-chopped-salad",
+          "167:petite-filet-mignon",
+          "168:petite-horseradish-filet",
+          "169:porterhouse",
+          "170:prime-angus-burger",
+          "171:prime-angus-cheeseburger",
+          "172:prime-burgers-and-sandwiches",
+          "173:prime-rib-french-dip",
+          "174:prime-rib-of-beef-au-jus",
+          "175:roasted-asparagus",
+          "176:roasted-herb-chicken",
+          "177:roasted-market-vegetables",
+          "178:roasted-mushroom-caps",
+          "179:roasted-prime-rib-french-dip",
+          "180:roumanian-skirt-steak",
+          "181:salmon-1100",
+          "182:scallops-dejonghe",
+          "183:sea-scallop-skewers",
+          "184:seasonal-berries-crisp",
+          "185:shrimp-and-crab-bisque",
+          "186:side-caesar",
+          "187:side-farmstand-watermelon-salad",
+          "188:side-field-greens",
+          "189:side-greek",
+          "190:side-tuscan-kale-and-spinach",
+          "191:sliced-turkey-sandwich",
+          "192:small-caesar",
+          "193:small-farmstand-watermelon-salad",
+          "194:small-field-greens",
+          "195:small-greek",
+          "196:small-tuscan-kale-and-spinach",
+          "197:small-wildfire-chopped-salad",
+          "198:spit-roasted-herb-chicken",
+          "199:steak-and-blue-cheese",
+          "200:sunday-spit-roasted-turkey-dinner",
+          "201:the-wildfire-chopped-salad",
+          "202:triple-layer-chocolate-cake",
+          "203:tuscan-kale-and-spinach",
+          "204:warm-chocolate-chip-cookie-skillet",
+          "205:wednesday-spit-roasted-half-long-island-duck",
+          "206:whole-classic-blueberry-pie",
+          "207:whole-creamy-cheesecake",
+          "208:whole-door-county-cherry-pie",
+          "209:whole-flourless-chocolate-cake",
+          "210:whole-triple-layer-chocolate-cake"
+        ],
+        "matchedCurrentProductKeys": [
+          "wildfire-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-official-menus",
+          "src-official-dining",
+          "src-linked-ordering"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify"
+}

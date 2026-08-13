@@ -1,0 +1,522 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-160-2026-08-07",
+  "restaurantId": "haikan-dc",
+  "runId": "poc-batch-160-2026-08-07-haikan-dc-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "haikan-dc",
+    "name": "Haikan",
+    "locationId": "shaw-dc",
+    "domain": "haikandc.com",
+    "baselineItemCount": 28,
+    "baselineFingerprint": "e88e91ed46ba8acc9084272138bb41caa7c1b831b78770296e951651d575e660",
+    "itemChecksRead": 28,
+    "itemChecksPath": "data/restaurant-verification/item-checks/haikan-dc.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Haikan",
+    "location": "805 V St NW, Washington, DC 20001 (Shaw)",
+    "locationId": "shaw-dc",
+    "domain": "haikandc.com",
+    "officialHomepage": "https://haikandc.com/",
+    "sourceEvidenceIds": [
+      "ev-ramw",
+      "ev-order",
+      "ev-closure"
+    ]
+  },
+  "sources": [
+    {
+      "id": "ev-home",
+      "url": "https://haikandc.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity/menu",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Official domain inspected; homepage unavailable to fetch.",
+      "title": "Haikan official homepage",
+      "evidenceId": "ev-home"
+    },
+    {
+      "id": "ev-ramw",
+      "url": "https://www.ramw.org/restaurant/haikan",
+      "authorityTier": "third_party",
+      "purpose": "identity/location",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Lists Haikan, 805 V Street NW, Washington DC 20001, haikandc.com, Shaw.",
+      "title": "RAMW Haikan listing",
+      "evidenceId": "ev-ramw"
+    },
+    {
+      "id": "ev-order",
+      "url": "https://order.online/store/Haikan-78991",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "DoorDash Order Online page identifies Haikan at 805 V St NW; online ordering hours closed, unavailable; residual ramen menu shown.",
+      "title": "DoorDash Haikan ordering",
+      "evidenceId": "ev-order"
+    },
+    {
+      "id": "ev-closure",
+      "url": "https://www.popville.com/2025/04/haikan-closing-shaw/",
+      "authorityTier": "third_party",
+      "purpose": "operation-status",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Report states Haikan announced Shaw closure due to cost/economic challenges.",
+      "title": "PoPville closure report",
+      "evidenceId": "ev-closure"
+    },
+    {
+      "id": "ev-singleplatform",
+      "url": "https://places.singleplatform.com/haikan/menu",
+      "authorityTier": "third_party",
+      "purpose": "menu",
+      "retrievedAt": "2026-08-07",
+      "excerpt": "Frozen baseline source; stale SinglePlatform menu, not evidence of current operation.",
+      "title": "SinglePlatform legacy menu",
+      "evidenceId": "ev-singleplatform"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://haikandc.com/",
+      "authority": "restaurant_issued",
+      "locationScope": "shaw-dc",
+      "servicePeriod": "current",
+      "retrieval": "unavailable",
+      "evidenceId": "ev-home",
+      "title": "Official homepage",
+      "current": false,
+      "scopeStatus": "unresolved",
+      "sourceEvidenceIds": [
+        "ev-home"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "linked-order",
+      "url": "https://order.online/store/Haikan-78991",
+      "authority": "linked_vendor",
+      "locationScope": "shaw-dc",
+      "servicePeriod": "current",
+      "retrieval": "success",
+      "evidenceId": "ev-order",
+      "title": "DoorDash ordering",
+      "current": false,
+      "scopeStatus": "closed-unavailable",
+      "sourceEvidenceIds": [
+        "ev-order",
+        "ev-closure"
+      ],
+      "currentProductKeys": []
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "closure-status-observation",
+      "name": "Haikan Shaw location closure/status observation (not an orderable product)",
+      "category": "Status observation",
+      "servicePeriod": "current",
+      "presentationIds": [
+        "ev-closure",
+        "ev-order"
+      ],
+      "sourceEvidenceIds": [
+        "ev-closure",
+        "ev-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": "Descriptive non-orderable observation only; do not publish as menu item."
+    }
+  ],
+  "officialAllergenStatus": "accurately_unavailable",
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:amazu-veggies",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "2:butter",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "3:chashu",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "4:corn",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "5:crab-rangoons",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "6:crispy-pig-ears",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "7:extra-soup",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "8:fried-calamari",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "9:hiyashi-chuka",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "10:ice-cream-cookie-sandwich",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "11:mapo-tofu-aburamen",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "12:menma",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "13:miso",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "14:mochi-ice-cream",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "15:nitamago",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "16:onsen-egg",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "17:pork-belly",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "18:purin",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "19:shio",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "20:shoyu",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "21:shrimp-burger",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "22:smashed-cucumber-salad",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "23:spice-bomb",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "24:spicy-shoyu",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "25:veggie",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "26:veggie-spice-bomb",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "27:wakame",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      },
+      {
+        "auditItemKey": "28:wood-ear-mushrooms",
+        "disposition": "stale",
+        "sourceEvidenceIds": [
+          "ev-order",
+          "ev-closure"
+        ],
+        "notes": "Frozen SinglePlatform item; no current operating menu confirmed. Ordering vendor is closed/unavailable.",
+        "currentProductKeys": []
+      }
+    ]
+  },
+  "reconciliationSummary": {
+    "frozenItemCount": 28,
+    "reconciledCount": 28,
+    "dispositionCounts": {
+      "stale": 28
+    },
+    "missingAuditItemKeys": [],
+    "duplicateAuditItemKeys": []
+  },
+  "proposedChanges": [
+    {
+      "type": "menu-boundary-repair",
+      "description": "Replace stale SinglePlatform catalog with closed/inactive status or authoritative current menu after operator confirms; do not publish residual vendor snapshot as current."
+    }
+  ],
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": true,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": true,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "routingSignals": {
+    "identityAmbiguous": false,
+    "unresolvedMenuScope": true,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "authorityConflict": false,
+    "lightweightRepairSignals": [
+      "stale SinglePlatform baseline",
+      "restaurant closure/status boundary"
+    ],
+    "safetyEscalationSignals": [
+      "unresolved current menu scope: official homepage unavailable and linked vendor closed; closure report conflicts with residual menu snapshot"
+    ],
+    "route": "sol_review",
+    "menuScopeUnresolved": true
+  },
+  "blockedReason": "Authoritative current operating/menu boundary unresolved: official homepage unavailable; DoorDash ordering closed/unavailable; targeted report says Shaw location announced closure, while residual vendor menu remains visible.",
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "location": "haikandc.com homepage/menu/navigation",
+        "url": "https://haikandc.com/",
+        "outcome": "Homepage unavailable; no allergen matrix found.",
+        "sourceEvidenceIds": [
+          "ev-home"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "location": "haikandc.com nutrition/allergen/ingredients/PDF surfaces",
+        "url": "https://haikandc.com/",
+        "outcome": "No official allergen documents found.",
+        "sourceEvidenceIds": [
+          "ev-home"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "location": "DoorDash Haikan 805 V St NW",
+        "url": "https://order.online/store/Haikan-78991",
+        "outcome": "Closed/unavailable ordering; no allergen matrix.",
+        "sourceEvidenceIds": [
+          "ev-order"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "location": "Haikan DC allergen allergy nutrition ingredients PDF menu closure",
+        "url": "https://www.popville.com/2025/04/haikan-closing-shaw/",
+        "outcome": "No official allergen matrix; closure report found.",
+        "sourceEvidenceIds": [
+          "ev-closure"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": []
+}

@@ -1,0 +1,1256 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-011-2026-07-16",
+  "restaurantId": "replacement-bar-chinois-dc-washington-dc",
+  "runId": "poc-batch-011-bar-chinois-dc-luna-phase-a-2026-07-16",
+  "stage": "luna_phase_a",
+  "packetValidation": {
+    "baselineItemCount": 21,
+    "baselineFingerprint": "8d3f0f03744486141c4360ea8e11d03a989eced71652eeddf9501998639cf881",
+    "baselineHashAlgorithm": "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "itemCheckCount": 21,
+    "identityMatch": true
+  },
+  "identity": {
+    "name": "Bar Chinois DC",
+    "locationId": "washington-dc",
+    "address": "455 I St NW, Washington, DC 20001",
+    "domain": "barchinois.com",
+    "identityConfirmed": true,
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "S1",
+      "S2",
+      "S3"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "S1",
+      "url": "https://www.barchinois.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity and location navigation",
+      "retrievedAt": "2026-07-16T20:10:00Z",
+      "proof": "Official homepage identifies two locations and links the Washington, DC menu."
+    },
+    {
+      "evidenceId": "S2",
+      "url": "https://www.barchinois.com/menu.html",
+      "authorityTier": "restaurant_issued",
+      "purpose": "location identity and scope",
+      "retrievedAt": "2026-07-16T20:10:00Z",
+      "proof": "Official location chooser identifies Washington, DC Mt. Vernon Triangle at 455 I St NW and separately identifies National Landing."
+    },
+    {
+      "evidenceId": "S3",
+      "url": "https://www.barchinois.com/dc.html",
+      "authorityTier": "restaurant_issued",
+      "purpose": "DC location identity",
+      "retrievedAt": "2026-07-16T20:10:00Z",
+      "proof": "Official DC page identifies Washington, DC and 455 I St NW."
+    },
+    {
+      "evidenceId": "S4",
+      "url": "https://www.barchinois.com/dc-menu.html",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current DC food and nonalcoholic menu",
+      "retrievedAt": "2026-07-16T20:10:00Z",
+      "proof": "Current DC menu exposes Dinner and Brunch food tabs, product names, descriptions, and current menu markers."
+    },
+    {
+      "evidenceId": "S5",
+      "url": "https://order.toasttab.com/online/barchinoisdc",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "DC linked ordering scope",
+      "retrievedAt": "2026-07-16T20:10:00Z",
+      "proof": "Toast identifies Bar Chinois DC at 455 Eye St, Washington, DC, but reports menu items unavailable at retrieval."
+    },
+    {
+      "evidenceId": "S6",
+      "url": "https://www.toasttab.com/local/order/barchinoisdc/r-93872a8c-e1a4-4f41-90b7-3b92bd9c3b27",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "rendered DC product and ingredient evidence",
+      "retrievedAt": "2026-07-16T20:10:00Z",
+      "proof": "Rendered Toast DC page exposes product descriptions, explicit ingredient/allergen wording, and item-scoped fry-oil cross-contact wording."
+    },
+    {
+      "evidenceId": "S7",
+      "url": "https://www.barchinois.com/nl-menu.html",
+      "authorityTier": "restaurant_issued",
+      "purpose": "excluded location check",
+      "retrievedAt": "2026-07-16T20:10:00Z",
+      "proof": "Separate National Landing menu; excluded because it is not the Washington, DC location."
+    },
+    {
+      "evidenceId": "S8",
+      "url": "https://www.google.com/search?q=site%3Abarchinois.com+Bar+Chinois+DC+allergen+nutrition+ingredients+PDF",
+      "authorityTier": "third_party",
+      "purpose": "official matrix search",
+      "retrievedAt": "2026-07-16T20:10:00Z",
+      "proof": "Targeted search found the official menu/location pages but no complete official allergen matrix."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "dc-official-dinner",
+      "url": "https://www.barchinois.com/dc-menu.html",
+      "surfaceType": "html",
+      "locationScope": "washington-dc",
+      "servicePeriod": "dinner",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "S4"
+      ]
+    },
+    {
+      "surfaceId": "dc-official-brunch",
+      "url": "https://www.barchinois.com/dc-menu.html",
+      "surfaceType": "html",
+      "locationScope": "washington-dc",
+      "servicePeriod": "brunch",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "S4"
+      ]
+    },
+    {
+      "surfaceId": "dc-toast-rendered",
+      "url": "https://www.toasttab.com/local/order/barchinoisdc/r-93872a8c-e1a4-4f41-90b7-3b92bd9c3b27",
+      "surfaceType": "linked_vendor",
+      "locationScope": "washington-dc",
+      "servicePeriod": "dinner and brunch",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "S6"
+      ]
+    },
+    {
+      "surfaceId": "dc-toast-root",
+      "url": "https://order.toasttab.com/online/barchinoisdc",
+      "surfaceType": "linked_vendor",
+      "locationScope": "washington-dc",
+      "servicePeriod": "ordering",
+      "current": false,
+      "scopeStatus": "unavailable",
+      "sourceEvidenceIds": [
+        "S5"
+      ]
+    },
+    {
+      "surfaceId": "national-landing-menu",
+      "url": "https://www.barchinois.com/nl-menu.html",
+      "surfaceType": "html",
+      "locationScope": "national-landing",
+      "servicePeriod": "all",
+      "current": false,
+      "scopeStatus": "location_mismatch",
+      "sourceEvidenceIds": [
+        "S7"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "apricot-duck-sauce",
+      "name": "Apricot Duck Sauce",
+      "category": "Extra Sauces",
+      "sourceEvidenceIds": [
+        "S6"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "breakfast-fried-rice",
+      "name": "Breakfast Fried Rice",
+      "category": "Brunch Entrées",
+      "sourceEvidenceIds": [
+        "S4",
+        "S6"
+      ],
+      "containsAllergens": [
+        "egg",
+        "shellfish",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "partial_positive_only",
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "S6"
+      ],
+      "authorityVerdict": "verified",
+      "notes": "Toast product text explicitly supports these direct positives: egg, shellfish, soy. No complete allergen matrix; absence of other allergens is not established. Toast also states item-scoped fry-oil cross contamination without naming a specific major allergen; this is not mapped to mayContainAllergens."
+    },
+    {
+      "currentProductKey": "brussel-sprouts",
+      "name": "Brussel Sprouts",
+      "category": "Small Bites",
+      "sourceEvidenceIds": [
+        "S4",
+        "S6"
+      ],
+      "containsAllergens": [
+        "tree-nut",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "partial_positive_only",
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "S6"
+      ],
+      "authorityVerdict": "verified",
+      "notes": "Toast product text explicitly supports these direct positives: tree-nut, soy. No complete allergen matrix; absence of other allergens is not established."
+    },
+    {
+      "currentProductKey": "canto-egg-ham",
+      "name": "Canto Egg + Ham",
+      "category": "Brunch Entrées",
+      "sourceEvidenceIds": [
+        "S6"
+      ],
+      "containsAllergens": [
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "partial_positive_only",
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "S6"
+      ],
+      "authorityVerdict": "verified",
+      "notes": "Toast product text explicitly supports these direct positives: egg. No complete allergen matrix; absence of other allergens is not established. Toast also states item-scoped fry-oil cross contamination without naming a specific major allergen; this is not mapped to mayContainAllergens."
+    },
+    {
+      "currentProductKey": "canto-egg-shrimp",
+      "name": "Canto Egg + Shrimp",
+      "category": "Dim Sum",
+      "sourceEvidenceIds": [
+        "S6"
+      ],
+      "containsAllergens": [
+        "egg",
+        "shellfish"
+      ],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "partial_positive_only",
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "S6"
+      ],
+      "authorityVerdict": "verified",
+      "notes": "Toast product text explicitly supports these direct positives: egg, shellfish. No complete allergen matrix; absence of other allergens is not established. Toast also states item-scoped fry-oil cross contamination without naming a specific major allergen; this is not mapped to mayContainAllergens."
+    },
+    {
+      "currentProductKey": "canto-egg-on-rice",
+      "name": "Canto Egg on Rice",
+      "category": "Dim Sum",
+      "sourceEvidenceIds": [
+        "S4",
+        "S6"
+      ],
+      "containsAllergens": [
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "partial_positive_only",
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "S6"
+      ],
+      "authorityVerdict": "verified",
+      "notes": "Toast product text explicitly supports these direct positives: egg. No complete allergen matrix; absence of other allergens is not established."
+    },
+    {
+      "currentProductKey": "chicken-curry-rice",
+      "name": "Chicken Curry Rice",
+      "category": "Brunch Entrées",
+      "sourceEvidenceIds": [
+        "S4",
+        "S6"
+      ],
+      "containsAllergens": [
+        "egg"
+      ],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "partial_positive_only",
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "S6"
+      ],
+      "authorityVerdict": "verified",
+      "notes": "Toast product text explicitly supports these direct positives: egg. No complete allergen matrix; absence of other allergens is not established."
+    },
+    {
+      "currentProductKey": "chicken-flutes",
+      "name": "Chicken Flutes",
+      "category": "Dim Sum",
+      "sourceEvidenceIds": [
+        "S4",
+        "S6"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "crab-rangoon",
+      "name": "Crab Rangoon",
+      "category": "Small Bites",
+      "sourceEvidenceIds": [
+        "S4",
+        "S6"
+      ],
+      "containsAllergens": [
+        "milk",
+        "shellfish",
+        "sesame"
+      ],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "partial_positive_only",
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "S6"
+      ],
+      "authorityVerdict": "verified",
+      "notes": "Toast product text explicitly supports these direct positives: milk, shellfish, sesame. No complete allergen matrix; absence of other allergens is not established."
+    },
+    {
+      "currentProductKey": "croque-monsieur-spring-roll",
+      "name": "Croque Monsieur Spring Roll",
+      "category": "Small Bites",
+      "sourceEvidenceIds": [
+        "S6"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "partial_positive_only",
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "S6"
+      ],
+      "authorityVerdict": "verified",
+      "notes": "Toast product text explicitly supports these direct positives: milk. No complete allergen matrix; absence of other allergens is not established."
+    },
+    {
+      "currentProductKey": "garlic-chives-gao",
+      "name": "Garlic Chives Gao",
+      "category": "Dumplings",
+      "sourceEvidenceIds": [
+        "S4",
+        "S6"
+      ],
+      "containsAllergens": [
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "partial_positive_only",
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "S6"
+      ],
+      "authorityVerdict": "verified",
+      "notes": "Toast product text explicitly supports these direct positives: soy. No complete allergen matrix; absence of other allergens is not established. Toast also states item-scoped fry-oil cross contamination without naming a specific major allergen; this is not mapped to mayContainAllergens."
+    },
+    {
+      "currentProductKey": "gyoza-de-boeuf",
+      "name": "Gyoza de Boeuf",
+      "category": "Dumplings",
+      "sourceEvidenceIds": [
+        "S4",
+        "S6"
+      ],
+      "containsAllergens": [
+        "milk",
+        "egg",
+        "sesame"
+      ],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "partial_positive_only",
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "S6"
+      ],
+      "authorityVerdict": "verified",
+      "notes": "Toast product text explicitly supports these direct positives: milk, egg, sesame. No complete allergen matrix; absence of other allergens is not established."
+    },
+    {
+      "currentProductKey": "pork-xlb-dumplings",
+      "name": "Pork XLB Dumplings",
+      "category": "Dumplings",
+      "sourceEvidenceIds": [
+        "S4",
+        "S6"
+      ],
+      "containsAllergens": [
+        "soy",
+        "sesame"
+      ],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "partial_positive_only",
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "S6"
+      ],
+      "authorityVerdict": "verified",
+      "notes": "Toast product text explicitly supports these direct positives: soy, sesame. No complete allergen matrix; absence of other allergens is not established."
+    },
+    {
+      "currentProductKey": "red-chili-wontons",
+      "name": "Red Chili Wontons",
+      "category": "Dumplings",
+      "sourceEvidenceIds": [
+        "S4",
+        "S6"
+      ],
+      "containsAllergens": [
+        "shellfish",
+        "soy",
+        "sesame"
+      ],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "partial_positive_only",
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "S6"
+      ],
+      "authorityVerdict": "verified",
+      "notes": "Toast product text explicitly supports these direct positives: shellfish, soy, sesame. No complete allergen matrix; absence of other allergens is not established."
+    },
+    {
+      "currentProductKey": "shrimp-cigar",
+      "name": "Shrimp Cigar",
+      "category": "Dim Sum",
+      "sourceEvidenceIds": [
+        "S4",
+        "S6"
+      ],
+      "containsAllergens": [
+        "shellfish",
+        "tree-nut"
+      ],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "partial_positive_only",
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "S6"
+      ],
+      "authorityVerdict": "verified",
+      "notes": "Toast product text explicitly supports these direct positives: shellfish, tree-nut. No complete allergen matrix; absence of other allergens is not established."
+    },
+    {
+      "currentProductKey": "side-of-rice",
+      "name": "Side of Rice",
+      "category": "Extra Sauces",
+      "sourceEvidenceIds": [
+        "S6"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "spicy-eggplant",
+      "name": "Spicy Eggplant",
+      "category": "Small Bites",
+      "sourceEvidenceIds": [
+        "S4",
+        "S6"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "steamed-shumai",
+      "name": "Steamed Shumai",
+      "category": "Dumplings",
+      "sourceEvidenceIds": [
+        "S4",
+        "S6"
+      ],
+      "containsAllergens": [
+        "shellfish",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "partial_positive_only",
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "S6"
+      ],
+      "authorityVerdict": "verified",
+      "notes": "Toast product text explicitly supports these direct positives: shellfish, soy. No complete allergen matrix; absence of other allergens is not established."
+    },
+    {
+      "currentProductKey": "sweet-chili-sauce",
+      "name": "Sweet Chili Sauce",
+      "category": "Extra Sauces",
+      "sourceEvidenceIds": [
+        "S6"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "veggie-fried-rice",
+      "name": "Veggie Fried Rice",
+      "category": "Brunch Entrées",
+      "sourceEvidenceIds": [
+        "S4",
+        "S6"
+      ],
+      "containsAllergens": [
+        "egg",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "partial_positive_only",
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "S6"
+      ],
+      "authorityVerdict": "verified",
+      "notes": "Toast product text explicitly supports these direct positives: egg, soy. No complete allergen matrix; absence of other allergens is not established."
+    },
+    {
+      "currentProductKey": "roasted-mushroom-salad",
+      "name": "Roasted Mushroom Salad",
+      "category": "Small Bites",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "popiah-de-canard",
+      "name": "Popiah de Canard",
+      "category": "Small Bites",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "chili-karaage",
+      "name": "Chili Karaage",
+      "category": "Small Bites",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "crispy-shrimp-bao",
+      "name": "Crispy Shrimp Bao",
+      "category": "Small Bites",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "walnut-shrimp",
+      "name": "Walnut Shrimp",
+      "category": "Small Bites",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "hoisin-ribs",
+      "name": "Hoisin Ribs",
+      "category": "Small Bites",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "pork-belly-bao",
+      "name": "Pork Belly Bao",
+      "category": "Small Bites",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "char-siu-chicken-rice",
+      "name": "Char Siu Chicken Rice",
+      "category": "Entrées",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "misozuke-salmon-rice",
+      "name": "Misozuke Salmon Rice",
+      "category": "Entrées",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "lu-rao-fan",
+      "name": "Lu Rao Fan",
+      "category": "Entrées",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "zha-jiang-mian",
+      "name": "Zha Jiang Mian",
+      "category": "Entrées",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "chinois-chicken-salad",
+      "name": "Chinois Chicken Salad",
+      "category": "Entrées",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "1970s-garlic-noodles",
+      "name": "1970's Garlic Noodles",
+      "category": "Entrées",
+      "sourceEvidenceIds": [
+        "S4",
+        "S6"
+      ],
+      "containsAllergens": [
+        "egg",
+        "shellfish"
+      ],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "partial_positive_only",
+      "allergenSourceType": "restaurant_linked_vendor",
+      "allergenAuthorityTier": "restaurant_linked_vendor",
+      "allergenSourceEvidenceIds": [
+        "S6"
+      ],
+      "authorityVerdict": "verified",
+      "notes": "Toast product text explicitly supports these direct positives: egg, shellfish. No complete allergen matrix; absence of other allergens is not established."
+    },
+    {
+      "currentProductKey": "black-pepper-duck",
+      "name": "Black Pepper Duck",
+      "category": "Entrées",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "matcha-creme-brulee",
+      "name": "Matcha Crème Brûlée",
+      "category": "Desserts",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "mousse-au-chocolat",
+      "name": "Mousse au Chocolat",
+      "category": "Desserts",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "french-vanilla-profiteroles",
+      "name": "French Vanilla Profiteroles",
+      "category": "Desserts",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "apple-tarte-tatin",
+      "name": "Apple Tarte Tatin",
+      "category": "Desserts",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "bottomless-dim-sum",
+      "name": "Bottomless Dim Sum",
+      "category": "Brunch",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    },
+    {
+      "currentProductKey": "vegetable-dumpling-presentation",
+      "name": "Pork, Chicken, or Veggie Dumplings",
+      "category": "Happy Hour",
+      "sourceEvidenceIds": [
+        "S4"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenEvidenceStatus": "unavailable",
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "authorityVerdict": "unverifiable",
+      "notes": "No complete or item-specific direct allergen disclosure was found; empty allergen arrays do not establish absence."
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "query": "Official DC homepage, location, menu navigation and DC menu",
+        "outcome": "no_complete_matrix",
+        "sourceEvidenceIds": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "query": "Official allergen, nutrition, ingredient, PDF, image, FAQ and sitemap surfaces",
+        "outcome": "no_complete_matrix",
+        "sourceEvidenceIds": [
+          "S4"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "query": "Toast DC root and rendered DC ordering menu",
+        "outcome": "no_complete_matrix",
+        "sourceEvidenceIds": [
+          "S5",
+          "S6"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "Bar Chinois DC allergen nutrition ingredients PDF menu",
+        "outcome": "no_complete_matrix",
+        "sourceEvidenceIds": [
+          "S8"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:apricot-duck-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "apricot-duck-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "S6"
+        ]
+      },
+      {
+        "auditItemKey": "2:breakfast-fried-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "breakfast-fried-rice"
+        ],
+        "sourceEvidenceIds": [
+          "S4",
+          "S6"
+        ]
+      },
+      {
+        "auditItemKey": "3:brussel-sprouts",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "brussel-sprouts"
+        ],
+        "sourceEvidenceIds": [
+          "S4",
+          "S6"
+        ]
+      },
+      {
+        "auditItemKey": "4:canto-egg-ham",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "canto-egg-ham"
+        ],
+        "sourceEvidenceIds": [
+          "S6"
+        ]
+      },
+      {
+        "auditItemKey": "5:canto-egg-shrimp",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "canto-egg-shrimp"
+        ],
+        "sourceEvidenceIds": [
+          "S6"
+        ]
+      },
+      {
+        "auditItemKey": "6:canto-egg-on-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "canto-egg-on-rice"
+        ],
+        "sourceEvidenceIds": [
+          "S4",
+          "S6"
+        ]
+      },
+      {
+        "auditItemKey": "7:chicken-curry-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken-curry-rice"
+        ],
+        "sourceEvidenceIds": [
+          "S4",
+          "S6"
+        ]
+      },
+      {
+        "auditItemKey": "8:chicken-flutes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken-flutes"
+        ],
+        "sourceEvidenceIds": [
+          "S4",
+          "S6"
+        ]
+      },
+      {
+        "auditItemKey": "9:crab-rangoon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "crab-rangoon"
+        ],
+        "sourceEvidenceIds": [
+          "S4",
+          "S6"
+        ]
+      },
+      {
+        "auditItemKey": "10:croque-monsieur-spring-roll",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "croque-monsieur-spring-roll"
+        ],
+        "sourceEvidenceIds": [
+          "S6"
+        ]
+      },
+      {
+        "auditItemKey": "11:garlic-chives-gao",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "garlic-chives-gao"
+        ],
+        "sourceEvidenceIds": [
+          "S4",
+          "S6"
+        ]
+      },
+      {
+        "auditItemKey": "12:gyoza-de-boeuf",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "gyoza-de-boeuf"
+        ],
+        "sourceEvidenceIds": [
+          "S4",
+          "S6"
+        ]
+      },
+      {
+        "auditItemKey": "13:pork-xlb",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "pork-xlb-dumplings"
+        ],
+        "sourceEvidenceIds": [
+          "S4",
+          "S6"
+        ]
+      },
+      {
+        "auditItemKey": "14:red-chili-wontons",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "red-chili-wontons"
+        ],
+        "sourceEvidenceIds": [
+          "S4",
+          "S6"
+        ]
+      },
+      {
+        "auditItemKey": "15:shrimp-cigar",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "shrimp-cigar"
+        ],
+        "sourceEvidenceIds": [
+          "S4",
+          "S6"
+        ]
+      },
+      {
+        "auditItemKey": "16:side-of-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "side-of-rice"
+        ],
+        "sourceEvidenceIds": [
+          "S6"
+        ]
+      },
+      {
+        "auditItemKey": "17:spicy-eggplant",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "spicy-eggplant"
+        ],
+        "sourceEvidenceIds": [
+          "S4",
+          "S6"
+        ]
+      },
+      {
+        "auditItemKey": "18:steamed-shumai",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "steamed-shumai"
+        ],
+        "sourceEvidenceIds": [
+          "S4",
+          "S6"
+        ]
+      },
+      {
+        "auditItemKey": "19:surfside-iced-tea",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "S4",
+          "S5",
+          "S6",
+          "S8"
+        ]
+      },
+      {
+        "auditItemKey": "20:sweet-chili-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sweet-chili-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "S6"
+        ]
+      },
+      {
+        "auditItemKey": "21:veggie-fried-rice",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "veggie-fried-rice"
+        ],
+        "sourceEvidenceIds": [
+          "S4",
+          "S6"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [],
+  "findings": [
+    {
+      "findingId": "F1",
+      "severity": "medium",
+      "kind": "catalog_drift",
+      "summary": "Current official DC dinner and brunch surfaces contain additional food products beyond the frozen baseline; the DC product boundary was expanded with current products.",
+      "sourceEvidenceIds": [
+        "S4"
+      ]
+    },
+    {
+      "findingId": "F2",
+      "severity": "medium",
+      "kind": "allergen_source",
+      "summary": "No complete official allergen matrix was found after all four required searches. Explicit positives are retained only where directly stated by the linked Toast menu; otherwise allergen status is unavailable.",
+      "sourceEvidenceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S8"
+      ]
+    },
+    {
+      "findingId": "F3",
+      "severity": "medium",
+      "kind": "cross_contact",
+      "summary": "Toast explicitly states fry-oil cross contamination for Breakfast Fried Rice, Canto Egg + Shrimp, Canto Egg + Ham, and Garlic Chives Gao. This remains item-scoped and is not generalized into mayContain arrays.",
+      "sourceEvidenceIds": [
+        "S6"
+      ]
+    },
+    {
+      "findingId": "F4",
+      "severity": "low",
+      "kind": "stale_item",
+      "summary": "Surfside Iced Tea has no current DC-specific evidence and is excluded from the current product boundary.",
+      "sourceEvidenceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S8"
+      ]
+    }
+  ],
+  "riskSignals": [
+    {
+      "riskSignalId": "R1",
+      "kind": "matrix_unavailable",
+      "severity": "medium",
+      "summary": "Official allergen matrix unavailable after complete four-class search.",
+      "evidenceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S8"
+      ]
+    },
+    {
+      "riskSignalId": "R2",
+      "kind": "item_scoped_cross_contact",
+      "severity": "medium",
+      "summary": "Four linked-vendor items carry explicit fry-oil cross-contact wording.",
+      "evidenceIds": [
+        "S6"
+      ]
+    }
+  ],
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": true,
+    "newItems": true,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "luna_fix",
+  "summary": "DC identity and current menu scope confirmed. All 21 frozen items reconciled exactly once; Surfside Iced Tea is stale and excluded. Complete current official DC dinner/brunch food boundary is recorded, National Landing is excluded, no complete official allergen matrix was found, and only explicit linked-vendor positives and four item-scoped fry-oil statements are preserved.",
+  "coordinatorNotes": [
+    "Read-only POC result; no canonical, dossier, evidence, item-check, script, manifest, closeout, or ledger file was modified.",
+    "No Terra or Sol used."
+  ]
+}

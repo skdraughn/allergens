@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-139-2026-08-07",
+  "restaurantId": "osm-front-porch-514348150",
+  "reviewType": "narrow_menu_scope_conflict_final_binding",
+  "model": {"id": "gpt-5.6-sol", "reasoningEffort": "medium", "role": "sol_reviewer"},
+  "evidence": [
+    {"evidenceId": "ev-home", "finding": "The official homepage confirms identity but exposes only descriptive categories, not orderable products."},
+    {"evidenceId": "ev-zmenu", "finding": "The restaurant-linked full menu returns HTTP 403, leaving current membership unknown."},
+    {"evidenceId": "ev-uber", "finding": "The same-address Uber menu is stale and closed and cannot establish the current boundary."}
+  ],
+  "resolution": {
+    "binding": true,
+    "outcome": "blocked_unverifiable",
+    "items": [],
+    "surfaceResolutions": [
+      {"surfaceId": "official-home", "resolution": "partial_descriptive_only"},
+      {"surfaceId": "linked-zmenu", "resolution": "current_full_menu_unverifiable"},
+      {"surfaceId": "uber-historical", "resolution": "stale_excluded"}
+    ],
+    "safetySourceAuthorityConflictRemains": false
+  },
+  "validation": {"valid": false, "materialSafetyError": true, "identityConfirmed": true, "frozenItemCount": 8, "reconciledFrozenItemCount": 8, "currentMenuBoundaryComplete": false, "unsupportedAllergenNegativeClaimCount": 0},
+  "remainingSolSignals": [],
+  "coordinatorRecommendation": "Record Front Porch as blocked_unverifiable until an accessible current Alexandria menu establishes the complete food and nonalcoholic product boundary."
+}

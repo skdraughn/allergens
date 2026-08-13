@@ -1,0 +1,1062 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-batch-02-2026-07-16",
+  "restaurant": {
+    "restaurantId": "bandit-taco-dc",
+    "name": "Bandit Taco",
+    "domain": "bandittacodc.com",
+    "locationId": "tenleytown-dc",
+    "baselineItemCount": 113,
+    "baselineItemFingerprint": "de77c1aa6f6f1bc86ba97eacbe607dff934ea0f97dcf9264889b4b4367ef6f53",
+    "officialItemCount": 79,
+    "officialAllergenStatus": "extracted",
+    "sourceFamily": "toast",
+    "parserProfile": "toast-menu",
+    "guideUrl": "https://order.toasttab.com/online/bandit-taco",
+    "sourceUrls": [
+      "https://order.toasttab.com/online/bandit-taco"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "validationWarnings": [
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "scope_incomplete",
+      "count_drift",
+      "baseline_only",
+      "non_exact_reconciliation",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 113,
+      "reconciledItemCount": 113,
+      "uniqueReconciledItemCount": 113,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 2,
+      "activeMenuSurfaceCount": 2,
+      "accessibleMenuSurfaceCount": 1,
+      "serviceCount": 1,
+      "pdfImageSurfaceCount": 0,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 0,
+      "incompleteSurfaceCount": 0,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 0,
+      "currentOnlyCount": 0,
+      "baselineOnlyCount": 113,
+      "countDrift": true,
+      "duplicatePresentationCount": 0,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 0,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 113,
+      "allergenMismatchItemCount": 0,
+      "crossContactCount": 0,
+      "parserRepairFindingCount": 0,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 0,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "medium",
+      "overall": 0.79,
+      "menu": 0.93,
+      "allergenSource": 0.25,
+      "extraction": 0.91,
+      "rationale": "Official location navigation and the linked, location-specific Toast catalog establish the Tenleytown menu boundary. No restaurant-issued allergen matrix, complete ingredient source, or cross-contact policy was found."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Bandit Taco Tenleytown, 4629 41st St NW, Washington, DC 20016",
+      "confidence": 0.98,
+      "sourceEvidenceIds": [
+        "terra-official-home",
+        "terra-tenleytown-toast"
+      ],
+      "notes": "The official site separately links U-Street and Tenleytown ordering destinations; this verification is scoped to Tenleytown."
+    },
+    "sources": [
+      {
+        "evidenceId": "terra-official-home",
+        "url": "https://www.bandittacodc.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Bandit Taco official homepage",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": "The official site lists distinct U-Street and Tenleytown ordering links and identifies Tenleytown at 4629 41st St NW, Washington, DC 20016.",
+        "stableRowId": "homepage-lines-15-18,177-193",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-tenleytown-toast",
+        "url": "https://www.toasttab.com/local/order/bandit-taco-tenleytown",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Bandit Taco Tenleytown 4629 41st NW | Toast",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": "The location-specific Toast menu identifies 4629 41st St NW and exposes FOOD, Beverage, and FOOD (3PD). Descriptions provide limited named ingredient positives but no complete allergen or cross-contact policy.",
+        "stableRowId": "toast-lines-12-21,35-39,46-396",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "terra-configured-toast-ustreet",
+        "url": "https://order.toasttab.com/online/bandit-taco",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Bandit Taco U-Street Toast ordering menu",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": "The configured baseline Toast endpoint is a separate U-Street/New Hampshire Avenue ordering destination, not scoped Tenleytown.",
+        "stableRowId": "toast-order-page",
+        "contentHash": null,
+        "artifactSuggested": null
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://www.bandittacodc.com/",
+        "notes": "Reopened official location and ordering navigation; no allergen document or cross-contact policy was present."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://www.toasttab.com/local/order/bandit-taco-tenleytown",
+        "notes": "Reopened the official-linked, location-specific Toast catalog and reviewed FOOD, Beverage, and FOOD (3PD)."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://order.toasttab.com/online/bandit-taco",
+        "notes": "Reopened configured baseline source; it represents U-Street rather than scoped Tenleytown."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "not_found",
+        "url": null,
+        "notes": "No restaurant-issued Tenleytown allergen matrix, ingredient guide, or cross-contact policy located."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No relevant restaurant-controlled allergen document located."
+      },
+      {
+        "kind": "third_party",
+        "status": "not_found",
+        "url": null,
+        "notes": "No third-party source supplied authoritative allergen evidence suitable for this location."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "scope_incomplete",
+        "triggered": true,
+        "verdict": "rejected",
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "notes": "Luna's Toast scope was incomplete, but the reopened visible FOOD, Beverage, and FOOD (3PD) catalog is enumerated. FOOD (3PD) is a delivery-service duplicate/variant rather than an unresolved source boundary."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast",
+          "terra-configured-toast-ustreet"
+        ],
+        "notes": "The frozen 113-row catalog is not a clean Tenleytown snapshot; it includes U-Street-only or absent products and omits current Tenleytown products."
+      },
+      {
+        "gateId": "baseline_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast",
+          "terra-configured-toast-ustreet"
+        ],
+        "notes": "Multiple frozen entries are absent from Tenleytown and align with the differently located configured source."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "notes": "Reconciliation contains exact, variant, and missing-from-source dispositions."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-home",
+          "terra-tenleytown-toast"
+        ],
+        "notes": "Identity and menu confidence are high, but primary allergen and cross-contact evidence remain unavailable."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "notes": "The scout's allergen and cross-contact evidence gap remains unresolved."
+      },
+      {
+        "gateId": "multiple_menu_or_service_surfaces",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "notes": "Toast separately presents FOOD, Beverage, and FOOD (3PD)."
+      },
+      {
+        "gateId": "source_authority_ambiguity",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-home",
+          "terra-tenleytown-toast",
+          "terra-configured-toast-ustreet"
+        ],
+        "notes": "Toast is restaurant-linked vendor content, not restaurant-issued allergen documentation; the configured endpoint is also a different location."
+      },
+      {
+        "gateId": "allergen_source_unavailable",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-official-home",
+          "terra-tenleytown-toast"
+        ],
+        "notes": "No restaurant-issued complete allergen source, complete ingredient source, negative allergen claim, may-contain statement, or cross-contact policy was found."
+      },
+      {
+        "gateId": "cross_contact_semantics",
+        "triggered": true,
+        "verdict": "unresolved",
+        "sourceEvidenceIds": [
+          "terra-official-home",
+          "terra-tenleytown-toast"
+        ],
+        "notes": "Neither primary surface states shared-equipment, shared-fryer, or may-contain semantics; none were inferred."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "surface-official-home",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-official-home"
+        ],
+        "notes": "Verified as official identity/location and ordering navigation, not as a product catalog."
+      },
+      {
+        "surfaceId": "surface-tenleytown-toast",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "notes": "Verified as the current linked-vendor Tenleytown catalog; FOOD, Beverage, and FOOD (3PD) were reviewed."
+      }
+    ],
+    "currentProductCheckGroups": [],
+    "additionalMenuSurfaces": [
+      {
+        "surfaceId": "surface-tenleytown-food-3pd",
+        "title": "Tenleytown Toast FOOD (3PD) delivery-service menu",
+        "service": "third-party delivery menu within Toast",
+        "url": "https://www.toasttab.com/local/order/bandit-taco-tenleytown",
+        "authorityTier": "restaurant_linked_vendor",
+        "mediaType": "html",
+        "accessStatus": "accessible",
+        "fullyEnumerated": true,
+        "scopeStatus": "complete",
+        "current": true,
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "currentProductKeys": [],
+        "notes": "Luna did not enumerate FOOD (3PD) as a surface. It repeats or varies FOOD entries and is retained as a service surface without treating duplicate presentations as new products."
+      }
+    ],
+    "additionalCurrentProducts": [
+      {
+        "currentProductKey": "kids-rice-and-beans",
+        "name": "Kids Rice and Beans",
+        "category": "Kids Menu",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current product missed by Luna; menu description is not a complete allergen declaration."
+      },
+      {
+        "currentProductKey": "kids-sweet-plantains",
+        "name": "Kids Sweet Plantains",
+        "category": "Kids Menu",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current product missed by Luna."
+      },
+      {
+        "currentProductKey": "kids-yuca",
+        "name": "Kids Yuca",
+        "category": "Kids Menu",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current product missed by Luna."
+      },
+      {
+        "currentProductKey": "kids-street-corn",
+        "name": "Kids Street Corn",
+        "category": "Kids Menu",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Cotija cheese supports a narrow milk positive only."
+      },
+      {
+        "currentProductKey": "guac-and-chips",
+        "name": "Guac and Chips",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food",
+          "toast-food-3pd"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current product missed by Luna."
+      },
+      {
+        "currentProductKey": "salsa-and-chips",
+        "name": "Salsa and Chips",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food",
+          "toast-food-3pd"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current product missed by Luna."
+      },
+      {
+        "currentProductKey": "sweet-plantains",
+        "name": "Sweet Plantains",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food",
+          "toast-food-3pd"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current product missed by Luna."
+      },
+      {
+        "currentProductKey": "yuca",
+        "name": "Yuca",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food",
+          "toast-food-3pd"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current product missed by Luna."
+      },
+      {
+        "currentProductKey": "pico-de-gallo",
+        "name": "Pico de Gallo (5oz/8oz/side)",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food",
+          "toast-food-3pd"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Additional current presentation family absent from the frozen baseline."
+      },
+      {
+        "currentProductKey": "salsa-habanero",
+        "name": "Salsa Habanero",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food",
+          "toast-food-3pd"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current product missed by Luna."
+      },
+      {
+        "currentProductKey": "chipotle-sauce",
+        "name": "Chipotle Sauce",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food",
+          "toast-food-3pd"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current product missed by Luna."
+      },
+      {
+        "currentProductKey": "lemon-sake-sauce",
+        "name": "Lemon Sake Sauce",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food",
+          "toast-food-3pd"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current product missed by Luna."
+      },
+      {
+        "currentProductKey": "poblano-sauce",
+        "name": "Poblano Sauce",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food",
+          "toast-food-3pd"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current product missed by Luna."
+      },
+      {
+        "currentProductKey": "strawberry-tres-leches",
+        "name": "Strawberry Tres Leches",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Named identity supports a narrow milk positive only."
+      },
+      {
+        "currentProductKey": "family-trio",
+        "name": "Family Trio",
+        "category": "Sides",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food",
+          "toast-food-3pd"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current product missed by Luna."
+      },
+      {
+        "currentProductKey": "2lb-korean",
+        "name": "2lb Korean",
+        "category": "Family Meal",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food",
+          "toast-food-3pd"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current family-meal protein missed by Luna."
+      },
+      {
+        "currentProductKey": "2lb-barbacoa",
+        "name": "2lb Barbacoa",
+        "category": "Family Meal",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food",
+          "toast-food-3pd"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current family-meal protein missed by Luna."
+      },
+      {
+        "currentProductKey": "2lb-carnitas",
+        "name": "2lb Carnitas",
+        "category": "Family Meal",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food",
+          "toast-food-3pd"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current family-meal protein missed by Luna."
+      },
+      {
+        "currentProductKey": "2lb-chorizo",
+        "name": "2lb Chorizo",
+        "category": "Family Meal",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food",
+          "toast-food-3pd"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current family-meal protein missed by Luna."
+      },
+      {
+        "currentProductKey": "2lb-al-pastor",
+        "name": "2lb Al Pastor",
+        "category": "Family Meal",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-food",
+          "toast-food-3pd"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Current family-meal protein missed by Luna."
+      },
+      {
+        "currentProductKey": "water-and-jarritos-beverage-range",
+        "name": "Water, Jarritos, Topo Chico, Horchata, Hibiscus Flower, Lime, Coca-Cola, Diet Coke, Sprite, Fanta, Apple Juice, and Cinco de Mayo beverages",
+        "category": "Beverage",
+        "surfaceIds": [
+          "surface-tenleytown-toast"
+        ],
+        "presentationIds": [
+          "toast-beverage"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "authorityVerdict": "unverified",
+        "notes": "Luna omitted the Beverage surface; this grouped record preserves its enumerated product range without asserting allergen negatives."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 113,
+      "counts": {
+        "exact_match/mismatch": 83,
+        "missing_from_source/accurately_unavailable": 13,
+        "variant_match/mismatch": 17
+      }
+    },
+    "findings": [
+      {
+        "findingId": "finding-location-source-mismatch",
+        "severity": "high",
+        "kind": "identity",
+        "summary": "The frozen baseline's configured Toast URL is U-Street/New Hampshire Avenue, while the scoped restaurant is Tenleytown. Location-specific menu equivalence assumptions are invalid.",
+        "sourceEvidenceIds": [
+          "terra-official-home",
+          "terra-tenleytown-toast",
+          "terra-configured-toast-ustreet"
+        ],
+        "affectedAuditItemKeys": [
+          "56:fried-chicken",
+          "59:gios-fried-chicken-bowl",
+          "60:gios-fried-chicken-burrito",
+          "61:hot-dark-roast-coffee-12oz",
+          "62:hot-dark-roast-coffee-decaf-12oz",
+          "74:korean-beef-yuca-loca",
+          "101:telera-pan-torta"
+        ]
+      },
+      {
+        "findingId": "finding-luna-catalog-omission",
+        "severity": "high",
+        "kind": "scope",
+        "summary": "Luna supplied no current products or presentation IDs despite an accessible linked Tenleytown catalog with FOOD, Beverage, and FOOD (3PD) services.",
+        "sourceEvidenceIds": [
+          "terra-tenleytown-toast"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "finding-allergen-authority-and-completeness",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "Frozen allergen arrays cannot be verified for Tenleytown. Available evidence is restaurant-linked Toast content with partial named-ingredient positives only; it provides no complete allergen arrays, negative claims, may-contain claims, or cross-contact semantics.",
+        "sourceEvidenceIds": [
+          "terra-official-home",
+          "terra-tenleytown-toast",
+          "terra-configured-toast-ustreet"
+        ],
+        "affectedAuditItemKeys": []
+      }
+    ],
+    "summary": "Terra verified both scout surfaces. Luna supplied zero current products and zero presentation IDs, so there were no scout product or presentation records to re-check. The reopened Tenleytown Toast catalog shows material catalog and location drift from the frozen U-Street-derived baseline. No restaurant-issued complete allergen or cross-contact source was found; only limited restaurant-linked vendor positive ingredient evidence is available. All 113 frozen auditItemKeys are reconciled exactly once.",
+    "coordinatorNotes": [
+      "Read-only verification; no files, ledger, evidence captures, generated data, or coordinator state were changed.",
+      "Escalate for Sol adjudication due to location/source mismatch, catalog omission, allergen-source gap, baseline allergen mismatches, and unresolved cross-contact semantics."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "56:fried-chicken",
+      "baseline": {
+        "itemId": "fried-chicken",
+        "name": "Fried chicken",
+        "category": "Mexican",
+        "variantGroup": "Chicken Tinga 4oz Side",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bandit-taco"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "59:gios-fried-chicken-bowl",
+      "baseline": {
+        "itemId": "gios-fried-chicken-bowl",
+        "name": "Gio's Fried Chicken Bowl",
+        "category": "Mexican",
+        "variantGroup": "Chicken Tinga Bowl",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bandit-taco"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "60:gios-fried-chicken-burrito",
+      "baseline": {
+        "itemId": "gios-fried-chicken-burrito",
+        "name": "Gio's Fried Chicken Burrito",
+        "category": "Mexican",
+        "variantGroup": "Chicken Tinga Burrito",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bandit-taco"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "61:hot-dark-roast-coffee-12oz",
+      "baseline": {
+        "itemId": "hot-dark-roast-coffee-12oz",
+        "name": "Hot Dark Roast Coffee (12oz)",
+        "category": "Mexican",
+        "variantGroup": "Mexican Sprite",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bandit-taco"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "62:hot-dark-roast-coffee-decaf-12oz",
+      "baseline": {
+        "itemId": "hot-dark-roast-coffee-decaf-12oz",
+        "name": "Hot Dark Roast Coffee Decaf (12oz)",
+        "category": "Mexican",
+        "variantGroup": "Hot Dark Roast Coffee (12oz)",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bandit-taco"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "74:korean-beef-yuca-loca",
+      "baseline": {
+        "itemId": "korean-beef-yuca-loca",
+        "name": "Korean Beef Yuca Loca",
+        "category": "Mexican",
+        "variantGroup": "Yuca Loca",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bandit-taco"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "101:telera-pan-torta",
+      "baseline": {
+        "itemId": "telera-pan-torta",
+        "name": "Telera ( pan torta )",
+        "category": "Mexican",
+        "variantGroup": "Tofu 5 Side",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bandit-taco"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-02-2026-07-16/jobs/bandit-taco-dc.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-02-2026-07-16/results/bandit-taco-dc.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/bandit-taco-dc.jsonl"
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-008-2026-07-16",
+  "restaurantId": "barrel-and-bushel-tysons-va-dc-metro",
+  "reviewType": "binding_menu_scope_and_source_authority_resolution",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "role": "sol_reviewer"
+  },
+  "reviewedKeys": [],
+  "resolution": {
+    "binding": true,
+    "outcome": "exact_location_94_product_catalog_and_source_authority_resolved",
+    "catalogDefinition": {
+      "scope": "The exact-location Barrel & Bushel catalog at 7901 Tysons One Place, Tysons, VA 22102, limited to 94 current food and nonalcoholic products.",
+      "locationId": "tysons-va",
+      "completeAuthoritySurfaceIds": [
+        "surface-breakfast",
+        "surface-lunch",
+        "surface-dinner",
+        "surface-brunch",
+        "surface-happy-hour",
+        "surface-market",
+        "surface-kids",
+        "surface-eat250"
+      ],
+      "supportingSurfaceIds": [
+        "surface-dessert",
+        "surface-beverage",
+        "surface-ordering"
+      ],
+      "historicalNoncurrentSurfaceIds": [],
+      "enumerationRule": "union_of_distinct_current_exact_location_food_and_nonalcoholic_products_on_complete_official_surfaces_with_alcohol_excluded",
+      "existingProductCount": 94,
+      "additionalProductCount": 0,
+      "removedProductCount": 0,
+      "excludedProductCount": 0,
+      "resolvedCatalogProductCount": 94,
+      "productAdditionsRequired": [],
+      "productRemovalsRequired": [],
+      "productExclusionsRequired": [],
+      "alcoholicProductsIncluded": [],
+      "directPositiveBoundary": "Preserve only direct current restaurant-issued positive wording; it is not a complete allergen profile or evidence that unlisted allergens are absent.",
+      "rationale": "Eight complete current official surfaces establish the exact-location catalog. The partial dessert and beverage surfaces identify no additional distinct attributable food or nonalcoholic products, and the linked ordering surface is not enumerable. Alcohol is excluded."
+    },
+    "crossContactResolution": {
+      "scope": "restaurant_wide_caution",
+      "statement": "Any generic cross-contact caution remains restaurant-level only.",
+      "sourceEvidenceIds": [
+        "src-menus"
+      ],
+      "appliesToCurrentCatalog": true,
+      "itemSpecificMayContainProductKeys": [],
+      "negativeClaimsEstablished": [],
+      "completeCrossContactProfileEstablished": false
+    },
+    "items": [],
+    "surfaceResolutions": [
+      {
+        "surfaceId": "surface-dessert",
+        "disposition": "supporting",
+        "sourceEvidenceIds": [
+          "src-menus"
+        ],
+        "additionalProductsRequired": [],
+        "rationale": "The partial official dessert surface identifies no exact additional distinct products beyond the reconciled catalog."
+      },
+      {
+        "surfaceId": "surface-beverage",
+        "disposition": "supporting",
+        "sourceEvidenceIds": [
+          "src-menus",
+          "src-market"
+        ],
+        "additionalProductsRequired": [],
+        "rationale": "The partial official beverage surface identifies no exact additional distinct nonalcoholic products beyond the reconciled catalog; alcoholic products are excluded."
+      },
+      {
+        "surfaceId": "surface-ordering",
+        "disposition": "supporting",
+        "sourceEvidenceIds": [
+          "src-ordering",
+          "src-market"
+        ],
+        "additionalProductsRequired": [],
+        "rationale": "The restaurant-linked ordering surface supports same-day Market pickup but is not enumerated and identifies no exact additional distinct products."
+      }
+    ],
+    "safetySourceAuthorityConflictRemains": false
+  },
+  "remainingSolSignals": [
+    {
+      "signal": "current_complete_official_allergen_matrix",
+      "status": "accurately_unavailable",
+      "sourceEvidenceIds": [
+        "src-home",
+        "src-menus",
+        "src-market",
+        "src-ordering"
+      ],
+      "rationale": "Official-site, official-document, linked-vendor, and targeted-web searches were completed without finding a current official allergen matrix."
+    },
+    {
+      "signal": "cross_contact_detail",
+      "status": "restaurant_wide_caution_preserved_item_specific_detail_unavailable",
+      "sourceEvidenceIds": [
+        "src-menus"
+      ],
+      "rationale": "Generic cross-contact caution remains restaurant-level; no item-specific mayContain claims are established."
+    }
+  ],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "frozenBaselineItemCount": 94,
+    "researchReconciledItemCount": 94,
+    "exactMatchCount": 94,
+    "normalizedMatchCount": 0,
+    "staleOrOutOfScopeCount": 0,
+    "unresolvedResearchKeyCount": 0,
+    "reviewedKeyCount": 0,
+    "resolutionItemCount": 0,
+    "allAffectedKeysReviewedExactlyOnce": true,
+    "researchCurrentProductCount": 94,
+    "additionalProductCount": 0,
+    "removedProductCount": 0,
+    "excludedProductCount": 0,
+    "resolvedCatalogProductCount": 94,
+    "alcoholicProductCountIncluded": 0,
+    "surfaceResolutionCount": 3,
+    "partialSurfaceIds": [
+      "surface-dessert",
+      "surface-beverage",
+      "surface-ordering"
+    ],
+    "resolvedSurfaceIds": [
+      "surface-dessert",
+      "surface-beverage",
+      "surface-ordering"
+    ],
+    "allPartialSurfacesResolvedExactlyOnce": true,
+    "exactLocationCatalogPreserved": true,
+    "restaurantWideCrossContactCautionPreserved": true,
+    "itemSpecificMayContainClaimsIntroduced": false,
+    "unsupportedAllergenNegativesIntroduced": false,
+    "completeAllergenProfileClaimed": false,
+    "safetySourceAuthorityConflictResolved": true,
+    "matrixSearchCount": 4,
+    "matrixStatusRemainsAccuratelyUnavailable": true,
+    "codexVerifiedClaimed": false
+  },
+  "coordinatorRecommendation": "Accept the binding 94-product catalog and completed supporting dispositions for dessert, beverage, and ordering; retain accurately_unavailable allergen-matrix status and restaurant-level-only cross-contact caution."
+}

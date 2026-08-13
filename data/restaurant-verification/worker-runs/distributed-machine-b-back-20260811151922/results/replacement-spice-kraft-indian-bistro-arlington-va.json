@@ -1,0 +1,319 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811151922",
+  "restaurantId": "replacement-spice-kraft-indian-bistro-arlington-va",
+  "packetValidation": {
+    "baselineItemCount": 105,
+    "baselineFingerprint": "330171963e6a5d3e3a1b3d11776ab7e6a7f5c040822dae7922e607777ae1eb60",
+    "itemCheckCount": 105,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "Spice Kraft Indian Bistro",
+    "locationId": "arlington-va",
+    "address": "1135 N Highland St, Arlington, VA 22201",
+    "domain": "spicekraftva.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "src-home",
+      "src-search",
+      "src-square"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "src-home",
+      "url": "https://www.spicekraftva.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and navigation",
+      "retrievedAt": "2026-08-11T15:21:20.134Z"
+    },
+    {
+      "evidenceId": "src-square",
+      "url": "https://www.spicekraftva.com/app/store/api/v28/editor/users/127166122/sites/463159035502694372/products?page=1&per_page=200&include=images,media_files,discounts",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current linked Square ordering catalog",
+      "retrievedAt": "2026-08-11T15:21:20.134Z"
+    },
+    {
+      "evidenceId": "src-search",
+      "url": "https://www.google.com/search?q=site%3Aspicekraftva.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted official-domain search",
+      "retrievedAt": "2026-08-11T15:21:20.134Z"
+    },
+    {
+      "evidenceId": "src-identity",
+      "url": "https://www.stayarlington.com/directory/spice-kraft-indian-bistro/",
+      "authorityTier": "third_party",
+      "purpose": "independent Arlington identity corroboration",
+      "retrievedAt": "2026-08-11T15:21:20.134Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://www.spicekraftva.com/",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "arlington-va",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; menu/navigation reviewed",
+      "sourceEvidenceIds": [
+        "src-home"
+      ]
+    },
+    {
+      "surfaceId": "square-current-menu",
+      "url": "https://www.spicekraftva.com/app/store/api/v28/editor/users/127166122/sites/463159035502694372/products?page=1&per_page=200&include=images,media_files,discounts",
+      "authority": "linked Square vendor",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "arlington-va",
+      "servicePeriod": "current food and nonalcoholic ordering",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; 105 frozen products represented; alcohol-only products excluded",
+      "sourceEvidenceIds": [
+        "src-square"
+      ]
+    },
+    {
+      "surfaceId": "targeted-search",
+      "url": "https://www.google.com/search?q=site%3Aspicekraftva.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authority": "web search",
+      "authorityTier": "third_party",
+      "locationScope": "arlington-va",
+      "servicePeriod": "current/official-document discovery",
+      "current": false,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "searched; no authoritative allergen matrix located",
+      "sourceEvidenceIds": [
+        "src-search"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "spice-kraft-arlington-current-catalog",
+      "name": "Spice Kraft Arlington current food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "src-home",
+        "src-square"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "productCount": 105,
+      "boundary": "105 frozen food and nonalcoholic products; alcohol-only offerings excluded; repeated presentations consolidated to one catalog product"
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "location": "spicekraftva.com homepage, menu and navigation pages",
+        "queryOrLocation": "official site navigation and menu surfaces",
+        "urls": [
+          "https://www.spicekraftva.com/"
+        ],
+        "outcome": "searched; no official allergen matrix or cross-contact policy located",
+        "sourceEvidenceIds": [
+          "src-home"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "location": "official PDFs, images, nutrition, ingredient, FAQ, sitemap and downloadable-document surfaces",
+        "queryOrLocation": "site:spicekraftva.com allergen allergy nutrition ingredients PDF menu",
+        "urls": [
+          "https://www.spicekraftva.com/"
+        ],
+        "outcome": "searched; no authoritative allergen document or complete matrix located",
+        "sourceEvidenceIds": [
+          "src-home",
+          "src-search"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "location": "restaurant-linked Square ordering catalog",
+        "queryOrLocation": "Square current menu and item detail surfaces",
+        "urls": [
+          "https://www.spicekraftva.com/app/store/api/v28/editor/users/127166122/sites/463159035502694372/products?page=1&per_page=200&include=images,media_files,discounts"
+        ],
+        "outcome": "current products inspected; no complete allergen matrix or cross-contact statement located",
+        "sourceEvidenceIds": [
+          "src-square"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "location": "targeted official-domain searches",
+        "query": "site:spicekraftva.com allergen allergy nutrition ingredients PDF menu",
+        "urls": [
+          "https://www.google.com/search?q=site%3Aspicekraftva.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+        ],
+        "outcome": "no authoritative allergen matrix located",
+        "sourceEvidenceIds": [
+          "src-search"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "expectedCount": 105,
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:aloo-gobi",
+          "2:basmathi-rice",
+          "3:bhuna-bhartha",
+          "4:blueberry-mint-fizz",
+          "5:butter-chicken-pasta",
+          "6:butter-chicken-pasta-d",
+          "7:butter-chicken-taco",
+          "8:cauliflower-wrap",
+          "9:chana-masala",
+          "10:charbroiled-tandoori-chicken",
+          "11:chefs-mixed-grill",
+          "12:chettinadu-vegetable-korma",
+          "13:chicken-biryani",
+          "14:chicken-nuggets-and-fries",
+          "15:chicken-tikka-burger",
+          "16:chicken-tikka-naan-pizza",
+          "17:chicken-tikka-naan-pizza-d",
+          "18:chicken-tikka-wrap",
+          "19:chili-garlic-naan",
+          "20:cucumber-raita",
+          "21:curried-lamb-wrap",
+          "22:curry-rice-bowl",
+          "23:dhal-makhani",
+          "24:easter-menu-for-two",
+          "25:french-fries",
+          "26:garlic-naan",
+          "27:gluten-free-naan",
+          "28:goat-cheese-olive-naan",
+          "29:greek-salad",
+          "30:gulab-jamun-w-roasted-nuts",
+          "31:hakka-noodles",
+          "32:hot-tea",
+          "33:house-salad",
+          "34:iced-chai-latte",
+          "35:kata-meta-okra-and-aloo-with-lentil-sauce",
+          "36:kork-fee",
+          "37:lamb-biryani",
+          "38:lamb-chops",
+          "39:lamb-shank-josh",
+          "40:lamb-shorba",
+          "41:lashooni-cauliflower",
+          "42:lentil-soup-v",
+          "43:madras-noir",
+          "44:maharani-veg-burger",
+          "45:malabar-paratha-set-of-2-1",
+          "46:mango-and-cardamom-cheese-cake-vg",
+          "47:mango-and-ginger-crispy-chicken",
+          "48:mango-and-hibiscus-kulfi",
+          "49:mango-chutney",
+          "50:mango-lassi",
+          "51:mango-mule-virgin",
+          "52:masala-chai",
+          "53:masala-fries-gf",
+          "54:mint-and-tamarind-chutney",
+          "55:mint-chutney",
+          "56:naan-bread",
+          "57:onion-kulcha",
+          "58:paneer-butter-pasta",
+          "59:paneer-butter-pasta-d",
+          "60:paneer-kulcha",
+          "61:paneer-tikka-naan-pizza",
+          "62:paneer-tikka-naan-pizza-d",
+          "63:papadam",
+          "64:pongal-menu-for-2-pre-orders-only-jan-14th",
+          "65:quinoa-sun-dried-tomato-kale-kofta-with-turmeric-and-coconut-sauce",
+          "66:r-w-for-1-arlington",
+          "67:r-w-for-2-arlington",
+          "68:rice-pudding-with-sweet-bondhi",
+          "69:roti-vegan",
+          "70:saag-paneer-naan-pizza",
+          "71:saag-paneer-naan-pizza-d",
+          "72:saag-paneer-pasta",
+          "73:salmon-tikka-pineapple",
+          "74:samosa",
+          "75:samosa-chaat-vg",
+          "76:sauteed-spinach",
+          "77:serving-utensils",
+          "78:shrimp-biryani",
+          "79:shrimp-sea-salt-balsamic-kebab",
+          "80:side-chana-masala-gf",
+          "81:side-dal-makani",
+          "82:side-greek-salad",
+          "83:side-house-salad",
+          "84:side-mixed-vegetables",
+          "85:side-rogan-josh-sauce",
+          "86:side-saag-paneer",
+          "87:side-tika-masala-sauce",
+          "88:side-tikka-masala-sauce",
+          "89:spice-kraft-indian-classic-served-with-rice",
+          "90:spicy-chicken-65-gf",
+          "91:spicy-mangonada",
+          "92:spinach-pakora-chaat",
+          "93:still-water",
+          "94:taj-mahal",
+          "95:tamarind-chutney",
+          "96:tandoor-paratha",
+          "97:tandoori-chicken-tikka",
+          "98:tandoori-chicken-wings",
+          "99:tava-paneer-wrap",
+          "100:tomato-and-ginger-soup-vg",
+          "101:tulsi-citrus-wild-caught-salmon",
+          "102:vegan-dark-chocolate-pista-ganache-vgor-gf",
+          "103:vegetable-biryani",
+          "104:vegetable-pickle",
+          "105:yellow-lentils"
+        ],
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "spice-kraft-arlington-current-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-square"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify",
+  "outcome": "researched",
+  "processLog": [
+    "packet_validated",
+    "identity_verified",
+    "menu_surfaces_inventoried",
+    "matrix_search_completed",
+    "products_reconciled",
+    "validator_passed"
+  ]
+}

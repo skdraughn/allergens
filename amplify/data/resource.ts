@@ -1,5 +1,7 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
+import { deleteAccount } from "../functions/delete-account/resource.ts";
+
 const schema = a.schema({
   AllergyProfile: a
     .model({
@@ -7,6 +9,7 @@ const schema = a.schema({
       allergies: a.string().array(),
       notes: a.string(),
       emergencyContact: a.string(),
+      owner: protectedOwnerField(),
     })
     .authorization((allow) => [allow.owner()]),
   RestaurantRequest: a
@@ -26,7 +29,10 @@ const schema = a.schema({
       notes: a.string(),
       postalCode: a.string(),
       region: a.string(),
-      status: a.string(),
+      status: a.string().authorization((allow) => [
+        allow.owner().to(["read"]),
+        allow.group("Admins").to(["read", "update"]),
+      ]),
       createdBy: a.string(),
     })
     .secondaryIndexes((index) => [
@@ -34,8 +40,7 @@ const schema = a.schema({
     ])
     .authorization((allow) => [
       allow.publicApiKey().to(["create"]),
-      allow.owner().to(["create", "read"]),
-      allow.authenticated().to(["read"]),
+      allow.owner().to(["create", "read", "update", "delete"]),
       allow.group("Admins").to(["read", "update", "delete"]),
     ]),
   CommunityMenuItem: a
@@ -50,14 +55,14 @@ const schema = a.schema({
       status: a.string(),
       reviewNotes: a.string(),
       createdBy: a.string(),
+      owner: protectedOwnerField(),
     })
     .secondaryIndexes((index) => [
       index("createdBy").queryField("communityMenuItemsByCreatedBy"),
       index("restaurantId").queryField("communityMenuItemsByRestaurantId"),
     ])
     .authorization((allow) => [
-      allow.owner().to(["create", "read"]),
-      allow.authenticated().to(["read"]),
+      allow.owner().to(["create", "read", "delete"]),
       allow.group("Admins").to(["read", "update", "delete"]),
     ]),
   MenuItemReport: a
@@ -69,14 +74,14 @@ const schema = a.schema({
       sourceUrl: a.string(),
       status: a.string(),
       createdBy: a.string(),
+      owner: protectedOwnerField(),
     })
     .secondaryIndexes((index) => [
       index("createdBy").queryField("menuItemReportsByCreatedBy"),
       index("restaurantId").queryField("menuItemReportsByRestaurantId"),
     ])
     .authorization((allow) => [
-      allow.owner().to(["create", "read"]),
-      allow.authenticated().to(["read"]),
+      allow.owner().to(["create", "read", "delete"]),
       allow.group("Admins").to(["read", "update", "delete"]),
     ]),
   CommunityComment: a
@@ -87,14 +92,14 @@ const schema = a.schema({
       allergyContext: a.string(),
       status: a.string(),
       createdBy: a.string(),
+      owner: protectedOwnerField(),
     })
     .secondaryIndexes((index) => [
       index("createdBy").queryField("communityCommentsByCreatedBy"),
       index("restaurantId").queryField("communityCommentsByRestaurantId"),
     ])
     .authorization((allow) => [
-      allow.owner().to(["create", "read"]),
-      allow.authenticated().to(["read"]),
+      allow.owner().to(["create", "read", "delete"]),
       allow.group("Admins").to(["read", "update", "delete"]),
     ]),
   CommunityAllergyReview: a
@@ -107,15 +112,66 @@ const schema = a.schema({
       allergyContext: a.string(),
       status: a.string(),
       createdBy: a.string(),
+      owner: protectedOwnerField(),
     })
     .secondaryIndexes((index) => [
       index("createdBy").queryField("communityAllergyReviewsByCreatedBy"),
       index("restaurantId").queryField("communityAllergyReviewsByRestaurantId"),
     ])
     .authorization((allow) => [
-      allow.owner().to(["create", "read"]),
-      allow.authenticated().to(["read"]),
+      allow.owner().to(["create", "read", "delete"]),
       allow.group("Admins").to(["read", "update", "delete"]),
+    ]),
+  PublishedCommunityAllergyReview: a
+    .model({
+      id: a.id().required(),
+      restaurantId: a.string().required(),
+      menuItemId: a.string(),
+      menuItemName: a.string(),
+      rating: a.integer().required(),
+      body: a.string().required(),
+      allergyContext: a.string(),
+      authorId: a.string().required(),
+      originalCreatedAt: a.datetime(),
+    })
+    .identifier(["id"])
+    .secondaryIndexes((index) => [
+      index("restaurantId").queryField("publishedAllergyReviewsByRestaurantId"),
+    ])
+    .authorization((allow) => [
+      allow.authenticated().to(["read"]),
+      allow.group("Admins").to(["read", "create", "update", "delete"]),
+    ]),
+  CommunityReviewReport: a
+    .model({
+      reviewId: a.string().required(),
+      restaurantId: a.string().required(),
+      reason: a.string().required(),
+      comment: a.string(),
+      createdBy: a.string(),
+      status: a.string(),
+      owner: protectedOwnerField(),
+    })
+    .secondaryIndexes((index) => [
+      index("createdBy").queryField("communityReviewReportsByCreatedBy"),
+      index("reviewId").queryField("communityReviewReportsByReviewId"),
+    ])
+    .authorization((allow) => [
+      allow.owner().to(["create", "read", "delete"]),
+      allow.group("Admins").to(["read", "update", "delete"]),
+    ]),
+  BlockedCommunityUser: a
+    .model({
+      blockedUserId: a.string().required(),
+      createdBy: a.string(),
+      owner: protectedOwnerField(),
+    })
+    .secondaryIndexes((index) => [
+      index("createdBy").queryField("blockedCommunityUsersByCreatedBy"),
+    ])
+    .authorization((allow) => [
+      allow.owner(),
+      allow.group("Admins").to(["read", "delete"]),
     ]),
   RestaurantAllergyRatingSummary: a
     .model({
@@ -129,7 +185,19 @@ const schema = a.schema({
       allow.authenticated().to(["read"]),
       allow.group("Admins").to(["read", "create", "update", "delete"]),
     ]),
+  deleteMyAccount: a
+    .mutation()
+    .returns(a.boolean())
+    .authorization((allow) => [allow.authenticated()])
+    .handler(a.handler.function(deleteAccount)),
 });
+
+function protectedOwnerField() {
+  return a.string().authorization((allow) => [
+    allow.owner().to(["read", "delete"]),
+    allow.group("Admins").to(["read", "delete"]),
+  ]);
+}
 
 export type Schema = ClientSchema<typeof schema>;
 

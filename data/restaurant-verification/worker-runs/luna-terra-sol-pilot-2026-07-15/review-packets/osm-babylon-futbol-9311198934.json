@@ -1,0 +1,1216 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-pilot-2026-07-15",
+  "restaurant": {
+    "restaurantId": "osm-babylon-futbol-9311198934",
+    "name": "Babylon Futbol Cafe",
+    "domain": "babylonfc.com",
+    "locationId": "falls-church",
+    "baselineItemCount": 30,
+    "baselineItemFingerprint": "e933fe6adf078494dc2b2a1bdbe2a9ae02cb7b628a1d429fc1d137f696ec36f8",
+    "officialItemCount": 11,
+    "officialAllergenStatus": "not-found",
+    "sourceFamily": "generic-website",
+    "parserProfile": "generic-website",
+    "guideUrl": "https://www.babylonfc.com/",
+    "sourceUrls": [
+      "https://www.babylonfc.com/",
+      "https://www.babylonfc.com/product/BOTTLE-PACKAGES",
+      "https://www.babylonfc.com/product/MONDAYS",
+      "https://www.babylonfc.com/product/TUESDAYS",
+      "https://www.babylonfc.com/menu",
+      "https://www.babylonfc.com/brunch--nfl-menu",
+      "https://www.babylonfc.com/hookah-mneu",
+      "https://www.babylonfc.com/bottle-menu",
+      "https://www.babylonfc.com/product/SUNDAY-BRUNCH",
+      "https://www.babylonfc.com/product/WEEKLY-LINEUP-c172026503",
+      "https://www.babylonfc.com/product/account",
+      "https://www.babylonfc.com/product/account/favorites"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found.",
+    "Low confidence must be explicitly marked low_confidence.",
+    "Terra must verify every scout product presentation exactly once.",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra reported a mismatched or unverifiable current product.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "validationWarnings": [
+    "Low confidence must be explicitly marked low_confidence.",
+    "Terra must verify every scout product presentation exactly once.",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra reported a mismatched or unverifiable current product.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "multi_service",
+      "unresolved_surface",
+      "count_drift",
+      "current_only",
+      "baseline_only",
+      "duplicate_presentations",
+      "authority_ambiguity",
+      "non_exact_reconciliation",
+      "allergen_mismatch",
+      "cross_contact",
+      "validation_warnings",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 30,
+      "reconciledItemCount": 30,
+      "uniqueReconciledItemCount": 30,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 6,
+      "activeMenuSurfaceCount": 5,
+      "accessibleMenuSurfaceCount": 4,
+      "serviceCount": 5,
+      "pdfImageSurfaceCount": 0,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 0,
+      "incompleteSurfaceCount": 0,
+      "unresolvedSurfaceCount": 1,
+      "currentProductCount": 13,
+      "currentOnlyCount": 1,
+      "baselineOnlyCount": 2,
+      "countDrift": true,
+      "duplicatePresentationCount": 28,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 2,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 30,
+      "allergenMismatchItemCount": 8,
+      "crossContactCount": 3,
+      "parserRepairFindingCount": 0,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 102,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "low",
+      "overall": 0.48,
+      "menu": 0.77,
+      "allergenSource": 0.38,
+      "extraction": 0.31,
+      "rationale": "The official food, happy-hour, and shisha pages are accessible and identify a much larger catalog than Luna defined, but brunch is not enumerated, the linked vendor menu is not independently accessible, and no complete restaurant-issued allergen or cross-contact disclosure was found."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Babylon Futbol Cafe / Babylon Lounge, 3501 S Jefferson St, Falls Church, VA 22041",
+      "confidence": 0.98,
+      "sourceEvidenceIds": [
+        "terra-home",
+        "terra-food-menu"
+      ],
+      "notes": "The official homepage gives the Falls Church address and links the menu surfaces."
+    },
+    "sources": [
+      {
+        "evidenceId": "terra-home",
+        "url": "https://www.babylonfc.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Babylon Futbol Cafe homepage",
+        "retrievedAt": "2026-07-15T00:00:00Z",
+        "excerpt": "Navigation links Food Menu, Brunch - NFL Menu, Happy Hour, Shisha Menu, and Bottle Menu; footer gives 3501 S Jefferson St, Falls Church, VA 22041.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "official-home.html"
+      },
+      {
+        "evidenceId": "terra-food-menu",
+        "url": "https://www.babylonfc.com/menu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Food Menu",
+        "retrievedAt": "2026-07-15T00:00:00Z",
+        "excerpt": "Official page enumerates appetizers, pizzas, sandwiches, salads, Ethiopian dishes, specials, entrees, and sides; it names ingredients for some dishes and contains only a raw/undercooked-food warning, not an allergen matrix or cross-contact statement.",
+        "stableRowId": "lines-19-317",
+        "contentHash": null,
+        "artifactSuggested": "official-food-menu.html"
+      },
+      {
+        "evidenceId": "terra-happy-hour",
+        "url": "https://www.babylonfc.com/happy-hour",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Happy Hour Menu",
+        "retrievedAt": "2026-07-15T00:00:00Z",
+        "excerpt": "Monday-Friday 4PM-9PM food bites include chips and salsa, 8-piece wings, fried mozzarella, potato skins, fried calamari, chicken tender, quesadillas, and tacos.",
+        "stableRowId": "lines-20-52",
+        "contentHash": null,
+        "artifactSuggested": "official-happy-hour.html"
+      },
+      {
+        "evidenceId": "terra-shisha",
+        "url": "https://www.babylonfc.com/hookah-mneu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Shisha Menu",
+        "retrievedAt": "2026-07-15T00:00:00Z",
+        "excerpt": "The accessible page lists an Al Fakher flavor catalog and hookah price periods; it does not list Starbuzz.",
+        "stableRowId": "lines-19-72",
+        "contentHash": null,
+        "artifactSuggested": "official-shisha.html"
+      },
+      {
+        "evidenceId": "terra-brunch",
+        "url": "https://www.babylonfc.com/brunch--nfl-menu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Brunch - NFL Menu",
+        "retrievedAt": "2026-07-15T00:00:00Z",
+        "excerpt": "Official linked page returned only sparse, non-enumerable content.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "official-brunch-menu.html"
+      },
+      {
+        "evidenceId": "terra-bottle",
+        "url": "https://www.babylonfc.com/bottle-menu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "other",
+        "title": "Bottle Menu",
+        "retrievedAt": "2026-07-15T00:00:00Z",
+        "excerpt": "Official linked bottle-service page; out of the frozen food/nonalcoholic audit scope.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "official-bottle-menu.html"
+      },
+      {
+        "evidenceId": "terra-grubhub",
+        "url": "https://www.grubhub.com/restaurant/babylon-futbol-cafe-3501-s-jefferson-st-falls-church/6456096",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Grubhub ordering menu",
+        "retrievedAt": "2026-07-15T00:00:00Z",
+        "excerpt": "Official site links this ordering vendor, but independent retrieval returned a loading shell without an enumerable catalog.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "grubhub-menu.html"
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://www.babylonfc.com/",
+        "notes": "Official identity and navigation accessible."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://www.babylonfc.com/menu",
+        "notes": "Official food, happy-hour, shisha, brunch, and bottle links re-opened."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "blocked",
+        "url": "https://www.grubhub.com/restaurant/babylon-futbol-cafe-3501-s-jefferson-st-falls-church/6456096",
+        "notes": "Returned a non-enumerable loading shell; vendor authority remains restaurant_linked_vendor."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": "https://www.babylonfc.com/",
+        "notes": "Official domain and linked ordering URL confirmed."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No useful official archive located or relied upon."
+      },
+      {
+        "kind": "third_party",
+        "status": "not_found",
+        "url": null,
+        "notes": "No third-party allergen source suitable for verification located or relied upon."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "multi_service",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-home",
+          "terra-food-menu",
+          "terra-happy-hour",
+          "terra-shisha"
+        ],
+        "notes": "Official navigation exposes distinct food, happy-hour, shisha, brunch, and bottle surfaces."
+      },
+      {
+        "gateId": "unresolved_surface",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-brunch"
+        ],
+        "notes": "The official brunch page was not enumerable; it cannot support completeness or negatives."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-food-menu",
+          "terra-happy-hour",
+          "terra-shisha"
+        ],
+        "notes": "Luna defined 13 current products while the official food page alone enumerates dozens of separately orderable items."
+      },
+      {
+        "gateId": "current_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-food-menu",
+          "terra-grubhub"
+        ],
+        "notes": "Current catalog includes many products without frozen mappings; can sodas remain vendor-only."
+      },
+      {
+        "gateId": "baseline_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-food-menu",
+          "terra-shisha"
+        ],
+        "notes": "Several frozen rows are extraction fragments, and Starbuzz is absent from the current shisha page."
+      },
+      {
+        "gateId": "duplicate_presentations",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-food-menu",
+          "terra-happy-hour",
+          "terra-grubhub"
+        ],
+        "notes": "Food, happy-hour, and linked-vendor presentations overlap; vendor catalog could not be independently enumerated."
+      },
+      {
+        "gateId": "authority_ambiguity",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-food-menu",
+          "terra-grubhub"
+        ],
+        "notes": "Restaurant ingredient text is partial only; vendor evidence cannot be promoted to restaurant-issued."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-food-menu",
+          "terra-shisha"
+        ],
+        "notes": "Frozen rows include modifier text, descriptions, timing fragments, navigation, and stale Starbuzz content."
+      },
+      {
+        "gateId": "allergen_mismatch",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "notes": "Frozen official-ingredient arrays include unsupported positives, including shellfish on fettuccine, salmon, and catfish; the official page supports only narrow named-ingredient positives."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-food-menu",
+          "terra-happy-hour"
+        ],
+        "notes": "Only raw/undercooked-food warnings appear. They are not cross-contact disclosures and cannot support may-contain arrays or negative claims."
+      },
+      {
+        "gateId": "validation_warnings",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-food-menu",
+          "terra-happy-hour",
+          "terra-shisha"
+        ],
+        "notes": "Most Luna surface product references have no corresponding currentProduct definition; pizza key mismatch and Starbuzz references remain."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-brunch",
+          "terra-grubhub"
+        ],
+        "notes": "Brunch scope and vendor ordering catalog remain unverifiable."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "terra-food-menu",
+          "terra-brunch"
+        ],
+        "notes": "Independent review confirms material menu-scope and allergen-source gaps."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "surface-food",
+        "verdict": "mismatch",
+        "sourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "notes": "Page is fully enumerable, but Luna failed to define the large majority of its listed products."
+      },
+      {
+        "surfaceId": "surface-happy-hour",
+        "verdict": "mismatch",
+        "sourceEvidenceIds": [
+          "terra-happy-hour"
+        ],
+        "notes": "Page is fully enumerable; Luna did not define its distinct bites/variants."
+      },
+      {
+        "surfaceId": "surface-shisha",
+        "verdict": "mismatch",
+        "sourceEvidenceIds": [
+          "terra-shisha"
+        ],
+        "notes": "Current page lists Al Fakher and price periods, not Starbuzz; Luna's Starbuzz presentation mapping is unsupported."
+      },
+      {
+        "surfaceId": "surface-bottle",
+        "verdict": "verified",
+        "sourceEvidenceIds": [
+          "terra-bottle"
+        ],
+        "notes": "Official bottle-service surface is excluded from the food/nonalcoholic audit scope."
+      },
+      {
+        "surfaceId": "surface-brunch",
+        "verdict": "unverifiable",
+        "sourceEvidenceIds": [
+          "terra-brunch"
+        ],
+        "notes": "Sparse official content prevents enumeration or current-status determination."
+      },
+      {
+        "surfaceId": "surface-ordering",
+        "verdict": "unverifiable",
+        "sourceEvidenceIds": [
+          "terra-grubhub"
+        ],
+        "notes": "Linked vendor page was not independently enumerable; Luna's complete-catalog assertion cannot be verified."
+      }
+    ],
+    "currentProductCheckGroups": [
+      {
+        "currentProductKeys": [
+          "chips-salsa"
+        ],
+        "presentationIds": [
+          "official-standard",
+          "happy-hour",
+          "grubhub-standard"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-food-menu",
+          "terra-happy-hour"
+        ],
+        "notes": "Official food description names corn tortillas and salsa only; no complete allergen disclosure."
+      },
+      {
+        "currentProductKeys": [
+          "quesadilla"
+        ],
+        "presentationIds": [
+          "official-standard",
+          "grubhub-standard"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "milk",
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "notes": "Official text explicitly says cheese and flour tortillas; no complete matrix."
+      },
+      {
+        "currentProductKeys": [
+          "buffalo-shrimp"
+        ],
+        "presentationIds": [
+          "official-standard",
+          "grubhub-standard"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "shellfish"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "notes": "Shrimp is explicit; breading and sauce remain incomplete."
+      },
+      {
+        "currentProductKeys": [
+          "shrimp-poboy"
+        ],
+        "presentationIds": [
+          "official-standard",
+          "grubhub-standard"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "shellfish"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "notes": "Shrimp is explicit; bun and breading are not fully disclosed."
+      },
+      {
+        "currentProductKeys": [
+          "fettuccine-alfredo"
+        ],
+        "presentationIds": [
+          "official-standard",
+          "grubhub-standard"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "milk",
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "notes": "Pasta, Alfredo sauce, and Parmesan support narrow positives only; shellfish is not named."
+      },
+      {
+        "currentProductKeys": [
+          "grilled-salmon"
+        ],
+        "presentationIds": [
+          "official-standard"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "milk",
+          "fish"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "notes": "Salmon and lemon butter are explicit; shellfish is not named."
+      },
+      {
+        "currentProductKeys": [
+          "catfish-dinner"
+        ],
+        "presentationIds": [
+          "official-standard"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "fish"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "notes": "Catfish is explicit; breading does not establish a complete wheat/gluten claim and shellfish is not named."
+      },
+      {
+        "currentProductKeys": [
+          "pizza-cheese"
+        ],
+        "presentationIds": [
+          "official-standard",
+          "grubhub-standard"
+        ],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "notes": "Official product is Cheese Pizza, while the surface references unresolved key cheese-pizza; mozzarella supports milk only."
+      },
+      {
+        "currentProductKeys": [
+          "babylon-wings"
+        ],
+        "presentationIds": [
+          "official-standard",
+          "happy-hour",
+          "grubhub-standard"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "terra-food-menu",
+          "terra-happy-hour"
+        ],
+        "notes": "Sauce-specific ingredients and cross-contact are undisclosed."
+      },
+      {
+        "currentProductKeys": [
+          "fried-chicken-slider"
+        ],
+        "presentationIds": [
+          "official-standard",
+          "grubhub-standard"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "notes": "The slider text does not establish the frozen milk claim or a reliable wheat claim."
+      },
+      {
+        "currentProductKeys": [
+          "can-sodas"
+        ],
+        "presentationIds": [
+          "grubhub-standard"
+        ],
+        "verdict": "unverifiable",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "terra-grubhub"
+        ],
+        "notes": "Vendor-only product could not be independently enumerated."
+      },
+      {
+        "currentProductKeys": [
+          "sega-tibs"
+        ],
+        "presentationIds": [
+          "official-standard"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "notes": "Official description is ingredient text only and is not a complete allergen disclosure."
+      },
+      {
+        "currentProductKeys": [
+          "doro-tibs"
+        ],
+        "presentationIds": [
+          "official-standard"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "sourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "notes": "Official description is ingredient text only and is not a complete allergen disclosure."
+      }
+    ],
+    "additionalMenuSurfaces": [],
+    "additionalCurrentProducts": [
+      {
+        "currentProductKey": "food-menu-unmapped-products",
+        "name": "Official Food Menu products omitted from Luna currentProducts",
+        "category": "multiple official food categories",
+        "surfaceIds": [
+          "surface-food"
+        ],
+        "presentationIds": [
+          "official-standard"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "terra-food-menu"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Luna omitted definitions for Nachos Con Todo, Fried Mozzarella, Potato Skins, Fried Calamari, Southwestern Egg Rolls, Catfish Nuggets, Steak & Cheese Egg Rolls, Chicken Fingers, Soft Tacos, Pizza Pomodoro, Vegetable Pizza, Gyro Pizza, Pizza Club, White Pizza, Pizza My Way, Babylon Burger, Vegetable Burger, Southwest Burger, Steak and Cheese, Steak Caesar Wrap, Chicken Sandwich, Gyro, Chicken Sandwich Jose Special, Crispy Cajun Chicken Sandwich, Grilled Salmon Wrap, Buffalo Chicken Wrap, Grilled Ham & Cheese, Fried Chicken Sandwich, House Salad, Caesar Salad, Greek Salad, Chicken Fried Rice, Chicken & Shrimp Fried Rice, Shrimp Fried Rice, Chicken & Beef Fried Rice, Cajun Shrimp Pasta, Chicken Kabob, Lomo Saltado, Arroz Con Pollo, Chicken Fajitas, Steak Fajitas, Fajita El Rey, New York Steak, Lamb Chops, Smothered Chicken, Camarones Al Ajo, Seafood Platter, Mashed Potatoes, Vegetable Medley, Mac & Cheese, Collard Greens, Baked Potatoes, and Rice. This aggregate records the missed catalog boundary; ingredient prose supports only product-specific narrow positives, never complete arrays or cross-contact conclusions."
+      },
+      {
+        "currentProductKey": "happy-hour-unmapped-products",
+        "name": "Happy Hour variants omitted from Luna currentProducts",
+        "category": "Happy Hour Bites",
+        "surfaceIds": [
+          "surface-happy-hour"
+        ],
+        "presentationIds": [
+          "happy-hour"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-happy-hour"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "unverified",
+        "notes": "Distinct current variants omitted from Luna definitions: Chicken Tender; Chicken, Beef, and Shrimp Quesadilla; and Chicken, Beef, and Shrimp Taco. Menu names alone do not provide complete allergen disclosures."
+      },
+      {
+        "currentProductKey": "alfakher-flavor-catalog",
+        "name": "Al Fakher flavor catalog",
+        "category": "Shisha",
+        "surfaceIds": [
+          "surface-shisha"
+        ],
+        "presentationIds": [
+          "official-standard"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "terra-shisha"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "not_applicable",
+        "allergenSourceType": "not_applicable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "verified",
+        "notes": "Current official shisha product catalog; Luna incorrectly represented a Starbuzz catalog instead."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 30,
+      "counts": {
+        "variant_match/accurately_unavailable": 1,
+        "variant_match/verified": 2,
+        "variant_match/mismatch": 4,
+        "artifact/not_applicable": 14,
+        "normalized_match/mismatch": 6,
+        "normalized_match/accurately_unavailable": 1,
+        "stale_extra/not_applicable": 1,
+        "normalized_match/verified": 1
+      }
+    },
+    "findings": [
+      {
+        "findingId": "terra-catalog-underdefinition",
+        "severity": "high",
+        "kind": "menu",
+        "summary": "Luna defined only 13 current products despite official food and happy-hour pages enumerating a substantially larger catalog; most referenced surface keys are unresolved.",
+        "sourceEvidenceIds": [
+          "terra-food-menu",
+          "terra-happy-hour"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "terra-shisha-starbuzz-drift",
+        "severity": "medium",
+        "kind": "menu",
+        "summary": "Luna's Starbuzz product/presentation mapping is not supported by the current official shisha page, which lists Al Fakher flavors and price periods only.",
+        "sourceEvidenceIds": [
+          "terra-shisha"
+        ],
+        "affectedAuditItemKeys": [
+          "21:starbuzz",
+          "25:200pm",
+          "26:400pm",
+          "27:700pm",
+          "28:starbuzz-7-00pm-close",
+          "29:starbuzz-citrus-mist-love66-new-impressionz-hookah-prices-hookah-sunday-to-thursday-4-00pm-9-00pm",
+          "30:starbuzz-hookah-friday-to-saturday-2-00pm-4-00pm"
+        ]
+      },
+      {
+        "findingId": "terra-allergen-overclaims",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "Frozen restaurant-issued allergen arrays overclaim unsupported allergens. The accessible official page supplies ingredient prose only; it supports narrow named positives but no complete arrays, negatives, or cross-contact conclusions.",
+        "sourceEvidenceIds": [
+          "terra-food-menu",
+          "terra-happy-hour"
+        ],
+        "affectedAuditItemKeys": [
+          "3:chicken",
+          "7:with-small-fries-add-dollar2",
+          "8:100-pieces",
+          "9:crispy-seasoned-shrimp-lettuce-tomato",
+          "13:fettuccine-pasta-tossed-with-our-unique-alfredo-sauce-and-topped-with-parmesan-cheese",
+          "14:fresh-grilled-salmon-served-with-rice-and-vegetables-in-lemon-butter-sauce",
+          "15:fried-corn-tortillas-served-with-our-home-made-traditional-mexican-salsa",
+          "19:seasoned-and-breaded-catfish-w-2-sides"
+        ]
+      },
+      {
+        "findingId": "terra-unverifiable-brunch-vendor",
+        "severity": "medium",
+        "kind": "scope",
+        "summary": "Official brunch content is non-enumerable and the linked Grubhub page is not independently enumerable, so neither source can establish complete product scope or allergen negatives.",
+        "sourceEvidenceIds": [
+          "terra-brunch",
+          "terra-grubhub"
+        ],
+        "affectedAuditItemKeys": [
+          "6:check-in-process",
+          "22:sunday-brunch"
+        ]
+      }
+    ],
+    "summary": "Independent verification found material catalog-definition and allergen-authority discrepancies. Official food and happy-hour menus are much larger than Luna's defined current-product catalog; the shisha page does not support Starbuzz; brunch and linked-vendor scope remain unverifiable. No complete allergen matrix or cross-contact disclosure was found, so only narrow official named-ingredient positives are retained and all may-contain arrays remain empty.",
+    "coordinatorNotes": [
+      "Do not treat the raw/undercooked-food warning as cross-contact evidence.",
+      "The two aggregate additional-product records identify the complete omitted catalog boundary from the fully enumerable official surfaces; they require product-level catalog expansion before any terminal action.",
+      "This result is intentionally nonterminal and requires Sol review."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "3:chicken",
+      "baseline": {
+        "itemId": "chicken",
+        "name": "CHICKEN",
+        "category": "Appetizers",
+        "variantGroup": "restaurant",
+        "isConfigurable": false,
+        "allergens": [
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.babylonfc.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "6:check-in-process",
+      "baseline": {
+        "itemId": "check-in-process",
+        "name": "CHECK-IN PROCESS",
+        "category": "Brunch Service Reservations 2-6pm",
+        "variantGroup": "Brunch Service Reservations 2-6pm",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.babylonfc.com/product/SUNDAY-BRUNCH"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "7:with-small-fries-add-dollar2",
+      "baseline": {
+        "itemId": "with-small-fries-add-dollar2",
+        "name": "(WITH SMALL FRIES ADD $2)",
+        "category": "restaurant",
+        "variantGroup": "restaurant",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.babylonfc.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "8:100-pieces",
+      "baseline": {
+        "itemId": "100-pieces",
+        "name": "100 PIECES:",
+        "category": "restaurant",
+        "variantGroup": "restaurant",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.babylonfc.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "9:crispy-seasoned-shrimp-lettuce-tomato",
+      "baseline": {
+        "itemId": "crispy-seasoned-shrimp-lettuce-tomato",
+        "name": "CRISPY SEASONED SHRIMP, LETTUCE, TOMATO",
+        "category": "restaurant",
+        "variantGroup": "restaurant",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.babylonfc.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "13:fettuccine-pasta-tossed-with-our-unique-alfredo-sauce-and-topped-with-parmesan-cheese",
+      "baseline": {
+        "itemId": "fettuccine-pasta-tossed-with-our-unique-alfredo-sauce-and-topped-with-parmesan-cheese",
+        "name": "FETTUCCINE PASTA TOSSED WITH OUR UNIQUE ALFREDO SAUCE AND TOPPED WITH PARMESAN CHEESE",
+        "category": "restaurant",
+        "variantGroup": "restaurant",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.babylonfc.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "14:fresh-grilled-salmon-served-with-rice-and-vegetables-in-lemon-butter-sauce",
+      "baseline": {
+        "itemId": "fresh-grilled-salmon-served-with-rice-and-vegetables-in-lemon-butter-sauce",
+        "name": "FRESH GRILLED SALMON SERVED WITH RICE AND VEGETABLES IN LEMON BUTTER SAUCE",
+        "category": "restaurant",
+        "variantGroup": "restaurant",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "fish",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.babylonfc.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "15:fried-corn-tortillas-served-with-our-home-made-traditional-mexican-salsa",
+      "baseline": {
+        "itemId": "fried-corn-tortillas-served-with-our-home-made-traditional-mexican-salsa",
+        "name": "FRIED CORN TORTILLAS SERVED WITH OUR HOME MADE TRADITIONAL MEXICAN SALSA",
+        "category": "restaurant",
+        "variantGroup": "restaurant",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.babylonfc.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "19:seasoned-and-breaded-catfish-w-2-sides",
+      "baseline": {
+        "itemId": "seasoned-and-breaded-catfish-w-2-sides",
+        "name": "SEASONED AND BREADED CATFISH W/ 2 SIDES",
+        "category": "restaurant",
+        "variantGroup": "restaurant",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "fish",
+          "shellfish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.babylonfc.com/menu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "21:starbuzz",
+      "baseline": {
+        "itemId": "starbuzz",
+        "name": "STARBUZZ",
+        "category": "restaurant",
+        "variantGroup": "restaurant",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.babylonfc.com/hookah-mneu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "22:sunday-brunch",
+      "baseline": {
+        "itemId": "sunday-brunch",
+        "name": "SUNDAY BRUNCH",
+        "category": "restaurant",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.babylonfc.com/product/SUNDAY-BRUNCH"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "25:200pm",
+      "baseline": {
+        "itemId": "200pm",
+        "name": "2:00PM",
+        "category": "Starbuzz",
+        "variantGroup": "Al Fakher",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.babylonfc.com/hookah-mneu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "26:400pm",
+      "baseline": {
+        "itemId": "400pm",
+        "name": "4:00PM",
+        "category": "Starbuzz",
+        "variantGroup": "Al Fakher",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.babylonfc.com/hookah-mneu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "27:700pm",
+      "baseline": {
+        "itemId": "700pm",
+        "name": "7:00PM",
+        "category": "Starbuzz",
+        "variantGroup": "Al Fakher",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.babylonfc.com/hookah-mneu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "28:starbuzz-7-00pm-close",
+      "baseline": {
+        "itemId": "starbuzz-7-00pm-close",
+        "name": "7:00PM - CLOSE",
+        "category": "STARBUZZ",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "reviewed-menu-repair",
+        "sourceUrls": [
+          "https://www.babylonfc.com/hookah-mneu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "29:starbuzz-citrus-mist-love66-new-impressionz-hookah-prices-hookah-sunday-to-thursday-4-00pm-9-00pm",
+      "baseline": {
+        "itemId": "starbuzz-citrus-mist-love66-new-impressionz-hookah-prices-hookah-sunday-to-thursday-4-00pm-9-00pm",
+        "name": "Citrus Mist love66 New Impressionz HOOKAH PRICES HOOKAH SUNDAY TO THURSDAY 4:00PM - 9:00PM",
+        "category": "STARBUZZ",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "reviewed-menu-repair",
+        "sourceUrls": [
+          "https://www.babylonfc.com/hookah-mneu"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "30:starbuzz-hookah-friday-to-saturday-2-00pm-4-00pm",
+      "baseline": {
+        "itemId": "starbuzz-hookah-friday-to-saturday-2-00pm-4-00pm",
+        "name": "HOOKAH FRIDAY TO SATURDAY 2:00PM - 4:00PM",
+        "category": "STARBUZZ",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "reviewed-menu-repair",
+        "sourceUrls": [
+          "https://www.babylonfc.com/hookah-mneu"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-pilot-2026-07-15/jobs/osm-babylon-futbol-9311198934.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-pilot-2026-07-15/results/osm-babylon-futbol-9311198934.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/osm-babylon-futbol-9311198934.jsonl"
+  }
+}

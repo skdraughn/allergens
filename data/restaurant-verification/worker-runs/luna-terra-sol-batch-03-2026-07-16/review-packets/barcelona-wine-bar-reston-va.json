@@ -1,0 +1,1108 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-batch-03-2026-07-16",
+  "restaurant": {
+    "restaurantId": "barcelona-wine-bar-reston-va",
+    "name": "Barcelona Wine Bar Reston",
+    "domain": "barcelonawinebar.com",
+    "locationId": "reston",
+    "baselineItemCount": 34,
+    "baselineItemFingerprint": "acfcb4b8489ca8ccf4a0319ac41eb90b9b1833823dfb181f1b4a12cefe331f65",
+    "officialItemCount": 17,
+    "officialAllergenStatus": "not-found",
+    "sourceFamily": "website-menu-pdfs",
+    "parserProfile": "website-menu-pdfs",
+    "guideUrl": "https://barcelonawinebar.com/location/reston/",
+    "sourceUrls": [
+      "https://barcelonawinebar.com/location/reston/",
+      "https://barcelonawinebar.com/food/",
+      "https://barcelonawinebar.com/media/3-13-26-Menu-Reston.pdf",
+      "https://barcelonawinebar.com/media/4-25-26-Brunch-Menu-Reston.pdf",
+      "https://barcelonawinebar.com/dinner/",
+      "https://barcelonawinebar.com/dessert/",
+      "https://barcelonawinebar.com/locations/"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found.",
+    "Low confidence must be explicitly marked low_confidence.",
+    "Terra must verify every scout product presentation exactly once.",
+    "Terra missed 1 scout product presentation(s).",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra reported a mismatched or unverifiable current product.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "validationWarnings": [
+    "Low confidence must be explicitly marked low_confidence.",
+    "Terra must verify every scout product presentation exactly once.",
+    "Terra missed 1 scout product presentation(s).",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra reported a mismatched or unverifiable current product.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "multi_service",
+      "pdf_or_image",
+      "inaccessible_source",
+      "count_drift",
+      "current_only",
+      "baseline_only",
+      "duplicate_presentations",
+      "non_exact_reconciliation",
+      "cross_contact",
+      "parser_or_repair_finding",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 34,
+      "reconciledItemCount": 34,
+      "uniqueReconciledItemCount": 34,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 5,
+      "activeMenuSurfaceCount": 5,
+      "accessibleMenuSurfaceCount": 2,
+      "serviceCount": 5,
+      "pdfImageSurfaceCount": 4,
+      "inaccessibleSurfaceCount": 2,
+      "inaccessiblePrimaryAttemptCount": 2,
+      "incompleteSurfaceCount": 0,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 27,
+      "currentOnlyCount": 4,
+      "baselineOnlyCount": 11,
+      "countDrift": true,
+      "duplicatePresentationCount": 2,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 0,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 11,
+      "allergenMismatchItemCount": 0,
+      "crossContactCount": 2,
+      "parserRepairFindingCount": 1,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 0,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "low",
+      "overall": 0.42,
+      "menu": 0.42,
+      "allergenSource": 0.2,
+      "extraction": 0.64,
+      "rationale": "Identity and the official Reston dinner and happy-hour PDFs were independently reopened. The dinner PDF is demonstrably far broader than Luna's alleged complete catalog, and its food, alcoholic, and happy-hour scope was incompletely enumerated. No restaurant-issued allergen matrix or cross-contact disclosure was located; the PDF supports only narrow named-ingredient positives, never complete arrays or negatives."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Barcelona Wine Bar Reston, 12023 Town Square Street, Reston, VA 20190.",
+      "confidence": 0.99,
+      "sourceEvidenceIds": [
+        "T1"
+      ],
+      "notes": "The official location page identifies the Reston address, hours, ordering link, and Lunch & Dinner, Brunch, Full Wine List, and Happy Hour menu links."
+    },
+    "sources": [
+      {
+        "evidenceId": "T1",
+        "url": "https://barcelonawinebar.com/location/reston/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Reston - Barcelona Wine Bar",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Official Reston page gives 12023 Town Square Street and links Lunch & Dinner, Brunch, Full Wine List, Happy Hour, and GoTab ordering.",
+        "stableRowId": "L25-L72",
+        "contentHash": null,
+        "artifactSuggested": "official-location-page"
+      },
+      {
+        "evidenceId": "T2",
+        "url": "https://barcelonawinebar.com/media/7-10-26-Menu-Reston.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "7-10-26 Menu Reston",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Two-page official dinner PDF. Page 1 lists substantially more charcuterie, tapas, salads, large plates, and desserts than Luna enumerated; page 2 lists wine, cocktails, beer, and two no-ABV cocktails. It says to inform the server if a person in the party has a food allergy, but provides no allergen matrix or cross-contact statement.",
+        "stableRowId": "P0-L0-P1-L608",
+        "contentHash": null,
+        "artifactSuggested": "official-dinner-menu-pdf"
+      },
+      {
+        "evidenceId": "T3",
+        "url": "https://barcelonawinebar.com/media/6-18-26-Reston-Happy-Hour.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "6-18-26 Reston Happy Hour",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "Official happy-hour PDF lists four cocktails, wine, and snacks including charcuterie & cheese, spinach & chickpea cazuela, olives, patatas bravas, albondigas, jamón & manchego croquetas, and oysters.",
+        "stableRowId": "P0-L0-L29",
+        "contentHash": null,
+        "artifactSuggested": "official-happy-hour-pdf"
+      },
+      {
+        "evidenceId": "T4",
+        "url": "https://gotab.io/loc/barcelonareston",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "GoTab Barcelona Reston",
+        "retrievedAt": "2026-07-16T00:00:00Z",
+        "excerpt": "The linked vendor page requires cookies and JavaScript and did not expose a catalog in this review.",
+        "stableRowId": "L0-L8",
+        "contentHash": null,
+        "artifactSuggested": "linked-ordering-page"
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://barcelonawinebar.com/location/reston/",
+        "notes": "Official location and menu-index page reopened."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://barcelonawinebar.com/media/7-10-26-Menu-Reston.pdf",
+        "notes": "Official two-page dinner/menu PDF reopened and text reviewed."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://barcelonawinebar.com/media/6-18-26-Reston-Happy-Hour.pdf",
+        "notes": "Official one-page happy-hour PDF reopened and text reviewed."
+      },
+      {
+        "kind": "linked_source",
+        "status": "error",
+        "url": "https://barcelonawinebar.com/media/7-11-26-Brunch-Menu-Reston.pdf",
+        "notes": "Officially linked brunch PDF did not yield retrievable content in this review."
+      },
+      {
+        "kind": "linked_source",
+        "status": "error",
+        "url": "https://barcelonawinebar.com/media/6-3-26-Bottle-Menu-Reston.pdf",
+        "notes": "Officially linked full wine-list PDF did not yield retrievable content in this review; the dinner PDF itself nevertheless has an alcoholic menu page."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://gotab.io/loc/barcelonareston",
+        "notes": "Linked vendor shell accessible but catalog blocked behind JavaScript/cookies."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "not_found",
+        "url": null,
+        "notes": "No restaurant-issued item allergen matrix or allergen policy located."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No authoritative archived allergen document located."
+      },
+      {
+        "kind": "third_party",
+        "status": "not_found",
+        "url": null,
+        "notes": "No reliable third-party allergen document used."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "multi_service",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1",
+          "T2",
+          "T3"
+        ],
+        "notes": "Official page links lunch/dinner, brunch, wine, happy hour, and ordering."
+      },
+      {
+        "gateId": "pdf_or_image",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T2",
+          "T3"
+        ],
+        "notes": "Primary menus are PDFs; dinner extraction also has multi-column ordering ambiguity."
+      },
+      {
+        "gateId": "inaccessible_source",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1",
+          "T4"
+        ],
+        "notes": "Brunch and full-wine links were not retrievable; linked GoTab catalog was not exposed."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T2",
+          "T3"
+        ],
+        "notes": "The 27-product Luna catalog materially undercounts the visible dinner and happy-hour product catalog."
+      },
+      {
+        "gateId": "current_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T2",
+          "T3"
+        ],
+        "notes": "Luna omitted many visible current products."
+      },
+      {
+        "gateId": "baseline_only",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1"
+        ],
+        "notes": "Brunch-reliant frozen items remain unresolved, not proven absent."
+      },
+      {
+        "gateId": "duplicate_presentations",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T2",
+          "T3"
+        ],
+        "notes": "Shared products occur on dinner and happy-hour presentations."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T2"
+        ],
+        "notes": "Luna incorrectly marked Chicken Pimientos and Chocolate Cake missing despite their visible official dinner entries."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T2",
+          "T3"
+        ],
+        "notes": "Both PDFs contain the generic food-allergy instruction and raw-food warning; neither makes a cross-contact/allergen precaution statement. No cross-contact conclusion can be drawn."
+      },
+      {
+        "gateId": "parser_or_repair_finding",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T2"
+        ],
+        "notes": "The current parser/scout omitted many plainly visible official products and treated the surface as fully enumerated."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1",
+          "T2",
+          "T3",
+          "T4"
+        ],
+        "notes": "Allergen authority and complete current scope remain incomplete."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1",
+          "T2",
+          "T3"
+        ],
+        "notes": "Luna itself reported unresolved menu/allergen scope; its confidence cannot clear any gate."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "SURF-DINNER",
+        "verdict": "mismatch",
+        "sourceEvidenceIds": [
+          "T2"
+        ],
+        "notes": "Accessible and current, but not fully enumerated by Luna. The official PDF includes numerous omitted food products and an extensive alcoholic page; Luna's exclusion of alcohol was not a supported scope exclusion."
+      },
+      {
+        "surfaceId": "SURF-HAPPY",
+        "verdict": "mismatch",
+        "sourceEvidenceIds": [
+          "T3"
+        ],
+        "notes": "Accessible and current, but Luna omitted visible happy-hour cocktails, wine, spinach & chickpea cazuela, patatas bravas, albondigas, croquetas, and oysters."
+      },
+      {
+        "surfaceId": "SURF-BRUNCH",
+        "verdict": "unverifiable",
+        "sourceEvidenceIds": [
+          "T1"
+        ],
+        "notes": "Officially linked, but its current PDF could not be reopened. It cannot support absence, complete arrays, or cross-contact conclusions."
+      },
+      {
+        "surfaceId": "SURF-WINE",
+        "verdict": "unverifiable",
+        "sourceEvidenceIds": [
+          "T1",
+          "T2"
+        ],
+        "notes": "Official full-wine PDF was unavailable. The dinner PDF independently establishes an alcoholic menu page, which Luna excluded without a valid scope basis."
+      },
+      {
+        "surfaceId": "SURF-ORDERING",
+        "verdict": "unverifiable",
+        "sourceEvidenceIds": [
+          "T4"
+        ],
+        "notes": "Restaurant-linked GoTab shell loaded but did not expose a complete catalog."
+      }
+    ],
+    "currentProductCheckGroups": [
+      {
+        "currentProductKeys": [
+          "prod-aged-manchego",
+          "prod-marinated-mahon",
+          "prod-queso-de-trufa",
+          "prod-truffle-sheeps-cheese"
+        ],
+        "presentationIds": [
+          "dinner-aged-manchego",
+          "dinner-marinated-mahon",
+          "dinner-queso-trufa",
+          "dinner-truffle-sheeps-cheese"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T2"
+        ],
+        "sourceEvidenceIds": [
+          "T2"
+        ],
+        "notes": "Each named cheese/milk descriptor supports only its listed milk positive; no negative or complete array is supported."
+      },
+      {
+        "currentProductKeys": [
+          "prod-charcuterie-cheese"
+        ],
+        "presentationIds": [
+          "dinner-charcuterie-cheese",
+          "happy-charcuterie-cheese"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T2",
+          "T3"
+        ],
+        "sourceEvidenceIds": [
+          "T2",
+          "T3"
+        ],
+        "notes": "Named cheese supports milk only; the board is configurable and not completely disclosed."
+      },
+      {
+        "currentProductKeys": [
+          "prod-flan-catalan"
+        ],
+        "presentationIds": [
+          "dinner-flan-catalan"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "egg",
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T2"
+        ],
+        "sourceEvidenceIds": [
+          "T2"
+        ],
+        "notes": "Flan identity supports narrow egg and milk positives only."
+      },
+      {
+        "currentProductKeys": [
+          "prod-gambas-al-ajillo",
+          "prod-paella-mariscos",
+          "prod-salpicon-mariscos"
+        ],
+        "presentationIds": [
+          "dinner-gambas",
+          "dinner-paella-mariscos",
+          "dinner-salpicon"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "shellfish"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T2"
+        ],
+        "sourceEvidenceIds": [
+          "T2"
+        ],
+        "notes": "Named shrimp/gambas, mussels, clams, and/or octopus support narrow shellfish positives; no fish negative follows."
+      },
+      {
+        "currentProductKeys": [
+          "prod-patatas-bravas"
+        ],
+        "presentationIds": [
+          "dinner-patatas-bravas"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T2"
+        ],
+        "sourceEvidenceIds": [
+          "T2"
+        ],
+        "notes": "Named garlic aioli supports egg only."
+      },
+      {
+        "currentProductKeys": [
+          "prod-truffled-bikini"
+        ],
+        "presentationIds": [
+          "dinner-truffled-bikini"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T2"
+        ],
+        "sourceEvidenceIds": [
+          "T2"
+        ],
+        "notes": "Fresh Mahón and garlic aioli support milk and egg positives."
+      },
+      {
+        "currentProductKeys": [
+          "prod-whole-roasted-branzino",
+          "prod-salmon-crudo"
+        ],
+        "presentationIds": [
+          "dinner-branzino",
+          "happy-salmon-crudo"
+        ],
+        "verdict": "mismatch",
+        "containsAllergens": [
+          "fish"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T2",
+          "T3"
+        ],
+        "sourceEvidenceIds": [
+          "T2",
+          "T3"
+        ],
+        "notes": "Branzino is verified on dinner; Luna's Salmon Crudo presentation is not on the reopened happy-hour PDF, which instead lists oysters."
+      },
+      {
+        "currentProductKeys": [
+          "prod-chorizo-blanco",
+          "prod-duck-prosciutto",
+          "prod-eggplant-caponata",
+          "prod-ensalada-mixta",
+          "prod-lamb-chops",
+          "prod-paella-salvaje",
+          "prod-paella-verduras",
+          "prod-parrillada-barcelona",
+          "prod-pork-belly",
+          "prod-salchichon",
+          "prod-soria-chorizo"
+        ],
+        "presentationIds": [
+          "dinner-chorizo-blanco",
+          "dinner-duck-prosciutto",
+          "dinner-eggplant-caponata",
+          "dinner-ensalada-mixta",
+          "dinner-lamb-chops",
+          "dinner-paella-salvaje",
+          "dinner-paella-verduras",
+          "dinner-parrillada",
+          "dinner-pork-belly",
+          "dinner-salchichon",
+          "dinner-soria-chorizo"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "T2"
+        ],
+        "notes": "Names/presentations were found; no complete allergen evidence exists, so empty arrays are not negatives."
+      },
+      {
+        "currentProductKeys": [
+          "prod-marinated-olives"
+        ],
+        "presentationIds": [
+          "happy-marinated-olives"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "T3"
+        ],
+        "notes": "Visible happy-hour product; no complete allergen evidence."
+      },
+      {
+        "currentProductKeys": [
+          "prod-bees-bays",
+          "prod-tea-time"
+        ],
+        "presentationIds": [
+          "dinner-bees-bays",
+          "dinner-tea-time"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T2"
+        ],
+        "sourceEvidenceIds": [
+          "T2"
+        ],
+        "notes": "Both no-ABV drinks are listed with ingredient descriptions; neither supports a declared major-allergen array or negatives."
+      }
+    ],
+    "additionalMenuSurfaces": [],
+    "additionalCurrentProducts": [
+      {
+        "currentProductKey": "additional-dinner-food-catalog",
+        "name": "Visible official dinner food products omitted from Luna's catalog",
+        "category": "multiple",
+        "surfaceIds": [
+          "SURF-DINNER"
+        ],
+        "presentationIds": [],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "T2"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "ambiguous",
+        "notes": "At minimum: Jamón Serrano, Sobrasada, Fuet, Chorizo Picante, Valdeón, Aged Mahón, Alisios, Drunken Goat, Idiazábal, Délice de Bourgogne, Tetilla, Jamón Ibérico, Lomo Ibérico de Bellota, Aperitivo Board, spinach & chickpea cazuela, escalivada, roasted zucchini, grilled asparagus, roasted carrots, green beans, champiñones, roasted cauliflower, grilled calçots, beet salad, broccolini, crispy okra, gazpacho, black garlic hummus, burrata, potato tortilla, boquerones, mussels, tuna tartar, pulpo, salmon a la plancha, pescado frito, grilled chicken thigh, albondigas, croquetas, bacon-wrapped dates, pork ribs, filet mignon, spiced beef empanadas, flank steak, wagyu carpaccio, cucumber salad, heirloom tomato salad, olive oil cake, chocolate cake, Basque burnt cheesecake, crepas, arroz con leche, and Basque pantxineta are visible on T2 but absent from Luna's current products."
+      },
+      {
+        "currentProductKey": "additional-happy-hour-catalog",
+        "name": "Visible official happy-hour products omitted from Luna's catalog",
+        "category": "multiple",
+        "surfaceIds": [
+          "SURF-HAPPY"
+        ],
+        "presentationIds": [],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "T3"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "ambiguous",
+        "notes": "Mini Espresso Martini, Mini Chamomile Cosmo, Mini Dirty Martini, Mini Richmond Gimlet, spinach & chickpea cazuela, patatas bravas, albondigas, jamón & manchego croquetas, and oysters are visible on T3 but absent from Luna's catalog. The PDF's snacks differ from Luna's claimed salmon crudo and eggplant caponata entries."
+      },
+      {
+        "currentProductKey": "additional-dinner-alcoholic-catalog",
+        "name": "Alcoholic current catalog omitted from Luna scope",
+        "category": "multiple",
+        "surfaceIds": [
+          "SURF-DINNER",
+          "SURF-HAPPY"
+        ],
+        "presentationIds": [],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "T2",
+          "T3"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "unverifiable",
+        "notes": "T2 visibly contains wine by the glass, cocktails, gin and tonics, sangria, sherry, beer, and cider; T3 contains wine and cocktails. Their full item boundary was not reliably parsed from the multi-column PDF, so this is an unresolved catalog omission rather than a negative finding."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 34,
+      "counts": {
+        "exact_match/accurately_unavailable": 13,
+        "exact_match/verified": 4,
+        "exact_match/mismatch": 5,
+        "missing_from_source/accurately_unavailable": 3,
+        "missing_from_source/mismatch": 6,
+        "artifact/mismatch": 1,
+        "normalized_match/accurately_unavailable": 1,
+        "normalized_match/verified": 1
+      }
+    },
+    "findings": [
+      {
+        "findingId": "F1",
+        "severity": "high",
+        "kind": "menu",
+        "summary": "Luna marked the official dinner surface fully enumerated but omitted a large visible set of food products and the alcoholic catalog; Chicken Pimientos and Chocolate Cake were incorrectly reconciled as missing.",
+        "sourceEvidenceIds": [
+          "T2"
+        ],
+        "affectedAuditItemKeys": [
+          "3:chicken-pimientos",
+          "4:chocolate-cake"
+        ]
+      },
+      {
+        "findingId": "F2",
+        "severity": "high",
+        "kind": "menu",
+        "summary": "Luna marked the happy-hour surface complete while omitting visible cocktails and snacks, and included Salmon Crudo/eggplant caponata that are not present in the reopened PDF.",
+        "sourceEvidenceIds": [
+          "T3"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "F3",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "No complete restaurant-issued allergen matrix or cross-contact policy was found. Frozen arrays and inferred complete/negative semantics cannot be retained as verified; only narrow named-ingredient positives are supportable.",
+        "sourceEvidenceIds": [
+          "T2",
+          "T3"
+        ],
+        "affectedAuditItemKeys": [
+          "4:chocolate-cake",
+          "10:ensalada-mixta",
+          "12:gambas-al-ajillo",
+          "15:mangalica-estrellados",
+          "21:patatas-bravas",
+          "25:salmon-benedict",
+          "26:salmon-montadito",
+          "29:steak",
+          "31:truffled-bikini",
+          "32:vegetable-benedict",
+          "34:yogurt-parfait"
+        ]
+      },
+      {
+        "findingId": "F4",
+        "severity": "medium",
+        "kind": "scope",
+        "summary": "The inaccessible brunch and full-wine links plus JavaScript-only ordering surface leave the full current product boundary unresolved. They cannot support baseline-item absence, complete allergen arrays, negatives, or cross-contact conclusions.",
+        "sourceEvidenceIds": [
+          "T1",
+          "T4"
+        ],
+        "affectedAuditItemKeys": [
+          "6:duck-magret",
+          "9:endive-salad",
+          "13:grilled-pulpo",
+          "15:mangalica-estrellados",
+          "25:salmon-benedict",
+          "26:salmon-montadito",
+          "29:steak",
+          "32:vegetable-benedict",
+          "34:yogurt-parfait"
+        ]
+      }
+    ],
+    "summary": "Independent review found material menu-scope and extraction discrepancies. The official dinner and happy-hour PDFs are current and accessible, but Luna's claimed complete enumeration omitted many visible items, misclassified two frozen products as absent, and unsupportedly excluded alcohol. Official sources provide no complete allergen matrix or cross-contact disclosure; only item-specific named-ingredient positives are retained narrowly. Brunch, full-wine, and ordering scopes remain unresolved.",
+    "coordinatorNotes": [
+      "Do not treat any empty contains/may-contain array as a negative claim.",
+      "The current catalog requires a fresh complete extraction before repair or terminal evaluation.",
+      "No terminal state is asserted by this Terra result."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "3:chicken-pimientos",
+      "baseline": {
+        "itemId": "chicken-pimientos",
+        "name": "CHICKEN PIMIENTOS",
+        "category": "Tapas",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://barcelonawinebar.com/media/3-13-26-Menu-Reston.pdf",
+          "https://barcelonawinebar.com/media/4-25-26-Brunch-Menu-Reston.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "4:chocolate-cake",
+      "baseline": {
+        "itemId": "chocolate-cake",
+        "name": "CHOCOLATE CAKE",
+        "category": "Desserts",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "egg",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://barcelonawinebar.com/media/3-13-26-Menu-Reston.pdf",
+          "https://barcelonawinebar.com/media/4-25-26-Brunch-Menu-Reston.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "6:duck-magret",
+      "baseline": {
+        "itemId": "duck-magret",
+        "name": "Duck magret",
+        "category": "Tapas",
+        "variantGroup": "Tapas",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://barcelonawinebar.com/media/4-25-26-Brunch-Menu-Reston.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "9:endive-salad",
+      "baseline": {
+        "itemId": "endive-salad",
+        "name": "Endive Salad",
+        "category": "Tapas",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://barcelonawinebar.com/media/3-13-26-Menu-Reston.pdf",
+          "https://barcelonawinebar.com/media/4-25-26-Brunch-Menu-Reston.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "10:ensalada-mixta",
+      "baseline": {
+        "itemId": "ensalada-mixta",
+        "name": "ENSALADA MIXTA",
+        "category": "Salads",
+        "variantGroup": "Salads",
+        "isConfigurable": false,
+        "allergens": [
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://barcelonawinebar.com/media/3-13-26-Menu-Reston.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "12:gambas-al-ajillo",
+      "baseline": {
+        "itemId": "gambas-al-ajillo",
+        "name": "GAMBAS AL AJILLO",
+        "category": "Tapas",
+        "variantGroup": "Tapas",
+        "isConfigurable": false,
+        "allergens": [
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://barcelonawinebar.com/media/4-25-26-Brunch-Menu-Reston.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "13:grilled-pulpo",
+      "baseline": {
+        "itemId": "grilled-pulpo",
+        "name": "GRILLED PULPO",
+        "category": "Tapas",
+        "variantGroup": "Tapas",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://barcelonawinebar.com/media/4-25-26-Brunch-Menu-Reston.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "15:mangalica-estrellados",
+      "baseline": {
+        "itemId": "mangalica-estrellados",
+        "name": "MANGALICA ESTRELLADOS",
+        "category": "Tapas",
+        "variantGroup": "Tapas",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://barcelonawinebar.com/media/4-25-26-Brunch-Menu-Reston.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "21:patatas-bravas",
+      "baseline": {
+        "itemId": "patatas-bravas",
+        "name": "PATATAS BRAVAS",
+        "category": "Tapas",
+        "variantGroup": "Tapas",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://barcelonawinebar.com/media/4-25-26-Brunch-Menu-Reston.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "25:salmon-benedict",
+      "baseline": {
+        "itemId": "salmon-benedict",
+        "name": "SALMON BENEDICT",
+        "category": "Tapas",
+        "variantGroup": "Tapas",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://barcelonawinebar.com/media/4-25-26-Brunch-Menu-Reston.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "26:salmon-montadito",
+      "baseline": {
+        "itemId": "salmon-montadito",
+        "name": "SALMON MONTADITO",
+        "category": "Tapas",
+        "variantGroup": "Tapas",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "fish"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://barcelonawinebar.com/media/4-25-26-Brunch-Menu-Reston.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "29:steak",
+      "baseline": {
+        "itemId": "steak",
+        "name": "STEAK",
+        "category": "Tapas",
+        "variantGroup": "Tapas",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://barcelonawinebar.com/media/4-25-26-Brunch-Menu-Reston.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "31:truffled-bikini",
+      "baseline": {
+        "itemId": "truffled-bikini",
+        "name": "TRUFFLED BIKINI",
+        "category": "Spanish Tapas",
+        "variantGroup": "Spanish Tapas",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://barcelonawinebar.com/media/3-13-26-Menu-Reston.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "32:vegetable-benedict",
+      "baseline": {
+        "itemId": "vegetable-benedict",
+        "name": "VEGETABLE BENEDICT",
+        "category": "Tapas",
+        "variantGroup": "Tapas",
+        "isConfigurable": false,
+        "allergens": [
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://barcelonawinebar.com/media/4-25-26-Brunch-Menu-Reston.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "34:yogurt-parfait",
+      "baseline": {
+        "itemId": "yogurt-parfait",
+        "name": "YOGURT PARFAIT",
+        "category": "Tapas",
+        "variantGroup": "Tapas",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://barcelonawinebar.com/media/4-25-26-Brunch-Menu-Reston.pdf"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-03-2026-07-16/jobs/barcelona-wine-bar-reston-va.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-03-2026-07-16/results/barcelona-wine-bar-reston-va.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/barcelona-wine-bar-reston-va.jsonl"
+  }
+}

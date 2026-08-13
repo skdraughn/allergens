@@ -1,6 +1,8 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
+  DeleteCommand,
   DynamoDBDocumentClient,
+  PutCommand,
   UpdateCommand,
   type UpdateCommandOutput,
 } from "@aws-sdk/lib-dynamodb";
@@ -28,6 +30,13 @@ type DynamoDbStreamEvent = {
 };
 
 type ReviewRecord = {
+  allergyContext?: string;
+  body?: string;
+  createdAt?: string;
+  createdBy?: string;
+  id?: string;
+  menuItemId?: string;
+  menuItemName?: string;
   rating?: number;
   restaurantId?: string;
   status?: string;
@@ -57,12 +66,12 @@ export const handler = async (event: DynamoDbStreamEvent) => {
     const countDelta = afterContribution.count - beforeContribution.count;
     const ratingTotalDelta = afterContribution.ratingTotal - beforeContribution.ratingTotal;
 
-    if (countDelta === 0 && ratingTotalDelta === 0) {
-      continue;
-    }
+    await syncPublishedReview(after, before);
 
-    const result = await addSummaryDeltas(tableName, restaurantId, countDelta, ratingTotalDelta);
-    await normalizeSummary(tableName, restaurantId, result);
+    if (countDelta !== 0 || ratingTotalDelta !== 0) {
+      const result = await addSummaryDeltas(tableName, restaurantId, countDelta, ratingTotalDelta);
+      await normalizeSummary(tableName, restaurantId, result);
+    }
     updated += 1;
   }
 
@@ -78,10 +87,54 @@ function decodeReview(image?: Record<string, DynamoDbAttribute>): ReviewRecord {
   const rating = Number(decoded.rating);
 
   return {
+    allergyContext: stringValue(decoded.allergyContext),
+    body: stringValue(decoded.body),
+    createdAt: stringValue(decoded.createdAt),
+    createdBy: stringValue(decoded.createdBy),
+    id: stringValue(decoded.id),
+    menuItemId: stringValue(decoded.menuItemId),
+    menuItemName: stringValue(decoded.menuItemName),
     rating: Number.isFinite(rating) ? Math.max(1, Math.min(5, Math.round(rating))) : undefined,
     restaurantId: typeof decoded.restaurantId === "string" ? decoded.restaurantId : undefined,
     status: typeof decoded.status === "string" ? decoded.status : undefined,
   };
+}
+
+async function syncPublishedReview(after: ReviewRecord, before: ReviewRecord) {
+  const tableName = getPublishedTableName();
+  const id = after.id ?? before.id;
+
+  if (!id) {
+    return;
+  }
+
+  if (after.status === "approved" && after.restaurantId && after.rating && after.createdBy) {
+    await dynamo.send(
+      new PutCommand({
+        Item: {
+          allergyContext: after.allergyContext ?? null,
+          authorId: after.createdBy,
+          body: after.body ?? "",
+          createdAt: new Date().toISOString(),
+          id,
+          menuItemId: after.menuItemId ?? null,
+          menuItemName: after.menuItemName ?? null,
+          originalCreatedAt: after.createdAt ?? null,
+          rating: after.rating,
+          restaurantId: after.restaurantId,
+          updatedAt: new Date().toISOString(),
+        },
+        TableName: tableName,
+      }),
+    );
+    return;
+  }
+
+  await dynamo.send(new DeleteCommand({ Key: { id }, TableName: tableName }));
+}
+
+function stringValue(value: unknown) {
+  return typeof value === "string" && value.trim() ? value.trim() : undefined;
 }
 
 function approvedContribution(record: ReviewRecord) {
@@ -203,6 +256,16 @@ function getSummaryTableName() {
 
   if (!tableName) {
     throw new Error("Missing RESTAURANT_ALLERGY_RATING_SUMMARY_TABLE_NAME");
+  }
+
+  return tableName;
+}
+
+function getPublishedTableName() {
+  const tableName = process.env.PUBLISHED_COMMUNITY_ALLERGY_REVIEW_TABLE_NAME;
+
+  if (!tableName) {
+    throw new Error("Missing PUBLISHED_COMMUNITY_ALLERGY_REVIEW_TABLE_NAME");
   }
 
   return tableName;

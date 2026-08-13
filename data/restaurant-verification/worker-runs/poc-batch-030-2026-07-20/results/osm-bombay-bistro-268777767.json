@@ -1,0 +1,3829 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-030-2026-07-20",
+  "restaurantId": "osm-bombay-bistro-268777767",
+  "runId": "poc-batch-030-2026-07-20-osm-bombay-bistro-268777767",
+  "stage": "poc_research",
+  "model": {
+    "id": "gpt-5.6-luna",
+    "reasoningEffort": "low"
+  },
+  "packetValidation": {
+    "restaurantId": "osm-bombay-bistro-268777767",
+    "name": "Bombay Bistro",
+    "locationId": "rockville",
+    "domain": "bombaybistro.com",
+    "baselineItemCount": 94,
+    "baselineFingerprint": "d3e6e3708a2fe92717337ffa3ea2aa8cc0cccc83a9279c5578ebac80a9163b6b",
+    "itemChecksRead": 94,
+    "itemChecksPath": "data/restaurant-verification/item-checks/osm-bombay-bistro-268777767.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "location": "98 W. Montgomery Ave, Rockville, MD 20850",
+    "domain": "bombaybistro.com",
+    "officialHomepage": "https://www.bombaybistro.com/",
+    "sourceEvidenceIds": [
+      "ev-bombay-official-home",
+      "ev-bombay-official-lunchdinner"
+    ],
+    "notes": "Official homepage, contact/location content, and linked ordering references agree on the Rockville restaurant; other Bombay Bistro domains/locations were excluded."
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-bombay-official-home",
+      "url": "https://www.bombaybistro.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Bombay Bistro official homepage",
+      "retrievedAt": "2026-07-20T00:00:00.000Z",
+      "excerpt": "Official site identifies Bombay Bistro in Rockville at 98 W. Montgomery Ave."
+    },
+    {
+      "evidenceId": "ev-bombay-official-lunchdinner",
+      "url": "https://www.bombaybistro.com/lunchdinner",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Official lunch and dinner menu",
+      "retrievedAt": "2026-07-20T00:00:00.000Z",
+      "excerpt": "Current official Rockville menu with food, beverages, and alcohol sections."
+    },
+    {
+      "evidenceId": "ev-bombay-official-carryout",
+      "url": "https://www.bombaybistro.com/carryout",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Official carryout menu",
+      "retrievedAt": "2026-07-20T00:00:00.000Z",
+      "excerpt": "Current official carryout food and nonalcoholic menu with ingredient descriptions."
+    },
+    {
+      "evidenceId": "ev-bombay-official-late-night",
+      "url": "https://www.bombaybistro.com/bb-late-night",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Official late-night menu",
+      "retrievedAt": "2026-07-20T00:00:00.000Z",
+      "excerpt": "Official late-night menu; alcohol-only items excluded from POC food boundary."
+    },
+    {
+      "evidenceId": "ev-bombay-linked-clover",
+      "url": "https://www.clover.com/online-ordering/bombay-bistro-rockville",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "title": "Official-site-linked Clover ordering",
+      "retrievedAt": "2026-07-20T00:00:00.000Z",
+      "excerpt": "Ordering vendor linked from official homepage; location scope is Rockville."
+    },
+    {
+      "evidenceId": "ev-bombay-linked-doordash",
+      "url": "https://order.online/business/bombay-bistro-8079",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "title": "Official-site-linked DoorDash ordering",
+      "retrievedAt": "2026-07-20T00:00:00.000Z",
+      "excerpt": "Ordering vendor linked from official homepage; location scope is Rockville."
+    },
+    {
+      "evidenceId": "ev-bombay-matrix-site",
+      "url": "https://www.bombaybistro.com/",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "official_site allergen search",
+      "retrievedAt": "2026-07-20T00:00:00.000Z",
+      "excerpt": "Inspected official homepage navigation and linked pages; no allergen matrix."
+    },
+    {
+      "evidenceId": "ev-bombay-matrix-docs",
+      "url": "https://www.bombaybistro.com/carryout",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "official_documents allergen search",
+      "retrievedAt": "2026-07-20T00:00:00.000Z",
+      "excerpt": "Inspected official menu/document/image surfaces; no allergen or nutrition matrix."
+    },
+    {
+      "evidenceId": "ev-bombay-matrix-vendor",
+      "url": "https://www.clover.com/online-ordering/bombay-bistro-rockville",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "linked_vendor allergen search",
+      "retrievedAt": "2026-07-20T00:00:00.000Z",
+      "excerpt": "Inspected linked ordering vendors; no official allergen matrix."
+    },
+    {
+      "evidenceId": "ev-bombay-matrix-web",
+      "url": "https://www.google.com/search?q=site%3Abombaybistro.com+allergen+allergy+nutrition+ingredients+PDF",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "targeted_web_search allergen search",
+      "retrievedAt": "2026-07-20T00:00:00.000Z",
+      "excerpt": "Targeted searches for official matrix terms found no current official allergen matrix."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-homepage",
+      "title": "Official homepage and location",
+      "service": null,
+      "url": "https://www.bombaybistro.com/",
+      "authorityTier": "restaurant_issued",
+      "mediaType": "html",
+      "accessStatus": "accessible",
+      "fullyEnumerated": true,
+      "scopeStatus": "complete",
+      "current": false,
+      "sourceEvidenceIds": [
+        "ev-bombay-official-home"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "official-lunch-dinner",
+      "title": "Official lunch/dinner menu",
+      "service": "lunch and dinner",
+      "url": "https://www.bombaybistro.com/lunchdinner",
+      "authorityTier": "restaurant_issued",
+      "mediaType": "html",
+      "accessStatus": "accessible",
+      "fullyEnumerated": true,
+      "scopeStatus": "complete",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner"
+      ],
+      "currentProductKeys": [
+        "chicken-biriyani-gf",
+        "goat-biriyani-gf",
+        "lamb-biriyani-gf",
+        "shrimp-biriyani-gf",
+        "vegetable-biriyani-gf",
+        "bread-basket",
+        "garlic-naan",
+        "mint-paratha",
+        "naan",
+        "onion-kulcha",
+        "paratha",
+        "roti-v",
+        "gulab-jamun",
+        "kulfi-with-orange-sauce",
+        "pista-badam-kheer",
+        "rasmalai",
+        "aloo-chole",
+        "aloo-gobhi",
+        "baingan-bhartha",
+        "bhindi-masala",
+        "dal-makhani",
+        "kadai-pakora",
+        "kadai-paneer",
+        "malai-kofta-curry",
+        "mattar-paneer",
+        "paneer-makhani",
+        "saag-aloo",
+        "saag-paneer",
+        "vegetable-jhalfrezi",
+        "chicken-chettinad",
+        "chicken-curry-madras",
+        "chicken-nilgiri",
+        "chicken-tikka-makhani",
+        "chicken-vindaloo",
+        "fish-curry",
+        "goat-curry",
+        "goat-niligiri",
+        "kadai-chicken",
+        "lamb-niligiri",
+        "lamb-rogan-josh",
+        "lamb-shank-bhuna",
+        "lamb-vindaloo",
+        "masala-grilled-rockfish",
+        "saag-chicken",
+        "saag-goat",
+        "saag-lamb",
+        "shrimp-scallop-masala",
+        "shrimp-curry",
+        "coffee",
+        "fresh-lemon-soda",
+        "juices",
+        "mango-lassi",
+        "masala-chai",
+        "salt-lassi",
+        "sweet-lassi",
+        "tea",
+        "cucumber-raita",
+        "dal-tadka",
+        "mango-chutnry",
+        "papadam",
+        "sambar",
+        "green-peas-soup",
+        "house-green-salad",
+        "lobster-shrimp-bisque-gf",
+        "chicken-dosa",
+        "chicken-oothapam",
+        "masala-dosa-v",
+        "plain-dosa-v",
+        "rava-onion-masala-dosa",
+        "vegetable-oothapam-v",
+        "achari-chicken-tacos",
+        "aloo-tikki-veg",
+        "bhel-puri-veg",
+        "calamari",
+        "cauli-pecorino-kulchaveg",
+        "chicken",
+        "malabar-mussels",
+        "momo-chicken",
+        "momo-veg",
+        "onion-bhajji-veg",
+        "pani-puri-shots-veg",
+        "papri-chaat-veg",
+        "vegetable-samosa-veg",
+        "chicken-seekh-kebab",
+        "chicken-tikka",
+        "malai-cheese-kebab",
+        "tandoori-chicken",
+        "tandoori-lamb-chops",
+        "tandoori-salmon",
+        "tandoori-vegetables",
+        "non-vegetarian-thali",
+        "vegetarian-thali"
+      ]
+    },
+    {
+      "surfaceId": "official-carryout",
+      "title": "Official carryout menu",
+      "service": "carryout",
+      "url": "https://www.bombaybistro.com/carryout",
+      "authorityTier": "restaurant_issued",
+      "mediaType": "html",
+      "accessStatus": "accessible",
+      "fullyEnumerated": true,
+      "scopeStatus": "complete",
+      "current": true,
+      "sourceEvidenceIds": [
+        "ev-bombay-official-carryout"
+      ],
+      "currentProductKeys": [
+        "chicken-biriyani-gf",
+        "goat-biriyani-gf",
+        "lamb-biriyani-gf",
+        "shrimp-biriyani-gf",
+        "vegetable-biriyani-gf",
+        "bread-basket",
+        "garlic-naan",
+        "mint-paratha",
+        "naan",
+        "onion-kulcha",
+        "paratha",
+        "roti-v",
+        "gulab-jamun",
+        "kulfi-with-orange-sauce",
+        "pista-badam-kheer",
+        "rasmalai",
+        "aloo-chole",
+        "aloo-gobhi",
+        "baingan-bhartha",
+        "bhindi-masala",
+        "dal-makhani",
+        "kadai-pakora",
+        "kadai-paneer",
+        "malai-kofta-curry",
+        "mattar-paneer",
+        "paneer-makhani",
+        "saag-aloo",
+        "saag-paneer",
+        "vegetable-jhalfrezi",
+        "chicken-chettinad",
+        "chicken-curry-madras",
+        "chicken-nilgiri",
+        "chicken-tikka-makhani",
+        "chicken-vindaloo",
+        "fish-curry",
+        "goat-curry",
+        "goat-niligiri",
+        "kadai-chicken",
+        "lamb-niligiri",
+        "lamb-rogan-josh",
+        "lamb-shank-bhuna",
+        "lamb-vindaloo",
+        "masala-grilled-rockfish",
+        "saag-chicken",
+        "saag-goat",
+        "saag-lamb",
+        "shrimp-scallop-masala",
+        "shrimp-curry",
+        "coffee",
+        "fresh-lemon-soda",
+        "juices",
+        "mango-lassi",
+        "masala-chai",
+        "salt-lassi",
+        "sweet-lassi",
+        "tea",
+        "cucumber-raita",
+        "dal-tadka",
+        "mango-chutnry",
+        "papadam",
+        "sambar",
+        "green-peas-soup",
+        "house-green-salad",
+        "lobster-shrimp-bisque-gf",
+        "chicken-dosa",
+        "chicken-oothapam",
+        "masala-dosa-v",
+        "plain-dosa-v",
+        "rava-onion-masala-dosa",
+        "vegetable-oothapam-v",
+        "achari-chicken-tacos",
+        "aloo-tikki-veg",
+        "bhel-puri-veg",
+        "calamari",
+        "cauli-pecorino-kulchaveg",
+        "chicken",
+        "malabar-mussels",
+        "momo-chicken",
+        "momo-veg",
+        "onion-bhajji-veg",
+        "pani-puri-shots-veg",
+        "papri-chaat-veg",
+        "vegetable-samosa-veg",
+        "chicken-seekh-kebab",
+        "chicken-tikka",
+        "malai-cheese-kebab",
+        "tandoori-chicken",
+        "tandoori-lamb-chops",
+        "tandoori-salmon",
+        "tandoori-vegetables",
+        "non-vegetarian-thali",
+        "vegetarian-thali"
+      ]
+    },
+    {
+      "surfaceId": "official-late-night",
+      "title": "Official late-night menu",
+      "service": "late night",
+      "url": "https://www.bombaybistro.com/bb-late-night",
+      "authorityTier": "restaurant_issued",
+      "mediaType": "html",
+      "accessStatus": "accessible",
+      "fullyEnumerated": true,
+      "scopeStatus": "complete",
+      "current": false,
+      "sourceEvidenceIds": [
+        "ev-bombay-official-late-night"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "linked-clover",
+      "title": "Clover ordering",
+      "service": "ordering",
+      "url": "https://www.clover.com/online-ordering/bombay-bistro-rockville",
+      "authorityTier": "restaurant_linked_vendor",
+      "mediaType": "html",
+      "accessStatus": "accessible",
+      "fullyEnumerated": true,
+      "scopeStatus": "complete",
+      "current": false,
+      "sourceEvidenceIds": [
+        "ev-bombay-linked-clover"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "linked-doordash",
+      "title": "DoorDash ordering",
+      "service": "ordering",
+      "url": "https://order.online/business/bombay-bistro-8079",
+      "authorityTier": "restaurant_linked_vendor",
+      "mediaType": "html",
+      "accessStatus": "accessible",
+      "fullyEnumerated": true,
+      "scopeStatus": "complete",
+      "current": false,
+      "sourceEvidenceIds": [
+        "ev-bombay-linked-doordash"
+      ],
+      "currentProductKeys": []
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "chicken-biriyani-gf",
+      "name": "CHICKEN BIRIYANI (GF)",
+      "category": "BIRIYANI",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "CHICKEN BIRIYANI (GF)"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "CHICKEN BIRIYANI (GF)"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "goat-biriyani-gf",
+      "name": "GOAT BIRIYANI (GF)",
+      "category": "BIRIYANI",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "GOAT BIRIYANI (GF)"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "GOAT BIRIYANI (GF)"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "lamb-biriyani-gf",
+      "name": "LAMB BIRIYANI (GF)",
+      "category": "BIRIYANI",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "LAMB BIRIYANI (GF)"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "LAMB BIRIYANI (GF)"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "shrimp-biriyani-gf",
+      "name": "SHRIMP BIRIYANI (GF)",
+      "category": "BIRIYANI",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "SHRIMP BIRIYANI (GF)"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "SHRIMP BIRIYANI (GF)"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "vegetable-biriyani-gf",
+      "name": "VEGETABLE BIRIYANI (GF)",
+      "category": "BIRIYANI",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "VEGETABLE BIRIYANI (GF)"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "VEGETABLE BIRIYANI (GF)"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "bread-basket",
+      "name": "BREAD BASKET",
+      "category": "Breads",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "BREAD BASKET"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "BREAD BASKET"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "garlic-naan",
+      "name": "GARLIC NAAN",
+      "category": "Breads",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "GARLIC NAAN"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "GARLIC NAAN"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "mint-paratha",
+      "name": "MINT PARATHA",
+      "category": "Breads",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "MINT PARATHA"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "MINT PARATHA"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "naan",
+      "name": "NAAN",
+      "category": "Breads",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "NAAN"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "NAAN"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "onion-kulcha",
+      "name": "ONION KULCHA",
+      "category": "Breads",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "ONION KULCHA"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "ONION KULCHA"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "paratha",
+      "name": "PARATHA",
+      "category": "Breads",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "PARATHA"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "PARATHA"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "roti-v",
+      "name": "ROTI (V)",
+      "category": "Breads",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "ROTI (V)"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "ROTI (V)"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "gulab-jamun",
+      "name": "GULAB JAMUN",
+      "category": "DESSERTS",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "GULAB JAMUN"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "GULAB JAMUN"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "kulfi-with-orange-sauce",
+      "name": "KULFI with ORANGE SAUCE",
+      "category": "DESSERTS",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "KULFI with ORANGE SAUCE"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "KULFI with ORANGE SAUCE"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "pista-badam-kheer",
+      "name": "PISTA BADAM KHEER",
+      "category": "DESSERTS",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "PISTA BADAM KHEER"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "PISTA BADAM KHEER"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "rasmalai",
+      "name": "RASMALAI",
+      "category": "DESSERTS",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "RASMALAI"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "RASMALAI"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "aloo-chole",
+      "name": "ALOO CHOLE",
+      "category": "MAINS/ CLASSICS / VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "ALOO CHOLE"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "ALOO CHOLE"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "aloo-gobhi",
+      "name": "ALOO GOBHI",
+      "category": "MAINS/ CLASSICS / VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "ALOO GOBHI"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "ALOO GOBHI"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "baingan-bhartha",
+      "name": "BAINGAN BHARTHA",
+      "category": "MAINS/ CLASSICS / VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "BAINGAN BHARTHA"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "BAINGAN BHARTHA"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "bhindi-masala",
+      "name": "BHINDI MASALA",
+      "category": "MAINS/ CLASSICS / VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "BHINDI MASALA"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "BHINDI MASALA"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "dal-makhani",
+      "name": "DAL MAKHANI",
+      "category": "MAINS/ CLASSICS / VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "DAL MAKHANI"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "DAL MAKHANI"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "kadai-pakora",
+      "name": "KADAI PAKORA",
+      "category": "MAINS/ CLASSICS / VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "KADAI PAKORA"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "KADAI PAKORA"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "kadai-paneer",
+      "name": "KADAI PANEER",
+      "category": "MAINS/ CLASSICS / VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "KADAI PANEER"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "KADAI PANEER"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "malai-kofta-curry",
+      "name": "MALAI KOFTA CURRY",
+      "category": "MAINS/ CLASSICS / VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "MALAI KOFTA CURRY"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "MALAI KOFTA CURRY"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "mattar-paneer",
+      "name": "MATTAR PANEER",
+      "category": "MAINS/ CLASSICS / VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "MATTAR PANEER"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "MATTAR PANEER"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "paneer-makhani",
+      "name": "PANEER MAKHANI",
+      "category": "MAINS/ CLASSICS / VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "PANEER MAKHANI"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "PANEER MAKHANI"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "saag-aloo",
+      "name": "SAAG ALOO",
+      "category": "MAINS/ CLASSICS / VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "SAAG ALOO"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "SAAG ALOO"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "saag-paneer",
+      "name": "SAAG PANEER",
+      "category": "MAINS/ CLASSICS / VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "SAAG PANEER"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "SAAG PANEER"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "vegetable-jhalfrezi",
+      "name": "VEGETABLE JHALFREZI",
+      "category": "MAINS/ CLASSICS / VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "VEGETABLE JHALFREZI"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "VEGETABLE JHALFREZI"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "chicken-chettinad",
+      "name": "CHICKEN CHETTINAD",
+      "category": "MAINS/CLASSICS/NON VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "CHICKEN CHETTINAD"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "CHICKEN CHETTINAD"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "chicken-curry-madras",
+      "name": "CHICKEN CURRY MADRAS",
+      "category": "MAINS/CLASSICS/NON VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "CHICKEN CURRY MADRAS"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "CHICKEN CURRY MADRAS"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "chicken-nilgiri",
+      "name": "CHICKEN NILGIRI",
+      "category": "MAINS/CLASSICS/NON VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "CHICKEN NILGIRI"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "CHICKEN NILGIRI"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "chicken-tikka-makhani",
+      "name": "CHICKEN TIKKA MAKHANI",
+      "category": "MAINS/CLASSICS/NON VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "CHICKEN TIKKA MAKHANI"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "CHICKEN TIKKA MAKHANI"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "chicken-vindaloo",
+      "name": "CHICKEN VINDALOO",
+      "category": "MAINS/CLASSICS/NON VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "CHICKEN VINDALOO"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "CHICKEN VINDALOO"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "fish-curry",
+      "name": "FISH CURRY",
+      "category": "MAINS/CLASSICS/NON VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "FISH CURRY"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "FISH CURRY"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "goat-curry",
+      "name": "GOAT CURRY",
+      "category": "MAINS/CLASSICS/NON VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "GOAT CURRY"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "GOAT CURRY"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "goat-niligiri",
+      "name": "GOAT NILIGIRI",
+      "category": "MAINS/CLASSICS/NON VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "GOAT NILIGIRI"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "GOAT NILIGIRI"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "kadai-chicken",
+      "name": "KADAI CHICKEN",
+      "category": "MAINS/CLASSICS/NON VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "KADAI CHICKEN"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "KADAI CHICKEN"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "lamb-niligiri",
+      "name": "LAMB NILIGIRI",
+      "category": "MAINS/CLASSICS/NON VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "LAMB NILIGIRI"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "LAMB NILIGIRI"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "lamb-rogan-josh",
+      "name": "LAMB ROGAN JOSH",
+      "category": "MAINS/CLASSICS/NON VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "LAMB ROGAN JOSH"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "LAMB ROGAN JOSH"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "lamb-shank-bhuna",
+      "name": "LAMB SHANK BHUNA",
+      "category": "MAINS/CLASSICS/NON VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "LAMB SHANK BHUNA"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "LAMB SHANK BHUNA"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "lamb-vindaloo",
+      "name": "LAMB VINDALOO",
+      "category": "MAINS/CLASSICS/NON VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "LAMB VINDALOO"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "LAMB VINDALOO"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "masala-grilled-rockfish",
+      "name": "MASALA GRILLED ROCKFISH",
+      "category": "MAINS/CLASSICS/NON VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "MASALA GRILLED ROCKFISH"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "MASALA GRILLED ROCKFISH"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "saag-chicken",
+      "name": "SAAG CHICKEN",
+      "category": "MAINS/CLASSICS/NON VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "SAAG CHICKEN"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "SAAG CHICKEN"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "saag-goat",
+      "name": "SAAG GOAT",
+      "category": "MAINS/CLASSICS/NON VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "SAAG GOAT"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "SAAG GOAT"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "saag-lamb",
+      "name": "SAAG LAMB",
+      "category": "MAINS/CLASSICS/NON VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "SAAG LAMB"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "SAAG LAMB"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "shrimp-scallop-masala",
+      "name": "SHRIMP + SCALLOP MASALA",
+      "category": "MAINS/CLASSICS/NON VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "SHRIMP + SCALLOP MASALA"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "SHRIMP + SCALLOP MASALA"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "shrimp-curry",
+      "name": "SHRIMP CURRY",
+      "category": "MAINS/CLASSICS/NON VEG",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "SHRIMP CURRY"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "SHRIMP CURRY"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "coffee",
+      "name": "COFFEE",
+      "category": "NON-ALCOHOLIC",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "COFFEE"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "COFFEE"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "fresh-lemon-soda",
+      "name": "FRESH LEMON SODA",
+      "category": "NON-ALCOHOLIC",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "FRESH LEMON SODA"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "FRESH LEMON SODA"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "juices",
+      "name": "JUICES",
+      "category": "NON-ALCOHOLIC",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "JUICES"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "JUICES"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "mango-lassi",
+      "name": "MANGO LASSI",
+      "category": "NON-ALCOHOLIC",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "MANGO LASSI"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "MANGO LASSI"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "masala-chai",
+      "name": "MASALA CHAI",
+      "category": "NON-ALCOHOLIC",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "MASALA CHAI"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "MASALA CHAI"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "salt-lassi",
+      "name": "SALT LASSI",
+      "category": "NON-ALCOHOLIC",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "SALT LASSI"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "SALT LASSI"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "sweet-lassi",
+      "name": "SWEET LASSI",
+      "category": "NON-ALCOHOLIC",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "SWEET LASSI"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "SWEET LASSI"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "tea",
+      "name": "TEA",
+      "category": "NON-ALCOHOLIC",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "TEA"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "TEA"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "cucumber-raita",
+      "name": "CUCUMBER RAITA",
+      "category": "SIDES",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "CUCUMBER RAITA"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "CUCUMBER RAITA"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "dal-tadka",
+      "name": "DAL TADKA",
+      "category": "SIDES",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "DAL TADKA"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "DAL TADKA"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "mango-chutnry",
+      "name": "MANGO CHUTNRY",
+      "category": "SIDES",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "MANGO CHUTNRY"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "MANGO CHUTNRY"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "papadam",
+      "name": "PAPADAM",
+      "category": "SIDES",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "PAPADAM"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "PAPADAM"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "sambar",
+      "name": "SAMBAR",
+      "category": "SIDES",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "SAMBAR"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "SAMBAR"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "green-peas-soup",
+      "name": "GREEN PEAS SOUP",
+      "category": "SOUP & SALAD",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "GREEN PEAS SOUP"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "GREEN PEAS SOUP"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "house-green-salad",
+      "name": "HOUSE GREEN SALAD",
+      "category": "SOUP & SALAD",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "HOUSE GREEN SALAD"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "HOUSE GREEN SALAD"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "lobster-shrimp-bisque-gf",
+      "name": "LOBSTER SHRIMP BISQUE (GF)",
+      "category": "SOUP & SALAD",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "LOBSTER SHRIMP BISQUE (GF)"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "LOBSTER SHRIMP BISQUE (GF)"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "chicken-dosa",
+      "name": "CHICKEN DOSA",
+      "category": "SOUTHERN SPECIALTIES",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "CHICKEN DOSA"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "CHICKEN DOSA"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "chicken-oothapam",
+      "name": "CHICKEN OOTHAPAM",
+      "category": "SOUTHERN SPECIALTIES",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "CHICKEN OOTHAPAM"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "CHICKEN OOTHAPAM"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "masala-dosa-v",
+      "name": "MASALA DOSA (V)",
+      "category": "SOUTHERN SPECIALTIES",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "MASALA DOSA (V)"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "MASALA DOSA (V)"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "plain-dosa-v",
+      "name": "PLAIN DOSA (V)",
+      "category": "SOUTHERN SPECIALTIES",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "PLAIN DOSA (V)"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "PLAIN DOSA (V)"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "rava-onion-masala-dosa",
+      "name": "RAVA ONION MASALA DOSA",
+      "category": "SOUTHERN SPECIALTIES",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "RAVA ONION MASALA DOSA"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "RAVA ONION MASALA DOSA"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "vegetable-oothapam-v",
+      "name": "VEGETABLE OOTHAPAM (V)",
+      "category": "SOUTHERN SPECIALTIES",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "VEGETABLE OOTHAPAM (V)"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "VEGETABLE OOTHAPAM (V)"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "achari-chicken-tacos",
+      "name": "ACHARI CHICKEN TACOS",
+      "category": "STARTERS",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "ACHARI CHICKEN TACOS"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "ACHARI CHICKEN TACOS"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "aloo-tikki-veg",
+      "name": "ALOO TIKKI (VEG)",
+      "category": "STARTERS",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "ALOO TIKKI (VEG)"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "ALOO TIKKI (VEG)"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "bhel-puri-veg",
+      "name": "BHEL PURI (VEG)",
+      "category": "STARTERS",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "BHEL PURI (VEG)"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "BHEL PURI (VEG)"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "calamari",
+      "name": "CALAMARI",
+      "category": "STARTERS",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "CALAMARI"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "CALAMARI"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "cauli-pecorino-kulchaveg",
+      "name": "CAULI PECORINO KULCHA(VEG)",
+      "category": "STARTERS",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "CAULI PECORINO KULCHA(VEG)"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "CAULI PECORINO KULCHA(VEG)"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "chicken",
+      "name": "CHICKEN",
+      "category": "STARTERS",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "CHICKEN"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "CHICKEN"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "malabar-mussels",
+      "name": "MALABAR MUSSELS",
+      "category": "STARTERS",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "MALABAR MUSSELS"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "MALABAR MUSSELS"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "momo-chicken",
+      "name": "MOMO CHICKEN",
+      "category": "STARTERS",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "MOMO CHICKEN"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "MOMO CHICKEN"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "momo-veg",
+      "name": "MOMO VEG",
+      "category": "STARTERS",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "MOMO VEG"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "MOMO VEG"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "onion-bhajji-veg",
+      "name": "ONION BHAJJI (VEG)",
+      "category": "STARTERS",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "ONION BHAJJI (VEG)"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "ONION BHAJJI (VEG)"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "pani-puri-shots-veg",
+      "name": "PANI PURI SHOTS (VEG)",
+      "category": "STARTERS",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "PANI PURI SHOTS (VEG)"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "PANI PURI SHOTS (VEG)"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "papri-chaat-veg",
+      "name": "PAPRI CHAAT (VEG)",
+      "category": "STARTERS",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "PAPRI CHAAT (VEG)"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "PAPRI CHAAT (VEG)"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "vegetable-samosa-veg",
+      "name": "VEGETABLE SAMOSA (VEG)",
+      "category": "STARTERS",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "VEGETABLE SAMOSA (VEG)"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "VEGETABLE SAMOSA (VEG)"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "chicken-seekh-kebab",
+      "name": "CHICKEN SEEKH KEBAB",
+      "category": "TANDOOR",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "CHICKEN SEEKH KEBAB"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "CHICKEN SEEKH KEBAB"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "chicken-tikka",
+      "name": "CHICKEN TIKKA",
+      "category": "TANDOOR",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "CHICKEN TIKKA"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "CHICKEN TIKKA"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "malai-cheese-kebab",
+      "name": "MALAI CHEESE KEBAB",
+      "category": "TANDOOR",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "MALAI CHEESE KEBAB"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "MALAI CHEESE KEBAB"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "tandoori-chicken",
+      "name": "TANDOORI CHICKEN",
+      "category": "TANDOOR",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "TANDOORI CHICKEN"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "TANDOORI CHICKEN"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "tandoori-lamb-chops",
+      "name": "TANDOORI LAMB CHOPS",
+      "category": "TANDOOR",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "TANDOORI LAMB CHOPS"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "TANDOORI LAMB CHOPS"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "tandoori-salmon",
+      "name": "TANDOORI SALMON",
+      "category": "TANDOOR",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "TANDOORI SALMON"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "TANDOORI SALMON"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "tandoori-vegetables",
+      "name": "TANDOORI VEGETABLES",
+      "category": "TANDOOR",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "TANDOORI VEGETABLES"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "TANDOORI VEGETABLES"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "non-vegetarian-thali",
+      "name": "NON-VEGETARIAN THALI",
+      "category": "THALI PLATTER",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "NON-VEGETARIAN THALI"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "NON-VEGETARIAN THALI"
+        }
+      ]
+    },
+    {
+      "currentProductKey": "vegetarian-thali",
+      "name": "VEGETARIAN THALI",
+      "category": "THALI PLATTER",
+      "sourceEvidenceIds": [
+        "ev-bombay-official-lunchdinner",
+        "ev-bombay-official-carryout"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "allergenSourceEvidenceIds": [],
+      "presentationReferences": [
+        {
+          "surfaceId": "official-lunch-dinner",
+          "label": "VEGETARIAN THALI"
+        },
+        {
+          "surfaceId": "official-carryout",
+          "label": "VEGETARIAN THALI"
+        }
+      ]
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "location": "Official homepage navigation, menu links, contact/location pages",
+        "query": "allergen, allergy, nutrition, ingredients, dietary",
+        "url": "https://www.bombaybistro.com/",
+        "outcome": "not_found",
+        "sourceEvidenceIds": [
+          "ev-bombay-matrix-site"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "location": "Official HTML menus, linked images, PDFs/downloads, sitemap/document surfaces",
+        "query": "allergen, allergy, nutrition, ingredients, PDF",
+        "url": "https://www.bombaybistro.com/carryout",
+        "outcome": "not_found",
+        "sourceEvidenceIds": [
+          "ev-bombay-matrix-docs"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "location": "Clover and DoorDash ordering links exposed by official site",
+        "query": "item allergen tags, ingredients, nutrition, allergen matrix",
+        "url": "https://www.clover.com/online-ordering/bombay-bistro-rockville",
+        "outcome": "not_found",
+        "sourceEvidenceIds": [
+          "ev-bombay-matrix-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "location": "Web search restricted to restaurant/domain and official menu terms",
+        "query": "site:bombaybistro.com allergen allergy nutrition ingredients PDF",
+        "url": "https://www.google.com/search?q=site%3Abombaybistro.com+allergen+allergy+nutrition+ingredients+PDF",
+        "outcome": "not_found",
+        "sourceEvidenceIds": [
+          "ev-bombay-matrix-web"
+        ]
+      }
+    ],
+    "notes": "No current official allergen matrix located after all four required lanes. Official ingredient prose is not a complete allergen matrix; unavailable is retained per policy."
+  },
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:king-fisher",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner"
+        ],
+        "notes": "Alcohol-only item outside POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "2:taj-mahal",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner"
+        ],
+        "notes": "Alcohol-only item outside POC food/nonalcoholic boundary."
+      },
+      {
+        "auditItemKey": "3:chicken-biriyani-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "chicken-biriyani-gf"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "4:goat-biriyani-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "goat-biriyani-gf"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "5:lamb-biriyani-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "lamb-biriyani-gf"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "6:shrimp-biriyani-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "shrimp-biriyani-gf"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "7:vegetable-biriyani-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "vegetable-biriyani-gf"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "8:bread-basket",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "bread-basket"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "9:garlic-naan",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "garlic-naan"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "10:mint-paratha",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "mint-paratha"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "11:naan",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "naan"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "12:onion-kulcha",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "onion-kulcha"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "13:paratha",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "paratha"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "14:roti-v",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "roti-v"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "15:gulab-jamun",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "gulab-jamun"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "16:kulfi-with-orange-sauce",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "kulfi-with-orange-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "17:pista-badam-kheer",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "pista-badam-kheer"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "18:rasmalai",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rasmalai"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "19:aloo-chole",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "aloo-chole"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "20:aloo-gobhi",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "aloo-gobhi"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "21:baingan-bhartha",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "baingan-bhartha"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "22:bhindi-masala",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "bhindi-masala"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "23:dal-makhani",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "dal-makhani"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "24:kadai-pakora",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "kadai-pakora"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "25:kadai-paneer",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "kadai-paneer"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "26:malai-kofta-curry",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "malai-kofta-curry"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "27:mattar-paneer",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "mattar-paneer"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "28:paneer-makhani",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "paneer-makhani"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "29:saag-aloo",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "saag-aloo"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "30:saag-paneer",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "saag-paneer"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "31:vegetable-jhalfrezi",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "vegetable-jhalfrezi"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "32:chicken-chettinad",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "chicken-chettinad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "33:chicken-curry-madras",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "chicken-curry-madras"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "34:chicken-nilgiri",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "chicken-nilgiri"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "35:chicken-tikka-makhani",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "chicken-tikka-makhani"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "36:chicken-vindaloo",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "chicken-vindaloo"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "37:fish-curry",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "fish-curry"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "38:goat-curry",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "goat-curry"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "39:goat-niligiri",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "goat-niligiri"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "40:kadai-chicken",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "kadai-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "41:lamb-niligiri",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "lamb-niligiri"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "42:lamb-rogan-josh",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "lamb-rogan-josh"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "43:lamb-shank-bhuna",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "lamb-shank-bhuna"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "44:lamb-vindaloo",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "lamb-vindaloo"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "45:masala-grilled-rockfish",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "masala-grilled-rockfish"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "46:saag-chicken",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "saag-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "47:saag-goat",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "saag-goat"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "48:saag-lamb",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "saag-lamb"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "49:shrimp-scallop-masala",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "shrimp-scallop-masala"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "50:shrimp-curry",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "shrimp-curry"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "51:coffee",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "coffee"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "52:fresh-lemon-soda",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "fresh-lemon-soda"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "53:juices",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "juices"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "54:mango-lassi",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "mango-lassi"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "55:masala-chai",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "masala-chai"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "56:salt-lassi",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "salt-lassi"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "57:sweet-lassi",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "sweet-lassi"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "58:tea",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "tea"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "59:cucumber-raita",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "cucumber-raita"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "60:dal-tadka",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "dal-tadka"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "61:mango-chutnry",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "mango-chutnry"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "62:papadam",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "papadam"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "63:sambar",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "sambar"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "64:green-peas-soup",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "green-peas-soup"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "65:house-green-salad",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "house-green-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "66:lobster-shrimp-bisque-gf",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "lobster-shrimp-bisque-gf"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "67:chicken-dosa",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "chicken-dosa"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "68:chicken-oothapam",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "chicken-oothapam"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "69:masala-dosa-v",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "masala-dosa-v"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "70:plain-dosa-v",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "plain-dosa-v"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "71:rava-onion-masala-dosa",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "rava-onion-masala-dosa"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "72:vegetable-oothapam-v",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "vegetable-oothapam-v"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "73:achari-chicken-tacos",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "achari-chicken-tacos"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "74:aloo-tikki-veg",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "aloo-tikki-veg"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "75:bhel-puri-veg",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "bhel-puri-veg"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "76:calamari",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "calamari"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "77:cauli-pecorino-kulchaveg",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "cauli-pecorino-kulchaveg"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "78:chicken",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "chicken"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "79:malabar-mussels",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "malabar-mussels"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "80:momo-chicken",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "momo-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "81:momo-veg",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "momo-veg"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "82:onion-bhajji-veg",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "onion-bhajji-veg"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "83:pani-puri-shots-veg",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "pani-puri-shots-veg"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "84:papri-chaat-veg",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "papri-chaat-veg"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "85:vegetable-samosa-veg",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "vegetable-samosa-veg"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "86:chicken-seekh-kebab",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "chicken-seekh-kebab"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "87:chicken-tikka",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "chicken-tikka"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "88:malai-cheese-kebab",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "malai-cheese-kebab"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "89:tandoori-chicken",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "tandoori-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "90:tandoori-lamb-chops",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "tandoori-lamb-chops"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "91:tandoori-salmon",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "tandoori-salmon"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "92:tandoori-vegetables",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "tandoori-vegetables"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "93:non-vegetarian-thali",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "non-vegetarian-thali"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      },
+      {
+        "auditItemKey": "94:vegetarian-thali",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "vegetarian-thali"
+        ],
+        "sourceEvidenceIds": [
+          "ev-bombay-official-lunchdinner",
+          "ev-bombay-official-carryout"
+        ],
+        "notes": "Current official menu match; direct allergen disclosure unavailable."
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": true,
+    "newItems": false,
+    "nameOrCategoryCleanup": true,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": true
+  },
+  "proposedChanges": [
+    "Route ordinary catalog cleanup to luna_fix: remove two alcohol-only frozen rows from the POC food/nonalcoholic catalog and retain current Rockville food/nonalcoholic products.",
+    "Preserve unavailable allergen status; do not infer negatives from missing disclosure.",
+    "Retain technical-debt note for the frozen Squarespace extraction artifact and source spelling/category drift."
+  ],
+  "routingSignals": {
+    "route": "luna_fix",
+    "safetyEscalation": false,
+    "lightweightRepairSignals": [
+      "catalogDrift",
+      "staleItems",
+      "nameOrCategoryCleanup",
+      "parserIssue"
+    ],
+    "safetySignals": []
+  },
+  "blockedReason": null
+}

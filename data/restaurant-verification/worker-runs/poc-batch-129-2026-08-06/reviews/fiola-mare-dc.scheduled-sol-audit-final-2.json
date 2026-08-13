@@ -1,0 +1,236 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-129-2026-08-06",
+  "restaurantId": "fiola-mare-dc",
+  "reviewType": "scheduled_one_in_20_audit_final_recheck_2",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium",
+    "role": "sol_reviewer"
+  },
+  "reviewedFailedRules": [
+    "current_dinner_lunch_brunch_scope_and_membership",
+    "direct_positive_current_scope_and_reconciliation_mapping",
+    "linked_vendor_search_credibility_and_source_authority"
+  ],
+  "regressionChecks": [
+    "official_documents_actual_sitemap_evidence",
+    "unsupported_allergen_negatives"
+  ],
+  "evidence": [
+    {
+      "evidenceId": "restored-result",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-129-2026-08-06/results/fiola-mare-dc.json",
+      "finding": "The result contains 77 products and declares dinner/lunch/brunch complete with 51/36/36 memberships. Twenty-two distinct product names assigned to those current surfaces are not present in the corresponding current official menu sections."
+    },
+    {
+      "evidenceId": "official-dinner-membership",
+      "url": "https://www.fiolamaredc.com/dinner",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-06",
+      "finding": "Fourteen of the 51 asserted dinner memberships are absent by normalized product name from the current Dinner Menu section."
+    },
+    {
+      "evidenceId": "official-lunch-membership",
+      "url": "https://www.fiolamaredc.com/lunch",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-06",
+      "finding": "Twelve of the 36 asserted lunch memberships are absent by normalized product name from the current Lunch Menu section."
+    },
+    {
+      "evidenceId": "official-brunch-membership",
+      "url": "https://www.fiolamaredc.com/brunch",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-06",
+      "finding": "Seven of the 36 asserted brunch memberships are absent by normalized product name from the current Brunch Menu section."
+    },
+    {
+      "evidenceId": "direct-positive-and-reconciliation",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-129-2026-08-06/results/fiola-mare-dc.json",
+      "finding": "All 48 direct-positive records have nonempty restaurant-issued evidence and all 64 frozen keys map exactly once with no empty matches. However, 16 of the direct-positive records are assigned as current through false surface memberships, so the combined current-scope rule is not truthful."
+    },
+    {
+      "evidenceId": "linked-vendor-attempt",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-129-2026-08-06/results/fiola-mare-dc.json",
+      "finding": "The linked_vendor search now truthfully records that homepage/menu/sitemap inspection found no restaurant-linked outbound vendor and cites only restaurant-controlled evidence. Tock is removed."
+    },
+    {
+      "evidenceId": "remaining-surface-authority-conflict",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-129-2026-08-06/results/fiola-mare-dc.json",
+      "finding": "Despite the corrected search outcome, surface-vendor still assigns authority linked_vendor to https://www.fiolamaredc.com/menus. The canonical dossier repeats this surface authority, while canonical evidence ev-menus and ev-vendor correctly classify the same URL restaurant_issued."
+    },
+    {
+      "evidenceId": "apply-validation",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-129-2026-08-06/apply-results/fiola-mare-dc.json",
+      "finding": "Mechanical validation passes with 77 products, 64 normalized mappings, 48 direct-positive products, zero orphan keys, zero undefined keys, and byte-identical second application. These checks do not detect false live-surface membership or the remaining surface authority contradiction."
+    },
+    {
+      "evidenceId": "regression-checks",
+      "artifact": "data/restaurant-verification/restaurants/fiola-mare-dc.json",
+      "finding": "The official sitemap attempt remains recorded and credible. No product presents empty contains/mayContain arrays as an official absence claim; unsupported-negative count remains zero."
+    }
+  ],
+  "resolution": {
+    "binding": true,
+    "outcome": "audit_recheck_failed_material_safety_error",
+    "items": [
+      {
+        "resolution": "false_current_surface_membership",
+        "affectedCurrentProductKeys": [
+          "artichoke-alla-giudia",
+          "asparagus-gazpacho",
+          "atlantic-razor-clams",
+          "australian-prawn",
+          "carolina-yellowfin-tuna",
+          "carolina-yellowfin-tuna-crudo",
+          "grilled-california-asparagus",
+          "hazelnut-rocher",
+          "large-wild-danish-sole",
+          "merasheen-bay-oysters",
+          "savory-croissants",
+          "sexy-fish",
+          "wester-ross-salmon",
+          "wild-hawaiian-kampachi-amalfi-style-crudo",
+          "canary-island-branzino-crudo",
+          "cavatelli-ragu-di-seppia",
+          "fiola-mare-lobster-ravioli",
+          "wild-kampachi-amalfi-style-crudo",
+          "current-wild-atlantic-striped-bass",
+          "bucatini-carbonara",
+          "grand-chocolate-cake",
+          "spicy-maryland-crab-cake-benedict"
+        ],
+        "requiredAction": "Remove each unsupported surface membership or replace it with the exact current presentation only when the official section supports equivalence; recompute the union catalog after correcting all three surface arrays."
+      },
+      {
+        "resolution": "direct_positive_current_scope_not_truthful",
+        "affectedCurrentProductKeys": [
+          "artichoke-alla-giudia",
+          "asparagus-gazpacho",
+          "atlantic-razor-clams",
+          "carolina-yellowfin-tuna",
+          "carolina-yellowfin-tuna-crudo",
+          "grilled-california-asparagus",
+          "hazelnut-rocher",
+          "merasheen-bay-oysters",
+          "sexy-fish",
+          "wester-ross-salmon",
+          "canary-island-branzino-crudo",
+          "cavatelli-ragu-di-seppia",
+          "fiola-mare-lobster-ravioli",
+          "bucatini-carbonara",
+          "grand-chocolate-cake",
+          "spicy-maryland-crab-cake-benedict"
+        ],
+        "requiredAction": "Preserve direct positives only on truthful current/equivalent presentations; reconcile removed or replaced presentations with precise stale/equivalent dispositions instead of retaining false current membership."
+      }
+    ],
+    "surfaceResolutions": [
+      {
+        "surfaceId": "surface-dinner",
+        "resolution": "membership_not_truthful",
+        "assertedProductCount": 51,
+        "unsupportedMembershipCount": 14,
+        "affectedCurrentProductKeys": [
+          "artichoke-alla-giudia",
+          "asparagus-gazpacho",
+          "atlantic-razor-clams",
+          "australian-prawn",
+          "carolina-yellowfin-tuna",
+          "carolina-yellowfin-tuna-crudo",
+          "grilled-california-asparagus",
+          "hazelnut-rocher",
+          "large-wild-danish-sole",
+          "merasheen-bay-oysters",
+          "savory-croissants",
+          "sexy-fish",
+          "wester-ross-salmon",
+          "wild-hawaiian-kampachi-amalfi-style-crudo"
+        ]
+      },
+      {
+        "surfaceId": "surface-lunch",
+        "resolution": "membership_not_truthful",
+        "assertedProductCount": 36,
+        "unsupportedMembershipCount": 12,
+        "affectedCurrentProductKeys": [
+          "asparagus-gazpacho",
+          "australian-prawn",
+          "canary-island-branzino-crudo",
+          "carolina-yellowfin-tuna",
+          "cavatelli-ragu-di-seppia",
+          "fiola-mare-lobster-ravioli",
+          "grilled-california-asparagus",
+          "merasheen-bay-oysters",
+          "savory-croissants",
+          "wester-ross-salmon",
+          "wild-kampachi-amalfi-style-crudo",
+          "current-wild-atlantic-striped-bass"
+        ]
+      },
+      {
+        "surfaceId": "surface-brunch",
+        "resolution": "membership_not_truthful",
+        "assertedProductCount": 36,
+        "unsupportedMembershipCount": 7,
+        "affectedCurrentProductKeys": [
+          "australian-prawn",
+          "bucatini-carbonara",
+          "carolina-yellowfin-tuna",
+          "grand-chocolate-cake",
+          "spicy-maryland-crab-cake-benedict",
+          "wester-ross-salmon",
+          "wild-kampachi-amalfi-style-crudo"
+        ]
+      },
+      {
+        "surfaceId": "surface-vendor",
+        "resolution": "authority_conflict",
+        "url": "https://www.fiolamaredc.com/menus",
+        "recordedAuthority": "linked_vendor",
+        "requiredAuthority": "restaurant_issued"
+      }
+    ],
+    "safetySourceAuthorityConflictRemains": true
+  },
+  "ruleResults": {
+    "currentDinnerLunchBrunchScopeAndMembership": "fail",
+    "directPositiveCurrentScopeAndReconciliationMapping": "fail",
+    "linkedVendorSearchCredibilityAndSourceAuthority": "fail",
+    "officialDocumentsSitemapRegression": "pass",
+    "unsupportedAllergenNegativesRegression": "pass"
+  },
+  "remainingRules": [
+    "current_dinner_lunch_brunch_membership_truth",
+    "direct_positive_current_scope_truth_for_16_affected_products",
+    "surface_vendor_restaurant_issued_authority_consistency"
+  ],
+  "validation": {
+    "valid": false,
+    "errors": [
+      "Twenty-two distinct products have unsupported current surface memberships.",
+      "Sixteen direct-positive products are incorrectly classified as current through those memberships.",
+      "surface-vendor still labels the restaurant-issued /menus URL linked_vendor."
+    ],
+    "currentProductCount": 77,
+    "dinnerAssertedProductCount": 51,
+    "lunchAssertedProductCount": 36,
+    "brunchAssertedProductCount": 36,
+    "unsupportedCurrentMembershipDistinctProductCount": 22,
+    "directPositiveProductCount": 48,
+    "directPositiveEvidenceStructurallyValidCount": 48,
+    "falseCurrentDirectPositiveProductCount": 16,
+    "frozenItemCount": 64,
+    "reconciledFrozenItemCount": 64,
+    "uniqueReconciledFrozenItemCount": 64,
+    "emptyReconciliationMatchCount": 0,
+    "linkedVendorSearchOutcomeTruthful": true,
+    "tockRemoved": true,
+    "linkedVendorAuthorityConsistent": false,
+    "officialDocumentsSearchRegressionPassed": true,
+    "unsupportedAllergenNegativeClaimCount": 0,
+    "materialSafetyError": true,
+    "codexVerifiedClaimed": false
+  },
+  "coordinatorRecommendation": "Binding recheck fails. Keep fiola-mare-dc nonterminal. Correct the 22 enumerated unsupported memberships across dinner/lunch/brunch, then reclassify the 16 affected direct-positive records against truthful current/equivalent presentations and update their frozen reconciliations. Change surface-vendor authority for https://www.fiolamaredc.com/menus from linked_vendor to restaurant_issued or remove that synthetic surface. The no-vendor search outcome, Tock removal, sitemap evidence, and unsupported-negative handling otherwise pass."
+}

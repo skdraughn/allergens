@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-006-2026-07-16",
+  "restaurantId": "bantam-king-dc",
+  "reviewType": "binding_catalog_and_safety_authority_resolution",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "role": "sol_reviewer"
+  },
+  "reviewedKeys": [],
+  "resolution": {
+    "binding": true,
+    "outcome": "current_catalog_and_safety_authority_resolved_without_reopening_reconciled_rows",
+    "catalogDefinition": {
+      "scope": "Current food and nonalcoholic products for Bantam King at 501 G Street NW, Washington, DC 20001, using the union of the complete current official homepage and official menus page.",
+      "completeSurfaceIds": [
+        "official-homepage-menu",
+        "official-menus-page"
+      ],
+      "supportingSurfaceIds": [
+        "toast-ordering"
+      ],
+      "enumerationRule": "union_of_current_exact_location_restaurant_issued_html_food_and_nonalcoholic_rows_with_alcohol_excluded_and_normalized_duplicate_frozen_presentations_bound_to_one_product_identity",
+      "excludedCategories": [
+        "cocktails, beer, sake, wine, spirits, and other alcoholic beverages",
+        "headings and service promotions",
+        "modifier choices that are not separately sold products"
+      ],
+      "excludedAlcoholicProductKeys": [
+        "23:crownr-oya-lwhiskylemonade",
+        "32:smirnoffsmashvodkasoda"
+      ],
+      "sourceEvidenceIds": [
+        "H1",
+        "E1",
+        "T3"
+      ],
+      "existingProductCount": 38,
+      "additionalProductCount": 0,
+      "resolvedCatalogProductCount": 38,
+      "productAdditionsRequired": [],
+      "officialSurfaceDifference": "Chicken Katsu is current on the official homepage but absent from the official menus page. Calpico Soda and UCC Green Tea are current on the menus page. The union is authoritative and contains 38 distinct in-scope products.",
+      "toastAssessment": "The legacy Toast URL is exact-location and reachable, but it is not fully enumerable and the current official takeout/delivery link now points to order.online. Toast is supporting-only and cannot add, remove, or override products from the complete official HTML union.",
+      "productDefinitionCorrections": [
+        {
+          "currentProductKey": "big-fat-chocolate-chip-cookie",
+          "bindingContainsAllergens": [],
+          "unsupportedClaimsRemoved": [
+            "gluten",
+            "milk",
+            "wheat"
+          ],
+          "allergenEvidenceStatus": "accurately_unavailable",
+          "rationale": "The current restaurant-issued description names Valrhona chocolate and rendered chicken fat but does not explicitly establish gluten, milk, or wheat. This is a catalog-level safety-authority decision and does not reopen an already-resolved reconciliation row."
+        }
+      ],
+      "allergenBoundary": "Only direct restaurant-issued positives are retained. Empty contains or may-contain arrays are not negative claims. Unsupported baseline positives, all negative conclusions, and every item-specific cross-contact conclusion are excluded from the binding catalog. No complete matrix exists.",
+      "rationale": "The complete official HTML surfaces resolve product scope without relying on partial Toast. The two frozen alcoholic rows remain outside the food and nonalcoholic POC boundary. No item-level reconciliation is reopened because the research result contains zero unresolved dispositions."
+    },
+    "items": [],
+    "surfaceResolutions": [
+      {
+        "surfaceId": "toast-ordering",
+        "disposition": "excluded",
+        "title": "Legacy exact-location Toast ordering surface",
+        "url": "https://order.toasttab.com/online/bantam-king",
+        "authority": "restaurant_linked_vendor",
+        "locationScope": "Bantam King, 501 G Street NW, Washington, DC 20001",
+        "currentAsOf": "2026-07-16",
+        "current": true,
+        "scopeClassification": "supporting_identity_vendor_surface_not_authoritative_for_catalog_enumeration",
+        "sourceEvidenceIds": [
+          "T3",
+          "H1",
+          "E1"
+        ],
+        "rationale": "The direct Toast URL remains reachable but cannot be fully enumerated, and the current official takeout/delivery navigation points to order.online rather than this Toast catalog. The two complete official HTML menus already enumerate the binding 38-product catalog, so Toast is retained only as supporting exact-location vendor evidence and adds no products.",
+        "additionalProductsRequired": [],
+        "excludedProductsRequired": [],
+        "excludedAlcoholicProductKeys": [
+          "23:crownr-oya-lwhiskylemonade",
+          "32:smirnoffsmashvodkasoda"
+        ],
+        "allergenAssessment": {
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfilesEstablished": false,
+          "notes": "Toast supplies no complete matrix and cannot support negatives, may-contain absence, or cross-contact conclusions."
+        },
+        "safetySourceAuthorityConflictRemains": false,
+        "allergenAuthorityLimitationRemains": true
+      }
+    ],
+    "safetySourceAuthorityConflictRemains": false
+  },
+  "remainingSolSignals": [
+    {
+      "signal": "allergen_authority_incomplete",
+      "status": "accurately_unavailable_non_blocking_for_catalog_scope",
+      "affectedSurfaces": [
+        "official-homepage-menu",
+        "official-menus-page",
+        "toast-ordering"
+      ],
+      "sourceEvidenceIds": [
+        "H1",
+        "E1",
+        "T3"
+      ],
+      "rationale": "No complete current official allergen, ingredient, may-contain, or cross-contact matrix was found. This remains a safety-data limitation after unsupported claims are excluded."
+    }
+  ],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "baselineItemCount": 52,
+    "researchReconciliationEntryCount": 52,
+    "unresolvedResearchKeyCount": 0,
+    "reviewedKeyCount": 0,
+    "resolutionItemCount": 0,
+    "allAffectedKeysReviewedExactlyOnce": true,
+    "allDispositionsBinding": true,
+    "duplicateReviewedKeys": [],
+    "duplicateResolutionItemKeys": [],
+    "surfaceResolutionCount": 1,
+    "partialSurfaceIds": [
+      "toast-ordering"
+    ],
+    "allPartialSurfacesResolvedExactlyOnce": true,
+    "existingProductCount": 38,
+    "additionalProductCount": 0,
+    "resolvedCatalogProductCount": 38,
+    "outOfScopeAlcoholKeyCount": 2,
+    "alreadyResolvedReconciliationRowsReopened": false,
+    "unsupportedAllergenNegativesIntroduced": false,
+    "unsupportedAllergenNegativesRetained": false,
+    "itemSpecificMayContainClaimsIntroduced": false,
+    "crossContactConclusionIntroduced": false,
+    "completeAllergenProfileClaimed": false,
+    "matrixSearchCount": 4,
+    "matrixStatusRemainsAccuratelyUnavailable": true,
+    "codexVerifiedClaimed": false
+  }
+}

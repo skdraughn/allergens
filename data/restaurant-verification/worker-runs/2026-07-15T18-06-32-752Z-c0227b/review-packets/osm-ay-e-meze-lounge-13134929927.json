@@ -1,0 +1,648 @@
+{
+  "schemaVersion": 1,
+  "runId": "2026-07-15T18-06-32-752Z-c0227b",
+  "restaurant": {
+    "restaurantId": "osm-ay-e-meze-lounge-13134929927",
+    "name": "AYŞE Meze Lounge",
+    "domain": "aysemeze.com",
+    "locationId": "rockville",
+    "baselineItemCount": 106,
+    "baselineItemFingerprint": "0b2925f6eb53bd7fd87bb55257c0804765bc0f10146ea36cc82a88d96d74200d",
+    "officialItemCount": 79,
+    "officialAllergenStatus": "not-found",
+    "sourceFamily": "generic-website",
+    "parserProfile": "generic-website",
+    "guideUrl": "https://aysemeze.com/",
+    "sourceUrls": [
+      "https://aysemeze.com/",
+      "https://aysemeze.com/wp-content/uploads/2026/05/AY-MENU.pdf",
+      "https://aysemeze.com/wp-content/uploads/2026/05/king-farm-express-lunch-menu.pdf",
+      "https://aysemeze.com/wp-content/uploads/2026/03/KIDS-MENU.pdf",
+      "https://aysemeze.com/wp-content/uploads/2026/06/AY-Brunch-Menu.pdf",
+      "https://aysemeze.com/wp-content/uploads/2026/05/AyDessertMenu.pdf",
+      "https://aysemeze.com/wp-content/uploads/2026/03/AY-LunchMenu.pdf",
+      "https://aysemeze.com/foodmenu/brunch-menu/",
+      "https://aysemeze.com/foodmenu/lunch-menu/",
+      "https://aysemeze.com/foodmenu/dinner-menu/",
+      "https://aysemeze.com/banquet-menu/",
+      "https://aysemeze.com/foodmenu/bar-menu/",
+      "https://aysemeze.com/foodmenu/happy-hour-menu/",
+      "https://order.toasttab.com/online/ayse"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found."
+  ],
+  "validationWarnings": [],
+  "terra": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "medium",
+      "overall": 0.78,
+      "menu": 0.9,
+      "allergenSource": 0.55,
+      "extraction": 0.75,
+      "rationale": "The restaurant site identifies the Rockville restaurant and links to the live Toast menu. The linked menu and current restaurant PDF provide strong menu/ingredient evidence, but neither is a complete allergen matrix; several baseline rows are duplicates, concatenated artifacts, missing from the current menu, or contain allergen arrays not fully supported by direct source text."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "AYŞE Meze Lounge, 700 King Farm Blvd. Suite 170, Rockville, Maryland",
+      "confidence": 0.98,
+      "sourceEvidenceIds": [
+        "official-home",
+        "linked-toast"
+      ],
+      "notes": "The restaurant-issued homepage identifies AYŞE as a Rockville, Maryland Mediterranean restaurant and links to the Toast ordering surface. Toast identifies the same restaurant and street address."
+    },
+    "sources": [
+      {
+        "evidenceId": "official-home",
+        "url": "https://aysemeze.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Ayşe Restaurant | Authentic Mediterranean Cuisine in Rockville, MD",
+        "retrievedAt": "2026-07-15T18:10:00Z",
+        "excerpt": "Ayse Meze Lounge is a Mediterranean restaurant in Rockville, Maryland; the site links to its online ordering menu.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "official-menu-pdf",
+        "url": "https://aysemeze.com/wp-content/uploads/2026/05/AY-MENU.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "AYSE MENU",
+        "retrievedAt": "2026-07-15T18:10:00Z",
+        "excerpt": "Current two-page restaurant menu names items and ingredient descriptions, including hummus with tahini, cauliflower with green tahini and zaatar bread, pizzas made with 00 flour, and individual dishes such as lasagna, fettuccine Alfredo, and salmon with sesame crust.",
+        "stableRowId": "pages-1-2",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "linked-toast",
+        "url": "https://order.toasttab.com/online/ayse",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Order Online | Ayse Meze Lounge Ayse",
+        "retrievedAt": "2026-07-15T18:10:00Z",
+        "excerpt": "Linked ordering menu for Ayse Meze Lounge at 700 King Farm Blvd. Suite 170, Rockville, MD. It lists current food, side, dessert, and kids-menu items with ingredient descriptions, but no allergen matrix or cross-contact disclosure.",
+        "stableRowId": "Ayse Meze Lounge Ayse - 700 King Farm Blvd. Suite 170",
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "toast-search-current",
+        "url": "https://order.toasttab.com/online/ayse",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "ingredients",
+        "title": "Current indexed Toast menu for Ayse Meze Lounge",
+        "retrievedAt": "2026-07-15T18:10:00Z",
+        "excerpt": "Current indexed menu confirms dessert, side, kids, pizza, pasta, and lunch descriptions, including direct named ingredients such as yogurt, cheese, tahini, walnuts, pistachios, butter, egg pasta, and sesame-crusted salmon.",
+        "stableRowId": "current-menu-index",
+        "contentHash": null,
+        "artifactSuggested": null
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://aysemeze.com/",
+        "notes": "Restaurant homepage accessible; identity, location, menu links, and linked ordering provider confirmed."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://aysemeze.com/wp-content/uploads/2026/05/AY-MENU.pdf",
+        "notes": "Restaurant-issued current menu PDF accessible and text-extractable."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://order.toasttab.com/online/ayse",
+        "notes": "Restaurant-linked Toast ordering menu accessible; current item descriptions and modifier/side rows available."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": "https://order.toasttab.com/online/ayse",
+        "notes": "Targeted current-menu search surfaced additional current Toast rows, including desserts, sides, and kids items."
+      },
+      {
+        "kind": "archive",
+        "status": "accessible",
+        "url": "https://aysemeze.com/wp-content/uploads/2026/04/AYSE-MENU.pdf",
+        "notes": "Official historical menu surfaced by targeted search; used only as corroborating menu history, not as a current allergen matrix."
+      },
+      {
+        "kind": "third_party",
+        "status": "accessible",
+        "url": "https://www.toasttab.com/local/order/ayse/r-93ed7a82-e113-497c-a1e3-28af24748d02",
+        "notes": "Toast local listing corroborates the same Rockville restaurant and menu family; lower priority than the restaurant-linked ordering URL."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 106,
+      "counts": {
+        "exact_match/verified": 67,
+        "exact_match/accurately_unavailable": 22,
+        "exact_match/mismatch": 8,
+        "missing_from_source/not_applicable": 4,
+        "artifact/not_applicable": 2,
+        "stale_extra/not_applicable": 3
+      }
+    },
+    "findings": [
+      {
+        "findingId": "menu-artifact-concatenation",
+        "severity": "high",
+        "kind": "extraction",
+        "summary": "Two frozen rows are parser artifacts rather than orderable menu items: “Caesar Salad Hummus Bowl” concatenates the separately listed Hummus Bowl and Caesar Salad, and “Cheese Pizza Pepperoni Pizza” concatenates the two separate kids pizza choices.",
+        "sourceEvidenceIds": [
+          "official-menu-pdf",
+          "linked-toast"
+        ],
+        "affectedAuditItemKeys": [
+          "18:caesar-salad-hummus-bowl",
+          "22:cheese-pizza-pepperoni-pizza"
+        ]
+      },
+      {
+        "findingId": "menu-duplicate-normalization",
+        "severity": "medium",
+        "kind": "extraction",
+        "summary": "The frozen baseline retains duplicate representations of current items: Linguine/Linguini Pomodoro, Muhamara/Muhammara, and + Warm Pita Bread/Warm Pita. One current representation is retained; the duplicate is stale extra.",
+        "sourceEvidenceIds": [
+          "official-menu-pdf",
+          "linked-toast",
+          "toast-search-current"
+        ],
+        "affectedAuditItemKeys": [
+          "57:linguine-pomodoro",
+          "58:linguini-pomodoro",
+          "65:muhamara",
+          "66:muhammara",
+          "3:warm-pita-bread",
+          "104:warm-pita"
+        ]
+      },
+      {
+        "findingId": "current-menu-missing-items",
+        "severity": "medium",
+        "kind": "menu",
+        "summary": "Affogato, crabcake fritters, generic Ice Cream Sundae, and New York Strip Steak were not found on the current linked ordering menu or current restaurant menu PDF. They may be prior-menu or changing-special entries and require coordinator review before removal.",
+        "sourceEvidenceIds": [
+          "official-menu-pdf",
+          "linked-toast",
+          "toast-search-current"
+        ],
+        "affectedAuditItemKeys": [
+          "6:affogato",
+          "28:crabcake-fritters",
+          "41:ice-cream-sundae",
+          "68:new-york-strip-steak"
+        ]
+      },
+      {
+        "findingId": "incomplete-allergen-array-semantics",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "AYŞE's current PDF and linked Toast descriptions provide direct positive ingredient evidence but no complete allergen matrix, negative allergen claims, or cross-contact statement. Direct descriptions do not support treating generated arrays as complete. The listed mismatch rows contain one or more baseline allergen values not directly established by their current descriptions; direct positives should be retained narrowly rather than erased.",
+        "sourceEvidenceIds": [
+          "official-menu-pdf",
+          "linked-toast",
+          "toast-search-current"
+        ],
+        "affectedAuditItemKeys": [
+          "26:chocolate-evoo-cake",
+          "30:eggplant-parmesan",
+          "54:lahmacun",
+          "70:nutella",
+          "71:orange-yogurt-cake",
+          "81:scallops",
+          "94:spaghetti-and-meatballs",
+          "106:zucchini-cakes"
+        ]
+      }
+    ],
+    "summary": "AYŞE Meze Lounge identity and current menu surface are verified, but the frozen baseline has two concatenation artifacts, three duplicate/stale rows, four items absent from the current menu, and incomplete allergen-array semantics. Current restaurant-issued and restaurant-linked menu descriptions support narrow positive ingredients only; they do not provide a complete allergen matrix or cross-contact information.",
+    "coordinatorNotes": [
+      "Route to Sol: discrepancy_found. Preserve direct restaurant-issued positive ingredient evidence when repairing allergen claims, but do not infer completeness, absence, or cross-contact status from the menu descriptions.",
+      "Do not delete the four missing-current-menu rows without a date/special-menu decision; the frozen source family includes changing daily and dessert menu material."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "3:warm-pita-bread",
+      "baseline": {
+        "itemId": "warm-pita-bread",
+        "name": "+ warm pita bread",
+        "category": "mediterranean",
+        "variantGroup": "Raw Vegetables",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/ayse"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "6:affogato",
+      "baseline": {
+        "itemId": "affogato",
+        "name": "Affogato",
+        "category": "mediterranean",
+        "variantGroup": "mediterranean",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://aysemeze.com/wp-content/uploads/2026/05/AyDessertMenu.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "18:caesar-salad-hummus-bowl",
+      "baseline": {
+        "itemId": "caesar-salad-hummus-bowl",
+        "name": "Caesar Salad Hummus Bowl",
+        "category": "mediterranean",
+        "variantGroup": "mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://aysemeze.com/wp-content/uploads/2026/05/AY-MENU.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "22:cheese-pizza-pepperoni-pizza",
+      "baseline": {
+        "itemId": "cheese-pizza-pepperoni-pizza",
+        "name": "Cheese Pizza Pepperoni Pizza",
+        "category": "mediterranean",
+        "variantGroup": "mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://aysemeze.com/wp-content/uploads/2026/03/KIDS-MENU.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "26:chocolate-evoo-cake",
+      "baseline": {
+        "itemId": "chocolate-evoo-cake",
+        "name": "chocolate evoo cake",
+        "category": "mediterranean",
+        "variantGroup": "Side Hot Sauce",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten",
+          "egg",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/ayse"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "28:crabcake-fritters",
+      "baseline": {
+        "itemId": "crabcake-fritters",
+        "name": "crabcake fritters",
+        "category": "mediterranean",
+        "variantGroup": "mediterranean",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/ayse"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "30:eggplant-parmesan",
+      "baseline": {
+        "itemId": "eggplant-parmesan",
+        "name": "Eggplant Parmesan",
+        "category": "mediterranean",
+        "variantGroup": "mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://aysemeze.com/wp-content/uploads/2026/05/AY-MENU.pdf",
+          "https://order.toasttab.com/online/ayse"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "41:ice-cream-sundae",
+      "baseline": {
+        "itemId": "ice-cream-sundae",
+        "name": "Ice Cream Sundae",
+        "category": "Dessert",
+        "variantGroup": "Dessert",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://aysemeze.com/wp-content/uploads/2026/03/KIDS-MENU.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "54:lahmacun",
+      "baseline": {
+        "itemId": "lahmacun",
+        "name": "Lahmacun",
+        "category": "mediterranean",
+        "variantGroup": "mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://aysemeze.com/wp-content/uploads/2026/05/AY-MENU.pdf",
+          "https://order.toasttab.com/online/ayse"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "57:linguine-pomodoro",
+      "baseline": {
+        "itemId": "linguine-pomodoro",
+        "name": "Linguine Pomodoro",
+        "category": "mediterranean",
+        "variantGroup": "mediterranean",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://aysemeze.com/wp-content/uploads/2026/05/AY-MENU.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "58:linguini-pomodoro",
+      "baseline": {
+        "itemId": "linguini-pomodoro",
+        "name": "linguini pomodoro",
+        "category": "mediterranean",
+        "variantGroup": "mediterranean",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/ayse"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "65:muhamara",
+      "baseline": {
+        "itemId": "muhamara",
+        "name": "muhamara",
+        "category": "mediterranean",
+        "variantGroup": "mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/ayse"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "66:muhammara",
+      "baseline": {
+        "itemId": "muhammara",
+        "name": "Muhammara",
+        "category": "mediterranean",
+        "variantGroup": "mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "tree-nut",
+          "sesame"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://aysemeze.com/wp-content/uploads/2026/05/AY-MENU.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "68:new-york-strip-steak",
+      "baseline": {
+        "itemId": "new-york-strip-steak",
+        "name": "new york strip steak",
+        "category": "mediterranean",
+        "variantGroup": "Grilled Whole Bronzini",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/ayse"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "70:nutella",
+      "baseline": {
+        "itemId": "nutella",
+        "name": "nutella",
+        "category": "mediterranean",
+        "variantGroup": "mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "wheat",
+          "gluten"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/ayse"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "71:orange-yogurt-cake",
+      "baseline": {
+        "itemId": "orange-yogurt-cake",
+        "name": "Orange Yogurt Cake",
+        "category": "mediterranean",
+        "variantGroup": "mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://aysemeze.com/wp-content/uploads/2026/05/AyDessertMenu.pdf",
+          "https://order.toasttab.com/online/ayse"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "81:scallops",
+      "baseline": {
+        "itemId": "scallops",
+        "name": "Scallops",
+        "category": "mediterranean",
+        "variantGroup": "mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "shellfish",
+          "tree-nut"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://aysemeze.com/wp-content/uploads/2026/05/AY-MENU.pdf",
+          "https://order.toasttab.com/online/ayse"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "94:spaghetti-and-meatballs",
+      "baseline": {
+        "itemId": "spaghetti-and-meatballs",
+        "name": "Spaghetti & Meatballs",
+        "category": "mediterranean",
+        "variantGroup": "mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://aysemeze.com/wp-content/uploads/2026/05/AY-MENU.pdf",
+          "https://order.toasttab.com/online/ayse"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "104:warm-pita",
+      "baseline": {
+        "itemId": "warm-pita",
+        "name": "Warm Pita",
+        "category": "mediterranean",
+        "variantGroup": "mediterranean",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://aysemeze.com/wp-content/uploads/2026/05/AY-MENU.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "106:zucchini-cakes",
+      "baseline": {
+        "itemId": "zucchini-cakes",
+        "name": "Zucchini Cakes",
+        "category": "mediterranean",
+        "variantGroup": "mediterranean",
+        "isConfigurable": false,
+        "allergens": [
+          "milk",
+          "wheat",
+          "gluten",
+          "egg"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://aysemeze.com/wp-content/uploads/2026/05/AY-MENU.pdf",
+          "https://order.toasttab.com/online/ayse"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/2026-07-15T18-06-32-752Z-c0227b/jobs/osm-ay-e-meze-lounge-13134929927.json",
+    "workerResultPath": "data/restaurant-verification/worker-runs/2026-07-15T18-06-32-752Z-c0227b/results/osm-ay-e-meze-lounge-13134929927.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/osm-ay-e-meze-lounge-13134929927.jsonl"
+  }
+}

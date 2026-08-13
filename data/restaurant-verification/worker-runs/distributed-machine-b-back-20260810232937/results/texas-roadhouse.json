@@ -1,0 +1,269 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260810232937",
+  "restaurantId": "texas-roadhouse",
+  "name": "Texas Roadhouse",
+  "locationId": null,
+  "packetValidation": {
+    "baselineItemCount": 57,
+    "baselineFingerprint": "55e595c0b393e6b27e838d3ad64f91948b73f6df77c3cbd3c7a75d1e1412396c",
+    "itemChecksPath": "data/restaurant-verification/item-checks/texas-roadhouse.jsonl"
+  },
+  "identity": {
+    "name": "Texas Roadhouse",
+    "location": "U.S. chain; packet has no locationId",
+    "domain": "texasroadhouse.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "src-home"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "src-home",
+      "url": "https://www.texasroadhouse.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and menu navigation",
+      "retrievedAt": "2026-08-10T23:34:00.000Z"
+    },
+    {
+      "evidenceId": "src-menu",
+      "url": "https://www.texasroadhouse.com/global-menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current official food and beverage menu surface",
+      "retrievedAt": "2026-08-10T23:34:00.000Z"
+    },
+    {
+      "evidenceId": "src-pdf",
+      "url": "https://forms.texasroadhouse.com/NMotion/Menus/Menu%20%282409-22-3-C%29.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official downloadable menu PDF and allergy warning",
+      "retrievedAt": "2026-08-10T23:34:00.000Z"
+    },
+    {
+      "evidenceId": "src-vendor",
+      "url": "https://www.texasroadhouse.com/locations",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "official location/order entry point; no packet location supplied",
+      "retrievedAt": "2026-08-10T23:34:00.000Z"
+    },
+    {
+      "evidenceId": "src-nutritionix",
+      "url": "https://www.nutritionix.com/texas-roadhouse/menu/special-diets/premium",
+      "authorityTier": "third_party",
+      "purpose": "baseline third-party menu/allergen capture; not treated as restaurant-issued",
+      "retrievedAt": "2026-08-10T23:34:00.000Z"
+    },
+    {
+      "evidenceId": "src-search",
+      "url": "https://www.google.com/search?q=site%3Atexasroadhouse.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted web search audit; no official allergen matrix located",
+      "retrievedAt": "2026-08-10T23:34:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://www.texasroadhouse.com/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "U.S. chain",
+      "servicePeriod": "homepage",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "src-home"
+      ]
+    },
+    {
+      "surfaceId": "official-global-menu",
+      "url": "https://www.texasroadhouse.com/global-menu",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "U.S. chain",
+      "servicePeriod": "all current food and nonalcoholic menu categories",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "src-menu"
+      ]
+    },
+    {
+      "surfaceId": "official-menu-pdf",
+      "url": "https://forms.texasroadhouse.com/NMotion/Menus/Menu%20%282409-22-3-C%29.pdf",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "U.S. menu",
+      "servicePeriod": "menu PDF",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "src-pdf"
+      ]
+    },
+    {
+      "surfaceId": "location-order-entry",
+      "url": "https://www.texasroadhouse.com/locations",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "location-specific ordering entry; no packet location",
+      "servicePeriod": "to-go/order surface",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "src-vendor"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "texas-roadhouse-current-menu-catalog",
+      "name": "Texas Roadhouse current food and nonalcoholic menu catalog",
+      "category": "Complete current menu boundary",
+      "sourceEvidenceIds": [
+        "src-menu",
+        "src-pdf"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "crossContactNotes": [
+        "Official menu instructs guests to inform the server before ordering if a person has a food allergy; no complete official allergen matrix was located."
+      ]
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "query": "Official homepage, menu, navigation, and location pages inspected",
+        "outcome": "not_found",
+        "sourceEvidenceIds": [
+          "src-home",
+          "src-menu"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "query": "Official PDF, nutrition, allergen, ingredient, FAQ, sitemap/CDN surfaces inspected",
+        "outcome": "not_found",
+        "sourceEvidenceIds": [
+          "src-pdf"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "query": "Official location/order entry inspected for linked menu/allergen controls",
+        "outcome": "not_found",
+        "sourceEvidenceIds": [
+          "src-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "site:texasroadhouse.com allergen allergy nutrition ingredients PDF menu",
+        "outcome": "not_found",
+        "sourceEvidenceIds": [
+          "src-search"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:big-ol-brownie",
+          "2:bleu-cheese-dressing",
+          "3:boneless-buffalo-wings-hot",
+          "4:boneless-buffalo-wings-mild",
+          "5:boneless-wings-hot",
+          "6:boneless-wings-mild",
+          "7:bread-pudding-in-selected-stores-only",
+          "8:cactus-blossom",
+          "9:caesar-dressing",
+          "10:caesar-salad",
+          "11:caesar-side-salad",
+          "12:cheese-fries-regular",
+          "13:cheese-fries-small",
+          "14:chicken-caesar-salad",
+          "15:chicken-critter-salad",
+          "16:chicken-critters",
+          "17:chicken-critters-and-ribs",
+          "18:chicken-critters-and-sirloin",
+          "19:chicken-parm-penne-in-selected-stores-only",
+          "20:country-fried-chicken",
+          "21:country-fried-pork-sandwich-indiana-in-selected-stores-only",
+          "22:country-fried-pork-sandwich-iowa-in-selected-stores-only",
+          "23:country-fried-sirloin",
+          "24:creamy-horseradish-sauce",
+          "25:creole-mustard",
+          "26:deviled-eggs-in-selected-stores-only",
+          "27:fire-blossom-in-selected-stores-only",
+          "28:firecracker-shrimp-in-selected-stores-only",
+          "29:fish-and-chips-in-selected-stores-only",
+          "30:fried-catfish-3-piece-in-selected-stores-only",
+          "31:fried-catfish-4-piece-in-selected-stores-only",
+          "32:fried-chicken-sandwich-in-selected-stores-only",
+          "33:fried-pickles",
+          "34:grannys-apple-classic",
+          "35:grilled-salmon-salad",
+          "36:grilled-shrimp-salad-in-selected-stores-only",
+          "37:honey-mustard",
+          "38:honey-mustard-dressing",
+          "39:house-salad",
+          "40:house-side-salad",
+          "41:jr-chicken-tenders",
+          "42:killer-ribs",
+          "43:low-fat-ranch-dressing-in-selected-stores-only",
+          "44:parmesan-peppercorn-dressing-in-selected-stores-only",
+          "45:ranch",
+          "46:ranch-dressing",
+          "47:ranger-meal-chicken-critters-basket",
+          "48:rattlesnake-bites",
+          "49:salmon-caesar-salad",
+          "50:shrimp-caesar-salad-in-selected-stores-only",
+          "51:steak-fries",
+          "52:steakhouse-filet-salad",
+          "53:strawberry-cheesecake",
+          "54:tartar-sauce",
+          "55:tater-skins",
+          "56:thousand-island-dressing",
+          "57:twisted-mozzarella"
+        ],
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "texas-roadhouse-current-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-menu",
+          "src-pdf"
+        ],
+        "notes": "Frozen baseline presentations reconciled to the complete current menu boundary; no unsupported allergen negatives asserted."
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify",
+  "outcome": "researched"
+}

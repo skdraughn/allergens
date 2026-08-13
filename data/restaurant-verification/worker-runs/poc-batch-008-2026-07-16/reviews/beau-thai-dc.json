@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-008-2026-07-16",
+  "restaurantId": "beau-thai-dc",
+  "reviewType": "binding_cross_contact_authority_resolution",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "role": "sol_reviewer"
+  },
+  "reviewedKeys": [],
+  "resolution": {
+    "binding": true,
+    "outcome": "exact_location_59_product_catalog_and_restaurant_wide_cross_contact_caution_resolved",
+    "catalogDefinition": {
+      "scope": "The exact-location Beau Thai Shaw catalog at 1550 7th St NW, Unit A, Washington, DC 20001, limited to 59 current food and nonalcoholic products.",
+      "locationId": "shaw-dc",
+      "completeAuthoritySurfaceIds": [
+        "S2",
+        "S4",
+        "S7"
+      ],
+      "supportingSurfaceIds": [
+        "S1",
+        "S6"
+      ],
+      "historicalNoncurrentSurfaceIds": [],
+      "enumerationRule": "union_of_distinct_current_exact_location_food_and_nonalcoholic_products_on_complete_official_and_restaurant_linked_surfaces_with_alcohol_excluded",
+      "existingProductCount": 59,
+      "additionalProductCount": 0,
+      "removedProductCount": 0,
+      "excludedProductCount": 0,
+      "resolvedCatalogProductCount": 59,
+      "productAdditionsRequired": [],
+      "productRemovalsRequired": [],
+      "productExclusionsRequired": [],
+      "alcoholicProductsIncluded": [],
+      "directPositiveBoundary": "Preserve only direct current positive evidence; it does not establish that unlisted allergens are absent or constitute a complete allergen profile.",
+      "rationale": "Exact Shaw-only identity and catalog scope are resolved by complete current Shaw food, nonalcoholic drink, and linked ordering surfaces. Alcohol is excluded."
+    },
+    "crossContactResolution": {
+      "scope": "restaurant_wide_caution",
+      "statement": "The kitchen handles nuts and seeds, flour, and shellfish, and possible cross-contamination can occur.",
+      "sourceEvidenceIds": [
+        "E6"
+      ],
+      "appliesToCurrentCatalog": true,
+      "itemSpecificMayContainProductKeys": [],
+      "negativeClaimsEstablished": [],
+      "completeCrossContactProfileEstablished": false,
+      "rationale": "Restaurant-issued catering evidence E6 publishes a kitchen-wide caution. It controls as restaurant-level safety evidence and is not converted into item-specific mayContain claims."
+    },
+    "items": [],
+    "surfaceResolutions": [],
+    "safetySourceAuthorityConflictRemains": false
+  },
+  "remainingSolSignals": [
+    {
+      "signal": "current_complete_official_allergen_matrix",
+      "status": "accurately_unavailable",
+      "sourceEvidenceIds": [
+        "E1",
+        "E2",
+        "E4",
+        "E6",
+        "E7"
+      ],
+      "rationale": "Official-site, official-document, linked-vendor, and targeted-web searches were completed without finding a current complete official allergen matrix."
+    },
+    {
+      "signal": "cross_contact_detail",
+      "status": "restaurant_wide_caution_resolved_item_specific_detail_unavailable",
+      "sourceEvidenceIds": [
+        "E6"
+      ],
+      "rationale": "The official kitchen-wide caution is preserved only at restaurant level; no item-specific mayContain claims are established."
+    }
+  ],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "frozenBaselineItemCount": 61,
+    "researchReconciledItemCount": 61,
+    "normalizedMatchCount": 41,
+    "locationMismatchCount": 15,
+    "artifactCount": 5,
+    "staleOrOutOfScopeCount": 20,
+    "unresolvedResearchKeyCount": 0,
+    "reviewedKeyCount": 0,
+    "resolutionItemCount": 0,
+    "allFrozenRowsReconciled": true,
+    "allAffectedKeysReviewedExactlyOnce": true,
+    "researchCurrentProductCount": 59,
+    "additionalProductCount": 0,
+    "removedProductCount": 0,
+    "excludedProductCount": 0,
+    "resolvedCatalogProductCount": 59,
+    "alcoholicProductCountIncluded": 0,
+    "surfaceResolutionCount": 0,
+    "partialSurfaceIds": [],
+    "resolvedSurfaceIds": [],
+    "allPartialSurfacesResolvedExactlyOnce": true,
+    "exactLocationCatalogPreserved": true,
+    "restaurantWideCrossContactCautionPreserved": true,
+    "itemSpecificMayContainClaimsIntroduced": false,
+    "unsupportedAllergenNegativesIntroduced": false,
+    "completeAllergenProfileClaimed": false,
+    "safetySourceAuthorityConflictResolved": true,
+    "matrixSearchCount": 4,
+    "matrixStatusRemainsAccuratelyUnavailable": true,
+    "codexVerifiedClaimed": false
+  },
+  "coordinatorRecommendation": "Accept E6 as authoritative restaurant-wide cross-contact evidence for the resolved 59-product Shaw catalog without introducing item-specific mayContain or negative allergen claims."
+}

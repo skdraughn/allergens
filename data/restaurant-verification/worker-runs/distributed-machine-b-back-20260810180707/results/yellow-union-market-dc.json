@@ -1,0 +1,244 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260810180707",
+  "restaurantId": "yellow-union-market-dc",
+  "name": "YELLOW Union Market",
+  "locationId": "union-market-dc",
+  "domain": "yellowthecafe.com",
+  "packetValidation": {
+    "baselineItemCount": 45,
+    "baselineFingerprint": "394549c6a46bc9a2a4c61821fa3f65a4438d23f01a06c29886847cbb427b8e17",
+    "itemCheckCount": 45,
+    "fingerprintVerified": true,
+    "itemChecksPath": "data/restaurant-verification/item-checks/yellow-union-market-dc.jsonl"
+  },
+  "identity": {
+    "name": "YELLOW Union Market",
+    "locationId": "union-market-dc",
+    "address": "417 Morse Street NE, Washington, DC 20002",
+    "domain": "yellowthecafe.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "src-toast"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "src-toast",
+      "url": "https://order.toasttab.com/online/yellow-union-market",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current Union Market food and nonalcoholic menu, location identity, product descriptions",
+      "retrievedAt": "2026-08-10T18:10:00.000Z"
+    },
+    {
+      "evidenceId": "src-official-site",
+      "url": "https://yellowthecafe.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official site and navigation inspection",
+      "retrievedAt": "2026-08-10T18:10:00.000Z"
+    },
+    {
+      "evidenceId": "src-targeted-search",
+      "url": "https://www.google.com/search?q=site%3Ayellowthecafe.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted official-domain allergen/document search; no authoritative matrix located",
+      "retrievedAt": "2026-08-10T18:10:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "toast-union-market",
+      "url": "https://order.toasttab.com/online/yellow-union-market",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "417 Morse Street NE, Washington, DC 20002",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; merchandise excluded",
+      "sourceEvidenceIds": [
+        "src-toast"
+      ]
+    },
+    {
+      "surfaceId": "official-home",
+      "url": "https://yellowthecafe.com/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "YELLOW Union Market",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "src-official-site"
+      ]
+    },
+    {
+      "surfaceId": "targeted-doc-search",
+      "url": "https://www.google.com/search?q=site%3Ayellowthecafe.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "locationScope": "official domain",
+      "servicePeriod": "current",
+      "current": false,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "no official allergen document found",
+      "sourceEvidenceIds": [
+        "src-targeted-search"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "yellow-union-market-current-food-nonalcoholic-catalog",
+      "name": "YELLOW Union Market current food and nonalcoholic menu catalog",
+      "category": "Levantine Cafe",
+      "variantGroup": "Union Market current menu",
+      "sourceEvidenceIds": [
+        "src-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "allergenSourceEvidenceIds": [],
+      "productCount": 32,
+      "boundary": "32 current food/nonalcoholic products across pastry case, hummus, NOT COFFEE, and retail coffee; non-food merchandise excluded; alcohol-only items not present on inspected surface"
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "outcome": "No official allergen matrix located",
+        "location": "yellowthecafe.com homepage and navigation/menu surfaces",
+        "sourceEvidenceIds": [
+          "src-official-site"
+        ],
+        "queryOrLocation": "yellowthecafe.com homepage and navigation/menu surfaces",
+        "urls": [
+          "https://yellowthecafe.com/"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "outcome": "No official allergen, nutrition, ingredient, PDF, image, FAQ, sitemap, or downloadable matrix located",
+        "location": "official-domain document and asset surfaces",
+        "sourceEvidenceIds": [
+          "src-official-site",
+          "src-targeted-search"
+        ],
+        "queryOrLocation": "official-domain document and asset surfaces",
+        "urls": [
+          "https://yellowthecafe.com/"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "outcome": "No allergen matrix or cross-contact statement located",
+        "location": "Toast menu at order.toasttab.com/online/yellow-union-market",
+        "sourceEvidenceIds": [
+          "src-toast"
+        ],
+        "queryOrLocation": "Toast menu at order.toasttab.com/online/yellow-union-market",
+        "urls": [
+          "https://order.toasttab.com/online/yellow-union-market"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "outcome": "No authoritative official allergen matrix located",
+        "location": "targeted searches for YELLOW/yellowthecafe.com with allergen, allergy, nutrition, ingredients, PDF, and menu terms",
+        "sourceEvidenceIds": [
+          "src-targeted-search"
+        ],
+        "queryOrLocation": "targeted searches for YELLOW/yellowthecafe.com with allergen, allergy, nutrition, ingredients, PDF, and menu terms",
+        "urls": [
+          "https://www.google.com/search?q=site%3Ayellowthecafe.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:all-the-kebabs-platter",
+          "2:all-the-mouneh",
+          "3:baklawa",
+          "4:bbqd-lamb-shoulder",
+          "5:blueberry-labne-coffee-cake",
+          "6:boylans-cola",
+          "7:boylans-diet-cola",
+          "8:butchers-steak",
+          "9:charred-green-onion-labne",
+          "10:chicken-thigh",
+          "11:chocolate-halawa-pain-suisse",
+          "12:classic-hummus",
+          "13:coconut-almond-arak-twice-baked-croissant",
+          "14:crispy-falafel",
+          "15:fattoush",
+          "16:green-shatta-yogurt",
+          "17:green-tomato-tatbili-hummus",
+          "18:habibi-butter-rice",
+          "19:halawa-chocolate-chip-cookie",
+          "20:jammy-egg-croissant",
+          "21:kebabs",
+          "22:kouign-amann",
+          "23:lamb-awarma-hummus",
+          "24:lamb-kefta",
+          "25:little-gem-lettuce",
+          "26:mish-mish-carrots",
+          "27:oat-orange-blossom-toffee-cookie",
+          "28:orange-blossom-croissant",
+          "29:palestinian-basbousa",
+          "30:pickles",
+          "31:potato-kashkaval-pain-suisse",
+          "32:red-shatta-hummus",
+          "33:red-shatta-labne",
+          "34:s-cookie",
+          "35:shatta-batata",
+          "36:smashed-cucumbers",
+          "37:smoked-amba-chicken",
+          "38:smoked-palestinian-olives",
+          "39:soujek-arayes",
+          "40:strawberry-apricot-maamoul",
+          "41:strawberry-rose-cruffin",
+          "42:tahini-chocolate-chip-brownie",
+          "43:veggie",
+          "44:wood-fired-pita-bread",
+          "45:zaatar-labne-croissant"
+        ],
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "yellow-union-market-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-toast"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "riskSignals": [],
+  "recommendedLane": "verify",
+  "outcome": "researched"
+}

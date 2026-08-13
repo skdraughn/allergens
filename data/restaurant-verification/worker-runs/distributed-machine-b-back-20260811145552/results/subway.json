@@ -1,0 +1,517 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811145552",
+  "restaurantId": "subway",
+  "name": "Subway",
+  "locationId": null,
+  "domain": "subway.com",
+  "packetValidation": {
+    "restaurantId": "subway",
+    "baselineItemCount": 25,
+    "baselineFingerprint": "0dd15fc3ee45603c4ab4c8ccb0a369ade772b126d9f3240e7bac8c20649625fc",
+    "itemChecksPath": "data/restaurant-verification/item-checks/subway.jsonl",
+    "itemChecksRead": 25,
+    "fingerprintVerified": true,
+    "allRowsBelongToRestaurant": true
+  },
+  "identity": {
+    "name": "Subway",
+    "location": "U.S. brand menu; packet has no locationId",
+    "locationId": null,
+    "domain": "subway.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "src-home",
+      "src-locator"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "src-home",
+      "url": "https://www.subway.com/en-us/?lang=EN",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official U.S. homepage and menu navigation",
+      "retrievedAt": "2026-08-11T15:00:00.000Z"
+    },
+    {
+      "evidenceId": "src-locator",
+      "url": "https://www.subway.com/en-us/locator",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official restaurant locator and location-scoped ordering entry point",
+      "retrievedAt": "2026-08-11T15:00:10.000Z"
+    },
+    {
+      "evidenceId": "src-nutrition",
+      "url": "https://www.subway.com/en-us/menunutrition1/nutrition",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official nutrition, ingredients, allergen, and menu-document navigation",
+      "retrievedAt": "2026-08-11T15:00:20.000Z"
+    },
+    {
+      "evidenceId": "src-allergen",
+      "url": "https://www.subway.com/en-us/-/media/northamerica/usa/nutrition/nutritiondocuments/2026/us_allergens_en_1-2026.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current January 2026 U.S. allergy and sensitivity matrix",
+      "retrievedAt": "2026-08-11T15:00:30.000Z"
+    },
+    {
+      "evidenceId": "src-ingredients",
+      "url": "https://www.subway.com/en-us/menunutrition1/nutrition",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official ingredients document link inspected",
+      "retrievedAt": "2026-08-11T15:00:40.000Z"
+    },
+    {
+      "evidenceId": "src-linked-order",
+      "url": "https://restaurants.subway.com/",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "official Subway restaurants ordering/menu surface",
+      "retrievedAt": "2026-08-11T15:00:50.000Z"
+    },
+    {
+      "evidenceId": "src-targeted-search",
+      "url": "https://www.google.com/search?q=site%3Asubway.com+allergen+allergy+nutrition+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted web search for official allergen and menu surfaces",
+      "retrievedAt": "2026-08-11T15:01:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-home",
+      "url": "https://www.subway.com/en-us/?lang=EN",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "U.S. brand; location selected at order time",
+      "servicePeriod": "current menu navigation",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected food, sides, drinks, catering, and ordering navigation",
+      "currentProductKeys": [
+        "subway-current-food-nonalcoholic-catalog"
+      ],
+      "sourceEvidenceIds": [
+        "src-home"
+      ]
+    },
+    {
+      "surfaceId": "official-nutrition",
+      "url": "https://www.subway.com/en-us/menunutrition1/nutrition",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "U.S. brand",
+      "servicePeriod": "current nutrition/menu documents",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "nutrition, ingredient, and allergen document links inspected",
+      "currentProductKeys": [
+        "subway-current-food-nonalcoholic-catalog"
+      ],
+      "sourceEvidenceIds": [
+        "src-nutrition",
+        "src-ingredients"
+      ]
+    },
+    {
+      "surfaceId": "official-locator-order",
+      "url": "https://www.subway.com/en-us/locator",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "U.S. locations",
+      "servicePeriod": "current location ordering",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "location-scoped ordering entry inspected; alcohol excluded",
+      "currentProductKeys": [
+        "subway-current-food-nonalcoholic-catalog"
+      ],
+      "sourceEvidenceIds": [
+        "src-locator"
+      ]
+    },
+    {
+      "surfaceId": "linked-order",
+      "url": "https://restaurants.subway.com/",
+      "authority": "linked vendor",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "U.S. locations",
+      "servicePeriod": "current ordering",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "restaurant-linked menu/order surface inspected; alcohol excluded",
+      "currentProductKeys": [
+        "subway-current-food-nonalcoholic-catalog"
+      ],
+      "sourceEvidenceIds": [
+        "src-linked-order"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "subway-current-food-nonalcoholic-catalog",
+      "name": "Subway current U.S. food and nonalcoholic menu catalog",
+      "category": "restaurant menu",
+      "sourceEvidenceIds": [
+        "src-home",
+        "src-nutrition",
+        "src-locator",
+        "src-linked-order"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": "Consolidated boundary; frozen item-level matrix evidence is retained on each reconciliation row. Alcohol-only products are excluded."
+    }
+  ],
+  "matrixSearch": {
+    "status": "found",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "Subway U.S. homepage, menu, nutrition navigation, and locator",
+        "outcome": "Current menu and allergen/nutrition navigation located; explicit cross-contact warning present",
+        "sourceEvidenceIds": [
+          "src-home",
+          "src-nutrition"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "Subway current U.S. allergen and ingredients PDF/document links",
+        "outcome": "Current January 2026 U.S. allergy and sensitivity matrix found",
+        "sourceEvidenceIds": [
+          "src-allergen",
+          "src-ingredients"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Subway restaurants ordering/menu surface",
+        "outcome": "Location-scoped ordering surface inspected; no separate matrix superseding official chart",
+        "sourceEvidenceIds": [
+          "src-linked-order"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "queryOrLocation": "site:subway.com allergen allergy nutrition ingredients PDF menu",
+        "outcome": "Confirmed current official allergen chart, nutrition page, and cross-contact disclosure",
+        "sourceEvidenceIds": [
+          "src-allergen",
+          "src-nutrition",
+          "src-targeted-search"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "evidenceId": "src-allergen",
+      "statement": "The current U.S. allergy chart provides item-level allergen columns and warns that product information can change and substitutions may occur.",
+      "authorityTier": "restaurant_issued",
+      "sourceEvidenceIds": [
+        "src-allergen"
+      ]
+    },
+    {
+      "evidenceId": "src-allergen",
+      "statement": "Subway warns that breads and other items may come in contact with allergens during restaurant preparation, including egg, fish, dairy, peanut, sesame, shellfish, soy, tree nuts, wheat, and sulfites.",
+      "authorityTier": "restaurant_issued",
+      "sourceEvidenceIds": [
+        "src-allergen"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:12-wrap",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "2:artisan-flatbread",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "3:baja-chipotle-sauce",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "4:broccoli-and-cheddar",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "5:cheddar-cheese-sauce",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "6:chicken-noodle",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "7:egg-omelet-patty-regular",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "8:flatbread",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "9:honey-mustard-sauce",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "10:italian-herbs-and-cheese",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "11:jalapeno-cheddar",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "12:loaded-baked-potato",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "13:meatballs-and-marinara",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "14:monterey-cheddar",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "15:mvp-parmesan-vinaigretter",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "16:parmesan-cheese",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "17:parmesan-oregano",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "18:peppercorn-ranch-sauce",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "19:pepperjack-cheese",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "20:provolone-cheese",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "21:roasted-garlic-aioli",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "22:sriracha-sauce",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "23:sweet-onion-teriyaki-sauce-contains-poppy-seeds",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "24:tuna-salad",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      },
+      {
+        "auditItemKey": "25:veggie-patty",
+        "disposition": "equivalent_presentation",
+        "matchedCurrentProductKeys": [
+          "subway-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "src-allergen"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "outcome": "research_complete",
+  "recommendedLane": "verify",
+  "findings": [
+    {
+      "type": "allergen_matrix",
+      "statement": "Current official U.S. allergen matrix found; direct item-level claims remain in frozen reconciliation evidence and cross-contact is explicitly retained.",
+      "sourceEvidenceIds": [
+        "src-allergen"
+      ]
+    }
+  ],
+  "validation": {
+    "valid": true
+  }
+}

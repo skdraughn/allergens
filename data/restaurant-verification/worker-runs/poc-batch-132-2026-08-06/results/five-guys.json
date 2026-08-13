@@ -1,0 +1,1321 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-132-2026-08-06",
+  "restaurantId": "five-guys",
+  "runId": "poc-batch-132-2026-08-06-five-guys-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "five-guys",
+    "name": "Five Guys",
+    "locationId": null,
+    "domain": "fiveguys.com",
+    "baselineItemCount": 47,
+    "baselineFingerprint": "4300b8724268af68f75f833ae99933a005ec1ef2cf7be9b6644a883d6affa0e6",
+    "itemChecksRead": 47,
+    "itemChecksPath": "data/restaurant-verification/item-checks/five-guys.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Five Guys",
+    "location": "US-wide official menu; no location-specific branch supplied",
+    "locationId": null,
+    "domain": "fiveguys.com",
+    "officialHomepage": "https://www.fiveguys.com/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-menu"
+    ],
+    "notes": "Official US site and guide; no ambiguous location merged."
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-home",
+      "url": "https://www.fiveguys.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "title": "Five Guys official homepage",
+      "retrievedAt": "2026-08-06T00:00:00Z",
+      "excerpt": "Official Five Guys US site."
+    },
+    {
+      "evidenceId": "ev-menu",
+      "url": "https://www.fiveguys.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Official current menu",
+      "retrievedAt": "2026-08-06T00:00:00Z",
+      "excerpt": "Current US food menu categories and products."
+    },
+    {
+      "evidenceId": "ev-guide",
+      "url": "https://www.fiveguys.com/-/media/public-site/files/allergen-ingredients-and-nutrition-info/five-guys-us-nutrition--allergen-guide-english.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "Five Guys US Nutrition & Allergen Guide (Nutrition/Allergen Chart US 01-2024)",
+      "retrievedAt": "2026-08-06T00:00:00Z",
+      "excerpt": "Official two-page nutrition/allergen matrix and ingredient listing; warns of possible contamination and supplier formulation changes."
+    },
+    {
+      "evidenceId": "ev-order",
+      "url": "https://order.fiveguys.com/api/vendors/shakes",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "title": "Five Guys restaurant-controlled ordering API",
+      "retrievedAt": "2026-08-06T00:00:00Z",
+      "excerpt": "Linked ordering vendor endpoint confirms shake mix-in surface."
+    },
+    {
+      "evidenceId": "ev-search-site",
+      "url": "https://www.fiveguys.com/nutritional-allergy-information/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_site search",
+      "retrievedAt": "2026-08-06T00:00:00Z",
+      "excerpt": "Inspected official nutrition/allergy page and menu navigation; links to official guide."
+    },
+    {
+      "evidenceId": "ev-search-docs",
+      "url": "https://www.fiveguys.com/-/media/public-site/files/allergen-ingredients-and-nutrition-info/five-guys-us-nutrition--allergen-guide-english.pdf",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "official_documents search",
+      "retrievedAt": "2026-08-06T00:00:00Z",
+      "excerpt": "Inspected official PDF; matrix and ingredient listing found."
+    },
+    {
+      "evidenceId": "ev-search-vendor",
+      "url": "https://order.fiveguys.com/api/vendors/shakes",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "title": "restaurant_issued controlled-endpoint search",
+      "retrievedAt": "2026-08-06T00:00:00Z",
+      "excerpt": "Inspected linked ordering API; menu data, no independent conflicting matrix."
+    },
+    {
+      "evidenceId": "ev-search-web",
+      "url": "https://www.google.com/search?q=site%3Afiveguys.com+allergen+ingredients+nutrition+menu+PDF",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "title": "targeted_web_search",
+      "retrievedAt": "2026-08-06T00:00:00Z",
+      "excerpt": "Targeted domain search located the official guide and nutrition/allergy page."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-menu",
+      "title": "Official current menu",
+      "url": "https://www.fiveguys.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "US",
+      "servicePeriod": "all",
+      "surfaceType": "html_menu",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-menu"
+      ],
+      "currentProductKeys": [
+        "hamburger",
+        "cheeseburger",
+        "bacon-burger",
+        "bacon-cheeseburger",
+        "little-hamburger",
+        "little-cheeseburger",
+        "little-bacon-burger",
+        "little-bacon-cheeseburger",
+        "hot-dog",
+        "bacon-dog",
+        "cheese-dog",
+        "bacon-cheese-dog",
+        "veggie-sandwich",
+        "veggie-sandwich-with-cheese",
+        "grilled-cheese",
+        "blt",
+        "regular-five-guys-fries",
+        "large-five-guys-fries",
+        "regular-cajun-fries",
+        "large-cajun-fries",
+        "shake",
+        "soft-drink"
+      ],
+      "outcome": "Current POC food/nonalcoholic menu boundary represented by official menu and guide."
+    },
+    {
+      "surfaceId": "official-guide",
+      "title": "Nutrition & Allergen Guide",
+      "url": "https://www.fiveguys.com/-/media/public-site/files/allergen-ingredients-and-nutrition-info/five-guys-us-nutrition--allergen-guide-english.pdf",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "US",
+      "servicePeriod": "all",
+      "surfaceType": "pdf",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-guide"
+      ],
+      "currentProductKeys": [],
+      "outcome": "Supporting official allergen/nutrition document; not an orderable menu surface."
+    },
+    {
+      "surfaceId": "linked-order",
+      "title": "Five Guys restaurant-controlled ordering shakes API",
+      "url": "https://order.fiveguys.com/api/vendors/shakes",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "US",
+      "servicePeriod": "all",
+      "surfaceType": "restaurant_controlled_ordering_endpoint",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-order"
+      ],
+      "currentProductKeys": [],
+      "outcome": "Supporting restaurant-issued controlled endpoint evidence; no independent linked-vendor authority and not used as canonical menu boundary."
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "hamburger",
+      "name": "Hamburger",
+      "category": "Burgers",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "wheat",
+        "gluten",
+        "milk",
+        "sesame",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products.",
+        "Direct claims aggregated from official guide component rows (bun, cheese, hot-dog supplier, vanilla shake base); claims apply to this orderable parent presentation."
+      ]
+    },
+    {
+      "currentProductKey": "cheeseburger",
+      "name": "Cheeseburger",
+      "category": "Burgers",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "wheat",
+        "gluten",
+        "milk",
+        "sesame",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products.",
+        "Direct claims aggregated from official guide component rows (bun, cheese, hot-dog supplier, vanilla shake base); claims apply to this orderable parent presentation."
+      ]
+    },
+    {
+      "currentProductKey": "bacon-burger",
+      "name": "Bacon Burger",
+      "category": "Burgers",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "wheat",
+        "gluten",
+        "milk",
+        "sesame",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products.",
+        "Direct claims aggregated from official guide component rows (bun, cheese, hot-dog supplier, vanilla shake base); claims apply to this orderable parent presentation."
+      ]
+    },
+    {
+      "currentProductKey": "bacon-cheeseburger",
+      "name": "Bacon Cheeseburger",
+      "category": "Burgers",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "wheat",
+        "gluten",
+        "milk",
+        "sesame",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products.",
+        "Direct claims aggregated from official guide component rows (bun, cheese, hot-dog supplier, vanilla shake base); claims apply to this orderable parent presentation."
+      ]
+    },
+    {
+      "currentProductKey": "little-hamburger",
+      "name": "Little Hamburger",
+      "category": "Burgers",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "wheat",
+        "gluten",
+        "milk",
+        "sesame",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products.",
+        "Direct claims aggregated from official guide component rows (bun, cheese, hot-dog supplier, vanilla shake base); claims apply to this orderable parent presentation."
+      ]
+    },
+    {
+      "currentProductKey": "little-cheeseburger",
+      "name": "Little Cheeseburger",
+      "category": "Burgers",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "wheat",
+        "gluten",
+        "milk",
+        "sesame",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products.",
+        "Direct claims aggregated from official guide component rows (bun, cheese, hot-dog supplier, vanilla shake base); claims apply to this orderable parent presentation."
+      ]
+    },
+    {
+      "currentProductKey": "little-bacon-burger",
+      "name": "Little Bacon Burger",
+      "category": "Burgers",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "wheat",
+        "gluten",
+        "milk",
+        "sesame",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products.",
+        "Direct claims aggregated from official guide component rows (bun, cheese, hot-dog supplier, vanilla shake base); claims apply to this orderable parent presentation."
+      ]
+    },
+    {
+      "currentProductKey": "little-bacon-cheeseburger",
+      "name": "Little Bacon Cheeseburger",
+      "category": "Burgers",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "wheat",
+        "gluten",
+        "milk",
+        "sesame",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products.",
+        "Direct claims aggregated from official guide component rows (bun, cheese, hot-dog supplier, vanilla shake base); claims apply to this orderable parent presentation."
+      ]
+    },
+    {
+      "currentProductKey": "hot-dog",
+      "name": "Hot Dog",
+      "category": "Dogs",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products.",
+        "Direct claims aggregated from official guide component rows (bun, cheese, hot-dog supplier, vanilla shake base); claims apply to this orderable parent presentation."
+      ]
+    },
+    {
+      "currentProductKey": "bacon-dog",
+      "name": "Bacon Dog",
+      "category": "Dogs",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products.",
+        "Direct claims aggregated from official guide component rows (bun, cheese, hot-dog supplier, vanilla shake base); claims apply to this orderable parent presentation."
+      ]
+    },
+    {
+      "currentProductKey": "cheese-dog",
+      "name": "Cheese Dog",
+      "category": "Dogs",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products.",
+        "Direct claims aggregated from official guide component rows (bun, cheese, hot-dog supplier, vanilla shake base); claims apply to this orderable parent presentation."
+      ]
+    },
+    {
+      "currentProductKey": "bacon-cheese-dog",
+      "name": "Bacon Cheese Dog",
+      "category": "Dogs",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products.",
+        "Direct claims aggregated from official guide component rows (bun, cheese, hot-dog supplier, vanilla shake base); claims apply to this orderable parent presentation."
+      ]
+    },
+    {
+      "currentProductKey": "veggie-sandwich",
+      "name": "Veggie Sandwich",
+      "category": "Sandwiches",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "wheat",
+        "gluten",
+        "milk",
+        "sesame",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products.",
+        "Direct claims aggregated from official guide component rows (bun, cheese, hot-dog supplier, vanilla shake base); claims apply to this orderable parent presentation."
+      ]
+    },
+    {
+      "currentProductKey": "veggie-sandwich-with-cheese",
+      "name": "Veggie Sandwich with Cheese",
+      "category": "Sandwiches",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "wheat",
+        "gluten",
+        "milk",
+        "sesame",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products.",
+        "Direct claims aggregated from official guide component rows (bun, cheese, hot-dog supplier, vanilla shake base); claims apply to this orderable parent presentation."
+      ]
+    },
+    {
+      "currentProductKey": "grilled-cheese",
+      "name": "Grilled Cheese",
+      "category": "Sandwiches",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "wheat",
+        "gluten",
+        "milk",
+        "sesame",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products.",
+        "Direct claims aggregated from official guide component rows (bun, cheese, hot-dog supplier, vanilla shake base); claims apply to this orderable parent presentation."
+      ]
+    },
+    {
+      "currentProductKey": "blt",
+      "name": "BLT",
+      "category": "Sandwiches",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "egg",
+        "wheat",
+        "gluten",
+        "milk",
+        "sesame",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products.",
+        "Direct claims aggregated from official guide component rows (bun, cheese, hot-dog supplier, vanilla shake base); claims apply to this orderable parent presentation."
+      ]
+    },
+    {
+      "currentProductKey": "regular-five-guys-fries",
+      "name": "Regular Five Guys Style Fries",
+      "category": "Fries",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products."
+      ]
+    },
+    {
+      "currentProductKey": "large-five-guys-fries",
+      "name": "Large Five Guys Style Fries",
+      "category": "Fries",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products."
+      ]
+    },
+    {
+      "currentProductKey": "regular-cajun-fries",
+      "name": "Regular Cajun Style Fries",
+      "category": "Fries",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products."
+      ]
+    },
+    {
+      "currentProductKey": "large-cajun-fries",
+      "name": "Large Cajun Style Fries",
+      "category": "Fries",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products."
+      ]
+    },
+    {
+      "currentProductKey": "shake",
+      "name": "Milkshake",
+      "category": "Shakes",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [
+        "ev-guide"
+      ],
+      "allergenSourceType": "restaurant_allergen_document",
+      "allergenAuthorityTier": "restaurant_issued",
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products.",
+        "Direct claims aggregated from official guide component rows (bun, cheese, hot-dog supplier, vanilla shake base); claims apply to this orderable parent presentation."
+      ]
+    },
+    {
+      "currentProductKey": "soft-drink",
+      "name": "Soft Drink",
+      "category": "Beverages",
+      "servicePeriod": "all",
+      "presentationIds": [],
+      "sourceEvidenceIds": [
+        "ev-menu",
+        "ev-guide"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "allergenAuthorityTier": null,
+      "notes": [
+        "Orderable product boundary; component and supplier rows are retained only as evidence on parent products."
+      ]
+    }
+  ],
+  "reconciliation": {
+    "expectedItemCheckCount": 47,
+    "reconciledItemCheckCount": 47,
+    "duplicateAuditItemKeys": [],
+    "missingAuditItemKeys": [],
+    "items": [
+      {
+        "auditItemKey": "1:a1-sauce",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "2:bacon-2-pieces",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "3:bacon-2-pieces-supplier-d",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "4:bacon-2-pieces-supplier-s",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "5:banana",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "6:bbq-sauce",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "7:bulk-peanuts-1oz",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "8:bun",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "9:candy-cane-crunch",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "10:cheese-1-slice-supplier-k",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "11:cheese-1-slice-supplier-s",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "12:chocolate",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "13:eggs-2",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "14:fry-sauce-bulk",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "15:fry-sauce-pc",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "16:green-peppers",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "17:grilled-mushrooms",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "18:hamburger-patty",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "19:hot-dog-supplier-h",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "20:hot-dog-supplier-k",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "21:hot-sauce",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "22:jalapeno-peppers",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "23:ketchup",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "24:large-cajun-style",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "25:large-five-guys-style",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "26:lettuce",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "27:little-cajun-style",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "28:little-five-guys-style",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "29:malt-vinegar-1tbs",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "30:mayonnaise-supplier-k",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "31:mayonnaise-supplier-s",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "32:onions-grilled-onions",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "33:oreo-cookie-pieces",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "34:oreo-creme",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "35:peanut-butter",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "36:pickles-supplier-b",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "37:pickles-supplier-m",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "38:reeses-peanut-butter-cup",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "39:regular-cajun-style",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "40:regular-five-guys-style",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "41:relish",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "42:salted-caramel",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "43:strawberry",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "44:tomatoes",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "45:vanilla-shake-base",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "46:whipped-cream-supplier-a",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      },
+      {
+        "auditItemKey": "47:whipped-cream-supplier-s",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-menu",
+          "ev-guide"
+        ],
+        "notes": "Component/supplier/topping/guide row retained as parent evidence; not standalone orderable product."
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": true,
+    "catalogDrift": true,
+    "staleItems": false,
+    "newItems": true,
+    "nameOrCategoryCleanup": true,
+    "restaurantSpecificExtraction": true,
+    "parserIssue": false
+  },
+  "proposedChanges": [
+    "Rebuild current membership from orderable burgers, dogs, sandwiches, fries, shakes, and beverages (22 products).",
+    "Retain component, supplier, topping, and allergen-guide rows as parent evidence/artifacts.",
+    "Preserve official guide direct positives and restaurant-level cross-contact warning.",
+    "Treat order.fiveguys.com as restaurant-controlled ordering surface.",
+    "Aggregated 19 official-guide component positives onto supported orderable parents; direct fields retain restaurant_allergen_document/restaurant_issued/ev-guide authority."
+  ],
+  "routingSignals": {
+    "lightweightRepairSignals": [
+      "catalog_boundary_rebuild",
+      "component_supplier_rows_artifacts",
+      "category_cleanup",
+      "restaurant_controlled_order_surface"
+    ],
+    "safetyEscalationSignals": []
+  },
+  "blockedReason": null,
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "found",
+    "attempts": [
+      {
+        "class": "official_site",
+        "locationsOrQueries": [
+          "https://www.fiveguys.com/nutritional-allergy-information/",
+          "https://www.fiveguys.com/menu/"
+        ],
+        "urlsInspected": [
+          "https://www.fiveguys.com/nutritional-allergy-information/",
+          "https://www.fiveguys.com/menu/"
+        ],
+        "outcome": "found_official_guide_link",
+        "sourceEvidenceIds": [
+          "ev-search-site",
+          "ev-guide"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "locationsOrQueries": [
+          "Five Guys official PDF links and CDN document"
+        ],
+        "urlsInspected": [
+          "https://www.fiveguys.com/-/media/public-site/files/allergen-ingredients-and-nutrition-info/five-guys-us-nutrition--allergen-guide-english.pdf"
+        ],
+        "outcome": "matrix_found",
+        "sourceEvidenceIds": [
+          "ev-search-docs"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "locationsOrQueries": [
+          "order.fiveguys.com shakes API"
+        ],
+        "urlsInspected": [
+          "https://order.fiveguys.com/api/vendors/shakes"
+        ],
+        "outcome": "restaurant_issued_controlled_order_surface_inspected_no_conflicting_matrix",
+        "sourceEvidenceIds": [
+          "ev-search-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "locationsOrQueries": [
+          "site:fiveguys.com allergen ingredients nutrition menu PDF"
+        ],
+        "urlsInspected": [
+          "https://www.google.com/search?q=site%3Afiveguys.com+allergen+ingredients+nutrition+menu+PDF"
+        ],
+        "outcome": "official_guide_confirmed",
+        "sourceEvidenceIds": [
+          "ev-search-web",
+          "ev-guide"
+        ]
+      }
+    ]
+  }
+}

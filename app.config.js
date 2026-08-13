@@ -1,5 +1,3 @@
-const baseConfig = require("./app.json");
-
 const deriveReversedGoogleIosScheme = (iosClientId) => {
   const normalized = String(iosClientId || "").trim();
   if (!normalized) {
@@ -15,8 +13,10 @@ const deriveReversedGoogleIosScheme = (iosClientId) => {
   return "";
 };
 
-module.exports = () => {
-  const expo = baseConfig.expo;
+module.exports = ({ config }) => {
+  const expo = config;
+  const omitAssociatedDomains =
+    process.env.MYSAFEMENU_LOCAL_IOS_BUILD_WITHOUT_ASSOCIATED_DOMAINS === "1";
   const googleIosClientId = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || "";
   const googleIosReversedClientId =
     process.env.EXPO_PUBLIC_GOOGLE_IOS_REVERSED_CLIENT_ID ||
@@ -30,7 +30,7 @@ module.exports = () => {
       ? entry.CFBundleURLSchemes.includes(googleIosReversedClientId)
       : false,
   );
-  const mergedUrlTypes =
+  const withGoogleUrlType =
     googleIosReversedClientId && !hasGoogleScheme
       ? [
           ...existingUrlTypes,
@@ -39,6 +39,16 @@ module.exports = () => {
           },
         ]
       : existingUrlTypes;
+  const appScheme = String(expo.scheme || "").trim();
+  const hasAppScheme = withGoogleUrlType.some((entry) =>
+    Array.isArray(entry?.CFBundleURLSchemes)
+      ? entry.CFBundleURLSchemes.includes(appScheme)
+      : false,
+  );
+  const mergedUrlTypes =
+    appScheme && !hasAppScheme
+      ? [...withGoogleUrlType, { CFBundleURLSchemes: [appScheme] }]
+      : withGoogleUrlType;
   const plugins = (expo.plugins || []).filter((plugin) => {
     if (typeof plugin === "string") {
       return plugin !== "@react-native-google-signin/google-signin" && plugin !== "expo-apple-authentication";
@@ -62,6 +72,7 @@ module.exports = () => {
       : "@react-native-google-signin/google-signin",
   );
   plugins.push("expo-apple-authentication");
+  plugins.push("./plugins/with-ios-modular-headers");
 
   return {
     ...expo,
@@ -71,6 +82,7 @@ module.exports = () => {
     },
     ios: {
       ...expo.ios,
+      associatedDomains: omitAssociatedDomains ? undefined : expo.ios?.associatedDomains,
       infoPlist: {
         ...existingInfoPlist,
         CFBundleURLTypes: mergedUrlTypes,

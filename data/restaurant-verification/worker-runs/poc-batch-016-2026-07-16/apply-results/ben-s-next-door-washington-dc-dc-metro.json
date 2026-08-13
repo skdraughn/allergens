@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-016-2026-07-16",
+  "restaurantId": "ben-s-next-door-washington-dc-dc-metro",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "15325ad7be06a8c1ed6c6b9d0b8a50ab2837c37c8f850bbef3e2e39257197591",
+    "currentProductCount": 91,
+    "evidenceSourceCount": 12,
+    "reconciliation": {
+      "equivalent_presentation": 14,
+      "normalized_match": 51,
+      "artifact": 8,
+      "exact_match": 34,
+      "stale": 8
+    },
+    "assertions": [
+      "stale contract fingerprint gate passed",
+      "validatePocResearchResult passed before mutation",
+      "exactly 91 accepted products published",
+      "corrected direct allergen assertions preserved",
+      "SinglePlatform excluded; current official and linked Toast surfaces preserved",
+      "Ingredient Intelligence recomputed after direct catalog finalization",
+      "all 115 frozen item-checks updated exactly once",
+      "canonical evidence IDs resolve",
+      "no ledger, manifest, parser, or other restaurant writes"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/ben-s-next-door-washington-dc-dc-metro.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/ben-s-next-door-washington-dc-dc-metro.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/ben-s-next-door-washington-dc-dc-metro.jsonl",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-ben-next-door-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-016-2026-07-16/apply-results/ben-s-next-door-washington-dc-dc-metro.json"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "validatePocResearchResult",
+    "node scripts/apply-ben-next-door-poc.mjs (twice)",
+    "sha256 comparison of owned canonical artifacts",
+    "node scripts/restaurant-verification-poc-result.mjs"
+  ],
+  "secondRunDiff": "none",
+  "hashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "87efd8d02f1e6551366e62cb42272b5f465f7ca3ada0c465709fb0c0411a659f",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/ben-s-next-door-washington-dc-dc-metro.json": "1ea52b22947b641afce2bd0083a3e6aafc19bb63fc117c17a4cf9d2547398dfc",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/ben-s-next-door-washington-dc-dc-metro.json": "ec243990bddd8747a8dae4842e22ad1fa91ef1eb16a18ddc395938850275687d",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/ben-s-next-door-washington-dc-dc-metro.jsonl": "6d453358c36f273dcd7e0a4368677eea65713fc95b26f5a9032946987df191f2"
+  },
+  "counts": {
+    "publishedProducts": 91,
+    "exact_match": 34,
+    "normalized_match": 51,
+    "equivalent_presentation": 14,
+    "stale": 8,
+    "artifact": 8,
+    "unresolved": 0,
+    "directEgg": 4,
+    "directFish": 9,
+    "directMilk": 9,
+    "directShellfish": 16,
+    "wheat": 0,
+    "gluten": 0,
+    "mayContainProducts": 0,
+    "evidenceSources": 12,
+    "currentCompleteSurfaces": 10
+  }
+}

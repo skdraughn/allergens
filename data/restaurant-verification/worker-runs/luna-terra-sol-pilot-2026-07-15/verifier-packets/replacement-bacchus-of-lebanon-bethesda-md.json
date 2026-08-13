@@ -1,0 +1,825 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-pilot-2026-07-15",
+  "restaurant": {
+    "restaurantId": "replacement-bacchus-of-lebanon-bethesda-md",
+    "name": "Bacchus of Lebanon",
+    "domain": "bacchusoflebanon.com",
+    "locationId": "bethesda-md",
+    "baselineItemCount": 91,
+    "baselineItemFingerprint": "6a3f521f0ac5e388878cc28b16ea3b3ea2b090f39c65f770f5c9bfa5f1c1e6be",
+    "officialItemCount": 50,
+    "officialAllergenStatus": "not-found",
+    "sourceFamily": "generic-website",
+    "parserProfile": "generic-website",
+    "guideUrl": "https://bacchusoflebanon.com/",
+    "sourceUrls": [
+      "https://www.bacchusoflebanon.com/",
+      "https://www.bacchusoflebanon.com/menu/",
+      "https://order.toasttab.com/online/bacchus-of-lebanon"
+    ]
+  },
+  "scout": {
+    "resultHash": "2977e9198668b7654aa719705880b461ae852df654643ccf060345b9dbc3cdeb",
+    "model": {
+      "id": "gpt-5.6-luna",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "medium",
+      "overall": 0.84,
+      "menu": 0.92,
+      "allergenSource": 0.35,
+      "extraction": 0.9,
+      "rationale": "Official HTML menu and restaurant-linked Toast ordering surface were accessible. The frozen baseline contains stale beverage rows and a heading artifact, with normalized current food matches. No complete restaurant-issued allergen matrix or cross-contact disclosure was found."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Bacchus of Lebanon, 7945 Norfolk Ave, Bethesda, MD 20814",
+      "confidence": 0.99,
+      "sourceEvidenceIds": [
+        "official-home",
+        "official-menu",
+        "toast-menu"
+      ],
+      "notes": "Candidate scout only; Terra must independently check."
+    },
+    "sources": [
+      {
+        "evidenceId": "official-home",
+        "url": "https://www.bacchusoflebanon.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Bacchus of Lebanon homepage",
+        "retrievedAt": "2026-07-15T21:40:00Z",
+        "excerpt": "Bacchus of Lebanon; 7945 Norfolk Ave, Bethesda, MD 20814.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "official-menu",
+        "url": "https://www.bacchusoflebanon.com/menu/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Bacchus of Lebanon official menu",
+        "retrievedAt": "2026-07-15T21:40:00Z",
+        "excerpt": "Current cuisine, wine, cocktail, and dessert menu with food descriptions and service notes.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      },
+      {
+        "evidenceId": "toast-menu",
+        "url": "https://order.toasttab.com/online/bacchus-of-lebanon",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Bacchus of Lebanon Toast ordering menu",
+        "retrievedAt": "2026-07-15T21:40:00Z",
+        "excerpt": "Bethesda pickup menu with Appetizers, Entrees, Salads, Sides, Dessert, and Soup sections.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": null
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://www.bacchusoflebanon.com/",
+        "notes": "Homepage accessible; links to official menu and ordering vendor."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://www.bacchusoflebanon.com/menu/",
+        "notes": "Official HTML menu accessible."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://order.toasttab.com/online/bacchus-of-lebanon",
+        "notes": "Restaurant-linked Toast Bethesda pickup menu accessible."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": "https://www.google.com/search?q=Bacchus+of+Lebanon+Bethesda+menu",
+        "notes": "Search confirmed official menu and Toast surfaces."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No official archived or historical allergen source located."
+      },
+      {
+        "kind": "third_party",
+        "status": "accessible",
+        "url": "https://www.opentable.com/r/bacchus-of-lebanon-bethesda",
+        "notes": "Identity corroboration only; not used for allergen claims."
+      }
+    ],
+    "menuSurfaces": [
+      {
+        "surfaceId": "official-cuisine",
+        "title": "Official cuisine menu",
+        "service": "dinner",
+        "url": "https://www.bacchusoflebanon.com/menu/",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "html",
+        "accessStatus": "accessible",
+        "fullyEnumerated": true,
+        "scopeStatus": "complete",
+        "current": true,
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "currentProductKeys": [
+          "official-food-catalog"
+        ],
+        "notes": "Cold mezze, warm mezze, salads, and main courses."
+      },
+      {
+        "surfaceId": "official-wine-cocktail",
+        "title": "Official wine and cocktail menu",
+        "service": "beverage",
+        "url": "https://www.bacchusoflebanon.com/menu/",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "html",
+        "accessStatus": "accessible",
+        "fullyEnumerated": true,
+        "scopeStatus": "complete",
+        "current": true,
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "currentProductKeys": [
+          "official-beverage-catalog"
+        ],
+        "notes": "Alcoholic beverage surface retained for scope completeness; allergen reconciliation is not applicable."
+      },
+      {
+        "surfaceId": "official-desserts",
+        "title": "Official desserts menu",
+        "service": "dessert",
+        "url": "https://www.bacchusoflebanon.com/menu/",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "html",
+        "accessStatus": "accessible",
+        "fullyEnumerated": true,
+        "scopeStatus": "complete",
+        "current": true,
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "currentProductKeys": [
+          "official-dessert-catalog"
+        ],
+        "notes": "Desserts include Baklava, Baluza, Hazelnut Mousse, Ice Cream & Sorbet, Knafeh, Chocolate Soufflé, and Pear Tart."
+      },
+      {
+        "surfaceId": "toast-ordering",
+        "title": "Toast pickup ordering menu",
+        "service": "pickup",
+        "url": "https://order.toasttab.com/online/bacchus-of-lebanon",
+        "authorityTier": "restaurant_linked_vendor",
+        "mediaType": "html",
+        "accessStatus": "accessible",
+        "fullyEnumerated": true,
+        "scopeStatus": "complete",
+        "current": true,
+        "sourceEvidenceIds": [
+          "toast-menu"
+        ],
+        "currentProductKeys": [
+          "toast-food-catalog"
+        ],
+        "notes": "Pickup menu with overlapping presentations consolidated by food identity."
+      }
+    ],
+    "currentProducts": [
+      {
+        "currentProductKey": "official-food-catalog",
+        "name": "Official cuisine catalog",
+        "category": "food",
+        "surfaceIds": [
+          "official-cuisine"
+        ],
+        "presentationIds": [
+          "official-cuisine"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "1:a-selection-of-simmered-vegetables-served-with-grilled-cauliflower-and-lentils",
+          "3:bacchus-delight",
+          "5:bacchus-eggplant-dip",
+          "6:bacchus-salad",
+          "7:bacchus-shrimp",
+          "8:bacchus-veal-chop",
+          "9:baga-ghannouj",
+          "15:cauliflower-fried-served-with-tahini",
+          "19:chicken-shawarma",
+          "22:combination-bacchu",
+          "24:falafel",
+          "26:fatte-bel-lahm",
+          "27:fattet-bel-hummus",
+          "28:fattet-makdous",
+          "29:fette-bel-djaj",
+          "32:fresh-grilled-salmon-served-over-basmati-rice-with-spiced-tomato-sauce",
+          "36:hummus-baladi",
+          "37:hummus-bel-foul",
+          "38:hummus-special",
+          "39:hummus",
+          "40:kafta-mechwi",
+          "43:kibbe-bel-batata",
+          "44:kibbe-bel-laban",
+          "48:knafeh",
+          "50:labneh",
+          "51:lahm-mechwi",
+          "52:lamb-chops",
+          "54:lamb-shank",
+          "59:maacarona-bel-lah",
+          "64:ouzi",
+          "66:pear-tart",
+          "67:potato-with-cracked-wheat-filled-with-vegetables-and-fried-served-with-tahini",
+          "69:salatet-bethenjan",
+          "70:salmon-mechwi",
+          "71:samki-harra",
+          "73:sedr-djaj-mechwi",
+          "74:shankleesh",
+          "75:shaved-marinated-chicken-breast-grilled-with-spices-served-with-tahini",
+          "77:shawrma",
+          "78:shish-taouk",
+          "83:strained-farmers-yogurt-with-olive-oil-and-mint",
+          "84:surf-and-turf",
+          "85:tahini-sauce",
+          "89:warak-inab-mehchi",
+          "90:yogurt-sauce",
+          "91:zahra-makli"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "official-menu"
+        ],
+        "authorityVerdict": "unverifiable",
+        "notes": "Incomplete menu prose provides no complete allergen matrix or cross-contact disclosure."
+      },
+      {
+        "currentProductKey": "toast-food-catalog",
+        "name": "Toast food catalog",
+        "category": "food",
+        "surfaceIds": [
+          "toast-ordering"
+        ],
+        "presentationIds": [
+          "toast-ordering"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "2:bacchus-calamari",
+          "4:bacchus-drumetts",
+          "12:bamye-bel-zeit",
+          "13:basmati-rice-wvermicelli",
+          "14:bethenjan-al-raheb",
+          "17:chicken-and-rice-soup",
+          "18:chicken-livers",
+          "25:fasoulia-m-table",
+          "30:foul-akhdar-bel-zeit",
+          "31:foul-mdammas",
+          "33:garlic-sauce",
+          "35:homemade-grilled-lamb-sausage-with-pine-nuts-and-coriander",
+          "41:kalage-bel-jebne",
+          "42:kalage-bel-lahm",
+          "45:kibbeh-bel-hamod",
+          "46:kibbeh-nayeh",
+          "47:kibbeh",
+          "53:lamb-kabob",
+          "55:lentil-soup",
+          "56:loubie-bel-zeit",
+          "57:msaka",
+          "58:maanek",
+          "60:malfoof-bel-zeit",
+          "61:mihshi-kousa",
+          "62:moujadra",
+          "68:sabanegh-bel-zeit",
+          "76:shawarma",
+          "79:soujok",
+          "80:soup-online",
+          "81:spiced-basmati-rice",
+          "86:vegetarian-sampler",
+          "87:village-salad",
+          "88:vine-leaves"
+        ],
+        "sourceEvidenceIds": [
+          "toast-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "toast-menu"
+        ],
+        "authorityVerdict": "unverifiable",
+        "notes": "No item-level allergen matrix was exposed."
+      },
+      {
+        "currentProductKey": "official-beverage-catalog",
+        "name": "Official wine and cocktail catalog",
+        "category": "beverage",
+        "surfaceIds": [
+          "official-wine-cocktail"
+        ],
+        "presentationIds": [
+          "official-wine-cocktail"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "16:chateau-st-thomas",
+          "21:clos-du-caillow",
+          "23:don-manuel",
+          "49:ksara-merwah",
+          "65:paul-hobbs",
+          "72:schild-estate-shiraz",
+          "82:stonewood"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "not_applicable",
+        "allergenSourceType": "not_applicable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "verified",
+        "notes": "Alcoholic beverage catalog enumerated for scope completeness; allergen reconciliation is not applicable."
+      },
+      {
+        "currentProductKey": "official-dessert-catalog",
+        "name": "Official dessert catalog",
+        "category": "dessert",
+        "surfaceIds": [
+          "official-desserts"
+        ],
+        "presentationIds": [
+          "official-desserts"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "10:baklava",
+          "11:baluza",
+          "20:chocolate-souffle",
+          "34:hazelnut-mousse",
+          "48:knafeh",
+          "66:pear-tart"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "official-menu"
+        ],
+        "authorityVerdict": "unverifiable",
+        "notes": "Descriptions support narrow positive ingredients but not complete matrices."
+      }
+    ],
+    "itemCheckGroups": [
+      {
+        "auditItemKeys": [
+          "16:chateau-st-thomas",
+          "21:clos-du-caillow",
+          "23:don-manuel",
+          "49:ksara-merwah",
+          "65:paul-hobbs",
+          "72:schild-estate-shiraz",
+          "82:stonewood"
+        ],
+        "disposition": "stale_extra",
+        "allergenVerdict": "not_applicable",
+        "matchedCurrentProductKeys": [
+          "official-beverage-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "not_applicable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": []
+      },
+      {
+        "auditItemKeys": [
+          "63:our-hummus-is-a-3-day-process"
+        ],
+        "disposition": "artifact",
+        "allergenVerdict": "not_applicable",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-menu"
+        ],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "not_applicable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": []
+      },
+      {
+        "auditItemKeys": [
+          "1:a-selection-of-simmered-vegetables-served-with-grilled-cauliflower-and-lentils",
+          "3:bacchus-delight",
+          "5:bacchus-eggplant-dip",
+          "6:bacchus-salad",
+          "7:bacchus-shrimp",
+          "8:bacchus-veal-chop",
+          "9:baga-ghannouj",
+          "10:baklava",
+          "11:baluza",
+          "15:cauliflower-fried-served-with-tahini",
+          "19:chicken-shawarma",
+          "20:chocolate-souffle",
+          "22:combination-bacchu",
+          "24:falafel",
+          "26:fatte-bel-lahm",
+          "27:fattet-bel-hummus",
+          "28:fattet-makdous",
+          "29:fette-bel-djaj",
+          "32:fresh-grilled-salmon-served-over-basmati-rice-with-spiced-tomato-sauce",
+          "34:hazelnut-mousse",
+          "36:hummus-baladi",
+          "37:hummus-bel-foul",
+          "38:hummus-special",
+          "39:hummus",
+          "40:kafta-mechwi",
+          "43:kibbe-bel-batata",
+          "44:kibbe-bel-laban",
+          "48:knafeh",
+          "50:labneh",
+          "51:lahm-mechwi",
+          "52:lamb-chops",
+          "54:lamb-shank",
+          "59:maacarona-bel-lah",
+          "64:ouzi",
+          "66:pear-tart",
+          "67:potato-with-cracked-wheat-filled-with-vegetables-and-fried-served-with-tahini",
+          "69:salatet-bethenjan",
+          "70:salmon-mechwi",
+          "71:samki-harra",
+          "73:sedr-djaj-mechwi",
+          "74:shankleesh",
+          "75:shaved-marinated-chicken-breast-grilled-with-spices-served-with-tahini",
+          "77:shawrma",
+          "78:shish-taouk",
+          "83:strained-farmers-yogurt-with-olive-oil-and-mint",
+          "84:surf-and-turf",
+          "85:tahini-sauce",
+          "89:warak-inab-mehchi",
+          "90:yogurt-sauce",
+          "91:zahra-makli"
+        ],
+        "disposition": "normalized_match",
+        "allergenVerdict": "mismatch",
+        "matchedCurrentProductKeys": [
+          "official-food-catalog",
+          "toast-food-catalog",
+          "official-dessert-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "auditItemKeys": [
+          "2:bacchus-calamari",
+          "4:bacchus-drumetts",
+          "12:bamye-bel-zeit",
+          "13:basmati-rice-wvermicelli",
+          "14:bethenjan-al-raheb",
+          "17:chicken-and-rice-soup",
+          "18:chicken-livers",
+          "25:fasoulia-m-table",
+          "30:foul-akhdar-bel-zeit",
+          "31:foul-mdammas",
+          "33:garlic-sauce",
+          "35:homemade-grilled-lamb-sausage-with-pine-nuts-and-coriander",
+          "41:kalage-bel-jebne",
+          "42:kalage-bel-lahm",
+          "45:kibbeh-bel-hamod",
+          "46:kibbeh-nayeh",
+          "47:kibbeh",
+          "53:lamb-kabob",
+          "55:lentil-soup",
+          "56:loubie-bel-zeit",
+          "57:msaka",
+          "58:maanek",
+          "60:malfoof-bel-zeit",
+          "61:mihshi-kousa",
+          "62:moujadra",
+          "68:sabanegh-bel-zeit",
+          "76:shawarma",
+          "79:soujok",
+          "80:soup-online",
+          "81:spiced-basmati-rice",
+          "86:vegetarian-sampler",
+          "87:village-salad",
+          "88:vine-leaves"
+        ],
+        "disposition": "normalized_match",
+        "allergenVerdict": "accurately_unavailable",
+        "matchedCurrentProductKeys": [
+          "official-food-catalog",
+          "toast-food-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": []
+      }
+    ],
+    "riskSignals": [
+      {
+        "gateId": "structural_invalid",
+        "triggered": false,
+        "rationale": "All 91 frozen audit keys are reconciled exactly once and every referenced currentProductKey resolves.",
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "gateId": "multi_service",
+        "triggered": true,
+        "rationale": "Official dinner, beverage, dessert, and restaurant-linked Toast pickup surfaces are in scope.",
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "rationale": "Frozen baseline has 91 rows while the current catalog boundary differs and includes stale beverage rows and an artifact.",
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "gateId": "current_only",
+        "triggered": false,
+        "rationale": "Current surfaces and products are enumerated.",
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "gateId": "baseline_only",
+        "triggered": true,
+        "rationale": "Seven frozen beverage rows and one menu-heading artifact are not current food products.",
+        "sourceEvidenceIds": [
+          "official-menu"
+        ]
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "rationale": "Several baseline names require normalization and duplicate presentation consolidation.",
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "gateId": "allergen_mismatch",
+        "triggered": true,
+        "rationale": "Frozen allergen claims cannot be fully supported by the incomplete public menu descriptions.",
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "rationale": "No cross-contact statement was published on the reviewed surfaces.",
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "rationale": "Allergen-source confidence is low because no complete matrix was found.",
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "rationale": "Catalog drift and incomplete allergen disclosure require Terra review.",
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "findingId": "catalog-drift",
+        "severity": "high",
+        "kind": "menu",
+        "summary": "The frozen 91-row catalog mixes current food presentations with seven beverage rows and one non-product menu heading; current official and Toast menus require normalized matching and duplicate consolidation.",
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ],
+        "affectedAuditItemKeys": [
+          "16:chateau-st-thomas",
+          "21:clos-du-caillow",
+          "23:don-manuel",
+          "49:ksara-merwah",
+          "63:our-hummus-is-a-3-day-process",
+          "65:paul-hobbs",
+          "72:schild-estate-shiraz",
+          "82:stonewood"
+        ]
+      },
+      {
+        "findingId": "incomplete-allergen-disclosure",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "Menu prose contains narrow explicit ingredient identities but does not establish complete contains arrays, allergen absence, or cross-contact status; unavailable is required for incomplete disclosures.",
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ],
+        "affectedAuditItemKeys": [
+          "1:a-selection-of-simmered-vegetables-served-with-grilled-cauliflower-and-lentils",
+          "3:bacchus-delight",
+          "5:bacchus-eggplant-dip",
+          "6:bacchus-salad",
+          "7:bacchus-shrimp",
+          "8:bacchus-veal-chop",
+          "9:baga-ghannouj",
+          "10:baklava",
+          "11:baluza",
+          "15:cauliflower-fried-served-with-tahini",
+          "19:chicken-shawarma",
+          "20:chocolate-souffle",
+          "22:combination-bacchu",
+          "24:falafel",
+          "26:fatte-bel-lahm",
+          "27:fattet-bel-hummus",
+          "28:fattet-makdous",
+          "29:fette-bel-djaj",
+          "32:fresh-grilled-salmon-served-over-basmati-rice-with-spiced-tomato-sauce",
+          "34:hazelnut-mousse",
+          "36:hummus-baladi",
+          "37:hummus-special",
+          "38:hummus-special",
+          "39:hummus",
+          "40:kafta-mechwi",
+          "43:kibbe-bel-batata",
+          "44:kibbe-bel-laban",
+          "48:knafeh",
+          "50:labneh",
+          "51:lahm-mechwi",
+          "52:lamb-chops",
+          "54:lamb-shank",
+          "59:maacarona-bel-lah",
+          "64:ouzi",
+          "66:pear-tart",
+          "67:potato-with-cracked-wheat-filled-with-vegetables-and-fried-served-with-tahini",
+          "69:salatet-bethenjan",
+          "70:salmon-mechwi",
+          "71:samki-harra",
+          "73:sedr-djaj-mechwi",
+          "74:shankleesh",
+          "75:shaved-marinated-chicken-breast-grilled-with-spices-served-with-tahini",
+          "77:shawrma",
+          "78:shish-taouk",
+          "83:strained-farmers-yogurt-with-olive-oil-and-mint",
+          "84:surf-and-turf",
+          "85:tahini-sauce",
+          "89:warak-inab-mehchi",
+          "90:yogurt-sauce",
+          "91:zahra-makli"
+        ]
+      },
+      {
+        "findingId": "duplicate-presentations",
+        "severity": "medium",
+        "kind": "scope",
+        "summary": "Repeated official and Toast presentations were consolidated by food identity while preserving both source surfaces.",
+        "sourceEvidenceIds": [
+          "official-menu",
+          "toast-menu"
+        ],
+        "affectedAuditItemKeys": [
+          "19:chicken-shawarma",
+          "76:shawarma",
+          "77:shawrma",
+          "80:soup-online",
+          "81:spiced-basmati-rice"
+        ]
+      }
+    ],
+    "summary": "Bacchus of Lebanon identity is supported for Bethesda. Current public evidence consists of the official HTML menu and restaurant-linked Toast pickup menu. The frozen baseline requires substantial reconciliation: seven beverage extras and one heading artifact are outside the current food catalog, while current food names include normalized and duplicate presentations. No complete allergen or cross-contact source is available; incomplete menu descriptions do not establish negative claims or complete arrays.",
+    "coordinatorNotes": [
+      "Candidate scout result only; Terra must independently verify all surfaces, products, and reconciliations.",
+      "No files, ledger records, dossiers, or generated data were edited."
+    ]
+  },
+  "deterministicRisk": {
+    "triggeredGates": [
+      "multi_service",
+      "count_drift",
+      "baseline_only",
+      "non_exact_reconciliation",
+      "allergen_mismatch",
+      "cross_contact",
+      "parser_or_repair_finding",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 91,
+      "reconciledItemCount": 91,
+      "uniqueReconciledItemCount": 91,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 4,
+      "activeMenuSurfaceCount": 4,
+      "accessibleMenuSurfaceCount": 4,
+      "serviceCount": 4,
+      "pdfImageSurfaceCount": 0,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 0,
+      "incompleteSurfaceCount": 0,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 4,
+      "currentOnlyCount": 0,
+      "baselineOnlyCount": 7,
+      "countDrift": true,
+      "duplicatePresentationCount": 0,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 0,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 91,
+      "allergenMismatchItemCount": 50,
+      "crossContactCount": 2,
+      "parserRepairFindingCount": 1,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 0,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "routingReasons": [
+    "Every valid Luna scout receives an independent Terra verification.",
+    "deterministic gate: multi_service",
+    "deterministic gate: count_drift",
+    "deterministic gate: baseline_only",
+    "deterministic gate: non_exact_reconciliation",
+    "deterministic gate: allergen_mismatch",
+    "deterministic gate: cross_contact",
+    "deterministic gate: parser_or_repair_finding",
+    "deterministic gate: low_confidence",
+    "deterministic gate: scout_flagged_risk"
+  ],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-pilot-2026-07-15/jobs/replacement-bacchus-of-lebanon-bethesda-md.json",
+    "scoutResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-pilot-2026-07-15/scout-results/replacement-bacchus-of-lebanon-bethesda-md.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/replacement-bacchus-of-lebanon-bethesda-md.jsonl"
+  }
+}

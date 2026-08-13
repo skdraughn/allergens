@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-001-2026-07-16",
+  "restaurantId": "bangkok-54-arlington-dc-metro",
+  "changedPaths": [
+    "src/data/generated/restaurants.generated.json",
+    "data/restaurant-verification/restaurants/bangkok-54-arlington-dc-metro.json",
+    "data/restaurant-verification/evidence/bangkok-54-arlington-dc-metro.json",
+    ".codex/agent-results/poc-batch-001-2026-07-16/bangkok-54-arlington-dc-metro.apply.json"
+  ],
+  "commands": [
+    {
+      "command": "node baseline SHA-256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+      "exitCode": 0,
+      "result": "9b0020e2738dc7aa242291667c4203bbc4a615c24536fd3b1242fddd46aba68e"
+    },
+    {
+      "command": "target-specific 348-product catalog transformation",
+      "exitCode": 0,
+      "result": "348 unique generated products; 220 exact baseline matches; 42 stale baseline rows"
+    },
+    {
+      "command": "node scripts/recompute-ingredient-intelligence.mjs --input src/data/generated/restaurants.generated.json --output src/data/generated/restaurants.generated.json --restaurants bangkok-54-arlington-dc-metro",
+      "exitCode": 0,
+      "result": "ingredient-intelligence-v2 recomputed for 1 selected restaurant"
+    },
+    {
+      "command": "focused generated/dossier/evidence validation",
+      "exitCode": 0,
+      "result": {
+        "valid": true,
+        "errors": [],
+        "checks": {
+          "generatedItemCount": 348,
+          "uniqueGeneratedIds": 348,
+          "allCurrentItemsUseToastSource": true,
+          "unsupportedMayContainCount": 0,
+          "directPadThai": [
+            "egg",
+            "peanut"
+          ],
+          "ingredientIntelligenceVersion": "ingredient-intelligence-v2",
+          "dossierCurrentProductCount": 348,
+          "evidenceCatalogProductCount": 348
+        }
+      }
+    },
+    {
+      "command": "second scoped Ingredient Intelligence publish (idempotency check)",
+      "exitCode": 0,
+      "result": "secondRunDiff=[]; beforeFingerprint equals afterFingerprint"
+    }
+  ],
+  "beforeFingerprint": "2df44a3000dfc058c47a10a10ae5d64457b22d1dc3ca5705d77be1913009630b",
+  "afterFingerprint": "2df44a3000dfc058c47a10a10ae5d64457b22d1dc3ca5705d77be1913009630b",
+  "secondRunDiff": [],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "checks": {
+      "generatedItemCount": 348,
+      "uniqueGeneratedIds": 348,
+      "allCurrentItemsUseToastSource": true,
+      "unsupportedMayContainCount": 0,
+      "directPadThai": [
+        "egg",
+        "peanut"
+      ],
+      "ingredientIntelligenceVersion": "ingredient-intelligence-v2",
+      "dossierCurrentProductCount": 348,
+      "evidenceCatalogProductCount": 348
+    }
+  },
+  "remainingIssues": [
+    "Official allergen matrix remains unavailable.",
+    "Coordinator must make the terminal ledger decision; this APPLY did not edit the ledger or claim codex_verified."
+  ]
+}

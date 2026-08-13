@@ -1,0 +1,249 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260810183321",
+  "restaurantId": "replacement-vienna-inn-vienna-va",
+  "packetValidation": {
+    "baselineItemCount": 33,
+    "baselineFingerprint": "5d0ceedc592092572a2b25889b5c72da2691a9f60adbd0d3749567264a884235",
+    "itemCheckCount": 33,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "Vienna Inn",
+    "locationId": "vienna-va",
+    "address": "120 East Maple Ave, Vienna, VA 22180",
+    "domain": "viennainn.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "e-home",
+      "e-menu",
+      "e-toast"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "e-home",
+      "url": "https://www.viennainn.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage and location identity",
+      "retrievedAt": "2026-08-10T18:38:00Z"
+    },
+    {
+      "evidenceId": "e-menu",
+      "url": "https://www.viennainn.com/menu.html",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current official food and nonalcoholic menu",
+      "retrievedAt": "2026-08-10T18:38:00Z"
+    },
+    {
+      "evidenceId": "e-toast",
+      "url": "https://www.toasttab.com/local/order/viennainn",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current linked ordering surface",
+      "retrievedAt": "2026-08-10T18:38:00Z"
+    },
+    {
+      "evidenceId": "e-kegs",
+      "url": "https://www.viennainn.com/beer-kegs.html",
+      "authorityTier": "restaurant_issued",
+      "purpose": "alcohol-only beer keg surface excluded from food scope",
+      "retrievedAt": "2026-08-10T18:38:00Z"
+    },
+    {
+      "evidenceId": "e-search",
+      "url": "https://www.google.com/search?q=site%3Aviennainn.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted official-domain allergen search",
+      "retrievedAt": "2026-08-10T18:38:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-homepage",
+      "url": "https://www.viennainn.com/",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "vienna-va",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "e-home"
+      ]
+    },
+    {
+      "surfaceId": "official-menu",
+      "url": "https://www.viennainn.com/menu.html",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "vienna-va",
+      "servicePeriod": "breakfast,lunch,dinner,current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; food and nonalcoholic items inventoried",
+      "sourceEvidenceIds": [
+        "e-menu"
+      ]
+    },
+    {
+      "surfaceId": "toast-ordering",
+      "url": "https://www.toasttab.com/local/order/viennainn",
+      "authority": "linked vendor",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "vienna-va",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; alcohol-only party ticket excluded",
+      "sourceEvidenceIds": [
+        "e-toast"
+      ]
+    },
+    {
+      "surfaceId": "beer-kegs",
+      "url": "https://www.viennainn.com/beer-kegs.html",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "vienna-va",
+      "servicePeriod": "alcohol",
+      "current": false,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "identified as alcohol-only and excluded",
+      "sourceEvidenceIds": [
+        "e-kegs"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "vienna-inn-current-food-nonalcoholic-catalog",
+      "name": "Vienna Inn current food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "e-menu",
+        "e-toast"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "productCount": 33,
+      "boundary": "33 frozen food/nonalcoholic products reconciled; alcohol-only offerings excluded"
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "Vienna Inn official homepage, menu, and navigation pages inspected for allergen, allergy, nutrition, ingredients, and cross-contact disclosures",
+        "url": "https://www.viennainn.com/menu.html",
+        "outcome": "Inspected homepage/menu/navigation; no official allergen matrix or cross-contact disclosure located",
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-menu"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "Vienna Inn official document/PDF/image/download, sitemap, nutrition, ingredient, FAQ, and menu surfaces",
+        "url": "https://www.viennainn.com/menu.html",
+        "outcome": "Inspected official document/PDF/image/download/search surfaces; no current allergen or ingredient matrix located",
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-search"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Vienna Inn linked Toast ordering surface inspected for allergen, allergy, nutrition, ingredients, and cross-contact disclosures",
+        "url": "https://www.toasttab.com/local/order/viennainn",
+        "outcome": "Inspected linked Toast ordering surface; no allergen matrix or cross-contact disclosure located",
+        "sourceEvidenceIds": [
+          "e-toast"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "queryOrLocation": "site:viennainn.com allergen OR allergy OR nutrition OR ingredients OR PDF menu",
+        "url": "https://www.google.com/search?q=site%3Aviennainn.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF+menu",
+        "outcome": "Searched official domain with allergen, allergy, nutrition, ingredients, PDF, and menu terms; no authoritative matrix located",
+        "sourceEvidenceIds": [
+          "e-search"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:bacon-cheeseburger",
+          "2:boost-your-winnings-with-special-promotions-on-1win",
+          "3:breakfast-served-monday-friday-8am-11am-saturday-8am-1100am",
+          "4:buffalo-chicken-wings",
+          "5:chicken-caesar-salad",
+          "6:chili-with-red-beans-cheddar-cheese-and-diced-onions",
+          "7:country-ham",
+          "8:egg-beaters-home-fries-and-toast",
+          "9:fried-zucchini-with-blue-cheese-dressing",
+          "10:gravy-fries",
+          "11:hot-roast-turkey-an-open-sandwich-served-with-mashed-potatoes-and-gravy",
+          "12:our-omelets-are-made-with-two-large-grade-a-eggs-and-are-served-with-home-fries-and-toast",
+          "13:tex-mex-omelet-with-cheese-and-salsa",
+          "14:with-blue-cheese-dressing",
+          "15:served-with-honey-mustard-and-french-fries",
+          "16:our-high-mountain-blend-coffees-are-freshly-ground",
+          "17:home-fries-and-toast",
+          "18:on-toast-or-home-fries",
+          "19:cheddar-cheese-and-diced-onions",
+          "20:choice-of-american-cheddar-jack-provolone",
+          "21:with-peppers-onions-tomatoes-and-cheese",
+          "22:red-leaf-and-romaine-lettuce-with-fresh-vegetables-tossed-in-balsamic-vinaigrette",
+          "23:a-spicy-black-bean-vegetable-patty-served-with-lettuce-and-tomato",
+          "24:grilled-boneless-skinless-chicken-breast-with-salsa-and-cheddar",
+          "25:pita-bread-with-lettuce-and-tomato-using-solid-white-albacore-tuna",
+          "26:thinly-sliced-ham-steamed-with-alpine-lace-swiss-cheese",
+          "27:tuna-on-an-english-muffin-with-tomatoes-and-swiss-cheese",
+          "28:an-open-sandwich-of-braised-brisket-of-beef-served-with-mashed-potatoes-and-gravy",
+          "29:an-open-sandwich-served-with-mashed-potatoes-and-gravy",
+          "30:braised-lean-been-brisket-simmered-in-barbeque-sauce-served-on-a-roll-with-cole-slaw",
+          "31:served-on-a-seeded-roll-with-potato-salad",
+          "32:served-on-rye-bread-with-provolone-cheese-and-cole-slaw",
+          "33:sirloin-sandwich-steak-grilled-with-onions-served-on-a-heath-roll-with-lettuce-and-tomato"
+        ],
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "vienna-inn-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-toast"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify",
+  "outcome": "researched"
+}

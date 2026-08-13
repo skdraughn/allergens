@@ -1,0 +1,264 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811165721",
+  "restaurantId": "sakaki-izakaya-arlington-va",
+  "name": "Sakaki Izakaya",
+  "domain": "sakaki-izakaya.com",
+  "outcome": "researched",
+  "recommendedLane": "verify",
+  "packetValidation": {
+    "baselineItemCount": 32,
+    "baselineFingerprint": "dc6e55b862eb21e7172f444741d53fd96c1a3101a0e7be6e040b24456b383454",
+    "itemCheckCount": 32,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "Sakaki Izakaya",
+    "locationId": "arlington",
+    "address": "3227 Washington Blvd, Ste D, Arlington, VA 22201",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "official-home",
+      "official-menu",
+      "linked-chowbus"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "official-home",
+      "url": "https://www.sakakiizakaya.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official homepage, identity, address, hours, menu overview",
+      "retrievedAt": "2026-08-11T20:00:00Z"
+    },
+    {
+      "evidenceId": "official-menu",
+      "url": "https://www.sakaki-izakaya.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official menu page and location details",
+      "retrievedAt": "2026-08-11T20:00:00Z"
+    },
+    {
+      "evidenceId": "linked-chowbus",
+      "url": "https://pos.chowbus.com/online-ordering/store/Sakaki-Izakaya/22224",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "current linked ordering menu, item descriptions, direct allergen and allergy-note statements",
+      "retrievedAt": "2026-08-11T20:00:00Z"
+    },
+    {
+      "evidenceId": "targeted-search",
+      "url": "https://www.restaurantji.com/va/arlington/sakaki-izakaya-/menu/",
+      "authorityTier": "third_party",
+      "purpose": "targeted web search menu comparison and location corroboration",
+      "retrievedAt": "2026-08-11T20:00:00Z"
+    },
+    {
+      "evidenceId": "official-allergen-search",
+      "url": "https://www.sakakiizakaya.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official-site allergen, allergy, nutrition, ingredients and PDF search; no matrix found",
+      "retrievedAt": "2026-08-11T20:00:00Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-homepage",
+      "url": "https://www.sakakiizakaya.com/",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "arlington",
+      "servicePeriod": "current all-day; food and nonalcoholic menu overview",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "official-home"
+      ]
+    },
+    {
+      "surfaceId": "official-menu-page",
+      "url": "https://www.sakaki-izakaya.com/menu",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "arlington",
+      "servicePeriod": "current menu page",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; menu page contains navigation/location details",
+      "sourceEvidenceIds": [
+        "official-menu"
+      ]
+    },
+    {
+      "surfaceId": "linked-chowbus-ordering",
+      "url": "https://pos.chowbus.com/online-ordering/store/Sakaki-Izakaya/22224",
+      "authority": "linked vendor",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "arlington",
+      "servicePeriod": "current online ordering; food, nonalcoholic and alcohol sections inspected; alcohol excluded",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; current food/nonalcoholic boundary captured",
+      "sourceEvidenceIds": [
+        "linked-chowbus"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "sakaki-current-food-nonalcoholic-catalog",
+      "name": "Sakaki Izakaya current food and nonalcoholic menu catalog",
+      "category": "menu-catalog",
+      "sourceEvidenceIds": [
+        "official-home",
+        "official-menu",
+        "linked-chowbus"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "productCount": 32,
+      "boundary": "32 frozen food/nonalcoholic products reconciled to current linked menu; alcohol-only offerings excluded"
+    }
+  ],
+  "restaurantLevelAllergenEvidence": [
+    {
+      "statement": "The linked Chowbus menu gives direct Cannot Remove allergen statements and allergy-note prompts on selected products (for example takoyaki, tempura set, eel foie gras, egg on egg, seaweed salad, and desserts). Preserve these as item-level linked-vendor evidence; no absent-allergen inference is made for other items.",
+      "authorityTier": "restaurant_linked_vendor",
+      "sourceEvidenceIds": [
+        "linked-chowbus"
+      ],
+      "crossContact": "No general cross-contact guarantee or policy located; item-level allergy notes are not a cross-contact clearance."
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "query": "restaurant-controlled homepage/menu navigation and allergen, allergy, nutrition, ingredients terms",
+        "outcome": "official homepage and menu inspected; no complete allergen matrix found",
+        "sourceEvidenceIds": [
+          "official-home",
+          "official-menu"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "query": "official PDFs, menu images, nutrition, ingredient, FAQ, sitemap and downloadable-document surfaces",
+        "outcome": "no official allergen/nutrition/ingredient matrix located",
+        "sourceEvidenceIds": [
+          "official-home",
+          "official-menu",
+          "official-allergen-search"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "query": "restaurant-linked Chowbus ordering menu and item pages",
+        "outcome": "item-level Cannot Remove statements and allergy notes found; no complete matrix or cross-contact policy found",
+        "sourceEvidenceIds": [
+          "linked-chowbus"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "query": "Sakaki Izakaya Arlington allergen allergy nutrition ingredients PDF menu site:sakaki-izakaya.com",
+        "outcome": "official identity/menu results and third-party menu corroboration found; no authoritative complete allergen matrix",
+        "sourceEvidenceIds": [
+          "official-home",
+          "official-menu",
+          "targeted-search"
+        ]
+      }
+    ]
+  },
+  "reconciliation": {
+    "expectedCount": 32,
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:agedashi-tofu",
+          "2:blazing-tuna-roll",
+          "3:buffalo-crab-tempura",
+          "4:california-roll",
+          "5:chicken-karaage",
+          "6:corn-fritter",
+          "7:creamy-clams",
+          "8:eel-avocado-roll",
+          "9:eel-foie-gras",
+          "10:egg-on-egg",
+          "11:grilled-edamame",
+          "12:gyoza",
+          "13:hotate-nigiri",
+          "14:ika-nigiri",
+          "15:ikageso-karaage",
+          "16:japanese-chicken-wing",
+          "17:mango-tango-roll",
+          "18:mekyabetsu",
+          "19:miso-soup",
+          "20:og-lobster-roll",
+          "21:rainbow-roll",
+          "22:salmon-nigiri",
+          "23:seaweed-salad",
+          "24:shrimp-katsu-sando",
+          "25:shrimp-tempura-roll",
+          "26:spicy-salmon-roll",
+          "27:spicy-tuna-roll",
+          "28:takoyaki",
+          "29:tempura-set",
+          "30:tuna-ponzu",
+          "31:yellowtail-jalapeno",
+          "32:yellowtail-nigiri"
+        ],
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sakaki-current-food-nonalcoholic-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "linked-chowbus",
+          "official-home"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "findings": [
+    {
+      "type": "direct_linked_vendor_allergen_evidence",
+      "details": "Selected Chowbus items carry Cannot Remove allergen statements and allergy-note prompts; unlisted allergens remain unavailable.",
+      "sourceEvidenceIds": [
+        "linked-chowbus"
+      ]
+    }
+  ],
+  "processLog": [
+    "packet_validated",
+    "identity_verified",
+    "menu_surfaces_inventoried",
+    "matrix_search_completed",
+    "products_reconciled",
+    "validator_passed"
+  ]
+}

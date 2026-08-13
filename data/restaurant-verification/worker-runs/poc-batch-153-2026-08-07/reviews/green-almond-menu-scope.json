@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-153-2026-08-07",
+  "restaurantId": "green-almond-pantry-dc",
+  "reviewType": "narrow_menu_scope_conflict_resolution",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "medium",
+    "role": "sol_reviewer"
+  },
+  "reviewedQuestion": "Whether the supplied evidence supports a complete zero-product current food and nonalcoholic catalog or requires blocked_unverifiable because the complete current boundary is unavailable.",
+  "evidence": [
+    {
+      "evidenceId": "job-packet",
+      "artifact": "data/restaurant-verification/worker-runs/poc-batch-153-2026-08-07/jobs/green-almond-pantry-dc.json",
+      "finding": "The frozen zero-row manual-review baseline is not affirmative evidence that the operating restaurant has a zero-product catalog."
+    },
+    {
+      "evidenceId": "ev-menu",
+      "url": "https://www.greenalmondpantry.com/menu",
+      "authorityTier": "restaurant_issued",
+      "finding": "The official menu URL exposed no readable product list; retrieval absence cannot establish a zero-product catalog."
+    },
+    {
+      "evidenceId": "ev-square",
+      "url": "https://greenalmondpantry.square.site/",
+      "authorityTier": "restaurant_linked_vendor",
+      "finding": "The officially linked Square surface exposed no readable menu and cannot prove completeness."
+    },
+    {
+      "evidenceId": "ev-doordash",
+      "url": "https://www.doordash.com/store/green-almond-pantry-29666979/",
+      "authorityTier": "restaurant_linked_vendor",
+      "finding": "The linked DoorDash surface reports inactive status; cached product material was correctly rejected as current evidence."
+    }
+  ],
+  "resolution": {
+    "binding": true,
+    "outcome": "blocked_unverifiable",
+    "zeroProductCatalogSupported": false,
+    "menuScopeComplete": false,
+    "catalogDefinition": null,
+    "rationale": "No authoritative surface supplies a complete current food and nonalcoholic enumeration. Missing or unreadable menu evidence cannot support publication of an empty catalog.",
+    "officialAllergenStatus": "accurately_unavailable",
+    "unsupportedNegativeClaimsIntroduced": false,
+    "allergenAbsenceClaimsSupported": false,
+    "crossContactAbsenceClaimsSupported": false,
+    "safetySourceAuthorityConflictRemains": false
+  },
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "reviewLimitedToNamedMenuScopeQuestion": true,
+    "fullDiscoveryRepeated": false,
+    "completeCurrentEnumeratingSurfaceCount": 0,
+    "currentProductCount": 0,
+    "zeroProductAffirmativeEvidenceCount": 0,
+    "matrixSearchClassCount": 4,
+    "allRequiredMatrixSearchClassesCompleted": true,
+    "matrixStatusPreservedAsAccuratelyUnavailable": true,
+    "unsupportedAllergenNegativesIntroduced": false,
+    "codexVerifiedClaimed": false
+  },
+  "coordinatorRecommendation": "Record green-almond-pantry-dc as blocked_unverifiable and preserve accurately_unavailable allergen status without negative claims."
+}

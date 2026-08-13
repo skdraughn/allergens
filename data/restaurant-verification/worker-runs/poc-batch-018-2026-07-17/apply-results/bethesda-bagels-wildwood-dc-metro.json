@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-018-2026-07-17",
+  "restaurantId": "bethesda-bagels-wildwood-dc-metro",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "e82e28c8b693d07de34a76b2f0031211433d435754c5069dcf7cc0f9a8a4becf",
+    "currentProductCount": 112,
+    "evidenceSourceCount": 7,
+    "reconciliation": {
+      "exact_match": 112
+    },
+    "assertions": [
+      "fingerprint gate passed",
+      "accepted JOB/RESULT validated",
+      "direct aggregate preserved exactly",
+      "canonical evidence purposes and IDs resolve",
+      "Ingredient Intelligence recomputed after direct finalization",
+      "all 112 item-checks updated exactly once",
+      "Wildwood location only",
+      "no ledger, manifest, parser, or other restaurant writes"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/bethesda-bagels-wildwood-dc-metro.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/bethesda-bagels-wildwood-dc-metro.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/bethesda-bagels-wildwood-dc-metro.jsonl",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-bethesda-bagels-wildwood-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-018-2026-07-17/apply-results/bethesda-bagels-wildwood-dc-metro.json"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "validatePocResearchResult",
+    "node scripts/apply-bethesda-bagels-wildwood-poc.mjs (twice)",
+    "sha256 comparison of owned artifacts"
+  ],
+  "secondRunDiff": "none",
+  "hashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "e1110035743253d104a97f31698b789ca764c5303d126745796791700f8b0891",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/bethesda-bagels-wildwood-dc-metro.json": "f81980abcd747d92a4ad3671b4836c27cf28bd68f8bfa85e50239f1745aa7f0c",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/bethesda-bagels-wildwood-dc-metro.json": "f7cecfc55b3ef87dca7a5349d3c94ada66bb2d756f6a2e2b8e5a9ce57bbb4c35",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/bethesda-bagels-wildwood-dc-metro.jsonl": "f5ff48ee8143d7d4d06674323e63c25dd8350919951afd19d18675441fe71fa6"
+  },
+  "counts": {
+    "publishedProducts": 112,
+    "exact_match": 112,
+    "unresolved": 0,
+    "egg": 15,
+    "milk": 39,
+    "fish": 7,
+    "peanut": 1,
+    "soy": 4,
+    "treeNut": 2,
+    "wheat": 0,
+    "gluten": 0,
+    "sesame": 0,
+    "mayContainProducts": 0,
+    "evidenceSources": 7,
+    "currentCompleteSurfaces": 1
+  }
+}

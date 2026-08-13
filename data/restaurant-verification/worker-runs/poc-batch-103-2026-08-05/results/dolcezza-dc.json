@@ -1,0 +1,488 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-103-2026-08-05",
+  "restaurantId": "dolcezza-dc",
+  "runId": "poc-batch-103-2026-08-05-dolcezza-dc-research",
+  "stage": "poc_research",
+  "model": "gpt-5.6-luna",
+  "packetValidation": {
+    "restaurantId": "dolcezza-dc",
+    "name": "Dolcezza Gelato",
+    "locationId": "dc-metro",
+    "domain": "dolcezzagelato.com",
+    "baselineItemCount": 9,
+    "baselineFingerprint": "5618ba43b1f120b6ed456836977791ee3fd44e9ff78437f89dffa14256ec656f",
+    "itemChecksRead": 9,
+    "itemChecksPath": "data/restaurant-verification/item-checks/dolcezza-dc.jsonl"
+  },
+  "identity": {
+    "verdict": "verified",
+    "identityAmbiguous": false,
+    "name": "Dolcezza Gelato",
+    "location": "Washington, DC metro (official locations include 904 Palmer Alley NW, 1704 Connecticut Ave NW, 600 H St NE and Hirshhorn)",
+    "locationId": "dc-metro",
+    "domain": "dolcezzagelato.com",
+    "officialHomepage": "https://dolcezzagelato.com/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-location",
+      "ev-toast"
+    ],
+    "notes": "Official site identifies Dolcezza Gelato DC locations; DC metro scope retained and non-DC Bethesda/Fairfax excluded."
+  },
+  "sources": [
+    {
+      "evidenceId": "ev-home",
+      "url": "https://dolcezzagelato.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity",
+      "retrievedAt": "2026-08-05",
+      "title": "Dolcezza official homepage",
+      "excerpt": "Official Dolcezza website and navigation."
+    },
+    {
+      "evidenceId": "ev-location",
+      "url": "https://dolcezzagelato.com/locations/h-street/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-08-05",
+      "title": "Official H Street location page",
+      "excerpt": "600 H St NE Washington DC; gelato, sorbetto and coffee menus; seasonal availability notice."
+    },
+    {
+      "evidenceId": "ev-nutrition",
+      "url": "https://dolcezzagelato.com/gelato/nutritional-information/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "retrievedAt": "2026-08-05",
+      "title": "Official nutritional information",
+      "excerpt": "All gelato flavors contain dairy; flavor ingredient cards state Contains and May contain."
+    },
+    {
+      "evidenceId": "ev-gelato",
+      "url": "https://dolcezzagelato.com/gelato/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "menu",
+      "retrievedAt": "2026-08-05",
+      "title": "Official gelato page",
+      "excerpt": "Gelato and sorbetto product description and nutrition link."
+    },
+    {
+      "evidenceId": "ev-toast",
+      "url": "https://order.toasttab.com/online/dolcezza-city-center-dc-904-palmer-alley-nw",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "menu",
+      "retrievedAt": "2026-08-05",
+      "title": "Linked Toast CityCenter ordering menu",
+      "excerpt": "Drinks, gelato pints/pushpops, retail, snacks and pastries for 904 Palmer Alley NW."
+    },
+    {
+      "evidenceId": "ev-search",
+      "url": "https://www.google.com/search?q=site%3Adolcezzagelato.com+allergen+ingredients+nutrition+PDF",
+      "authorityTier": "third_party",
+      "purpose": "allergen",
+      "retrievedAt": "2026-08-05",
+      "title": "Targeted web search",
+      "excerpt": "Search surfaced official nutritional-information page; no separate allergen matrix."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-nutrition",
+      "title": "Nutritional Information flavor cards",
+      "url": "https://dolcezzagelato.com/gelato/nutritional-information/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "DC metro",
+      "servicePeriod": "current gelato flavors",
+      "surfaceType": "html_card",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-nutrition"
+      ],
+      "currentProductKeys": [
+        "dark-chocolate",
+        "mascarpone-and-berries",
+        "milk-chocolate",
+        "peanut-butter-stracciatella",
+        "roasted-strawberry",
+        "salted-caramel",
+        "stracciatella",
+        "vanilla-bean"
+      ]
+    },
+    {
+      "surfaceId": "official-location",
+      "title": "H Street gelato, sorbetto and coffee menu",
+      "url": "https://dolcezzagelato.com/locations/h-street/",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "600 H St NE Washington DC",
+      "servicePeriod": "all day",
+      "surfaceType": "html_menu",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-location"
+      ],
+      "currentProductKeys": []
+    },
+    {
+      "surfaceId": "linked-toast-citycenter",
+      "title": "CityCenter Toast ordering menu",
+      "url": "https://order.toasttab.com/online/dolcezza-city-center-dc-904-palmer-alley-nw",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "904 Palmer Alley NW Washington DC",
+      "servicePeriod": "all day",
+      "surfaceType": "linked_ordering_vendor",
+      "current": false,
+      "scopeStatus": "supporting",
+      "sourceEvidenceIds": [
+        "ev-toast"
+      ],
+      "currentProductKeys": []
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "dark-chocolate",
+      "name": "Dark Chocolate",
+      "category": "Gelato",
+      "presentationRefs": [
+        "official-nutrition:Dark Chocolate"
+      ],
+      "sourceEvidenceIds": [
+        "ev-nutrition"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-nutrition"
+      ]
+    },
+    {
+      "currentProductKey": "mascarpone-and-berries",
+      "name": "Mascarpone & Berries",
+      "category": "Gelato",
+      "presentationRefs": [
+        "official-nutrition:Mascarpone & Berries"
+      ],
+      "sourceEvidenceIds": [
+        "ev-nutrition"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-nutrition"
+      ]
+    },
+    {
+      "currentProductKey": "milk-chocolate",
+      "name": "Milk Chocolate",
+      "category": "Gelato",
+      "presentationRefs": [
+        "official-nutrition:Milk Chocolate"
+      ],
+      "sourceEvidenceIds": [
+        "ev-nutrition"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-nutrition"
+      ]
+    },
+    {
+      "currentProductKey": "peanut-butter-stracciatella",
+      "name": "Peanut Butter Stracciatella",
+      "category": "Gelato",
+      "presentationRefs": [
+        "official-nutrition:Peanut Butter Stracciatella"
+      ],
+      "sourceEvidenceIds": [
+        "ev-nutrition"
+      ],
+      "containsAllergens": [
+        "peanut",
+        "milk",
+        "soy"
+      ],
+      "mayContainAllergens": [
+        "tree-nut"
+      ],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-nutrition"
+      ]
+    },
+    {
+      "currentProductKey": "roasted-strawberry",
+      "name": "Roasted Strawberry",
+      "category": "Gelato",
+      "presentationRefs": [
+        "official-nutrition:Roasted Strawberry"
+      ],
+      "sourceEvidenceIds": [
+        "ev-nutrition"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-nutrition"
+      ]
+    },
+    {
+      "currentProductKey": "salted-caramel",
+      "name": "Salted Caramel",
+      "category": "Gelato",
+      "presentationRefs": [
+        "official-nutrition:Salted Caramel"
+      ],
+      "sourceEvidenceIds": [
+        "ev-nutrition"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-nutrition"
+      ]
+    },
+    {
+      "currentProductKey": "stracciatella",
+      "name": "Stracciatella",
+      "category": "Gelato",
+      "presentationRefs": [
+        "official-nutrition:Stracciatella"
+      ],
+      "sourceEvidenceIds": [
+        "ev-nutrition"
+      ],
+      "containsAllergens": [
+        "milk",
+        "soy"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-nutrition"
+      ]
+    },
+    {
+      "currentProductKey": "vanilla-bean",
+      "name": "Vanilla Bean",
+      "category": "Gelato",
+      "presentationRefs": [
+        "official-nutrition:Vanilla Bean"
+      ],
+      "sourceEvidenceIds": [
+        "ev-nutrition"
+      ],
+      "containsAllergens": [
+        "milk"
+      ],
+      "mayContainAllergens": [],
+      "allergenSourceType": "restaurant_ingredients",
+      "allergenAuthorityTier": "restaurant_issued",
+      "allergenSourceEvidenceIds": [
+        "ev-nutrition"
+      ]
+    }
+  ],
+  "matrixSearch": {
+    "status": "found",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "locationInspected": "dolcezzagelato.com homepage, gelato and locations pages",
+        "url": "https://dolcezzagelato.com/gelato/nutritional-information/",
+        "outcome": "found official flavor ingredient/allergen cards",
+        "sourceEvidenceIds": [
+          "ev-nutrition"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "locationInspected": "official site downloads/PDF/image/document links",
+        "url": "https://dolcezzagelato.com/wp-content/uploads/eventspackagefinal.pdf",
+        "outcome": "no current allergen matrix; event PDF is catering information",
+        "sourceEvidenceIds": [
+          "ev-nutrition"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "locationInspected": "Toast CityCenter ordering menu",
+        "url": "https://order.toasttab.com/online/dolcezza-city-center-dc-904-palmer-alley-nw",
+        "outcome": "menu products available; no allergen matrix or claims exposed",
+        "sourceEvidenceIds": [
+          "ev-toast"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "locationInspected": "web search for site: dolcezzagelato.com allergen ingredients nutrition PDF",
+        "url": "https://www.google.com/search?q=site%3Adolcezzagelato.com+allergen+ingredients+nutrition+PDF",
+        "outcome": "official nutrition page located; no separate matrix",
+        "sourceEvidenceIds": [
+          "ev-search",
+          "ev-nutrition"
+        ]
+      }
+    ],
+    "notes": "Official ingredient cards are direct evidence for the nine frozen products; a universal matrix is unavailable."
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "evidenceId": "ev-nutrition",
+      "statement": "All gelato flavors contain dairy.",
+      "authorityTier": "restaurant_issued",
+      "sourceEvidenceIds": [
+        "ev-nutrition"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:dark-chocolate",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "dark-chocolate"
+        ],
+        "sourceEvidenceIds": [
+          "ev-nutrition"
+        ]
+      },
+      {
+        "auditItemKey": "2:mascarpone-and-berries",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mascarpone-and-berries"
+        ],
+        "sourceEvidenceIds": [
+          "ev-nutrition"
+        ]
+      },
+      {
+        "auditItemKey": "3:milk-chocolate",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "milk-chocolate"
+        ],
+        "sourceEvidenceIds": [
+          "ev-nutrition"
+        ]
+      },
+      {
+        "auditItemKey": "4:nutritional-information-gelato-all-gelato-flavors",
+        "disposition": "artifact",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "ev-nutrition"
+        ]
+      },
+      {
+        "auditItemKey": "5:peanut-butter-stracciatella",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "peanut-butter-stracciatella"
+        ],
+        "sourceEvidenceIds": [
+          "ev-nutrition"
+        ]
+      },
+      {
+        "auditItemKey": "6:roasted-strawberry",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roasted-strawberry"
+        ],
+        "sourceEvidenceIds": [
+          "ev-nutrition"
+        ]
+      },
+      {
+        "auditItemKey": "7:salted-caramel",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "salted-caramel"
+        ],
+        "sourceEvidenceIds": [
+          "ev-nutrition"
+        ]
+      },
+      {
+        "auditItemKey": "8:stracciatella",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "stracciatella"
+        ],
+        "sourceEvidenceIds": [
+          "ev-nutrition"
+        ]
+      },
+      {
+        "auditItemKey": "9:vanilla-bean",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "vanilla-bean"
+        ],
+        "sourceEvidenceIds": [
+          "ev-nutrition"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify",
+  "routingSignals": {
+    "lightweightRepair": [],
+    "safetyEscalation": []
+  },
+  "findings": [
+    "Official nutrition cards directly support milk/soy/peanut and tree-nut may-contain claims.",
+    "No unsupported allergen negatives asserted; non-covered menu items remain unavailable."
+  ],
+  "blockedReason": null
+}

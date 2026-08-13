@@ -1,0 +1,348 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260811153211",
+  "restaurantId": "sonic",
+  "packetValidation": {
+    "baselineItemCount": 139,
+    "baselineFingerprint": "a5597d3dc2974539374f7a18dc1ac252d3a5f5dc07e219a6b2bf0cb8bce4d8b3",
+    "itemCheckCount": 139,
+    "fingerprintVerified": true
+  },
+  "identity": {
+    "name": "Sonic Drive-In",
+    "locationId": null,
+    "address": null,
+    "domain": "sonicdrivein.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "e-home",
+      "e-menu"
+    ]
+  },
+  "sources": [
+    {
+      "evidenceId": "e-home",
+      "url": "https://www.sonicdrivein.com/",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-11T15:33:19.4520011Z",
+      "purpose": "official homepage"
+    },
+    {
+      "evidenceId": "e-menu",
+      "url": "https://www.sonicdrivein.com/menu/",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-11T15:33:19.4520011Z",
+      "purpose": "current official food and nonalcoholic menu"
+    },
+    {
+      "evidenceId": "e-allergen",
+      "url": "https://www.sonicdrivein.com/nutrition-allergen/",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-11T15:33:19.4520011Z",
+      "purpose": "official nutrition, allergen, ingredient document hub"
+    },
+    {
+      "evidenceId": "e-pdf",
+      "url": "https://assets.ctfassets.net/whnlxz6bna9d/4tmYsesAFvJSgShsHRJOa6/f7ccdc5ef9d5fc0126ca091d285a4942/61131-15_NAT_SUM26_NationalAllergenGuide_FA_rg_WCAG.pdf",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-11T15:33:19.4520011Z",
+      "purpose": "official national allergen guide"
+    },
+    {
+      "evidenceId": "e-vendor",
+      "url": "https://www.sonicdrivein.com/menu/",
+      "authorityTier": "restaurant_linked_vendor",
+      "retrievedAt": "2026-08-11T15:33:19.4520011Z",
+      "purpose": "linked ordering/menu surface"
+    },
+    {
+      "evidenceId": "e-search",
+      "url": "https://www.sonicdrivein.com/nutrition-allergen/",
+      "authorityTier": "restaurant_issued",
+      "retrievedAt": "2026-08-11T15:33:19.4520011Z",
+      "purpose": "targeted search corroboration"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-homepage",
+      "url": "https://www.sonicdrivein.com/",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "brand-wide",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "e-home"
+      ]
+    },
+    {
+      "surfaceId": "official-menu",
+      "url": "https://www.sonicdrivein.com/menu/",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "brand-wide",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected; alcohol excluded",
+      "sourceEvidenceIds": [
+        "e-menu"
+      ]
+    },
+    {
+      "surfaceId": "official-allergen",
+      "url": "https://www.sonicdrivein.com/nutrition-allergen/",
+      "authority": "restaurant",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "brand-wide",
+      "servicePeriod": "current",
+      "current": true,
+      "scopeStatus": "complete",
+      "retrievalOutcome": "inspected",
+      "sourceEvidenceIds": [
+        "e-allergen",
+        "e-pdf"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "mayContainAllergens": [],
+      "allergenSourceType": "unavailable",
+      "currentProductKey": "sonic-menu-catalog",
+      "productCount": 139,
+      "containsAllergens": [],
+      "name": "Sonic current food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "e-menu",
+        "e-pdf"
+      ],
+      "allergenSourceEvidenceIds": [],
+      "boundary": "139 frozen food and nonalcoholic products represented; alcohol-only products excluded"
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "found",
+    "attempts": [
+      {
+        "outcome": "Official menu and nutrition/allergen hub inspected",
+        "class": "official_site",
+        "sourceEvidenceIds": [
+          "e-home",
+          "e-menu",
+          "e-allergen"
+        ],
+        "queryOrLocation": "sonicdrivein.com official homepage, menu navigation, and nutrition/allergen hub",
+        "locationInspected": "https://www.sonicdrivein.com/"
+      },
+      {
+        "outcome": "Official Summer 2026 national allergen guide found and inspected",
+        "class": "official_documents",
+        "sourceEvidenceIds": [
+          "e-pdf"
+        ],
+        "queryOrLocation": "sonicdrivein.com official nutrition, allergen, ingredient, PDF, image, and document surfaces",
+        "locationInspected": "https://www.sonicdrivein.com/nutrition-allergen/"
+      },
+      {
+        "outcome": "Official menu ordering surface inspected; no separate matrix",
+        "class": "linked_vendor",
+        "sourceEvidenceIds": [
+          "e-vendor"
+        ],
+        "queryOrLocation": "Sonic official linked ordering/menu surface and item-detail pages",
+        "locationInspected": "https://www.sonicdrivein.com/menu/"
+      },
+      {
+        "outcome": "Official Sonic nutrition/allergen pages and guide located",
+        "class": "targeted_web_search",
+        "sourceEvidenceIds": [
+          "e-search",
+          "e-pdf"
+        ],
+        "query": "site:sonicdrivein.com allergen OR allergy OR nutrition OR ingredients PDF menu"
+      }
+    ]
+  },
+  "reconciliation": {
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:1percent-white-milk",
+          "2:american-cheese-sliced",
+          "3:asian-style-sweet-chili",
+          "4:bacon",
+          "5:bakery-bun",
+          "6:banana",
+          "7:bbq",
+          "8:big-red",
+          "9:biscuit",
+          "10:blackberry-zero-sugar-syrup",
+          "11:blue-coconut-syrup",
+          "12:blue-raspberry-syrup",
+          "13:blueberry",
+          "14:bottled-water",
+          "15:breaded-chicken-breast",
+          "16:breakfast-sausage-crumbles",
+          "17:breakfast-sausage-patty",
+          "18:brioche-bun",
+          "19:buffalo",
+          "20:bun-oil",
+          "21:burger-patty",
+          "22:canada-dry-ginger-ale",
+          "23:caramel-topping",
+          "24:celery-salt",
+          "25:ched-r-bites",
+          "26:ched-r-peppers",
+          "27:cheddar-cheese-shredded",
+          "28:cheesecake-syrup",
+          "29:cherry-syrup",
+          "30:cherry-zero-sugar-syrup",
+          "31:chocolate-chip-cookie-dough",
+          "32:chocolate-chunk-brownie",
+          "33:chocolate-fudge-topping",
+          "34:coca-cola-zero-sugar",
+          "35:coconut-syrup",
+          "36:coffee-creamer",
+          "37:cold-coffee-concentrate",
+          "38:corn-dog",
+          "39:country-fried-steak",
+          "40:country-gravy",
+          "41:cranberry-syrup",
+          "42:crispy-tenders",
+          "43:croissant",
+          "44:diced-onion",
+          "45:diet-dr-pepper",
+          "46:dill-pickle-chips",
+          "47:dill-pickle-spears",
+          "48:dr-pepper",
+          "49:fanta-orange",
+          "50:french-toast-sticks",
+          "51:fresh-brewed-sweet-tea",
+          "52:fresh-brewed-unsweet-tea",
+          "53:fryer-shortening",
+          "54:garlic-parmesan-ranch",
+          "55:graham-crumbs",
+          "56:grape-jelly",
+          "57:grape-syrup",
+          "58:green-tea-concentrate",
+          "59:grilled-onions",
+          "60:groovy-fries",
+          "61:groovy-sauce",
+          "62:halal-hamburger-patty",
+          "63:halal-hot-dog",
+          "64:hatch-green-chiles",
+          "65:heath-toffee-pieces",
+          "66:hi-c-fruit-punch",
+          "67:hoagie-bun",
+          "68:honey-mustard",
+          "69:hot-chili",
+          "70:hot-chocolate-16-oz",
+          "71:hot-coffee",
+          "72:hot-dog-beef",
+          "73:hot-dog-pork-and-beef",
+          "74:hot-dog-bun",
+          "75:jalapeno-ranch",
+          "76:jalapenos",
+          "77:ketchup",
+          "78:lemon",
+          "79:lemon-juice",
+          "80:lemonade",
+          "81:lettuce",
+          "82:light-mayonnaise",
+          "83:lime",
+          "84:liquid-margarine",
+          "85:mandms-minis-chocolate-candies",
+          "86:mango",
+          "87:mango-zero-sugar-syrup",
+          "88:maraschino-cherries",
+          "89:marinara",
+          "90:mello-yello",
+          "91:mint",
+          "92:minute-maid-apple-juice-box",
+          "93:mozzarella-sticks",
+          "94:onion-rings",
+          "95:oreo-cookie-pieces",
+          "96:passion-fruit",
+          "97:peach",
+          "98:peach-zero-sugar-syrup",
+          "99:peanut-butter-sauce",
+          "100:pepper",
+          "101:philly-steak",
+          "102:plain-slush-base",
+          "103:pork-tenderloin-fritter",
+          "104:potato-bun",
+          "105:powerade",
+          "106:premium-chicken-bites",
+          "107:ranch",
+          "108:raspberry-zero-sugar-syrup",
+          "109:reeses-peanut-butter-cups",
+          "110:salt",
+          "111:saltpepper-blend",
+          "112:sauerkraut",
+          "113:signature-cheese-sauce",
+          "114:simply-orange-juice-bottle-115-fl-oz",
+          "115:sliced-ham",
+          "116:smasher-patty",
+          "117:soft-pretzel-twist",
+          "118:sparkling-water",
+          "119:sport-peppers",
+          "120:sprite-zero-sugar",
+          "121:strawberry-jam",
+          "122:strawberry-topping",
+          "123:sugar-substitute",
+          "124:sun-drop",
+          "125:sweet-cream",
+          "126:sweet-pickle-relish",
+          "127:syrup",
+          "128:texas-toast",
+          "129:tomato",
+          "130:tortilla",
+          "131:tots",
+          "132:tree-top-apple-sauce",
+          "133:turtle-truffle-nut",
+          "134:vanilla-soft-serve-cup",
+          "135:vanilla-syrup",
+          "136:whipped-topping",
+          "137:white-american-cheese-shredded",
+          "138:wildberry",
+          "139:zesty-cheese-sauce"
+        ],
+        "matchedCurrentProductKeys": [
+          "sonic-menu-catalog"
+        ],
+        "disposition": "exact_match",
+        "sourceEvidenceIds": [
+          "e-menu",
+          "e-pdf"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "sourceAuthorityAmbiguous": false,
+    "unsupportedNegativeClaim": false,
+    "restaurantSpecificExtraction": false,
+    "nameOrCategoryCleanup": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "duplicateItems": false,
+    "parserIssue": false,
+    "staleItems": false,
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "catalogDrift": false,
+    "newItems": false
+  },
+  "recommendedLane": "verify",
+  "outcome": "researched"
+}

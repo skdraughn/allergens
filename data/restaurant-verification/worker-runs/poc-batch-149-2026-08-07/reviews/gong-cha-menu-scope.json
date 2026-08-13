@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-149-2026-08-07",
+  "restaurantId": "gong-cha",
+  "reviewType": "binding_menu_scope_and_source_authority_resolution",
+  "model": {"id": "gpt-5.6-sol", "role": "sol_reviewer"},
+  "reviewedKeys": [],
+  "evidence": [
+    {"evidenceId": "official-products-live", "url": "https://www.gong-cha.com/usa/us-en/our-products", "authorityTier": "restaurant_issued", "finding": "Nine named drinks coexist with additional product categories and location-dependent availability; this is a partial showcase."},
+    {"evidenceId": "official-store-finder-live", "url": "https://www.gong-cha.com/usa/us-en/store-finder", "authorityTier": "restaurant_issued", "finding": "The official ordering flow requires selecting a concrete state and store."},
+    {"evidenceId": "nutritionix-packet-authority", "url": "https://www.nutritionix.com/gong-cha/menu/premium", "authorityTier": "third_party", "finding": "No official linkage, effective date, or location scope establishes the 205 rows as a complete current menu."},
+    {"evidenceId": "official-cross-contact-warning", "url": "https://www.gong-cha.com/usa/us-en/our-products", "authorityTier": "restaurant_issued", "finding": "Broad warning covers possible milk, peanut, tree-nut, soy, and gluten contact."}
+  ],
+  "resolution": {
+    "binding": true,
+    "outcome": "blocked_location_specific_menu_required",
+    "identityResolution": {"restaurantId": "gong-cha", "locationId": null, "identityConfirmed": true, "storeIdentityClaimed": false},
+    "menuScopeResolution": {"nineNameSurfaceClassification": "official_partial_product_showcase", "nineNamesConstituteCompleteUsaCatalog": false, "locationSpecificOrderingRequiredForCompleteCurrentCatalog": true},
+    "sourceAuthorityResolution": {"nutritionixProductCount": 205, "mayBeTreatedAsCurrentCompleteMenu": false, "permittedUse": "reconciliation lead or historical third-party reference only"},
+    "catalogAction": {"status": "blocked", "requiredAction": "Bind a concrete USA store and capture its official-linked complete ordering catalog before verification."},
+    "allergenSafetyAction": {"preserveBroadOfficialWarning": true, "warningScope": "restaurant_level_all_bubble_tea_products", "mayContainOrCrossContact": ["milk", "peanut", "tree-nut", "soy", "gluten"], "unsupportedNegativesPermitted": false},
+    "safetySourceAuthorityConflictRemains": false
+  },
+  "remainingSolSignals": [{"signal": "menu_scope", "status": "blocked_pending_concrete_location"}],
+  "validation": {"valid": true, "errors": [], "frozenBaselineItemCount": 205, "nineNameNationalCompletenessEstablished": false, "nutritionixOfficialLinkageEstablished": false, "locationSpecificCatalogRequired": true, "broadOfficialCrossContactWarningProtected": true, "codexVerifiedClaimed": false},
+  "coordinatorRecommendation": "Block until a concrete store-specific official ordering catalog is captured."
+}

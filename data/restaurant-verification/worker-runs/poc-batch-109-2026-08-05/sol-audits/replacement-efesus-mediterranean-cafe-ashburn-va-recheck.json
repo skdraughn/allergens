@@ -1,0 +1,71 @@
+{
+  "restaurantId": "replacement-efesus-mediterranean-cafe-ashburn-va",
+  "runId": "poc-batch-109-2026-08-05-replacement-efesus-mediterranean-cafe-ashburn-va-sol-recheck",
+  "auditType": "sampled_failure_focused_repair_recheck",
+  "decision": "pass",
+  "reviewedChecks": [
+    {
+      "check": "current_menu_scope",
+      "status": "pass",
+      "evidenceRefs": [
+        "result.currentProducts",
+        "result.menuSurfaces[official-food-menu].currentProductKeys",
+        "result.reconciliation.items",
+        "https://efesuscafe.com/food-menu lines 3-350"
+      ]
+    },
+    {
+      "check": "direct_positive_preservation_and_source_authority",
+      "status": "pass",
+      "evidenceRefs": [
+        "data/restaurant-verification/item-checks/replacement-efesus-mediterranean-cafe-ashburn-va.jsonl",
+        "result.currentProducts[*].containsAllergens",
+        "result.currentProducts[*].allergenSourceEvidenceIds",
+        "result.reconciliation.items[auditItemKey=45:seasonal-mix-vegetable]",
+        "result.reconciliation.items[auditItemKey=58:white-chicken-sauteed-with-vegetables-in-creamy-sauce-and-served-with-white-rice]"
+      ]
+    },
+    {
+      "check": "official_documents_and_targeted_web_search_evidence",
+      "status": "pass",
+      "evidenceRefs": [
+        "result.matrixSearch.attempts[official_documents]",
+        "result.matrixSearch.attempts[targeted_web_search]"
+      ]
+    },
+    {
+      "check": "unsupported_negative_allergen_claims",
+      "status": "pass",
+      "evidenceRefs": [
+        "result.currentProducts[*].allergenSourceType",
+        "result.currentProducts[*].containsAllergens",
+        "result.currentProducts[*].mayContainAllergens"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "severity": "none",
+      "rule": "current_menu_scope",
+      "finding": "The repaired result contains the 54 genuine official-menu products, including Homemade Bread. The five homepage/party marketing headings are reconciled as artifacts, the three description fragments are reconciled as stale, and the complete official-food-menu surface contains exactly the same 54 product keys."
+    },
+    {
+      "severity": "none",
+      "rule": "direct_positive_preservation_and_source_authority",
+      "finding": "Twenty-six genuine products now preserve restaurant-ingredient positives with ev-food-menu authority. The two positive-bearing frozen description artifacts do not justify standalone products: the creamy-sauce description is consolidated into Efesus Chicken with supported milk retained, while the bare Seasonal mix vegetable description supplies no official ingredient basis for its prior milk/wheat/gluten/tree-nut array. No supported direct positive is discarded."
+    },
+    {
+      "severity": "none",
+      "rule": "required_official_allergen_search",
+      "finding": "official_documents now records the official-domain document/PDF/image/download inspection terms, inspected URLs, outcome, and evidence IDs. targeted_web_search records the full allergen/allergy/nutrition/ingredients/PDF/menu term set, the search URL, outcome, and an official-domain evidence ID. All four required classes are adequately recorded for accurately_unavailable status."
+    },
+    {
+      "severity": "none",
+      "rule": "unsupported_negative_claims",
+      "finding": "Products without supported direct positives remain unavailable rather than asserting allergen absence; no unsupported negative claim is present."
+    }
+  ],
+  "rationale": "Binding focused recheck passes. The repair resolves every original Efesus audit finding: the 54-product boundary is truthful, supported restaurant-ingredient positives are retained on genuine products, all four official-allergen search classes are adequately evidenced, and no unsupported negative remains. The coordinator may proceed to normal terminal validation after completing the required prior-20 sampled-failure remediation; this pass does not by itself authorize verification while those failures remain open.",
+  "reviewedAt": "2026-08-05T22:28:00Z",
+  "model": "gpt-5.6-sol"
+}

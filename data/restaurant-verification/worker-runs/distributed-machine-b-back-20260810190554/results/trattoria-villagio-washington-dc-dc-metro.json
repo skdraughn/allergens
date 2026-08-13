@@ -1,0 +1,3792 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-b-back-20260810190554",
+  "restaurantId": "trattoria-villagio-washington-dc-dc-metro",
+  "name": "Trattoria Villagio",
+  "locationId": "washington-dc",
+  "domain": "trattoriavillagio.com",
+  "packetValidation": {
+    "baselineItemCount": 144,
+    "baselineFingerprint": "6faaedd6fef4b52da6775add2ba3aa41db900436d785d169cc7306ef610bfd0f",
+    "itemChecksPath": "data/restaurant-verification/item-checks/trattoria-villagio-washington-dc-dc-metro.jsonl"
+  },
+  "identity": {
+    "name": "Trattoria Villagio",
+    "location": "Clifton, Virginia; Washington DC metro",
+    "domain": "trattoriavillagio.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "ev-official-home",
+      "ev-official-menu"
+    ]
+  },
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-menu",
+      "url": "https://trattoriavillagio.com/menu",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "Clifton, VA / DC metro",
+      "servicePeriods": [
+        "brunch",
+        "lunch",
+        "dinner"
+      ],
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-official-menu"
+      ]
+    },
+    {
+      "surfaceId": "official-cocktails",
+      "url": "https://trattoriavillagio.com/menu/cocktails",
+      "authorityTier": "restaurant_issued",
+      "locationScope": "Clifton, VA / DC metro",
+      "servicePeriods": [
+        "cocktails"
+      ],
+      "current": true,
+      "scopeStatus": "complete",
+      "alcoholOnly": true,
+      "sourceEvidenceIds": [
+        "ev-official-cocktails"
+      ]
+    },
+    {
+      "surfaceId": "toast-ordering",
+      "url": "https://order.toasttab.com/online/trattoria-villagio",
+      "authorityTier": "restaurant_linked_vendor",
+      "locationScope": "Trattoria Villagio",
+      "servicePeriods": [
+        "all day"
+      ],
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-toast-menu"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "evidenceId": "ev-official-home",
+      "url": "https://trattoriavillagio.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity and official homepage",
+      "retrievedAt": "2026-08-10T19:07:10.706Z"
+    },
+    {
+      "evidenceId": "ev-official-menu",
+      "url": "https://trattoriavillagio.com/menu",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current food menu surfaces",
+      "retrievedAt": "2026-08-10T19:07:10.707Z"
+    },
+    {
+      "evidenceId": "ev-official-cocktails",
+      "url": "https://trattoriavillagio.com/menu/cocktails",
+      "authorityTier": "restaurant_issued",
+      "purpose": "current beverage menu surface; alcohol-only items excluded",
+      "retrievedAt": "2026-08-10T19:07:10.707Z"
+    },
+    {
+      "evidenceId": "ev-toast-menu",
+      "url": "https://order.toasttab.com/online/trattoria-villagio",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "linked ordering menu and current product boundary",
+      "retrievedAt": "2026-08-10T19:07:10.707Z"
+    },
+    {
+      "evidenceId": "ev-targeted-search",
+      "url": "https://www.google.com/search?q=site%3Atrattoriavillagio.com+allergen+OR+allergy+OR+nutrition+OR+ingredients",
+      "authorityTier": "third_party",
+      "purpose": "targeted official allergen search",
+      "retrievedAt": "2026-08-10T19:07:10.707Z"
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "outcome": "not_found",
+        "url": "https://trattoriavillagio.com/",
+        "query": "site:trattoriavillagio.com allergen allergy nutrition ingredients",
+        "locationInspected": "official homepage and menu navigation",
+        "sourceEvidenceIds": [
+          "ev-official-home",
+          "ev-official-menu"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "outcome": "not_found",
+        "url": "https://trattoriavillagio.com/menu",
+        "query": "site:trattoriavillagio.com (allergen OR allergy OR nutrition OR ingredients OR PDF)",
+        "locationInspected": "official menu, PDF/document and downloadable surfaces",
+        "sourceEvidenceIds": [
+          "ev-official-menu"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "outcome": "not_found",
+        "url": "https://order.toasttab.com/online/trattoria-villagio",
+        "query": "Toast Trattoria Villagio allergen allergy nutrition ingredients",
+        "locationInspected": "Toast ordering menu",
+        "sourceEvidenceIds": [
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "outcome": "not_found",
+        "query": "Trattoria Villagio allergen allergy nutrition ingredients PDF menu",
+        "sourceEvidenceIds": [
+          "ev-targeted-search"
+        ]
+      }
+    ]
+  },
+  "currentProducts": [
+    {
+      "currentProductKey": "12-12-and-12-specialty-pizza",
+      "name": "12\" 1/2 & 1/2 Specialty Pizza",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "12-4-seasons",
+      "name": "12\" 4 Seasons",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "12-byo-pizza",
+      "name": "12\" BYO Pizza",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "12-cheese",
+      "name": "12\" Cheese",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "12-genovese",
+      "name": "12\" Genovese",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "12-margherita",
+      "name": "12\" Margherita",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "12-pepperoni",
+      "name": "12\" Pepperoni",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "12-pepperoni-arrabiata",
+      "name": "12\" Pepperoni Arrabiata",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "12-pesto-fig",
+      "name": "12\" Pesto Fig",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "12-pizza",
+      "name": "12\" Pizza",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "12-romana",
+      "name": "12\" Romana",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "12-the-villagio",
+      "name": "12\" The Villagio",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "12-vesuvio",
+      "name": "12\" Vesuvio",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "16-oz-steak-with-garlic-herb-butter-and-served-with-rosemary-potatoes",
+      "name": "16 oz steak with garlic herb butter and served with rosemary potatoes",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "16-12-and-12-pizza",
+      "name": "16\" 1/2 & 1/2 Pizza",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "16-4-seasons",
+      "name": "16\" 4 Seasons",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "16-byo-pizza",
+      "name": "16\" BYO Pizza",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "16-cheese",
+      "name": "16\" Cheese",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "16-genovese",
+      "name": "16\" Genovese",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "16-margherita",
+      "name": "16\" Margherita",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "16-pepperoni",
+      "name": "16\" Pepperoni",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "16-pepperoni-arrabiata",
+      "name": "16\" Pepperoni Arrabiata",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "16-pesto-fig",
+      "name": "16\" Pesto Fig",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "16-romana",
+      "name": "16\" Romana",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "16-the-villagio",
+      "name": "16\" The Villagio",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "16-vesuvio",
+      "name": "16\" Vesuvio",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "alfredo-sauce",
+      "name": "Alfredo Sauce",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "all-natural-smoked-pepper-crusted-goodness",
+      "name": "All-natural smoked pepper-crusted goodness",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "anchovies",
+      "name": "Anchovies",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "apple-strudel",
+      "name": "Apple Strudel",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "arancini",
+      "name": "Arancini",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "baked-meatballs",
+      "name": "Baked Meatballs",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "basil-pesto-sauce",
+      "name": "Basil Pesto Sauce",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "basque-cheesecake",
+      "name": "Basque Cheesecake",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "bolognese-sauce",
+      "name": "Bolognese Sauce",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "bruschetta-trio",
+      "name": "Bruschetta Trio",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "bucatini-pasta-1-lb",
+      "name": "Bucatini Pasta 1 lb",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "bucatini-pasta-12-lb",
+      "name": "Bucatini Pasta 1/2 lb",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "byo-sandwich",
+      "name": "BYO Sandwich",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "cannoli",
+      "name": "Cannoli",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "caprese-salad",
+      "name": "Caprese Salad",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "caprese-sandwich",
+      "name": "Caprese Sandwich",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "carpaccio",
+      "name": "Carpaccio",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "cavatelli-arrabbiata",
+      "name": "Cavatelli Arrabbiata",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "cheese-select",
+      "name": "Cheese - Select",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "chefs-board",
+      "name": "Chef's Board",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "chefs-daily-creation",
+      "name": "Chef's daily creation",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "chicken-caesar-wrap-lv",
+      "name": "Chicken Caesar Wrap LV",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "chicken-marsala",
+      "name": "Chicken Marsala",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "chicken-milanese",
+      "name": "Chicken Milanese",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "chicken-parmesan",
+      "name": "Chicken Parmesan",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "chilled-asparagus",
+      "name": "Chilled Asparagus",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "filet-mignon",
+      "name": "Filet Mignon",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "freshly-baked-cinnamon-roll-topped-with-a-fresh-mascarpone-cream-cheese-glaze",
+      "name": "Freshly baked cinnamon roll topped with a fresh mascarpone cream cheese glaze",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "fried-calamari",
+      "name": "Fried Calamari",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "fried-calamari-served-with-homemade-marinara-and-aioli",
+      "name": "Fried calamari served with homemade marinara and aioli",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "fried-chicken",
+      "name": "Fried Chicken",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "garlic-truffle-bread",
+      "name": "Garlic Truffle Bread",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "grilled-asparagus",
+      "name": "Grilled Asparagus",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "grilled-summer-vegetables",
+      "name": "Grilled Summer Vegetables",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "herb-grilled-ribeye",
+      "name": "Herb Grilled Ribeye",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "homemade-ribbon-pasta-tossed-with-a-traditional-bolognese-meat-sauce",
+      "name": "Homemade ribbon pasta tossed with a traditional Bolognese meat sauce",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "italian-vanilla-bean-custard-topped-with-seasonal-fruit-compote",
+      "name": "Italian vanilla bean custard topped with seasonal fruit compote",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "italiano-sandwich",
+      "name": "Italiano Sandwich",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "kids-cheese-ravioli",
+      "name": "Kids Cheese Ravioli",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "kids-chicken-tenders",
+      "name": "Kids Chicken Tenders",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "kids-grilled-chicken-tv",
+      "name": "Kids Grilled Chicken TV",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "kids-mac-and-cheese-tv",
+      "name": "Kids Mac & Cheese TV",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "kids-penne-pasta",
+      "name": "Kids Penne Pasta",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "kids-petite-salmon",
+      "name": "Kids Petite Salmon",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "kids-spaghetti-and-meatball-tv",
+      "name": "Kids Spaghetti & Meatball TV",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "kids-steak",
+      "name": "Kids Steak",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "lg-caesar-salad-tv",
+      "name": "Lg Caesar Salad TV",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "lg-fennel-orange-salad",
+      "name": "Lg Fennel Orange Salad",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "lg-italian-chopped-salad",
+      "name": "Lg Italian Chopped Salad",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "lg-panzanella-salad",
+      "name": "Lg Panzanella Salad",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "lg-trattoria-tuscan-chopped-salad",
+      "name": "Lg Trattoria Tuscan Chopped Salad",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "lg-villagio-salad",
+      "name": "Lg Villagio Salad",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "lobster-ravioli",
+      "name": "Lobster Ravioli",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "local-oysters-east-coastand-beyond",
+      "name": "Local Oysters, East Coast…and beyond",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "mac-and-cheese-pasta-1-lb",
+      "name": "Mac & Cheese Pasta 1 lb",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "mac-and-cheese-pasta-12-lb",
+      "name": "Mac & Cheese Pasta 1/2 lb",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "mama-jeans",
+      "name": "Mama Jean's",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "marinara-sauce",
+      "name": "Marinara Sauce",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "market-fresh-pasta-and-sauces",
+      "name": "Market Fresh Pasta & Sauces",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "meatball-wrapper-lv",
+      "name": "Meatball Wrapper LV",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "mediterrranean-branzino",
+      "name": "Mediterrranean Branzino",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "mocha-mousse-cake",
+      "name": "Mocha Mousse Cake",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "mussels",
+      "name": "Mussels",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "pappardelle-pasta-1-lb",
+      "name": "Pappardelle Pasta 1 lb",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "pappardelle-pasta-12-lb",
+      "name": "Pappardelle Pasta 1/2 lb",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "parmigiana-sandwich",
+      "name": "Parmigiana Sandwich",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "pasta-al-limone",
+      "name": "Pasta al Limone",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "pastry-shell-filled-with-ricotta-and-sprinkled-with-chocolate-chips",
+      "name": "Pastry shell filled with ricotta and sprinkled with chocolate chips",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "penne-meatball-crush",
+      "name": "Penne Meatball Crush",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "penne-pasta-1-lb",
+      "name": "Penne Pasta 1 lb",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "penne-pasta-12-lb",
+      "name": "Penne Pasta 1/2 lb",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "pig-in-a-blanket",
+      "name": "Pig in a Blanket",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "pistachio-cake",
+      "name": "Pistachio Cake",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "red-skin-garlic-mashed-potatoes",
+      "name": "Red Skin Garlic Mashed Potatoes",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "rigatoni-pasta-1-lb",
+      "name": "Rigatoni Pasta 1 lb",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "rigatoni-pasta-12-lb",
+      "name": "Rigatoni Pasta 1/2 lb",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "roasted-fingerling-potatoes",
+      "name": "Roasted Fingerling Potatoes",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "rotini-pasta-1-lb",
+      "name": "Rotini Pasta 1 lb",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "rotini-pasta-12-lb",
+      "name": "Rotini Pasta 1/2 lb",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "saffron-risotto",
+      "name": "Saffron Risotto",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "salmon-piccata",
+      "name": "Salmon Piccata",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "salmon-tv",
+      "name": "Salmon TV",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "sauteed-mixed-mushrooms",
+      "name": "Sauteed Mixed Mushrooms",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "scallops",
+      "name": "Scallops",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "scroll-greater",
+      "name": "scroll >",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "seasonal-vegetables",
+      "name": "Seasonal Vegetables",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "seven-layer-chocolate-cake",
+      "name": "Seven Layer Chocolate Cake",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "short-rib-ragu",
+      "name": "Short Rib Ragu",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "shrimp-badda-bing",
+      "name": "Shrimp Badda Bing",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "shrimp-scampi-toast",
+      "name": "Shrimp Scampi Toast",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "shrimp-tv",
+      "name": "Shrimp TV",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "sm-caesar-salad-tv",
+      "name": "Sm Caesar Salad TV",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "sm-fennel-orange-salad",
+      "name": "Sm Fennel Orange Salad",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "sm-italian-chopped-salad",
+      "name": "Sm Italian Chopped Salad",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "sm-panzanella-salad",
+      "name": "Sm Panzanella Salad",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "sm-trattoria-tuscan-chopped-salad",
+      "name": "Sm Trattoria Tuscan Chopped Salad",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "sm-villagio-salad",
+      "name": "Sm Villagio Salad",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "small-fruit-bowl",
+      "name": "Small Fruit Bowl",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "soup-of-the-day-bowl",
+      "name": "Soup of the Day - Bowl",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "soup-of-the-day-cup",
+      "name": "Soup of the Day - Cup",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "spaghetti-a-la-pomodoro",
+      "name": "Spaghetti a la Pomodoro",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "spaghetti-carbonara",
+      "name": "Spaghetti Carbonara",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "spaghetti-pasta-1-lb",
+      "name": "Spaghetti Pasta 1 lb",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "spaghetti-pasta-12-lb",
+      "name": "Spaghetti Pasta 1/2 lb",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "spicy-seafood-pasta",
+      "name": "Spicy Seafood Pasta",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "steak-tv",
+      "name": "Steak TV",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "stracciatella-dip",
+      "name": "Stracciatella Dip",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "stuffed-gnocchi",
+      "name": "Stuffed Gnocchi",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "tagliatelle-bolognese",
+      "name": "Tagliatelle Bolognese",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "tagliatelle-pasta-1-lb",
+      "name": "Tagliatelle Pasta 1 lb",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "tagliatelle-pasta-12-lb",
+      "name": "Tagliatelle Pasta 1/2 lb",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "tba-sandwich",
+      "name": "TBA Sandwich",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "tiramisu",
+      "name": "Tiramisu",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "tommys-pocket",
+      "name": "Tommy's Pocket",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "villagio-lasagna",
+      "name": "Villagio Lasagna",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "villagio-shrimp-scampi",
+      "name": "Villagio Shrimp Scampi",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "wimpy-skippy",
+      "name": "Wimpy Skippy",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    },
+    {
+      "currentProductKey": "zeppole",
+      "name": "Zeppole",
+      "category": "Pizza",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": "Current menu presentation; official item-level allergen matrix not found."
+    }
+  ],
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:12-12-and-12-specialty-pizza",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "12-12-and-12-specialty-pizza"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "2:12-4-seasons",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "12-4-seasons"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "3:12-byo-pizza",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "12-byo-pizza"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "4:12-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "12-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "5:12-genovese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "12-genovese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "6:12-margherita",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "12-margherita"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "7:12-pepperoni",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "12-pepperoni"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "8:12-pepperoni-arrabiata",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "12-pepperoni-arrabiata"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "9:12-pesto-fig",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "12-pesto-fig"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "10:12-pizza",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "12-pizza"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "11:12-romana",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "12-romana"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "12:12-the-villagio",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "12-the-villagio"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "13:12-vesuvio",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "12-vesuvio"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "14:16-oz-steak-with-garlic-herb-butter-and-served-with-rosemary-potatoes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "16-oz-steak-with-garlic-herb-butter-and-served-with-rosemary-potatoes"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "15:16-12-and-12-pizza",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "16-12-and-12-pizza"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "16:16-4-seasons",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "16-4-seasons"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "17:16-byo-pizza",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "16-byo-pizza"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "18:16-cheese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "16-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "19:16-genovese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "16-genovese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "20:16-margherita",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "16-margherita"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "21:16-pepperoni",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "16-pepperoni"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "22:16-pepperoni-arrabiata",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "16-pepperoni-arrabiata"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "23:16-pesto-fig",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "16-pesto-fig"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "24:16-romana",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "16-romana"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "25:16-the-villagio",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "16-the-villagio"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "26:16-vesuvio",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "16-vesuvio"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "27:alfredo-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "alfredo-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "28:all-natural-smoked-pepper-crusted-goodness",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "all-natural-smoked-pepper-crusted-goodness"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "29:anchovies",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "anchovies"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "30:apple-strudel",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "apple-strudel"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "31:arancini",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "arancini"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "32:baked-meatballs",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "baked-meatballs"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "33:basil-pesto-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "basil-pesto-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "34:basque-cheesecake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "basque-cheesecake"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "35:bolognese-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "bolognese-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "36:bruschetta-trio",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "bruschetta-trio"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "37:bucatini-pasta-1-lb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "bucatini-pasta-1-lb"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "38:bucatini-pasta-12-lb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "bucatini-pasta-12-lb"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "39:byo-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "byo-sandwich"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "40:cannoli",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "cannoli"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "41:caprese-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "caprese-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "42:caprese-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "caprese-sandwich"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "43:carpaccio",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "carpaccio"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "44:cavatelli-arrabbiata",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "cavatelli-arrabbiata"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "45:cheese-select",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "cheese-select"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "46:chefs-board",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chefs-board"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "47:chefs-daily-creation",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chefs-daily-creation"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "48:chicken-caesar-wrap-lv",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken-caesar-wrap-lv"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "49:chicken-marsala",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken-marsala"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "50:chicken-milanese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken-milanese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "51:chicken-parmesan",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken-parmesan"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "52:chilled-asparagus",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chilled-asparagus"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "53:filet-mignon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "filet-mignon"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "54:freshly-baked-cinnamon-roll-topped-with-a-fresh-mascarpone-cream-cheese-glaze",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "freshly-baked-cinnamon-roll-topped-with-a-fresh-mascarpone-cream-cheese-glaze"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "55:fried-calamari",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "fried-calamari"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "56:fried-calamari-served-with-homemade-marinara-and-aioli",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "fried-calamari-served-with-homemade-marinara-and-aioli"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "57:fried-chicken",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "fried-chicken"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "58:garlic-truffle-bread",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "garlic-truffle-bread"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "59:grilled-asparagus",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "grilled-asparagus"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "60:grilled-summer-vegetables",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "grilled-summer-vegetables"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "61:herb-grilled-ribeye",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "herb-grilled-ribeye"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "62:homemade-ribbon-pasta-tossed-with-a-traditional-bolognese-meat-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "homemade-ribbon-pasta-tossed-with-a-traditional-bolognese-meat-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "63:italian-vanilla-bean-custard-topped-with-seasonal-fruit-compote",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "italian-vanilla-bean-custard-topped-with-seasonal-fruit-compote"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "64:italiano-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "italiano-sandwich"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "65:kids-cheese-ravioli",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kids-cheese-ravioli"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "66:kids-chicken-tenders",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kids-chicken-tenders"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "67:kids-grilled-chicken-tv",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kids-grilled-chicken-tv"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "68:kids-mac-and-cheese-tv",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kids-mac-and-cheese-tv"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "69:kids-penne-pasta",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kids-penne-pasta"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "70:kids-petite-salmon",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kids-petite-salmon"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "71:kids-spaghetti-and-meatball-tv",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kids-spaghetti-and-meatball-tv"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "72:kids-steak",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "kids-steak"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "73:lg-caesar-salad-tv",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lg-caesar-salad-tv"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "74:lg-fennel-orange-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lg-fennel-orange-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "75:lg-italian-chopped-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lg-italian-chopped-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "76:lg-panzanella-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lg-panzanella-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "77:lg-trattoria-tuscan-chopped-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lg-trattoria-tuscan-chopped-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "78:lg-villagio-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lg-villagio-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "79:lobster-ravioli",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lobster-ravioli"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "80:local-oysters-east-coastand-beyond",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "local-oysters-east-coastand-beyond"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "81:mac-and-cheese-pasta-1-lb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mac-and-cheese-pasta-1-lb"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "82:mac-and-cheese-pasta-12-lb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mac-and-cheese-pasta-12-lb"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "83:mama-jeans",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mama-jeans"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "84:marinara-sauce",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "marinara-sauce"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "85:market-fresh-pasta-and-sauces",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "market-fresh-pasta-and-sauces"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "86:meatball-wrapper-lv",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "meatball-wrapper-lv"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "87:mediterrranean-branzino",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mediterrranean-branzino"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "88:mocha-mousse-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mocha-mousse-cake"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "89:mussels",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mussels"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "90:pappardelle-pasta-1-lb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pappardelle-pasta-1-lb"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "91:pappardelle-pasta-12-lb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pappardelle-pasta-12-lb"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "92:parmigiana-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "parmigiana-sandwich"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "93:pasta-al-limone",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pasta-al-limone"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "94:pastry-shell-filled-with-ricotta-and-sprinkled-with-chocolate-chips",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pastry-shell-filled-with-ricotta-and-sprinkled-with-chocolate-chips"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "95:penne-meatball-crush",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "penne-meatball-crush"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "96:penne-pasta-1-lb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "penne-pasta-1-lb"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "97:penne-pasta-12-lb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "penne-pasta-12-lb"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "98:pig-in-a-blanket",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pig-in-a-blanket"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "99:pistachio-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "pistachio-cake"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "100:red-skin-garlic-mashed-potatoes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "red-skin-garlic-mashed-potatoes"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "101:rigatoni-pasta-1-lb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rigatoni-pasta-1-lb"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "102:rigatoni-pasta-12-lb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rigatoni-pasta-12-lb"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "103:roasted-fingerling-potatoes",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "roasted-fingerling-potatoes"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "104:rotini-pasta-1-lb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rotini-pasta-1-lb"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "105:rotini-pasta-12-lb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "rotini-pasta-12-lb"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "106:saffron-risotto",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "saffron-risotto"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "107:salmon-piccata",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "salmon-piccata"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "108:salmon-tv",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "salmon-tv"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "109:sauteed-mixed-mushrooms",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sauteed-mixed-mushrooms"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "110:scallops",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "scallops"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "111:scroll-greater",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "scroll-greater"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "112:seasonal-vegetables",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "seasonal-vegetables"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "113:seven-layer-chocolate-cake",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "seven-layer-chocolate-cake"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "114:short-rib-ragu",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "short-rib-ragu"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "115:shrimp-badda-bing",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "shrimp-badda-bing"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "116:shrimp-scampi-toast",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "shrimp-scampi-toast"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "117:shrimp-tv",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "shrimp-tv"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "118:sm-caesar-salad-tv",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sm-caesar-salad-tv"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "119:sm-fennel-orange-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sm-fennel-orange-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "120:sm-italian-chopped-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sm-italian-chopped-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "121:sm-panzanella-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sm-panzanella-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "122:sm-trattoria-tuscan-chopped-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sm-trattoria-tuscan-chopped-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "123:sm-villagio-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "sm-villagio-salad"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "124:small-fruit-bowl",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "small-fruit-bowl"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "125:soup-of-the-day-bowl",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "soup-of-the-day-bowl"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "126:soup-of-the-day-cup",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "soup-of-the-day-cup"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "127:spaghetti-a-la-pomodoro",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "spaghetti-a-la-pomodoro"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "128:spaghetti-carbonara",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "spaghetti-carbonara"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "129:spaghetti-pasta-1-lb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "spaghetti-pasta-1-lb"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "130:spaghetti-pasta-12-lb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "spaghetti-pasta-12-lb"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "131:spicy-seafood-pasta",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "spicy-seafood-pasta"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "132:steak-tv",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "steak-tv"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "133:stracciatella-dip",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "stracciatella-dip"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "134:stuffed-gnocchi",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "stuffed-gnocchi"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "135:tagliatelle-bolognese",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tagliatelle-bolognese"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "136:tagliatelle-pasta-1-lb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tagliatelle-pasta-1-lb"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "137:tagliatelle-pasta-12-lb",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tagliatelle-pasta-12-lb"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "138:tba-sandwich",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tba-sandwich"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "139:tiramisu",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tiramisu"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "140:tommys-pocket",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tommys-pocket"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "141:villagio-lasagna",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "villagio-lasagna"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "142:villagio-shrimp-scampi",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "villagio-shrimp-scampi"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "143:wimpy-skippy",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "wimpy-skippy"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      },
+      {
+        "auditItemKey": "144:zeppole",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "zeppole"
+        ],
+        "sourceEvidenceIds": [
+          "ev-official-menu",
+          "ev-toast-menu"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "restaurantLevelAllergenEvidence": [],
+  "riskSignals": [
+    {
+      "type": "cross_contact",
+      "status": "unavailable",
+      "description": "No official cross-contact statement found; shared kitchen risk cannot be ruled out.",
+      "sourceEvidenceIds": [
+        "ev-official-menu",
+        "ev-toast-menu"
+      ]
+    }
+  ],
+  "outcome": "researched",
+  "recommendedLane": "verify"
+}

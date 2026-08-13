@@ -1,0 +1,375 @@
+{
+  "schemaVersion": 1,
+  "batchId": "distributed-machine-a-front-20260811121042",
+  "restaurantId": "chain-ledo-pizza",
+  "packetValidation": {
+    "baselineItemCount": 142,
+    "baselineFingerprint": "46ed114398085cea9bf73e1cd9eba1648943c401968094f7448fb9dadbba8d65",
+    "itemChecksRead": 142,
+    "restaurantIdMatched": true
+  },
+  "identity": {
+    "status": "confirmed",
+    "name": "Ledo Pizza",
+    "location": "3472 Olney Laytonsville Road, Olney, MD 20832",
+    "locationId": "dc-metro",
+    "domain": "ledopizza.com",
+    "officialHomepage": "https://ledopizza.com/store/md-olney/",
+    "sourceEvidenceIds": [
+      "ev-home",
+      "ev-faq"
+    ]
+  },
+  "sources": [
+    {
+      "id": "ev-home",
+      "url": "https://ledopizza.com/store/md-olney/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official Olney identity and current food/nonalcoholic menu",
+      "retrievedAt": "2026-08-11T12:15:00.000Z"
+    },
+    {
+      "id": "ev-faq",
+      "url": "https://ledopizza.com/about/faq/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official allergy and cross-contact guidance",
+      "retrievedAt": "2026-08-11T12:15:00.000Z"
+    },
+    {
+      "id": "ev-nutrition",
+      "url": "https://ledopizza.com/nutrition/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "official nutrition/document surface inspected",
+      "retrievedAt": "2026-08-11T12:15:00.000Z"
+    },
+    {
+      "id": "ev-vendor",
+      "url": "https://order.ledopizza.com/api/vendors/ledo-pizza-olney",
+      "authorityTier": "restaurant_linked_vendor",
+      "purpose": "Olney linked ordering catalog and baseline source surface",
+      "retrievedAt": "2026-08-11T12:15:00.000Z"
+    },
+    {
+      "id": "ev-search",
+      "url": "https://www.google.com/search?q=site%3Aledopizza.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+PDF+menu",
+      "authorityTier": "third_party",
+      "purpose": "targeted official-domain allergen search",
+      "retrievedAt": "2026-08-11T12:15:00.000Z"
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-olney-menu",
+      "url": "https://ledopizza.com/store/md-olney/",
+      "authority": "restaurant_issued",
+      "locationScope": "Olney, MD",
+      "servicePeriod": "all published periods",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-home"
+      ]
+    },
+    {
+      "surfaceId": "official-nutrition",
+      "url": "https://ledopizza.com/nutrition/",
+      "authority": "restaurant_issued",
+      "locationScope": "chain-wide/supporting",
+      "servicePeriod": "all published periods",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-nutrition"
+      ]
+    },
+    {
+      "surfaceId": "olney-linked-ordering-api",
+      "url": "https://order.ledopizza.com/api/vendors/ledo-pizza-olney",
+      "authority": "restaurant_linked_vendor",
+      "locationScope": "Olney, MD",
+      "servicePeriod": "ordering hours",
+      "current": true,
+      "scopeStatus": "complete",
+      "sourceEvidenceIds": [
+        "ev-vendor"
+      ]
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "ledo-olney-menu-catalog",
+      "name": "Current Ledo Pizza Olney food and nonalcoholic menu catalog",
+      "sourceEvidenceIds": [
+        "ev-home",
+        "ev-vendor"
+      ],
+      "containsAllergens": [],
+      "mayContainAllergens": [],
+      "allergenSourceEvidenceIds": [],
+      "allergenSourceType": "unavailable",
+      "notes": [
+        "Catalog boundary includes current food and nonalcoholic orderable items; alcohol-only presentations and section headings are excluded."
+      ]
+    }
+  ],
+  "matrixSearch": {
+    "status": "accurately_unavailable",
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "attempts": [
+      {
+        "class": "official_site",
+        "queryOrLocation": "Official homepage, Olney location page, menu navigation and FAQ",
+        "urlsInspected": [
+          "https://ledopizza.com/",
+          "https://ledopizza.com/store/md-olney/",
+          "https://ledopizza.com/about/faq/"
+        ],
+        "outcome": "No complete item allergen matrix located; FAQ gives general allergy guidance only",
+        "sourceEvidenceIds": [
+          "ev-home",
+          "ev-faq"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "queryOrLocation": "Official nutrition page, PDFs, downloadable documents, images, sitemap and FAQ",
+        "urlsInspected": [
+          "https://ledopizza.com/nutrition/",
+          "https://ledopizza.com/vegetarian-menu/",
+          "https://ledopizza.com/about/faq/"
+        ],
+        "outcome": "Nutrition/menu documents inspected; no complete allergen or ingredient matrix located",
+        "sourceEvidenceIds": [
+          "ev-nutrition",
+          "ev-faq"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "queryOrLocation": "Olney linked ordering vendor API",
+        "urlsInspected": [
+          "https://order.ledopizza.com/api/vendors/ledo-pizza-olney"
+        ],
+        "outcome": "Current ordering catalog inspected; no complete official allergen matrix exposed",
+        "sourceEvidenceIds": [
+          "ev-vendor"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "queryOrLocation": "site:ledopizza.com allergen OR allergy OR nutrition OR ingredients PDF menu",
+        "urlsInspected": [
+          "https://www.google.com/search?q=site%3Aledopizza.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+PDF+menu"
+        ],
+        "outcome": "No authoritative complete item allergen matrix found",
+        "sourceEvidenceIds": [
+          "ev-search"
+        ]
+      }
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "type": "cross_contact",
+      "status": "caution",
+      "statement": "Ledo says it cannot guarantee a peanut-free kitchen and directs guests to ask a manager about allergies.",
+      "sourceEvidenceIds": [
+        "ev-faq"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "type": "cross_contact",
+      "status": "caution",
+      "statement": "Official FAQ states no peanuts on the menu but no guarantee of a peanut-free kitchen; no item-level absence claims made.",
+      "sourceEvidenceIds": [
+        "ev-faq"
+      ]
+    }
+  ],
+  "reconciliation": {
+    "dispositions": [
+      {
+        "auditItemKeys": [
+          "1:14-ledo-pizza",
+          "2:14-white-pizza",
+          "3:18-ledo-pizza",
+          "4:18-white-pizza",
+          "5:1955-deal",
+          "6:8-cauliflower-crust-pizza",
+          "7:8-ledo-pizza",
+          "8:8-white-pizza",
+          "9:aquafina-bottled-water",
+          "10:athena-salad",
+          "11:baby-spinach-salad",
+          "12:bacon-and-cheese-house-fries",
+          "13:bake-at-home-14-cheese-pizza",
+          "14:bake-at-home-14-thick-cut-pepperoni-pizza",
+          "15:boneless-wings",
+          "16:boneless-wings-platter-2-pounds",
+          "17:boneless-wings-platter-4-pounds",
+          "18:breadsticks-20",
+          "19:brownie-tray",
+          "20:buffalo-calzone",
+          "21:buffalo-chicken-pizza",
+          "22:caesar-salad",
+          "23:caesar-salad-party-bowl",
+          "24:caesar-side-salad",
+          "25:calzone-and-drink",
+          "26:calzonesstrombolis",
+          "27:caramelized-spicy-italian-sausage-pizza",
+          "28:carrot-cake",
+          "29:cheesy-garlic-bread",
+          "30:cheesy-garlic-bread-platter",
+          "31:chicken-and-broccoli-fettuccine-alfredo",
+          "32:chicken-and-broccoli-fettuccini-alfredo",
+          "33:chicken-calzone",
+          "34:chicken-parmesan",
+          "35:chicken-tenders",
+          "36:chicken-tenders-and-fries-with-drink",
+          "37:chicken-tenders-and-house-fries",
+          "38:chicken-tenders-platter-20",
+          "39:chicken-tenders-platter-40",
+          "40:chocolate-cheesecake-cupcake",
+          "41:classic-chicken-sandwich",
+          "42:corners-deal",
+          "43:craft-pizzas",
+          "44:create-your-own-pizza",
+          "45:crispy-pickle-chips",
+          "46:diet-dr-pepper",
+          "47:diet-pepsi",
+          "48:dr-pepper",
+          "49:feastival-deal",
+          "50:fried-chicken-salad",
+          "51:fried-chicken-salad-party-bowl",
+          "52:garden-salad",
+          "53:garden-salad-party-bowl",
+          "54:gluten-free-chewy-marshmallow-bar",
+          "55:gluten-free-pizza",
+          "56:gold-peak-sweet-fresh-brewed-iced-tea",
+          "57:gold-peak-unsweet-fresh-brewed-iced-tea",
+          "58:grandmas-lasagna",
+          "59:greek-gyro",
+          "60:grilled-chicken-caesar-salad",
+          "61:ham-and-cheese-sub-platter",
+          "62:hawaiian-pizza",
+          "63:hot-grilled-chicken",
+          "64:hot-grilled-chicken-salad-party-bowl",
+          "65:hot-italian-cold-cut",
+          "66:house-fries",
+          "67:italian-cold-cut",
+          "68:italian-cold-cut-sub-platter",
+          "69:kids-chicken-tenders",
+          "70:kids-pasta",
+          "71:kids-spaghetti-w-meatballs",
+          "72:kings-chicken-sandwich",
+          "73:kraft-mac-and-cheese",
+          "74:large-salad-dressing",
+          "75:ledo-breadsticks",
+          "76:ledo-brownie",
+          "77:ledo-buffalo-wing-sauce",
+          "78:ledo-deluxe-pizza",
+          "79:ledo-house-dressing-romano-cheese-and-herb",
+          "80:ledo-italian-salad",
+          "81:ledo-italian-salad-party-bowl",
+          "82:ledo-jumbo-nuggets",
+          "83:ledo-jumbo-wings",
+          "84:ledo-jumbo-wings-platter-25",
+          "85:ledo-jumbo-wings-platter-50",
+          "86:ledo-lasagna",
+          "87:ledo-pizza-deals-and-specials",
+          "88:ledo-sauce",
+          "89:ledo-steak-and-cheese",
+          "90:ledo-stromboli",
+          "91:ledo-thick-cut-pepperoni-pizza",
+          "92:ledo-white-pizza",
+          "93:ledo123",
+          "94:lunch-deal-8-3-topping-ledo-pizza",
+          "95:lunch-deals",
+          "96:meatball-and-cheese",
+          "97:meatballs-in-ledo-sauce-22",
+          "98:meatlovers-calzone",
+          "99:meatlovers-pizza",
+          "100:mikes-hot-honeyr-pepperoni-pizza",
+          "101:mikes-hot-honeyr-spicy-italian-sausage-pizza",
+          "102:mikes-hot-honeyr-stromboli",
+          "103:mikesr-hot-honey",
+          "104:minute-maid-limeade",
+          "105:mountain-dew",
+          "106:mozzarella-sticks",
+          "107:party-sized-desserts",
+          "108:party-sized-pastas",
+          "109:party-sized-salad-bowls",
+          "110:party-sized-sub-platters",
+          "111:penne-and-spicy-italian-sausage-bolognese",
+          "112:penne-pasta",
+          "113:pepperoni-calzone",
+          "114:pepsi",
+          "115:plain",
+          "116:pure-leaf-iced-tea",
+          "117:root-beer",
+          "118:sausage-parm",
+          "119:search",
+          "120:soup-by-the-bowl",
+          "121:soup-salad-and-breadsticks",
+          "122:south-street-cheesesteak",
+          "123:spaghetti",
+          "124:spaghetti-with-half-pounder-meatball",
+          "125:spaghetti-with-meatballs",
+          "126:spicy-italian-sausage-and-mushroom-penne",
+          "127:spicy-italian-sausage-pizza",
+          "128:spicy-toasted-ravioli",
+          "129:starry",
+          "130:stromboli-and-drink",
+          "131:subssandwichesgyro",
+          "132:sweet-baby-q-chicken-pizza",
+          "133:the-family-meal-deal",
+          "134:the-fiery-sweet",
+          "135:the-half-pounder-meatball",
+          "136:the-half-pounder-meatball-sandwich",
+          "137:tossed-salad",
+          "138:tropicana-fruit-punch",
+          "139:tuesday-dollar6-calzone",
+          "140:veggie-calzone",
+          "141:veggie-pizza",
+          "142:wings-and-tenders"
+        ],
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "ledo-olney-menu-catalog"
+        ],
+        "sourceEvidenceIds": [
+          "ev-home",
+          "ev-vendor"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": false,
+    "menuScopeUnresolved": false,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": false,
+    "duplicateItems": false,
+    "catalogDrift": false,
+    "staleItems": false,
+    "newItems": false,
+    "nameOrCategoryCleanup": false,
+    "restaurantSpecificExtraction": false,
+    "parserIssue": false
+  },
+  "recommendedLane": "verify",
+  "proposedChanges": [
+    "Corrected the catalog reconciliation as a normalized current Ledo Pizza Olney menu catalog while retaining all 142 frozen audit keys exactly once.",
+    "Resolved duplicate/name/category and parser bookkeeping as mechanical catalog cleanup; no shared parser or canonical files were changed.",
+    "Preserved the supported official FAQ peanut cross-contact caution and retained unavailable official item-matrix semantics; no allergen absence or safety inference was added."
+  ]
+}

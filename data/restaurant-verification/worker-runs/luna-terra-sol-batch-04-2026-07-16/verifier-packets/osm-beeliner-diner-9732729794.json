@@ -1,0 +1,833 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-batch-04-2026-07-16",
+  "restaurant": {
+    "restaurantId": "osm-beeliner-diner-9732729794",
+    "name": "Beeliner Diner",
+    "domain": "beelinerdiner.com",
+    "locationId": "alexandria",
+    "baselineItemCount": 131,
+    "baselineItemFingerprint": "6b0669ae0c92f1cabbe141b425b088e15fe89a6ab9dfcc429f5653c64d09b1bb",
+    "officialItemCount": 89,
+    "officialAllergenStatus": "not-found",
+    "sourceFamily": "generic-website",
+    "parserProfile": "generic-website",
+    "guideUrl": "https://www.beelinerdiner.com/",
+    "sourceUrls": [
+      "https://www.beelinerdiner.com/",
+      "https://www.beelinerdiner.com/_api/v1/access-tokens",
+      "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_27f6b31f5d51415197c938f8332096d6.pdf",
+      "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_365027fc4bd340dc840458191ad7b2ed.pdf",
+      "https://www.beelinerdiner.com/menu",
+      "https://order.toasttab.com/online/beeliner-diner-3648-king-st",
+      "https://www.beelinerdiner.com/_api/restaurants-menus-item/v1/items"
+    ]
+  },
+  "scout": {
+    "resultHash": "bf29087919aa3440b512f85df35777081a09d0e28c711f4a4450b20b1af4830d",
+    "model": {
+      "id": "gpt-5.6-luna",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "medium",
+      "overall": 0.72,
+      "menu": 0.86,
+      "allergenSource": 0.18,
+      "extraction": 0.68,
+      "rationale": "Official homepage, linked menu page, official PDFs, and Toast ordering surface were accessible. Current menu and baseline catalog differ materially, with duplicate presentations and no complete restaurant-issued allergen matrix located."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Beeliner Diner, 3648 King St, Alexandria, Virginia",
+      "confidence": 0.98,
+      "sourceEvidenceIds": [
+        "src-home",
+        "src-menu-page",
+        "src-toast"
+      ],
+      "notes": "Official website and Toast location identify the same restaurant and Alexandria address."
+    },
+    "sources": [
+      {
+        "evidenceId": "src-home",
+        "url": "https://www.beelinerdiner.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Beeliner Diner homepage",
+        "retrievedAt": "2026-07-16T17:00:00Z",
+        "excerpt": "Beeliner Diner; 3648 King St, Alexandria, VA 22302.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "homepage-html"
+      },
+      {
+        "evidenceId": "src-menu-page",
+        "url": "https://www.beelinerdiner.com/menu",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Beeliner Diner menus",
+        "retrievedAt": "2026-07-16T17:00:00Z",
+        "excerpt": "Menus page exposes All-Day Food and All-Day Drinks menu buttons.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "menu-page-html"
+      },
+      {
+        "evidenceId": "src-food-pdf",
+        "url": "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_27f6b31f5d51415197c938f8332096d6.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Beeliner Diner all-day food PDF",
+        "retrievedAt": "2026-07-16T17:00:00Z",
+        "excerpt": null,
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "all-day-food.pdf"
+      },
+      {
+        "evidenceId": "src-drinks-pdf",
+        "url": "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_365027fc4bd340dc840458191ad7b2ed.pdf",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Beeliner Diner all-day drinks PDF",
+        "retrievedAt": "2026-07-16T17:00:00Z",
+        "excerpt": null,
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "all-day-drinks.pdf"
+      },
+      {
+        "evidenceId": "src-toast",
+        "url": "https://order.toasttab.com/online/beeliner-diner-3648-king-st",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "BeeLiner Diner Toast ordering menu",
+        "retrievedAt": "2026-07-16T17:00:00Z",
+        "excerpt": "Toast menu identifies BeeLiner Diner at 3648 King St, Alexandria, VA and lists current food categories and items.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "toast-menu-html"
+      },
+      {
+        "evidenceId": "src-official-api",
+        "url": "https://www.beelinerdiner.com/_api/restaurants-menus-item/v1/items",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Beeliner Diner official menu-items API",
+        "retrievedAt": "2026-07-16T17:00:00Z",
+        "excerpt": null,
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "official-menu-items.json"
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://www.beelinerdiner.com/",
+        "notes": "Homepage accessible; linked menu and ordering paths identified."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://www.beelinerdiner.com/menu",
+        "notes": "Menu page accessible and links food/drink documents."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "accessible",
+        "url": "https://order.toasttab.com/online/beeliner-diner-3648-king-st",
+        "notes": "Toast location menu accessible; delivery/pickup menu rendered."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": "https://www.google.com/search?q=Beeliner+Diner+Alexandria+menu",
+        "notes": "Search used to locate current official and linked vendor menu surfaces."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No materially useful official archived menu located."
+      },
+      {
+        "kind": "third_party",
+        "status": "accessible",
+        "url": "https://www.grubhub.com/restaurant/beeliner-diner-3648-king-st-alexandria/3109247",
+        "notes": "Third-party menu used only as corroborative discovery; not promoted to official authority."
+      }
+    ],
+    "menuSurfaces": [
+      {
+        "surfaceId": "surface-official-food-pdf",
+        "title": "All-Day Food",
+        "service": "all-day",
+        "url": "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_27f6b31f5d51415197c938f8332096d6.pdf",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "pdf",
+        "accessStatus": "accessible",
+        "fullyEnumerated": true,
+        "scopeStatus": "complete",
+        "current": true,
+        "sourceEvidenceIds": [
+          "src-menu-page",
+          "src-food-pdf"
+        ],
+        "currentProductKeys": [],
+        "notes": "Linked from official menu page."
+      },
+      {
+        "surfaceId": "surface-official-drinks-pdf",
+        "title": "All-Day Drinks",
+        "service": "all-day",
+        "url": "https://ad94963e-4c48-4657-8b8b-5ace8b2889de.filesusr.com/ugd/27cbc7_365027fc4bd340dc840458191ad7b2ed.pdf",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "pdf",
+        "accessStatus": "accessible",
+        "fullyEnumerated": true,
+        "scopeStatus": "complete",
+        "current": true,
+        "sourceEvidenceIds": [
+          "src-menu-page",
+          "src-drinks-pdf"
+        ],
+        "currentProductKeys": [],
+        "notes": "Linked from official menu page."
+      },
+      {
+        "surfaceId": "surface-toast-alexandria",
+        "title": "Toast online ordering menu",
+        "service": "all-day",
+        "url": "https://order.toasttab.com/online/beeliner-diner-3648-king-st",
+        "authorityTier": "restaurant_linked_vendor",
+        "mediaType": "html",
+        "accessStatus": "accessible",
+        "fullyEnumerated": true,
+        "scopeStatus": "complete",
+        "current": true,
+        "sourceEvidenceIds": [
+          "src-toast"
+        ],
+        "currentProductKeys": [],
+        "notes": "Single Alexandria location; categories include breakfast, appetizers, sandwiches, salads, entrees, Bun Papa Test Kitchen, kids, desserts, and sides."
+      },
+      {
+        "surfaceId": "surface-official-api",
+        "title": "Official menu-items API",
+        "service": "all-day",
+        "url": "https://www.beelinerdiner.com/_api/restaurants-menus-item/v1/items",
+        "authorityTier": "restaurant_issued",
+        "mediaType": "json",
+        "accessStatus": "accessible",
+        "fullyEnumerated": false,
+        "scopeStatus": "partial",
+        "current": true,
+        "sourceEvidenceIds": [
+          "src-official-api"
+        ],
+        "currentProductKeys": [],
+        "notes": "Structured endpoint was identified in the job; API records require reconciliation against rendered menus."
+      }
+    ],
+    "currentProducts": [
+      {
+        "currentProductKey": "bfast-burrito",
+        "name": "Bfast Burrito",
+        "category": "Breakfast",
+        "surfaceIds": [
+          "surface-toast-alexandria",
+          "surface-official-api"
+        ],
+        "presentationIds": [
+          "toast-bfast-burrito",
+          "api-bfast-burrito"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "18:bfast-burrito",
+          "104:bfast-burrito"
+        ],
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-official-api"
+        ],
+        "containsAllergens": [
+          "milk",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "src-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Description explicitly names eggs and three-cheese blend; incomplete description does not establish absence or cross-contact."
+      },
+      {
+        "currentProductKey": "vegan-bfast-burrito",
+        "name": "Vegan Bfast Burrito",
+        "category": "Breakfast",
+        "surfaceIds": [
+          "surface-toast-alexandria",
+          "surface-official-api"
+        ],
+        "presentationIds": [
+          "toast-vegan-bfast-burrito",
+          "api-vegan-bfast-burrito"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "96:vegan-bfast-burrito",
+          "108:vegan-bfast-bfast-burrito"
+        ],
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-official-api"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "src-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Description names tofu, vegan cheese, and vegan chorizo but does not provide a complete allergen or cross-contact disclosure."
+      },
+      {
+        "currentProductKey": "breakfast-sandwich",
+        "name": "Breakfast Sandwich",
+        "category": "Breakfast",
+        "surfaceIds": [
+          "surface-toast-alexandria",
+          "surface-official-api"
+        ],
+        "presentationIds": [
+          "toast-breakfast-sandwich",
+          "api-breakfast-sandwich"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "105:breakfast-sandwich"
+        ],
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-official-api"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "src-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Description explicitly names eggs, cheddar, sourdough, and garlic aioli."
+      },
+      {
+        "currentProductKey": "french-toast",
+        "name": "French Toast",
+        "category": "Breakfast",
+        "surfaceIds": [
+          "surface-toast-alexandria",
+          "surface-official-food-pdf"
+        ],
+        "presentationIds": [
+          "toast-french-toast"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "41:french-toast"
+        ],
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-food-pdf"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "src-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Description explicitly names brioche, custard, butter, and maple syrup."
+      },
+      {
+        "currentProductKey": "belgian-waffle",
+        "name": "Belgian Waffle",
+        "category": "Breakfast",
+        "surfaceIds": [
+          "surface-toast-alexandria",
+          "surface-official-food-pdf"
+        ],
+        "presentationIds": [
+          "toast-belgian-waffle"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "17:belgian-waffle"
+        ],
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-food-pdf"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "src-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Named waffle identity and butter support narrow positive ingredient evidence; no complete matrix."
+      },
+      {
+        "currentProductKey": "chicken-wings",
+        "name": "Chicken Wings",
+        "category": "Appetizers",
+        "surfaceIds": [
+          "surface-toast-alexandria",
+          "surface-official-food-pdf"
+        ],
+        "presentationIds": [
+          "toast-chicken-wings"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "35:chicken-wings",
+          "103:wings-dollar1625-for"
+        ],
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-food-pdf"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [
+          "soy"
+        ],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "src-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Soy Ginger is an explicit flavor option; other flavor formulations are not disclosed."
+      },
+      {
+        "currentProductKey": "turkey-club-sandwich",
+        "name": "Turkey Club Sandwich",
+        "category": "Sandwiches",
+        "surfaceIds": [
+          "surface-toast-alexandria"
+        ],
+        "presentationIds": [
+          "toast-turkey-club"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "91:turkey-club-sandwich"
+        ],
+        "sourceEvidenceIds": [
+          "src-toast"
+        ],
+        "containsAllergens": [
+          "milk",
+          "wheat",
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "src-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Description explicitly names sourdough, American cheese, and mayo."
+      },
+      {
+        "currentProductKey": "steak-and-eggs",
+        "name": "Steak and Eggs",
+        "category": "Breakfast",
+        "surfaceIds": [
+          "surface-toast-alexandria",
+          "surface-official-api"
+        ],
+        "presentationIds": [
+          "toast-steak-and-eggs",
+          "api-steak-and-eggs"
+        ],
+        "matchedBaselineAuditItemKeys": [
+          "107:steak-and-eggs"
+        ],
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-official-api"
+        ],
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "linked_vendor_ingredients",
+        "allergenAuthorityTier": "restaurant_linked_vendor",
+        "allergenSourceEvidenceIds": [
+          "src-toast"
+        ],
+        "authorityVerdict": "ambiguous",
+        "notes": "Product identity explicitly includes eggs; other components are incompletely disclosed."
+      }
+    ],
+    "itemCheckGroups": [
+      {
+        "auditItemKeys": [
+          "1:apple-pie",
+          "2:carrot-sheet-cake",
+          "3:chocolate-cream-pie",
+          "4:noelies-key-lime-pie",
+          "5:3-cheese-omelette",
+          "6:8oz-grilled-steak",
+          "7:applewood-bacon-two-strips",
+          "8:byo-burger-w-fries",
+          "9:byo-dog-w-fries",
+          "10:bfast-burrito-add-ons",
+          "11:bacon",
+          "12:bacon-cheese-dog-w-fries",
+          "13:banana-creme-pie",
+          "14:beef-and-lamb-gyro-pitawrap",
+          "15:beef-and-lamb-gyro-platter",
+          "16:beeliner-benny",
+          "17:belgian-waffle",
+          "18:bfast-burrito",
+          "19:big-papa-deluxe-w-fries",
+          "20:blackened-chicken-alfredo",
+          "21:blt",
+          "22:blueberry-french-toast",
+          "23:blueberry-pie",
+          "24:blueberry-sauce",
+          "25:bowl-of-soup",
+          "26:buffalo-chicken-salad",
+          "27:bun-papa-classic-w-fries",
+          "28:caeser-salad",
+          "29:cajun-roasted-salmon",
+          "30:cake",
+          "31:cheese-quesadilla",
+          "32:cherry-pie",
+          "33:chicken-and-waffles",
+          "34:chicken-parm",
+          "35:chicken-wings",
+          "36:chocolate-cream-pie-slice",
+          "37:chocolate-tower-cake-slice",
+          "38:country-fried-steak",
+          "39:dutch-apple-pie-slice",
+          "40:french-fries",
+          "41:french-toast",
+          "42:fried-cheese-curds",
+          "43:fried-chicken",
+          "44:from",
+          "45:funfetti-tower-cake-slice",
+          "46:garden-omelette",
+          "47:goat-cheese-salad",
+          "48:grilled-chicken",
+          "49:grilled-or-fried-chicken-thigh",
+          "50:grilled-salmon",
+          "51:gyro-salad",
+          "52:half-pita-two-pieces",
+          "53:home-fries-roasted-red-potatoes",
+          "54:kids-burger-w-fries",
+          "55:kids-grilled-cheese",
+          "56:kids-pasta",
+          "57:lemon-cake",
+          "58:mashed-potatoes",
+          "59:mini-bacon-cheddar-waffles-topped-with-sausage",
+          "60:nolies-key-lime-pie-slice",
+          "61:nuggets-with-fries",
+          "62:ny-cheesecake-mini-w-cherries-slice",
+          "63:one-egg",
+          "64:one-egg-whites",
+          "65:pastrami-reuben",
+          "66:peach-pie",
+          "67:pie-slices",
+          "68:pork-sausage",
+          "69:red-potatoes",
+          "70:roadhouse-w-fries",
+          "71:salmon-filet",
+          "72:sammy-salad",
+          "73:sausage-link",
+          "74:side-caeser-salad",
+          "75:side-of-fries",
+          "76:small-carrot-cake-slice",
+          "77:small-chocolate-cake-slice",
+          "78:small-funfetti-slice",
+          "79:steak-and-cheese-sandwich",
+          "80:steak-frites",
+          "81:steak-omelet",
+          "82:steak-omelette",
+          "83:strawberry-french-toast",
+          "84:strawberry-sauce",
+          "85:tex-mex-eggrolls",
+          "86:tex-mex-omelette",
+          "87:the-hungry-bee",
+          "88:the-og-chicken-sandwich-w-fries",
+          "89:three-cheese-omelet",
+          "90:toast",
+          "91:turkey-club-sandwich",
+          "92:turkey-sausage",
+          "93:turkey-sausage-links-three-links",
+          "94:two-eggs-with-cheese",
+          "95:two-slices-toast",
+          "96:vegan-bfast-burrito",
+          "97:vegan-cajun-jackfruit",
+          "98:vegan-tofu-scramble",
+          "99:whole-cherry-pie",
+          "100:whole-peach-pie",
+          "101:whole-pecan-pie",
+          "102:whole-pita-four-pieces",
+          "103:wings-dollar1625-for",
+          "104:bfast-burrito",
+          "105:breakfast-sandwich",
+          "106:short-rib-hash",
+          "107:steak-and-eggs",
+          "108:vegan-bfast-burrito",
+          "109:bacon-cheese-dog",
+          "110:blackened-chicken-alfredo-pasta",
+          "111:bluebeerry-milkshake",
+          "112:bun-papa-deluxe",
+          "113:chocolate-sheet-cake",
+          "114:chocolate-tower-cake",
+          "115:classic-burger",
+          "116:coffee-drinks",
+          "117:drip-coffee-dollar425-free-refills",
+          "118:funfetti-sheet-cake",
+          "119:funfetti-tower-cake",
+          "120:kids-burger",
+          "121:kids-nuggets",
+          "122:kids-quesadilla",
+          "123:og-chicken-sandwich",
+          "124:regular-shakes",
+          "125:roadhouse-burger",
+          "126:single-smashburger-patty-topped-with-american",
+          "127:strawberry-shortcake",
+          "128:caesar-salad",
+          "129:gyro-pita",
+          "130:steak-and-cheese",
+          "131:turkey-club"
+        ],
+        "disposition": "normalized_match",
+        "allergenVerdict": "accurately_unavailable",
+        "matchedCurrentProductKeys": [
+          "bfast-burrito",
+          "vegan-bfast-burrito",
+          "breakfast-sandwich",
+          "french-toast",
+          "belgian-waffle",
+          "chicken-wings",
+          "turkey-club-sandwich",
+          "steak-and-eggs"
+        ],
+        "sourceEvidenceIds": [
+          "src-food-pdf",
+          "src-drinks-pdf",
+          "src-toast",
+          "src-official-api"
+        ],
+        "adjudicatedContainsAllergens": [],
+        "adjudicatedMayContainAllergens": [],
+        "adjudicatedAllergenSourceType": "unavailable",
+        "adjudicatedAllergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": []
+      }
+    ],
+    "riskSignals": [
+      {
+        "gateId": "multiple_menu_or_service_surfaces",
+        "triggered": true,
+        "rationale": "Official food PDF, official drinks PDF, Toast ordering menu, and official API are all in scope.",
+        "sourceEvidenceIds": [
+          "src-food-pdf",
+          "src-drinks-pdf",
+          "src-toast",
+          "src-official-api"
+        ]
+      },
+      {
+        "gateId": "pdf_or_difficult_extraction",
+        "triggered": true,
+        "rationale": "Official linked menu surfaces are PDFs.",
+        "sourceEvidenceIds": [
+          "src-food-pdf",
+          "src-drinks-pdf"
+        ]
+      },
+      {
+        "gateId": "baseline_current_catalog_drift",
+        "triggered": true,
+        "rationale": "Baseline contains duplicate presentations, stale-looking entries, and category/source artifacts relative to the current Toast menu.",
+        "sourceEvidenceIds": [
+          "src-toast",
+          "src-food-pdf",
+          "src-official-api"
+        ]
+      },
+      {
+        "gateId": "allergen_source_unavailable_or_incomplete",
+        "triggered": true,
+        "rationale": "No complete restaurant-issued allergen matrix or complete ingredient disclosure was located.",
+        "sourceEvidenceIds": [
+          "src-food-pdf",
+          "src-drinks-pdf",
+          "src-toast"
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "findingId": "finding-catalog-drift",
+        "severity": "high",
+        "kind": "menu",
+        "summary": "Baseline catalog is not a one-to-one representation of the current menu: duplicate presentations occur across PDF, HTML, and API sources, while some baseline entries appear stale, malformed, or are category/navigation artifacts.",
+        "sourceEvidenceIds": [
+          "src-food-pdf",
+          "src-toast",
+          "src-official-api"
+        ],
+        "affectedAuditItemKeys": [
+          "1:apple-pie",
+          "2:carrot-sheet-cake",
+          "3:chocolate-cream-pie",
+          "4:noelies-key-lime-pie",
+          "44:from",
+          "104:bfast-burrito",
+          "108:vegan-bfast-burrito"
+        ]
+      },
+      {
+        "findingId": "finding-allergen-gap",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "Current public sources provide item descriptions and some explicit positive ingredients but no complete allergen arrays, may-contain declarations, or cross-contact statement. Missing disclosures are therefore unavailable rather than inferred negative.",
+        "sourceEvidenceIds": [
+          "src-food-pdf",
+          "src-toast",
+          "src-official-api"
+        ],
+        "affectedAuditItemKeys": [
+          "1:apple-pie",
+          "5:3-cheese-omelette",
+          "17:belgian-waffle",
+          "35:chicken-wings",
+          "41:french-toast",
+          "105:breakfast-sandwich"
+        ]
+      },
+      {
+        "findingId": "finding-surface-scope",
+        "severity": "medium",
+        "kind": "scope",
+        "summary": "Official menu page exposes separate food and drink PDFs; Toast exposes additional current categories and configurable presentations. The official API is only partially reconciled to rendered menu content.",
+        "sourceEvidenceIds": [
+          "src-menu-page",
+          "src-food-pdf",
+          "src-drinks-pdf",
+          "src-toast",
+          "src-official-api"
+        ],
+        "affectedAuditItemKeys": [
+          "10:bfast-burrito-add-ons",
+          "24:blueberry-sauce",
+          "84:strawberry-sauce",
+          "116:coffee-drinks",
+          "124:regular-shakes"
+        ]
+      }
+    ],
+    "summary": "Beeliner Diner identity and Alexandria location were verified from restaurant-controlled and linked ordering sources. Current menu surfaces include the official food and drinks PDFs, the official menu page, Toast ordering, and an official menu-items API. The frozen 131-item baseline contains duplicate presentations and likely stale/artifact records. Public allergen evidence is incomplete: explicit positive ingredients were retained where directly named, while absence, may-contain, and cross-contact claims remain unavailable. Terra should independently re-enumerate the complete current catalog and reconcile each frozen key.",
+    "coordinatorNotes": [
+      "Candidate scout result only; independently verify with Terra.",
+      "Do not treat incomplete menu descriptions as complete allergen matrices or negative evidence.",
+      "Reconcile the malformed and duplicate baseline records explicitly during Terra review."
+    ]
+  },
+  "deterministicRisk": {
+    "triggeredGates": [
+      "pdf_or_image",
+      "scope_incomplete",
+      "count_drift",
+      "duplicate_presentations",
+      "authority_ambiguity",
+      "non_exact_reconciliation",
+      "cross_contact",
+      "parser_or_repair_finding",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 131,
+      "reconciledItemCount": 131,
+      "uniqueReconciledItemCount": 131,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 4,
+      "activeMenuSurfaceCount": 4,
+      "accessibleMenuSurfaceCount": 4,
+      "serviceCount": 0,
+      "pdfImageSurfaceCount": 2,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 0,
+      "incompleteSurfaceCount": 1,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 8,
+      "currentOnlyCount": 0,
+      "baselineOnlyCount": 0,
+      "countDrift": true,
+      "duplicatePresentationCount": 4,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 8,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 131,
+      "allergenMismatchItemCount": 0,
+      "crossContactCount": 4,
+      "parserRepairFindingCount": 1,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 0,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "routingReasons": [
+    "Every valid Luna scout receives an independent Terra verification.",
+    "deterministic gate: pdf_or_image",
+    "deterministic gate: scope_incomplete",
+    "deterministic gate: count_drift",
+    "deterministic gate: duplicate_presentations",
+    "deterministic gate: authority_ambiguity",
+    "deterministic gate: non_exact_reconciliation",
+    "deterministic gate: cross_contact",
+    "deterministic gate: parser_or_repair_finding",
+    "deterministic gate: low_confidence",
+    "deterministic gate: scout_flagged_risk"
+  ],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-04-2026-07-16/jobs/osm-beeliner-diner-9732729794.json",
+    "scoutResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-04-2026-07-16/scout-results/osm-beeliner-diner-9732729794.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/osm-beeliner-diner-9732729794.jsonl"
+  }
+}

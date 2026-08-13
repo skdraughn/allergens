@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-122-2026-08-06",
+  "restaurantId": "ethiopic-dc",
+  "reviewType": "scheduled_one_in_20_final_reaudit",
+  "model": {"id":"gpt-5.6-sol","reasoningEffort":"medium","role":"sol_reviewer"},
+  "evidence": [
+    {"artifact":"data/restaurant-verification/worker-runs/poc-batch-122-2026-08-06/results/ethiopic-dc.json","finding":"Contains 31 presentation records; base samplers have no fish assertion and distinct with-fish products retain restaurant-issued fish positives."},
+    {"artifact":"data/restaurant-verification/restaurants/ethiopic-dc.json","finding":"Canonical catalog matches the 31-record result; Heartland is supporting-only with zero membership."},
+    {"url":"https://www.ethiopicrestaurant.com/menus/","authorityTier":"restaurant_issued","finding":"Official menu has 29 unique names and 31 presentations."},
+    {"url":"https://www.ethiopicrestaurant.com/sitemap.xml","authorityTier":"restaurant_issued","finding":"Credible official_documents evidence resolves through ev-search-docs."}
+  ],
+  "resolution": {"binding":true,"outcome":"audit_passed_no_material_safety_error","safetySourceAuthorityConflictRemains":false},
+  "remainingSolSignals": [],
+  "validation": {"valid":true,"isolatedResultMatchesCanonical":true,"presentationRecordCount":31,"officialUniqueMenuNameCount":29,"completeSurfaceKeyCount":31,"baseSamplerFishAssertionCount":0,"withFishPresentationCount":2,"withFishDirectPositiveCount":2,"credibleMatrixSearchClassCount":4,"officialMatrixSearchComplete":true,"supportingVendorMembershipCount":0,"materialSafetyError":false},
+  "coordinatorRecommendation": "Final scheduled audit passes; proceed with coordinator-owned terminal validation."
+}

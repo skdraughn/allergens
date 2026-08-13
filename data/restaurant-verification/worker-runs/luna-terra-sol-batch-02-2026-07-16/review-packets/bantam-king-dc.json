@@ -1,0 +1,1475 @@
+{
+  "schemaVersion": 2,
+  "runId": "luna-terra-sol-batch-02-2026-07-16",
+  "restaurant": {
+    "restaurantId": "bantam-king-dc",
+    "name": "Bantam King",
+    "domain": "bantamking.com",
+    "locationId": "penn-quarter-dc",
+    "baselineItemCount": 52,
+    "baselineItemFingerprint": "c2df6d29ff8b3f9307708d1d9c912edfa12b5c932df84d5f396ec06e80684c72",
+    "officialItemCount": 26,
+    "officialAllergenStatus": "extracted",
+    "sourceFamily": "toast",
+    "parserProfile": "toast-menu",
+    "guideUrl": "https://www.bantamking.com/",
+    "sourceUrls": [
+      "https://www.bantamking.com/",
+      "https://order.toasttab.com/online/bantam-king",
+      "https://media-cdn.getbento.com/accounts/72b9b08b20e3f5b447061ce71f79caf8/media/7OBd0PFnR82UT8CfqiMl_BKdinner-6.7.26.pdf",
+      "https://www.bantamking.com/menus/"
+    ]
+  },
+  "effectiveOutcome": "discrepancy_found",
+  "routingReasons": [
+    "Terra marked the result discrepancy_found.",
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "validationWarnings": [
+    "Terra reported a mismatched or unverifiable menu surface.",
+    "Terra confirmed or left unresolved a deterministic risk gate.",
+    "Terra discovered additional menu surfaces.",
+    "Terra discovered additional current products.",
+    "Terra reported findings requiring adjudication.",
+    "Terra reported baseline allergen mismatches."
+  ],
+  "deterministicRisk": {
+    "triggeredGates": [
+      "multi_service",
+      "pdf_or_image",
+      "scope_incomplete",
+      "count_drift",
+      "duplicate_presentations",
+      "non_exact_reconciliation",
+      "cross_contact",
+      "parser_or_repair_finding",
+      "validation_warnings",
+      "low_confidence",
+      "scout_flagged_risk"
+    ],
+    "requiresStrongReview": true,
+    "retryRequired": false,
+    "metrics": {
+      "baselineItemCount": 52,
+      "reconciledItemCount": 52,
+      "uniqueReconciledItemCount": 52,
+      "duplicateReconciledKeyCount": 0,
+      "menuSurfaceCount": 4,
+      "activeMenuSurfaceCount": 4,
+      "accessibleMenuSurfaceCount": 4,
+      "serviceCount": 3,
+      "pdfImageSurfaceCount": 1,
+      "inaccessibleSurfaceCount": 0,
+      "inaccessiblePrimaryAttemptCount": 0,
+      "incompleteSurfaceCount": 1,
+      "unresolvedSurfaceCount": 0,
+      "currentProductCount": 32,
+      "currentOnlyCount": 0,
+      "baselineOnlyCount": 0,
+      "countDrift": true,
+      "duplicatePresentationCount": 15,
+      "nameCollisionCount": 0,
+      "authorityAmbiguityCount": 0,
+      "differentDomainCount": 0,
+      "nonExactItemCount": 52,
+      "allergenMismatchItemCount": 0,
+      "crossContactCount": 2,
+      "parserRepairFindingCount": 1,
+      "missingAnchorCount": 0,
+      "validationWarningCount": 1,
+      "validationErrorCount": 0,
+      "lowConfidence": true
+    }
+  },
+  "verifier": {
+    "model": {
+      "id": "gpt-5.6-terra",
+      "reasoningEffort": "low"
+    },
+    "outcome": "discrepancy_found",
+    "confidence": {
+      "level": "medium",
+      "overall": 0.81,
+      "menu": 0.88,
+      "allergenSource": 0.58,
+      "extraction": 0.7,
+      "rationale": "The current restaurant-issued HTML menu is fully enumerable and establishes identity, scope, products, and narrow named-ingredient positives. Toast and linked PDFs could not be independently enumerated; no complete allergen matrix or current cross-contact disclosure was available."
+    },
+    "identity": {
+      "verdict": "verified",
+      "scope": "Bantam King, 501 G St NW, Washington, DC 20001",
+      "confidence": 0.99,
+      "sourceEvidenceIds": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "notes": "Official pages and linked Toast ordering presence identify the same Penn Quarter restaurant."
+    },
+    "sources": [
+      {
+        "evidenceId": "T1",
+        "url": "https://www.bantamking.com/menus/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "menu",
+        "title": "Bantam King official menus",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": "Current HTML enumerates ramen, toppings, chicken, sides, dessert, non-alcoholic drinks, and soft drinks; its descriptions explicitly name several ingredients.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "official-menu-html"
+      },
+      {
+        "evidenceId": "T2",
+        "url": "https://www.bantamking.com/",
+        "authorityTier": "restaurant_issued",
+        "purpose": "identity",
+        "title": "Bantam King homepage",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": "Homepage embeds the substantive menu and identifies 501 G St NW, Washington, DC 20001.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "official-homepage-html"
+      },
+      {
+        "evidenceId": "T3",
+        "url": "https://order.toasttab.com/online/bantam-king",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Bantam King Toast ordering",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": "Linked ordering surface identifies Bantam King, but its menu could not be independently enumerated in this review.",
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "toast-unavailable-html"
+      },
+      {
+        "evidenceId": "T4",
+        "url": "https://media-cdn.getbento.com/accounts/72b9b08b20e3f5b447061ce71f79caf8/media/7OBd0PFnR82UT8CfqiMl_BKdinner-6.7.26.pdf",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "menu",
+        "title": "Linked dinner menu PDF",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": null,
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "linked-pdf-unavailable"
+      },
+      {
+        "evidenceId": "T5",
+        "url": "https://media-cdn.getbento.com/accounts/72b9b08b20e3f5b447061ce71f79caf8/media/hBrkFTHFQjSxq0sQc93C_BKprintmenu%20copy.pdf",
+        "authorityTier": "restaurant_linked_vendor",
+        "purpose": "cross_contact",
+        "title": "Linked printed-menu PDF",
+        "retrievedAt": "2026-07-16T00:00:00-04:00",
+        "excerpt": null,
+        "stableRowId": null,
+        "contentHash": null,
+        "artifactSuggested": "linked-pdf-unavailable"
+      }
+    ],
+    "sourceAttempts": [
+      {
+        "kind": "official_site",
+        "status": "accessible",
+        "url": "https://www.bantamking.com/",
+        "notes": "Identity and embedded menu accessible."
+      },
+      {
+        "kind": "linked_source",
+        "status": "accessible",
+        "url": "https://www.bantamking.com/menus/",
+        "notes": "Current restaurant-issued menu fully enumerated."
+      },
+      {
+        "kind": "ordering_vendor",
+        "status": "blocked",
+        "url": "https://order.toasttab.com/online/bantam-king",
+        "notes": "Identity surface loaded but menu enumeration was unavailable."
+      },
+      {
+        "kind": "targeted_search",
+        "status": "accessible",
+        "url": "https://www.bantamking.com/menus/",
+        "notes": "Confirmed official HTML menu as the strongest current source."
+      },
+      {
+        "kind": "archive",
+        "status": "not_found",
+        "url": null,
+        "notes": "No current complete official allergen matrix or accessible archive was found."
+      },
+      {
+        "kind": "third_party",
+        "status": "not_found",
+        "url": null,
+        "notes": "No third-party source was needed to establish current catalog or allergen claims."
+      }
+    ],
+    "reviewedRiskGates": [
+      {
+        "gateId": "multi_service",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1",
+          "T3",
+          "T4"
+        ],
+        "notes": "Dine-in HTML, takeout ordering, and linked PDF service presentations exist."
+      },
+      {
+        "gateId": "pdf_or_image",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T4",
+          "T5"
+        ],
+        "notes": "Linked PDF surfaces remain difficult-to-extract and unavailable for independent reopening."
+      },
+      {
+        "gateId": "scope_incomplete",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1",
+          "T3"
+        ],
+        "notes": "Toast cannot support complete ordering scope, and Luna omitted six products visible on the official HTML."
+      },
+      {
+        "gateId": "count_drift",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1"
+        ],
+        "notes": "Frozen rows contain duplicate/OCR/alcohol presentations while the current menu has products omitted by Luna."
+      },
+      {
+        "gateId": "duplicate_presentations",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1",
+          "T3"
+        ],
+        "notes": "Multiple spellings and service presentations consolidate to one current product."
+      },
+      {
+        "gateId": "non_exact_reconciliation",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1"
+        ],
+        "notes": "OCR variants, renamed chicken-quarter presentation, and alcohol-only rows require non-exact dispositions."
+      },
+      {
+        "gateId": "cross_contact",
+        "triggered": true,
+        "verdict": "unresolved",
+        "sourceEvidenceIds": [
+          "T5"
+        ],
+        "notes": "The reported linked-PDF global warning could not be reopened. Absence of equivalent HTML language does not clear it or support product may-contain arrays."
+      },
+      {
+        "gateId": "parser_or_repair_finding",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1"
+        ],
+        "notes": "Frozen extraction omitted Chicken Katsu and individual Coke, Diet Coke, Sprite, Ginger Ale, and Juice; it also retained OCR/artifact rows."
+      },
+      {
+        "gateId": "validation_warnings",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1"
+        ],
+        "notes": "Luna's purported complete catalog omitted current restaurant-issued products."
+      },
+      {
+        "gateId": "low_confidence",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1",
+          "T3",
+          "T5"
+        ],
+        "notes": "Allergen completeness and cross-contact evidence remain insufficient."
+      },
+      {
+        "gateId": "scout_flagged_risk",
+        "triggered": true,
+        "verdict": "confirmed",
+        "sourceEvidenceIds": [
+          "T1",
+          "T3",
+          "T4",
+          "T5"
+        ],
+        "notes": "Catalog, extraction, source-completeness, and allergen-authority risks remain."
+      }
+    ],
+    "surfaceChecks": [
+      {
+        "surfaceId": "official-menu-page",
+        "verdict": "mismatch",
+        "sourceEvidenceIds": [
+          "T1"
+        ],
+        "notes": "Fully enumerable current menu, but Luna omitted Chicken Katsu and individual Coke, Diet Coke, Sprite, Ginger Ale, and Juice."
+      },
+      {
+        "surfaceId": "official-dinner-pdf",
+        "verdict": "unverifiable",
+        "sourceEvidenceIds": [
+          "T4"
+        ],
+        "notes": "Cannot support current completeness, negatives, complete arrays, or cross-contact conclusions."
+      },
+      {
+        "surfaceId": "toast-ordering",
+        "verdict": "unverifiable",
+        "sourceEvidenceIds": [
+          "T3"
+        ],
+        "notes": "Ordering menu was unavailable for independent enumeration."
+      },
+      {
+        "surfaceId": "official-homepage-menu-links",
+        "verdict": "mismatch",
+        "sourceEvidenceIds": [
+          "T2"
+        ],
+        "notes": "Homepage embeds substantive current menu content, including the products Luna omitted."
+      }
+    ],
+    "currentProductCheckGroups": [
+      {
+        "currentProductKeys": [
+          "shio",
+          "spice-bomb",
+          "pulled-chicken",
+          "greens",
+          "corn",
+          "nori",
+          "extra-soup",
+          "roasted-chicken-quarter",
+          "nashville-fried-chicken-plate",
+          "curry-snow-fried-chicken-plate",
+          "steamed-rice",
+          "agua-fresca",
+          "house-iced-tea",
+          "ramune",
+          "ucc-green-tea",
+          "can-soda",
+          "hot-tea"
+        ],
+        "presentationIds": [
+          "shio-official",
+          "shio-toast",
+          "spice-bomb-official",
+          "pulled-chicken-official",
+          "pulled-chicken-toast",
+          "greens-official",
+          "corn-official",
+          "nori-official",
+          "extra-soup-official",
+          "roasted-quarter-official",
+          "nashville-official",
+          "nashville-toast",
+          "curry-snow-official",
+          "curry-snow-toast",
+          "steamed-rice-toast",
+          "agua-fresca-official",
+          "house-tea-official",
+          "ramune-official",
+          "ramune-toast",
+          "ucc-official",
+          "ucc-toast",
+          "can-soda-toast",
+          "hot-tea-official"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "sourceEvidenceIds": [
+          "T1",
+          "T3"
+        ],
+        "notes": "No complete allergen disclosure. Empty arrays mean no verified current allergen claim, not an allergen-negative conclusion."
+      },
+      {
+        "currentProductKeys": [
+          "shoyu"
+        ],
+        "presentationIds": [
+          "shoyu-official",
+          "shoyu-toast"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "soy"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T1"
+        ],
+        "sourceEvidenceIds": [
+          "T1",
+          "T3"
+        ],
+        "notes": "Official description expressly names soy sauce."
+      },
+      {
+        "currentProductKeys": [
+          "miso-ramen"
+        ],
+        "presentationIds": [
+          "miso-official",
+          "miso-toast"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "sesame",
+          "soy"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T1"
+        ],
+        "sourceEvidenceIds": [
+          "T1",
+          "T3"
+        ],
+        "notes": "Official description expressly names miso and sesame seeds."
+      },
+      {
+        "currentProductKeys": [
+          "spicy-miso-ramen"
+        ],
+        "presentationIds": [
+          "spicy-miso-official",
+          "spicy-miso-toast"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "peanut",
+          "soy"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T1"
+        ],
+        "sourceEvidenceIds": [
+          "T1",
+          "T3"
+        ],
+        "notes": "Official description names miso and peanuts and carries a peanut warning."
+      },
+      {
+        "currentProductKeys": [
+          "veggie-tantanmen-ramen"
+        ],
+        "presentationIds": [
+          "veggie-tantanmen-official",
+          "veggie-tantanmen-toast"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "peanut",
+          "sesame",
+          "soy"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T1"
+        ],
+        "sourceEvidenceIds": [
+          "T1",
+          "T3"
+        ],
+        "notes": "Official description names soy, sesame, and peanuts and carries a peanut warning."
+      },
+      {
+        "currentProductKeys": [
+          "nitamago",
+          "onsen-egg"
+        ],
+        "presentationIds": [
+          "nitamago-official",
+          "onsen-egg-official",
+          "onsen-egg-toast"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "egg"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T1"
+        ],
+        "sourceEvidenceIds": [
+          "T1",
+          "T3"
+        ],
+        "notes": "Official descriptions identify egg."
+      },
+      {
+        "currentProductKeys": [
+          "butter"
+        ],
+        "presentationIds": [
+          "butter-official"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "milk"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T1"
+        ],
+        "sourceEvidenceIds": [
+          "T1"
+        ],
+        "notes": "Named butter supports a narrow milk positive only."
+      },
+      {
+        "currentProductKeys": [
+          "naruto"
+        ],
+        "presentationIds": [
+          "naruto-official"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "fish"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T1"
+        ],
+        "sourceEvidenceIds": [
+          "T1"
+        ],
+        "notes": "Official description identifies Japanese fish cake."
+      },
+      {
+        "currentProductKeys": [
+          "rice-with-chicken-drippings"
+        ],
+        "presentationIds": [
+          "rice-drippings-official",
+          "rice-drippings-toast"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "milk",
+          "soy"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T1"
+        ],
+        "sourceEvidenceIds": [
+          "T1",
+          "T3"
+        ],
+        "notes": "Official description explicitly names butter and soy sauce."
+      },
+      {
+        "currentProductKeys": [
+          "rice-with-onsen-egg"
+        ],
+        "presentationIds": [
+          "rice-egg-official",
+          "rice-egg-toast"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "egg",
+          "soy"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T1"
+        ],
+        "sourceEvidenceIds": [
+          "T1",
+          "T3"
+        ],
+        "notes": "Official description explicitly names egg and soy sauce."
+      },
+      {
+        "currentProductKeys": [
+          "gyoza"
+        ],
+        "presentationIds": [
+          "gyoza-official",
+          "gyoza-toast"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "sesame"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T1"
+        ],
+        "sourceEvidenceIds": [
+          "T1",
+          "T3"
+        ],
+        "notes": "Official description explicitly names sesame seeds."
+      },
+      {
+        "currentProductKeys": [
+          "big-fat-chocolate-chip-cookie",
+          "mochi-ice-cream",
+          "kohi-time",
+          "calpico-soda"
+        ],
+        "presentationIds": [
+          "big-cookie-official",
+          "mochi-official",
+          "kohi-official",
+          "calpico-official",
+          "calpico-toast"
+        ],
+        "verdict": "verified",
+        "containsAllergens": [
+          "milk",
+          "wheat"
+        ],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "partial_positive_only",
+        "allergenSourceType": "restaurant_ingredients",
+        "allergenAuthorityTier": "restaurant_issued",
+        "allergenSourceEvidenceIds": [
+          "T1"
+        ],
+        "sourceEvidenceIds": [
+          "T1",
+          "T3"
+        ],
+        "notes": "Named cookie and mochi ice cream support narrow unavoidable identity positives; Kohi Time expressly names sweetened condensed milk and Calpico is described as milk-based. No complete matrix supports negatives."
+      }
+    ],
+    "additionalMenuSurfaces": [
+      {
+        "surfaceId": "linked-printed-menu-pdf",
+        "title": "Linked printed menu PDF",
+        "service": null,
+        "url": "https://media-cdn.getbento.com/accounts/72b9b08b20e3f5b447061ce71f79caf8/media/hBrkFTHFQjSxq0sQc93C_BKprintmenu%20copy.pdf",
+        "authorityTier": "restaurant_linked_vendor",
+        "mediaType": "pdf",
+        "accessStatus": "error",
+        "fullyEnumerated": false,
+        "scopeStatus": "unresolved",
+        "current": null,
+        "sourceEvidenceIds": [
+          "T5"
+        ],
+        "currentProductKeys": [],
+        "notes": "Luna recorded it as cross-contact evidence but did not enumerate it as a surface. It could not be reopened and is not used for current catalog or allergen negatives."
+      }
+    ],
+    "additionalCurrentProducts": [
+      {
+        "currentProductKey": "chicken-katsu",
+        "name": "Chicken Katsu",
+        "category": "Fried Chicken",
+        "surfaceIds": [
+          "official-menu-page",
+          "official-homepage-menu-links"
+        ],
+        "presentationIds": [
+          "chicken-katsu-official"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "T1",
+          "T2"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "unverified",
+        "notes": "Current restaurant-issued product omitted by Luna; no ingredient or allergen disclosure."
+      },
+      {
+        "currentProductKey": "coke",
+        "name": "Coke",
+        "category": "Soft Drinks/Tea",
+        "surfaceIds": [
+          "official-menu-page",
+          "official-homepage-menu-links"
+        ],
+        "presentationIds": [
+          "coke-official"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "T1",
+          "T2"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "unverified",
+        "notes": "Current product omitted by Luna."
+      },
+      {
+        "currentProductKey": "diet-coke",
+        "name": "Diet Coke",
+        "category": "Soft Drinks/Tea",
+        "surfaceIds": [
+          "official-menu-page",
+          "official-homepage-menu-links"
+        ],
+        "presentationIds": [
+          "diet-coke-official"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "T1",
+          "T2"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "unverified",
+        "notes": "Current product omitted by Luna."
+      },
+      {
+        "currentProductKey": "sprite",
+        "name": "Sprite",
+        "category": "Soft Drinks/Tea",
+        "surfaceIds": [
+          "official-menu-page",
+          "official-homepage-menu-links"
+        ],
+        "presentationIds": [
+          "sprite-official"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "T1",
+          "T2"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "unverified",
+        "notes": "Current product omitted by Luna."
+      },
+      {
+        "currentProductKey": "ginger-ale",
+        "name": "Ginger Ale",
+        "category": "Soft Drinks/Tea",
+        "surfaceIds": [
+          "official-menu-page",
+          "official-homepage-menu-links"
+        ],
+        "presentationIds": [
+          "ginger-ale-official"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "T1",
+          "T2"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "unverified",
+        "notes": "Current product omitted by Luna."
+      },
+      {
+        "currentProductKey": "juice",
+        "name": "Juice",
+        "category": "Soft Drinks/Tea",
+        "surfaceIds": [
+          "official-menu-page",
+          "official-homepage-menu-links"
+        ],
+        "presentationIds": [
+          "juice-official"
+        ],
+        "matchedBaselineAuditItemKeys": [],
+        "sourceEvidenceIds": [
+          "T1",
+          "T2"
+        ],
+        "containsAllergens": [],
+        "mayContainAllergens": [],
+        "allergenEvidenceStatus": "unavailable",
+        "allergenSourceType": "unavailable",
+        "allergenAuthorityTier": null,
+        "allergenSourceEvidenceIds": [],
+        "authorityVerdict": "unverified",
+        "notes": "Cranberry or apple current product omitted by Luna."
+      }
+    ],
+    "reconciliationSummary": {
+      "reconciledItemCount": 52,
+      "counts": {
+        "normalized_match/mismatch": 13,
+        "exact_match/mismatch": 4,
+        "exact_match/verified": 3,
+        "exact_match/accurately_unavailable": 10,
+        "normalized_match/verified": 6,
+        "variant_match/accurately_unavailable": 2,
+        "normalized_match/accurately_unavailable": 12,
+        "stale_extra/not_applicable": 2
+      }
+    },
+    "findings": [
+      {
+        "findingId": "F1",
+        "severity": "high",
+        "kind": "menu",
+        "summary": "Luna's purported complete current catalog omits Chicken Katsu, Coke, Diet Coke, Sprite, Ginger Ale, and Juice, all listed on the restaurant-issued current HTML menu.",
+        "sourceEvidenceIds": [
+          "T1",
+          "T2"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "F2",
+        "severity": "high",
+        "kind": "allergen_source",
+        "summary": "Frozen complete allergen arrays are not supported by current restaurant-issued descriptions. Only narrow explicit positives are supported; no negative or may-contain conclusion is justified.",
+        "sourceEvidenceIds": [
+          "T1"
+        ],
+        "affectedAuditItemKeys": [
+          "1:big-fat-chocolate-chip-cookie",
+          "2:mochi-ice-cream",
+          "20:chocolate-chip-cookie",
+          "22:cookie",
+          "25:gyo",
+          "30:rice-with-drippings",
+          "31:ricewithdrippings",
+          "33:spi-cy-miso",
+          "35:ta-magogohan",
+          "36:tamago-gohan",
+          "45:miso",
+          "46:shio",
+          "47:shoyu",
+          "48:spicy-miso",
+          "50:gyoza",
+          "51:rice-with-chicken-drippings",
+          "52:rice-with-onsen-egg"
+        ]
+      },
+      {
+        "findingId": "F3",
+        "severity": "medium",
+        "kind": "cross_contact",
+        "summary": "The historical linked-PDF global cross-contamination statement could not be independently reopened. It remains unresolved and cannot be converted into product may-contain arrays or cleared by absent HTML language.",
+        "sourceEvidenceIds": [
+          "T5"
+        ],
+        "affectedAuditItemKeys": []
+      },
+      {
+        "findingId": "F4",
+        "severity": "medium",
+        "kind": "extraction",
+        "summary": "Frozen rows include OCR variants, duplicate presentations, and alcohol-only rows outside the food/nonalcoholic boundary; each has been reconciled individually.",
+        "sourceEvidenceIds": [
+          "T1",
+          "T4"
+        ],
+        "affectedAuditItemKeys": [
+          "16:a-g-ua-fresca",
+          "19:chicken-leg-quarter",
+          "23:crownr-oya-lwhiskylemonade",
+          "32:smirnoffsmashvodkasoda",
+          "33:spi-cy-miso",
+          "35:ta-magogohan",
+          "37:ucc-green",
+          "39:uccgreenteacan",
+          "41:veggie-ta-n-ta-nmen"
+        ]
+      }
+    ],
+    "summary": "Independent verification confirms six current products omitted by Luna and an additional unresolved linked printed-menu PDF surface. The restaurant-issued HTML supports only narrow named allergen positives; complete frozen arrays, negatives, and current cross-contact conclusions are unsupported. Every scout current product and presentation is verified exactly once, and every frozen audit item is reconciled exactly once.",
+    "coordinatorNotes": [
+      "Read-only worker result only; no ledger, dossier, evidence, repair, or result file was modified.",
+      "Route to Sol for catalog incompleteness, PDF/extraction risk, unsupported allergen arrays, and unresolved cross-contact semantics."
+    ]
+  },
+  "affectedBaselineItems": [
+    {
+      "auditItemKey": "1:big-fat-chocolate-chip-cookie",
+      "baseline": {
+        "itemId": "big-fat-chocolate-chip-cookie",
+        "name": "BIG FAT CHOCOLATE CHIP COOKIE",
+        "category": "DESSERT",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.bantamking.com/",
+          "https://www.bantamking.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "2:mochi-ice-cream",
+      "baseline": {
+        "itemId": "mochi-ice-cream",
+        "name": "MOCHI ICE CREAM",
+        "category": "DESSERT",
+        "variantGroup": null,
+        "isConfigurable": false,
+        "allergens": [
+          "milk"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.bantamking.com/",
+          "https://www.bantamking.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "16:a-g-ua-fresca",
+      "baseline": {
+        "itemId": "a-g-ua-fresca",
+        "name": "A G UA FRESCA",
+        "category": "Japanese",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://media-cdn.getbento.com/accounts/72b9b08b20e3f5b447061ce71f79caf8/media/7OBd0PFnR82UT8CfqiMl_BKdinner-6.7.26.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "19:chicken-leg-quarter",
+      "baseline": {
+        "itemId": "chicken-leg-quarter",
+        "name": "CHICKEN LEG QUARTER",
+        "category": "Japanese",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://media-cdn.getbento.com/accounts/72b9b08b20e3f5b447061ce71f79caf8/media/7OBd0PFnR82UT8CfqiMl_BKdinner-6.7.26.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "20:chocolate-chip-cookie",
+      "baseline": {
+        "itemId": "chocolate-chip-cookie",
+        "name": "Chocolate Chip Cookie",
+        "category": "Japanese",
+        "variantGroup": "Steamed Rice",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bantam-king"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "22:cookie",
+      "baseline": {
+        "itemId": "cookie",
+        "name": "COOKIE",
+        "category": "Japanese",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://media-cdn.getbento.com/accounts/72b9b08b20e3f5b447061ce71f79caf8/media/7OBd0PFnR82UT8CfqiMl_BKdinner-6.7.26.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "23:crownr-oya-lwhiskylemonade",
+      "baseline": {
+        "itemId": "crownr-oya-lwhiskylemonade",
+        "name": "CROWNR OYA LWHISKYLEMONADE",
+        "category": "Japanese",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://media-cdn.getbento.com/accounts/72b9b08b20e3f5b447061ce71f79caf8/media/7OBd0PFnR82UT8CfqiMl_BKdinner-6.7.26.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "25:gyo",
+      "baseline": {
+        "itemId": "gyo",
+        "name": "GYO",
+        "category": "Japanese",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "sesame",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://media-cdn.getbento.com/accounts/72b9b08b20e3f5b447061ce71f79caf8/media/7OBd0PFnR82UT8CfqiMl_BKdinner-6.7.26.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "30:rice-with-drippings",
+      "baseline": {
+        "itemId": "rice-with-drippings",
+        "name": "Rice with Drippings",
+        "category": "Japanese",
+        "variantGroup": "Tamago Gohan",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "soy",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bantam-king"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "31:ricewithdrippings",
+      "baseline": {
+        "itemId": "ricewithdrippings",
+        "name": "RICEWITHDRIPPINGS",
+        "category": "Japanese",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "soy",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://media-cdn.getbento.com/accounts/72b9b08b20e3f5b447061ce71f79caf8/media/7OBd0PFnR82UT8CfqiMl_BKdinner-6.7.26.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "32:smirnoffsmashvodkasoda",
+      "baseline": {
+        "itemId": "smirnoffsmashvodkasoda",
+        "name": "SMIRNOFFSMASHVODKASODA",
+        "category": "Japanese",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://media-cdn.getbento.com/accounts/72b9b08b20e3f5b447061ce71f79caf8/media/7OBd0PFnR82UT8CfqiMl_BKdinner-6.7.26.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "33:spi-cy-miso",
+      "baseline": {
+        "itemId": "spi-cy-miso",
+        "name": "SPI CY MISO",
+        "category": "Japanese",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [
+          "peanut",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://media-cdn.getbento.com/accounts/72b9b08b20e3f5b447061ce71f79caf8/media/7OBd0PFnR82UT8CfqiMl_BKdinner-6.7.26.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "35:ta-magogohan",
+      "baseline": {
+        "itemId": "ta-magogohan",
+        "name": "TA MAGOGOHAN",
+        "category": "Japanese",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "gluten",
+          "soy",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://media-cdn.getbento.com/accounts/72b9b08b20e3f5b447061ce71f79caf8/media/7OBd0PFnR82UT8CfqiMl_BKdinner-6.7.26.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "36:tamago-gohan",
+      "baseline": {
+        "itemId": "tamago-gohan",
+        "name": "Tamago Gohan",
+        "category": "Japanese",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "gluten",
+          "soy",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://order.toasttab.com/online/bantam-king"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "37:ucc-green",
+      "baseline": {
+        "itemId": "ucc-green",
+        "name": "UCC GREEN",
+        "category": "Japanese",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "html-card",
+        "sourceUrls": [
+          "https://www.bantamking.com/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "39:uccgreenteacan",
+      "baseline": {
+        "itemId": "uccgreenteacan",
+        "name": "UCCGREENTEACAN",
+        "category": "Japanese",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [],
+        "mayContain": [],
+        "allergenSourceType": "unavailable",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://media-cdn.getbento.com/accounts/72b9b08b20e3f5b447061ce71f79caf8/media/7OBd0PFnR82UT8CfqiMl_BKdinner-6.7.26.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "41:veggie-ta-n-ta-nmen",
+      "baseline": {
+        "itemId": "veggie-ta-n-ta-nmen",
+        "name": "VEGGIE TA N TA NMEN",
+        "category": "Japanese",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [
+          "peanut",
+          "sesame",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "pdf-menu",
+        "sourceUrls": [
+          "https://media-cdn.getbento.com/accounts/72b9b08b20e3f5b447061ce71f79caf8/media/7OBd0PFnR82UT8CfqiMl_BKdinner-6.7.26.pdf"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "45:miso",
+      "baseline": {
+        "itemId": "miso",
+        "name": "MISO",
+        "category": "RAMEN",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [
+          "fish",
+          "sesame",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.bantamking.com/",
+          "https://order.toasttab.com/online/bantam-king",
+          "https://media-cdn.getbento.com/accounts/72b9b08b20e3f5b447061ce71f79caf8/media/7OBd0PFnR82UT8CfqiMl_BKdinner-6.7.26.pdf",
+          "https://www.bantamking.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "46:shio",
+      "baseline": {
+        "itemId": "shio",
+        "name": "SHIO",
+        "category": "RAMEN",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "soy",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.bantamking.com/",
+          "https://order.toasttab.com/online/bantam-king",
+          "https://media-cdn.getbento.com/accounts/72b9b08b20e3f5b447061ce71f79caf8/media/7OBd0PFnR82UT8CfqiMl_BKdinner-6.7.26.pdf",
+          "https://www.bantamking.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "47:shoyu",
+      "baseline": {
+        "itemId": "shoyu",
+        "name": "SHOYU",
+        "category": "RAMEN",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [
+          "fish",
+          "gluten",
+          "soy",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.bantamking.com/",
+          "https://order.toasttab.com/online/bantam-king",
+          "https://www.bantamking.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "48:spicy-miso",
+      "baseline": {
+        "itemId": "spicy-miso",
+        "name": "SPICY MISO",
+        "category": "RAMEN",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [
+          "fish",
+          "peanut",
+          "soy"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.bantamking.com/",
+          "https://order.toasttab.com/online/bantam-king",
+          "https://www.bantamking.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "50:gyoza",
+      "baseline": {
+        "itemId": "gyoza",
+        "name": "GYOZA",
+        "category": "SIDES",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "sesame",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.bantamking.com/",
+          "https://order.toasttab.com/online/bantam-king",
+          "https://www.bantamking.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "51:rice-with-chicken-drippings",
+      "baseline": {
+        "itemId": "rice-with-chicken-drippings",
+        "name": "RICE WITH CHICKEN DRIPPINGS",
+        "category": "SIDES",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [
+          "gluten",
+          "milk",
+          "soy",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.bantamking.com/",
+          "https://www.bantamking.com/menus/"
+        ]
+      }
+    },
+    {
+      "auditItemKey": "52:rice-with-onsen-egg",
+      "baseline": {
+        "itemId": "rice-with-onsen-egg",
+        "name": "RICE WITH ONSEN EGG",
+        "category": "SIDES",
+        "variantGroup": "Japanese",
+        "isConfigurable": false,
+        "allergens": [
+          "egg",
+          "gluten",
+          "soy",
+          "wheat"
+        ],
+        "mayContain": [],
+        "allergenSourceType": "official-ingredients",
+        "sourceType": "json-structured",
+        "sourceUrls": [
+          "https://www.bantamking.com/",
+          "https://www.bantamking.com/menus/"
+        ]
+      }
+    }
+  ],
+  "sampleBaselineItems": [],
+  "fullInputs": {
+    "workerJobPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-02-2026-07-16/jobs/bantam-king-dc.json",
+    "verifierResultPath": "data/restaurant-verification/worker-runs/luna-terra-sol-batch-02-2026-07-16/results/bantam-king-dc.json",
+    "frozenItemChecksPath": "data/restaurant-verification/item-checks/bantam-king-dc.jsonl"
+  }
+}

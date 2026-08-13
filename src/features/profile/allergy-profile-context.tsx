@@ -21,12 +21,14 @@ type AllergyProfileState = {
   activeProfileId: string;
   createProfile: () => Promise<AllergyProfile>;
   isLoading: boolean;
+  isSyncing: boolean;
   onboardingComplete: boolean;
   profiles: AllergyProfile[];
   activeProfileAllergyIds: string[];
   selectedAllergyIds: string[];
   selectedProfileIds: string[];
   completeOnboarding: () => Promise<void>;
+  clearAccountData: () => Promise<void>;
   deleteProfile: (id: string) => Promise<void>;
   renameProfile: (id: string, name: string) => Promise<void>;
   resetOnboarding: () => Promise<void>;
@@ -50,6 +52,7 @@ const AllergyProfileContext = createContext<AllergyProfileState | null>(null);
 
 export function AllergyProfileProvider({ children }: PropsWithChildren) {
   const [isLoading, setIsLoading] = useState(true);
+  const [isSyncing, setIsSyncing] = useState(false);
   const [onboardingComplete, setOnboardingComplete] = useState(false);
   const [activeProfileId, setActiveProfileId] = useState(DEFAULT_PROFILE_ID);
   const [selectedProfileIds, setSelectedProfileIds] = useState<string[]>([
@@ -196,6 +199,8 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
       return;
     }
 
+    setIsSyncing(true);
+
     try {
       await getCurrentUser();
       const result = await allergyProfileClient.models.AllergyProfile.list();
@@ -260,6 +265,8 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
       }
     } catch {
       // Stay on the local profile cache when signed out or offline.
+    } finally {
+      setIsSyncing(false);
     }
   }, [activeProfileId, onboardingComplete, profiles, selectedProfileIds, writeLocalState]);
 
@@ -339,6 +346,16 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
     },
     [writeState],
   );
+
+  const clearAccountData = useCallback(async () => {
+    const defaultProfiles: AllergyProfile[] = [
+      { id: DEFAULT_PROFILE_ID, name: "My Profile", selectedAllergyIds: [] },
+    ];
+
+    hasUserProfileEditRef.current = false;
+    didHydrateCloudRef.current = true;
+    await writeLocalState(false, defaultProfiles, DEFAULT_PROFILE_ID, [DEFAULT_PROFILE_ID]);
+  }, [writeLocalState]);
 
   const switchProfile = useCallback(
     (id: string) => {
@@ -515,10 +532,12 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
     () => ({
       activeProfileId,
       activeProfileAllergyIds,
+      clearAccountData,
       completeOnboarding,
       createProfile,
       deleteProfile,
       isLoading,
+      isSyncing,
       onboardingComplete,
       profiles,
       renameProfile,
@@ -533,10 +552,12 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
     [
       activeProfileId,
       activeProfileAllergyIds,
+      clearAccountData,
       completeOnboarding,
       createProfile,
       deleteProfile,
       isLoading,
+      isSyncing,
       onboardingComplete,
       profiles,
       renameProfile,

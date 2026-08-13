@@ -2,27 +2,41 @@ import { useAuthenticator } from "@aws-amplify/ui-react-native";
 import { Check, X } from "lucide-react-native";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  KeyboardAvoidingView,
+  Keyboard,
   Modal,
-  Platform,
   Pressable,
-  type ScrollView as ScrollViewType,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from "react-native";
+import {
+  KeyboardAwareScrollView,
+  type KeyboardAwareScrollViewRef,
+  KeyboardStickyView,
+  useKeyboardState,
+} from "react-native-keyboard-controller";
+import Animated, {
+  FadeInDown,
+  FadeOutDown,
+  LinearTransition,
+} from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { AnimatedContentSwap } from "@/components/animated-content-swap";
+import { AllergyRatingPicker } from "@/components/allergy-rating-picker";
 import { ModalScreen } from "@/components/modal-screen";
 import { PrimaryButton } from "@/components/primary-button";
 import { SereneLoader } from "@/components/serene-loader";
 import { SelectableChip } from "@/components/selectable-chip";
 import { useSnackbar } from "@/components/snackbar-provider";
 import { SecondaryButton } from "@/components/secondary-button";
-import { allergyOptions } from "@/constants/allergies";
-import { colors, radius, spacing } from "@/constants/theme";
+import {
+  allergyOptions,
+  getAllergyLabels,
+  normalizeAllergyIds,
+} from "@/constants/allergies";
+import { colors, spacing } from "@/constants/theme";
 import type { MenuItem, Restaurant } from "@/data/restaurants";
 import {
   createGooglePlacesSessionToken,
@@ -32,6 +46,8 @@ import {
   type GooglePlaceSuggestion,
 } from "@/features/community/google-places-service";
 import { useCommunitySubmission } from "@/features/community/use-restaurant-community";
+import { DuplicateRestaurantRequestError } from "@/features/community/community-service";
+import { useAllergyProfile } from "@/features/profile/allergy-profile-context";
 import {
   getRestaurantSearchLocation,
   type RestaurantSearchLocation,
@@ -74,14 +90,6 @@ type FormState = {
   website: string;
 };
 
-type RequestMenuDraft = {
-  allergens: string[];
-  category: string;
-  description: string;
-  mayContain: string[];
-  name: string;
-};
-
 const defaultForm: FormState = {
   addressLine1: "",
   addressLine2: "",
@@ -108,14 +116,6 @@ const defaultForm: FormState = {
   website: "",
 };
 
-const emptyRequestMenuDraft = (): RequestMenuDraft => ({
-  allergens: [],
-  category: "",
-  description: "",
-  mayContain: [],
-  name: "",
-});
-
 const reportReasons = [
   { id: "outdated-allergen-info", label: "Outdated allergen info" },
   { id: "missing-allergen", label: "Missing allergen" },
@@ -134,32 +134,61 @@ export function CommunityContributionModal({
   const { showSnackbar } = useSnackbar();
   const insets = useSafeAreaInsets();
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
+  const { selectedAllergyIds } = useAllergyProfile();
   const submissions = useCommunitySubmission(restaurant?.id);
   const [form, setForm] = useState<FormState>(() => ({
     ...defaultForm,
     category: item?.category ?? "",
     name: initialRestaurantName ?? "",
   }));
-  const [requestMenuItems, setRequestMenuItems] = useState<RequestMenuDraft[]>([]);
-  const [placeLocation, setPlaceLocation] = useState<RestaurantSearchLocation | null>(null);
+  const [requestReviewAllergyIds, setRequestReviewAllergyIds] = useState<
+    string[]
+  >(() => normalizeAllergyIds(selectedAllergyIds));
+  const [requestReviewRating, setRequestReviewRating] = useState(0);
+  const [requestedRestaurantId, setRequestedRestaurantId] = useState<
+    string | null
+  >(null);
+  const [placeLocation, setPlaceLocation] =
+    useState<RestaurantSearchLocation | null>(null);
   const [placeLookupError, setPlaceLookupError] = useState<string | null>(null);
   const [placeLookupLoading, setPlaceLookupLoading] = useState(false);
-  const [placeSearchText, setPlaceSearchText] = useState(initialRestaurantName ?? "");
-  const [placeSessionToken, setPlaceSessionToken] = useState(createGooglePlacesSessionToken);
-  const [placeSuggestions, setPlaceSuggestions] = useState<GooglePlaceSuggestion[]>([]);
+  const [placeSearchText, setPlaceSearchText] = useState(
+    initialRestaurantName ?? "",
+  );
+  const [placeSessionToken, setPlaceSessionToken] = useState(
+    createGooglePlacesSessionToken,
+  );
+  const [placeSuggestions, setPlaceSuggestions] = useState<
+    GooglePlaceSuggestion[]
+  >([]);
   const notesSectionYRef = useRef(0);
-  const scrollViewRef = useRef<ScrollViewType>(null);
+  const scrollViewRef = useRef<KeyboardAwareScrollViewRef>(null);
+  const [stickyFooterHeight, setStickyFooterHeight] = useState(0);
+  const keyboardVisible = useKeyboardState((state) => state.isVisible);
   const [submitted, setSubmitted] = useState(false);
-  const content = mode ? modalContent(mode, restaurant?.name, item?.name) : null;
+  const [presentedMode, setPresentedMode] = useState<ContributionMode | null>(
+    mode,
+  );
+  const [presentedItem, setPresentedItem] = useState<
+    MenuItem | null | undefined
+  >(item);
+  const displayMode = mode ?? presentedMode;
+  const displayItem = item ?? presentedItem;
+  const content = displayMode
+    ? modalContent(displayMode, restaurant?.name, displayItem?.name)
+    : null;
   const isSubmitting =
     submissions.submitReport.isPending ||
     submissions.submitRestaurantRequest.isPending;
+  const stickyFooterBottomInset = Math.max(insets.bottom, 12);
 
   useEffect(() => {
     if (!mode) {
       return;
     }
 
+    setPresentedMode(mode);
+    setPresentedItem(item);
     setSubmitted(false);
     setForm({
       ...defaultForm,
@@ -171,8 +200,10 @@ export function CommunityContributionModal({
     setPlaceSearchText(initialRestaurantName ?? "");
     setPlaceSessionToken(createGooglePlacesSessionToken());
     setPlaceSuggestions([]);
-    setRequestMenuItems([]);
-  }, [initialRestaurantName, item?.category, mode]);
+    setRequestReviewAllergyIds(normalizeAllergyIds(selectedAllergyIds));
+    setRequestReviewRating(0);
+    setRequestedRestaurantId(null);
+  }, [initialRestaurantName, item, mode, selectedAllergyIds]);
 
   useEffect(() => {
     if (mode !== "restaurant-request" || !isGooglePlacesConfigured()) {
@@ -195,6 +226,7 @@ export function CommunityContributionModal({
   useEffect(() => {
     if (mode !== "restaurant-request" || !isGooglePlacesConfigured()) {
       setPlaceSuggestions([]);
+      setPlaceLookupLoading(false);
       return;
     }
 
@@ -203,12 +235,13 @@ export function CommunityContributionModal({
     if (query.length < 3 || form.googlePlaceId) {
       setPlaceSuggestions([]);
       setPlaceLookupError(null);
+      setPlaceLookupLoading(false);
       return;
     }
 
     let active = true;
+    setPlaceLookupLoading(true);
     const timer = setTimeout(() => {
-      setPlaceLookupLoading(true);
       fetchRestaurantPlaceSuggestions({
         input: query,
         location: placeLocation,
@@ -224,7 +257,9 @@ export function CommunityContributionModal({
           if (active) {
             setPlaceSuggestions([]);
             setPlaceLookupError(
-              error instanceof Error ? error.message : "Restaurant lookup is unavailable right now.",
+              error instanceof Error
+                ? error.message
+                : "Restaurant lookup is unavailable right now.",
             );
           }
         })
@@ -239,7 +274,13 @@ export function CommunityContributionModal({
       active = false;
       clearTimeout(timer);
     };
-  }, [form.googlePlaceId, mode, placeLocation, placeSearchText, placeSessionToken]);
+  }, [
+    form.googlePlaceId,
+    mode,
+    placeLocation,
+    placeSearchText,
+    placeSessionToken,
+  ]);
 
   const canSubmit = useMemo(() => {
     if (!mode) {
@@ -263,6 +304,9 @@ export function CommunityContributionModal({
 
   const updateRestaurantName = (value: string) => {
     setPlaceSearchText(value);
+    setPlaceLookupLoading(
+      isGooglePlacesConfigured() && value.trim().length >= 3,
+    );
     setForm((current) => ({
       ...current,
       googleMapsUri: "",
@@ -270,6 +314,22 @@ export function CommunityContributionModal({
       lat: null,
       lng: null,
       name: value,
+    }));
+  };
+
+  const updateRestaurantLocation = (value: string) => {
+    setForm((current) => ({
+      ...current,
+      addressLine1: "",
+      addressLine2: "",
+      city: "",
+      country: "",
+      googleMapsUri: "",
+      lat: null,
+      lng: null,
+      locationHint: value,
+      postalCode: "",
+      region: "",
     }));
   };
 
@@ -310,51 +370,20 @@ export function CommunityContributionModal({
       }, 120);
     } catch (error) {
       setPlaceLookupError(
-        error instanceof Error ? error.message : "Restaurant details are unavailable right now.",
+        error instanceof Error
+          ? error.message
+          : "Restaurant details are unavailable right now.",
       );
     } finally {
       setPlaceLookupLoading(false);
     }
   };
 
-  const addRequestMenuItem = () => {
-    setRequestMenuItems((current) => [...current, emptyRequestMenuDraft()]);
-  };
-
-  const removeRequestMenuItem = (index: number) => {
-    setRequestMenuItems((current) => current.filter((_, nextIndex) => nextIndex !== index));
-  };
-
-  const updateRequestMenuItem = (
-    index: number,
-    field: Exclude<keyof RequestMenuDraft, "allergens" | "mayContain">,
-    value: string,
-  ) => {
-    setRequestMenuItems((current) =>
-      current.map((draft, nextIndex) =>
-        nextIndex === index ? { ...draft, [field]: value } : draft,
-      ),
-    );
-  };
-
-  const toggleRequestMenuAllergen = (
-    index: number,
-    field: "allergens" | "mayContain",
-    id: string,
-  ) => {
-    setRequestMenuItems((current) =>
-      current.map((draft, nextIndex) => {
-        if (nextIndex !== index) {
-          return draft;
-        }
-
-        return {
-          ...draft,
-          [field]: draft[field].includes(id)
-            ? draft[field].filter((value) => value !== id)
-            : [...draft[field], id],
-        };
-      }),
+  const toggleRequestReviewAllergy = (id: string) => {
+    setRequestReviewAllergyIds((current) =>
+      current.includes(id)
+        ? current.filter((value) => value !== id)
+        : normalizeAllergyIds([...current, id]),
     );
   };
 
@@ -371,7 +400,7 @@ export function CommunityContributionModal({
 
     try {
       if (mode === "restaurant-request") {
-        await submissions.submitRestaurantRequest.mutateAsync({
+        const request = await submissions.submitRestaurantRequest.mutateAsync({
           addressLine1: form.addressLine1,
           addressLine2: form.addressLine2,
           city: form.city,
@@ -383,11 +412,14 @@ export function CommunityContributionModal({
           lng: form.lng ?? undefined,
           locationHint: form.locationHint,
           name: form.name,
-          notes: formatRestaurantRequestNotes(form.notes, requestMenuItems),
+          notes: form.notes,
           postalCode: form.postalCode,
           region: form.region,
           website: form.website,
         });
+        Keyboard.dismiss();
+        setRequestedRestaurantId(request.id);
+        return;
       } else if (mode === "report" && restaurant) {
         await submissions.submitReport.mutateAsync({
           comment: form.comment,
@@ -400,7 +432,45 @@ export function CommunityContributionModal({
 
       setSubmitted(true);
     } catch (nextError) {
-      const message = nextError instanceof Error ? nextError.message : "Submission failed.";
+      if (nextError instanceof DuplicateRestaurantRequestError) {
+        showSnackbar({
+          message:
+            "You already submitted this restaurant. You can edit it from My Requests in Settings.",
+          placement: "top",
+          title: "Already Requested",
+          tone: "info",
+        });
+        return;
+      }
+
+      const message =
+        nextError instanceof Error ? nextError.message : "Submission failed.";
+      showSnackbar({ message, title: "Submission Error", tone: "error" });
+    }
+  };
+
+  const submitRequestedRestaurantReview = async () => {
+    if (!requestedRestaurantId || requestReviewRating < 1) {
+      return;
+    }
+
+    if (authStatus !== "authenticated") {
+      onClose();
+      onSignInRequired();
+      return;
+    }
+
+    try {
+      await submissions.submitReview.mutateAsync({
+        allergyContext: formatAllergyContext(requestReviewAllergyIds),
+        body: form.body,
+        rating: requestReviewRating,
+        restaurantId: `request:${requestedRestaurantId}`,
+      });
+      setSubmitted(true);
+    } catch (nextError) {
+      const message =
+        nextError instanceof Error ? nextError.message : "Review submission failed.";
       showSnackbar({ message, title: "Submission Error", tone: "error" });
     }
   };
@@ -408,192 +478,268 @@ export function CommunityContributionModal({
   return (
     <Modal
       animationType="slide"
+      onDismiss={() => {
+        if (!mode) {
+          setPresentedMode(null);
+          setPresentedItem(null);
+        }
+      }}
       onRequestClose={onClose}
       presentationStyle="pageSheet"
       visible={Boolean(mode)}
     >
-      {mode && content ? (
+      {displayMode && content ? (
         <ModalScreen
           actionIcon={X}
           actionLabel="Close contribution modal"
           headerContent={
-            <>
-              <Text style={styles.kicker}>{content.kicker}</Text>
-              <Text style={styles.title}>{content.title}</Text>
-            </>
+            displayMode === "restaurant-request" ? (
+              <AnimatedContentSwap
+                primary={
+                  <View>
+                    <Text style={styles.kicker}>{content.kicker}</Text>
+                    <Text style={styles.title}>{content.title}</Text>
+                  </View>
+                }
+                secondary={
+                  <AnimatedContentSwap
+                    primary={
+                      <View>
+                        <Text style={styles.kicker}>Request sent</Text>
+                        <Text style={styles.title}>Add a Review?</Text>
+                      </View>
+                    }
+                    secondary={
+                      <View>
+                        <Text style={styles.kicker}>Thank you</Text>
+                        <Text style={styles.title}>Queued for Review</Text>
+                      </View>
+                    }
+                    showSecondary={submitted}
+                  />
+                }
+                showSecondary={Boolean(requestedRestaurantId)}
+                style={styles.headerTransition}
+              />
+            ) : (
+              <>
+                <Text style={styles.kicker}>{content.kicker}</Text>
+                <Text style={styles.title}>{content.title}</Text>
+              </>
+            )
           }
+          includeBottomInset={false}
           onActionPress={onClose}
         >
-          {submitted ? (
-            <View style={styles.done}>
-              <View style={styles.doneIcon}>
-                <Check color={colors.primary} size={30} strokeWidth={2.8} />
-              </View>
-              <Text style={styles.doneTitle}>Queued for review</Text>
-              <Text style={styles.doneCopy}>
-                Thanks. We&rsquo;ll review your request soon!
-              </Text>
-              <SecondaryButton label="Close" onPress={onClose} />
-            </View>
-          ) : (
-            <KeyboardAvoidingView
-              behavior={Platform.OS === "ios" ? "padding" : undefined}
-              style={styles.formShell}
-            >
-              <ScrollView
+          <AnimatedContentSwap
+            primary={
+              submitted && !requestedRestaurantId ? (
+                <SubmissionDone onClose={onClose} />
+              ) : (
+                <View style={styles.formShell}>
+              <KeyboardAwareScrollView
+                bottomOffset={
+                  displayMode === "restaurant-request"
+                    ? Math.max(stickyFooterHeight + 4, 20)
+                    : 20
+                }
                 contentContainerStyle={[
                   styles.content,
-                  mode === "restaurant-request" && styles.restaurantRequestContent,
+                  displayMode === "restaurant-request" &&
+                    styles.restaurantRequestContent,
                 ]}
+                keyboardDismissMode="interactive"
                 keyboardShouldPersistTaps="handled"
                 ref={scrollViewRef}
+                style={styles.formScroll}
               >
-              {content.helper ? <Text style={styles.helper}>{content.helper}</Text> : null}
+                {content.helper ? (
+                  <Text style={styles.helper}>{content.helper}</Text>
+                ) : null}
 
-              {mode === "restaurant-request" ? (
-                <>
-                  <RestaurantPlaceLookup
-                    error={placeLookupError}
-                    loading={placeLookupLoading}
-                    onChangeText={updateRestaurantName}
-                    onSelect={selectPlaceSuggestion}
-                    selectedPlaceId={form.googlePlaceId}
-                    suggestions={placeSuggestions}
-                    value={placeSearchText}
-                  />
-                  <Field
-                    autoCapitalize="none"
-                    label="Website"
-                    onChangeText={(value) => update("website", value)}
-                    placeholder="https://..."
-                    value={form.website}
-                  />
-                  <Field
-                    label="Location"
-                    onChangeText={(value) => update("locationHint", value)}
-                    placeholder="City, state, or region"
-                    value={form.locationHint}
-                  />
-                  <Field
-                    label="Street address"
-                    onChangeText={(value) => update("addressLine1", value)}
-                    placeholder="Optional"
-                    value={form.addressLine1}
-                  />
-                  <Field
-                    label="Unit or suite"
-                    onChangeText={(value) => update("addressLine2", value)}
-                    placeholder="Optional"
-                    value={form.addressLine2}
-                  />
-                  <View style={styles.fieldRow}>
-                    <View style={styles.fieldRowPrimary}>
-                      <Field
-                        label="City"
-                        onChangeText={(value) => update("city", value)}
-                        placeholder="Optional"
-                        value={form.city}
-                      />
-                    </View>
-                    <View style={styles.fieldRowRegion}>
-                      <Field
-                        autoCapitalize="characters"
-                        label="State"
-                        onChangeText={(value) => update("region", value)}
-                        placeholder="ST"
-                        value={form.region}
-                      />
-                    </View>
-                  </View>
-                  <View style={styles.fieldRow}>
-                    <View style={styles.fieldRowPrimary}>
-                      <Field
-                        label="ZIP"
-                        onChangeText={(value) => update("postalCode", value)}
-                        placeholder="Optional"
-                        value={form.postalCode}
-                      />
-                    </View>
-                    <View style={styles.fieldRowRegion}>
-                      <Field
-                        autoCapitalize="characters"
-                        label="Country"
-                        onChangeText={(value) => update("country", value)}
-                        placeholder="US"
-                        value={form.country}
-                      />
-                    </View>
-                  </View>
-                  <View
-                    onLayout={(event) => {
-                      notesSectionYRef.current = event.nativeEvent.layout.y;
-                    }}
-                    style={styles.notesSection}
-                  >
+                {displayMode === "restaurant-request" ? (
+                  <>
+                    <RestaurantPlaceLookup
+                      error={placeLookupError}
+                      loading={placeLookupLoading}
+                      onChangeText={updateRestaurantName}
+                      onSelect={selectPlaceSuggestion}
+                      selectedPlaceId={form.googlePlaceId}
+                      suggestions={placeSuggestions}
+                      value={placeSearchText}
+                    />
                     <Field
-                      label="Notes"
+                      label="Location (optional)"
+                      onChangeText={updateRestaurantLocation}
+                      placeholder="City, state, or region"
+                      value={form.locationHint}
+                    />
+                    <Field
+                      autoCapitalize="none"
+                      label="Website (optional)"
+                      onChangeText={(value) => update("website", value)}
+                      placeholder="https://..."
+                      value={form.website}
+                    />
+                    <View
+                      onLayout={(event) => {
+                        notesSectionYRef.current = event.nativeEvent.layout.y;
+                      }}
+                      style={styles.notesSection}
+                    >
+                      <Field
+                        label="Notes (optional)"
+                        multiline
+                        onChangeText={(value) => update("notes", value)}
+                        placeholder="Why should we add it?"
+                        value={form.notes}
+                      />
+                    </View>
+                  </>
+                ) : null}
+
+                {displayMode === "report" ? (
+                  <>
+                    <ReasonPicker
+                      onSelect={(value) => update("reason", value)}
+                      selected={form.reason}
+                    />
+                    <Field
+                      label="What should we fix?"
                       multiline
-                      onChangeText={(value) => update("notes", value)}
-                      placeholder="Why should we add it?"
-                      value={form.notes}
+                      onChangeText={(value) => update("comment", value)}
+                      placeholder="Tell us what looks inaccurate."
+                      value={form.comment}
                     />
-                    <RestaurantRequestMenuSection
-                      items={requestMenuItems}
-                      onAdd={addRequestMenuItem}
-                      onRemove={removeRequestMenuItem}
-                      onToggleAllergen={toggleRequestMenuAllergen}
-                      onUpdate={updateRequestMenuItem}
+                    <Field
+                      autoCapitalize="none"
+                      label="Source URL (optional)"
+                      onChangeText={(value) => update("sourceUrl", value)}
+                      placeholder="Optional link to the correct source"
+                      value={form.sourceUrl}
                     />
-                  </View>
-                </>
-              ) : null}
+                  </>
+                ) : null}
 
-              {mode === "report" ? (
-                <>
-                  <ReasonPicker onSelect={(value) => update("reason", value)} selected={form.reason} />
-                  <Field
-                    label="What should we fix?"
-                    multiline
-                    onChangeText={(value) => update("comment", value)}
-                    placeholder="Tell us what looks inaccurate."
-                    value={form.comment}
-                  />
-                  <Field
-                    autoCapitalize="none"
-                    label="Source URL (optional)"
-                    onChangeText={(value) => update("sourceUrl", value)}
-                    placeholder="Optional link to the correct source"
-                    value={form.sourceUrl}
-                  />
-                </>
-              ) : null}
-
-                {mode !== "restaurant-request" ? (
+                {displayMode !== "restaurant-request" ? (
                   <>
                     <PrimaryButton
                       disabled={!canSubmit || isSubmitting}
-                      label={isSubmitting ? "Submitting..." : content.submitLabel}
+                      label={
+                        isSubmitting ? "Submitting..." : content.submitLabel
+                      }
                       loading={isSubmitting}
                       onPress={submit}
                     />
                   </>
                 ) : null}
-              </ScrollView>
-              {mode === "restaurant-request" ? (
-                <View style={[styles.stickyFooter, { paddingBottom: Math.max(insets.bottom, 12) }]}>
+              </KeyboardAwareScrollView>
+              {displayMode === "restaurant-request" ? (
+                <KeyboardStickyView
+                  onLayout={(event) =>
+                    setStickyFooterHeight(event.nativeEvent.layout.height)
+                  }
+                  offset={{
+                    closed: 0,
+                    opened: Math.max(0, stickyFooterBottomInset - 6),
+                  }}
+                  style={[
+                    styles.stickyFooter,
+                    { paddingBottom: stickyFooterBottomInset },
+                  ]}
+                >
                   <PrimaryButton
                     disabled={!canSubmit || isSubmitting}
                     label={isSubmitting ? "Submitting..." : content.submitLabel}
                     loading={isSubmitting}
                     onPress={submit}
                   />
-                </View>
+                </KeyboardStickyView>
               ) : null}
-            </KeyboardAvoidingView>
-          )}
+                </View>
+              )
+            }
+            secondary={
+              <AnimatedContentSwap
+                primary={
+                  <View style={styles.formShell}>
+                  <KeyboardAwareScrollView
+                    bottomOffset={Math.max(stickyFooterHeight + 4, 20)}
+                    contentContainerStyle={styles.reviewPageContent}
+                    keyboardDismissMode="interactive"
+                    keyboardShouldPersistTaps="handled"
+                  >
+                    <Text style={styles.reviewApprovalNote}>
+                      Published only if the restaurant and review are approved.
+                    </Text>
+                    <RestaurantRequestReviewSection
+                      allergyIds={requestReviewAllergyIds}
+                      body={form.body}
+                      onBodyChange={(value) => update("body", value)}
+                      onChangeRating={setRequestReviewRating}
+                      onToggleAllergy={toggleRequestReviewAllergy}
+                      rating={requestReviewRating}
+                    />
+                  </KeyboardAwareScrollView>
+                  <KeyboardStickyView
+                    onLayout={(event) =>
+                      setStickyFooterHeight(event.nativeEvent.layout.height)
+                    }
+                    offset={{
+                      closed: 0,
+                      opened: Math.max(0, stickyFooterBottomInset - 6),
+                    }}
+                    style={[
+                      styles.reviewPageActions,
+                      { paddingBottom: stickyFooterBottomInset },
+                    ]}
+                  >
+                    {!keyboardVisible ? (
+                      <Animated.View
+                        entering={FadeInDown.duration(300)}
+                        exiting={FadeOutDown.duration(180)}
+                        layout={LinearTransition.duration(240)}
+                      >
+                        <SecondaryButton label="Not now" onPress={onClose} />
+                      </Animated.View>
+                    ) : null}
+                    <PrimaryButton
+                      disabled={requestReviewRating < 1}
+                      label={
+                        authStatus === "authenticated"
+                          ? "Submit review"
+                          : "Sign in to submit review"
+                      }
+                      loading={submissions.submitReview.isPending}
+                      onPress={submitRequestedRestaurantReview}
+                    />
+                  </KeyboardStickyView>
+                  </View>
+                }
+                secondary={<SubmissionDone onClose={onClose} />}
+                showSecondary={submitted}
+              />
+            }
+            showSecondary={Boolean(requestedRestaurantId)}
+          />
         </ModalScreen>
       ) : null}
     </Modal>
+  );
+}
+
+function SubmissionDone({ onClose }: { onClose: () => void }) {
+  return (
+    <View style={styles.done}>
+      <View style={styles.doneIcon}>
+        <Check color={colors.primary} size={30} strokeWidth={2.8} />
+      </View>
+      <Text style={styles.doneTitle}>Queued for review</Text>
+      <Text style={styles.doneCopy}>
+        Thanks. We&rsquo;ll review your request soon!
+      </Text>
+      <SecondaryButton label="Close" onPress={onClose} />
+    </View>
   );
 }
 
@@ -623,12 +769,11 @@ function RestaurantPlaceLookup({
         <TextInput
           autoCapitalize="words"
           onChangeText={onChangeText}
-          placeholder="Search restaurants"
+          placeholder="Search restaurants..."
           placeholderTextColor="#8E8E93"
           style={styles.placeInput}
           value={value}
         />
-        {loading ? <SereneLoader size="small" /> : null}
       </View>
 
       {!placesEnabled ? (
@@ -637,7 +782,14 @@ function RestaurantPlaceLookup({
 
       {error ? <Text style={styles.placeError}>{error}</Text> : null}
 
-      {suggestions.length > 0 && !selectedPlaceId ? (
+      {loading && !selectedPlaceId ? (
+        <View style={styles.placeSuggestions}>
+          <View style={styles.placeLoadingState}>
+            <SereneLoader size="small" />
+            <Text style={styles.placeLoadingText}>Finding restaurants...</Text>
+          </View>
+        </View>
+      ) : suggestions.length > 0 && !selectedPlaceId ? (
         <View style={styles.placeSuggestions}>
           {suggestions.map((suggestion) => (
             <Pressable
@@ -651,7 +803,10 @@ function RestaurantPlaceLookup({
                   {suggestion.mainText}
                 </Text>
                 {suggestion.secondaryText ? (
-                  <Text numberOfLines={1} style={styles.placeSuggestionSubtitle}>
+                  <Text
+                    numberOfLines={1}
+                    style={styles.placeSuggestionSubtitle}
+                  >
                     {suggestion.secondaryText}
                   </Text>
                 ) : null}
@@ -664,81 +819,53 @@ function RestaurantPlaceLookup({
   );
 }
 
-function RestaurantRequestMenuSection({
-  items,
-  onAdd,
-  onRemove,
-  onToggleAllergen,
-  onUpdate,
+function RestaurantRequestReviewSection({
+  allergyIds,
+  body,
+  onBodyChange,
+  onChangeRating,
+  onToggleAllergy,
+  rating,
 }: {
-  items: RequestMenuDraft[];
-  onAdd: () => void;
-  onRemove: (index: number) => void;
-  onToggleAllergen: (index: number, field: "allergens" | "mayContain", id: string) => void;
-  onUpdate: (
-    index: number,
-    field: Exclude<keyof RequestMenuDraft, "allergens" | "mayContain">,
-    value: string,
-  ) => void;
+  allergyIds: string[];
+  body: string;
+  onBodyChange: (value: string) => void;
+  onChangeRating: (rating: number) => void;
+  onToggleAllergy: (id: string) => void;
+  rating: number;
 }) {
   return (
-    <View style={styles.optionalMenu}>
-      <View style={styles.optionalMenuHeader}>
-        <View style={styles.optionalMenuText}>
-          <Text style={styles.optionalMenuTitle}>Optional menu info</Text>
-          <Text style={styles.optionalMenuCopy}>
-            Add item names and allergen details if you already have them.
-          </Text>
-        </View>
-        <Pressable accessibilityRole="button" onPress={onAdd} style={styles.addMenuButton}>
-          <Text style={styles.addMenuButtonText}>{items.length ? "Add" : "Add item"}</Text>
-        </Pressable>
-      </View>
-
-      {items.map((draft, index) => (
-        <View key={index} style={styles.requestMenuCard}>
-          <View style={styles.requestMenuCardHeader}>
-            <Text style={styles.requestMenuCardTitle}>Menu item {index + 1}</Text>
-            <Pressable
-              accessibilityLabel={`Remove menu item ${index + 1}`}
-              accessibilityRole="button"
-              onPress={() => onRemove(index)}
-              style={styles.removeMenuButton}
-            >
-              <X color={colors.muted} size={16} strokeWidth={2.6} />
-            </Pressable>
-          </View>
+    <View style={styles.reviewForm}>
+      <AllergyRatingPicker
+        label="Rating"
+        onChange={onChangeRating}
+        rating={rating}
+      />
+      {rating ? (
+        <>
           <Field
-            label="Item name"
-            onChangeText={(value) => onUpdate(index, "name", value)}
-            placeholder="Menu item"
-            value={draft.name}
-          />
-          <Field
-            label="Category"
-            onChangeText={(value) => onUpdate(index, "category", value)}
-            placeholder="Entrees, sides, drinks..."
-            value={draft.category}
-          />
-          <Field
-            label="Description"
+            label="Review (optional)"
             multiline
-            onChangeText={(value) => onUpdate(index, "description", value)}
-            placeholder="Optional item details"
-            value={draft.description}
+            onChangeText={onBodyChange}
+            placeholder="What should someone with allergies know?"
+            value={body}
           />
-          <AllergenPicker
-            label="Contains"
-            onToggle={(id) => onToggleAllergen(index, "allergens", id)}
-            selectedIds={draft.allergens}
-          />
-          <AllergenPicker
-            label="Cross-contact"
-            onToggle={(id) => onToggleAllergen(index, "mayContain", id)}
-            selectedIds={draft.mayContain}
-          />
-        </View>
-      ))}
+          <View style={styles.field}>
+            <Text style={styles.fieldLabel}>Relevant allergies (optional)</Text>
+            <View style={styles.chipWrap}>
+              {allergyOptions.map((option) => (
+                <SelectableChip
+                  accessibilityRole="checkbox"
+                  key={option.id}
+                  label={option.label}
+                  onPress={() => onToggleAllergy(option.id)}
+                  selected={allergyIds.includes(option.id)}
+                />
+              ))}
+            </View>
+          </View>
+        </>
+      ) : null}
     </View>
   );
 }
@@ -768,37 +895,6 @@ function Field({
   );
 }
 
-function AllergenPicker({
-  label,
-  onToggle,
-  selectedIds,
-}: {
-  label: string;
-  onToggle: (id: string) => void;
-  selectedIds: string[];
-}) {
-  return (
-    <View style={styles.field}>
-      <Text style={styles.fieldLabel}>{label}</Text>
-      <View style={styles.chipWrap}>
-        {allergyOptions.map((option) => {
-          const selected = selectedIds.includes(option.id);
-
-          return (
-            <SelectableChip
-              accessibilityRole="checkbox"
-              key={option.id}
-              label={option.label}
-              onPress={() => onToggle(option.id)}
-              selected={selected}
-            />
-          );
-        })}
-      </View>
-    </View>
-  );
-}
-
 function ReasonPicker({
   onSelect,
   selected,
@@ -824,7 +920,11 @@ function ReasonPicker({
   );
 }
 
-function modalContent(mode: ContributionMode, restaurantName?: string, itemName?: string) {
+function modalContent(
+  mode: ContributionMode,
+  restaurantName?: string,
+  itemName?: string,
+) {
   const target = itemName ?? restaurantName ?? "this restaurant";
 
   if (mode === "restaurant-request") {
@@ -844,54 +944,18 @@ function modalContent(mode: ContributionMode, restaurantName?: string, itemName?
   };
 }
 
-function formatRestaurantRequestNotes(notes: string, menuItems: RequestMenuDraft[]) {
-  const cleanNotes = notes.trim();
-  const filledItems = menuItems
-    .map((item) => ({
-      allergens: labelsForAllergens(item.allergens),
-      category: item.category.trim(),
-      description: item.description.trim(),
-      mayContain: labelsForAllergens(item.mayContain),
-      name: item.name.trim(),
-    }))
-    .filter(
-      (item) =>
-        item.name || item.category || item.description || item.allergens || item.mayContain,
-    );
+function formatAllergyContext(allergyIds: string[]) {
+  const labels = getAllergyLabels(allergyIds);
 
-  if (filledItems.length === 0) {
-    return cleanNotes;
-  }
-
-  const menuNotes = filledItems
-    .map((item, index) => {
-      const lines = [`${index + 1}. ${item.name || "Unnamed item"}`];
-
-      if (item.category) {
-        lines.push(`Category: ${item.category}`);
-      }
-
-      if (item.description) {
-        lines.push(`Description: ${item.description}`);
-      }
-
-      if (item.allergens) {
-        lines.push(`Contains: ${item.allergens}`);
-      }
-
-      if (item.mayContain) {
-        lines.push(`Cross-contact: ${item.mayContain}`);
-      }
-
-      return lines.join("; ");
-    })
-    .join("\n");
-
-  return [cleanNotes, "Suggested menu/allergen info:", menuNotes].filter(Boolean).join("\n\n");
+  return labels.length > 0
+    ? `Relevant allergies: ${labels.join(", ")}`
+    : "General restaurant note";
 }
 
 function formatDisplayAddress(form: FormState) {
-  const cityRegion = [form.city.trim(), form.region.trim()].filter(Boolean).join(", ");
+  const cityRegion = [form.city.trim(), form.region.trim()]
+    .filter(Boolean)
+    .join(", ");
 
   return [
     form.addressLine1.trim(),
@@ -901,12 +965,6 @@ function formatDisplayAddress(form: FormState) {
   ]
     .filter(Boolean)
     .join("\n");
-}
-
-function labelsForAllergens(ids: string[]) {
-  return ids
-    .map((id) => allergyOptions.find((option) => option.id === id)?.label ?? id)
-    .join(", ");
 }
 
 const styles = StyleSheet.create({
@@ -921,7 +979,7 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.four,
   },
   restaurantRequestContent: {
-    paddingBottom: 130,
+    paddingBottom: spacing.four,
   },
   done: {
     flex: 1,
@@ -958,36 +1016,19 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "800",
   },
-  fieldRow: {
-    flexDirection: "row",
-    gap: spacing.two,
-  },
-  fieldRowPrimary: {
-    flex: 1,
-  },
-  fieldRowRegion: {
-    width: 98,
-  },
   formShell: {
     flex: 1,
   },
-  addMenuButton: {
-    alignItems: "center",
-    backgroundColor: colors.primaryLight,
-    borderRadius: radius.pill,
-    justifyContent: "center",
-    minHeight: 36,
-    paddingHorizontal: 13,
-  },
-  addMenuButtonText: {
-    color: colors.primary,
-    fontSize: 14,
-    fontWeight: "800",
+  formScroll: {
+    flex: 1,
   },
   helper: {
     color: colors.muted,
     fontSize: 16,
     lineHeight: 23,
+  },
+  headerTransition: {
+    height: 52,
   },
   input: {
     backgroundColor: colors.white,
@@ -1009,34 +1050,6 @@ const styles = StyleSheet.create({
   multiline: {
     minHeight: 112,
     textAlignVertical: "top",
-  },
-  optionalMenu: {
-    backgroundColor: "#F8F8FA",
-    borderColor: colors.line,
-    borderRadius: 22,
-    borderWidth: 1,
-    gap: spacing.two,
-    padding: spacing.two,
-  },
-  optionalMenuCopy: {
-    color: colors.muted,
-    fontSize: 13,
-    fontWeight: "600",
-    lineHeight: 18,
-    marginTop: 2,
-  },
-  optionalMenuHeader: {
-    alignItems: "center",
-    flexDirection: "row",
-    gap: spacing.two,
-  },
-  optionalMenuText: {
-    flex: 1,
-  },
-  optionalMenuTitle: {
-    color: colors.ink,
-    fontSize: 16,
-    fontWeight: "800",
   },
   notesSection: {
     gap: spacing.two,
@@ -1070,6 +1083,18 @@ const styles = StyleSheet.create({
     minHeight: 52,
     paddingHorizontal: spacing.two,
   },
+  placeLoadingState: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 10,
+    minHeight: 52,
+    paddingHorizontal: spacing.two,
+  },
+  placeLoadingText: {
+    color: colors.muted,
+    fontSize: 14,
+    fontWeight: "700",
+  },
   placeSuggestion: {
     alignItems: "center",
     flexDirection: "row",
@@ -1102,34 +1127,30 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     gap: 8,
   },
-  removeMenuButton: {
-    alignItems: "center",
-    backgroundColor: "#F2F2F7",
-    borderRadius: 15,
-    height: 30,
-    justifyContent: "center",
-    width: 30,
+  reviewApprovalNote: {
+    color: colors.muted,
+    fontSize: 14,
+    fontWeight: "600",
+    lineHeight: 20,
   },
-  requestMenuCard: {
+  reviewForm: {
+    gap: spacing.three,
+  },
+  reviewPageActions: {
     backgroundColor: colors.white,
     borderColor: colors.line,
-    borderRadius: 20,
-    borderWidth: 1,
-    gap: spacing.two,
-    padding: spacing.two,
+    borderTopWidth: 1,
+    gap: 10,
+    paddingHorizontal: spacing.three,
+    paddingTop: 12,
   },
-  requestMenuCardHeader: {
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  requestMenuCardTitle: {
-    color: colors.ink,
-    fontSize: 15,
-    fontWeight: "800",
+  reviewPageContent: {
+    gap: spacing.three,
+    padding: spacing.three,
+    paddingBottom: spacing.four,
   },
   stickyFooter: {
-    backgroundColor: "rgba(255,255,255,0.94)",
+    backgroundColor: colors.white,
     borderColor: colors.line,
     borderTopWidth: 1,
     paddingHorizontal: spacing.three,

@@ -1,0 +1,753 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-008-2026-07-16",
+  "restaurantId": "barca-pier-and-wine-bar-alexandria-va-dc-metro",
+  "name": "BARCA Pier & Wine Bar",
+  "locationId": "alexandria-va",
+  "identity": {
+    "verdict": "confirmed",
+    "address": "3 Pioneer Mill Way, Alexandria, VA 22314",
+    "domain": "barcaalx.com",
+    "sourceEvidenceIds": [
+      "official-home",
+      "official-faq",
+      "opentable-menu"
+    ],
+    "notes": "Restaurant-controlled pages and linked OpenTable listing identify the same BARCA Pier & Wine Bar in Alexandria. The official FAQ displays 2 Pioneer Mill Way while OpenTable displays 3 Pioneer Mill Way; this street-number conflict is recorded as an identity/location risk, not merged with another business."
+  },
+  "packetValidation": {
+    "baselineItemCount": 26,
+    "baselineFingerprint": "cd21d5262c3ae37d3d5632f1b8d4ea6fe21394d0305e52c70da92e3662d9ecbe",
+    "itemCheckFileReadCompletely": true
+  },
+  "sources": [
+    {
+      "evidenceId": "official-home",
+      "url": "https://barcaalx.com/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "identity/menu",
+      "retrievedAt": "2026-07-16",
+      "notes": "Official homepage identifies BARCA Pier & Wine Bar and links/exposes all-day, Pier Beverage, Wine Bar Beverage, brunch and happy-hour content; menu widget content is not a complete allergen matrix."
+    },
+    {
+      "evidenceId": "official-faq",
+      "url": "https://barcaalx.com/faqs/",
+      "authorityTier": "restaurant_issued",
+      "purpose": "allergen",
+      "retrievedAt": "2026-07-16",
+      "notes": "FAQ says vegan and gluten-free items are marked V or G; no complete contains/may-contain matrix or cross-contact policy."
+    },
+    {
+      "evidenceId": "opentable-menu",
+      "url": "https://www.opentable.com/r/barca-wine-bar-and-pier-alexandria",
+      "authorityTier": "linked_vendor",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-16",
+      "notes": "Linked menu lists the all-day menu and menu tabs; states menu last updated 2026-05-13. Used as corroboration, not promoted over restaurant-issued content."
+    },
+    {
+      "evidenceId": "toast-menu",
+      "url": "https://www.toasttab.com/local/order/barca-pier-and-wine-bar/item-marinated-cucumbers_8c73bb41-dfb2-4dde-a946-a33140f99bfb",
+      "authorityTier": "linked_vendor",
+      "purpose": "menu",
+      "retrievedAt": "2026-07-16",
+      "notes": "Restaurant-linked Toast ordering surface confirms a current product presentation."
+    },
+    {
+      "evidenceId": "targeted-search",
+      "url": "https://www.google.com/search?q=site%3Abarcaalx.com+allergen+OR+allergy+OR+nutrition+OR+ingredients+OR+PDF",
+      "authorityTier": "web_search",
+      "purpose": "matrix_search",
+      "retrievedAt": "2026-07-16",
+      "notes": "Targeted search found official FAQ/menu pages but no official allergen or nutrition matrix."
+    }
+  ],
+  "menuSurfaces": [
+    {
+      "surfaceId": "official-all-day-food",
+      "title": "All-Day Menu",
+      "service": "all_day",
+      "url": "https://barcaalx.com/",
+      "authorityTier": "restaurant_issued",
+      "current": true,
+      "scopeStatus": "complete",
+      "fullyEnumerated": true,
+      "sourceEvidenceIds": [
+        "official-home",
+        "opentable-menu"
+      ],
+      "notes": "31 named food products; V/G are dietary markers, not a complete allergen matrix."
+    },
+    {
+      "surfaceId": "official-pier-beverage",
+      "title": "Pier Beverage Menu",
+      "service": "pier_beverage",
+      "url": "https://barcaalx.com/",
+      "authorityTier": "restaurant_issued",
+      "current": true,
+      "scopeStatus": "complete",
+      "fullyEnumerated": true,
+      "sourceEvidenceIds": [
+        "official-home"
+      ],
+      "notes": "Only nonalcoholic products retained; alcohol excluded from POC scope."
+    },
+    {
+      "surfaceId": "official-wine-bar-beverage",
+      "title": "Wine Bar Beverage Menu",
+      "service": "wine_bar_beverage",
+      "url": "https://barcaalx.com/",
+      "authorityTier": "restaurant_issued",
+      "current": true,
+      "scopeStatus": "complete",
+      "fullyEnumerated": true,
+      "sourceEvidenceIds": [
+        "official-home"
+      ],
+      "notes": "Nonalcoholic products retained; repeated presentations consolidated."
+    },
+    {
+      "surfaceId": "official-brunch",
+      "title": "Brunch Specials",
+      "service": "brunch",
+      "url": "https://barcaalx.com/",
+      "authorityTier": "restaurant_issued",
+      "current": true,
+      "scopeStatus": "partial",
+      "fullyEnumerated": false,
+      "sourceEvidenceIds": [
+        "official-home",
+        "opentable-menu"
+      ],
+      "notes": "Named brunch items are recorded, but the accessible surface does not establish a complete brunch catalog."
+    },
+    {
+      "surfaceId": "official-happy-hour",
+      "title": "Wine Bar Happy Hour",
+      "service": "happy_hour",
+      "url": "https://barcaalx.com/",
+      "authorityTier": "restaurant_issued",
+      "current": true,
+      "scopeStatus": "partial",
+      "fullyEnumerated": false,
+      "sourceEvidenceIds": [
+        "official-home"
+      ],
+      "notes": "Service is named and limited products may be presented, but not treated as a complete separate catalog."
+    },
+    {
+      "surfaceId": "linked-opentable",
+      "title": "OpenTable menu tabs",
+      "service": "multi_service",
+      "url": "https://www.opentable.com/r/barca-wine-bar-and-pier-alexandria",
+      "authorityTier": "linked_vendor",
+      "current": true,
+      "scopeStatus": "complete",
+      "fullyEnumerated": true,
+      "sourceEvidenceIds": [
+        "opentable-menu"
+      ],
+      "notes": "Complete all-day menu corroboration; other tabs include brunch, beverages, happy hour, dessert and kids menus, but alcohol/non-food and incomplete seasonal tabs are outside the enumerated POC product boundary."
+    },
+    {
+      "surfaceId": "linked-toast",
+      "title": "Toast ordering",
+      "service": "ordering",
+      "url": "https://www.toasttab.com/local/order/barca-pier-and-wine-bar/item-marinated-cucumbers_8c73bb41-dfb2-4dde-a946-a33140f99bfb",
+      "authorityTier": "linked_vendor",
+      "current": true,
+      "scopeStatus": "partial",
+      "fullyEnumerated": false,
+      "sourceEvidenceIds": [
+        "toast-menu"
+      ],
+      "notes": "Accessible product detail corroborates the linked ordering surface; no complete catalog extraction claimed."
+    }
+  ],
+  "currentProducts": [
+    {
+      "currentProductKey": "spanish-tomato-salad",
+      "name": "Spanish Tomato Salad",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "stuffed-piquillo-peppers",
+      "name": "Stuffed Piquillo Peppers",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "seared-scallops",
+      "name": "Seared Scallops",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "gambas-al-ajillo",
+      "name": "Gambas al Ajillo",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "tuna-tartare",
+      "name": "Tuna Tartare",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "marinated-cucumbers",
+      "name": "Marinated Cucumbers",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "catalan-style-mussels",
+      "name": "Catalan Style Mussels",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "pan-con-tomate",
+      "name": "Pan con Tomate",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "lamb-chops",
+      "name": "Lamb Chops",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "garlic-chicken-montadito",
+      "name": "Garlic Chicken Montadito",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "chicken-albondigas",
+      "name": "Chicken Albondigas",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "basque-green-beans",
+      "name": "Basque Green Beans",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "mojo-rojo-braised-pork-belly",
+      "name": "Mojo Rojo-Braised Pork Belly",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "jamon-serrano-croquetas",
+      "name": "Jamon Serrano Croquetas",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "stuffed-dates",
+      "name": "Stuffed Dates",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "beef-kebab",
+      "name": "Beef Kebab",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "patatas-bravas",
+      "name": "Patatas Bravas",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "fried-calamari",
+      "name": "Fried Calamari",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "skirt-steak",
+      "name": "Skirt Steak",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "andalusian-chicken-skewers",
+      "name": "Andalusian Chicken Skewers",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "crispy-brussels-sprouts",
+      "name": "Crispy Brussels Sprouts",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "burrata-mushroom-toast",
+      "name": "Burrata & Mushroom Toast",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "quesos-y-embutidos",
+      "name": "Quesos y Embutidos",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "tzatziki",
+      "name": "Tzatziki",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "chickpea-hummus",
+      "name": "Chickpea Hummus",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "butternut-squash-romesco",
+      "name": "Butternut Squash Romesco",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "whipped-goat-cheese",
+      "name": "Whipped Goat Cheese",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "burnt-basque-cheesecake",
+      "name": "Burnt Basque Cheesecake",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "creme-catalana-shortbread",
+      "name": "Crème Catalana Shortbread",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "chocolate-torta",
+      "name": "Chocolate Torta",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "flan",
+      "name": "Flan",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "hibiscus-tea",
+      "name": "Hibiscus Tea",
+      "category": "nonalcoholic"
+    },
+    {
+      "currentProductKey": "passion-fruit-nojito",
+      "name": "Passion Fruit Nojito",
+      "category": "nonalcoholic"
+    },
+    {
+      "currentProductKey": "blackberry-sage-whiskey-smash",
+      "name": "Blackberry Sage Whiskey Smash",
+      "category": "nonalcoholic"
+    },
+    {
+      "currentProductKey": "orange-wave",
+      "name": "Orange Wave",
+      "category": "nonalcoholic"
+    },
+    {
+      "currentProductKey": "pomelo-dulce",
+      "name": "Pomelo Dulce",
+      "category": "nonalcoholic"
+    },
+    {
+      "currentProductKey": "soft-scramble",
+      "name": "Soft Scramble",
+      "category": "food"
+    },
+    {
+      "currentProductKey": "torrijas",
+      "name": "Torrijas",
+      "category": "food"
+    }
+  ],
+  "matrixSearch": {
+    "attempted": [
+      "official_site",
+      "official_documents",
+      "linked_vendor",
+      "targeted_web_search"
+    ],
+    "status": "accurately_unavailable",
+    "attempts": [
+      {
+        "class": "official_site",
+        "locations": [
+          "https://barcaalx.com/",
+          "https://barcaalx.com/faqs/"
+        ],
+        "outcome": "no_complete_matrix",
+        "sourceEvidenceIds": [
+          "official-home",
+          "official-faq"
+        ]
+      },
+      {
+        "class": "official_documents",
+        "locations": [
+          "official homepage links, FAQ, downloadable/document search"
+        ],
+        "outcome": "no_complete_matrix",
+        "sourceEvidenceIds": [
+          "official-home",
+          "official-faq"
+        ]
+      },
+      {
+        "class": "linked_vendor",
+        "locations": [
+          "https://www.opentable.com/r/barca-wine-bar-and-pier-alexandria",
+          "https://www.toasttab.com/local/order/barca-pier-and-wine-bar/item-marinated-cucumbers_8c73bb41-dfb2-4dde-a946-a33140f99bfb"
+        ],
+        "outcome": "menu ingredient positives only; no complete matrix",
+        "sourceEvidenceIds": [
+          "opentable-menu",
+          "toast-menu"
+        ]
+      },
+      {
+        "class": "targeted_web_search",
+        "locations": [
+          "restaurant/domain searches for allergen, allergy, nutrition, ingredients, PDF"
+        ],
+        "outcome": "no complete matrix found",
+        "sourceEvidenceIds": [
+          "targeted-search"
+        ]
+      }
+    ],
+    "notes": "No absence or cross-contact conclusions are drawn from the unavailable matrix. Direct named ingredients support only narrow positive fields for downstream verification."
+  },
+  "reconciliation": {
+    "items": [
+      {
+        "auditItemKey": "1:andalusian-chicken-skewers-g",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "andalusian-chicken-skewers"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "2:barca-breakfast",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "3:basque-green-beans-v",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "basque-green-beans"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "4:breakfast-croquetas",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "5:burrata-and-mushroom-toast-v",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "burrata-mushroom-toast"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "6:catalan-style-mussels",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "catalan-style-mussels"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "7:chicken-albondigas",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chicken-albondigas"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "8:chickpea-hummus-v",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chickpea-hummus"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "9:chocolate-torta-g",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "chocolate-torta"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "10:crispy-brussels-sprouts-v",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "crispy-brussels-sprouts"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "11:empanadas",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "12:gambas-al-ajillo-g",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "gambas-al-ajillo"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "13:garlic-chicken-montadito",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "garlic-chicken-montadito"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "14:lamb-chops-g",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "lamb-chops"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "15:mojo-rojo-braised-pork-belly",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "mojo-rojo-braised-pork-belly"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "16:patatas-bravas-v",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "patatas-bravas"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "17:quesos-y-embutidos",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "quesos-y-embutidos"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "18:seared-scallops",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "seared-scallops"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "19:skirt-steak-g",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "skirt-steak"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "20:soft-scramble-v",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "soft-scramble"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "21:spanish-tomato-salad",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "spanish-tomato-salad"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "22:spanish-tortilla",
+        "disposition": "stale",
+        "matchedCurrentProductKeys": [],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "23:stuffed-piquillo-peppers-v",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "stuffed-piquillo-peppers"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "24:torrijas-bread-pudding-v",
+        "disposition": "normalized_match",
+        "matchedCurrentProductKeys": [
+          "torrijas"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "25:tuna-tartare",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "tuna-tartare"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      },
+      {
+        "auditItemKey": "26:whipped-goat-cheese-v",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "whipped-goat-cheese"
+        ],
+        "sourceEvidenceIds": [
+          "official-home",
+          "opentable-menu"
+        ]
+      }
+    ]
+  },
+  "changes": {
+    "identityAmbiguous": true,
+    "menuScopeUnresolved": true,
+    "officialAllergenConflict": false,
+    "crossContactConflict": false,
+    "unsupportedNegativeClaim": false,
+    "sourceAuthorityAmbiguous": true,
+    "duplicateItems": false,
+    "catalogDrift": true,
+    "staleItems": true,
+    "newItems": true,
+    "nameOrCategoryCleanup": true,
+    "restaurantSpecificExtraction": true,
+    "parserIssue": false
+  },
+  "riskSignals": [
+    {
+      "gateId": "location_number_conflict",
+      "triggered": true,
+      "rationale": "Official FAQ says 2 Pioneer Mill Way; linked OpenTable says 3 Pioneer Mill Way.",
+      "sourceEvidenceIds": [
+        "official-faq",
+        "opentable-menu"
+      ]
+    },
+    {
+      "gateId": "partial_current_surface",
+      "triggered": true,
+      "rationale": "Brunch and happy-hour surfaces are named but not fully extractable.",
+      "sourceEvidenceIds": [
+        "official-home",
+        "opentable-menu"
+      ]
+    },
+    {
+      "gateId": "catalog_drift",
+      "triggered": true,
+      "rationale": "Three frozen keys are not present on the current all-day menu and 12 current food products plus nonalcoholic products are new relative to the frozen baseline.",
+      "sourceEvidenceIds": [
+        "official-home",
+        "opentable-menu"
+      ]
+    },
+    {
+      "gateId": "incomplete_allergen_disclosure",
+      "triggered": true,
+      "rationale": "V/G markers and descriptions do not constitute a complete contains/may-contain or cross-contact matrix.",
+      "sourceEvidenceIds": [
+        "official-faq",
+        "opentable-menu"
+      ]
+    }
+  ],
+  "recommendedLane": "sol_review",
+  "summary": "Scout result only. Identity is likely the requested Alexandria BARCA, with a street-number discrepancy requiring deeper identity/location review. Current named food and nonalcoholic products from complete all-day and beverage surfaces are enumerated; brunch/happy-hour are explicitly partial. Every frozen auditItemKey is reconciled exactly once. No official allergen matrix was found after all four required searches; direct positive ingredient evidence is retained only as source-backed signals."
+}

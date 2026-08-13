@@ -2,6 +2,16 @@
   "name": "allergy-app",
   "version": "1.0.0",
   "main": "expo-router/entry",
+  "codegenConfig": {
+    "name": "MySafeMenuCodegen",
+    "type": "modules",
+    "jsSrcsDir": "src",
+    "ios": {
+      "modulesProvider": {
+        "KeyboardController": "KeyboardController"
+      }
+    }
+  },
   "dependencies": {
     "@aws-amplify/backend": "^1.23.0",
     "@aws-amplify/react-native": "^1.3.3",
@@ -16,19 +26,24 @@
     "@tanstack/react-query": "^5.101.0",
     "aws-amplify": "^6.17.0",
     "cheerio": "^1.2.0",
-    "expo": "~56.0.12",
+    "expo": "~56.0.19",
     "expo-apple-authentication": "^56.0.4",
-    "expo-constants": "~56.0.18",
-    "expo-dev-client": "~56.0.20",
+    "expo-constants": "~56.0.23",
+    "expo-dev-client": "~56.0.24",
+    "expo-glass-effect": "~56.0.4",
+    "expo-haptics": "~56.0.3",
     "expo-linear-gradient": "~56.0.4",
-    "expo-linking": "~56.0.14",
-    "expo-location": "^56.0.18",
-    "expo-router": "~56.2.11",
+    "expo-linking": "~56.0.16",
+    "expo-location": "~56.0.23",
+    "expo-router": "~56.2.18",
+    "expo-splash-screen": "~56.0.14",
     "expo-status-bar": "~56.0.4",
-    "expo-web-browser": "~56.0.5",
+    "expo-updates": "~56.0.24",
+    "expo-web-browser": "~56.0.6",
     "jose": "^6.2.3",
     "lucide-react-native": "^1.17.0",
     "node-tls-client": "^2.1.0",
+    "pako": "^3.0.1",
     "pdf-parse": "^2.4.5",
     "playwright-core": "^1.60.0",
     "react": "19.2.3",
@@ -36,9 +51,10 @@
     "react-native": "0.85.3",
     "react-native-gesture-handler": "~2.31.1",
     "react-native-get-random-values": "~1.11.0",
+    "react-native-keyboard-controller": "1.21.6",
     "react-native-reanimated": "4.3.1",
     "react-native-safe-area-context": "~5.7.0",
-    "react-native-screens": "4.25.2",
+    "react-native-screens": "~4.26.0",
     "react-native-svg": "15.15.4",
     "react-native-url-polyfill": "^3.0.0",
     "react-native-web": "^0.21.2",
@@ -71,6 +87,7 @@
     "verify:restaurants:coordinator": "node scripts/restaurant-verification-coordinator.mjs",
     "verify:restaurants:migration-inventory": "node scripts/restaurant-verification-legacy-migration.mjs",
     "repair:allergen-distribution": "node scripts/repair-allergen-distribution-audit.mjs",
+    "repair:restaurant-projection": "node scripts/repair-generated-restaurant-projection.mjs",
     "coverage:apply-overlays": "node scripts/apply-launch-coverage-overlays.mjs",
     "coverage:build-replacements": "node scripts/build-launch-replacement-targets.mjs",
     "coverage:finalize-launch": "node scripts/build-final-launch-portfolio.mjs",
@@ -84,7 +101,10 @@
     "scrape:restaurants": "node scripts/scrape-restaurants.mjs",
     "sandbox": "npx -y @aws-amplify/backend-cli@1.8.3 sandbox",
     "generate:outputs": "npx -y @aws-amplify/backend-cli@1.8.3 generate outputs",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "ota:test": "node --test scripts/expo-updates/*.test.mjs && python3 scripts/expo-updates/aws_client_test.py",
+    "ota:deploy-infrastructure": "node scripts/expo-updates/deploy-infrastructure.mjs",
+    "ota:publish": "node scripts/expo-updates/publish.mjs"
   },
   "private": true
 }

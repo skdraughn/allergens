@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-010-2026-07-16",
+  "restaurantId": "osm-ballston-local-9596339846",
+  "validation": {
+    "valid": true,
+    "currentProductCount": 123,
+    "evidenceSourceCount": 10,
+    "evidencePreflightValid": true,
+    "assertions": [
+      "baseline fingerprint matches job",
+      "123 distinct current exact-location food/nonalcoholic products published",
+      "surface-toast-main is the only current complete catalog surface",
+      "supporting surfaces are current=false and non-catalog",
+      "artifacts, location mismatches, alcohol, modifiers, headers, and duplicate presentations excluded",
+      "validated Veg pizza presentation preserved",
+      "direct app fields use exactly containsAllergens and mayContainAllergens from research",
+      "generic allergen/cross-contact warnings remain restaurant-level only",
+      "missing direct evidence remains unavailable",
+      "all six research sources and referenced IDs retained",
+      "Ingredient Intelligence recomputed after direct catalog",
+      "dossier retains restaurantId/name and direct-vs-inferred boundaries",
+      "second run is byte-identical"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-ballston-local-9596339846.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-ballston-local-9596339846.json",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-ballston-local-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-010-2026-07-16/apply-results/osm-ballston-local-9596339846.json"
+  ],
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "target canonical catalog repair",
+    "recompute Ingredient Intelligence after direct catalog finalization",
+    "serialized APPLY twice with byte/hash comparison"
+  ],
+  "secondRunDiff": "none",
+  "scope": {
+    "currentCompleteSurface": "surface-toast-main",
+    "supportingCurrentFalse": [
+      "surface-official-home",
+      "surface-official-food",
+      "surface-spotapps-main"
+    ]
+  },
+  "evidence": {
+    "researchSources": [
+      "src-official-home",
+      "src-official-food",
+      "src-toast-main",
+      "src-spotapps-main",
+      "src-official-documents-search",
+      "src-targeted-search"
+    ],
+    "directVsInferred": "direct arrays are copied exactly; Ingredient Intelligence is inferred separately"
+  }
+}

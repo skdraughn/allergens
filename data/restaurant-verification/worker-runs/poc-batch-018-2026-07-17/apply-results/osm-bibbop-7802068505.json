@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-018-2026-07-17",
+  "restaurantId": "osm-bibbop-7802068505",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "e4b3b13e7288f242d53569f2b71418da4b66636bc2739baa40455e254c84266f",
+    "assertions": [
+      "fingerprint gate passed",
+      "validated result accepted",
+      "direct catalog finalized before Ingredient Intelligence",
+      "canonical evidence purposes emitted",
+      "no ledger, manifest, shared parser, test, or other restaurant writes",
+      "second run is byte-identical"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-bibbop-7802068505.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-bibbop-7802068505.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/osm-bibbop-7802068505.jsonl",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-bibibop-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-018-2026-07-17/apply-results/osm-bibbop-7802068505.json"
+  ],
+  "hashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "f029199c8ec9133fd9aef7b6c5aaf3771c71aee27e590d445d292225c8dc1a32",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-bibbop-7802068505.json": "657f3407ce470d9d4301c5ca9286750c9641622ceee0de3fb73d235f89324b66",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-bibbop-7802068505.json": "d3c03a11adcae6692494b4919b1271aec85aa34facd88b1a4ea4678886525c89",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/item-checks/osm-bibbop-7802068505.jsonl": "5deadd50572c278944e4fae6f55aa3a9ce83d4f6c882a6e622571e2748a6bdee"
+  },
+  "counts": {
+    "publishedProducts": 40,
+    "exact_match": 40,
+    "normalized_match": 0,
+    "artifact": 0,
+    "unresolved": 0,
+    "directSoy": 17,
+    "directSesame": 15,
+    "directFish": 2,
+    "directMilk": 2,
+    "directEgg": 4,
+    "mayContainProducts": 0,
+    "allergenVerdict": "extracted",
+    "currentCompleteSurfaces": 2,
+    "evidenceSources": 5
+  },
+  "commands": [
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "validatePocResearchFiles",
+    "node scripts/apply-bibibop-poc.mjs (twice)",
+    "sha256 comparison of owned artifacts"
+  ],
+  "secondRunDiff": "none"
+}

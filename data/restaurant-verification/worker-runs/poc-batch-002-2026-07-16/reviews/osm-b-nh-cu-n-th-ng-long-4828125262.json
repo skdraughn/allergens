@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-002-2026-07-16",
+  "restaurantId": "osm-b-nh-cu-n-th-ng-long-4828125262",
+  "reviewType": "narrow_scope_conflict_resolution",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "role": "sol_reviewer"
+  },
+  "reviewedKeys": [
+    "26:com-tam-bi-suon-cha",
+    "29:mi-quang",
+    "33:pho-tai-bo-vien"
+  ],
+  "resolution": {
+    "binding": true,
+    "outcome": "scope_conflict_resolved",
+    "sourceAssessment": {
+      "sourceEvidenceIds": [
+        "SRC-TERRA-HOMEPAGE-CATALOG",
+        "SRC-OFFICIAL-SQUARE-API"
+      ],
+      "url": "https://www.banhcuonthanglong.com/app/store/api/v28/editor/users/130839083/sites/674387170295414982/products?page=1&per_page=200&include=images,media_files,discounts",
+      "authority": "restaurant_issued",
+      "locationScope": "Bánh Cuốn Thăng Long, Falls Church",
+      "servicePeriod": "current ordering catalog",
+      "currentAsOf": "2026-07-16",
+      "sufficientlyCurrentAndLocationSpecific": true,
+      "rationale": "The captured official Falls Church homepage catalog and the restaurant-domain structured product endpoint are the same current ordering surface. The endpoint contains all three affected names verbatim as visible products with stable product identifiers."
+    },
+    "items": [
+      {
+        "auditItemKey": "26:com-tam-bi-suon-cha",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "square-product-435BPT6AJHJBIARX7AD36YZA"
+        ],
+        "currentProductMapping": {
+          "currentProductKey": "square-product-435BPT6AJHJBIARX7AD36YZA",
+          "sourceProductId": "435BPT6AJHJBIARX7AD36YZA",
+          "siteProductId": "39",
+          "name": "Cơm Tấm Bì Sườn Chả",
+          "visibility": "visible"
+        },
+        "sourceEvidenceIds": [
+          "SRC-TERRA-HOMEPAGE-CATALOG",
+          "SRC-OFFICIAL-SQUARE-API"
+        ],
+        "rationale": "The current official catalog name is an exact Unicode match to the frozen product name. The visible product and stable official identifiers rule out stale, artifact, location-mismatch, and unresolved dispositions.",
+        "allergenAssessment": {
+          "explicitPositiveSupport": [],
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfileEstablished": false,
+          "notes": "Current catalog identity does not establish or negate the frozen egg attribution."
+        },
+        "safetySourceAuthorityConflictRemains": false
+      },
+      {
+        "auditItemKey": "29:mi-quang",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "square-product-LXEZKLVFUJOEHJQQUE7B5W7B"
+        ],
+        "currentProductMapping": {
+          "currentProductKey": "square-product-LXEZKLVFUJOEHJQQUE7B5W7B",
+          "sourceProductId": "LXEZKLVFUJOEHJQQUE7B5W7B",
+          "siteProductId": "20",
+          "name": "Mì Quảng",
+          "visibility": "visible"
+        },
+        "sourceEvidenceIds": [
+          "SRC-TERRA-HOMEPAGE-CATALOG",
+          "SRC-OFFICIAL-SQUARE-API"
+        ],
+        "rationale": "The current official catalog name is an exact Unicode match to the frozen product name. The visible product and stable official identifiers rule out stale, artifact, location-mismatch, and unresolved dispositions.",
+        "allergenAssessment": {
+          "explicitPositiveSupport": [],
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfileEstablished": false,
+          "notes": "This identity resolution does not validate or negate the frozen wheat, gluten, egg, fish, peanut, or sesame attributions."
+        },
+        "safetySourceAuthorityConflictRemains": false
+      },
+      {
+        "auditItemKey": "33:pho-tai-bo-vien",
+        "disposition": "exact_match",
+        "matchedCurrentProductKeys": [
+          "square-product-GZMHMH7FUZWD3XZ4X6AN67AG"
+        ],
+        "currentProductMapping": {
+          "currentProductKey": "square-product-GZMHMH7FUZWD3XZ4X6AN67AG",
+          "sourceProductId": "GZMHMH7FUZWD3XZ4X6AN67AG",
+          "siteProductId": "68",
+          "name": "Phở Tái Bò Viên",
+          "visibility": "visible"
+        },
+        "sourceEvidenceIds": [
+          "SRC-TERRA-HOMEPAGE-CATALOG",
+          "SRC-OFFICIAL-SQUARE-API"
+        ],
+        "rationale": "The current official catalog name is an exact Unicode match to the frozen product name. The visible product and stable official identifiers rule out stale, artifact, location-mismatch, and unresolved dispositions.",
+        "allergenAssessment": {
+          "explicitPositiveSupport": [],
+          "negativeClaimsIntroduced": [],
+          "completeAllergenProfileEstablished": false,
+          "notes": "The frozen empty allergen array remains unavailable evidence, not a verified negative."
+        },
+        "safetySourceAuthorityConflictRemains": false
+      }
+    ],
+    "safetySourceAuthorityConflictRemains": false,
+    "allergenAuthorityLimitationRemains": true,
+    "allergenAuthorityRationale": "The official catalog is authoritative for current product identity and visibility but does not provide complete item-level allergen or cross-contact disclosures. It cannot establish allergen negatives, may-contain negatives, or complete allergen profiles."
+  },
+  "remainingSolSignals": [
+    {
+      "signal": "allergen_authority_incomplete",
+      "status": "non_blocking_for_menu_identity",
+      "affectedKeys": [
+        "26:com-tam-bi-suon-cha",
+        "29:mi-quang",
+        "33:pho-tai-bo-vien"
+      ],
+      "rationale": "The menu-scope conflict is resolved, but the official catalog rows establish product identity rather than complete allergen profiles."
+    }
+  ],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "reviewedKeyCount": 3,
+    "allAffectedKeysReviewedExactlyOnce": true,
+    "allDispositionsBinding": true,
+    "unresolvedReviewedKeys": [],
+    "staleReviewedKeys": [],
+    "artifactReviewedKeys": [],
+    "locationMismatchReviewedKeys": [],
+    "unsupportedAllergenNegativesIntroduced": false,
+    "codexVerifiedClaimed": false
+  }
+}

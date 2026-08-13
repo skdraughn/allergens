@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "verificationContractVersion": 2,
+  "restaurantId": "reverie-dc",
+  "name": "Reverie",
+  "status": "codex_verified",
+  "identity": {
+    "name": "Reverie",
+    "location": "3201 Cherry Hill Lane NW, Washington, DC 20007",
+    "domain": "reveriedc.com",
+    "identityAmbiguous": false,
+    "sourceEvidenceIds": [
+      "official-home",
+      "official-newsletter",
+      "eater-venue"
+    ],
+    "status": "confirmed"
+  },
+  "currentCatalog": {
+    "status": "verified",
+    "reviewedBaselineItemCount": 0,
+    "currentProductCount": 0,
+    "reconciledCurrentProductCount": 0,
+    "inventoryFingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "surfaces": [],
+    "products": [],
+    "notes": [
+      "Coordinator terminal catalog derived from validated Luna research and serialized APPLY output."
+    ]
+  },
+  "restaurantLevelAllergenEvidence": [
+    {
+      "statement": "No current food or nonalcoholic product boundary or official allergen matrix is published for this closed/unavailable restaurant; no allergen absence is inferred.",
+      "authorityTier": "restaurant_issued",
+      "sourceEvidenceIds": [
+        "official-home"
+      ]
+    }
+  ],
+  "checks": {
+    "menu": {
+      "verdict": "verified",
+      "reviewedItemCount": 0,
+      "sourceItemCount": 0,
+      "notes": [
+        "POC catalog and every frozen item were coordinator-reconciled."
+      ]
+    },
+    "allergenSource": {
+      "verdict": "accurately_unavailable",
+      "directPositiveCount": 0,
+      "directAssertionCount": 0,
+      "highestAuthorityTier": null,
+      "notes": [
+        "All four official-matrix search classes completed; direct positives are retained and missing disclosure remains unavailable."
+      ]
+    },
+    "extraction": {
+      "verdict": "not_applicable",
+      "parserReviewed": false,
+      "semanticsVerified": true,
+      "notes": [
+        "POC closeout uses a verified target-specific catalog transformation; shared-parser review is deferred."
+      ]
+    }
+  },
+  "sourceAttempts": [
+    {
+      "class": "official_site",
+      "location": "reveriedc.com homepage, navigation, contact/newsletter surfaces",
+      "outcome": "No current food menu, nonalcoholic menu, allergen matrix, or cross-contact statement found; site identity surface inspected",
+      "sourceEvidenceIds": [
+        "official-home",
+        "official-newsletter"
+      ],
+      "query": "Inspect https://www.reveriedc.com/ and https://www.reveriedc.com/newsletter for allergen, allergy, nutrition, ingredients, PDF, and menu material",
+      "urls": [
+        "https://www.reveriedc.com/",
+        "https://www.reveriedc.com/newsletter"
+      ]
+    },
+    {
+      "class": "official_documents",
+      "location": "official site document, PDF, FAQ, sitemap, image and downloadable-document surfaces",
+      "outcome": "No official current allergen or ingredient document located",
+      "sourceEvidenceIds": [
+        "official-home"
+      ],
+      "query": "Inspect https://www.reveriedc.com/ for official PDF, FAQ, sitemap, image, nutrition, ingredient, allergy, and downloadable-document surfaces",
+      "urls": [
+        "https://www.reveriedc.com/"
+      ]
+    },
+    {
+      "class": "linked_vendor",
+      "location": "historical Uber Eats and reservation/menu vendor surfaces",
+      "outcome": "Historical/closed menu capture only; no current allergen matrix or cross-contact statement",
+      "sourceEvidenceIds": [
+        "historical-ubereats"
+      ],
+      "query": "Inspect https://www.ubereats.com/store/reverie/1wlj01W9RpuvHaHfo0-AVQ and linked reservation/menu surfaces for allergen, allergy, nutrition, ingredients, and menu material",
+      "urls": [
+        "https://www.ubereats.com/store/reverie/1wlj01W9RpuvHaHfo0-AVQ"
+      ]
+    },
+    {
+      "class": "targeted_web_search",
+      "location": "site:reveriedc.com searches for allergen, allergy, nutrition, ingredients, PDF, and menu",
+      "outcome": "No authoritative current allergen matrix located; closure evidence found",
+      "sourceEvidenceIds": [
+        "targeted-search",
+        "eater-venue"
+      ],
+      "query": "site:reveriedc.com allergen allergy nutrition ingredients PDF menu",
+      "urls": [
+        "https://www.google.com/search?q=site%3Areveriedc.com+allergen+allergy+nutrition+ingredients+PDF+menu"
+      ]
+    }
+  ],
+  "findings": [],
+  "reconciliation": {
+    "unresolved": 0
+  },
+  "adjudication": {
+    "type": "coordinator",
+    "runId": "distributed-machine-b-back-20260811175711",
+    "decidedAt": "2026-08-12T13:54:04.178Z",
+    "recommendation": "codex_verified",
+    "model": {
+      "id": "codex-poc-coordinator",
+      "reasoningEffort": "high"
+    },
+    "rationale": "Research structure, current product mappings, direct allergen authority, target repair, Ingredient Intelligence timing, focused validation, and idempotency passed the POC terminal gates.",
+    "artifactHashes": []
+  },
+  "workerHandoff": {
+    "runId": "distributed-machine-b-back-20260811175711",
+    "restaurantId": "reverie-dc",
+    "preparedAt": "2026-08-12T13:54:04.174Z",
+    "routeDestination": "coordinator",
+    "solRequired": false,
+    "artifacts": [
+      {
+        "kind": "poc_job",
+        "path": "distributed-runs/distributed-machine-b-back-20260811175711/jobs/reverie-dc.json",
+        "sha256": "38c01f599bf62ea6581ebc4c5201f085bd055e122b4b9b8f08a8827e44447315"
+      },
+      {
+        "kind": "poc_research",
+        "path": "worker-runs/distributed-machine-b-back-20260811175711/results/reverie-dc.json",
+        "sha256": "3e1ec40993e61fc31273bece86c17918174f235e664af01f91309174d059d172"
+      },
+      {
+        "kind": "poc_apply",
+        "path": "worker-runs/distributed-machine-b-back-20260811175711/apply-results/reverie-dc.json",
+        "sha256": "bedd190624989039c4af98fd7306d008f008b3e6c1ef10ab6656c669c9dddb29"
+      }
+    ],
+    "notes": [
+      "POC worker artifacts persisted by the root coordinator."
+    ]
+  },
+  "repairs": [
+    {
+      "id": "distributed-machine-b-back-20260811175711-reverie-dc-target-repair",
+      "status": "verified",
+      "summary": "Applied and validated the restaurant-specific POC catalog repair.",
+      "files": [
+        "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+        "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/reverie-dc.json",
+        "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/reverie-dc.json",
+        "/Users/skdraughn/software/allergy-app/data/restaurant-verification/distributed-runs/distributed-machine-b-back-20260811175711/apply-results/reverie-dc.json",
+        "/Users/skdraughn/software/allergy-app/scripts/apply-batch40-poc.mjs"
+      ],
+      "fixturePaths": [
+        "data\\restaurant-verification\\distributed-runs\\distributed-machine-b-back-20260811175711\\results\\reverie-dc.json"
+      ],
+      "verificationCommands": [
+        "fingerprint gate",
+        "validatePocResearchFiles",
+        "exact current-surface preflight",
+        "target-only canonical apply",
+        "recompute Ingredient Intelligence after direct finalization",
+        "run twice and compare owned bytes"
+      ]
+    }
+  ],
+  "notes": [
+    "Coordinator-only POC closeout packet generated after serialized APPLY."
+  ],
+  "updatedAt": "2026-08-12T13:54:05.232Z",
+  "completedAt": "2026-08-12T13:54:05.232Z"
+}

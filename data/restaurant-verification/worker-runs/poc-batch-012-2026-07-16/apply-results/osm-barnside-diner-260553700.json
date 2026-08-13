@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "batchId": "poc-batch-012-2026-07-16",
+  "restaurantId": "osm-barnside-diner-260553700",
+  "validation": {
+    "valid": true,
+    "baselineFingerprint": "abe316b1fbfa9143b68c1519276c967b47e3d32474ce5ce21ab3cd7e4511aab0",
+    "currentProductCount": 137,
+    "directSourceTypeCounts": {
+      "restaurant_ingredients": 76,
+      "unavailable": 61
+    },
+    "directAuthorityCounts": {
+      "restaurant_ingredients": 76,
+      "unavailable": 61
+    },
+    "containsAllergenCount": 76,
+    "mayContainCount": 0,
+    "evidenceSourceCount": 4,
+    "currentCompleteSurfaceCount": 1,
+    "assertions": [
+      "stale fingerprint gate passed",
+      "strengthened result validator passed before mutation",
+      "137 validated products published",
+      "76 restaurant_ingredients and 61 unavailable",
+      "zero wheat/gluten and zero mayContain",
+      "133 exact and 1 stale baseline reconciliation; 4 current-only",
+      "four evidence sources retained with proof/excerpt closure and resolvable IDs",
+      "Alexandria identity confirmed",
+      "Ingredient Intelligence applied after direct catalog finalization",
+      "no closeout, ledger, or manifest writes",
+      "second run is byte-identical"
+    ]
+  },
+  "errors": [],
+  "changedPaths": [
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-barnside-diner-260553700.json",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-barnside-diner-260553700.json",
+    "/Users/skdraughn/software/allergy-app/scripts/apply-barnside-diner-poc.mjs",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/worker-runs/poc-batch-012-2026-07-16/apply-results/osm-barnside-diner-260553700.json"
+  ],
+  "commands": [
+    "node scripts/restaurant-verification-poc-result.mjs (strengthened preflight)",
+    "sha256(JSON.stringify(itemChecks.map(row => row.baseline)))",
+    "node scripts/apply-barnside-diner-poc.mjs (twice)",
+    "byte/hash comparison of all owned generated artifacts"
+  ],
+  "secondRunDiff": "none",
+  "artifactHashes": {
+    "/Users/skdraughn/software/allergy-app/src/data/generated/restaurants.generated.json": "49424dd9e9986a019f07afe4e4ffca341c94f5f237af0b6c796d26896199d239",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/restaurants/osm-barnside-diner-260553700.json": "8977f877c95d0764a48a262f42c5b7091dcd9868aad87e86e7ae3e6111a0a2eb",
+    "/Users/skdraughn/software/allergy-app/data/restaurant-verification/evidence/osm-barnside-diner-260553700.json": "a60bb30e108ae5f8179ca1137880459aa35d4d5b2155c7c54a919485f6f04419"
+  },
+  "counts": {
+    "publishedProducts": 137,
+    "directRestaurantIngredients": 76,
+    "directUnavailable": 61,
+    "mayContainProducts": 0,
+    "evidenceSources": 4,
+    "currentCompleteSurfaces": 1,
+    "exactReconciled": 133,
+    "staleBaseline": 1,
+    "currentOnly": 4
+  }
+}
