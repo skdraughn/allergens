@@ -5,7 +5,7 @@ import {
   Sparkles,
   UserRound,
 } from "lucide-react-native";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   type NativeScrollEvent,
   type NativeSyntheticEvent,
@@ -57,6 +57,8 @@ import {
 } from "@/features/restaurants/restaurant-search-service";
 import { useRestaurantData } from "@/features/restaurants/restaurant-data-context";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
+import { bucketCount, bucketPosition, safeErrorCode } from "@/lib/telemetry/schema";
+import { telemetry, type TelemetryTrace } from "@/lib/telemetry/telemetry";
 
 const restaurantResultPageSize = 50;
 type ReviewedRestaurant = {
@@ -73,7 +75,7 @@ export function HomeScreen() {
     selectedAllergyIds,
     selectedProfileIds,
   } = useAllergyProfile();
-  const { restaurants } = useRestaurantData();
+  const { catalogPath, restaurants } = useRestaurantData();
   const scrollY = useSharedValue(0);
   const stickySearchInteractive = useSharedValue(false);
   const [query, setQuery] = useState("");
@@ -82,6 +84,9 @@ export function HomeScreen() {
   const [profileManagerVisible, setProfileManagerVisible] = useState(false);
   const [stickySearchVisible, setStickySearchVisible] = useState(false);
   const navigationPendingRef = useRef(false);
+  const searchTraceRef = useRef<TelemetryTrace<"restaurant_search"> | null>(null);
+  const lastStartedSearchRef = useRef("");
+  const lastReportedSearchRef = useRef("");
   const locationQuery = useQuery({
     gcTime: 1000 * 60 * 30,
     queryFn: getRestaurantSearchLocation,
@@ -146,6 +151,7 @@ export function HomeScreen() {
     queryKey: [
       "restaurant-search",
       normalizedRemoteQuery,
+      catalogPath,
       restaurantDataSignature,
       locationQuery.data?.lat ?? null,
       locationQuery.data?.lng ?? null,
@@ -173,6 +179,48 @@ export function HomeScreen() {
     !isWaitingForDebounce &&
     searchQuery.hasNextPage &&
     !searchQuery.isFetchingNextPage;
+
+  useEffect(() => {
+    if (!normalizedRemoteQuery || lastStartedSearchRef.current === normalizedRemoteQuery) return;
+    lastStartedSearchRef.current = normalizedRemoteQuery;
+    lastReportedSearchRef.current = "";
+    searchTraceRef.current?.stop({ outcome: "cancelled" });
+    searchTraceRef.current = telemetry.startTrace("restaurant_search");
+    telemetry.track("restaurant_search_started", { entry_point: "home" });
+  }, [normalizedRemoteQuery]);
+
+  useEffect(() => {
+    if (
+      !normalizedRemoteQuery ||
+      searchQuery.isFetching ||
+      lastReportedSearchRef.current === normalizedRemoteQuery
+    ) {
+      return;
+    }
+    lastReportedSearchRef.current = normalizedRemoteQuery;
+    const outcome = searchQuery.isError
+      ? "failure"
+      : affirmedSearchResults.length > 0
+        ? "success"
+        : "empty";
+    searchTraceRef.current?.stop({
+      attributes: {
+        result_count_bucket: bucketCount(affirmedSearchResults.length),
+      },
+      outcome: outcome === "failure" ? "failure" : "success",
+    });
+    searchTraceRef.current = null;
+    telemetry.track("restaurant_search_results", {
+      outcome,
+      result_count_bucket: bucketCount(affirmedSearchResults.length),
+      source_type: "remote_with_local_fallback",
+    });
+    if (searchQuery.error) {
+      telemetry.recordError(searchQuery.error, "restaurant_search", {
+        errorCode: safeErrorCode(searchQuery.error),
+      });
+    }
+  }, [affirmedSearchResults.length, normalizedRemoteQuery, searchQuery.error, searchQuery.isError, searchQuery.isFetching]);
   const selectedProfiles = profiles.filter((profile) =>
     selectedProfileIds.includes(profile.id),
   );
@@ -186,7 +234,11 @@ export function HomeScreen() {
         return;
       }
 
-      void searchQuery.fetchNextPage();
+      void searchQuery.fetchNextPage().then((result) => {
+        telemetry.track("restaurant_search_paginated", {
+          outcome: result.isError ? "failure" : "success",
+        });
+      });
     },
     [canLoadMoreRestaurants, searchQuery],
   );
@@ -330,7 +382,10 @@ export function HomeScreen() {
                 </Text>
                 <RestaurantRequestButton
                   label="Request this restaurant"
-                  onPress={() => setContributionMode("restaurant-request")}
+                  onPress={() => {
+                    telemetry.track("restaurant_request_started", { entry_point: "search_empty" });
+                    setContributionMode("restaurant-request");
+                  }}
                 />
               </View>
             )
@@ -378,7 +433,7 @@ export function HomeScreen() {
           onScrollEndDrag={maybeLoadMoreRestaurants}
           onEndReached={loadMoreRestaurants}
           onEndReachedThreshold={1.25}
-          renderItem={({ item }) => (
+          renderItem={({ index, item }) => (
             <RestaurantRow
               compatibilityIsProvisional={compatibilityIsProvisional}
               onPress={() => {
@@ -387,6 +442,11 @@ export function HomeScreen() {
                 }
 
                 navigationPendingRef.current = true;
+                telemetry.track("restaurant_opened", {
+                  entry_point: normalizedImmediateQuery ? "search_results" : "restaurant_list",
+                  restaurant_id: item.restaurant.restaurantId,
+                  result_position_bucket: bucketPosition(index),
+                });
                 router.push({
                   params: {
                     id: item.restaurant.restaurantId,
@@ -406,7 +466,10 @@ export function HomeScreen() {
         />
 
         <FloatingRestaurantRequestButton
-          onPress={() => setContributionMode("restaurant-request")}
+          onPress={() => {
+            telemetry.track("restaurant_request_started", { entry_point: "home_floating_button" });
+            setContributionMode("restaurant-request");
+          }}
         />
 
         <CommunityContributionModal

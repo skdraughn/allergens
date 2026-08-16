@@ -11,7 +11,7 @@ import {
   ShieldCheck,
   UsersRound,
 } from "lucide-react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Linking,
   Pressable,
@@ -33,7 +33,7 @@ import Animated, {
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
-import { signIn, signUp } from "aws-amplify/auth";
+import { getCurrentUser, signIn, signUp } from "aws-amplify/auth";
 
 import { AllergyProfilePicker } from "@/components/allergy-profile-picker";
 import { AllergyIconChips } from "@/components/allergy-icon-chips";
@@ -57,6 +57,8 @@ import {
   signInWithGoogleNative,
 } from "@/features/account/native-social-auth";
 import { useAllergyProfile } from "@/features/profile/allergy-profile-context";
+import { safeErrorCode } from "@/lib/telemetry/schema";
+import { telemetry } from "@/lib/telemetry/telemetry";
 
 type AuthMode = "options" | "password";
 type PasswordIntent = "sign-in" | "create";
@@ -110,9 +112,34 @@ export function OnboardingFlow() {
   } = useAllergyProfile();
   const [step, setStep] = useState<OnboardingStep>("welcome");
   const [accountEntryIntent, setAccountEntryIntent] = useState<AccountEntryIntent>("create");
+  const completedRef = useRef(false);
+  const currentStepRef = useRef<OnboardingStep>("welcome");
+
+  useEffect(() => {
+    telemetry.track("onboarding_started", { entry_point: "first_launch" });
+    return () => {
+      if (!completedRef.current) {
+        telemetry.track("onboarding_abandoned", { step: currentStepRef.current });
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    currentStepRef.current = step;
+    telemetry.track("onboarding_step_viewed", { step });
+  }, [step]);
 
   async function finish() {
     await completeOnboarding();
+    let authState: "guest" | "signed_in" = "guest";
+    try {
+      await getCurrentUser();
+      authState = "signed_in";
+    } catch {
+      // Guest onboarding is supported.
+    }
+    completedRef.current = true;
+    telemetry.track("onboarding_completed", { auth_state: authState });
     router.replace("/home");
   }
 
@@ -205,15 +232,31 @@ function AccountChoiceStep({
     setIsActive(true);
   }, []);
 
-  async function completeAuth(work: () => Promise<unknown>) {
+  async function completeAuth(
+    work: () => Promise<unknown>,
+    authMethod: "apple" | "google",
+  ) {
     try {
       await work();
+      telemetry.track("auth_succeeded", {
+        auth_action: "authenticate",
+        auth_method: authMethod,
+      });
       await syncProfilesFromCloud();
       await onSkip();
     } catch (nextError) {
       if (isSocialSignInCancelled(nextError)) {
         return;
       }
+
+      telemetry.track("auth_failed", {
+        auth_action: "authenticate",
+        auth_method: authMethod,
+        error_code: safeErrorCode(nextError),
+      });
+      telemetry.recordError(nextError, "authentication", {
+        errorCode: safeErrorCode(nextError),
+      });
 
       const message = nextError instanceof Error ? nextError.message : "Something went wrong.";
       showSnackbar({ message, title: "Account Error", tone: "error" });
@@ -226,11 +269,15 @@ function AccountChoiceStep({
     }
 
     setLoadingProvider(provider);
+    telemetry.track("auth_started", {
+      auth_action: "authenticate",
+      auth_method: provider,
+    });
     await completeAuth(async () => {
       const payload =
         provider === "apple" ? await signInWithAppleNative() : await signInWithGoogleNative();
       await completeNativeSocialSignIn(payload);
-    });
+    }, provider);
     setLoadingProvider(null);
   }
 
@@ -259,6 +306,11 @@ function AccountChoiceStep({
     }
 
     setLoadingProvider("password");
+    const authAction = passwordIntent === "create" ? "sign_up" : "sign_in";
+    telemetry.track("auth_started", {
+      auth_action: authAction,
+      auth_method: "password",
+    });
     try {
       if (passwordIntent === "create") {
         const result = await signUp({
@@ -288,8 +340,20 @@ function AccountChoiceStep({
       }
 
       await syncProfilesFromCloud();
+      telemetry.track("auth_succeeded", {
+        auth_action: authAction,
+        auth_method: "password",
+      });
       await onSkip();
     } catch (nextError) {
+      telemetry.track("auth_failed", {
+        auth_action: authAction,
+        auth_method: "password",
+        error_code: safeErrorCode(nextError),
+      });
+      telemetry.recordError(nextError, "authentication", {
+        errorCode: safeErrorCode(nextError),
+      });
       const message = nextError instanceof Error ? nextError.message : "Password sign-in failed.";
       showSnackbar({ message, title: "Account Error", tone: "error" });
     } finally {

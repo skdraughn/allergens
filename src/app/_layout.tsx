@@ -21,6 +21,8 @@ import {
   useRestaurantData,
 } from "@/features/restaurants/restaurant-data-context";
 import { isAmplifyConfigured } from "@/lib/amplify";
+import { TelemetryErrorBoundary } from "@/lib/telemetry/telemetry-error-boundary";
+import { TelemetryProvider } from "@/lib/telemetry/telemetry-provider";
 
 // Keep the native launch screen in place until the first frame of our custom
 // splash has been laid out. Calling this at module scope prevents an automatic
@@ -108,29 +110,33 @@ export default function RootLayout() {
   );
 
   return (
-    <GestureHandlerRootView style={styles.root}>
-      <KeyboardProvider preload={false}>
-        <SafeAreaProvider>
-          <StartupUpdateGate>
-            <SnackbarProvider>
-              <LaunchSplashCompleteProvider isComplete={isLaunchSplashComplete}>
-                {isAmplifyConfigured ? (
-                  <Authenticator.Provider>{app}</Authenticator.Provider>
-                ) : (
-                  app
-                )}
-              </LaunchSplashCompleteProvider>
-            </SnackbarProvider>
-          </StartupUpdateGate>
-          {!isLaunchSplashComplete ? (
-            <LaunchSplashScreen
-              onFinish={handleLaunchSplashFinish}
-              ready={isStartupReady}
-            />
-          ) : null}
-        </SafeAreaProvider>
-      </KeyboardProvider>
-    </GestureHandlerRootView>
+    <TelemetryErrorBoundary>
+      <TelemetryProvider startupReady={isStartupReady}>
+        <GestureHandlerRootView style={styles.root}>
+          <KeyboardProvider preload={false}>
+            <SafeAreaProvider>
+              <StartupUpdateGate>
+                <SnackbarProvider>
+                  <LaunchSplashCompleteProvider isComplete={isLaunchSplashComplete}>
+                    {isAmplifyConfigured ? (
+                      <Authenticator.Provider>{app}</Authenticator.Provider>
+                    ) : (
+                      app
+                    )}
+                  </LaunchSplashCompleteProvider>
+                </SnackbarProvider>
+              </StartupUpdateGate>
+              {!isLaunchSplashComplete ? (
+                <LaunchSplashScreen
+                  onFinish={handleLaunchSplashFinish}
+                  ready={isStartupReady}
+                />
+              ) : null}
+            </SafeAreaProvider>
+          </KeyboardProvider>
+        </GestureHandlerRootView>
+      </TelemetryProvider>
+    </TelemetryErrorBoundary>
   );
 }
 

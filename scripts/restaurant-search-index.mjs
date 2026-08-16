@@ -224,6 +224,12 @@ function isOfficialAllergenCovered(item, restaurant, allergenId) {
   const profileId = item.officialAllergenProfileId;
 
   if (!profileId) {
+    if (
+      restaurant.officialAllergenProfiles &&
+      Object.keys(restaurant.officialAllergenProfiles).length > 0
+    ) {
+      return false;
+    }
     return Boolean(
       item.allergenSourceType !== "unavailable" &&
         (item.allergenSourceType ||

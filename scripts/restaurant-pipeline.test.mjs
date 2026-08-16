@@ -102,6 +102,12 @@ import {
   isAllowedSourceMenuName,
   extractTropicalSmoothieNutritionPdfItems,
   createRecord,
+  chipotleOfficialAllergenCoverage,
+  dominosAllergenAttributeCoverage,
+  nutritionixAvailableAllergenCoverage,
+  rbiSanityAllergens,
+  subwayPdfAllergenCoverage,
+  wendysNutritionAllergenCoverage,
   wendysImageUrl,
 } from "./pipeline/legacy-scrape-engine.mjs";
 import * as XLSX from "xlsx";
@@ -893,6 +899,74 @@ test("legacy API records keep real menu copy and reject source-label description
     wendysImageUrl("2260"),
     "https://app.wendys.com/unified/assets/menu/pg-cropped/2260_small_US_en.png",
   );
+});
+
+test("Wendy's API coverage retains explicit false allergen dimensions", () => {
+  assert.deepEqual(
+    wendysNutritionAllergenCoverage({
+      hasEgg: false,
+      hasFish: false,
+      hasMilk: true,
+      hasPeanut: false,
+      hasSesame: false,
+      hasShellfish: false,
+      hasSoy: true,
+      hasTreenut: false,
+      hasWheat: true,
+    }),
+    [
+      "egg",
+      "fish",
+      "milk",
+      "peanut",
+      "sesame",
+      "shellfish",
+      "soy",
+      "tree-nut",
+      "wheat",
+    ],
+  );
+});
+
+test("Nutritionix availability metadata retains supported negative allergen dimensions", () => {
+  const availableAllergenFields = {
+    eggs: 1,
+    fish: 1,
+    milk: 1,
+    peanuts: 1,
+    sesame: 1,
+    shellfish: 1,
+    soy: 1,
+    treeNuts: 1,
+    wheat: 1,
+    gluten: 1,
+    mustard: 0,
+  };
+
+  assert.deepEqual(
+    nutritionixAvailableAllergenCoverage(availableAllergenFields),
+    ["egg", "fish", "gluten", "milk", "peanut", "sesame", "shellfish", "soy", "tree-nut", "wheat"],
+  );
+});
+
+test("official structured parsers retain declared allergen dimensions with negative values", () => {
+  assert.deepEqual(
+    rbiSanityAllergens({
+      eggs: 0,
+      fish: 0,
+      milk: 3,
+      peanuts: 0,
+      shellfish: 0,
+      treeNuts: 0,
+    }).coveredAllergenIds,
+    ["egg", "fish", "milk", "peanut", "shellfish", "tree-nut"],
+  );
+  assert.ok(chipotleOfficialAllergenCoverage().includes("shellfish"));
+  assert.ok(chipotleOfficialAllergenCoverage().includes("tree-nut"));
+  assert.ok(dominosAllergenAttributeCoverage().includes("shellfish"));
+  assert.ok(dominosAllergenAttributeCoverage().includes("tree-nut"));
+  assert.ok(subwayPdfAllergenCoverage().includes("shellfish"));
+  assert.ok(subwayPdfAllergenCoverage().includes("tree-nut"));
 });
 
 test("publish quality strips inline allergen headings and official notice tails from dish descriptions", () => {
@@ -19544,6 +19618,37 @@ test("restaurant compatibility summary keeps official negative coverage allergy-
   assert.deepEqual(summary.unavailableAllergenItemIndexes.gluten, []);
   assert.deepEqual(summary.unavailableAllergenItemIndexes.peanut, [0]);
   assert.deepEqual(summary.unavailableItemIndexes, []);
+});
+
+test("unprofiled items cannot inherit all-allergen coverage from sibling profiles", () => {
+  const summary = compatibilitySummaryForRestaurant({
+    officialAllergenProfiles: {
+      m1: { coveredAllergenIds: ["milk", "shellfish", "tree-nut"] },
+    },
+    items: [
+      {
+        allergenSourceType: "official-allergen-menu",
+        allergens: [],
+        name: "Profiled Item",
+        officialAllergenProfileId: "m1",
+      },
+      {
+        allergenSourceType: "official-ingredients",
+        allergens: [],
+        name: "Unprofiled Item",
+      },
+    ],
+  });
+
+  assert.deepEqual(summary.unavailableAllergenItemIndexes.shellfish, [1]);
+  assert.deepEqual(summary.unavailableAllergenItemIndexes["tree-nut"], [1]);
+});
+
+test("colon-suffixed section labels are structural headings rather than menu items", () => {
+  assert.deepEqual(
+    classifyMenuItemRow({ name: "GLUTEN-SENSITIVE:" }),
+    { kind: "source-note", reasons: ["section-header-name"] },
+  );
 });
 
 test("refresh metadata defaults chains to manual and locals to user-demand", () => {

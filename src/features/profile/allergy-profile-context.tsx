@@ -14,6 +14,8 @@ import {
 
 import { normalizeAllergyId, normalizeAllergyIds } from "@/constants/allergies";
 import { isAmplifyConfigured } from "@/lib/amplify";
+import { safeErrorCode } from "@/lib/telemetry/schema";
+import { telemetry } from "@/lib/telemetry/telemetry";
 
 import type { Schema } from "../../../amplify/data/resource";
 
@@ -200,6 +202,7 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
     }
 
     setIsSyncing(true);
+    const trace = telemetry.startTrace("profile_sync");
 
     try {
       await getCurrentUser();
@@ -215,6 +218,7 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
       // Don't let an in-flight initial cloud read overwrite a choice the user
       // has just made in onboarding.
       if (hasUserProfileEditRef.current) {
+        trace.stop({ outcome: "cancelled" });
         return;
       }
 
@@ -233,6 +237,7 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
             ? nextSelectedProfileIds
             : [nextActiveProfileId],
         );
+        trace.stop({ outcome: "success" });
         return;
       }
 
@@ -263,7 +268,12 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
             : [createdProfiles[0].id],
         );
       }
-    } catch {
+      trace.stop({ outcome: "success" });
+    } catch (error) {
+      trace.stop({ outcome: "failure" });
+      telemetry.recordError(error, "profile_sync", {
+        errorCode: safeErrorCode(error),
+      });
       // Stay on the local profile cache when signed out or offline.
     } finally {
       setIsSyncing(false);
@@ -358,21 +368,22 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
   }, [writeLocalState]);
 
   const switchProfile = useCallback(
-    (id: string) => {
+    async (id: string) => {
       if (!profiles.some((profile) => profile.id === id)) {
-        return Promise.resolve();
+        return;
       }
 
-      return writeState(onboardingComplete, profiles, id, selectedProfileIds);
+      await writeState(onboardingComplete, profiles, id, selectedProfileIds);
+      telemetry.track("profile_switched");
     },
     [onboardingComplete, profiles, selectedProfileIds, writeState],
   );
 
   const renameProfile = useCallback(
-    (id: string, name: string) => {
+    async (id: string, name: string) => {
       const trimmedName = name.trim();
       if (!trimmedName) {
-        return Promise.resolve();
+        return;
       }
 
       const nextProfiles = profiles.map((profile) =>
@@ -384,12 +395,13 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
           : profile,
       );
 
-      return writeState(
+      await writeState(
         onboardingComplete,
         nextProfiles,
         activeProfileId,
         selectedProfileIds,
       );
+      telemetry.track("profile_edited");
     },
     [activeProfileId, onboardingComplete, profiles, selectedProfileIds, writeState],
   );
@@ -417,6 +429,7 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
         nextActiveProfileId,
         nextSelectedProfileIds,
       );
+      telemetry.track("profile_deleted");
 
       if (!isAmplifyConfigured || id.startsWith("profile-") || id === DEFAULT_PROFILE_ID) {
         return;
@@ -469,6 +482,7 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
       nextProfile.id,
       [...selectedProfileIds, nextProfile.id],
     );
+    telemetry.track("profile_created");
     return nextProfile;
   }, [onboardingComplete, profiles, selectedProfileIds, writeState]);
 
@@ -493,6 +507,7 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
       });
 
       hasUserProfileEditRef.current = true;
+      telemetry.track("profile_edited");
       void writeState(
         state.onboardingComplete,
         nextProfiles,
@@ -504,26 +519,27 @@ export function AllergyProfileProvider({ children }: PropsWithChildren) {
   );
 
   const toggleProfileSelection = useCallback(
-    (id: string) => {
+    async (id: string) => {
       if (!profiles.some((profile) => profile.id === id)) {
-        return Promise.resolve();
+        return;
       }
 
       const isSelected = selectedProfileIds.includes(id);
       if (isSelected && selectedProfileIds.length === 1) {
-        return Promise.resolve();
+        return;
       }
 
       const nextSelectedProfileIds = isSelected
         ? selectedProfileIds.filter((profileId) => profileId !== id)
         : [...selectedProfileIds, id];
 
-      return writeState(
+      await writeState(
         onboardingComplete,
         profiles,
         activeProfileId,
         nextSelectedProfileIds,
       );
+      if (!isSelected) telemetry.track("profile_selected");
     },
     [activeProfileId, onboardingComplete, profiles, selectedProfileIds, writeState],
   );

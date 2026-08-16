@@ -14,7 +14,7 @@ import Animated, {
 
 import { colors } from "@/constants/theme";
 
-const appIcon = require("../../assets/icon.png");
+const appIcon = require("../../assets/runtime-icon.png");
 const MINIMUM_SPLASH_DURATION_MS = 2500;
 const EXIT_DURATION_MS = 360;
 

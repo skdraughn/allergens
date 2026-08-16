@@ -18,6 +18,13 @@ const repositoryPath =
   process.env.RESTAURANT_REPOSITORY_PATH ??
   "src/data/generated/restaurants.generated.json";
 const repository = JSON.parse(fs.readFileSync(repositoryPath, "utf8"));
+const catalogDetailPrefix = process.env.RESTAURANT_CATALOG_DETAIL_PREFIX?.replace(/\/$/, "");
+if (catalogDetailPrefix) {
+  repository.restaurants = (repository.restaurants ?? []).map((restaurant) => ({
+    ...restaurant,
+    snapshotPath: `${catalogDetailPrefix}/${restaurant.id}.json`,
+  }));
+}
 const canonicalRows = buildRestaurantSearchIndexRows(repository);
 const canonicalByKey = new Map(canonicalRows.map((row) => [rowKey(row), row]));
 const dynamo = DynamoDBDocumentClient.from(new DynamoDBClient({}), {
@@ -57,6 +64,7 @@ const report = {
   ).size,
   deletes,
   generatedAt: repository.generatedAt,
+  catalogDetailPrefix: catalogDetailPrefix ?? null,
   liveIndexRows: liveRows.filter(isRestaurantIndexRow).length,
   puts,
   tableName,

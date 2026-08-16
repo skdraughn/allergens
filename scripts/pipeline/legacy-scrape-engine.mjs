@@ -4734,6 +4734,9 @@ async function fetchNutritionixOfficialRecords(
 
   const parsed = parseJsonLoose(fetched.text);
   const items = Object.values(parsed?.items ?? {});
+  const officialAllergenCoveredIds = nutritionixAvailableAllergenCoverage(
+    parsed?.availableAllergenFields,
+  );
   const categoryById = new Map(
     (parsed?.categories ?? []).map((category) => [
       category.id,
@@ -4755,6 +4758,7 @@ async function fetchNutritionixOfficialRecords(
         return createRecord({
           allergenSourceType: allergenSourceTypes.officialAllergenMenu,
           allergens: allergenResult.allergens,
+          officialAllergenCoveredIds,
           category: categoryById.get(item.categoryId) ?? source.category,
           description: sourceLabel,
           imageUrl:
@@ -4773,6 +4777,29 @@ async function fetchNutritionixOfficialRecords(
       .filter((record) => record.name && isProbablyMenuItemName(record.name)),
     sources,
   };
+}
+
+export function nutritionixAvailableAllergenCoverage(availableFields = {}) {
+  const fieldMap = new Map([
+    ["gluten", "gluten"],
+    ["milk", "milk"],
+    ["eggs", "egg"],
+    ["fish", "fish"],
+    ["shellfish", "shellfish"],
+    ["crustaceanShellfish", "shellfish"],
+    ["molluscanShellfish", "shellfish"],
+    ["treeNuts", "tree-nut"],
+    ["peanuts", "peanut"],
+    ["wheat", "wheat"],
+    ["soy", "soy"],
+    ["sesame", "sesame"],
+  ]);
+
+  return uniqueStrings(
+    [...fieldMap]
+      .filter(([field]) => availableFields?.[field] === 1 || availableFields?.[field] === true)
+      .map(([, allergen]) => allergen),
+  ).sort();
 }
 
 function nutritionixAllergens(allergens = {}) {
@@ -4910,6 +4937,7 @@ async function fetchRbiSanityOfficialRecords(
         return createRecord({
           allergenSourceType: allergenSourceTypes.officialAllergenMenu,
           allergens: allergenResult.allergens,
+          officialAllergenCoveredIds: allergenResult.coveredAllergenIds,
           category: titleCase(category),
           description: sourceLabel,
           imageUrl:
@@ -5064,7 +5092,7 @@ function nutritionFactsFromRbiNutrition(nutrition) {
   });
 }
 
-function rbiSanityAllergens(allergens = {}) {
+export function rbiSanityAllergens(allergens = {}) {
   const fieldMap = new Map([
     ["milk", "milk"],
     ["eggs", "egg"],
@@ -5081,6 +5109,7 @@ function rbiSanityAllergens(allergens = {}) {
   ]);
   const direct = [];
   const mayContain = [];
+  const coveredAllergenIds = [];
   let hasOfficialFlags = false;
 
   for (const [field, allergen] of fieldMap) {
@@ -5091,6 +5120,7 @@ function rbiSanityAllergens(allergens = {}) {
     }
 
     hasOfficialFlags = true;
+    coveredAllergenIds.push(allergen);
 
     if (value >= 3) {
       direct.push(allergen);
@@ -5101,6 +5131,7 @@ function rbiSanityAllergens(allergens = {}) {
 
   return {
     allergens: uniqueStrings(direct),
+    coveredAllergenIds: uniqueStrings(coveredAllergenIds).sort(),
     hasOfficialFlags,
     mayContain: uniqueStrings(mayContain),
   };
@@ -5354,6 +5385,8 @@ async function fetchWendysOfficialNutritionRecords(source) {
         createRecord({
           allergenSourceType: allergenSourceTypes.officialAllergenMenu,
           allergens: wendysNutritionAllergens(nutrition.data),
+          officialAllergenCoveredIds:
+            wendysNutritionAllergenCoverage(nutrition.data),
           category:
             categoryByMenuItemId.get(item.menuItemId) ??
             cleanText(salesItem.categoryName) ??
@@ -6595,6 +6628,24 @@ function wendysNutritionAllergens(data) {
     data.hasTreenut ? "tree-nut" : null,
     data.hasWheat ? "wheat" : null,
   ]);
+}
+
+export function wendysNutritionAllergenCoverage(data) {
+  const fields = [
+    ["hasEgg", "egg"],
+    ["hasFish", "fish"],
+    ["hasMilk", "milk"],
+    ["hasPeanut", "peanut"],
+    ["hasSesame", "sesame"],
+    ["hasShellfish", "shellfish"],
+    ["hasSoy", "soy"],
+    ["hasTreenut", "tree-nut"],
+    ["hasWheat", "wheat"],
+  ];
+
+  return fields
+    .filter(([field]) => typeof data?.[field] === "boolean")
+    .map(([, allergenId]) => allergenId);
 }
 
 export async function fetchSource(url, restaurant, kind, requestOptions = {}) {
@@ -9737,6 +9788,7 @@ function extractDominosAllergenXmlItems(text, restaurant, url) {
     ["sesame", "sesame"],
   ]);
   const records = [];
+  const officialAllergenCoveredIds = dominosAllergenAttributeCoverage();
 
   $("menuSet[type='food-items'] item").each((_index, element) => {
     const $item = $(element);
@@ -9767,6 +9819,7 @@ function extractDominosAllergenXmlItems(text, restaurant, url) {
       createRecord({
         allergenSourceType: allergenSourceTypes.officialAllergenMenu,
         allergens,
+        officialAllergenCoveredIds,
         category: restaurant.category,
         description: "Official Domino's allergen XML chart.",
         imageUrl: null,
@@ -9779,6 +9832,20 @@ function extractDominosAllergenXmlItems(text, restaurant, url) {
   });
 
   return records;
+}
+
+export function dominosAllergenAttributeCoverage() {
+  return [
+    "egg",
+    "fish",
+    "milk",
+    "peanut",
+    "sesame",
+    "shellfish",
+    "soy",
+    "tree-nut",
+    "wheat",
+  ];
 }
 
 function isDominosIngredientOnlyName(name) {
@@ -10766,6 +10833,10 @@ function extractProviderAllergenRecords(parsed, restaurant, url) {
       return createRecord({
         allergenSourceType: allergenSourceTypes.officialAllergenMenu,
         allergens,
+        officialAllergenCoveredIds:
+          restaurant.id === "chipotle"
+            ? chipotleOfficialAllergenCoverage()
+            : [],
         category: restaurant.category,
         description:
           allergens.length > 0
@@ -10779,6 +10850,23 @@ function extractProviderAllergenRecords(parsed, restaurant, url) {
       });
     })
     .filter(Boolean);
+}
+
+export function chipotleOfficialAllergenCoverage() {
+  return [
+    "egg",
+    "fish",
+    "gluten",
+    "milk",
+    "mustard",
+    "peanut",
+    "sesame",
+    "shellfish",
+    "soy",
+    "sulfites",
+    "tree-nut",
+    "wheat",
+  ];
 }
 
 function extractHtmlAllergenMatrixItems($, restaurant, url, kind) {
@@ -26247,6 +26335,7 @@ function nutritionFactsFromSubwayValues(values) {
 
 async function extractSubwayPdfItems(buffer, restaurant, url) {
   const records = [];
+  const officialAllergenCoveredIds = subwayPdfAllergenCoverage();
   const pdfjsLib = await getPdfJsLib();
   const document = await pdfjsLib.getDocument({ data: new Uint8Array(buffer) })
     .promise;
@@ -26312,6 +26401,7 @@ async function extractSubwayPdfItems(buffer, restaurant, url) {
           createRecord({
             allergenSourceType: allergenSourceTypes.officialAllergenMenu,
             allergens: direct,
+            officialAllergenCoveredIds,
             category: currentCategory,
             description:
               "Official Subway U.S. Allergy and Sensitivity Information matrix.",
@@ -26329,6 +26419,10 @@ async function extractSubwayPdfItems(buffer, restaurant, url) {
   }
 
   return records;
+}
+
+export function subwayPdfAllergenCoverage() {
+  return uniqueStrings(subwayPdfColumns.map((column) => column.id)).sort();
 }
 
 function isProbablySubwayAllergenMatrixItemName(name, category) {
@@ -28210,6 +28304,10 @@ export function mergeRecords(records) {
       byName.set(key, {
         ...current,
         evidence: uniqueEvidence([...current.evidence, ...next.evidence]),
+        officialAllergenCoveredIds: uniqueStrings([
+          ...(current.officialAllergenCoveredIds ?? []),
+          ...(next.officialAllergenCoveredIds ?? []),
+        ]),
         sourceUrls: publishableSourceUrls([
           ...current.sourceUrls,
           ...next.sourceUrls,
@@ -28221,6 +28319,10 @@ export function mergeRecords(records) {
     byName.set(key, {
       ...current,
       allergens: uniqueStrings([...current.allergens, ...next.allergens]),
+      officialAllergenCoveredIds: uniqueStrings([
+        ...(current.officialAllergenCoveredIds ?? []),
+        ...(next.officialAllergenCoveredIds ?? []),
+      ]),
       allergenSourceType:
         (allergenSourcePriority[next.allergenSourceType] ?? 0) >
         (allergenSourcePriority[current.allergenSourceType] ?? 0)
@@ -28264,6 +28366,9 @@ export function mergeRecords(records) {
       isConfigurable: item.isConfigurable,
       allergenSourceType: item.allergenSourceType,
       allergens: item.allergens,
+      ...(item.officialAllergenCoveredIds?.length
+        ? { officialAllergenCoveredIds: item.officialAllergenCoveredIds }
+        : {}),
       mayContain: item.mayContain,
       sourceType: item.sourceKind,
       sourceUrls: publishableSourceUrls(item.sourceUrls),
@@ -28456,6 +28561,9 @@ export function normalizeRecord(record) {
   return {
     allergens: uniqueStrings(allergens),
     allergenSourceType,
+    officialAllergenCoveredIds: uniqueStrings(
+      record.officialAllergenCoveredIds ?? [],
+    ),
     category:
       similarityKey(category) === similarityKey(name) ? "Menu" : category,
     description: cleanText(record.description),
@@ -28629,6 +28737,7 @@ function normalizeRecordCategory(value) {
 export function createRecord({
   allergenSourceType,
   allergens,
+  officialAllergenCoveredIds,
   category,
   description,
   imageUrl,
@@ -28645,6 +28754,9 @@ export function createRecord({
   return {
     allergens: uniqueStrings(allergens ?? []),
     allergenSourceType: allergenSourceType ?? allergenSourceTypes.unavailable,
+    officialAllergenCoveredIds: uniqueStrings(
+      officialAllergenCoveredIds ?? [],
+    ),
     category: cleanText(category) ?? "Menu",
     description: cleanMenuDescription(description),
     evidenceText: cleanText(evidenceText),

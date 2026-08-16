@@ -10,6 +10,7 @@ import {
   reportCommunityReview,
   type CommunityAllergyReview,
 } from "@/features/community/community-service";
+import { telemetry } from "@/lib/telemetry/telemetry";
 
 type CommunityReviewCardProps = {
   last: boolean;
@@ -46,6 +47,11 @@ export function CommunityReviewCard({
             setSubmitting(true);
             void reportCommunityReview(review)
               .then(() => {
+                telemetry.track("report_submitted", {
+                  outcome: "queued",
+                  restaurant_id: review.restaurantId,
+                  scope: "community_review",
+                });
                 showSnackbar({
                   message: "Thanks. Our moderation team will review it.",
                   title: "Review Reported",
@@ -80,6 +86,10 @@ export function CommunityReviewCard({
             setSubmitting(true);
             void blockCommunityReviewer(review)
               .then(() => {
+                telemetry.track("user_blocked", {
+                  outcome: "success",
+                  scope: "community_reviewer",
+                });
                 setHidden(true);
                 showSnackbar({
                   message: "This reviewer’s content is now hidden.",

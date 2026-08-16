@@ -4,6 +4,8 @@ import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import fs from "node:fs";
 import { gzipSync } from "node:zlib";
 
+import { buildVersionedRestaurantCatalog } from "./versioned-restaurant-catalog.mjs";
+
 const apply = process.argv.includes("--apply");
 const promotionRepair = process.argv.includes("--promotion");
 const bucket =
@@ -24,7 +26,16 @@ const report = JSON.parse(
     "utf8",
   ),
 );
-const changedIds = new Set(report.restaurants.map((restaurant) => restaurant.restaurantId));
+const explicitBooleanCoverageIds = new Set(
+  (report.explicitBooleanCoverageRepairs ?? []).map(
+    (restaurant) => restaurant.restaurantId,
+  ),
+);
+const changedIds = report.coverageContractVersion >= 2
+  ? new Set(report.restaurants.map((restaurant) => restaurant.restaurantId))
+  : explicitBooleanCoverageIds.size > 0
+    ? explicitBooleanCoverageIds
+    : new Set(report.restaurants.map((restaurant) => restaurant.restaurantId));
 const changedRestaurants = repository.restaurants.filter((restaurant) =>
   changedIds.has(restaurant.id),
 );
@@ -32,7 +43,10 @@ const timestamp = repository.generatedAt.replace(/[:.]/g, "-");
 const refreshScope = promotionRepair
   ? "official-text-allergen-promotion-repair"
   : "official-allergen-negative-coverage-repair";
+const versionedCatalog = buildVersionedRestaurantCatalog(repository, summary, prefix);
 const manifest = promotionRepair ? {
+  catalogPath: versionedCatalog.catalogPath,
+  catalogVersion: versionedCatalog.catalogVersion,
   generatedAt: repository.generatedAt,
   itemCount: repository.itemCount,
   promotedDirectCount: report.promotedDirectCount,
@@ -43,6 +57,8 @@ const manifest = promotionRepair ? {
   refreshScope,
   snapshotVersion: repository.snapshotVersion,
 } : {
+  catalogPath: versionedCatalog.catalogPath,
+  catalogVersion: versionedCatalog.catalogVersion,
   generatedAt: repository.generatedAt,
   itemCount: repository.itemCount,
   officialNegativeProfiledCount: report.officialNegativeProfiledCount,
@@ -67,6 +83,20 @@ if (summary.generatedAt !== repository.generatedAt) {
 
 if (apply) {
   const s3 = new S3Client({});
+  await putJson(s3, versionedCatalog.catalogPath, versionedCatalog.versionedSummary, {
+    immutable: true,
+  });
+  for (const restaurant of versionedCatalog.versionedRepository.restaurants) {
+    await putJson(
+      s3,
+      versionedCatalog.detailPathForRestaurant(restaurant.id),
+      restaurant,
+      { immutable: true },
+    );
+  }
+
+  // Keep the mutable aliases temporarily for native clients released before
+  // Firebase Remote Config became the catalog authority.
   await putJson(s3, `${prefix}/latest.json`, summary);
   await putJson(s3, `${prefix}/runs/${timestamp}-${refreshScope}.json`, summary);
   await putJson(
@@ -85,6 +115,8 @@ console.log(
     {
       apply,
       bucket,
+      catalogPath: versionedCatalog.catalogPath,
+      catalogVersion: versionedCatalog.catalogVersion,
       changedRestaurantCount: changedRestaurants.length,
       manifest,
       prefix,
@@ -94,14 +126,25 @@ console.log(
   ),
 );
 
-async function putJson(s3, key, value) {
+async function putJson(s3, key, value, options = {}) {
   await s3.send(
     new PutObjectCommand({
       Body: gzipSync(`${JSON.stringify(value)}\n`, { level: 9 }),
       Bucket: bucket,
       ContentEncoding: "gzip",
       ContentType: "application/json",
+      ...(options.immutable
+        ? {
+            CacheControl: "public, max-age=31536000, immutable",
+            IfNoneMatch: "*",
+          }
+        : {}),
       Key: key,
     }),
-  );
+  ).catch((error) => {
+    if (options.immutable && (error?.$metadata?.httpStatusCode === 412 || error?.name === "PreconditionFailed")) {
+      return;
+    }
+    throw error;
+  });
 }

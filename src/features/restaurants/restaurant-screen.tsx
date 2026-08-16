@@ -93,6 +93,8 @@ import {
   type RestaurantSearchLocation,
 } from "@/features/restaurants/restaurant-search-service";
 import { getMenuItemSafety, hasIngredientIntelligence } from "@/lib/safety";
+import { bucketCount, safeErrorCode } from "@/lib/telemetry/schema";
+import { telemetry } from "@/lib/telemetry/telemetry";
 
 type MenuFilter = "all" | "ok" | "caution" | "avoid";
 type SourceBadgeTone = "intelligence" | "official";
@@ -160,15 +162,49 @@ export function RestaurantScreen() {
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [sourceInfoVisible, setSourceInfoVisible] =
     useState<SourceBadgeTone | null>(null);
-  const handleSelectMenuItem = useCallback((item: MenuItem) => {
-    setSelectedItem(item);
-  }, []);
+  const detailTelemetryKeyRef = useRef<string | null>(null);
   const {
+    error: restaurantError,
     isLoading: restaurantIsLoading,
     notFound: restaurantNotFound,
     restaurant: loadedRestaurant,
   } = useRestaurantDetail(id, snapshotPath);
+  const handleSelectMenuItem = useCallback((item: MenuItem) => {
+    const safety = getMenuItemSafety(
+      item,
+      selectedAllergyIds,
+      loadedRestaurant?.officialAllergenProfiles,
+    );
+    telemetry.track("menu_item_opened", {
+      item_status: safety.status,
+      menu_item_id: item.id,
+      restaurant_id: id,
+      source_type: item.allergenSourceType,
+    });
+    setSelectedItem(item);
+  }, [id, loadedRestaurant?.officialAllergenProfiles, selectedAllergyIds]);
   const restaurantLoaderKey = `${id}::${snapshotPath ?? ""}`;
+  useEffect(() => {
+    if (!loadedRestaurant || detailTelemetryKeyRef.current === restaurantLoaderKey) return;
+    detailTelemetryKeyRef.current = restaurantLoaderKey;
+    telemetry.track("restaurant_detail_loaded", {
+      item_count_bucket: bucketCount(loadedRestaurant.items.length),
+      restaurant_id: loadedRestaurant.id,
+      source_type: loadedRestaurant.items.some(
+        (item) => item.allergenSourceType !== "unavailable",
+      )
+        ? "official"
+        : "ingredient_intelligence",
+    });
+  }, [loadedRestaurant, restaurantLoaderKey]);
+  useEffect(() => {
+    if (!restaurantError || detailTelemetryKeyRef.current === `error:${restaurantLoaderKey}`) return;
+    detailTelemetryKeyRef.current = `error:${restaurantLoaderKey}`;
+    telemetry.track("restaurant_detail_failed", {
+      error_code: safeErrorCode(restaurantError),
+      restaurant_id: id,
+    });
+  }, [id, restaurantError, restaurantLoaderKey]);
   useEffect(() => {
     if (!loadedRestaurant || presentedRestaurantKey === restaurantLoaderKey) {
       return;
@@ -554,6 +590,12 @@ export function RestaurantScreen() {
     setContributionMode(mode);
   };
   const openReviews = (item?: MenuItem | null) => {
+    telemetry.track("review_flow_opened", {
+      entry_point: item ? "menu_item_detail" : "restaurant_header",
+      menu_item_id: item?.id,
+      restaurant_id: restaurant.id,
+      scope: item ? "menu_item" : "restaurant",
+    });
     router.push({
       params: {
         id: restaurant.id,
@@ -564,6 +606,10 @@ export function RestaurantScreen() {
     });
   };
   const openAccommodations = () => {
+    telemetry.track("restaurant_accommodation_opened", {
+      restaurant_id: restaurant.id,
+      source_type: "restaurant_policy",
+    });
     router.push({
       params: {
         id: restaurant.id,
@@ -597,10 +643,15 @@ export function RestaurantScreen() {
   };
   const openRestaurantWebsite = () => {
     setRestaurantActionsVisible(false);
+    telemetry.track("restaurant_website_opened", {
+      restaurant_id: restaurant.id,
+      source_type: "official_website",
+    });
     void Linking.openURL(restaurant.guideUrl);
   };
   const shareRestaurant = async () => {
     setRestaurantActionsVisible(false);
+    telemetry.track("restaurant_shared", { restaurant_id: restaurant.id });
     const sharedRestaurantUrl = `https://mysafemenu.com/restaurant/${encodeURIComponent(restaurant.id)}`;
     try {
       await Share.share({
@@ -625,6 +676,7 @@ export function RestaurantScreen() {
     suppressViewabilityUntilRef.current = Date.now() + 1100;
     setActiveMenuSection(section.category);
     setSectionPickerVisible(false);
+    telemetry.track("menu_category_selected", { restaurant_id: restaurant.id });
     menuListRef.current?.scrollToIndex({
       animated: true,
       index: section.rowIndex,
@@ -803,7 +855,13 @@ export function RestaurantScreen() {
                       accessibilityLabel={`Explain ${badge.label}`}
                       accessibilityRole="button"
                       key={badge.tone}
-                      onPress={() => setSourceInfoVisible(badge.tone)}
+                      onPress={() => {
+                        telemetry.track("source_explanation_opened", {
+                          restaurant_id: restaurant.id,
+                          source_type: badge.tone,
+                        });
+                        setSourceInfoVisible(badge.tone);
+                      }}
                       style={[
                         styles.sourceBadge,
                         badge.tone === "official"
@@ -860,7 +918,13 @@ export function RestaurantScreen() {
                       count={nextFilter.count}
                       key={nextFilter.id}
                       label={nextFilter.label}
-                      onPress={() => setFilter(nextFilter.id)}
+                      onPress={() => {
+                        telemetry.track("menu_filter_selected", {
+                          filter: nextFilter.id,
+                          restaurant_id: restaurant.id,
+                        });
+                        setFilter(nextFilter.id);
+                      }}
                     />
                   ))}
                 </ScrollView>
@@ -923,6 +987,7 @@ export function RestaurantScreen() {
             openReviews(item);
           }}
           officialAllergenProfiles={restaurant.officialAllergenProfiles}
+          restaurantId={restaurant.id}
           selectedAllergyIds={selectedAllergyIds}
         />
         <CommunityContributionModal
@@ -953,6 +1018,10 @@ export function RestaurantScreen() {
           filterOptions={filterOptions}
           onClose={() => setFilterSheetVisible(false)}
           onSelectFilter={(nextFilter) => {
+            telemetry.track("menu_filter_selected", {
+              filter: nextFilter,
+              restaurant_id: restaurant.id,
+            });
             setFilter(nextFilter);
             setFilterSheetVisible(false);
           }}
@@ -976,6 +1045,7 @@ export function RestaurantScreen() {
             setSelectedItem(item);
           }}
           query={menuSearchQuery}
+          restaurantId={restaurant.id}
           officialAllergenProfiles={restaurant.officialAllergenProfiles}
           selectedAllergyIds={selectedAllergyIds}
           setQuery={setMenuSearchQuery}
@@ -1531,6 +1601,7 @@ function MenuSearchModal({
   onPressItem,
   officialAllergenProfiles,
   query,
+  restaurantId,
   selectedAllergyIds,
   setQuery,
   visible,
@@ -1540,6 +1611,7 @@ function MenuSearchModal({
   onPressItem: (item: MenuItem) => void;
   officialAllergenProfiles?: Restaurant["officialAllergenProfiles"];
   query: string;
+  restaurantId: string;
   selectedAllergyIds: string[];
   setQuery: (query: string) => void;
   visible: boolean;
@@ -1548,6 +1620,7 @@ function MenuSearchModal({
   const debouncedQuery = useDebouncedValue(query, 180);
   const normalizedQuery = debouncedQuery.trim().toLowerCase();
   const hasSearchQuery = normalizedQuery.length > 0;
+  const lastReportedQuery = useRef("");
   const matchingItems = useMemo(() => {
     if (!normalizedQuery) {
       return [];
@@ -1565,6 +1638,16 @@ function MenuSearchModal({
       )
       .map((result) => result.item);
   }, [items, normalizedQuery]);
+
+  useEffect(() => {
+    if (!normalizedQuery || lastReportedQuery.current === normalizedQuery) return;
+    lastReportedQuery.current = normalizedQuery;
+    telemetry.track("menu_search_used", {
+      outcome: matchingItems.length > 0 ? "success" : "empty",
+      restaurant_id: restaurantId,
+      result_count_bucket: bucketCount(matchingItems.length),
+    });
+  }, [matchingItems.length, normalizedQuery, restaurantId]);
 
   const renderSearchResult: ListRenderItem<MenuItem> = ({ index, item }) => (
     <MenuRow

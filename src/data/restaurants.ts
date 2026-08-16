@@ -65,6 +65,8 @@ export type MenuItem = {
   inferenceSummary?: string;
   inferenceVersion?: string;
   allergens: AllergenId[];
+  /** Allergen dimensions explicitly emitted by an official matrix/API, including false values. */
+  officialAllergenCoveredIds?: AllergenId[];
   isConfigurable?: boolean;
   mayContain?: AllergenId[];
   notes?: string;

@@ -2,7 +2,7 @@ import { useAuthenticator } from "@aws-amplify/ui-react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ChevronLeft, HeartPulse, Plus, Search, X } from "lucide-react-native";
 import type { LucideIcon } from "lucide-react-native";
-import { type ComponentProps, useEffect, useMemo, useState } from "react";
+import { type ComponentProps, useEffect, useMemo, useRef, useState } from "react";
 import {
   Alert,
   FlatList,
@@ -50,6 +50,7 @@ import {
 import { useAllergyProfile } from "@/features/profile/allergy-profile-context";
 import { useRestaurantDetail } from "@/features/restaurants/restaurant-data-context";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
+import { telemetry } from "@/lib/telemetry/telemetry";
 
 type ReviewForm = {
   allergyIds: string[];
@@ -89,6 +90,7 @@ export function RestaurantReviewsScreen() {
     emptyForm(initialMenuItemId, selectedAllergyIds),
   );
   const [composerVisible, setComposerVisible] = useState(shouldOpenComposerFromLink);
+  const reviewStartedRef = useRef(false);
   const [compactTitleThreshold, setCompactTitleThreshold] = useState(132);
   const [menuSearchVisible, setMenuSearchVisible] = useState(false);
   const [menuSearchQuery, setMenuSearchQuery] = useState("");
@@ -167,6 +169,16 @@ export function RestaurantReviewsScreen() {
     setForm(emptyForm(initialMenuItemId, selectedAllergyIds));
     setComposerVisible(shouldOpenComposerFromLink);
   }, [initialMenuItemId, restaurant?.id, selectedAllergyIds, shouldOpenComposerFromLink]);
+  useEffect(() => {
+    if (!composerVisible || !restaurant?.id || reviewStartedRef.current) return;
+    reviewStartedRef.current = true;
+    telemetry.track("review_started", {
+      entry_point: shouldOpenComposerFromLink ? "deep_link" : "review_screen",
+      menu_item_id: initialMenuItemId || undefined,
+      restaurant_id: restaurant.id,
+      scope: initialMenuItemId ? "menu_item" : "restaurant",
+    });
+  }, [composerVisible, initialMenuItemId, restaurant?.id, shouldOpenComposerFromLink]);
 
   const selectedMenuItem = restaurant?.items.find((item) => item.id === form.menuItemId) ?? null;
   const canSubmit = Boolean(restaurant?.id && form.rating >= 1);

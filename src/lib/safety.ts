@@ -44,6 +44,9 @@ function isCoveredByOfficialProfile(
   const profileId = item.officialAllergenProfileId;
 
   if (!profileId) {
+    if (profiles && Object.keys(profiles).length > 0) {
+      return false;
+    }
     return Boolean(
       item.allergenSourceType !== "unavailable" &&
         (item.allergenSourceType || item.allergens.length > 0 || (item.mayContain ?? []).length > 0),

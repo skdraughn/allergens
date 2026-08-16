@@ -120,7 +120,7 @@ const compactAddressDescriptionPattern =
   /[A-Za-z][A-Za-z .'-]+\d{3,5}\s+[A-Za-z0-9.' -]+(?:avenue|ave|street|st|road|rd|boulevard|blvd|place|pl|drive|dr|lane|ln|pike)[A-Za-z .'-]*,\s*[A-Z]{2}\s+\d{5}/i;
 
 const sectionHeaderNamePatterns = [
-  /^(?:appetizers?|starters?|snacks?|small plates|salads?|soups?|sandwiches?|burgers?|entrees?|main dishes|mains?|sides?|sides?\s*&\s*more|desserts?|sweet|drinks?|beverages?|hot beverages?|cocktails?|wine|beer|spirits?|breakfast|brunch|lunch|dinner|kids?|vegan|vegetarian|gluten[- ]free|menus?|menus▼|items?|food|restaurant|all day|meal plan|meal plan & programs|large share|small share|large format|weekly specials|with bread|sushi & ramen|kitchen entrées|signature rolls|sushi platters? \/ combos?)$/i,
+  /^(?:appetizers?|starters?|snacks?|small plates|salads?|soups?|sandwiches?|burgers?|entrees?|main dishes|mains?|sides?|sides?\s*&\s*more|desserts?|sweet|drinks?|beverages?|hot beverages?|cocktails?|wine|beer|spirits?|breakfast|brunch|lunch|dinner|kids?|vegan|vegetarian|gluten[- ](?:free|sensitive)|menus?|menus▼|items?|food|restaurant|all day|meal plan|meal plan & programs|large share|small share|large format|weekly specials|with bread|sushi & ramen|kitchen entrées|signature rolls|sushi platters? \/ combos?)$/i,
   /^kids?\s*menu\s*for\s*children$/i,
   /^(?:to start|salads\s*\(served with dressing\)|wr\s*aps\s*\(include s si de salad\))$/i,
   /^\(?for\s+kids\s+under\s+\d+\)?$/i,
@@ -2518,7 +2518,11 @@ export function classifyMenuItemRow(item) {
     return { kind: "navigation/legal", reasons: ["parking-row"] };
   }
 
-  if (sectionHeaderNamePatterns.some((pattern) => pattern.test(name)) && !description) {
+  const nameWithoutTrailingColon = name.replace(/\s*:\s*$/, "");
+  if (
+    !description &&
+    sectionHeaderNamePatterns.some((pattern) => pattern.test(nameWithoutTrailingColon))
+  ) {
     return { kind: "source-note", reasons: ["section-header-name"] };
   }
 

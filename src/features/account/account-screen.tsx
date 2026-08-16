@@ -76,6 +76,8 @@ import { deleteMyAccount } from "@/features/account/account-deletion-service";
 import { useAllergyProfile } from "@/features/profile/allergy-profile-context";
 import { useRestaurantData } from "@/features/restaurants/restaurant-data-context";
 import { isAmplifyConfigured } from "@/lib/amplify";
+import { safeErrorCode } from "@/lib/telemetry/schema";
+import { telemetry } from "@/lib/telemetry/telemetry";
 import type { Restaurant } from "@/data/restaurants";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -83,7 +85,7 @@ type AuthMode = "options" | "password";
 type PasswordIntent = "sign-in" | "create";
 type LoadingProvider = "apple" | "google" | "password" | "sign-out" | null;
 
-const mySafeMenuIcon = require("../../../assets/icon.png");
+const mySafeMenuIcon = require("../../../assets/runtime-icon.png");
 
 type CreateAccountContentProps = {
   authMode: AuthMode;
@@ -141,6 +143,13 @@ export function AccountScreen() {
     void refreshCurrentUser();
   }, []);
 
+  useEffect(() => {
+    if (currentUser === undefined) return;
+    telemetry.track("account_screen_opened", {
+      auth_state: currentUser ? "signed_in" : "guest",
+    });
+  }, [currentUser]);
+
   const accountLabel = useMemo(() => {
     return currentUser?.signInDetails?.loginId ?? currentUser?.username ?? "Your account is connected.";
   }, [currentUser]);
@@ -166,9 +175,16 @@ export function AccountScreen() {
     }
   }
 
-  async function completeAndRefresh(work: () => Promise<unknown>) {
+  async function completeAndRefresh(
+    work: () => Promise<unknown>,
+    authMethod: "apple" | "google",
+  ) {
     try {
       await work();
+      telemetry.track("auth_succeeded", {
+        auth_action: "authenticate",
+        auth_method: authMethod,
+      });
       await syncProfilesFromCloud();
       await refreshCurrentUser();
       closeAccount();
@@ -176,6 +192,15 @@ export function AccountScreen() {
       if (isSocialSignInCancelled(nextError)) {
         return;
       }
+
+      telemetry.track("auth_failed", {
+        auth_action: "authenticate",
+        auth_method: authMethod,
+        error_code: safeErrorCode(nextError),
+      });
+      telemetry.recordError(nextError, "authentication", {
+        errorCode: safeErrorCode(nextError),
+      });
 
       const message = nextError instanceof Error ? nextError.message : "Something went wrong.";
       showSnackbar({ message, title: "Sign In Error", tone: "error" });
@@ -188,11 +213,15 @@ export function AccountScreen() {
     }
 
     setLoadingProvider(provider);
+    telemetry.track("auth_started", {
+      auth_action: "authenticate",
+      auth_method: provider,
+    });
     await completeAndRefresh(async () => {
       const payload =
         provider === "apple" ? await signInWithAppleNative() : await signInWithGoogleNative();
       await completeNativeSocialSignIn(payload);
-    });
+    }, provider);
     setLoadingProvider(null);
   }
 
@@ -215,6 +244,11 @@ export function AccountScreen() {
     }
 
     setLoadingProvider("password");
+    const authAction = passwordIntent === "create" ? "sign_up" : "sign_in";
+    telemetry.track("auth_started", {
+      auth_action: authAction,
+      auth_method: "password",
+    });
     try {
       if (passwordIntent === "create") {
         const result = await signUp({
@@ -245,8 +279,20 @@ export function AccountScreen() {
 
       await syncProfilesFromCloud();
       await refreshCurrentUser();
+      telemetry.track("auth_succeeded", {
+        auth_action: authAction,
+        auth_method: "password",
+      });
       closeAccount();
     } catch (nextError) {
+      telemetry.track("auth_failed", {
+        auth_action: authAction,
+        auth_method: "password",
+        error_code: safeErrorCode(nextError),
+      });
+      telemetry.recordError(nextError, "authentication", {
+        errorCode: safeErrorCode(nextError),
+      });
       const message = nextError instanceof Error ? nextError.message : "Password sign-in failed.";
       showSnackbar({ message, title: "Account Error", tone: "error" });
     } finally {
@@ -260,6 +306,8 @@ export function AccountScreen() {
       await signOutFromNativeSocialProviders();
       await signOut();
       setCurrentUser(null);
+      await telemetry.clearIdentity();
+      telemetry.track("auth_signed_out");
     } catch (nextError) {
       const message = nextError instanceof Error ? nextError.message : "Could not sign out.";
       showSnackbar({ message, title: "Sign Out Error", tone: "error" });
@@ -294,8 +342,13 @@ export function AccountScreen() {
       await Promise.allSettled([signOutFromNativeSocialProviders(), signOut()]);
       setCurrentUser(null);
       await clearAccountData();
+      telemetry.track("account_deleted");
+      await telemetry.clearIdentity({ resetInstallation: true });
       router.replace("/onboarding");
     } catch (nextError) {
+      telemetry.recordError(nextError, "account_deletion", {
+        errorCode: safeErrorCode(nextError),
+      });
       showSnackbar({
         message: nextError instanceof Error ? nextError.message : "Your account could not be deleted.",
         title: "Deletion Failed",

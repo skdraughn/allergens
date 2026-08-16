@@ -3,6 +3,9 @@ import * as Linking from "expo-linking";
 import * as Updates from "expo-updates";
 import { Platform } from "react-native";
 
+import { safeErrorCode } from "../telemetry/schema";
+import { telemetry } from "../telemetry/telemetry";
+
 const attemptKey = "mysafemenu.ota.reloadAttempt";
 const pendingDeepLinkKey = "mysafemenu.ota.pendingDeepLink";
 const maximumReloadAttempts = 2;
@@ -104,8 +107,10 @@ async function recordReloadAttempt(updateId: string) {
 }
 
 export async function checkForMySafeMenuUpdate(): Promise<UpdateCheckState> {
+  const trace = telemetry.startTrace("ota_update_check");
   const preview = process.env.EXPO_PUBLIC_OTA_PREVIEW;
   if (__DEV__ && (preview === "required" || preview === "optional")) {
+    trace.stop({ attributes: { update_status: preview }, outcome: "success" });
     return {
       metadata: {
         message: "Getting the latest MySafeMenu update ready.",
@@ -118,6 +123,10 @@ export async function checkForMySafeMenuUpdate(): Promise<UpdateCheckState> {
   }
 
   if (__DEV__ || !Updates.isEnabled) {
+    trace.stop({
+      attributes: { update_status: "updates_disabled" },
+      outcome: "cancelled",
+    });
     return { reason: "updates_disabled", status: "ready" };
   }
 
@@ -125,6 +134,10 @@ export async function checkForMySafeMenuUpdate(): Promise<UpdateCheckState> {
     await reconcileSuccessfulReload();
     const result = await Updates.checkForUpdateAsync();
     if (!result.isAvailable) {
+      trace.stop({
+        attributes: { update_status: "no_update" },
+        outcome: "success",
+      });
       return { reason: "no_update", status: "ready" };
     }
 
@@ -138,6 +151,10 @@ export async function checkForMySafeMenuUpdate(): Promise<UpdateCheckState> {
     };
 
     if (await isReloadLoop(metadata.updateId)) {
+      trace.stop({
+        attributes: { update_status: "reload_loop" },
+        outcome: "failure",
+      });
       return {
         message:
           "This update could not start safely. Please contact MySafeMenu support.",
@@ -147,11 +164,17 @@ export async function checkForMySafeMenuUpdate(): Promise<UpdateCheckState> {
       };
     }
 
+    const status = metadata.required ? "required" : "optional";
+    trace.stop({ attributes: { update_status: status }, outcome: "success" });
     return {
       metadata,
-      status: metadata.required ? "required" : "optional",
+      status,
     };
-  } catch {
+  } catch (error) {
+    trace.stop({ attributes: { update_status: "check_failed" }, outcome: "failure" });
+    telemetry.recordError(error, "ota_update_check", {
+      errorCode: safeErrorCode(error),
+    });
     return {
       message:
         "MySafeMenu could not check for required updates. Check your connection and try again.",

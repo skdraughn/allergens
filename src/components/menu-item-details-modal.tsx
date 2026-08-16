@@ -42,6 +42,7 @@ import type {
   CommunityAllergyReview,
   CommunitySnapshot,
 } from "@/features/community/community-service";
+import { telemetry } from "@/lib/telemetry/telemetry";
 
 type MenuItemDetailsModalProps = {
   community?: CommunitySnapshot | null;
@@ -51,6 +52,7 @@ type MenuItemDetailsModalProps = {
   onReport?: (item: MenuItem) => void;
   onViewReviews?: (item: MenuItem) => void;
   officialAllergenProfiles?: OfficialAllergenProfiles;
+  restaurantId: string;
   selectedAllergyIds: string[];
 };
 
@@ -72,6 +74,7 @@ export function MenuItemDetailsModal({
   onReport,
   onViewReviews,
   officialAllergenProfiles,
+  restaurantId,
   selectedAllergyIds,
 }: MenuItemDetailsModalProps) {
   const [ingredientsVisible, setIngredientsVisible] = useState(false);
@@ -87,15 +90,9 @@ export function MenuItemDetailsModal({
     allergenSourceCue?.kind === "official" || allergenSourceCue?.kind === "linked",
   );
   const allergenSourceUrl = canShowAllergenSourceLink ? firstSource : undefined;
-  const devPreviewSourceUrl =
-    __DEV__ && canShowAllergenSourceLink && !allergenSourceUrl
-      ? "https://mysafemenu.com"
-      : undefined;
-  const displayedAllergenSourceUrl = allergenSourceUrl ?? devPreviewSourceUrl;
+  const displayedAllergenSourceUrl = allergenSourceUrl;
   const sourceHost = displayedAllergenSourceUrl
-    ? devPreviewSourceUrl
-      ? "DEV preview source"
-      : getSourceHost(displayedAllergenSourceUrl)
+    ? getSourceHost(displayedAllergenSourceUrl)
     : null;
   const displayDescription = displayItem
     ? getDisplayDescription(displayItem)
@@ -104,6 +101,26 @@ export function MenuItemDetailsModal({
   const itemCommunity = displayItem
     ? getItemCommunity(displayItem, community?.reviews ?? [])
     : null;
+  const openIngredients = () => {
+    if (displayItem) {
+      telemetry.track("menu_item_ingredients_opened", {
+        menu_item_id: displayItem.id,
+        restaurant_id: restaurantId,
+        source_type: displayItem.allergenSourceType,
+      });
+    }
+    setIngredientsVisible(true);
+  };
+  const openSource = (url: string) => {
+    if (displayItem) {
+      telemetry.track("menu_item_source_opened", {
+        menu_item_id: displayItem.id,
+        restaurant_id: restaurantId,
+        source_type: allergenSourceCue?.kind ?? "unknown",
+      });
+    }
+    void Linking.openURL(url);
+  };
 
   useEffect(() => {
     if (item) {
@@ -217,7 +234,7 @@ export function MenuItemDetailsModal({
                   {allergenSourceUrl ? (
                     <Pressable
                       accessibilityRole="link"
-                      onPress={() => Linking.openURL(allergenSourceUrl)}
+                      onPress={() => openSource(allergenSourceUrl)}
                       style={styles.ingredientsSourceLink}
                     >
                       <ExternalLink
@@ -286,7 +303,7 @@ export function MenuItemDetailsModal({
                   {hasIngredients ? (
                     <Text
                       accessibilityRole="button"
-                      onPress={() => setIngredientsVisible(true)}
+                      onPress={openIngredients}
                       style={styles.inlineTextLink}
                     >
                       {" "}
@@ -297,7 +314,7 @@ export function MenuItemDetailsModal({
               ) : hasIngredients ? (
                 <Pressable
                   accessibilityRole="button"
-                  onPress={() => setIngredientsVisible(true)}
+                  onPress={openIngredients}
                   style={styles.ingredientsLink}
                 >
                   <Text style={styles.ingredientsLinkText}>
@@ -313,7 +330,7 @@ export function MenuItemDetailsModal({
                 {displayedAllergenSourceUrl && allergenSourceCue ? (
                   <Pressable
                     accessibilityRole="link"
-                    onPress={() => Linking.openURL(displayedAllergenSourceUrl)}
+                    onPress={() => openSource(displayedAllergenSourceUrl)}
                     style={[
                       styles.sourceCue,
                       allergenSourceCue.kind === "official"
@@ -516,19 +533,6 @@ function AllergenChips({
             chips={inferredChips}
             selectedAllergyIds={selectedAllergyIds}
           />
-        ) : null}
-        {__DEV__ ? (
-          <View style={styles.devPreviewGroup}>
-            <Text style={styles.devPreviewLabel}>DEV PREVIEW DATA</Text>
-            <AllergenChipGroup
-              chips={[
-                { id: "milk", label: "Milk", tone: "direct" },
-                { id: "wheat", label: "Wheat", tone: "direct" },
-              ]}
-              label="Contains"
-              selectedAllergyIds={selectedAllergyIds}
-            />
-          </View>
         ) : null}
       </View>
     );
@@ -882,19 +886,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "400",
     lineHeight: 22,
-  },
-  devPreviewGroup: {
-    borderColor: "rgba(255,159,10,0.28)",
-    borderRadius: 14,
-    borderWidth: StyleSheet.hairlineWidth,
-    gap: 7,
-    padding: 10,
-  },
-  devPreviewLabel: {
-    color: "#B25E00",
-    fontSize: 10,
-    fontWeight: "900",
-    letterSpacing: 0.5,
   },
   feedbackActions: {
     flexDirection: "row",

@@ -977,6 +977,9 @@ function baselineItemCheck(item, index) {
       isConfigurable: Boolean(item?.isConfigurable),
       allergens: uniqueStrings(item?.allergens),
       mayContain: uniqueStrings(item?.mayContain),
+      officialAllergenCoveredIds: uniqueStrings(
+        item?.officialAllergenCoveredIds,
+      ),
       allergenSourceType: cleanString(item?.allergenSourceType),
       sourceType: cleanString(item?.sourceType),
       sourceUrls: uniqueStrings(item?.sourceUrls),

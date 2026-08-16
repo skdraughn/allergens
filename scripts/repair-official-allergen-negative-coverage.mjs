@@ -3,32 +3,55 @@
 import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
+import * as cheerio from "cheerio";
 
-import { annotateRestaurantWithIngredientIntelligence } from "./ingredient-intelligence.mjs";
+import { classifyMenuItemRow } from "./menu-item-quality.mjs";
 
 const apply = process.argv.includes("--apply");
+const targetRestaurantId = process.argv
+  .find((argument) => argument.startsWith("--restaurant="))
+  ?.slice("--restaurant=".length) || null;
+const targetRestaurantIds = new Set([
+  ...(targetRestaurantId ? [targetRestaurantId] : []),
+  ...(
+    process.argv
+      .find((argument) => argument.startsWith("--restaurants="))
+      ?.slice("--restaurants=".length)
+      .split(",") ?? []
+  ).filter(Boolean),
+]);
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
 const repositoryPath = path.join(root, "src/data/generated/restaurants.generated.json");
 const verificationRoot = path.join(root, "data/restaurant-verification");
+const ledgerPath = path.join(verificationRoot, "ledger.jsonl");
 const reportPath = path.join(
   verificationRoot,
   "reports/official-allergen-negative-coverage-repair.json",
 );
 const repository = readJson(repositoryPath);
+const ledgerRows = readJsonLines(ledgerPath);
+const ledgerByRestaurantId = new Map(
+  ledgerRows.map((row) => [row.restaurantId, row]),
+);
 const report = {
   apply,
+  coverageContractVersion: 3,
   generatedAt: new Date().toISOString(),
   restaurantCount: 0,
   profileCount: 0,
   profiledItemCount: 0,
   officialPositiveProfiledCount: 0,
   officialNegativeProfiledCount: 0,
+  explicitBooleanCoverageRepairs: [],
+  removedStructuralHeadingArtifacts: [],
+  rolledBackUnsupportedIngredientPromotions: [],
   skippedGroups: [],
   restaurants: [],
 };
 
 for (let restaurantIndex = 0; restaurantIndex < repository.restaurants.length; restaurantIndex += 1) {
   const restaurant = repository.restaurants[restaurantIndex];
+  if (targetRestaurantIds.size > 0 && !targetRestaurantIds.has(restaurant.id)) continue;
   const checksPath = path.join(verificationRoot, "item-checks", `${restaurant.id}.jsonl`);
   const dossierPath = path.join(verificationRoot, "restaurants", `${restaurant.id}.json`);
   const evidencePath = path.join(verificationRoot, "evidence", `${restaurant.id}.json`);
@@ -40,7 +63,22 @@ for (let restaurantIndex = 0; restaurantIndex < repository.restaurants.length; r
   const checks = readJsonLines(checksPath);
   const dossier = readJson(dossierPath);
   const evidence = readJson(evidencePath);
+  const rolledBackUnsupportedIngredientPromotions = rollbackUnsupportedIngredientPromotions({
+    checks,
+    dossier,
+    restaurant,
+  });
+  const removedStructuralHeadingArtifacts = removeStructuralHeadingArtifacts({
+    checks,
+    dossier,
+    restaurant,
+  });
   const evidenceById = new Map((evidence.sources ?? []).map((source) => [source.id, source]));
+  const explicitBooleanCoverage = await hydrateExplicitBooleanCoverage({
+    checks,
+    evidenceSources: evidence.sources ?? [],
+    restaurantId: restaurant.id,
+  });
   const precleanedProfileProductCount = resetExistingCoverageProfiles({
     checks,
     dossier,
@@ -48,7 +86,11 @@ for (let restaurantIndex = 0; restaurantIndex < repository.restaurants.length; r
   });
   const groups = buildEligibleGroups({ checks, evidenceById, restaurantId: restaurant.id });
 
-  if (groups.length === 0 && precleanedProfileProductCount === 0) {
+  if (
+    groups.length === 0 &&
+    precleanedProfileProductCount === 0 &&
+    removedStructuralHeadingArtifacts.length === 0
+  ) {
     continue;
   }
 
@@ -99,32 +141,15 @@ for (let restaurantIndex = 0; restaurantIndex < repository.restaurants.length; r
 
       if (generatedItem?.officialAllergenProfileId || dossierProduct?.officialAllergenProfileId) {
         if (generatedItem) {
-          generatedItem.allergens = [];
-          generatedItem.mayContain = [];
-          generatedItem.mayContainAllergens = [];
-          generatedItem.allergenSourceType = "unavailable";
-          generatedItem.allergenAuthorityTier = null;
-          generatedItem.allergenSourceEvidenceIds = [];
           delete generatedItem.officialAllergenProfileId;
         }
 
         if (dossierProduct) {
-          dossierProduct.containsAllergens = [];
-          dossierProduct.mayContainAllergens = [];
-          dossierProduct.allergenSourceType = "unavailable";
-          dossierProduct.allergenAuthorityTier = null;
-          dossierProduct.allergenSourceEvidenceIds = [];
           delete dossierProduct.officialAllergenProfileId;
         }
 
         for (const check of checks) {
           if (!(check.matchedCurrentProductKeys ?? []).includes(productKey)) continue;
-          check.allergenVerdict = "accurately_unavailable";
-          check.adjudicatedContainsAllergens = [];
-          check.adjudicatedMayContainAllergens = [];
-          check.adjudicatedAllergenSourceType = "unavailable";
-          check.adjudicatedAllergenAuthorityTier = null;
-          check.allergenSourceEvidenceIds = [];
           check.notes = removeRepairNote(check.notes);
           delete check.officialAllergenProfileId;
         }
@@ -204,12 +229,14 @@ for (let restaurantIndex = 0; restaurantIndex < repository.restaurants.length; r
       continue;
     }
 
-    check.allergenVerdict = "verified";
-    check.adjudicatedContainsAllergens = [...(check.baseline?.allergens ?? [])];
-    check.adjudicatedMayContainAllergens = [...(check.baseline?.mayContain ?? [])];
-    check.adjudicatedAllergenSourceType = "official-allergen-menu";
-    check.adjudicatedAllergenAuthorityTier = "restaurant_issued";
-    check.allergenSourceEvidenceIds = [...group.sourceEvidenceIds];
+    if (check.adjudicatedAllergenSourceType === "unavailable") {
+      check.allergenVerdict = "verified";
+      check.adjudicatedContainsAllergens = [...(check.baseline?.allergens ?? [])];
+      check.adjudicatedMayContainAllergens = [...(check.baseline?.mayContain ?? [])];
+      check.adjudicatedAllergenSourceType = "official-allergen-menu";
+      check.adjudicatedAllergenAuthorityTier = "restaurant_issued";
+      check.allergenSourceEvidenceIds = [...group.sourceEvidenceIds];
+    }
     check.notes = appendNote(
       check.notes,
       "Restored explicit official-matrix negative coverage for the allergens declared by the source profile; uncovered allergens remain unresolved.",
@@ -220,6 +247,14 @@ for (let restaurantIndex = 0; restaurantIndex < repository.restaurants.length; r
     [...generatedById.values()].map((item) => item.officialAllergenProfileId).filter(Boolean),
   );
   const usedGroups = groups.filter((group) => usedProfileIds.has(group.profileId));
+  for (const check of checks) {
+    if (
+      check.officialAllergenProfileId &&
+      !usedProfileIds.has(check.officialAllergenProfileId)
+    ) {
+      delete check.officialAllergenProfileId;
+    }
+  }
   const runtimeProfiles = Object.fromEntries(
     usedGroups.map((group) => [
       group.profileId,
@@ -236,6 +271,7 @@ for (let restaurantIndex = 0; restaurantIndex < repository.restaurants.length; r
       },
     ]),
   );
+  validateExplicitProfileAssignments({ checks, groups: usedGroups });
   if (usedGroups.length > 0) {
     restaurant.officialAllergenProfiles = runtimeProfiles;
     dossier.currentCatalog.officialAllergenProfiles = dossierProfiles;
@@ -252,9 +288,8 @@ for (let restaurantIndex = 0; restaurantIndex < repository.restaurants.length; r
     .update(JSON.stringify(dossier.currentCatalog.products.map(currentProductFingerprintRecord)))
     .digest("hex");
 
-  const annotatedRestaurant = await annotateRestaurantWithIngredientIntelligence(restaurant);
-  refreshOfficialCounts(annotatedRestaurant);
-  repository.restaurants[restaurantIndex] = annotatedRestaurant;
+  refreshOfficialCounts(restaurant);
+  repository.restaurants[restaurantIndex] = restaurant;
 
   report.restaurantCount += 1;
   report.profileCount += usedGroups.length;
@@ -275,9 +310,26 @@ for (let restaurantIndex = 0; restaurantIndex < repository.restaurants.length; r
     profiledItemCount,
     officialPositiveProfiledCount,
     officialNegativeProfiledCount,
+    explicitBooleanCoverage,
+    removedStructuralHeadingArtifacts,
+    rolledBackUnsupportedIngredientPromotions,
   });
+  report.removedStructuralHeadingArtifacts.push(...removedStructuralHeadingArtifacts);
+  report.rolledBackUnsupportedIngredientPromotions.push(
+    ...rolledBackUnsupportedIngredientPromotions,
+  );
+  if (explicitBooleanCoverage.length > 0) {
+    report.explicitBooleanCoverageRepairs.push(...explicitBooleanCoverage);
+  }
 
   if (apply) {
+    const ledgerRow = ledgerByRestaurantId.get(restaurant.id);
+    if (!ledgerRow) {
+      throw new Error(`Missing ledger row for ${restaurant.id}.`);
+    }
+    ledgerRow.baseline.itemFingerprint = sha256Json(
+      checks.map((check) => check.baseline),
+    );
     writeJsonLines(checksPath, checks);
     writeJson(dossierPath, dossier, true);
   }
@@ -289,6 +341,7 @@ report.skippedGroups.sort((left, right) =>
 );
 
 if (apply) {
+  writeJsonLines(ledgerPath, ledgerRows);
   repository.generatedAt = report.generatedAt;
   repository.itemCount = repository.restaurants.reduce(
     (sum, restaurant) => sum + (restaurant.items?.length ?? 0),
@@ -313,36 +366,164 @@ if (apply) {
 
 console.log(JSON.stringify(report, null, 2));
 
+function rollbackUnsupportedIngredientPromotions({ checks, dossier, restaurant }) {
+  const repairNote =
+    "Restored explicit official-matrix negative coverage for the allergens declared by the source profile; uncovered allergens remain unresolved.";
+  const affectedProductKeys = new Set();
+
+  for (const check of checks) {
+    if (
+      check.baseline?.allergenSourceType !== "official-ingredients" ||
+      !String(check.notes ?? "").includes(repairNote) ||
+      check.adjudicatedAllergenSourceType !== "official-allergen-menu"
+    ) {
+      continue;
+    }
+    for (const productKey of check.matchedCurrentProductKeys ?? []) {
+      affectedProductKeys.add(productKey);
+    }
+    check.allergenVerdict = "accurately_unavailable";
+    check.adjudicatedContainsAllergens = [];
+    check.adjudicatedMayContainAllergens = [];
+    check.adjudicatedAllergenSourceType = "unavailable";
+    check.adjudicatedAllergenAuthorityTier = null;
+    check.allergenSourceEvidenceIds = [];
+    check.notes = removeRepairNote(check.notes);
+    delete check.officialAllergenProfileId;
+  }
+
+  if (affectedProductKeys.size === 0) return [];
+  const dossierByKey = new Map(
+    (dossier.currentCatalog?.products ?? []).map((product) => [product.currentProductKey, product]),
+  );
+  const generatedByKey = new Map((restaurant.items ?? []).map((item) => [item.id, item]));
+
+  for (const productKey of affectedProductKeys) {
+    const product = dossierByKey.get(productKey);
+    const item = generatedByKey.get(productKey);
+    if (!product || !item) {
+      throw new Error(`${restaurant.id}:${productKey}: cannot roll back an unsupported promotion.`);
+    }
+    product.containsAllergens = [];
+    product.mayContainAllergens = [];
+    product.allergenSourceType = "unavailable";
+    product.allergenAuthorityTier = null;
+    product.allergenSourceEvidenceIds = [];
+    delete product.officialAllergenProfileId;
+    item.allergens = [];
+    item.mayContain = [];
+    delete item.mayContainAllergens;
+    item.allergenSourceType = "unavailable";
+    delete item.allergenAuthorityTier;
+    delete item.allergenSourceEvidenceIds;
+    delete item.officialAllergenProfileId;
+  }
+
+  return [...affectedProductKeys].sort().map((itemId) => ({
+    itemId,
+    restaurantId: restaurant.id,
+  }));
+}
+
+function removeStructuralHeadingArtifacts({ checks, dossier, restaurant }) {
+  const removableItems = (restaurant.items ?? []).filter((item) => {
+    const classification = classifyMenuItemRow(item);
+    return (
+      String(item.name ?? "").trim().endsWith(":") &&
+      classification.kind === "source-note" &&
+      classification.reasons.includes("section-header-name")
+    );
+  });
+  if (removableItems.length === 0) return [];
+
+  const removableKeys = new Set(removableItems.map((item) => item.id));
+  const removed = [];
+  restaurant.items = (restaurant.items ?? []).filter((item) => !removableKeys.has(item.id));
+
+  for (const item of removableItems) {
+    const product = (dossier.currentCatalog?.products ?? []).find(
+      (candidate) => candidate.currentProductKey === item.id,
+    );
+    if (!product) {
+      throw new Error(`${restaurant.id}:${item.id}: structural heading is missing its canonical product.`);
+    }
+
+    for (const auditItemKey of product.matchedBaselineAuditItemKeys ?? []) {
+      const check = checks.find((candidate) => candidate.auditItemKey === auditItemKey);
+      if (!check) {
+        throw new Error(`${restaurant.id}:${item.id}: structural heading references an unknown audit row.`);
+      }
+      const previousDisposition = check.disposition;
+      check.disposition = "artifact";
+      check.allergenVerdict = "not_applicable";
+      check.matchedCurrentProductKeys = [];
+      delete check.officialAllergenProfileId;
+      delete check.adjudicatedContainsAllergens;
+      delete check.adjudicatedMayContainAllergens;
+      delete check.adjudicatedAllergenSourceType;
+      delete check.adjudicatedAllergenAuthorityTier;
+      delete check.allergenSourceEvidenceIds;
+      check.notes = appendNote(
+        check.notes,
+        "Excluded by the shared structural-heading classifier; this colon-suffixed section label is not a menu product.",
+      );
+
+      if (dossier.reconciliation?.[previousDisposition] > 0) {
+        dossier.reconciliation[previousDisposition] -= 1;
+      }
+      dossier.reconciliation = {
+        ...(dossier.reconciliation ?? {}),
+        artifact: (dossier.reconciliation?.artifact ?? 0) + 1,
+      };
+    }
+
+    removed.push({
+      itemId: item.id,
+      name: item.name,
+      restaurantId: restaurant.id,
+    });
+  }
+
+  dossier.currentCatalog.products = dossier.currentCatalog.products.filter(
+    (product) => !removableKeys.has(product.currentProductKey),
+  );
+  dossier.currentCatalog.currentProductCount = dossier.currentCatalog.products.length;
+  dossier.currentCatalog.reconciledCurrentProductCount = dossier.currentCatalog.products.length;
+  return removed;
+}
+
 function buildEligibleGroups({ checks, evidenceById, restaurantId }) {
-  const bySourceType = new Map();
+  const byCoverageProfile = new Map();
 
   for (const check of checks) {
     const baseline = check.baseline ?? {};
 
-    if (
-      baseline.allergenSourceType !== "official-allergen-menu" ||
-      !(check.matchedCurrentProductKeys ?? []).length
-    ) {
+    if (!isExplicitOfficialSchemaRow(check) || !(check.matchedCurrentProductKeys ?? []).length) {
       continue;
     }
 
     const sourceType = baseline.sourceType || "official-allergen-menu";
-    const entry = bySourceType.get(sourceType) ?? { checks: [], sourceType };
+    const coveredAllergenIds = unique([
+      ...(baseline.officialAllergenCoveredIds ?? []),
+      ...(baseline.allergens ?? []),
+      ...(baseline.mayContain ?? []),
+    ]).sort();
+    const profileKey = `${sourceType}:${coveredAllergenIds.join(",")}`;
+    const entry = byCoverageProfile.get(profileKey) ?? {
+      checks: [],
+      coveredAllergenIds,
+      sourceType,
+    };
     entry.checks.push(check);
-    bySourceType.set(sourceType, entry);
+    byCoverageProfile.set(profileKey, entry);
   }
 
   const groups = [];
 
-  for (const [sourceType, entry] of [...bySourceType].sort(([left], [right]) =>
+  for (const [, entry] of [...byCoverageProfile].sort(([left], [right]) =>
     left.localeCompare(right),
   )) {
-    const coveredAllergenIds = unique(
-      entry.checks.flatMap((check) => [
-        ...(check.baseline?.allergens ?? []),
-        ...(check.baseline?.mayContain ?? []),
-      ]),
-    ).sort();
+    const { coveredAllergenIds, sourceType } = entry;
     const sourceUrls = new Set(
       entry.checks.flatMap((check) => check.baseline?.sourceUrls ?? []).filter(Boolean),
     );
@@ -394,12 +575,18 @@ function buildEligibleGroups({ checks, evidenceById, restaurantId }) {
 }
 
 function isRepairableOfficialMatrixRow(check) {
-  const baseline = check.baseline ?? {};
-
   return (
-    baseline.allergenSourceType === "official-allergen-menu" &&
-    (check.adjudicatedAllergenSourceType === "unavailable" ||
-      typeof check.officialAllergenProfileId === "string")
+    check.baseline?.allergenSourceType === "official-allergen-menu" &&
+    (check.matchedCurrentProductKeys ?? []).length > 0
+  );
+}
+
+function isExplicitOfficialSchemaRow(check) {
+  const baseline = check.baseline ?? {};
+  return (
+    baseline.allergenSourceType === "official-allergen-menu" ||
+    (baseline.allergenSourceType === "official-ingredients" &&
+      ["pdf-matrix", "official-api"].includes(baseline.sourceType))
   );
 }
 
@@ -413,34 +600,17 @@ function resetExistingCoverageProfiles({ checks, dossier, restaurant }) {
   for (const item of restaurant.items ?? []) {
     if (!item.officialAllergenProfileId) continue;
     profiledProductKeys.add(item.id);
-    item.allergens = [];
-    item.mayContain = [];
-    item.mayContainAllergens = [];
-    item.allergenSourceType = "unavailable";
-    item.allergenAuthorityTier = null;
-    item.allergenSourceEvidenceIds = [];
     delete item.officialAllergenProfileId;
   }
 
   for (const product of dossier.currentCatalog?.products ?? []) {
     if (!product.officialAllergenProfileId) continue;
     profiledProductKeys.add(product.currentProductKey);
-    product.containsAllergens = [];
-    product.mayContainAllergens = [];
-    product.allergenSourceType = "unavailable";
-    product.allergenAuthorityTier = null;
-    product.allergenSourceEvidenceIds = [];
     delete product.officialAllergenProfileId;
   }
 
   for (const check of checks) {
     if (!check.officialAllergenProfileId) continue;
-    check.allergenVerdict = "accurately_unavailable";
-    check.adjudicatedContainsAllergens = [];
-    check.adjudicatedMayContainAllergens = [];
-    check.adjudicatedAllergenSourceType = "unavailable";
-    check.adjudicatedAllergenAuthorityTier = null;
-    check.allergenSourceEvidenceIds = [];
     check.notes = removeRepairNote(check.notes);
     delete check.officialAllergenProfileId;
   }
@@ -483,6 +653,33 @@ function currentProductFingerprintRecord(product) {
   };
 }
 
+function validateExplicitProfileAssignments({ checks, groups }) {
+  const groupById = new Map(groups.map((group) => [group.profileId, group]));
+
+  for (const check of checks) {
+    if (!check.officialAllergenProfileId) continue;
+    const group = groupById.get(check.officialAllergenProfileId);
+    if (!group) {
+      throw new Error(
+        `${check.auditItemKey}: allergen coverage profile is missing.`,
+      );
+    }
+    const explicitlySupported = new Set([
+      ...(check.baseline?.officialAllergenCoveredIds ?? []),
+      ...(check.baseline?.allergens ?? []),
+      ...(check.baseline?.mayContain ?? []),
+    ]);
+    const unsupported = group.coveredAllergenIds.filter(
+      (allergenId) => !explicitlySupported.has(allergenId),
+    );
+    if (unsupported.length > 0) {
+      throw new Error(
+        `${check.auditItemKey}: profile infers unsupported negative coverage for ${unsupported.join(", ")}.`,
+      );
+    }
+  }
+}
+
 function appendNote(current, note) {
   if (!current) return note;
   if (String(current).includes(note)) return current;
@@ -494,6 +691,312 @@ function removeRepairNote(current) {
     "Restored explicit official-matrix negative coverage for the allergens declared by the source profile; uncovered allergens remain unresolved.";
   const next = String(current ?? "").replace(repairNote, "").replace(/\s+/g, " ").trim();
   return next || null;
+}
+
+async function hydrateExplicitBooleanCoverage({ checks, evidenceSources, restaurantId }) {
+  const eligibleChecks = checks.filter(
+    isExplicitOfficialSchemaRow,
+  );
+
+  if (eligibleChecks.length === 0) {
+    return [];
+  }
+
+  const candidates = unique(
+    [
+      ...eligibleChecks.flatMap((check) => check.baseline?.sourceUrls ?? []),
+      ...evidenceSources
+        .filter(
+          (source) =>
+            source.authorityTier === "restaurant_issued" &&
+            ["allergen", "ingredients", "both"].includes(source.purpose),
+        )
+        .map((source) => source.url),
+    ],
+  ).filter(
+    (url) =>
+      /^https:\/\//i.test(url) &&
+      !/google\.com\/search/i.test(url),
+  );
+
+  const detections = [];
+  for (const sourceUrl of candidates.slice(0, 32)) {
+    try {
+      const response = await fetch(sourceUrl, {
+        headers: { accept: "application/json, application/pdf, text/html, application/xml, text/xml" },
+        signal: AbortSignal.timeout(12_000),
+      });
+      if (!response.ok) continue;
+      const contentType = response.headers.get("content-type") ?? "";
+      let explicitCoverage;
+      if (/pdf/i.test(contentType) || /\.pdf(?:[?#]|$)/i.test(sourceUrl)) {
+        explicitCoverage = await findExplicitPdfCoverage(
+          Buffer.from(await response.arrayBuffer()),
+        );
+      } else {
+        const text = await response.text();
+        if (/json/i.test(contentType) || /^[\s\r\n]*[\[{]/.test(text)) {
+          explicitCoverage = findExplicitAllergenCoverage(JSON.parse(text));
+        } else {
+          explicitCoverage = findExplicitMarkupCoverage(text);
+        }
+      }
+      const coveredAllergenIds = explicitCoverage.coveredAllergenIds;
+      if (coveredAllergenIds.length < 5) continue;
+
+      const sourceChecks = eligibleChecks.filter((check) =>
+        (check.baseline?.sourceUrls ?? []).includes(sourceUrl),
+      );
+      if (sourceChecks.length === 0) continue;
+
+      for (const check of sourceChecks) {
+        check.baseline.officialAllergenCoveredIds = [...coveredAllergenIds];
+      }
+
+      detections.push({
+        coveredAllergenIds,
+        derivation: explicitCoverage.derivation,
+        restaurantId,
+        sourceUrl,
+      });
+    } catch {
+      // A failed live check cannot reduce existing canonical coverage.
+    }
+  }
+
+  return detections;
+}
+
+export function findExplicitMarkupCoverage(text) {
+  const $ = cheerio.load(String(text ?? ""), { xmlMode: /^\s*<\?xml/i.test(text) });
+  const covered = new Set();
+
+  $("*").each((_index, element) => {
+    const attributeCoverage = Object.keys(element.attribs ?? {})
+      .map((key) => allergenIdForSchemaLabel(key))
+      .filter(Boolean);
+    if (attributeCoverage.length >= 3) {
+      attributeCoverage.forEach((id) => covered.add(id));
+    }
+  });
+
+  $("tr").each((_index, row) => {
+    const headerCoverage = $(row)
+      .find("th,td")
+      .toArray()
+      .flatMap((cell) => allergenIdsForSchemaText($(cell).text()));
+    if (unique(headerCoverage).length >= 3) {
+      headerCoverage.forEach((id) => covered.add(id));
+    }
+  });
+
+  const searchableText = `${$("body").text()} ${$("[data-allergy-note]").attr("data-allergy-note") ?? ""}`
+    .replace(/\s+/g, " ");
+  for (const sentence of searchableText.split(/[.!?]/)) {
+    if (
+      /\b(?:do|does)\s+not\s+(?:use|contain)\b/i.test(sentence) &&
+      /\bingredients?\b/i.test(sentence)
+    ) {
+      allergenIdsForSchemaText(sentence).forEach((id) => covered.add(id));
+    }
+  }
+
+  return {
+    coveredAllergenIds: [...covered].sort(),
+    derivation: covered.size > 0 ? "explicit-markup-schema" : null,
+  };
+}
+
+async function findExplicitPdfCoverage(buffer) {
+  const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
+  const document = await pdfjs.getDocument({ data: new Uint8Array(buffer) }).promise;
+  let best = [];
+
+  try {
+    for (let pageNumber = 1; pageNumber <= Math.min(document.numPages, 5); pageNumber += 1) {
+      const page = await document.getPage(pageNumber);
+      const content = await page.getTextContent();
+      const labels = unique(
+        content.items
+          .map((item) => String(item.str ?? "").trim())
+          .filter((label) => label.length > 0 && label.length <= 32)
+          .flatMap(allergenIdsForExactSchemaLabel),
+      ).sort();
+      if (labels.length > best.length) best = labels;
+    }
+  } finally {
+    await document.destroy();
+  }
+
+  return {
+    coveredAllergenIds: best,
+    derivation: best.length > 0 ? "explicit-pdf-matrix-columns" : null,
+  };
+}
+
+function allergenIdForSchemaLabel(value) {
+  const normalized = String(value ?? "")
+    .toLowerCase()
+    .replace(/^(?:data[-_])/, "")
+    .replace(/(?:[-_](?:allergen|allergy|image|icon))+$/g, "")
+    .replace(/^(?:has|contains|is)/, "")
+    .replace(/[^a-z]/g, "");
+  const mappings = new Map([
+    ["dairy", "milk"], ["egg", "egg"], ["eggs", "egg"], ["fish", "fish"],
+    ["gluten", "gluten"], ["milk", "milk"], ["milklactose", "milk"],
+    ["mustard", "mustard"], ["nuts", "tree-nut"], ["peanut", "peanut"],
+    ["peanuts", "peanut"], ["sesame", "sesame"], ["shellfish", "shellfish"],
+    ["crustacea", "shellfish"], ["crustacean", "shellfish"],
+    ["crustaceans", "shellfish"], ["crustaceanshellfish", "shellfish"],
+    ["mollusk", "shellfish"], ["mollusks", "shellfish"],
+    ["mollusc", "shellfish"], ["molluscs", "shellfish"],
+    ["soy", "soy"], ["soya", "soy"], ["soybeans", "soy"],
+    ["sulfites", "sulfites"], ["sulphites", "sulfites"],
+    ["sulphurdioxide", "sulfites"], ["treenut", "tree-nut"],
+    ["treenuts", "tree-nut"], ["wheat", "wheat"], ["wheatgluten", "wheat"],
+  ]);
+  return mappings.get(normalized) ?? null;
+}
+
+function allergenIdsForExactSchemaLabel(value) {
+  const text = String(value ?? "").trim();
+  if (!text || /\b(?:may|contains?|free from|without)\b/i.test(text)) return [];
+  if (/^(?:crustacea(?:n|ns)?|crustacean shellfish|mollus[ck]s?)(?:\b|\s*\()/i.test(text)) {
+    return ["shellfish"];
+  }
+  const direct = allergenIdForSchemaLabel(text);
+  if (direct) {
+    return /wheat\s*(?:&|and|\/)\s*gluten/i.test(text)
+      ? ["wheat", "gluten"]
+      : [direct];
+  }
+  return [];
+}
+
+function allergenIdsForSchemaText(value) {
+  const text = String(value ?? "").toLowerCase();
+  const patterns = [
+    [/\beggs?\b/g, "egg"], [/\bfish\b/g, "fish"], [/\bgluten\b/g, "gluten"],
+    [/\b(?:milk|dairy|lactose)\b/g, "milk"], [/\bmustard\b/g, "mustard"],
+    [/\bpeanuts?\b/g, "peanut"], [/\bsesame\b/g, "sesame"],
+    [/\bshellfish\b/g, "shellfish"], [/\b(?:soy|soya|soybeans?)\b/g, "soy"],
+    [/\b(?:sulfites?|sulphites?|sulphur dioxide)\b/g, "sulfites"],
+    [/\b(?:tree nuts?|nuts)\b/g, "tree-nut"], [/\bwheat\b/g, "wheat"],
+  ];
+  return patterns.filter(([pattern]) => pattern.test(text)).map(([, id]) => id);
+}
+
+export function findExplicitAllergenCoverage(payload) {
+  const allergenByKey = new Map([
+    ["egg", "egg"],
+    ["eggs", "egg"],
+    ["fish", "fish"],
+    ["gluten", "gluten"],
+    ["milk", "milk"],
+    ["mustard", "mustard"],
+    ["peanut", "peanut"],
+    ["peanuts", "peanut"],
+    ["sesame", "sesame"],
+    ["shellfish", "shellfish"],
+    ["crustaceanshellfish", "shellfish"],
+    ["soy", "soy"],
+    ["soya", "soy"],
+    ["sulfites", "sulfites"],
+    ["sulphites", "sulfites"],
+    ["sulphurdioxide", "sulfites"],
+    ["treenut", "tree-nut"],
+    ["treenuts", "tree-nut"],
+    ["wheat", "wheat"],
+  ]);
+  let availabilityBest = [];
+  let completeUsAllergenDeclarationCount = 0;
+  const fieldSets = [];
+
+  function visit(value) {
+    if (!value || typeof value !== "object") return;
+    if (Array.isArray(value)) {
+      value.forEach(visit);
+      return;
+    }
+
+    if (
+      Object.prototype.hasOwnProperty.call(value, "item_allergen") &&
+      Object.prototype.hasOwnProperty.call(value, "item_ingredient_statement")
+    ) {
+      completeUsAllergenDeclarationCount += 1;
+    }
+
+    const covered = [];
+    for (const [key, entryValue] of Object.entries(value)) {
+      if (typeof entryValue !== "boolean" && typeof entryValue !== "number") continue;
+      const normalizedKey = key.toLowerCase().replace(/[^a-z]/g, "");
+      const allergenKey = normalizedKey.replace(/^(?:has|contains|is)/, "");
+      const allergenId = allergenByKey.get(allergenKey);
+      if (allergenId) covered.push(allergenId);
+    }
+    const uniqueCovered = unique(covered).sort();
+    if (uniqueCovered.length >= 3) fieldSets.push(uniqueCovered);
+
+    const availableFields = Object.entries(value).find(
+      ([key, entryValue]) =>
+        key.toLowerCase().replace(/[^a-z]/g, "") === "availableallergenfields" &&
+        entryValue &&
+        typeof entryValue === "object" &&
+        !Array.isArray(entryValue),
+    )?.[1];
+    if (availableFields) {
+      const availableCoverage = unique(
+        Object.entries(availableFields)
+          .filter(([, entryValue]) => entryValue === 1 || entryValue === true)
+          .map(([key]) => {
+            const normalizedKey = key.toLowerCase().replace(/[^a-z]/g, "");
+            return allergenByKey.get(normalizedKey) ?? null;
+          }),
+      ).sort();
+      if (availableCoverage.length > availabilityBest.length) {
+        availabilityBest = availableCoverage;
+      }
+    }
+
+    Object.values(value).forEach(visit);
+  }
+
+  visit(payload);
+  if (completeUsAllergenDeclarationCount > 0) {
+    return {
+      coveredAllergenIds: [
+        "egg",
+        "fish",
+        "milk",
+        "peanut",
+        "sesame",
+        "shellfish",
+        "soy",
+        "tree-nut",
+        "wheat",
+      ],
+      derivation: "explicit-us-allergen-declaration-fields",
+    };
+  }
+  if (availabilityBest.length > 0) {
+    return {
+      coveredAllergenIds: availabilityBest,
+      derivation: "explicit-allergen-availability-schema",
+    };
+  }
+
+  const commonFields = fieldSets.length > 0
+    ? fieldSets.reduce(
+        (common, fields) => common.filter((field) => fields.includes(field)),
+        fieldSets[0],
+      )
+    : [];
+  return {
+    coveredAllergenIds: commonFields,
+    derivation: commonFields.length > 0
+      ? "explicit-typed-api-fields"
+      : null,
+  };
 }
 
 function readJson(filePath) {
@@ -514,4 +1017,8 @@ function writeJsonLines(filePath, rows) {
 
 function unique(values) {
   return [...new Set(values.filter(Boolean))];
+}
+
+function sha256Json(value) {
+  return createHash("sha256").update(JSON.stringify(value)).digest("hex");
 }

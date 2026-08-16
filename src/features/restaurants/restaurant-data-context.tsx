@@ -1,13 +1,32 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { downloadData } from "aws-amplify/storage";
 import { ungzip } from "pako";
-import { createContext, useCallback, useContext, useMemo, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 
 import type { Restaurant } from "@/data/restaurants";
 import { isAmplifyConfigured } from "@/lib/amplify";
+import {
+  getAuthoritativeCatalogPath,
+  getCachedActiveCatalogPath,
+  isVersionedCatalogObjectPath,
+  markCatalogActive,
+  readImmutableCatalogFile,
+  subscribeToAuthoritativeCatalogPath,
+  writeImmutableCatalogFile,
+} from "@/lib/catalog/restaurant-catalog-cache";
+import { bucketCount, safeErrorCode } from "@/lib/telemetry/schema";
+import { telemetry } from "@/lib/telemetry/telemetry";
 
 const supportedSnapshotVersion = 1;
-const restaurantDataQueryKey = ["restaurant-data", "remote-only-v2"] as const;
 const emptyRestaurants: Restaurant[] = [];
 
 type RestaurantRepository = {
@@ -17,6 +36,7 @@ type RestaurantRepository = {
 };
 
 type RestaurantDataContextValue = {
+  catalogPath: string | null;
   error: Error | null;
   generatedAt: string | null;
   getRestaurantById: (id: string) => Restaurant | undefined;
@@ -28,6 +48,7 @@ type RestaurantDataContextValue = {
 };
 
 const RestaurantDataContext = createContext<RestaurantDataContextValue>({
+  catalogPath: null,
   error: null,
   generatedAt: null,
   getRestaurantById: () => undefined,
@@ -39,13 +60,67 @@ const RestaurantDataContext = createContext<RestaurantDataContextValue>({
 });
 
 export function RestaurantDataProvider({ children }: { children: ReactNode }) {
-  const query = useQuery({
-    gcTime: 1000 * 60 * 60 * 24 * 7,
-    queryFn: fetchRemoteRestaurantRepository,
-    queryKey: restaurantDataQueryKey,
+  const queryClient = useQueryClient();
+  const [catalogPath, setCatalogPath] = useState<string | null>(null);
+  const [pathResolutionError, setPathResolutionError] = useState<Error | null>(null);
+  const mounted = useRef(true);
+  const query = useQuery<RestaurantRepository>({
+    enabled: Boolean(catalogPath),
+    gcTime: Infinity,
+    queryFn: () => fetchRemoteRestaurantRepository(catalogPath!),
+    queryKey: ["restaurant-data", "versioned-v1", catalogPath],
     retry: 2,
-    staleTime: 1000 * 60 * 15,
+    staleTime: Infinity,
   });
+
+  const promoteCatalogPath = useCallback(
+    async (nextPath: string) => {
+      if (nextPath === catalogPath) return;
+      await queryClient.fetchQuery({
+        gcTime: Infinity,
+        queryFn: () => fetchRemoteRestaurantRepository(nextPath),
+        queryKey: ["restaurant-data", "versioned-v1", nextPath],
+        staleTime: Infinity,
+      });
+      await markCatalogActive(nextPath);
+      if (mounted.current) setCatalogPath(nextPath);
+    },
+    [catalogPath, queryClient],
+  );
+
+  useEffect(() => {
+    mounted.current = true;
+    let cancelled = false;
+    let unsubscribe: () => void = () => undefined;
+
+    void (async () => {
+      try {
+        const cachedPath = await getCachedActiveCatalogPath();
+        if (cachedPath && mounted.current) setCatalogPath(cachedPath);
+
+        const authoritativePath = await getAuthoritativeCatalogPath();
+        if (cancelled) return;
+        await promoteCatalogPath(authoritativePath);
+        if (cancelled) return;
+        unsubscribe = await subscribeToAuthoritativeCatalogPath((nextPath) => {
+          void promoteCatalogPath(nextPath).catch(() => undefined);
+        });
+        if (cancelled) unsubscribe();
+      } catch (error) {
+        if (mounted.current && !catalogPath) {
+          setPathResolutionError(
+            error instanceof Error ? error : new Error("Could not resolve restaurant catalog."),
+          );
+        }
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+      mounted.current = false;
+      unsubscribe();
+    };
+  }, [catalogPath, promoteCatalogPath]);
 
   const restaurants = query.data?.restaurants ?? emptyRestaurants;
   const restaurantsById = useMemo(
@@ -56,22 +131,23 @@ export function RestaurantDataProvider({ children }: { children: ReactNode }) {
     (id: string) => restaurantsById.get(id),
     [restaurantsById],
   );
-  const refetch = query.refetch;
   const refresh = useCallback(async () => {
-    await refetch();
-  }, [refetch]);
+    const authoritativePath = await getAuthoritativeCatalogPath();
+    await promoteCatalogPath(authoritativePath);
+  }, [promoteCatalogPath]);
   const value = useMemo(
     () => ({
-      error: query.error,
+      catalogPath,
+      error: query.error ?? pathResolutionError,
       generatedAt: query.data?.generatedAt ?? null,
       getRestaurantById,
-      isLoading: query.isPending,
+      isLoading: !catalogPath || query.isPending,
       isRefreshing: query.isFetching,
       refresh,
       restaurants,
       source: query.data ? ("remote" as const) : null,
     }),
-    [getRestaurantById, query.data, query.error, query.isFetching, query.isPending, refresh, restaurants],
+    [catalogPath, getRestaurantById, pathResolutionError, query.data, query.error, query.isFetching, query.isPending, refresh, restaurants],
   );
 
   return (
@@ -90,33 +166,49 @@ export function useRestaurantDetail(restaurantId: string | undefined, snapshotPa
   const remoteDetailEnabled = Boolean(restaurantId && normalizedPath && isAmplifyConfigured);
   const query = useQuery<Restaurant | undefined>({
     enabled: remoteDetailEnabled,
-    gcTime: 1000 * 60 * 60 * 24,
+    gcTime: Infinity,
     queryFn: async () => {
+      const trace = telemetry.startTrace("restaurant_detail_load");
       if (!normalizedPath) {
+        trace.stop({ outcome: "success" });
         return summaryRestaurant;
       }
 
-      const result = await downloadData({ path: normalizedPath }).result;
-      const parsed = parseRestaurantDetail(await readDownloadBody(result.body));
+      try {
+        const parsed = await readParsedImmutableRemoteObject(
+          normalizedPath,
+          parseRestaurantDetail,
+        );
 
-      if (!parsed) {
-        throw new Error(`Invalid remote restaurant detail: ${normalizedPath}`);
+        if (!parsed) {
+          throw new Error("Invalid remote restaurant detail");
+        }
+        trace.stop({
+          attributes: { item_count_bucket: bucketCount(parsed.items.length) },
+          outcome: "success",
+        });
+        return parsed;
+      } catch (error) {
+        trace.stop({ outcome: "failure" });
+        telemetry.recordError(error, "restaurant_detail_load", {
+          errorCode: safeErrorCode(error),
+        });
+        throw error;
       }
-
-      return parsed;
     },
     queryKey: [
       "restaurant-detail-v2",
       restaurantId,
       normalizedPath,
-      context.generatedAt,
+      context.catalogPath,
     ],
     retry: 2,
-    staleTime: 1000 * 60 * 30,
+    staleTime: Infinity,
   });
   const restaurant = remoteDetailEnabled ? query.data : summaryRestaurant;
 
   return {
+    error: remoteDetailEnabled ? query.error : context.error,
     isLoading: remoteDetailEnabled && query.isPending,
     isRefreshing: query.isFetching,
     notFound: Boolean(restaurantId) && !restaurant && (query.isError || query.isSuccess),
@@ -124,26 +216,58 @@ export function useRestaurantDetail(restaurantId: string | undefined, snapshotPa
   };
 }
 
-async function fetchRemoteRestaurantRepository(): Promise<RestaurantRepository> {
+async function fetchRemoteRestaurantRepository(path: string): Promise<RestaurantRepository> {
   if (!isAmplifyConfigured) {
     throw new Error("Remote restaurant storage is not configured.");
   }
 
   let repository: RestaurantRepository | null;
+  const trace = telemetry.startTrace("catalog_initialization");
 
   try {
-    const result = await downloadData({ path: "restaurant-data/latest.json" }).result;
-    repository = parseRestaurantRepository(await readDownloadBody(result.body));
+    repository = await readParsedImmutableRemoteObject(path, parseRestaurantRepository);
   } catch (error) {
+    trace.stop({ outcome: "failure" });
+    telemetry.recordError(error, "catalog_initialization", {
+      errorCode: safeErrorCode(error),
+    });
     console.error("Remote restaurant catalog download failed", error);
     throw error;
   }
 
   if (!repository) {
+    trace.stop({ outcome: "failure" });
     throw new Error("The remote restaurant catalog is invalid or unsupported.");
   }
 
+  trace.stop({
+    metrics: { restaurant_count: repository.restaurants.length },
+    outcome: "success",
+  });
+
   return repository;
+}
+
+async function readParsedImmutableRemoteObject<T>(
+  path: string,
+  parse: (contents: string) => T | null,
+): Promise<T | null> {
+  if (!isVersionedCatalogObjectPath(path)) {
+    throw new Error("Refusing to load a mutable restaurant catalog object.");
+  }
+
+  const cached = await readImmutableCatalogFile(path);
+  if (cached !== null) {
+    const parsed = parse(cached);
+    if (parsed) return parsed;
+  }
+
+  const result = await downloadData({ path }).result;
+  const contents = await readDownloadBody(result.body);
+  const parsed = parse(contents);
+  if (!parsed) return null;
+  await writeImmutableCatalogFile(path, contents);
+  return parsed;
 }
 
 async function readDownloadBody(body: { blob: () => Promise<Blob> }): Promise<string> {
