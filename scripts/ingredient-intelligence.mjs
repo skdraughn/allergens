@@ -767,10 +767,10 @@ function mergeSuppressions(...groups) {
 }
 
 function officialAllergenDataUnavailable(item, officialAllergenProfiles, manifest) {
-  const allergens = item.allergens ?? [];
-  const mayContain = item.mayContain ?? [];
-
-  if (item.officialAllergenProfileId) {
+  if (
+    item.officialAllergenProfileId ||
+    (item.officialAllergenCoveredIds ?? []).length > 0
+  ) {
     const supportedAllergenIds = new Set(
       Object.values(manifest.allergenMappings ?? {})
         .flat()
@@ -783,30 +783,21 @@ function officialAllergenDataUnavailable(item, officialAllergenProfiles, manifes
     );
   }
 
-  return (
-    item.allergenSourceType === "unavailable" ||
-    (!item.allergenSourceType && allergens.length === 0 && mayContain.length === 0)
-  );
+  return true;
 }
 
 function isAllergenCoveredByOfficialProfile(item, profiles, allergenId) {
-  const profileId = item.officialAllergenProfileId;
-
-  if (!profileId) {
-    return false;
-  }
-
   if (item.allergenSourceType === "unavailable") {
     return false;
   }
 
-  const coveredIds = new Set(profiles?.[profileId]?.coveredAllergenIds ?? []);
+  const profileId = item.officialAllergenProfileId;
+  const coveredIds = new Set([
+    ...(item.officialAllergenCoveredIds ?? []),
+    ...(profileId ? profiles?.[profileId]?.coveredAllergenIds ?? [] : []),
+  ]);
 
-  return (
-    coveredIds.has(allergenId) ||
-    (allergenId === "gluten" && coveredIds.has("wheat")) ||
-    (allergenId === "wheat" && coveredIds.has("gluten"))
-  );
+  return coveredIds.has(allergenId);
 }
 
 export function normalizeSearchText(value) {

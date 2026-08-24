@@ -929,6 +929,24 @@ function stripLeadingAllergenLabelFromDescription(value) {
   return { description: remaining, strippedSummary };
 }
 
+export function isWholeCatalogNutritionBleed(value) {
+  const text = String(value ?? "").trim();
+
+  if (text.length < 2_000) {
+    return false;
+  }
+
+  const servingSizeCount = (text.match(/\bServing Size\b/gi) ?? []).length;
+  const calorieCount = (text.match(/\bCalories\b/gi) ?? []).length;
+  const nutritionFieldCount = (
+    text.match(
+      /\b(?:grams? of (?:fat|protein|fiber|sugar|carbohydrates?)|milligrams? of (?:cholesterol|sodium))\b/gi,
+    ) ?? []
+  ).length;
+
+  return servingSizeCount >= 3 && calorieCount >= 3 && nutritionFieldCount >= 6;
+}
+
 export function sanitizeMenuItemDisplayFields(item) {
   if (!item || typeof item !== "object") {
     return item;
@@ -1088,7 +1106,9 @@ export function sanitizeMenuItemDisplayFields(item) {
 
   if (
     ingredientsText &&
-    (isSourceReviewNoteIngredientsText(ingredientsText) || isLegalOrWebsiteBoilerplateIngredientsText(ingredientsText))
+    (isSourceReviewNoteIngredientsText(ingredientsText) ||
+      isLegalOrWebsiteBoilerplateIngredientsText(ingredientsText) ||
+      isWholeCatalogNutritionBleed(ingredientsText))
   ) {
     next.sourceSummary = item.sourceSummary ?? ingredientsText;
     delete next.ingredientsText;

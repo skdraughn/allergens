@@ -525,13 +525,12 @@ function RestaurantRow({
   });
   const officialCompatibleCount = summary.okCount;
   const ingredientIntelligenceCompatibleCount = summary.ingredientIntelligenceOkCount;
-  const usesIngredientIntelligenceOnly = Boolean(
-    officialCompatibleCount === 0 && summary.hasIngredientIntelligence,
-  );
   const compatibleCount = officialCompatibleCount + ingredientIntelligenceCompatibleCount;
   const compatibleTotal = summary.totalCount;
-  const compatiblePercent =
-    compatibleTotal > 0 ? Math.round((compatibleCount / compatibleTotal) * 100) : 0;
+  const compatibilityPresentation = getCompatibilityPresentation(
+    compatibleCount,
+    summary,
+  );
   const locationLabel = getRestaurantLocationLabel(restaurant);
   const itemCount = restaurant.totalItemCount ?? summary.totalCount;
   const policy = sourceRestaurant?.allergyAccommodationPolicy;
@@ -566,6 +565,21 @@ function RestaurantRow({
             {metadataLabel}
           </Text>
         ) : null}
+        {!policyOnly && compatibilityIsProvisional ? (
+          <View style={styles.restaurantEvidenceSkeleton} />
+        ) : !policyOnly ? (
+          <Text
+            numberOfLines={1}
+            style={[
+              styles.restaurantEvidence,
+              compatibilityPresentation.emphasizeEvidence
+                ? styles.restaurantEvidenceNeedsConfirmation
+                : null,
+            ]}
+          >
+            {compatibilityPresentation.evidenceLabel}
+          </Text>
+        ) : null}
       </View>
       {compatibilityIsProvisional && !policyOnly ? (
         <CompatibilitySkeleton />
@@ -575,26 +589,30 @@ function RestaurantRow({
           exiting={FadeOut.duration(120)}
           style={styles.compatibilityBlock}
         >
-          <Text style={styles.compatibilityPercent}>{compatiblePercent}%</Text>
+          <Text style={styles.compatibilityPercent}>
+            {compatibilityPresentation.percentLabel}
+          </Text>
           <View
-            accessibilityLabel={
-              usesIngredientIntelligenceOnly
-                ? `${ingredientIntelligenceCompatibleCount} by Ingredient Intelligence out of ${compatibleTotal}`
-                : `${compatibleCount} okay out of ${compatibleTotal}`
-            }
+            accessibilityLabel={compatibilityPresentation.accessibilityLabel}
             accessible
             style={styles.compatibilityCountRow}
           >
-            {usesIngredientIntelligenceOnly ? (
-              <>
-                <Sparkles color="#B25E00" size={12} strokeWidth={2.45} />
-                <Text style={styles.compatibilityCount}>
-                  {ingredientIntelligenceCompatibleCount}/{compatibleTotal}
+            {compatibilityPresentation.showCount ? (
+              compatibilityPresentation.usesIngredientIntelligenceOnly ? (
+                <>
+                  <Sparkles color="#B25E00" size={12} strokeWidth={2.45} />
+                  <Text numberOfLines={1} style={styles.compatibilityCount}>
+                    {compatibleCount}/{compatibleTotal} possible
+                  </Text>
+                </>
+              ) : (
+                <Text numberOfLines={1} style={styles.compatibilityCount}>
+                  {compatibleCount}/{compatibleTotal} options
                 </Text>
-              </>
+              )
             ) : (
               <Text style={styles.compatibilityCount}>
-                {compatibleCount}/{compatibleTotal}
+                {compatibilityPresentation.countFallbackLabel}
               </Text>
             )}
           </View>
@@ -602,11 +620,10 @@ function RestaurantRow({
             <View
               style={[
                 styles.compatibilityFill,
-                usesIngredientIntelligenceOnly && styles.compatibilityFillIntelligence,
+                compatibilityPresentation.usesIngredientIntelligenceOnly &&
+                  styles.compatibilityFillIntelligence,
                 {
-                  width: `${
-                    compatibleTotal > 0 ? (compatibleCount / compatibleTotal) * 100 : 0
-                  }%`,
+                  width: `${compatibilityPresentation.progressPercent}%`,
                 },
               ]}
             />
@@ -615,6 +632,62 @@ function RestaurantRow({
       )}
     </Pressable>
   );
+}
+
+function getCompatibilityPresentation(
+  compatibleCount: number,
+  summary: RestaurantSearchSummary,
+) {
+  const totalCount = summary.totalCount;
+  const evidenceUnavailable =
+    summary.evidenceStatus === "none" || summary.evidenceStatus === "unknown";
+  const unconfigured = summary.evidenceStatus === "unconfigured";
+  const showCount = totalCount > 0 && !evidenceUnavailable && !unconfigured;
+  const percent = showCount
+    ? Math.round((compatibleCount / totalCount) * 100)
+    : null;
+  const usesIngredientIntelligenceOnly =
+    summary.evidenceStatus === "intelligence";
+  let evidenceLabel = "Not enough allergen data";
+  let emphasizeEvidence = evidenceUnavailable;
+
+  if (totalCount <= 0) {
+    evidenceLabel = "Menu unavailable";
+  } else if (unconfigured) {
+    evidenceLabel = "Choose allergies to see options";
+    emphasizeEvidence = false;
+  } else if (evidenceUnavailable) {
+    evidenceLabel = "Not enough allergen data";
+  } else if (summary.needsConfirmationCount > 0) {
+    evidenceLabel = `${summary.needsConfirmationCount} need confirmation`;
+    emphasizeEvidence = true;
+  } else if (compatibleCount === 0) {
+    evidenceLabel = "All items have a concern";
+    emphasizeEvidence = true;
+  } else if (summary.evidenceStatus === "official") {
+    evidenceLabel = "Official allergen data";
+  } else if (summary.evidenceStatus === "mixed") {
+    evidenceLabel = "Official + ingredient analysis";
+  } else if (summary.evidenceStatus === "intelligence") {
+    evidenceLabel = "Ingredient analysis only";
+  }
+
+  return {
+    accessibilityLabel: showCount
+      ? `${percent} percent, ${compatibleCount} of ${totalCount} potential options. ${evidenceLabel}`
+      : evidenceLabel,
+    countFallbackLabel: unconfigured
+      ? "Set profile"
+      : totalCount > 0
+        ? "No score"
+        : "No menu",
+    emphasizeEvidence,
+    evidenceLabel,
+    percentLabel: percent === null ? "—" : `${percent}%`,
+    progressPercent: percent ?? 0,
+    showCount,
+    usesIngredientIntelligenceOnly,
+  };
 }
 
 function CompatibilitySkeleton() {
@@ -671,13 +744,14 @@ function normalizeCityForRegion(city: string | null | undefined, region: string 
 const styles = StyleSheet.create({
   compatibilityBlock: {
     alignItems: "flex-end",
-    minWidth: 74,
+    minWidth: 104,
   },
   compatibilityCount: {
     color: colors.muted,
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "700",
-    lineHeight: 16,
+    lineHeight: 15,
+    fontVariant: ["tabular-nums"],
   },
   compatibilityCountRow: {
     alignItems: "center",
@@ -697,12 +771,13 @@ const styles = StyleSheet.create({
     color: colors.ink,
     fontSize: 19,
     fontWeight: "800",
+    fontVariant: ["tabular-nums"],
     lineHeight: 23,
   },
   compatibilitySkeleton: {
     alignItems: "flex-end",
     gap: 5,
-    minWidth: 74,
+    minWidth: 104,
   },
   compatibilitySkeletonCount: {
     backgroundColor: "rgba(116,119,124,0.12)",
@@ -821,6 +896,23 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
     marginTop: 2,
+  },
+  restaurantEvidence: {
+    color: colors.muted,
+    fontSize: 11,
+    fontWeight: "600",
+    lineHeight: 15,
+    marginTop: 2,
+  },
+  restaurantEvidenceSkeleton: {
+    backgroundColor: "rgba(116,119,124,0.10)",
+    borderRadius: radius.pill,
+    height: 9,
+    marginTop: 5,
+    width: 96,
+  },
+  restaurantEvidenceNeedsConfirmation: {
+    color: "#A85D00",
   },
   restaurantName: {
     color: colors.ink,

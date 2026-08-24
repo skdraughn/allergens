@@ -59,9 +59,25 @@ export type RestaurantSearchPage = {
 export type RestaurantSearchSummary = {
   avoidCount: number;
   cautionCount: number;
+  evidenceStatus:
+    | "unconfigured"
+    | "official"
+    | "mixed"
+    | "intelligence"
+    | "partial"
+    | "none"
+    | "unknown";
   hasIngredientIntelligence: boolean;
   ingredientIntelligenceOkCount: number;
+  needsConfirmationCount: number;
   okCount: number;
+  totalCount: number;
+};
+
+export type RestaurantAllergenCoverage = {
+  allergenId: string;
+  coveredItemCount: number;
+  status: "official" | "partial";
   totalCount: number;
 };
 
@@ -240,34 +256,65 @@ export async function recordRestaurantVisit({
 export function getSearchResultSummary(
   result: RestaurantSearchResult,
   selectedAllergyIds: string[],
-) {
+): RestaurantSearchSummary {
   const summary = result.compatibilitySummary;
   const totalCount = summary?.totalItemCount ?? result.totalItemCount ?? 0;
   const selectedIds = expandSelectedAllergyIds(selectedAllergyIds);
 
-  if (!summary || selectedIds.length === 0) {
+  if (selectedIds.length === 0) {
     return {
       avoidCount: 0,
-      cautionCount: Number(summary?.unavailableCount ?? 0),
+      cautionCount: 0,
+      evidenceStatus: "unconfigured",
       hasIngredientIntelligence: false,
       ingredientIntelligenceOkCount: 0,
-      okCount: Math.max(0, totalCount - Number(summary?.unavailableCount ?? 0)),
+      needsConfirmationCount: 0,
+      okCount: 0,
+      totalCount,
+    };
+  }
+
+  if (!summary) {
+    return {
+      avoidCount: 0,
+      cautionCount: totalCount,
+      evidenceStatus: "unknown",
+      hasIngredientIntelligence: false,
+      ingredientIntelligenceOkCount: 0,
+      needsConfirmationCount: totalCount,
+      okCount: 0,
       totalCount,
     };
   }
 
   if (summary.directAllergenItemIndexes || summary.mayContainAllergenItemIndexes) {
-    const avoidIndexes = collectIndexes(summary.directAllergenItemIndexes, selectedIds);
+    const directIndexes = collectIndexes(summary.directAllergenItemIndexes, selectedIds);
+    const avoidIndexes = new Set(directIndexes);
     const mayContainIndexes = collectIndexes(summary.mayContainAllergenItemIndexes, selectedIds);
     const cautionIndexes = new Set(mayContainIndexes);
     const inferredIndexes = collectIndexes(summary.inferredAllergenItemIndexes, selectedIds);
-    const intelligenceIndexes = new Set([
-      ...(summary.ingredientIntelligenceItemIndexes ?? []),
-      ...collectIndexes(summary.ingredientIntelligenceSafeAllergenItemIndexes, selectedIds),
-    ]);
+    const intelligenceSafeIndexes = collectIndexes(
+      summary.ingredientIntelligenceSafeAllergenItemIndexes,
+      selectedIds,
+    );
+    const intelligenceIndexes = new Set([...inferredIndexes, ...intelligenceSafeIndexes]);
     const unavailableIndexes = summary.unavailableAllergenItemIndexes
       ? collectIndexes(summary.unavailableAllergenItemIndexes, selectedIds)
       : new Set(summary.unavailableItemIndexes ?? []);
+
+    for (const allergenId of selectedIds) {
+      const unavailableForAllergen = new Set(
+        summary.unavailableAllergenItemIndexes?.[allergenId] ??
+          summary.unavailableItemIndexes ??
+          [],
+      );
+
+      for (const index of summary.inferredAllergenItemIndexes?.[allergenId] ?? []) {
+        if (unavailableForAllergen.has(index)) {
+          avoidIndexes.add(index);
+        }
+      }
+    }
 
     for (const index of unavailableIndexes) {
       cautionIndexes.add(index);
@@ -279,7 +326,7 @@ export function getSearchResultSummary(
 
     const avoidCount = avoidIndexes.size;
     const cautionCount = cautionIndexes.size;
-    const ingredientIntelligenceOkCount = Array.from(intelligenceIndexes).filter(
+    const ingredientIntelligenceOkCount = Array.from(intelligenceSafeIndexes).filter(
       (index) =>
         unavailableIndexes.has(index) &&
         !avoidIndexes.has(index) &&
@@ -290,12 +337,54 @@ export function getSearchResultSummary(
     const relevantIntelligenceCount = Array.from(intelligenceIndexes).filter((index) =>
       unavailableIndexes.has(index),
     ).length;
+    const needsConfirmationCount = Math.max(
+      0,
+      cautionCount - ingredientIntelligenceOkCount,
+    );
+    const officialResolvedIndexes = new Set<number>([
+      ...directIndexes,
+      ...mayContainIndexes,
+    ]);
+
+    for (let index = 0; index < totalCount; index += 1) {
+      if (!unavailableIndexes.has(index)) {
+        officialResolvedIndexes.add(index);
+      }
+    }
+
+    const intelligenceResolvedIndexes = new Set(
+      Array.from(intelligenceIndexes).filter((index) => unavailableIndexes.has(index)),
+    );
+    const resolvedIndexes = new Set([
+      ...officialResolvedIndexes,
+      ...intelligenceResolvedIndexes,
+    ]);
+    const hasAllergenSpecificCoverage = Boolean(
+      summary.unavailableAllergenItemIndexes,
+    );
+    let evidenceStatus: RestaurantSearchSummary["evidenceStatus"] = "unknown";
+
+    if (totalCount <= 0) {
+      evidenceStatus = "none";
+    } else if (!hasAllergenSpecificCoverage) {
+      evidenceStatus = "unknown";
+    } else if (officialResolvedIndexes.size >= totalCount) {
+      evidenceStatus = "official";
+    } else if (resolvedIndexes.size >= totalCount) {
+      evidenceStatus = officialResolvedIndexes.size > 0 ? "mixed" : "intelligence";
+    } else if (resolvedIndexes.size > 0) {
+      evidenceStatus = "partial";
+    } else {
+      evidenceStatus = "none";
+    }
 
     return {
       avoidCount,
       cautionCount,
+      evidenceStatus,
       hasIngredientIntelligence: relevantIntelligenceCount > 0,
       ingredientIntelligenceOkCount,
+      needsConfirmationCount,
       okCount: Math.max(0, totalCount - avoidCount - cautionCount),
       totalCount,
     };
@@ -319,11 +408,42 @@ export function getSearchResultSummary(
   return {
     avoidCount,
     cautionCount,
+    evidenceStatus: "unknown",
     hasIngredientIntelligence: false,
     ingredientIntelligenceOkCount: 0,
+    needsConfirmationCount: cautionCount,
     okCount: Math.max(0, totalCount - avoidCount - cautionCount),
     totalCount,
   };
+}
+
+export function getSearchResultAllergenCoverage(
+  result: RestaurantSearchResult,
+  selectedAllergyIds: string[],
+): RestaurantAllergenCoverage[] {
+  const summary = result.compatibilitySummary;
+  const unavailableByAllergen = summary?.unavailableAllergenItemIndexes;
+  const totalCount = summary?.totalItemCount ?? result.totalItemCount ?? 0;
+
+  if (!unavailableByAllergen || totalCount <= 0) {
+    return [];
+  }
+
+  return normalizeAllergyIds(selectedAllergyIds).flatMap((allergenId) => {
+    if (!Object.prototype.hasOwnProperty.call(unavailableByAllergen, allergenId)) {
+      return [];
+    }
+
+    const unavailableCount = new Set(unavailableByAllergen[allergenId] ?? []).size;
+    const coveredItemCount = Math.max(0, totalCount - unavailableCount);
+
+    return [{
+      allergenId,
+      coveredItemCount,
+      status: coveredItemCount === totalCount ? "official" as const : "partial" as const,
+      totalCount,
+    }];
+  });
 }
 
 export function searchResultFromRestaurant(restaurant: Restaurant): RestaurantSearchResult {
@@ -589,29 +709,19 @@ function isOfficialAllergenCovered(
   restaurant: Restaurant,
   allergenId: string,
 ) {
-  const profileId = item.officialAllergenProfileId;
-
-  if (!profileId) {
-    return Boolean(
-      item.allergenSourceType !== "unavailable" &&
-        (item.allergenSourceType || item.allergens.length > 0 || (item.mayContain ?? []).length > 0),
-    );
-  }
-
-
   if (item.allergenSourceType === "unavailable") {
     return false;
   }
 
-  const coveredIds = new Set(
-    restaurant.officialAllergenProfiles?.[profileId]?.coveredAllergenIds ?? [],
-  );
+  const profileId = item.officialAllergenProfileId;
+  const coveredIds = new Set<AllergenId>([
+    ...(item.officialAllergenCoveredIds ?? []),
+    ...(profileId
+      ? restaurant.officialAllergenProfiles?.[profileId]?.coveredAllergenIds ?? []
+      : []),
+  ]);
 
-  return (
-    coveredIds.has(allergenId as AllergenId) ||
-    (allergenId === "gluten" && coveredIds.has("wheat")) ||
-    (allergenId === "wheat" && coveredIds.has("gluten"))
-  );
+  return coveredIds.has(allergenId as AllergenId);
 }
 
 function collectIndexes(indexesByAllergen: Record<string, number[]> | undefined, allergenIds: string[]) {

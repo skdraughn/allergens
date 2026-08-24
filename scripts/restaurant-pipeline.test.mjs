@@ -103,8 +103,15 @@ import {
   extractTropicalSmoothieNutritionPdfItems,
   createRecord,
   chipotleOfficialAllergenCoverage,
+  chickFilAAllergenFacts,
+  dairyQueenAllergenCoverage,
   dominosAllergenAttributeCoverage,
+  littleCaesarsAllergenCoverage,
   nutritionixAvailableAllergenCoverage,
+  nutritionixItemAllergenCoverage,
+  authoritativeOfficialApiUrls,
+  isCurrentUnavailableOfficialApiItem,
+  retainUncoveredOfficialApiMenuRecords,
   rbiSanityAllergens,
   subwayPdfAllergenCoverage,
   wendysNutritionAllergenCoverage,
@@ -873,6 +880,21 @@ test("publish quality removes source boilerplate from descriptions without dropp
   assert.equal(quality.boilerplateDescriptionCount, 1);
 });
 
+test("publish quality rejects a whole nutrition catalog copied into one ingredient field", () => {
+  const repeatedNutritionRows = Array.from(
+    { length: 4 },
+    (_, index) =>
+      `Item ${index + 1} 200g Serving Size 500 Calories 20 grams of fat 5 grams of saturated fat 40 grams of carbohydrates 10 grams of protein 800 milligrams of sodium`,
+  ).join(" ");
+  const sanitized = sanitizeMenuItemDisplayFields({
+    id: "sausage",
+    name: "Sausage",
+    ingredientsText: repeatedNutritionRows.repeat(5),
+  });
+
+  assert.equal(sanitized.ingredientsText, undefined);
+});
+
 test("legacy API records keep real menu copy and reject source-label descriptions", () => {
   assert.equal(
     createRecord({
@@ -947,6 +969,117 @@ test("Nutritionix availability metadata retains supported negative allergen dime
     nutritionixAvailableAllergenCoverage(availableAllergenFields),
     ["egg", "fish", "gluten", "milk", "peanut", "sesame", "shellfish", "soy", "tree-nut", "wheat"],
   );
+});
+
+test("Nutritionix item coverage excludes fields whose row value is unknown", () => {
+  const available = {
+    eggs: 1,
+    milk: 1,
+    shellfish: 1,
+    wheat: 1,
+  };
+  const allergens = {
+    eggs: { presence: -1 },
+    milk: { presence: 0 },
+    shellfish: { presence: 2 },
+    wheat: { presence: 1 },
+  };
+
+  assert.deepEqual(
+    nutritionixItemAllergenCoverage(available, allergens),
+    ["milk", "shellfish", "wheat"],
+  );
+});
+
+test("official API menus retain current rows whose allergen value is unknown", () => {
+  const sourceUrl = "https://example.com/current-menu.json";
+  const official = {
+    name: "Known Item",
+    sourceKind: "official-api",
+    sourceUrl,
+    allergenSourceType: "official-allergen-menu",
+  };
+  const unavailable = {
+    name: "Current Item With Unknown Allergens",
+    sourceKind: "official-api",
+    sourceUrl,
+    allergenSourceType: "unavailable",
+  };
+  const staleOtherApi = {
+    name: "Different Feed Item",
+    sourceKind: "official-api",
+    sourceUrl: "https://example.com/other-menu.json",
+    allergenSourceType: "unavailable",
+  };
+
+  assert.deepEqual(
+    retainUncoveredOfficialApiMenuRecords(
+      [official],
+      [official, unavailable, staleOtherApi],
+    ),
+    [official, unavailable],
+  );
+});
+
+test("current uncovered official API items survive mixed-coverage projection", () => {
+  const sourceUrl = "https://example.com/current-menu.json";
+  const officialItem = {
+    sourceType: "official-api",
+    sourceUrls: [sourceUrl],
+    allergenSourceType: "official-allergen-menu",
+  };
+  const currentUnavailableItem = {
+    sourceType: "official-api",
+    sourceUrls: [sourceUrl],
+    allergenSourceType: "unavailable",
+  };
+  const staleUnavailableItem = {
+    sourceType: "official-api",
+    sourceUrls: ["https://example.com/stale-menu.json"],
+    allergenSourceType: "unavailable",
+  };
+  const officialApiUrls = authoritativeOfficialApiUrls([officialItem]);
+
+  assert.equal(
+    isCurrentUnavailableOfficialApiItem(
+      currentUnavailableItem,
+      officialApiUrls,
+    ),
+    true,
+  );
+  assert.equal(
+    isCurrentUnavailableOfficialApiItem(staleUnavailableItem, officialApiUrls),
+    false,
+  );
+});
+
+test("official matrix adapters declare negative coverage from headers, not positive marks", () => {
+  assert.deepEqual(littleCaesarsAllergenCoverage(), ["egg", "milk", "soy", "wheat"]);
+  assert.deepEqual(dairyQueenAllergenCoverage(), [
+    "egg",
+    "fish",
+    "milk",
+    "peanut",
+    "sesame",
+    "shellfish",
+    "soy",
+    "tree-nut",
+    "wheat",
+  ]);
+});
+
+test("Chick-fil-A rows retain explicit negative columns without inventing gluten or shellfish coverage", () => {
+  const fields = [
+    { key: "milk", "sr-text": "Contains Milk", value: "1" },
+    { key: "wheat", "sr-text": "Contains Wheat", value: "1" },
+    { key: "tree_nuts", "sr-text": "Does not contain Tree Nuts", value: "" },
+    { key: "fish", "sr-text": "Does not contain Fish", value: "" },
+  ];
+
+  assert.deepEqual(chickFilAAllergenFacts(fields), {
+    allergens: ["milk", "wheat"],
+    coveredAllergenIds: ["fish", "milk", "tree-nut", "wheat"],
+  });
 });
 
 test("official structured parsers retain declared allergen dimensions with negative values", () => {
@@ -19595,7 +19728,7 @@ test("restaurant compatibility summary stores exact item indexes", () => {
   assert.deepEqual(summary.directAllergenItemCounts.wheat, 2);
   assert.deepEqual(summary.directAllergenItemIndexes.wheat, [0, 1]);
   assert.deepEqual(summary.mayContainAllergenItemIndexes.soy, [1]);
-  assert.deepEqual(summary.unavailableItemIndexes, [2]);
+  assert.deepEqual(summary.unavailableItemIndexes, [0, 1, 2]);
 });
 
 test("restaurant compatibility summary keeps official negative coverage allergy-specific", () => {
@@ -19615,7 +19748,7 @@ test("restaurant compatibility summary keeps official negative coverage allergy-
   });
 
   assert.deepEqual(summary.unavailableAllergenItemIndexes.milk, []);
-  assert.deepEqual(summary.unavailableAllergenItemIndexes.gluten, []);
+  assert.deepEqual(summary.unavailableAllergenItemIndexes.gluten, [0]);
   assert.deepEqual(summary.unavailableAllergenItemIndexes.peanut, [0]);
   assert.deepEqual(summary.unavailableItemIndexes, []);
 });

@@ -1325,8 +1325,13 @@ export async function scrapeRestaurant(source) {
   records.push(...supplemental.records);
   sourceResults.push(...supplemental.sources);
 
+  const officialRecords = officialOnlyRecordsForBrand(source, records);
+  const catalogRecords =
+    source.id === "chick-fil-a"
+      ? officialRecords
+      : filterMenuCatalogRecords(officialRecords);
   const productionRecords = preferHighConfidenceMenuRecords(
-    filterMenuCatalogRecords(officialOnlyRecordsForBrand(source, records)),
+    catalogRecords,
   ).filter((record) => !isProbablyStrictNonFoodMenuRecord(record, source));
   const adapter = getBrandAdapter(source.id);
   let items = mergeRecords(productionRecords)
@@ -1340,13 +1345,21 @@ export async function scrapeRestaurant(source) {
     .filter(
       (item) =>
         isProbablyMenuItemName(item.name) ||
+        source.id === "chick-fil-a" ||
         (source.id === "andpizza-dc" &&
           /^(?:new g|@me don[’']t sub me)$/i.test(item.name ?? "")),
     )
-    .filter((item) => isProbablyMenuCatalogRecord(item))
+    .filter(
+      (item) =>
+        source.id === "chick-fil-a" || isProbablyMenuCatalogRecord(item),
+    )
     .filter((item) => isAllowedSourceMenuCategory(source, item.category))
     .filter((item) => isAllowedSourceMenuName(source, item.name))
-    .filter((item) => classifyMenuItemRow(item).kind === "menu-item")
+    .filter(
+      (item) =>
+        source.id === "chick-fil-a" ||
+        classifyMenuItemRow(item).kind === "menu-item",
+    )
     .slice(0, 2500);
   items = dropWixRestaurantDemoCatalogItems(items, sourceResults);
   items = collapseSparseCategories(items, source.category);
@@ -1360,8 +1373,11 @@ export async function scrapeRestaurant(source) {
       officialItemCount,
     )
   ) {
+    const officialApiUrls = authoritativeOfficialApiUrls(items);
     items = items.filter(
-      (item) => item.allergenSourceType !== allergenSourceTypes.unavailable,
+      (item) =>
+        item.allergenSourceType !== allergenSourceTypes.unavailable ||
+        isCurrentUnavailableOfficialApiItem(item, officialApiUrls),
     );
     officialItemCount = officialItemCountForRestaurant({ items });
   }
@@ -1877,7 +1893,9 @@ function isAllowedSourceMenuCategory(source, category) {
 
   if (
     source.includeNonAlcoholicBeverages === true &&
-    /^(?:beverages?|fountain sodas?)$/i.test(categoryText)
+    /^(?:catering\s+)?(?:beverages?|drinks?|coffee|fountain sodas?)$/i.test(
+      categoryText,
+    )
   ) {
     return !excludedPatterns.some((pattern) => pattern.test(categoryText));
   }
@@ -2053,6 +2071,13 @@ function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
       ? { id: sourceOrRestaurantId }
       : sourceOrRestaurantId;
   const restaurantId = source.id;
+  records = records.filter(
+    (record) =>
+      !(
+        record.sourceKind === "html-allergen-narrative" &&
+        /^(?:however|like|special)$/i.test(cleanText(record.name) ?? "")
+      ),
+  );
   const sharedOfficialAllergenRecords = sharedOfficialAllergenProfileRecords(
     source,
     records,
@@ -2077,14 +2102,23 @@ function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
       }
     }
 
-    return supplementPreferredRecords(sharedOfficialAllergenRecords, records);
+    return supplementPreferredRecords(
+      retainUncoveredOfficialApiMenuRecords(
+        sharedOfficialAllergenRecords,
+        records,
+      ),
+      records,
+    );
   }
 
   const dominantOfficialAllergenRecords =
     dominantOfficialAllergenProfileRecords(records);
 
   if (dominantOfficialAllergenRecords.length > 0) {
-    return dominantOfficialAllergenRecords;
+    return retainUncoveredOfficialApiMenuRecords(
+      dominantOfficialAllergenRecords,
+      records,
+    );
   }
 
   if (isThompsonOrderingSource(source)) {
@@ -2106,7 +2140,9 @@ function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
     const tableRecords = records.filter(
       (record) => record.sourceKind === "html-allergen-matrix",
     );
-    return tableRecords.length > 0 ? tableRecords : records;
+    return tableRecords.length > 0
+      ? supplementPreferredRecords(tableRecords, records)
+      : records;
   }
 
   if (restaurantId === "pf-changs") {
@@ -2463,6 +2499,51 @@ function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
   }
 
   return records;
+}
+
+export function retainUncoveredOfficialApiMenuRecords(
+  preferredRecords,
+  allRecords,
+) {
+  const authoritativeApiUrls = new Set(
+    preferredRecords
+      .filter((record) => record.sourceKind === "official-api")
+      .map((record) => record.sourceUrl)
+      .filter(Boolean),
+  );
+
+  if (authoritativeApiUrls.size === 0) {
+    return preferredRecords;
+  }
+
+  const preferredSet = new Set(preferredRecords);
+  return allRecords.filter(
+    (record) =>
+      preferredSet.has(record) ||
+      (record.sourceKind === "official-api" &&
+        authoritativeApiUrls.has(record.sourceUrl)),
+  );
+}
+
+export function authoritativeOfficialApiUrls(items) {
+  return new Set(
+    items
+      .filter(
+        (item) =>
+          item.sourceType === "official-api" &&
+          item.allergenSourceType === allergenSourceTypes.officialAllergenMenu,
+      )
+      .flatMap((item) => item.sourceUrls ?? [])
+      .filter(Boolean),
+  );
+}
+
+export function isCurrentUnavailableOfficialApiItem(item, officialApiUrls) {
+  return (
+    item.sourceType === "official-api" &&
+    item.allergenSourceType === allergenSourceTypes.unavailable &&
+    (item.sourceUrls ?? []).some((sourceUrl) => officialApiUrls.has(sourceUrl))
+  );
 }
 
 function dominantOfficialAllergenProfileRecords(records) {
@@ -4734,9 +4815,6 @@ async function fetchNutritionixOfficialRecords(
 
   const parsed = parseJsonLoose(fetched.text);
   const items = Object.values(parsed?.items ?? {});
-  const officialAllergenCoveredIds = nutritionixAvailableAllergenCoverage(
-    parsed?.availableAllergenFields,
-  );
   const categoryById = new Map(
     (parsed?.categories ?? []).map((category) => [
       category.id,
@@ -4749,6 +4827,10 @@ async function fetchNutritionixOfficialRecords(
       .filter((item) => item?.isActive !== 0 && item?.name)
       .map((item) => {
         const allergenResult = nutritionixAllergens(item.allergens);
+        const officialAllergenCoveredIds = nutritionixItemAllergenCoverage(
+          parsed?.availableAllergenFields,
+          item.allergens,
+        );
         const ingredientsText = stringifySelectedFields(item, [
           "ingredients",
           "ingredientStatement",
@@ -4756,7 +4838,10 @@ async function fetchNutritionixOfficialRecords(
         ]);
 
         return createRecord({
-          allergenSourceType: allergenSourceTypes.officialAllergenMenu,
+          allergenSourceType:
+            officialAllergenCoveredIds.length > 0
+              ? allergenSourceTypes.officialAllergenMenu
+              : allergenSourceTypes.unavailable,
           allergens: allergenResult.allergens,
           officialAllergenCoveredIds,
           category: categoryById.get(item.categoryId) ?? source.category,
@@ -4798,6 +4883,38 @@ export function nutritionixAvailableAllergenCoverage(availableFields = {}) {
   return uniqueStrings(
     [...fieldMap]
       .filter(([field]) => availableFields?.[field] === 1 || availableFields?.[field] === true)
+      .map(([, allergen]) => allergen),
+  ).sort();
+}
+
+export function nutritionixItemAllergenCoverage(
+  availableFields = {},
+  itemAllergens = {},
+) {
+  const availableIds = new Set(
+    nutritionixAvailableAllergenCoverage(availableFields),
+  );
+  const fieldMap = new Map([
+    ["gluten", "gluten"],
+    ["milk", "milk"],
+    ["eggs", "egg"],
+    ["fish", "fish"],
+    ["shellfish", "shellfish"],
+    ["crustaceanShellfish", "shellfish"],
+    ["molluscanShellfish", "shellfish"],
+    ["treeNuts", "tree-nut"],
+    ["peanuts", "peanut"],
+    ["wheat", "wheat"],
+    ["soy", "soy"],
+    ["sesame", "sesame"],
+  ]);
+
+  return uniqueStrings(
+    [...fieldMap]
+      .filter(([field, allergen]) => {
+        const presence = itemAllergens?.[field]?.presence;
+        return availableIds.has(allergen) && [0, 1, 2].includes(presence);
+      })
       .map(([, allergen]) => allergen),
   ).sort();
 }
@@ -9499,6 +9616,7 @@ function extractDairyQueenAllergenItems($, restaurant, url) {
           createRecord({
             allergenSourceType: allergenSourceTypes.officialAllergenMenu,
             allergens,
+            officialAllergenCoveredIds: dairyQueenAllergenCoverage(),
             category,
             description:
               "Official Dairy Queen nutrition facts and allergy information table.",
@@ -9514,6 +9632,20 @@ function extractDairyQueenAllergenItems($, restaurant, url) {
   });
 
   return records;
+}
+
+export function dairyQueenAllergenCoverage() {
+  return [
+    "egg",
+    "fish",
+    "milk",
+    "peanut",
+    "sesame",
+    "shellfish",
+    "soy",
+    "tree-nut",
+    "wheat",
+  ];
 }
 
 function dairyQueenAllergenCodes(value) {
@@ -10213,7 +10345,7 @@ function isNutritionValueToken(value) {
   return /^-?\d+(?:\.\d+)?$/.test(String(value).trim());
 }
 
-function extractChickFilAAllergenItems($, restaurant, url) {
+export function extractChickFilAAllergenItems($, restaurant, url) {
   const text = $(
     "script[type='application/json']#wp-script-module-data-\\@wordpress\\/interactivity",
   )
@@ -10249,24 +10381,24 @@ function extractChickFilAAllergenItems($, restaurant, url) {
     for (const item of section?.items ?? []) {
       const name = cleanText(item?.title);
 
-      if (!name || !isProbablyMenuItemName(name)) {
+      // This embedded first-party table is already a trusted menu boundary.
+      // Generic name heuristics reject legitimate fraction variants such as
+      // "1/2 Sweet Tea, 1/2 Lemonade".
+      if (!name) {
         continue;
       }
 
-      const allergens = [];
-
-      for (const field of item.fields ?? []) {
-        if (String(field?.value ?? "") !== "1") {
-          continue;
-        }
-
-        allergens.push(...normalizeProviderAllergens([field.key, field.label]));
-      }
+      const { allergens, coveredAllergenIds } =
+        chickFilAAllergenFacts(item.fields);
 
       records.push(
         createRecord({
-          allergenSourceType: allergenSourceTypes.officialAllergenMenu,
+          allergenSourceType:
+            coveredAllergenIds.length > 0
+              ? allergenSourceTypes.officialAllergenMenu
+              : allergenSourceTypes.unavailable,
           allergens,
+          officialAllergenCoveredIds: coveredAllergenIds,
           category,
           description: "Official Chick-fil-A nutrition and allergens table.",
           imageUrl: null,
@@ -10281,6 +10413,43 @@ function extractChickFilAAllergenItems($, restaurant, url) {
   }
 
   return records;
+}
+
+export function chickFilAAllergenFacts(fields = []) {
+  const allergenByField = new Map([
+    ["milk", "milk"],
+    ["egg", "egg"],
+    ["soy", "soy"],
+    ["wheat", "wheat"],
+    ["sesame", "sesame"],
+    ["tree_nuts", "tree-nut"],
+    ["peanut", "peanut"],
+    ["fish", "fish"],
+  ]);
+  const allergens = [];
+  const coveredAllergenIds = [];
+
+  for (const field of fields ?? []) {
+    const allergenId = allergenByField.get(String(field?.key ?? ""));
+    const screenReaderText = cleanText(field?.["sr-text"]) ?? "";
+
+    if (
+      !allergenId ||
+      !/^(?:contains|does not contain)\b/i.test(screenReaderText)
+    ) {
+      continue;
+    }
+
+    coveredAllergenIds.push(allergenId);
+    if (String(field?.value ?? "") === "1") {
+      allergens.push(allergenId);
+    }
+  }
+
+  return {
+    allergens: uniqueStrings(allergens).sort(),
+    coveredAllergenIds: uniqueStrings(coveredAllergenIds).sort(),
+  };
 }
 
 export function extractOfficialApiItems(
@@ -23394,14 +23563,13 @@ async function extractZaxbysPdfItems(buffer, restaurant, url) {
   return records;
 }
 
-async function extractLittleCaesarsPdfItems(buffer, restaurant, url) {
+export async function extractLittleCaesarsPdfItems(buffer, restaurant, url) {
   const rows = await readPdfPositionRows(buffer);
   const allergenColumns = [
     { id: "egg", min: 496, max: 512 },
     { id: "milk", min: 513, max: 531 },
     { id: "wheat", min: 532, max: 550 },
     { id: "soy", min: 551, max: 573 },
-    { id: "sesame", min: 574, max: 595 },
   ];
   const records = [];
   let currentCategory = restaurant.category;
@@ -23423,6 +23591,14 @@ async function extractLittleCaesarsPdfItems(buffer, restaurant, url) {
     if (category) {
       currentCategory = category;
       pendingName = null;
+      continue;
+    }
+
+    if (
+      ["Lunch Combo", "Meals & Lunch Combos", "Toppings"].includes(
+        currentCategory,
+      )
+    ) {
       continue;
     }
 
@@ -23457,7 +23633,10 @@ async function extractLittleCaesarsPdfItems(buffer, restaurant, url) {
       continue;
     }
 
-    const itemName = pendingName ?? name;
+    const itemName = littleCaesarsQualifiedItemName(
+      pendingName ?? name,
+      currentCategory,
+    );
 
     if (!itemName || !isProbablyMenuItemName(itemName)) {
       continue;
@@ -23479,6 +23658,7 @@ async function extractLittleCaesarsPdfItems(buffer, restaurant, url) {
       createRecord({
         allergenSourceType: allergenSourceTypes.officialAllergenMenu,
         allergens,
+        officialAllergenCoveredIds: littleCaesarsAllergenCoverage(),
         category: littleCaesarsCategoryForItem(itemName, currentCategory),
         description:
           "Official Little Caesars nutrition and allergen information PDF.",
@@ -23527,22 +23707,73 @@ function littleCaesarsCategoryFromRow(items) {
     return null;
   }
 
-  if (/^MENU OPTIONS$/.test(text)) {
-    return "Menu Options";
+  const categories = [
+    [/^LARGE EXTRAMOSTBESTEST(?:®)? PIZZAS$/, "ExtraMostBestest Pizzas"],
+    [/^LARGE SPECIALTY PIZZAS$/, "Specialty Pizzas"],
+    [/^LARGE CLASSIC PIZZAS$/, "Classic Pizzas"],
+    [/^DETROIT-STYLE DEEP DISH PIZZAS SPECIALTY$/, "Detroit-Style Deep Dish Specialty Pizzas"],
+    [/^DETROIT-STYLE DEEP DISH PIZZAS$/, "Detroit-Style Deep Dish Pizzas"],
+    [/^SIDES$/, "Sides"],
+    [/^CAESAR WINGS(?:®)?$/, "Caesar Wings"],
+    [/^CAESAR DIPS(?:®)?(?: \(SERVING SIZE: 1 CONTAINER\))?$/, "Caesar Dips"],
+    [/^THIN CRUST PIZZAS$/, "Thin Crust Pizzas"],
+    [/^MAKE IT STUFFED CRUST$/, "Crust Options"],
+    [/^EXTRAS$/, "Extras"],
+    [/^TOPPINGS\*?$/, "Toppings"],
+    [/^CUSTOM ROUND PIZZAS\b.*ADD CALORIES TO BASE PIZZA$/, "Toppings"],
+    [/^CUSTOM DETROIT-STYLE DEEP DISH\b.*ADD CALORIES TO BASE PIZZA$/, "Toppings"],
+    [/^MEALS & LUNCH COMBOS$/, "Meals & Lunch Combos"],
+    [/^LUNCH COMBO$/, "Lunch Combo"],
+  ];
+
+  return categories.find(([pattern]) => pattern.test(text))?.[1] ?? null;
+}
+
+export function littleCaesarsAllergenCoverage() {
+  return ["egg", "milk", "soy", "wheat"];
+}
+
+function littleCaesarsQualifiedItemName(name, category) {
+  let cleanedName = cleanText(name);
+
+  if (!cleanedName) {
+    return cleanedName;
   }
 
-  if (/^TOPPINGS\*?$/.test(text)) {
-    return "Toppings";
+  if (/^Cookie Dough Brownie made with M&M[’']S$/i.test(cleanedName)) {
+    cleanedName = "Cookie Dough Brownie made with M&M'S Minis Chocolate Candies (full package)";
+  } else if (
+    /^MINIS Chocolate Candies \(full package\) Cookie Dough Brownie made with TWIX$/i.test(
+      cleanedName,
+    )
+  ) {
+    cleanedName = "Cookie Dough Brownie made with TWIX Cookie Bar Pieces (full package)";
   }
 
-  if (/^MEALS & LUNCH COMBOS$/.test(text)) {
-    return "Meals & Lunch Combos";
+  if (!/^(?:Pepperoni|Cheese|Italian Sausage|5 Meat Feast|Ultimate Supreme|3 Meat Treat|Hula Hawaiian|Veggie)$/i.test(cleanedName)) {
+    return cleanedName;
   }
 
-  return null;
+  const prefixByCategory = new Map([
+    ["ExtraMostBestest Pizzas", "ExtraMostBestest"],
+    ["Classic Pizzas", "Classic"],
+    ["Detroit-Style Deep Dish Pizzas", "Detroit-Style Deep Dish"],
+    ["Detroit-Style Deep Dish Specialty Pizzas", "Detroit-Style Deep Dish"],
+    ["Thin Crust Pizzas", "Thin Crust"],
+  ]);
+  const prefix = prefixByCategory.get(category);
+
+  return prefix ? `${prefix} ${cleanedName}` : cleanedName;
 }
 
 function littleCaesarsCategoryForItem(name, fallback) {
+  if (
+    fallback &&
+    !["Menu", "Menu Options", "Pizza"].includes(fallback)
+  ) {
+    return fallback;
+  }
+
   if (/sauce|ranch|butter garlic|cheddar cheese/i.test(name)) {
     return "Sauces";
   }
@@ -30285,7 +30516,9 @@ function isProbablyCommercePlanRecord(description) {
 function isProbablyStrictNonFoodMenuRecord(record, source = null) {
   if (
     source?.includeNonAlcoholicBeverages === true &&
-    /^(?:beverages?|fountain sodas?)$/i.test(cleanText(record?.category) ?? "")
+    /^(?:catering\s+)?(?:beverages?|drinks?|fountain sodas?)$/i.test(
+      cleanText(record?.category) ?? "",
+    )
   ) {
     return false;
   }

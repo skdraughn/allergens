@@ -221,37 +221,19 @@ export function compatibilitySummaryForRestaurant(restaurant) {
 }
 
 function isOfficialAllergenCovered(item, restaurant, allergenId) {
-  const profileId = item.officialAllergenProfileId;
-
-  if (!profileId) {
-    if (
-      restaurant.officialAllergenProfiles &&
-      Object.keys(restaurant.officialAllergenProfiles).length > 0
-    ) {
-      return false;
-    }
-    return Boolean(
-      item.allergenSourceType !== "unavailable" &&
-        (item.allergenSourceType ||
-          (item.allergens ?? []).length > 0 ||
-          (item.mayContain ?? []).length > 0),
-    );
-  }
-
-
   if (item.allergenSourceType === "unavailable") {
     return false;
   }
 
-  const coveredIds = new Set(
-    restaurant.officialAllergenProfiles?.[profileId]?.coveredAllergenIds ?? [],
-  );
+  const profileId = item.officialAllergenProfileId;
+  const coveredIds = new Set([
+    ...(item.officialAllergenCoveredIds ?? []),
+    ...(profileId
+      ? restaurant.officialAllergenProfiles?.[profileId]?.coveredAllergenIds ?? []
+      : []),
+  ]);
 
-  return (
-    coveredIds.has(allergenId) ||
-    (allergenId === "gluten" && coveredIds.has("wheat")) ||
-    (allergenId === "wheat" && coveredIds.has("gluten"))
-  );
+  return coveredIds.has(allergenId);
 }
 
 function isIngredientIntelligenceReviewed(item) {

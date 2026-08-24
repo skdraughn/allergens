@@ -3055,6 +3055,7 @@ export const restaurantSources = [
     name: "Chick-fil-A",
     category: "Chicken",
     domain: "chick-fil-a.com",
+    includeNonAlcoholicBeverages: true,
     menuUrls: ["https://www.chick-fil-a.com/menu"],
     allergenUrls: ["https://www.chick-fil-a.com/nutrition-allergens"],
   },

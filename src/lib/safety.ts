@@ -41,29 +41,27 @@ function isCoveredByOfficialProfile(
   item: MenuItem,
   profiles: OfficialAllergenProfiles | undefined,
 ) {
+  if (item.allergenSourceType === "unavailable") {
+    return false;
+  }
+
+  const itemCoveredIds = new Set(item.officialAllergenCoveredIds ?? []);
+
+  if (
+    itemCoveredIds.has(allergenId as AllergenId)
+  ) {
+    return true;
+  }
+
   const profileId = item.officialAllergenProfileId;
 
   if (!profileId) {
-    if (profiles && Object.keys(profiles).length > 0) {
-      return false;
-    }
-    return Boolean(
-      item.allergenSourceType !== "unavailable" &&
-        (item.allergenSourceType || item.allergens.length > 0 || (item.mayContain ?? []).length > 0),
-    );
-  }
-
-  if (item.allergenSourceType === "unavailable") {
     return false;
   }
 
   const coveredIds = new Set(profiles?.[profileId]?.coveredAllergenIds ?? []);
 
-  return (
-    coveredIds.has(allergenId as AllergenId) ||
-    (allergenId === "gluten" && coveredIds.has("wheat")) ||
-    (allergenId === "wheat" && coveredIds.has("gluten"))
-  );
+  return coveredIds.has(allergenId as AllergenId);
 }
 
 export function getUncoveredOfficialAllergenIds(

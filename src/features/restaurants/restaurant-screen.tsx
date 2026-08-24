@@ -565,6 +565,17 @@ export function RestaurantScreen() {
     restaurant.allergenDataStatus?.officialItemCount ??
     restaurant.items.filter((item) => item.allergenSourceType !== "unavailable")
       .length;
+  const profileOfficialItemCount =
+    selectedAllergyIds.length === 0
+      ? officialItemCount
+      : restaurant.items.filter(
+          (item) =>
+            !getMenuItemSafety(
+              item,
+              selectedAllergyIds,
+              restaurant.officialAllergenProfiles,
+            ).officialAllergenDataUnavailable,
+        ).length;
   const totalItemCount = restaurant.items.length;
   const filterOptions: { count: number; id: MenuFilter; label: string }[] = [
     { count: totalItemCount, id: "all", label: "All" },
@@ -668,6 +679,7 @@ export function RestaurantScreen() {
   };
   const restaurantMeta = getRestaurantMetaLine({
     officialItemCount,
+    profileOfficialItemCount,
     restaurant,
     totalItemCount,
     userLocation: restaurantLocation,
@@ -2098,11 +2110,13 @@ function formatAllergyReviewSummary(summary: {
 
 function getRestaurantMetaLine({
   officialItemCount,
+  profileOfficialItemCount,
   restaurant,
   totalItemCount,
   userLocation,
 }: {
   officialItemCount: number;
+  profileOfficialItemCount: number;
   restaurant: Restaurant;
   totalItemCount: number;
   userLocation: RestaurantSearchLocation | null;
@@ -2112,6 +2126,7 @@ function getRestaurantMetaLine({
     sourceBadges: getRestaurantSourceBadges(
       restaurant,
       officialItemCount,
+      profileOfficialItemCount,
       totalItemCount,
     ),
   };
@@ -2161,6 +2176,7 @@ function normalizeCityForRegion(
 function getRestaurantSourceBadges(
   restaurant: Restaurant,
   officialItemCount: number,
+  profileOfficialItemCount: number,
   totalItemCount: number,
 ) {
   const inferredItemCount = restaurant.items.filter(
@@ -2170,7 +2186,7 @@ function getRestaurantSourceBadges(
 
   if (officialItemCount > 0) {
     badges.push({
-      label: `Official source ${officialItemCount}/${totalItemCount}`,
+      label: `Official coverage ${profileOfficialItemCount}/${totalItemCount}`,
       tone: "official",
     });
   }
