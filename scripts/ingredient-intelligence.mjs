@@ -52,6 +52,7 @@ export async function annotateRestaurantWithIngredientIntelligence(restaurant, o
       comprehensiveOfficialIngredients,
       manifest,
       officialAllergenProfiles: restaurant.officialAllergenProfiles,
+      promoteOfficialDisclosures: options.promoteOfficialDisclosures !== false,
     }),
   );
   const { inferenceVersion: _inferenceVersion, ...cleanRestaurant } = restaurant;
@@ -63,13 +64,20 @@ export async function annotateRestaurantWithIngredientIntelligence(restaurant, o
 
 export function annotateMenuItemWithIngredientIntelligence(
   item,
-  { comprehensiveOfficialIngredients = false, manifest, officialAllergenProfiles },
-) {
-  const promotedItem = promoteRestaurantIssuedAllergenDisclosures(item, {
-    comprehensiveOfficialIngredients,
+  {
+    comprehensiveOfficialIngredients = false,
     manifest,
     officialAllergenProfiles,
-  });
+    promoteOfficialDisclosures = true,
+  },
+) {
+  const promotedItem = promoteOfficialDisclosures
+    ? promoteRestaurantIssuedAllergenDisclosures(item, {
+        comprehensiveOfficialIngredients,
+        manifest,
+        officialAllergenProfiles,
+      })
+    : item;
   const inference = inferMenuItemIngredientIntelligence(promotedItem, {
     manifest,
     officialAllergenProfiles,

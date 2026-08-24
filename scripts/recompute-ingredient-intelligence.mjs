@@ -16,6 +16,7 @@ const restaurantIds = String(args.restaurants ?? args.restaurant ?? "")
   .map((id) => id.trim())
   .filter(Boolean);
 const manifest = await getDefaultIngredientIntelligenceManifest();
+const promoteOfficialDisclosures = args.promoteOfficialDisclosures !== "false";
 
 if (inputPath) {
   const body = await fs.readFile(inputPath, "utf8");
@@ -28,7 +29,10 @@ if (inputPath) {
         return restaurant;
       }
 
-      return annotateRestaurantWithIngredientIntelligence(restaurant, { manifest });
+      return annotateRestaurantWithIngredientIntelligence(restaurant, {
+        manifest,
+        promoteOfficialDisclosures,
+      });
     }),
   );
   const output = {
@@ -67,7 +71,10 @@ for (const restaurantId of restaurantIds) {
 
   const parsed = JSON.parse(body);
   const restaurant = parsed.restaurant ?? parsed;
-  const annotated = await annotateRestaurantWithIngredientIntelligence(restaurant, { manifest });
+  const annotated = await annotateRestaurantWithIngredientIntelligence(restaurant, {
+    manifest,
+    promoteOfficialDisclosures,
+  });
   const output = parsed.restaurant ? { ...parsed, restaurant: annotated } : annotated;
 
   await s3.send(

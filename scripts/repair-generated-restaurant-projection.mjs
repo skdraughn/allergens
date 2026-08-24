@@ -1,5 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
+import crypto from "node:crypto";
+import { gunzipSync } from "node:zlib";
+import { sanitizeMenuItemDisplayFields } from "./menu-item-quality.mjs";
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
 const repositoryPath = path.join(root, "src/data/generated/restaurants.generated.json");
@@ -64,6 +67,48 @@ for (const restaurant of repository.restaurants) {
   }
 }
 
+let descriptionRecoveryRestored = 0;
+const descriptionRecoveryDirectory = path.join(root, "data/restaurant-verification/description-recovery");
+const descriptionRecoveryManifestPath = path.join(descriptionRecoveryDirectory, "manifest.json");
+const descriptionRecoveryManifest = fs.existsSync(descriptionRecoveryManifestPath)
+  ? JSON.parse(fs.readFileSync(descriptionRecoveryManifestPath, "utf8"))
+  : null;
+if (!repository.metadata?.descriptionRecovery && descriptionRecoveryManifest?.activeOverlay) {
+  repository.metadata ||= {};
+  repository.metadata.descriptionRecovery = {
+    schemaVersion: descriptionRecoveryManifest.schemaVersion,
+    appliedAt: descriptionRecoveryManifest.generatedAt,
+    planSha256: descriptionRecoveryManifest.planSha256,
+    overlayPath: path.posix.join("data/restaurant-verification/description-recovery", descriptionRecoveryManifest.activeOverlay),
+    recoveryCount: descriptionRecoveryManifest.recoveryCount,
+    exactIdCount: descriptionRecoveryManifest.exactIdCount,
+    exactNameCount: descriptionRecoveryManifest.exactNameCount,
+    conflictCountSkipped: descriptionRecoveryManifest.conflictCountSkipped,
+    fuzzyOrSemanticMatching: false,
+  };
+}
+const descriptionRecovery = repository.metadata?.descriptionRecovery;
+if (descriptionRecovery?.overlayPath && descriptionRecovery?.planSha256) {
+  const overlayPath = path.join(root, descriptionRecovery.overlayPath);
+  const overlayBytes = fs.readFileSync(overlayPath);
+  const overlaySha256 = crypto.createHash("sha256").update(overlayBytes).digest("hex");
+  if (overlaySha256 !== descriptionRecovery.planSha256) {
+    throw new Error(`Description recovery overlay hash mismatch: ${overlaySha256}`);
+  }
+  const overlay = JSON.parse(gunzipSync(overlayBytes).toString("utf8"));
+  const restaurantsById = new Map(repository.restaurants.map((restaurant) => [restaurant.id, restaurant]));
+  for (const recovery of overlay.records || []) {
+    const item = (restaurantsById.get(recovery.restaurantId)?.items || []).find(
+      (candidate) => String(candidate.id || candidate.itemId || "") === recovery.itemId,
+    );
+    if (!item || normalize(item.name) !== normalize(recovery.itemName)) continue;
+    if (item.description === recovery.description) continue;
+    if (hasUsableDescription(item)) continue;
+    item.description = recovery.description;
+    descriptionRecoveryRestored += 1;
+  }
+}
+
 repository.generatedAt = new Date().toISOString();
 repository.snapshotVersion = 1;
 repository.restaurantCount = repository.restaurants.length;
@@ -78,4 +123,15 @@ console.log(JSON.stringify({
   restaurantCount: repository.restaurantCount,
   itemCount: repository.itemCount,
   zeroCatalogCount: repository.restaurants.filter((restaurant) => restaurant.items.length === 0).length,
+  descriptionRecoveryRestored,
 }, null, 2));
+
+function normalize(value) {
+  return String(value ?? "").normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+    .replace(/[’'`]/g, "").replace(/&/g, " and ").replace(/[^a-z0-9]+/g, " ").trim().replace(/\s+/g, " ");
+}
+
+function hasUsableDescription(item) {
+  const sanitized = sanitizeMenuItemDisplayFields(item);
+  return typeof sanitized?.description === "string" && sanitized.description.trim().length >= 18;
+}
