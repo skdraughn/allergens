@@ -1,6 +1,27 @@
-# Allergy App
+# MySafeMenu Monorepo
 
-React Native/Expo app for checking restaurant menu items against a user's allergy profile.
+MySafeMenu includes a React Native/Expo app for checking restaurant menu items
+against a user's allergy profile and the public MySafeMenu website.
+
+## Project Layout
+
+```txt
+src/        Expo application
+amplify/    Backend resources
+scripts/    Restaurant data and publishing pipelines
+website/    Public website, support, and legal pages
+```
+
+The app and website keep separate dependency lockfiles because their React
+runtimes have different version requirements. Both projects are tracked by this
+repository and the website can be managed from the repository root:
+
+```sh
+npm run website:dev
+npm run website:build
+npm run website:test
+npm run website:lint
+```
 
 ## Data Architecture
 
