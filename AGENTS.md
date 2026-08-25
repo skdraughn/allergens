@@ -2,6 +2,14 @@
 
 Read the exact versioned docs at https://docs.expo.dev/versions/v56.0.0/ before writing any code.
 
+## Expo development server signing
+
+- Every request to start or restart the Expo development server must use the code-signing private key via `npx expo start --private-key-path <path>`.
+- Resolve the key path from `EXPO_UPDATES_PRIVATE_KEY_PATH` first, then from the ignored local fallback `certs/expo-updates/private-key.pem`.
+- Before starting Metro, verify that the key file exists. Never start this app's development server unsigned or with anonymous/offline manifest signatures.
+- If the signing key is unavailable, stop and tell the user instead of starting Metro.
+- Never print, commit, log, or embed private-key contents in commands, reports, QR codes, or project instructions.
+
 ## Restaurant verification continuation
 
 When the user says `batch N` (for any integer `N`), immediately follow

@@ -298,19 +298,24 @@ export function MenuItemDetailsModal({
               </Text>
 
               {displayDescription ? (
-                <Text style={styles.descriptionText}>
-                  {displayDescription}
-                  {hasIngredients ? (
-                    <Text
-                      accessibilityRole="button"
-                      onPress={openIngredients}
-                      style={styles.inlineTextLink}
-                    >
-                      {" "}
-                      View Ingredients
-                    </Text>
-                  ) : null}
-                </Text>
+                <View style={styles.section}>
+                  <View style={styles.sectionHeaderRow}>
+                    <Text style={styles.sectionTitle}>Description</Text>
+                  </View>
+                  <Text selectable style={styles.descriptionText}>
+                    {displayDescription}
+                    {hasIngredients ? (
+                      <Text
+                        accessibilityRole="button"
+                        onPress={openIngredients}
+                        style={styles.inlineTextLink}
+                      >
+                        {" "}
+                        View Ingredients
+                      </Text>
+                    ) : null}
+                  </Text>
+                </View>
               ) : hasIngredients ? (
                 <Pressable
                   accessibilityRole="button"

@@ -34,7 +34,10 @@ export async function getAuthoritativeCatalogPath() {
   const config = await initializeRemoteConfig();
 
   if (!config || !remoteConfigModule) {
-    return cachedPath ?? getCatalogBootstrapPath();
+    // A development client without Firebase must follow the current bundle's
+    // immutable bootstrap path. Reusing an older active-path cache here traps
+    // the client on a catalog that a newer bundle has explicitly replaced.
+    return getCatalogBootstrapPath();
   }
 
   try {

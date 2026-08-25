@@ -153,7 +153,7 @@ module.exports = ({ config }) => {
       },
       restaurantCatalogBootstrapPath:
         process.env.EXPO_PUBLIC_RESTAURANT_CATALOG_BOOTSTRAP_PATH ||
-        "restaurant-data/catalogs/v1-64ae68867ddea1ae5c71/summary.json",
+        "restaurant-data/catalogs/v1-ed8c8f5523c7523f9f78/summary.json",
       socialAuthEndpoint: process.env.EXPO_PUBLIC_SOCIAL_AUTH_ENDPOINT,
     },
     android: {

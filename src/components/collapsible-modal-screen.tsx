@@ -8,7 +8,6 @@ import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
-  withTiming,
 } from "react-native-reanimated";
 import {
   SafeAreaView,
@@ -34,7 +33,6 @@ type CollapsibleModalScreenProps = {
 };
 
 const compactThreshold = 76;
-const compactAnimationDurationMs = 170;
 
 export function CollapsibleModalScreen({
   actionIcon,
@@ -51,28 +49,29 @@ export function CollapsibleModalScreen({
   const scrollY = useSharedValue(0);
   const handleScroll = useAnimatedScrollHandler({
     onScroll: (event) => {
-      scrollY.set(
-        withTiming(event.contentOffset.y, {
-          duration: compactAnimationDurationMs,
-        }),
-      );
+      scrollY.set(Math.max(0, event.contentOffset.y));
     },
   });
-  const titleAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(scrollY.value, [compactThreshold - 20, compactThreshold + 20], [0, 1], Extrapolation.CLAMP),
-    transform: [
-      {
-        translateX: interpolate(scrollY.value, [compactThreshold - 20, compactThreshold + 20], [-8, 0], Extrapolation.CLAMP),
-      },
-    ],
-  }));
-  const actionAnimatedStyle = useAnimatedStyle(() => {
-    const size = interpolate(scrollY.value, [0, compactThreshold], [48, 36], Extrapolation.CLAMP);
+  const titleAnimatedStyle = useAnimatedStyle(() => {
+    const offset = scrollY.get();
 
     return {
-      borderRadius: size / 2,
-      height: size,
-      width: size,
+      opacity: interpolate(
+        offset,
+        [compactThreshold - 20, compactThreshold + 20],
+        [0, 1],
+        Extrapolation.CLAMP,
+      ),
+      transform: [
+        {
+          translateX: interpolate(
+            offset,
+            [compactThreshold - 20, compactThreshold + 20],
+            [-8, 0],
+            Extrapolation.CLAMP,
+          ),
+        },
+      ],
     };
   });
   return (
@@ -86,7 +85,7 @@ export function CollapsibleModalScreen({
           >
             {title}
           </Animated.Text>
-          <Animated.View style={[styles.actionButton, actionAnimatedStyle]}>
+          <View style={styles.actionButton}>
             <ModalIconButton
               glassVisibilityProgress={actionGlassVisibilityProgress}
               Icon={actionIcon}
@@ -94,7 +93,7 @@ export function CollapsibleModalScreen({
               onPress={onActionPress}
               style={styles.actionPressable}
             />
-          </Animated.View>
+          </View>
         </View>
         <Animated.ScrollView
           contentContainerStyle={[styles.content, contentContainerStyle]}
@@ -124,7 +123,10 @@ export function CollapsibleModalScreen({
 
 const styles = StyleSheet.create({
   actionButton: {
+    borderRadius: 24,
+    height: 48,
     overflow: "hidden",
+    width: 48,
   },
   actionPressable: {
     borderRadius: 999,

@@ -31,13 +31,15 @@ const stackName = process.env.EXPO_UPDATES_STACK || "mysafemenu-expo-updates";
 const privateKeyPath = process.env.EXPO_UPDATES_PRIVATE_KEY_PATH;
 const certificatePath = path.join(root, "certs/expo-updates/certificate.pem");
 const awsClientPath = path.join(root, "scripts/expo-updates/aws-client.py");
-const expoCliPath = path.join(root, "node_modules/@expo/cli/build/bin/cli");
+const expoCliPath = path.join(root, "node_modules/expo/bin/cli");
 const updatesCliPath = path.join(root, "node_modules/expo-updates/bin/cli.js");
 const embeddedManifestDirectory = path.join(
   root,
   "scripts/expo-updates/embedded-manifests"
 );
 const npmCliPath = process.env.npm_execpath;
+const pythonExecutable =
+  process.env.PYTHON_EXECUTABLE || (process.platform === "win32" ? "python3" : "/usr/bin/python3");
 
 const parseArguments = (argv) => {
   const values = {};
@@ -82,7 +84,7 @@ const run = (command, args, options = {}) => {
 
 const awsClient = (args, capture = false) =>
   run(
-    "/usr/bin/python3",
+    pythonExecutable,
     [awsClientPath, "--profile", profile, "--region", region, ...args],
     { capture }
   );
@@ -116,7 +118,7 @@ const verifySigningKey = async () => {
     throw new Error("EXPO_UPDATES_PRIVATE_KEY_PATH is required.");
   }
   const keyStats = await stat(privateKeyPath);
-  if ((keyStats.mode & 0o077) !== 0) {
+  if (process.platform !== "win32" && (keyStats.mode & 0o077) !== 0) {
     throw new Error("Signing private key permissions must be 0600 or stricter.");
   }
   const privateKey = await readFile(privateKeyPath, "utf8");
@@ -154,7 +156,7 @@ const putImmutable = (bucket, key, file, contentType) => {
 
 const getPointer = (bucket, key, outputFile) => {
   const result = spawnSync(
-    "/usr/bin/python3",
+    pythonExecutable,
     [
       awsClientPath,
       "--profile",
