@@ -307,6 +307,7 @@ function officialAllergenDataUnavailable(item) {
   const mayContain = item.mayContain ?? [];
 
   return (
+    item.allergenSourceType === "ingredient_intelligence" ||
     item.allergenSourceType === "unavailable" ||
     (!item.allergenSourceType && allergens.length === 0 && mayContain.length === 0)
   );

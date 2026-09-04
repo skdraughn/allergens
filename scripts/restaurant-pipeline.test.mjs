@@ -15,7 +15,10 @@ import {
   inferMenuItemIngredientIntelligence,
 } from "./ingredient-intelligence.mjs";
 import { buildIngredientIntelligenceAudit } from "./audit-ingredient-intelligence.mjs";
-import { brandAdapters } from "./restaurant-adapters.mjs";
+import {
+  brandAdapters,
+  registerBrandAdapterSource,
+} from "./restaurant-adapters.mjs";
 import {
   genericAdapters,
   modularAdapterOverrides,
@@ -82,6 +85,10 @@ import {
 import { extractEveryBiteWidgetRows } from "./pipeline/everybite-widget.mjs";
 import { extractShopifyAllergenGuideRows } from "./pipeline/shopify-allergen-guide.mjs";
 import {
+  nutritionixOptionVariantRecords,
+  nutritionixPrimaryOptionVariantGroup,
+} from "./pipeline/nutritionix-option-variants.mjs";
+import {
   directGoogleDriveDownloadUrl,
   extractBbqChickenAllergenPdfItems,
   extractBbqChickenPageRows,
@@ -89,6 +96,8 @@ import {
   extractHtmlItems,
   extractFriedCrossContactAllergenTableItems,
   extractIMenuProScriptItems,
+  extractLunchboxNovaMenuApiLinksFromBundle,
+  looksLikeStreetAddressScope,
   extractJsonMenuFragmentItems,
   extractOsiTop9AllergenPdfItems,
   extractNandosNutritionAllergenPdfItems,
@@ -96,6 +105,7 @@ import {
   mergeRecords,
   normalizeRecord,
   extractOfficialApiItems,
+  extractOfficialReaderMarkdownItems,
   extractProductPageItem,
   extractSpreadsheetItems,
   isGenericMatrixAllergenCellEvidence,
@@ -109,9 +119,18 @@ import {
   littleCaesarsAllergenCoverage,
   nutritionixAvailableAllergenCoverage,
   nutritionixItemAllergenCoverage,
+  officialOnlyRecordsForBrand,
   authoritativeOfficialApiUrls,
   isCurrentUnavailableOfficialApiItem,
+  isProbablyNutritionixGridFoodOrFoodAdjacentRecord,
   retainUncoveredOfficialApiMenuRecords,
+  supplementPreferredRecords,
+  applyConfiguredDescriptionSupplementRules,
+  shouldFetchProductDetailPages,
+  applyOfficialDescriptionAdapters,
+  extractArbysCmsDataRecords,
+  plainTextFromSanityBlocks,
+  repairGenericPdfDescriptionBoundaryBleed,
   rbiSanityAllergens,
   subwayPdfAllergenCoverage,
   wendysNutritionAllergenCoverage,
@@ -121,6 +140,276 @@ import * as XLSX from "xlsx";
 
 const require = createRequire(import.meta.url);
 const generatedRestaurants = require("../src/data/generated/restaurants.generated.json");
+
+test("preferred allergen rows retain descriptions from matching menu rows", () => {
+  const [merged] = supplementPreferredRecords(
+    [{ name: "Wild West Shrimp", sourceKind: "pdf-matrix", allergens: ["shellfish"] }],
+    [{
+      name: "Wild West Shrimp",
+      sourceKind: "html-card",
+      description: "Crispy shrimp tossed with cherry peppers and garlic butter.",
+      sourceUrl: "https://example.com/menu",
+    }],
+  );
+
+  assert.equal(
+    merged.description,
+    "Crispy shrimp tossed with cherry peppers and garlic butter.",
+  );
+  assert.deepEqual(merged.allergens, ["shellfish"]);
+});
+
+test("explicit canonical menu precedence survives dominant supplemental allergen catalogs", () => {
+  const canonical = ["Ginger Scallion", "Spicy Garlic", "Sesame Garlic", "Cobb"]
+    .map((name) => ({
+      name,
+      description: `${name} restaurant-owned menu description`,
+      sourceKind: "json-structured",
+      allergenSourceType: "unavailable",
+    }));
+  const supplemental = Array.from({ length: 40 }, (_value, index) => ({
+    name: index === 0 ? "Ginger Scallion" : `Provider Item ${index}`,
+    sourceKind: "pdf-matrix",
+    allergenSourceType: "official-allergen-menu",
+    allergens: ["soy"],
+  }));
+
+  const selected = officialOnlyRecordsForBrand(
+    {
+      id: "honeygrow",
+      profileMenuIsCanonical: true,
+      profileMenuCanonicalSourceKinds: ["json-structured"],
+    },
+    [...canonical, ...supplemental],
+  );
+
+  assert.deepEqual(
+    selected.filter((record) => record.sourceKind === "json-structured").map((record) => record.name),
+    canonical.map((record) => record.name),
+  );
+  assert.deepEqual(
+    selected.filter((record) => record.sourceKind === "pdf-matrix").map((record) => record.name),
+    ["Ginger Scallion"],
+  );
+});
+
+test("sparse menu landing pages still crawl product details", () => {
+  assert.equal(shouldFetchProductDetailPages([]), true);
+  assert.equal(
+    shouldFetchProductDetailPages([
+      { name: "Burger" },
+      { name: "Fries" },
+      { name: "Shake", description: "Vanilla soft serve blended until smooth." },
+    ]),
+    true,
+  );
+  assert.equal(
+    shouldFetchProductDetailPages([
+      { name: "Burger", description: "Beef patty with pickles and mustard." },
+      { name: "Fries", ingredientsText: "Potatoes, vegetable oil, and salt." },
+    ]),
+    false,
+  );
+});
+
+test("generic HTML menu cards pair menu-item names with menu-item-sub descriptions", () => {
+  const names = [
+    "Edamame", "Oysters", "Sake Tataki", "Gindara Gyoza", "Nasu",
+    "Maguro Toro", "Wagyu Snack", "Kani", "Abokado", "Toro Taco",
+  ];
+  const cards = names.map((name, index) => `
+    <div class="menu-item" role="listitem">
+      <div class="menu-item-info">
+        <p class="menu-item-name">${name} <span class="menu-item-tag">V</span></p>
+        <p class="menu-item-sub">Ingredient description ${index + 1}</p>
+      </div>
+      <p class="menu-item-price">$${index + 10}</p>
+    </div>
+  `).join("");
+  const result = extractHtmlItems(
+    `<main><section class="menu-section"><h2 class="section-heading">Dinner</h2>${cards}</section></main>`,
+    { id: "founding-farmers-dc", category: "Japanese" },
+    "https://example.com/menu",
+  );
+
+  const parsed = result.items.filter((item) => names.includes(item.name));
+  assert.equal(parsed.length, 10);
+  assert.equal(parsed[0].description, "Ingredient description 1");
+  assert.equal(
+    result.items.some((item) => /^Ingredient description \d+$/.test(item.name)),
+    false,
+  );
+});
+
+test("Toast online ordering state yields structured menu descriptions", () => {
+  const state = {
+    ROOT_QUERY: {
+      menu: {
+        name: "Dinner",
+        items: [
+          {
+            name: "Creole Grilled Salmon",
+            description: "Grilled salmon with crab meat, shrimp, and Creole sauce.",
+            price: 29,
+          },
+        ],
+      },
+    },
+  };
+  const result = extractHtmlItems(
+    `<script>window.__OO_STATE__ = ${JSON.stringify(state)};</script>`,
+    { id: "carolina-kitchen-bar-and-grill-hyattsville-md-dc-metro", category: "American" },
+    "https://order.toasttab.com/online/example-restaurant",
+  );
+  const item = result.items.find((candidate) => candidate.name === "Creole Grilled Salmon");
+  assert.equal(item?.description, "Grilled salmon with crab meat, shrimp, and Creole sauce.");
+  assert.equal(item?.sourceKind, "toast-online-ordering-state");
+});
+
+test("subsection food item cards outrank sequential text and keep descriptions bounded", () => {
+  const result = extractHtmlItems(
+    `
+      <main>
+        <div class="subsection-food"><div class="items">
+          <div class="item">
+            <div class="item-head"><h4 class="item-name">BBQ BRISKET</h4><span class="item-price">24.95</span></div>
+            <div class="item-description"><p>SMOKED BEEF BRISKET, MAC AND CHEESE, SWEET POTATOES, BBQ SAUCE</p></div>
+          </div>
+          ${Array.from({ length: 9 }, (_, index) => `
+            <div class="item">
+              <div class="item-head"><h4 class="item-name">Dish ${index + 1}</h4><span class="item-price">12.95</span></div>
+              <div class="item-description"><p>Chicken, rice, vegetables and sauce</p></div>
+            </div>
+          `).join("")}
+        </div></div>
+        <h2>TACOS</h2>
+      </main>
+    `,
+    {
+      id: "maggie-mcfly-s-springfield-springfield-va-dc-metro",
+      name: "Maggie McFly's | Springfield",
+      category: "American",
+    },
+    "https://www.maggiemcflys.com/menus/springfield-va/",
+    "menu",
+  );
+
+  const brisket = result.items.find((item) => item.name === "BBQ BRISKET");
+  assert.equal(
+    brisket.description,
+    "SMOKED BEEF BRISKET, MAC AND CHEESE, SWEET POTATOES, BBQ SAUCE",
+  );
+  assert.equal(brisket.description.includes("TACOS"), false);
+});
+
+test("generic PDF cleanup stops descriptions at the next positioned menu heading", () => {
+  const records = repairGenericPdfDescriptionBoundaryBleed([
+    createRecord({
+      name: "Caesar Augustus Salad",
+      category: "Brunch",
+      description: "Gem lettuce, hearts of palm, anchovy vinaigrette CRUDO TOSTADA Heirloom corn tortilla, tuna, octopus",
+      sourceKind: "pdf-menu",
+      sourceUrl: "https://example.com/menu.pdf",
+    }),
+    createRecord({
+      name: "Crudo Tostada",
+      category: "Brunch",
+      description: "Heirloom corn tortilla, tuna, octopus",
+      sourceKind: "pdf-menu",
+      sourceUrl: "https://example.com/menu.pdf",
+    }),
+  ]);
+
+  assert.equal(records[0].description, "Gem lettuce, hearts of palm, anchovy vinaigrette");
+  assert.equal(records[1].description, "Heirloom corn tortilla, tuna, octopus");
+});
+
+test("generic PDF cleanup preserves ingredient lists and combination products", () => {
+  const records = repairGenericPdfDescriptionBoundaryBleed([
+    createRecord({
+      name: "Chicken Mole Cazuela",
+      description: "AUTHENTIC MOLE SAUCE | CHICKEN | CORN TORTILLAS",
+      sourceKind: "pdf-menu",
+      sourceUrl: "https://example.com/menu.pdf",
+    }),
+    createRecord({ name: "Corn Tortillas", description: "Three tortillas" }),
+    createRecord({
+      name: "Ultimate Three Meat Combo",
+      description: "Choose any three: Chicken Skewer, Carne Asada, or Lamb Chop",
+      sourceKind: "pdf-menu",
+      sourceUrl: "https://example.com/menu.pdf",
+    }),
+    createRecord({ name: "Chicken Skewer", description: "Grilled chicken" }),
+    createRecord({ name: "Carne Asada", description: "Grilled steak" }),
+  ]);
+
+  assert.equal(records[0].description, "AUTHENTIC MOLE SAUCE | CHICKEN | CORN TORTILLAS");
+  assert.equal(
+    records[2].description,
+    "Choose any three: Chicken Skewer, Carne Asada, or Lamb Chop",
+  );
+});
+
+test("published PDF descriptions contain no unreviewed high-signal row merges", () => {
+  const intentionallyAggregated = new Set([
+    "cafe-milano-washington-dc-dc-metro:burrata",
+    "cafe-milano-washington-dc-dc-metro:costoletta-di-vitello",
+    "cafe-milano-washington-dc-dc-metro:la-gricia",
+    "cafe-milano-washington-dc-dc-metro:la-scala",
+    "cafe-milano-washington-dc-dc-metro:merluzzo-nero-carbonaro",
+    "cafe-milano-washington-dc-dc-metro:parmigiana-di-zucchine",
+    "cafe-milano-washington-dc-dc-metro:san-babila",
+    "cafe-milano-washington-dc-dc-metro:via-condotti",
+    "cafe-milano-washington-dc-dc-metro:via-verdi",
+    "inca-social-vienna-va-dc-metro:current:jalea-mixta",
+    "ivy-city-smokehouse-washington-dc-dc-metro:the-crabcakes",
+    "mi-vida-wharf-dc:un-poco-de-todo",
+    "replacement-eleni-s-greek-taverna-springfield-va:mezze",
+    "replacement-the-little-grand-washington-dc:sweets",
+    "sardi-s-pollo-a-la-brasa-beltsville-washington-dc-dc-metro:5-large",
+    "sardi-s-pollo-a-la-brasa-beltsville-washington-dc-dc-metro:ultimate-3-meat-combo",
+    "sardi-s-pollo-a-la-brasa-beltsville-washington-dc-dc-metro:world-famous-souvlaki",
+    "sardi-s-pollo-a-la-brasa-langley-park-takoma-park-md-dc-metro:5-large",
+    "sardi-s-pollo-a-la-brasa-langley-park-takoma-park-md-dc-metro:ultimate-3-meat-combo",
+    "sardi-s-pollo-a-la-brasa-langley-park-takoma-park-md-dc-metro:world-famous-souvlaki",
+    "succotash-dc:chicken-and-waffles-shrimpngrits",
+    "succotash-dc:dollar2900adult",
+    "succotash-dc:dollar29adult",
+    "succotash-dc:dollar41adult",
+  ]);
+  const offenders = [];
+
+  for (const restaurant of generatedRestaurants.restaurants) {
+    const items = restaurant.items ?? [];
+    const headings = items
+      .map((item) => ({ id: item.id, name: String(item.name ?? "") }))
+      .filter((item) => item.name.length >= 8);
+
+    for (const item of items) {
+      const pdfDerived =
+        /pdf/i.test(String(item.sourceType ?? "")) ||
+        /pdf/i.test(String(restaurant.parserProfile ?? "")) ||
+        (item.sourceUrls ?? []).some((url) => /\.pdf(?:$|\?)/i.test(url));
+      const description = String(item.description ?? "");
+      if (!pdfDerived || !description) continue;
+      const embedsHeading = headings.some(
+        (heading) =>
+          heading.id !== item.id && description.includes(heading.name.toUpperCase()),
+      );
+      const hasLayoutArtifact =
+        /\b(?:DESSERT WINE|WINE PAIRINGS?|BEVERAGE PAIRINGS?|SERVICE FEE)\b/i.test(description) ||
+        /[•·]{3,}/.test(description);
+      if (embedsHeading || hasLayoutArtifact) {
+        offenders.push(`${restaurant.id}:${item.id}`);
+      }
+    }
+  }
+
+  assert.deepEqual(
+    offenders.filter((key) => !intentionallyAggregated.has(key)).sort(),
+    [],
+  );
+});
 
 test("Flipsnack official guide helper decodes embedded guide hashes and extracts page text", () => {
   const encodedHash = "RUFDQTlDNTU2OUIrNzFjYXhoeDRvdA==";
@@ -733,6 +1022,12 @@ test("publish quality removes source boilerplate from descriptions without dropp
     category: "Desserts",
     description: "8 oz cup of Carvel soft-serve ice cream.",
   });
+  const leadingCountDescription = sanitizeMenuItemDisplayFields({
+    id: "twelve-east-coast",
+    name: "12 EAST COAST",
+    category: "Raw Bar",
+    description: "12 east coast oysters",
+  });
   const orderAnytimeNameTail = sanitizeMenuItemDisplayFields({
     id: "thursday-lobster",
     name: "THURSDAY LOBSTER: 1 1/2 lb Maine Lobster - Order Anytime for THURSDAY pickup",
@@ -844,6 +1139,7 @@ test("publish quality removes source boilerplate from descriptions without dropp
     leadingSizeDescription.description,
     "8 oz cup of Carvel soft-serve ice cream.",
   );
+  assert.equal(leadingCountDescription.description, "12 east coast oysters");
   assert.equal(
     orderAnytimeNameTail.name,
     "THURSDAY LOBSTER: 1 1/2 lb Maine Lobster",
@@ -4919,6 +5215,34 @@ test("menu item detail pages with ingredient words are not discovered as officia
   assert.deepEqual(result.officialPageLinks, []);
 });
 
+test("product detail links are discovered independently of generic DOM menu parsing", () => {
+  const result = extractHtmlItems(
+    `
+      <html>
+        <body>
+          <a href="/menu/entrees/grilled-chicken-sandwich">
+            Grilled Chicken Sandwich
+          </a>
+        </body>
+      </html>
+    `,
+    {
+      category: "Chicken",
+      id: "chick-fil-a",
+      name: "Chick-fil-A",
+    },
+    "https://www.chick-fil-a.com/menu",
+    "menu",
+  );
+
+  assert.deepEqual(result.productLinks, [
+    {
+      name: "Grilled Chicken Sandwich",
+      url: "https://www.chick-fil-a.com/menu/entrees/grilled-chicken-sandwich",
+    },
+  ]);
+});
+
 test("Wix restaurant menu API produces shared menu records", () => {
   const payload = {
     items: [
@@ -5497,6 +5821,341 @@ test("product pages extract official allergens from embedded ingredient metafiel
   assert.match(item.ingredientsText, /Contains: Milk, Wheat/);
 });
 
+test("product pages do not publish generic menu and ordering SEO copy as descriptions", () => {
+  const item = extractProductPageItem(
+    `
+      <html>
+        <head>
+          <meta name="description" content="View our iconic menu. Find everything from appetizers to sushi." />
+          <meta property="og:description" content="Order an appetizer online for delivery or pick-up near you." />
+        </head>
+        <body><h1>Flaming Wontons</h1></body>
+      </html>
+    `,
+    { category: "Appetizers", id: "example", name: "Example" },
+    "https://example.com/menu/appetizers/flaming-wontons",
+    null,
+  );
+
+  assert.equal(item.description, null);
+});
+
+test("Chick-fil-A product pages prefer complete visible copy over truncated metadata", () => {
+  const item = extractProductPageItem(
+    `
+      <html>
+        <head>
+          <meta name="description" content="A grilled chicken sandwich served with green leaf" />
+        </head>
+        <body>
+          <main>
+            <h1>Grilled Chicken Sandwich</h1>
+            <p class="has-text-align-center">A lemon-herb marinated chicken breast served on a toasted multigrain bun with green leaf lettuce and tomato.</p>
+            <p class="has-text-align-center">Delivery when you need it</p>
+          </main>
+        </body>
+      </html>
+    `,
+    { category: "Entrées", id: "chick-fil-a", name: "Chick-fil-A" },
+    "https://www.chick-fil-a.com/menu/entrees/grilled-chicken-sandwich",
+    null,
+  );
+
+  assert.equal(
+    item.description,
+    "A lemon-herb marinated chicken breast served on a toasted multigrain bun with green leaf lettuce and tomato.",
+  );
+});
+
+test("Smoothie King product pages prefer complete visible ingredients over truncated metadata", () => {
+  const item = extractProductPageItem(
+    `
+      <html>
+        <head>
+          <meta name="description" content="Bananas, Pineapples, Spinach…" />
+        </head>
+        <body>
+          <main>
+            <h1>Vegan Pineapple Spinach</h1>
+            <div class="product-detail_ingredientsBlock_hash">
+              <h2>Ingredients:</h2>
+              <p>Bananas, Pineapples, Spinach - Organic, Carrots - Organic</p>
+            </div>
+          </main>
+        </body>
+      </html>
+    `,
+    { category: "Smoothies", id: "smoothie-king", name: "Smoothie King" },
+    "https://www.smoothieking.com/menu/smoothies/be-well/vegan-pineapple-spinach/",
+    null,
+  );
+
+  assert.equal(
+    item.description,
+    "Bananas, Pineapples, Spinach - Organic, Carrots - Organic",
+  );
+});
+
+test("P.F. Chang's description adapter removes ordering calls to action", () => {
+  const items = applyOfficialDescriptionAdapters(
+    [
+      {
+        name: "Dynamite Roll",
+        description:
+          "Tempura shrimp, California roll, sriracha aioli, and umami sauce. Order online from your favorite sushi restaurant near you.",
+      },
+      {
+        name: "Shrimp Tempura Roll",
+        description:
+          "Crispy tempura shrimp, avocado, cucumber, and umami sauce. A sushi restaurant classic—order online for pickup or delivery.",
+      },
+    ],
+    { id: "pf-changs" },
+  );
+
+  assert.equal(
+    items[0].description,
+    "Tempura shrimp, California roll, sriracha aioli, and umami sauce.",
+  );
+  assert.equal(
+    items[1].description,
+    "Crispy tempura shrimp, avocado, cucumber, and umami sauce.",
+  );
+});
+
+test("Krispy Kreme description adapter removes its product-page call to action", () => {
+  const items = applyOfficialDescriptionAdapters(
+    [{
+      name: "Original Glazed Doughnut",
+      description:
+        "Our iconic Original Glazed doughnut is hot, fresh, and delicious. View nutrition, ingredients, and order online today.",
+    }],
+    { id: "krispy-kreme" },
+  );
+
+  assert.equal(
+    items[0].description,
+    "Our iconic Original Glazed doughnut is hot, fresh, and delicious.",
+  );
+});
+
+test("official base descriptions inherit only to explicitly configured size variants", () => {
+  const items = applyOfficialDescriptionAdapters(
+    [
+      {
+        id: "daily-warrior",
+        name: "Daily Warrior®",
+        description: "Bananas, peanut butter, dates, blueberries and almonds",
+        sourceType: "product-page",
+        sourceUrls: [
+          "https://www.smoothieking.com/menu/smoothies/be-well/daily-warrior/",
+        ],
+      },
+      {
+        id: "daily-warrior-20-ounce",
+        name: "Daily Warrior, 20 Ounce",
+        description: null,
+        sourceType: "official-api",
+        sourceUrls: ["https://www.nutritionix.com/smoothie-king/menu/premium"],
+      },
+      {
+        id: "daily-warrior-strawberry-20-ounce",
+        name: "Daily Warrior Strawberry, 20 Ounce",
+        description: null,
+        sourceType: "official-api",
+        sourceUrls: ["https://www.nutritionix.com/smoothie-king/menu/premium"],
+      },
+    ],
+    {
+      id: "smoothie-king",
+      domain: "smoothieking.com",
+      descriptionVariantSuffixes: ["20 Ounce", "32 Ounce", "44 Ounce"],
+    },
+  );
+
+  assert.equal(items[1].description, items[0].description);
+  assert.equal(items[2].description, null);
+  assert.deepEqual(items[1].sourceUrls, [
+    "https://www.nutritionix.com/smoothie-king/menu/premium",
+    "https://www.smoothieking.com/menu/smoothies/be-well/daily-warrior/",
+  ]);
+});
+
+test("size inheritance rejects non-owned base descriptions and conflicting bases", () => {
+  const items = applyOfficialDescriptionAdapters(
+    [
+      {
+        name: "Daily Warrior",
+        description: "First description",
+        sourceType: "product-page",
+        sourceUrls: ["https://untrusted.example/menu/daily-warrior"],
+      },
+      {
+        name: "Daily Warrior, 20 Ounce",
+        description: null,
+        sourceType: "official-api",
+        sourceUrls: [],
+      },
+    ],
+    {
+      id: "smoothie-king",
+      domain: "smoothieking.com",
+      descriptionVariantSuffixes: ["20 Ounce"],
+    },
+  );
+
+  assert.equal(items[1].description, null);
+});
+
+test("True Food description adapter removes nutrition suffixes and rejects fragments", () => {
+  const items = applyOfficialDescriptionAdapters(
+    [
+      {
+        name: "Chicken Parmesan",
+        description: "Air-fried chicken, mozzarella, tomato sauce 56G PROTEIN",
+      },
+      {
+        name: "Chocolate Chip Cookie",
+        description: "house-made 360 CAL",
+      },
+      {
+        name: "Cheeseburger",
+        description: "served with hummus and rainbow carrots; swap for",
+      },
+      {
+        name: "Steak Frites",
+        description: "peppercorn sauce, air-fried fries, simple salad 78G",
+      },
+      {
+        name: "Lemon Oregano Chicken Wrap",
+        description:
+          "organic mixed greens, cucumber, carrots, snap peas, tomatoes, lemon oregano vinaigrette v Vegan veg Vegetarian gf Gluten-Friendly",
+      },
+    ],
+    { id: "true-food-kitchen" },
+  );
+
+  assert.equal(items[0].description, "Air-fried chicken, mozzarella, tomato sauce");
+  assert.equal(items[1].description, null);
+  assert.equal(items[2].description, null);
+  assert.equal(items[3].description, "peppercorn sauce, air-fried fries, simple salad");
+  assert.equal(
+    items[4].description,
+    "organic mixed greens, cucumber, carrots, snap peas, tomatoes, lemon oregano vinaigrette",
+  );
+});
+
+test("Sanity Portable Text descriptions flatten only ordered block spans", () => {
+  assert.equal(
+    plainTextFromSanityBlocks([
+      {
+        _type: "block",
+        children: [
+          { _type: "span", text: "Flame-grilled " },
+          { _type: "span", text: "beef." },
+        ],
+        markDefs: [{ title: "must not leak" }],
+      },
+      { _type: "image", caption: "must not leak" },
+      { _type: "block", children: [{ _type: "span", text: "Served hot." }] },
+    ]),
+    "Flame-grilled beef. Served hot.",
+  );
+  assert.equal(plainTextFromSanityBlocks({ children: [] }), null);
+  assert.equal(plainTextFromSanityBlocks([{ _type: "image" }]), null);
+});
+
+test("Arby's CMS adapter parses only the inert product detail map", () => {
+  const payload = {
+    productIdToProductDetailsMap: {
+      one: {
+        productName: "Jamocha Shake",
+        description: "Chocolate and coffee flavors blended into a creamy shake.",
+      },
+    },
+    productsById: {
+      ignored: { fields: { metaDescription: "Order online for delivery." } },
+    },
+  };
+  const bundle = `doNotExecute();e.exports=JSON.parse(${JSON.stringify(JSON.stringify(payload))});`;
+  const records = extractArbysCmsDataRecords(
+    bundle,
+    { id: "arbys", category: "Sandwich" },
+    "https://www.arbys.com/_next/static/chunks/cms-data-deadbeef.js",
+    { role: "arbys-cms-data-bundle" },
+  );
+
+  assert.equal(records.length, 1);
+  assert.equal(records[0].name, "Jamocha Shake");
+  assert.equal(records[0].allergenSourceType, "unavailable");
+  assert.doesNotMatch(records[0].description, /Order online/);
+  assert.deepEqual(
+    extractArbysCmsDataRecords(
+      "e.exports=JSON.parse('broken)",
+      { id: "arbys" },
+      "https://www.arbys.com/cms-data.js",
+      { role: "arbys-cms-data-bundle" },
+    ),
+    [],
+  );
+});
+
+test("configured description rules allow only exact owned aliases and variants", () => {
+  const preferred = [
+    { name: "Veggie Sandwich with Cheese", description: null },
+    { name: "Regular Cajun Style Fries", description: null },
+    { name: "Small Cajun Style Fries", description: null },
+  ];
+  const supplemental = [
+    {
+      name: "Cheese Veggie Sandwich",
+      description: "Fresh vegetables and melted cheese on a toasted bun.",
+      sourceUrl: "https://www.fiveguys.com/menu/sandwiches/",
+    },
+    {
+      name: "Cajun Style Fries",
+      description: "Fresh-cut fries cooked in peanut oil with Cajun seasoning.",
+      sourceUrl: "https://www.fiveguys.com/menu/fries/",
+    },
+  ];
+  const result = applyConfiguredDescriptionSupplementRules(
+    preferred,
+    supplemental,
+    {
+      domain: "fiveguys.com",
+      descriptionAliases: {
+        "Veggie Sandwich with Cheese": "Cheese Veggie Sandwich",
+      },
+      descriptionVariantRules: [
+        {
+          position: "prefix",
+          affixes: ["Regular", "Large"],
+          baseNames: ["Cajun Style Fries"],
+        },
+      ],
+    },
+  );
+
+  assert.match(result[0].description, /melted cheese/);
+  assert.match(result[1].description, /Cajun seasoning/);
+  assert.equal(result[2].description, null);
+});
+
+test("description adapter source contracts remain narrowly configured", () => {
+  const burgerKing = restaurantSources.find((source) => source.id === "burger-king");
+  const popeyes = restaurantSources.find((source) => source.id === "popeyes");
+  const firstWatch = restaurantSources.find((source) => source.id === "first-watch");
+  const fiveGuys = restaurantSources.find((source) => source.id === "five-guys");
+  const arbys = restaurantSources.find((source) => source.id === "arbys");
+
+  assert.equal(firstWatch.profileMenuIsCanonical, true);
+  assert.deepEqual(firstWatch.profileMenuCanonicalSourceKinds, ["json-structured"]);
+  assert.equal(fiveGuys.menuUrls.length, 8);
+  assert.deepEqual(arbys.descriptionVariantRules[0].affixes, ["Small", "Medium", "Large"]);
+  assert.equal(burgerKing.domain, "bk.com");
+  assert.equal(popeyes.domain, "popeyes.com");
+});
+
 test("product pages extract official allergens from visible treat contains sections", () => {
   const item = extractProductPageItem(
     `
@@ -5677,6 +6336,30 @@ test("Lunchbox Nova storefronts discover app bundles and parse class-based aller
   assert.ok(bundleLink);
   assert.equal(bundleLink.url, "https://order.mamannyc.com/js/app.abc123.js");
   assert.equal(bundleLink.storeId, "127");
+
+  const lunchboxApiLinks = extractLunchboxNovaMenuApiLinksFromBundle(
+    'const base="https://popupbagels.lunchbox.io/api/v2"; const key="ba687296-a292-11ed-a39b-f23c918b87aa";',
+    { category: "Bagels", id: "popup-bagels-georgetown-dc", name: "PopUp Bagels" },
+    bundleLink.url,
+    {
+      referer: "https://order.popupbagels.com/00038/popup-bagels---washington-dc",
+      role: "lunchbox-nova-app-bundle",
+      storeId: "00038",
+    },
+  );
+
+  assert.equal(
+    lunchboxApiLinks[0].url,
+    "https://popupbagels.lunchbox.io/api/v2/stores/00038/menus",
+  );
+  assert.equal(
+    lunchboxApiLinks[0].fetchOptions.extraHeaders["ND-API-Key"],
+    "ba687296-a292-11ed-a39b-f23c918b87aa",
+  );
+
+  assert.equal(looksLikeStreetAddressScope("catahoula-79-potomac-ave-se"), true);
+  assert.equal(looksLikeStreetAddressScope("washington-street"), true);
+  assert.equal(looksLikeStreetAddressScope("potomac-md"), false);
 
   const records = extractOfficialApiItems(
     JSON.stringify([
@@ -5955,6 +6638,400 @@ test("Founding Farmers locations share one parser profile and document discovery
     }),
     null,
   );
+});
+
+test("SER uses its current Arlington menu surface behind browser fetch", () => {
+  const ser = restaurantSources.find(
+    (source) => source.id === "ser-restaurant-arlington-va",
+  );
+
+  assert.ok(ser);
+  assert.equal(ser.useBrowserFetch, true);
+  assert.equal(ser.city, "Arlington");
+  assert.ok(
+    ser.menuUrls.includes("https://serrestaurant.com/menu/serrestaurant"),
+  );
+});
+
+test("Makers Union Reston uses the current location-scoped official PDF", () => {
+  const makersUnion = restaurantSources.find(
+    (source) => source.id === "makers-union-reston-va",
+  );
+
+  assert.ok(makersUnion);
+  assert.equal(makersUnion.city, "Reston");
+  assert.ok(
+    makersUnion.menuUrls.includes(
+      "https://www.makersunionpub.com/s/MakersUnion-2026Menus-VA1-082626-Reston-Arlington.pdf",
+    ),
+  );
+});
+
+test("Evening Star covers its current dinner and HiFi menu surfaces", () => {
+  const eveningStar = restaurantSources.find(
+    (source) => source.id === "evening-star-cafe-alexandria-va",
+  );
+
+  assert.ok(eveningStar);
+  assert.equal(eveningStar.city, "Alexandria");
+  assert.ok(eveningStar.menuUrls.some((url) => url.includes("c93a4354")));
+  assert.ok(eveningStar.menuUrls.some((url) => url.includes("6caeafa1")));
+});
+
+test("Hot Peppercorn uses its current official Springfield ordering surface", () => {
+  const hotPeppercorn = restaurantSources.find(
+    (source) => source.id === "osm-hot-peppercorn-asian-cuisin-3381531103",
+  );
+
+  assert.ok(hotPeppercorn);
+  assert.equal(hotPeppercorn.city, "Springfield");
+  assert.equal(hotPeppercorn.domain, "hotpeppercornspringfield.com");
+  assert.ok(
+    hotPeppercorn.menuUrls.some((url) => url.includes("order.mealkeyway.com")),
+  );
+});
+
+test("Billy Hicks and The Daily Dish use current official menu surfaces", () => {
+  const billyHicks = restaurantSources.find(
+    (source) => source.id === "billy-hicks-georgetown-dc",
+  );
+  const dailyDish = restaurantSources.find(
+    (source) => source.id === "replacement-the-daily-dish-silver-spring-md",
+  );
+
+  assert.ok(billyHicks?.menuUrls.some((url) => url.endsWith("BH-Menu.pdf")));
+  assert.ok(dailyDish);
+  assert.equal(dailyDish.city, "Silver Spring");
+  assert.ok(dailyDish.menuUrls.some((url) => url.includes("order.toasttab.com")));
+});
+
+test("The Lost Fox and South House Garden use current official ordering surfaces", () => {
+  const lostFox = restaurantSources.find(
+    (source) => source.id === "replacement-the-lost-fox-ashburn-va",
+  );
+  const southHouse = restaurantSources.find(
+    (source) => source.id === "replacement-south-house-garden-gaithersburg-md",
+  );
+
+  assert.ok(lostFox?.menuUrls.includes("https://order.toasttab.com/online/the-lost-fox"));
+  assert.ok(southHouse?.menuUrls.includes("https://order.toasttab.com/online/south-house-garden"));
+});
+
+test("Big Tony's and Marx Cafe use their current official menu surfaces", () => {
+  const bigTony = restaurantSources.find(
+    (source) => source.id === "osm-big-tony-s-pizzeria-dive-11767597986",
+  );
+  const marxCafe = restaurantSources.find(
+    (source) => source.id === "replacement-marx-cafe-revolutionary-cuisine-washington-dc",
+  );
+
+  assert.equal(bigTony?.domain, "bigtonyspizzabar.com");
+  assert.ok(bigTony?.menuUrls.includes("https://bigtonyspizzabar.com/order"));
+  assert.ok(
+    bigTony?.menuUrls.includes("https://r.jina.ai/http://bigtonyspizzabar.com/order"),
+  );
+  assert.equal(marxCafe?.domain, "marxcafemtp.com");
+  assert.ok(marxCafe?.menuUrls.includes("https://marxcafemtp.com/menu/"));
+});
+
+test("Bukom Cafe and Kung Fu Tea use current official description surfaces", () => {
+  const bukom = restaurantSources.find((source) => source.id === "bukom-cafe-dc");
+  const kungFuTea = restaurantSources.find(
+    (source) => source.id === "chain-kung-fu-tea",
+  );
+
+  assert.equal(bukom?.domain, "bukomdc.com");
+  assert.ok(bukom?.menuUrls.includes("https://bukomdc.com/menu/"));
+  assert.ok(kungFuTea?.menuUrls.includes("https://www.kungfutea.com/products/"));
+  assert.ok(kungFuTea?.allergenUrls.includes("https://www.kungfutea.com/nutrition/"));
+});
+
+test("Not Your Average Joe's uses browser-backed current menu and allergen surfaces", () => {
+  const source = restaurantSources.find(
+    (candidate) => candidate.id === "osm-not-your-average-joe-s-4719278718",
+  );
+
+  assert.equal(source?.useBrowserFetch, true);
+  assert.ok(source?.menuUrls.includes("https://www.notyouraveragejoes.com/menu"));
+  assert.ok(source?.menuUrls.includes("https://www.notyouraveragejoes.com/waltham"));
+  assert.ok(source?.allergenUrls.some((url) => url.includes("allergen-info")));
+});
+
+test("Enatye and ISAAC's use browser-backed current official menu surfaces", () => {
+  const enatye = restaurantSources.find(
+    (source) => source.id === "enatye-ethiopian-restaurant-herndon-va-dc-metro",
+  );
+  const isaacs = restaurantSources.find(
+    (source) => source.id === "osm-isaac-s-poultry-market-170085572",
+  );
+
+  assert.equal(enatye?.useBrowserFetch, true);
+  assert.ok(enatye?.menuUrls.includes("https://enatyerestaurant.com/food-menu"));
+  assert.equal(isaacs?.useBrowserFetch, true);
+  assert.ok(isaacs?.menuUrls.some((url) => url.includes("12163-darnestown-road")));
+});
+
+test("Tatte and Mandalay use their current item-bearing official menu surfaces", () => {
+  const tatte = restaurantSources.find((source) => source.id === "tatte-dc");
+  const mandalay = restaurantSources.find(
+    (source) => source.id === "mandalay-silver-spring-md",
+  );
+
+  assert.equal(tatte?.useBrowserFetch, true);
+  assert.equal(tatte?.forceBrowserFetch, true);
+  assert.equal(tatte?.includeNonAlcoholicBeverages, true);
+  assert.ok(tatte?.menuUrls.includes("https://tattebakery.com/menu/247374"));
+  assert.equal(mandalay?.useBrowserFetch, true);
+  assert.ok(
+    mandalay?.menuUrls.includes(
+      "https://www.toasttab.com/local/order/mandalay-restaurant-cafe",
+    ),
+  );
+  assert.ok(mandalay?.menuUrls.some((url) => url.endsWith(".pdf")));
+});
+
+test("BlackSalt audits its current official item-bearing menu pages", () => {
+  const source = restaurantSources.find(
+    (candidate) => candidate.id === "blacksalt-washington-dc-dc-metro",
+  );
+
+  assert.ok(source?.menuUrls.includes("https://www.blacksaltrestaurant.com/lunch-menu/"));
+  assert.ok(source?.menuUrls.includes("https://www.blacksaltrestaurant.com/dinner-menu/"));
+  assert.equal(source?.menuUrls.includes("http://www.blacksaltrestaurant.com/"), false);
+});
+
+test("Round 45 blocked sites use rendered current ordering and menu surfaces", () => {
+  const byId = (id) => restaurantSources.find((source) => source.id === id);
+  const grazie = byId("grazie-grazie-dc");
+  const miRancho = byId("mi-rancho-silver-spring-md-dc-metro");
+  const dogwood = byId("dogwood-tavern-falls-church-va-dc-metro");
+  const greenFare = byId("osm-greenfare-12246325393");
+
+  for (const source of [grazie, miRancho, dogwood, greenFare]) {
+    assert.equal(source?.useBrowserFetch, true);
+  }
+  assert.ok(grazie?.menuUrls.some((url) => url.includes("toasttab.com")));
+  assert.ok(miRancho?.menuUrls.some((url) => url.includes("8701-ramsey-avenue")));
+  assert.ok(dogwood?.menuUrls.includes("https://www.dogwoodtavern.com/menu"));
+  assert.ok(greenFare?.menuUrls.includes("https://greenfare.com/desserts/"));
+});
+
+test("Round 46 blocked sites use current official menu surfaces", () => {
+  const byId = (id) => restaurantSources.find((source) => source.id === id);
+  const pennQuarter = byId("penn-quarter-sports-tavern-washington-dc-dc-metro");
+  const pearlDive = byId("pearl-dive-oyster-palace-dc");
+  const shia = byId("shia-dc");
+
+  assert.equal(pennQuarter?.useBrowserFetch, true);
+  assert.ok(pennQuarter?.menuUrls.includes("https://www.pennquartersportstavern.com/menu"));
+  assert.equal(pearlDive?.menuUrls.filter((url) => url.endsWith(".pdf")).length, 2);
+  assert.equal(shia?.useBrowserFetch, true);
+  assert.ok(shia?.menuUrls.includes("https://shiarestaurant.org/old-page1564878-menu/"));
+});
+
+test("Round 47 blocked sites use rendered official ordering and menu surfaces", () => {
+  const puttery = restaurantSources.find(
+    (source) => source.id === "puttery-washington-dc-dc-metro",
+  );
+  const lighthouse = restaurantSources.find(
+    (source) => source.id === "lighthouse-tofu-annandale-va-dc-metro",
+  );
+
+  assert.equal(puttery?.useBrowserFetch, true);
+  assert.ok(puttery?.menuUrls.some((url) => url.includes("260325_Puttery_DC_Core_Menu.pdf")));
+  assert.equal(lighthouse?.useBrowserFetch, true);
+  assert.ok(lighthouse?.menuUrls.includes("https://order1.usakor.com/lighthousetofu/"));
+});
+
+test("Round 48 uses current restaurant-owned and location-specific menu surfaces", () => {
+  const byId = (id) => restaurantSources.find((source) => source.id === id);
+  const dyfres = byId("dyfres-burger-springfield-dc-metro");
+  const zinnia = byId("zinnia-silver-spring-dc-metro");
+  const altaStrada = byId("replacement-alta-strada-fairfax-va-fairfax-va");
+
+  assert.equal(dyfres?.useBrowserFetch, true);
+  assert.ok(dyfres?.menuUrls.includes("https://dyfresburger.com/"));
+  assert.equal(zinnia?.domain, "eatzinnia.com");
+  assert.ok(zinnia?.menuUrls.some((url) => url.includes("Zinnia-All-Day-Menu.pdf")));
+  assert.equal(altaStrada?.useBrowserFetch, true);
+  assert.ok(altaStrada?.menuUrls.every((url) => !url.includes("foxwoods")));
+  assert.ok(altaStrada?.menuUrls.some((url) => url.includes("mosaic-district-dinner-menu")));
+});
+
+test("Round 49 replaces stale or thin menu surfaces with current official sources", () => {
+  const byId = (id) => restaurantSources.find((source) => source.id === id);
+  const jimmys = byId("jimmys-old-town-tavern-herndon-va-dc-metro");
+  const pearlStreet = byId("pearl-street-warehouse-dc");
+  const honor = byId("replacement-honor-brewing-kitchen-fairfax-fairfax-va");
+
+  assert.equal(jimmys?.domain, "jottnew.com");
+  assert.ok(jimmys?.menuUrls.some((url) => url.includes("february-2026-menu-complete.pdf")));
+  assert.equal(pearlStreet?.useBrowserFetch, true);
+  assert.ok(pearlStreet?.menuUrls.some((url) => url.includes("toasttab.com/local/order")));
+  assert.equal(honor?.useBrowserFetch, true);
+  assert.ok(honor?.menuUrls.includes("https://order.toasttab.com/online/honor-beer-kitchen"));
+});
+
+test("Round 50 reconciles China Express's image PDF with its linked structured menu", () => {
+  const chinaExpress = restaurantSources.find((source) => source.id === "chain-china-express");
+
+  assert.ok(chinaExpress?.menuUrls.includes("https://chinaexpresstysons.com/ChinaExpressMenu2026.pdf"));
+  assert.ok(chinaExpress?.menuUrls.includes("https://www.mealage.com/2foodmenu8.jsp?id=9338"));
+});
+
+test("Round 51 uses live rendered menus and records reviewed stale-location outcomes", () => {
+  const byId = (id) => restaurantSources.find((source) => source.id === id);
+  const frontPorch = byId("osm-front-porch-514348150");
+  const hersheys = byId("osm-hershey-s-166986918");
+  const kingPollo = byId("osm-king-pollo-of-reston-5353088952");
+  const elilta = byId("replacement-elilta-restaurant-silver-spring-md");
+
+  assert.equal(frontPorch?.descriptionRecoveryDisposition, "stale-location-no-current-menu");
+  assert.equal(kingPollo?.descriptionRecoveryDisposition, "stale-location-no-current-menu");
+  assert.equal(hersheys?.useBrowserFetch, true);
+  assert.ok(hersheys?.menuUrls.some((url) => url.includes("doordash.com/store/hersheys")));
+  assert.equal(elilta?.useBrowserFetch, true);
+});
+
+test("Round 52 records Boulangerie Christophe's reviewed image-menu boundary", () => {
+  const source = restaurantSources.find(
+    (candidate) => candidate.id === "boulangerie-christophe-washington-dc-dc-metro",
+  );
+
+  assert.equal(source?.descriptionRecoveryDisposition, "reviewed-image-menu-no-additional-copy");
+  assert.ok(source?.menuUrls.some((url) => url.includes("order.online/store/boulangerie-christophe")));
+});
+
+test("Round 54 parses Beaver Builder restaurant menus without mistaking passive Cloudflare scripts for a challenge", () => {
+  const names = [
+    "Chicken Plate",
+    "Salmon Plate",
+    "Turkey Plate",
+    "Brisket Plate",
+    "Shrimp Plate",
+    "Pork Plate",
+    "Tuna Plate",
+    "Crab Plate",
+    "Steak Plate",
+    "Vegetable Plate",
+  ];
+  const cards = names.map((name, index) => `
+    <div class="bbvm-restaurant-menu-item">
+      <div class="menu-item-title">${name}</div>
+      <div class="menu-item-description">Chicken, greens, and sauce ${index + 1}.</div>
+    </div>`).join("");
+  const result = extractHtmlItems(
+    `<html><body>
+      <div class="bbvm-restaurant-menu-items-wrapper">
+        <h2 class="bbvm-restaurant-menu-items-heading">Main Fare</h2>
+        ${cards}
+      </div>
+      <script src="/cdn-cgi/challenge-platform/scripts/jsd/main.js"></script>
+    </body></html>`,
+    { id: "dogfish-head-alehouse-gaithersburg-md-dc-metro", category: "American" },
+    "https://dogfishalehouse.com/menu/",
+  );
+
+  assert.equal(result.items.length, 10);
+  assert.equal(result.items[0].name, "Chicken Plate");
+  assert.equal(result.items[0].description, "Chicken, greens, and sauce 1.");
+  assert.equal(result.items[0].category, "Main Fare");
+  assert.equal(result.items[0].sourceKind, "beaver-builder-restaurant-menu");
+});
+
+test("Round 55 discovers and parses official Marqii menu widgets", () => {
+  const page = extractHtmlItems(
+    `<div data-marqii="menus-87ff0f8b-25ba-490b-a2ef-4165bf41a160"></div>`,
+    { id: "oyamel-dc", category: "Mexican" },
+    "https://www.oyamel.com/menu/main-menu-marquii/",
+  );
+  assert.ok(
+    page.apiLinks.some(
+      (link) =>
+        link.role === "marqii-menu-api" &&
+        link.url.includes("87ff0f8b-25ba-490b-a2ef-4165bf41a160"),
+    ),
+  );
+
+  const records = extractOfficialApiItems(
+    JSON.stringify({
+      data: [
+        {
+          name: "MAIN MENU",
+          sections: [
+            {
+              name: "Ceviches",
+              items: [
+                {
+                  name: "Ceviche Verde",
+                  description: "Bass, lime, jalapeño, avocado, and tomatillo.",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    }),
+    { id: "oyamel-dc", category: "Mexican" },
+    "https://embed.marqii.com/api/v2/public/widget/87ff0f8b-25ba-490b-a2ef-4165bf41a160?widgetType=menus",
+  );
+  assert.equal(records.length, 1);
+  assert.equal(records[0].name, "Ceviche Verde");
+  assert.equal(records[0].category, "Ceviches");
+  assert.equal(records[0].sourceKind, "marqii-menu-api");
+});
+
+test("Round 56 routes Aracosia and Charm Thai through their current menu surfaces", () => {
+  const byId = (id) => restaurantSources.find((source) => source.id === id);
+  const aracosia = byId("osm-aracosia-3584164912");
+  const charmThai = byId("osm-charm-thai-1671377421");
+
+  assert.ok(aracosia?.menuUrls.includes("https://www.aracosiamclean.com/menu-1"));
+  assert.ok(
+    charmThai?.menuUrls.some((url) =>
+      url.includes("toasttab.com/local/order/charm-thai-8408-georgia-ave"),
+    ),
+  );
+});
+
+test("Round 57 parses compact section menus without turning descriptions into item names", () => {
+  registerBrandAdapterSource({
+    id: "round-57-compact-section-fixture",
+    name: "Round 57 Fixture",
+    category: "Indian",
+    domain: "example.com",
+    type: "local",
+    allowUnavailableAllergenFallback: true,
+    menuUrls: ["https://example.com/menu"],
+    allergenUrls: [],
+  });
+  const names = [
+    "Chicken Curry",
+    "Lamb Curry",
+    "Shrimp Curry",
+    "Fish Curry",
+    "Paneer Curry",
+    "Goat Curry",
+    "Vegetable Curry",
+    "Egg Curry",
+    "Beef Curry",
+    "Chickpea Curry",
+  ];
+  const cards = names.map((name) => `
+    <div class="mn-item">
+      <div class="mn-item-row"><span class="mn-item-name">${name}</span></div>
+      <div class="mn-item-desc">${name} simmered with herbs and spices.</div>
+    </div>`).join("");
+  const result = extractHtmlItems(
+    `<div class="mn-section"><div class="mn-section-title">Entrées</div>${cards}</div>`,
+    { id: "round-57-compact-section-fixture", category: "Indian" },
+    "https://example.com/menu",
+  );
+
+  assert.equal(result.items.length, 10);
+  assert.equal(result.items[0].name, "Chicken Curry");
+  assert.equal(result.items[0].category, "Entrées");
+  assert.equal(result.items[0].sourceKind, "compact-section-menu");
 });
 
 test("configured special menus are audited while discovered special menus stay conservative", () => {
@@ -19719,8 +20796,17 @@ test("restaurant search index emits metadata, popularity, token, and geo rows", 
 test("restaurant compatibility summary stores exact item indexes", () => {
   const summary = compatibilitySummaryForRestaurant({
     items: [
-      { allergens: ["wheat", "milk"], name: "Mac" },
-      { allergens: ["wheat"], mayContain: ["soy"], name: "Bread" },
+      {
+        allergenSourceType: "official-allergen-menu",
+        allergens: ["wheat", "milk"],
+        name: "Mac",
+      },
+      {
+        allergenSourceType: "official-allergen-menu",
+        allergens: ["wheat"],
+        mayContain: ["soy"],
+        name: "Bread",
+      },
       { allergenSourceType: "unavailable", allergens: [], name: "Mystery" },
     ],
   });
@@ -19728,7 +20814,7 @@ test("restaurant compatibility summary stores exact item indexes", () => {
   assert.deepEqual(summary.directAllergenItemCounts.wheat, 2);
   assert.deepEqual(summary.directAllergenItemIndexes.wheat, [0, 1]);
   assert.deepEqual(summary.mayContainAllergenItemIndexes.soy, [1]);
-  assert.deepEqual(summary.unavailableItemIndexes, [0, 1, 2]);
+  assert.deepEqual(summary.unavailableItemIndexes, [2]);
 });
 
 test("restaurant compatibility summary keeps official negative coverage allergy-specific", () => {
@@ -19749,11 +20835,11 @@ test("restaurant compatibility summary keeps official negative coverage allergy-
 
   assert.deepEqual(summary.unavailableAllergenItemIndexes.milk, []);
   assert.deepEqual(summary.unavailableAllergenItemIndexes.gluten, [0]);
-  assert.deepEqual(summary.unavailableAllergenItemIndexes.peanut, [0]);
+  assert.deepEqual(summary.unavailableAllergenItemIndexes.peanut, []);
   assert.deepEqual(summary.unavailableItemIndexes, []);
 });
 
-test("unprofiled items cannot inherit all-allergen coverage from sibling profiles", () => {
+test("only exhaustive official allergen disclosures use inclusion by exclusion", () => {
   const summary = compatibilitySummaryForRestaurant({
     officialAllergenProfiles: {
       m1: { coveredAllergenIds: ["milk", "shellfish", "tree-nut"] },
@@ -19775,6 +20861,70 @@ test("unprofiled items cannot inherit all-allergen coverage from sibling profile
 
   assert.deepEqual(summary.unavailableAllergenItemIndexes.shellfish, [1]);
   assert.deepEqual(summary.unavailableAllergenItemIndexes["tree-nut"], [1]);
+  assert.deepEqual(summary.unavailableAllergenItemIndexes.gluten, [0, 1]);
+});
+
+test("ingredient-derived claims are indexed as Ingredient Intelligence, never official data", () => {
+  const summary = compatibilitySummaryForRestaurant({
+    items: [
+      {
+        allergenSourceType: "restaurant_ingredients",
+        allergens: ["shellfish"],
+        description: "Crab with herbs and remoulade.",
+        name: "Crab Cake",
+      },
+    ],
+  });
+
+  assert.deepEqual(summary.directAllergenItemIndexes.shellfish, []);
+  assert.deepEqual(summary.inferredAllergenItemIndexes.shellfish, [0]);
+  assert.deepEqual(summary.ingredientIntelligenceItemIndexes, [0]);
+  assert.deepEqual(summary.unavailableAllergenItemIndexes.shellfish, [0]);
+  assert.equal(summary.officialItemCount, 0);
+});
+
+test("reviewed Ingredient Intelligence without a profile signal is indexed as allergen-specific clear", () => {
+  const summary = compatibilitySummaryForRestaurant({
+    items: [
+      {
+        allergenSourceType: "unavailable",
+        allergens: [],
+        inferredAllergenSignals: [
+          { c: "high", e: ["title:lobster"], id: "shellfish" },
+        ],
+        ingredientIntelligenceReviewed: true,
+        name: "Lobster Salad Bun",
+      },
+      {
+        allergenSourceType: "unavailable",
+        allergens: [],
+        inferredAllergenSignals: [],
+        ingredientIntelligenceReviewed: true,
+        name: "Avocado Salad",
+      },
+    ],
+  });
+
+  assert.deepEqual(summary.inferredAllergenItemIndexes.shellfish, [0]);
+  assert.deepEqual(summary.ingredientIntelligenceSafeAllergenItemIndexes.shellfish, [1]);
+  assert.deepEqual(summary.ingredientIntelligenceSafeAllergenItemIndexes["tree-nut"], [0, 1]);
+});
+
+test("positive-only disclosures do not imply negative allergen coverage", () => {
+  const summary = compatibilitySummaryForRestaurant({
+    items: [
+      {
+        allergenSourceType: "restaurant_issued_positive",
+        allergens: ["milk"],
+        name: "Positive-only item",
+      },
+    ],
+  });
+
+  assert.deepEqual(summary.directAllergenItemIndexes.milk, [0]);
+  assert.deepEqual(summary.unavailableAllergenItemIndexes.milk, []);
+  assert.deepEqual(summary.unavailableAllergenItemIndexes.peanut, [0]);
+  assert.deepEqual(summary.unavailableAllergenItemIndexes["tree-nut"], [0]);
 });
 
 test("colon-suffixed section labels are structural headings rather than menu items", () => {
@@ -20033,6 +21183,38 @@ test("ingredient intelligence infers chicken parmesan milk wheat and egg signals
   assertAllergenSignalsInclude(inference, ["egg", "milk", "wheat"]);
 });
 
+test("ingredient intelligence recognizes Bananas Foster milk risk", async () => {
+  const manifest = await getDefaultIngredientIntelligenceManifest();
+  const inference = inferMenuItemIngredientIntelligence(
+    {
+      allergenSourceType: "ingredient_intelligence",
+      category: "Breakfast/Brunch",
+      description: "",
+      name: "Bananas Foster",
+    },
+    { manifest },
+  );
+
+  assertAllergenSignalsInclude(inference, ["milk"]);
+});
+
+test("ingredient intelligence records a reviewed no-signal result", async () => {
+  const manifest = await getDefaultIngredientIntelligenceManifest();
+  const inference = inferMenuItemIngredientIntelligence(
+    {
+      allergenSourceType: "ingredient_intelligence",
+      category: "Toppings",
+      description: "",
+      name: "Maine Blueberry Compote",
+    },
+    { manifest },
+  );
+
+  assert.equal(inference.ingredientIntelligenceReviewed, true);
+  assert.deepEqual(inference.inferredAllergenSignals, []);
+  assert.match(inference.inferenceSummary, /No common allergen signals/i);
+});
+
 test("ingredient intelligence infers cheeseburger milk wheat and gluten signals", async () => {
   const manifest = await getDefaultIngredientIntelligenceManifest();
   const inference = inferMenuItemIngredientIntelligence(
@@ -20055,7 +21237,7 @@ test("ingredient intelligence infers cheeseburger milk wheat and gluten signals"
   );
 });
 
-test("ingredient intelligence only emits signals outside official profile coverage", async () => {
+test("ingredient intelligence never supplements an official allergen item", async () => {
   const manifest = await getDefaultIngredientIntelligenceManifest();
   const inference = inferMenuItemIngredientIntelligence(
     {
@@ -20074,14 +21256,10 @@ test("ingredient intelligence only emits signals outside official profile covera
     },
   );
 
-  assertAllergenSignalsInclude(inference, ["gluten", "wheat"]);
-  assert.equal(
-    inference.inferredAllergenSignals.some((signal) => signal.id === "milk"),
-    false,
-  );
+  assert.equal(inference, null);
 });
 
-test("restaurant-issued allergen terms are promoted out of Ingredient Intelligence", async () => {
+test("restaurant-issued description terms are not promoted into official allergens", async () => {
   const manifest = await getDefaultIngredientIntelligenceManifest();
   const item = annotateMenuItemWithIngredientIntelligence(
     {
@@ -20101,7 +21279,7 @@ test("restaurant-issued allergen terms are promoted out of Ingredient Intelligen
     },
   );
 
-  assert.deepEqual(item.allergens, ["mustard"]);
+  assert.deepEqual(item.allergens, []);
   assert.equal(
     item.inferredAllergenSignals?.some((signal) => signal.id === "mustard") ??
       false,
@@ -20138,7 +21316,7 @@ test("official API may-contain clauses become canonical cross-contact data", asy
   );
 });
 
-test("culinary aliases and negated ingredients remain outside official promotion", async () => {
+test("culinary aliases and negated ingredients do not alter official items", async () => {
   const manifest = await getDefaultIngredientIntelligenceManifest();
   const profiles = { m1: { coveredAllergenIds: ["milk"] } };
   const bao = annotateMenuItemWithIngredientIntelligence(
@@ -20170,10 +21348,7 @@ test("culinary aliases and negated ingredients remain outside official promotion
   );
 
   assert.deepEqual(bao.allergens, []);
-  assert.equal(
-    bao.inferredAllergenSignals?.some((signal) => signal.id === "wheat"),
-    true,
-  );
+  assert.equal(bao.inferredAllergenSignals, undefined);
   assert.deepEqual(withoutCheese.allergens, []);
 });
 
@@ -22576,6 +23751,393 @@ test("ingredient intelligence annotates review-only fields without official safe
   );
   assert.equal("safetyStatus" in item, false);
 });
+
+test("Nutritionix option projection turns an unresolved flavor shell into official child items", () => {
+  const parsed = nutritionixOptionFixture();
+  const variants = nutritionixOptionVariantRecords(parsed, parsed.items.wings);
+
+  assert.deepEqual(
+    variants.map((variant) => variant.name),
+    [
+      "Baked Wings — Saucy BBQ Wing",
+      "Baked Wings — Saucy Buffalo Wing",
+    ],
+  );
+  assert.deepEqual(variants[0].allergens, ["gluten", "wheat"]);
+  assert.deepEqual(variants[0].officialAllergenCoveredIds, [
+    "egg",
+    "gluten",
+    "milk",
+    "wheat",
+  ]);
+  assert.equal(variants[0].optionParentName, "Baked Wings");
+});
+
+test("Nutritionix option projection prefers the flavor identity group over an optional dip", () => {
+  const parsed = nutritionixOptionFixture();
+  parsed.templates.template.groups.push("dip");
+  parsed.groups.dip = {
+    id: "dip",
+    displayName: "Dipping Sauce",
+    multipleSelect: 1,
+    modifiers: ["ranch", "blue-cheese"],
+  };
+  parsed.modifiers.ranch = resolvedModifier("Ranch", ["milk"], "ranch");
+  parsed.modifiers["blue-cheese"] = resolvedModifier(
+    "Blue Cheese",
+    ["milk"],
+    "blue-cheese",
+  );
+
+  const selected = nutritionixPrimaryOptionVariantGroup(
+    parsed,
+    parsed.items.wings,
+  );
+
+  assert.equal(selected.label, "Choose Your Flavor");
+});
+
+test("Nutritionix option projection does not manufacture items from toppings or resolved parents", () => {
+  const parsed = nutritionixOptionFixture();
+  parsed.groups.flavor.displayName = "Extra Toppings";
+
+  assert.deepEqual(
+    nutritionixOptionVariantRecords(parsed, parsed.items.wings),
+    [],
+  );
+
+  parsed.groups.flavor.displayName = "Choose Your Flavor";
+  parsed.items.wings.allergens.gluten.presence = 0;
+  assert.deepEqual(
+    nutritionixOptionVariantRecords(parsed, parsed.items.wings),
+    [],
+  );
+});
+
+test("Nutritionix option projection ignores hidden source-system groups", () => {
+  const parsed = nutritionixOptionFixture();
+  parsed.groups.flavor.displayName = "Hidden API Mapping";
+  parsed.groups.flavor.disallowUserChange = 1;
+
+  assert.deepEqual(
+    nutritionixOptionVariantRecords(parsed, parsed.items.wings),
+    [],
+  );
+});
+
+test("Nutritionix structured menus exclude alcohol-only rows while retaining food and nonalcoholic drinks", () => {
+  assert.equal(
+    isProbablyNutritionixGridFoodOrFoodAdjacentRecord({
+      category: "Casual Dining",
+      name: "Bud Light, 16 fl oz",
+    }),
+    false,
+  );
+  assert.equal(
+    isProbablyNutritionixGridFoodOrFoodAdjacentRecord({
+      category: "Casual Dining",
+      name: "Patron Marg - Strawberry",
+    }),
+    false,
+  );
+  assert.equal(
+    isProbablyNutritionixGridFoodOrFoodAdjacentRecord({
+      category: "Casual Dining",
+      name: "Margarita Grilled Chicken",
+    }),
+    true,
+  );
+  assert.equal(
+    isProbablyNutritionixGridFoodOrFoodAdjacentRecord({
+      category: "Beverages",
+      name: "Strawberry Lemonade",
+    }),
+    true,
+  );
+});
+
+test("generated Nutritionix rebuilds retain expanded menus and explicit official coverage", () => {
+  const expectations = [
+    ["texas-roadhouse", 129, 128],
+    ["chilis", 261, 256],
+    ["mcalisters-deli", 159, 159],
+    ["la-madeleine", 234, 129],
+  ];
+
+  for (const [restaurantId, itemCount, officialItemCount] of expectations) {
+    const restaurant = generatedRestaurants.restaurants.find(
+      (candidate) => candidate.id === restaurantId,
+    );
+    assert.equal(restaurant.items.length, itemCount, restaurantId);
+    assert.equal(
+      restaurant.items.filter(
+        (item) => item.allergenSourceType !== "unavailable",
+      ).length,
+      officialItemCount,
+      restaurantId,
+    );
+    assert.equal(
+      Object.keys(restaurant.officialAllergenProfiles ?? {}).length,
+      1,
+      restaurantId,
+    );
+  }
+
+  const texasRoadhouse = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "texas-roadhouse",
+  );
+  const cactusBlossom = texasRoadhouse.items.find(
+    (item) => item.name === "Cactus Blossom",
+  );
+  assert.equal(cactusBlossom.allergenSourceType, "official-allergen-menu");
+  assert.deepEqual(cactusBlossom.allergens, [
+    "milk",
+    "egg",
+    "fish",
+    "shellfish",
+    "wheat",
+    "soy",
+  ]);
+
+  const chilis = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "chilis",
+  );
+  assert.equal(
+    chilis.items.some((item) => /\b(?:Bud Light|Coors Light|Modelo)\b/i.test(item.name)),
+    false,
+  );
+});
+
+test("corpus source-parity repairs retain verified catalogs and official coverage", () => {
+  const expectations = [
+    ["chadwicks-alexandria-va-dc-metro", 72, 50],
+    ["chaatwala-herndon-va-dc-metro", 62, 0],
+    ["chain-bruster-s-ice-cream", 36, 22],
+    ["baskin-robbins", 60, 60],
+    ["centrolina-dc", 35, 21],
+    ["blue-ridge-seafood-restaurant-gainesville-va", 126, 51],
+    ["replacement-nue-elegantly-vietnamese-falls-church-va", 67, 14],
+    ["mezeh-dc", 74, 72],
+    ["sbarro", 86, 67],
+  ];
+
+  for (const [restaurantId, itemCount, officialItemCount] of expectations) {
+    const restaurant = generatedRestaurants.restaurants.find(
+      (candidate) => candidate.id === restaurantId,
+    );
+    assert.ok(restaurant, restaurantId);
+    assert.equal(restaurant.items.length, itemCount, restaurantId);
+    assert.equal(
+      restaurant.items.filter(
+        (item) => item.allergenSourceType !== "unavailable",
+      ).length,
+      officialItemCount,
+      restaurantId,
+    );
+  }
+
+  const mezeh = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "mezeh-dc",
+  );
+  assert.deepEqual(
+    mezeh.officialAllergenProfiles["m-source-parity"].coveredAllergenIds,
+    ["egg", "milk", "sesame", "shellfish", "soy", "tree-nut", "wheat"],
+  );
+
+  const sbarro = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "sbarro",
+  );
+  assert.deepEqual(
+    sbarro.officialAllergenProfiles["m-source-parity"].coveredAllergenIds,
+    [
+      "egg",
+      "fish",
+      "milk",
+      "peanut",
+      "sesame",
+      "shellfish",
+      "soy",
+      "tree-nut",
+      "wheat",
+    ],
+  );
+  assert.equal(
+    sbarro.items.filter((item) => item.description).length,
+    86,
+  );
+  assert.equal(
+    sbarro.items.filter((item) => item.ingredientsText).length,
+    86,
+  );
+});
+
+test("structured disparity review repairs real gaps and retains curated noisy-source catalogs", () => {
+  const expectations = [
+    ["mcdonalds", 100, 100],
+    ["buffalo-wild-wings", 206, 206],
+    ["ihop", 207, 207],
+    ["red-lobster", 127, 127],
+    ["smoothie-king", 325, 295],
+    ["potbelly-dc", 233, 233],
+    ["silver-diner-dc", 176, 0],
+    ["call-your-mother-dc", 78, 54],
+    ["sweetfrog", 137, 137],
+    ["south-block-dc", 55, 14],
+  ];
+
+  for (const [restaurantId, itemCount, officialItemCount] of expectations) {
+    const restaurant = generatedRestaurants.restaurants.find(
+      (candidate) => candidate.id === restaurantId,
+    );
+    assert.ok(restaurant, restaurantId);
+    assert.equal(restaurant.items.length, itemCount, restaurantId);
+    assert.equal(
+      restaurant.items.filter(
+        (item) => item.allergenSourceType !== "unavailable",
+      ).length,
+      officialItemCount,
+      restaurantId,
+    );
+  }
+
+  const mcdonalds = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "mcdonalds",
+  );
+  assert.equal(
+    mcdonalds.items.filter((item) => item.description).length,
+    52,
+  );
+
+  const southBlock = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "south-block-dc",
+  );
+  for (const name of [
+    "Birthday Cake Smoothie",
+    "Daily Protein Bowl",
+    "Dragon's Kiss Energy Smoothie",
+    "Electric Green Energy Smoothie",
+    "Protein Warrior Bowl",
+  ]) {
+    assert.ok(southBlock.items.some((item) => item.name === name), name);
+  }
+  assert.equal(
+    southBlock.items.some((item) => /popup|conversions|custom logos/i.test(item.name)),
+    false,
+  );
+
+  const sweetfrog = generatedRestaurants.restaurants.find(
+    (restaurant) => restaurant.id === "sweetfrog",
+  );
+  assert.equal(
+    sweetfrog.items.some((item) => /^(?:1% of|than 1% of)$/i.test(item.name)),
+    false,
+  );
+  assert.equal(
+    sweetfrog.items.some((item) => /[ÃÂ]/.test(item.name)),
+    false,
+  );
+});
+
+test("official reader heading menus recover only item-bounded descriptions", () => {
+  const markdown = `Title: Menu\nURL Source: https://example.com/menu\nMarkdown Content:\n## Sandwiches\n### Chicken Slider\n$7.99\nChicken, pickles, slaw, and house sauce.\nCustomize\n### Plain Fries\n$3.99\n0\n`;
+  const rows = extractOfficialReaderMarkdownItems(
+    markdown,
+    { id: "reader-fixture", category: "Menu", readerParserProfile: "heading-menu" },
+    "https://example.com/menu",
+    "menu",
+  );
+  assert.deepEqual(rows.map((row) => [row.name, row.description]), [
+    ["Chicken Slider", "Chicken, pickles, slaw, and house sauce."],
+  ]);
+});
+
+test("SHIA reader adapter preserves tasting-course boundaries", () => {
+  const markdown = `Title: SHIA\nURL Source: https://shiarestaurant.org/menu\nMarkdown Content:\n**Scallop and Fried Oyster Ssam\nMyeongran | Korean Pear | Ssamjang\nHobak Juk\nKabocha | Chili | Chestnut Cream\nSoon-Dae\nKorean Sausage | Monkfish liver | Daechu**`;
+  const rows = extractOfficialReaderMarkdownItems(
+    markdown,
+    { id: "shia-dc", category: "Korean Fine Dining", readerParserProfile: "shia-tasting-menu" },
+    "https://shiarestaurant.org/menu",
+    "menu",
+  );
+  assert.deepEqual(rows.map((row) => row.name), [
+    "Scallop and Fried Oyster Ssam",
+    "Hobak Juk",
+    "Soon-Dae",
+  ]);
+  assert.equal(rows[1].description, "Kabocha | Chili | Chestnut Cream");
+});
+
+test("generated projection finalizer runs Ingredient Intelligence without overriding source authority", () => {
+  const projectionSource = readFileSync(
+    new URL("./repair-generated-restaurant-projection.mjs", import.meta.url),
+    "utf8",
+  );
+  const finalizerSource = readFileSync(
+    new URL("./finalize-generated-restaurant-projection.mjs", import.meta.url),
+    "utf8",
+  );
+
+  assert.ok(projectionSource.includes("item.description = recovery.description"));
+  assert.equal(projectionSource.includes("annotateRestaurantWithIngredientIntelligence"), false);
+  assert.ok(finalizerSource.includes("annotateRestaurantWithIngredientIntelligence"));
+  assert.ok(finalizerSource.includes("promoteOfficialDisclosures: false"));
+});
+
+function nutritionixOptionFixture() {
+  return {
+    availableAllergenFields: {
+      eggs: 1,
+      gluten: 1,
+      milk: 1,
+      wheat: 1,
+    },
+    groups: {
+      flavor: {
+        id: "flavor",
+        displayName: "Choose Your Flavor",
+        multipleSelect: 0,
+        modifiers: ["bbq", "buffalo"],
+      },
+    },
+    items: {
+      wings: {
+        allergens: {
+          eggs: { presence: -1 },
+          gluten: { presence: -1 },
+          milk: { presence: -1 },
+          wheat: { presence: -1 },
+        },
+        id: "wings",
+        name: "Baked Wings",
+        templateId: "template",
+      },
+    },
+    modifiers: {
+      bbq: resolvedModifier("Saucy BBQ Wing (1)", ["gluten", "wheat"], "bbq"),
+      buffalo: resolvedModifier(
+        "Saucy Buffalo Wing (1)",
+        ["gluten", "wheat"],
+        "buffalo",
+      ),
+    },
+    templates: {
+      template: { id: "template", groups: ["flavor"] },
+    },
+  };
+}
+
+function resolvedModifier(name, contains = [], id = name) {
+  return {
+    allergens: Object.fromEntries(
+      ["eggs", "gluten", "milk", "wheat"].map((field) => [
+        field,
+        { presence: contains.includes(field) ? 1 : 0 },
+      ]),
+    ),
+    id,
+    name,
+  };
+}
 
 function signalIds(inference) {
   return inference.inferredAllergenSignals.map((signal) => signal.id).sort();

@@ -30,11 +30,13 @@ import {
   classifyMenuItemRow,
   sanitizeMenuItemDisplayFields,
 } from "../menu-item-quality.mjs";
+import { nutritionixOptionVariantRecords } from "./nutritionix-option-variants.mjs";
 
 const runtimeImport = new Function("specifier", "return import(specifier)");
 const execFile = promisify(execFileCallback);
 let pdfjsLibPromise = null;
 let pdfParsePromise = null;
+let popmenuReaderQueue = Promise.resolve();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, "../..");
@@ -205,7 +207,7 @@ const browserFetchRestaurantIds = new Set([
   "waffle-house",
   "zaxbys",
 ]);
-const tlsFetchPdfRestaurantIds = new Set(["qdoba", "zaxbys"]);
+const tlsFetchPdfRestaurantIds = new Set(["dennys", "qdoba", "zaxbys"]);
 
 const sourceTypes = {
   allergen: "allergen",
@@ -819,6 +821,7 @@ const catalogArtifactCategoryPatterns = [
 
 const itemSourcePriority = {
   "official-api": 6,
+  "anbe-online-kitchen-api": 5,
   "embedded-flavor-nutrition": 6,
   "pdf-matrix": 6,
   "html-allergen-matrix": 6,
@@ -901,6 +904,7 @@ export async function scrapeRestaurant(source) {
   const sourceProductPageLimit = Number(
     source.productPageLimit ?? productPageLimit,
   );
+  let remainingProductPageFetches = sourceProductPageLimit;
   const configuredSourceEntries = normalizeConfiguredSourceUrls(source);
   const skippedConfiguredSourceEntries = configuredSourceEntries.filter(
     (entry) => shouldSkipSourceEntryForLocation(source, entry),
@@ -969,9 +973,26 @@ export async function scrapeRestaurant(source) {
       next.kind,
       next.fetchOptions,
     );
-    sourceResults.push(
-      sourceManifestWithQueueMetadata(fetched.manifest, next, fetched.text),
+    const queuedManifest = sourceManifestWithQueueMetadata(
+      fetched.manifest,
+      next,
+      fetched.text,
     );
+
+    if (isUntrustedDomainFallbackRedirect(next, fetched)) {
+      sourceResults.push({
+        ...queuedManifest,
+        ok: false,
+        status: "untrusted-cross-domain-redirect",
+        urlWarnings: uniqueStrings([
+          ...(queuedManifest.urlWarnings ?? []),
+          "unconfigured-domain-fallback-redirected-off-site",
+        ]),
+      });
+      continue;
+    }
+
+    sourceResults.push(queuedManifest);
 
     if (!fetched.ok) {
       for (const fallbackUrl of failedConfiguredMenuFallbackUrls(
@@ -1060,10 +1081,43 @@ export async function scrapeRestaurant(source) {
           next.kind,
         ),
       );
+      records.push(
+        ...extractAnbeOnlineKitchenItems(
+          fetched.text,
+          source,
+          fetched.finalUrl,
+          next,
+        ),
+      );
       continue;
     }
 
     if (fetched.contentKind === "text") {
+      records.push(
+        ...extractYextMenuScriptItems(
+          fetched.text,
+          source,
+          next.referer ?? fetched.finalUrl,
+          next.kind,
+          next,
+        ),
+      );
+      records.push(
+        ...extractOfficialReaderMarkdownItems(
+          fetched.text,
+          source,
+          fetched.finalUrl,
+          next.kind,
+        ),
+      );
+      records.push(
+        ...extractArbysCmsDataRecords(
+          fetched.text,
+          source,
+          fetched.finalUrl,
+          next,
+        ),
+      );
       records.push(
         ...extractIMenuProScriptItems(
           fetched.text,
@@ -1093,6 +1147,25 @@ export async function scrapeRestaurant(source) {
         }
       }
 
+      for (const link of extractAnbeOnlineKitchenApiLinksFromBundle(
+        fetched.text,
+        source,
+        fetched.finalUrl,
+        next,
+      )) {
+        if (queue.length < 90) {
+          enqueueSource({
+            configured: false,
+            discovered: true,
+            fetchOptions: link.fetchOptions,
+            kind: sourceTypes.api,
+            referer: link.referer,
+            role: link.role,
+            url: link.url,
+          });
+        }
+      }
+
       continue;
     }
 
@@ -1106,6 +1179,7 @@ export async function scrapeRestaurant(source) {
         fetched.finalUrl,
       )
         .filter((candidate) => isSameSite(candidate.url, fetched.finalUrl))
+        .sort(productLinkComparator(source.productPageNames))
         .slice(0, sourceProductPageLimit);
 
       for (const candidate of detailCandidates) {
@@ -1138,6 +1212,27 @@ export async function scrapeRestaurant(source) {
 
           if (details) {
             records.push(details);
+          }
+        } else if (
+          isPopmenuProductUrl(candidate.url) &&
+          isCloudflareChallengeHtml(productPage)
+        ) {
+          const readerPage = await fetchPopmenuReaderPage(
+            candidate.url,
+            source,
+            sourceTypes.menu,
+          );
+          sourceResults.push(readerPage.manifest);
+
+          if (readerPage.ok) {
+            const details = extractPopmenuReaderItem(
+              readerPage.text,
+              source,
+              candidate.url,
+              candidate.name,
+            );
+
+            if (details) records.push(details);
           }
         }
       }
@@ -1276,20 +1371,21 @@ export async function scrapeRestaurant(source) {
         }
       }
 
-      const detailCandidates =
-        htmlResult.items.length > 0
-          ? []
-          : htmlResult.productLinks
-              .filter((candidate) =>
-                isSameSite(candidate.url, fetched.finalUrl),
-              )
-              .slice(0, sourceProductPageLimit);
+      const detailCandidates = shouldFetchProductDetailPages(htmlResult.items) &&
+        remainingProductPageFetches > 0
+        ? htmlResult.productLinks
+            .filter((candidate) =>
+              isSameSite(candidate.url, fetched.finalUrl),
+            )
+            .slice(0, remainingProductPageFetches)
+        : [];
 
       for (const candidate of detailCandidates) {
         if (seenUrls.has(normalizeUrl(candidate.url))) {
           continue;
         }
 
+        remainingProductPageFetches -= 1;
         seenUrls.add(normalizeUrl(candidate.url));
         const productPage = await fetchSource(
           candidate.url,
@@ -1363,6 +1459,7 @@ export async function scrapeRestaurant(source) {
     .slice(0, 2500);
   items = dropWixRestaurantDemoCatalogItems(items, sourceResults);
   items = collapseSparseCategories(items, source.category);
+  items = applyOfficialDescriptionAdapters(items, source);
   let officialItemCount = officialItemCountForRestaurant({ items });
 
   if (
@@ -1386,6 +1483,8 @@ export async function scrapeRestaurant(source) {
     accommodationOnly:
       source.accommodationOnly === true ||
       Boolean(source.allergyAccommodationPolicy),
+    descriptionRecoveryDisposition:
+      source.descriptionRecoveryDisposition ?? null,
     configuredUrlAudit: configuredUrlAuditForSource(source),
     discardedItemCount: Math.max(0, records.length - items.length),
     extractedFoodItemCount: items.length,
@@ -1464,6 +1563,193 @@ export async function scrapeRestaurant(source) {
     ),
     sources: sourceResults,
   };
+}
+
+function isUntrustedDomainFallbackRedirect(entry, fetched) {
+  return (
+    entry?.role === "domain-fallback-menu" &&
+    fetched?.ok === true &&
+    Boolean(fetched.finalUrl) &&
+    !isSameSite(entry.url, fetched.finalUrl)
+  );
+}
+
+export function shouldFetchProductDetailPages(items) {
+  if (!Array.isArray(items) || items.length === 0) return true;
+  const detailedCount = items.filter(
+    (item) => cleanText(item?.description) || cleanText(item?.ingredientsText),
+  ).length;
+  return detailedCount / items.length < 0.5;
+}
+
+export function applyOfficialDescriptionAdapters(items, source) {
+  let adapted = items;
+
+  if (source.id === "pf-changs") {
+    adapted = adapted.map((item) => ({
+      ...item,
+      description: cleanPfChangsDescription(item.description),
+    }));
+  }
+
+  if (source.id === "chick-fil-a") {
+    adapted = adapted.map((item) => ({
+      ...item,
+      description: cleanChickFilADescription(item.description, item.name),
+    }));
+  }
+
+  if (source.id === "true-food-kitchen") {
+    adapted = adapted.map((item) => ({
+      ...item,
+      description: cleanTrueFoodKitchenDescription(item.description),
+    }));
+  }
+
+  if (source.id === "krispy-kreme") {
+    adapted = adapted.map((item) => ({
+      ...item,
+      description: cleanKrispyKremeDescription(item.description),
+    }));
+  }
+
+  if (Array.isArray(source.descriptionVariantSuffixes)) {
+    adapted = inheritOfficialBaseDescriptions(
+      adapted,
+      source,
+      source.descriptionVariantSuffixes,
+    );
+  }
+
+  return adapted;
+}
+
+function cleanChickFilADescription(value, itemName) {
+  let description = cleanText(value);
+  if (!description) return null;
+
+  const normalizedName = cleanText(itemName);
+  if (
+    normalizedName &&
+    description.toLowerCase().startsWith(`${normalizedName.toLowerCase()} `)
+  ) {
+    description = description.slice(normalizedName.length).trim();
+  }
+
+  description = description
+    .replace(/\s+Options(?:\s+[\s\S]*)?$/i, "")
+    .replace(/\s+Order pickup(?:\s+[\s\S]*)?$/i, "")
+    .trim();
+
+  return description || null;
+}
+
+function cleanPfChangsDescription(value) {
+  const description = cleanText(value);
+  if (!description) return null;
+
+  return description
+    .replace(
+      /\s+(?:A\s+sushi\s+restaurant\s+classic[—–-]\s*)?Order\s+online\b[\s\S]*$/i,
+      "",
+    )
+    .trim() || null;
+}
+
+function cleanKrispyKremeDescription(value) {
+  const description = cleanText(value);
+  if (!description) return null;
+
+  return description
+    .replace(
+      /\s+View\s+nutrition,\s*ingredients,\s*and\s+order\s+online\s+today\.?$/i,
+      "",
+    )
+    .trim() || null;
+}
+
+function cleanTrueFoodKitchenDescription(value) {
+  let description = cleanText(value);
+
+  if (!description) return null;
+
+  description = description
+    .replace(
+      /\s+v\s+Vegan\s+veg\s+Vegetarian\s+gf\s+Gluten-Friendly\s*$/i,
+      "",
+    )
+    .replace(/\s+\d+\s*G\s+PROTEIN(?:\s+[A-Z]\d[A-Z]?)?\s*$/i, "")
+    .replace(/\s+\d+\s*CAL(?:ORIES?)?(?:\s+[A-Z]\d[A-Z]?)?\s*$/i, "")
+    .replace(/\s+\d+\s*G\s*$/i, "")
+    .trim();
+
+  if (
+    !description ||
+    /\bswap for\s*$/i.test(description) ||
+    /^house-made$/i.test(description)
+  ) {
+    return null;
+  }
+
+  return description;
+}
+
+function inheritOfficialBaseDescriptions(items, source, suffixes) {
+  const escapedSuffixes = suffixes
+    .map((suffix) => cleanText(suffix))
+    .filter(Boolean)
+    .map((suffix) => suffix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+
+  if (escapedSuffixes.length === 0) return items;
+
+  const suffixPattern = new RegExp(
+    `,\\s*(?:${escapedSuffixes.join("|")})$`,
+    "i",
+  );
+  const baseDescriptions = new Map();
+  const conflictedBases = new Set();
+
+  for (const item of items) {
+    if (
+      item.sourceType !== "product-page" ||
+      !cleanText(item.description) ||
+      suffixPattern.test(item.name ?? "") ||
+      !(item.sourceUrls ?? []).some((url) =>
+        isSameSite(url, `https://${source.domain}`),
+      )
+    ) {
+      continue;
+    }
+
+    const key = similarityKey(item.name);
+    const current = baseDescriptions.get(key);
+
+    if (current && current.description !== item.description) {
+      conflictedBases.add(key);
+      continue;
+    }
+
+    baseDescriptions.set(key, item);
+  }
+
+  return items.map((item) => {
+    if (cleanText(item.description)) return item;
+    const match = suffixPattern.exec(item.name ?? "");
+    if (!match) return item;
+    const baseName = item.name.slice(0, match.index);
+    const key = similarityKey(baseName);
+    const base = conflictedBases.has(key) ? null : baseDescriptions.get(key);
+    if (!base) return item;
+
+    return {
+      ...item,
+      description: base.description,
+      sourceUrls: publishableSourceUrls([
+        ...(item.sourceUrls ?? []),
+        ...(base.sourceUrls ?? []),
+      ]),
+    };
+  });
 }
 
 function sourceManifestWithQueueMetadata(
@@ -1579,7 +1865,7 @@ function locationScopeFromSourceEntryUrl(url) {
   const menuScope = menuLocationScopeFromUrl(url);
 
   if (menuScope) {
-    if (/\bwashington-(?:st|street)\b/i.test(menuScope)) {
+    if (looksLikeStreetAddressScope(menuScope)) {
       return "";
     }
 
@@ -1619,7 +1905,7 @@ function locationScopeFromSourceEntryUrl(url) {
   }
 
   const scopedSegment = segments.find((segment) => {
-    if (/\bwashington-(?:st|street)\b/i.test(segment)) {
+    if (looksLikeStreetAddressScope(segment)) {
       return false;
     }
 
@@ -1627,6 +1913,15 @@ function locationScopeFromSourceEntryUrl(url) {
   });
 
   return scopedSegment ?? "";
+}
+
+export function looksLikeStreetAddressScope(value) {
+  const scope = String(value ?? "");
+
+  return (
+    /\bwashington-(?:st|street)\b/i.test(scope) ||
+    /(?:^|-)\d+(?:-[a-z0-9]+)*-(?:ave|avenue|blvd|boulevard|cir|circle|ct|court|dr|drive|hwy|highway|ln|lane|pkwy|parkway|pl|place|rd|road|st|street|ter|terrace)(?:-|$)/i.test(scope)
+  );
 }
 
 function officialAllergenContentSignalForSourceResult(
@@ -2065,7 +2360,7 @@ function sharedOfficialAllergenProfileRecords(source, records) {
     : [];
 }
 
-function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
+export function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
   const source =
     typeof sourceOrRestaurantId === "string"
       ? { id: sourceOrRestaurantId }
@@ -2083,10 +2378,47 @@ function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
     records,
   );
 
+  // Some restaurants publish the complete current menu in one structured
+  // source and use a separate nutrition/allergen provider as supplemental
+  // evidence. Honor an explicitly configured canonical menu before any
+  // portfolio-wide "dominant allergen source" heuristic can replace it.
+  // Matching allergen rows remain available for merge, but provider-only rows
+  // cannot redefine the restaurant's catalog boundary.
+  if (source.profileMenuIsCanonical === true) {
+    const canonicalSourceKinds = Array.isArray(
+      source.profileMenuCanonicalSourceKinds,
+    )
+      ? source.profileMenuCanonicalSourceKinds
+      : ["html-menu"];
+    const canonicalMenuRecords = records.filter((record) =>
+      canonicalSourceKinds.includes(record.sourceKind),
+    );
+
+    if (canonicalMenuRecords.length >= 4) {
+      const canonicalNames = new Set(
+        canonicalMenuRecords
+          .map((record) => similarityKey(record.name))
+          .filter(Boolean),
+      );
+      const matchingSupplementalRecords = records.filter(
+        (record) =>
+          !canonicalMenuRecords.includes(record) &&
+          canonicalNames.has(similarityKey(record.name)),
+      );
+
+      return [...canonicalMenuRecords, ...matchingSupplementalRecords];
+    }
+  }
+
   if (sharedOfficialAllergenRecords.length > 0) {
     if (source.profileMenuIsCanonical === true) {
+      const canonicalSourceKinds = Array.isArray(
+        source.profileMenuCanonicalSourceKinds,
+      )
+        ? source.profileMenuCanonicalSourceKinds
+        : ["html-menu"];
       const canonicalMenuRecords = records.filter(
-        (record) => record.sourceKind === "html-menu",
+        (record) => canonicalSourceKinds.includes(record.sourceKind),
       );
 
       if (canonicalMenuRecords.length >= 4) {
@@ -2102,12 +2434,16 @@ function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
       }
     }
 
-    return supplementPreferredRecords(
-      retainUncoveredOfficialApiMenuRecords(
-        sharedOfficialAllergenRecords,
+    return applyConfiguredDescriptionSupplementRules(
+      supplementPreferredRecords(
+        retainUncoveredOfficialApiMenuRecords(
+          sharedOfficialAllergenRecords,
+          records,
+        ),
         records,
       ),
       records,
+      source,
     );
   }
 
@@ -2230,7 +2566,11 @@ function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
       (record) => record.sourceKind === "pdf-matrix",
     );
     return pdfRecords.length > 0
-      ? supplementPreferredRecords(pdfRecords, records)
+      ? applyConfiguredDescriptionSupplementRules(
+          supplementPreferredRecords(pdfRecords, records),
+          records,
+          source,
+        )
       : records;
   }
 
@@ -2481,8 +2821,9 @@ function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
       "cheesecake-factory",
       "chilis",
       "ihop",
+      "marcos-pizza",
+      "mcalisters-deli",
       "popeyes",
-      "red-robin",
       "starbucks",
       "texas-roadhouse",
       "whataburger",
@@ -2495,6 +2836,15 @@ function officialOnlyRecordsForBrand(sourceOrRestaurantId, records) {
       ? restaurantId === "burger-king"
         ? recordsWithNutrition(apiRecords)
         : apiRecords
+      : records;
+  }
+
+  if (restaurantId === "red-robin") {
+    const apiRecords = records.filter(
+      (record) => record.sourceKind === "official-api",
+    );
+    return apiRecords.length > 0
+      ? supplementPreferredRecords(apiRecords, records)
       : records;
   }
 
@@ -2595,7 +2945,7 @@ function recordsWithNutrition(records) {
   );
 }
 
-function supplementPreferredRecords(preferredRecords, allRecords) {
+export function supplementPreferredRecords(preferredRecords, allRecords) {
   const supplementalByName = new Map();
 
   for (const record of allRecords) {
@@ -2607,6 +2957,10 @@ function supplementPreferredRecords(preferredRecords, allRecords) {
 
     const existing = supplementalByName.get(key) ?? {};
     supplementalByName.set(key, {
+      description: pickBestDescription(
+        existing.description,
+        record.description,
+      ),
       ingredientsText: pickBestDescription(
         existing.ingredientsText,
         record.ingredientsText,
@@ -2629,6 +2983,10 @@ function supplementPreferredRecords(preferredRecords, allRecords) {
 
     return {
       ...record,
+      description: pickBestDescription(
+        record.description,
+        supplement.description,
+      ),
       ingredientsText: pickBestDescription(
         record.ingredientsText,
         supplement.ingredientsText,
@@ -2642,6 +3000,86 @@ function supplementPreferredRecords(preferredRecords, allRecords) {
       ]),
     };
   });
+}
+
+export function applyConfiguredDescriptionSupplementRules(
+  preferredRecords,
+  allRecords,
+  source,
+) {
+  const aliases = source?.descriptionAliases ?? {};
+  const variantRules = Array.isArray(source?.descriptionVariantRules)
+    ? source.descriptionVariantRules
+    : [];
+
+  if (Object.keys(aliases).length === 0 && variantRules.length === 0) {
+    return preferredRecords;
+  }
+
+  return preferredRecords.map((record) => {
+    if (cleanText(record.description)) return record;
+
+    const aliasBaseName = aliases[record.name];
+    const variantBaseName = descriptionVariantBaseName(record.name, variantRules);
+    const baseName = aliasBaseName ?? variantBaseName;
+    if (!baseName) return record;
+
+    const candidate = uniqueOwnedDescriptionRecord(
+      allRecords,
+      baseName,
+      source.domain,
+    );
+    if (!candidate) return record;
+
+    return {
+      ...record,
+      description: candidate.description,
+      sourceUrls: uniqueStrings([
+        ...(record.sourceUrls ?? []),
+        candidate.sourceUrl,
+        ...(candidate.sourceUrls ?? []),
+      ]),
+    };
+  });
+}
+
+function descriptionVariantBaseName(itemName, rules) {
+  const normalizedItemName = cleanText(itemName);
+  if (!normalizedItemName) return null;
+
+  for (const rule of rules) {
+    for (const baseName of rule.baseNames ?? []) {
+      for (const affix of rule.affixes ?? []) {
+        const expected = rule.position === "suffix"
+          ? `${baseName} ${affix}`
+          : `${affix} ${baseName}`;
+        if (similarityKey(normalizedItemName) === similarityKey(expected)) {
+          return baseName;
+        }
+      }
+    }
+  }
+
+  return null;
+}
+
+function uniqueOwnedDescriptionRecord(records, name, domain) {
+  const candidates = records.filter(
+    (record) =>
+      similarityKey(record.name) === similarityKey(name) &&
+      cleanText(record.description) &&
+      (record.sourceUrl || record.sourceUrls?.length) &&
+      [record.sourceUrl, ...(record.sourceUrls ?? [])]
+        .filter(Boolean)
+        .some((url) => isSameSite(url, `https://${domain}`)),
+  );
+  const descriptions = uniqueStrings(
+    candidates.map((record) => cleanText(record.description)).filter(Boolean),
+  );
+
+  return descriptions.length === 1
+    ? { ...candidates[0], description: descriptions[0] }
+    : null;
 }
 
 const supplementalSourceProfiles = [
@@ -2704,6 +3142,34 @@ const supplementalSourceProfiles = [
           "https://nix-vue-inm.s3.amazonaws.com/restaurant/applebees/data/menu-latest.json.gz",
         sourceLabel:
           "Official Applebee's Nutritionix nutrition and allergen guide.",
+      },
+      {
+        id: "chilis",
+        menuUrl:
+          "https://nix-vue-inm.s3.amazonaws.com/restaurant/chilis/data/menu-latest.json.gz",
+        sourceLabel:
+          "Official Chili's Nutritionix nutrition and allergen guide.",
+      },
+      {
+        id: "texas-roadhouse",
+        menuUrl:
+          "https://nix-vue-inm.s3.amazonaws.com/restaurant/texas-roadhouse/data/menu-latest.json.gz",
+        sourceLabel:
+          "Official Texas Roadhouse Nutritionix nutrition and allergen guide.",
+      },
+      {
+        id: "marcos-pizza",
+        menuUrl:
+          "https://nix-vue-inm.s3.amazonaws.com/restaurant/marcos-pizza/data/menu-latest.json.gz",
+        sourceLabel:
+          "Official Marco's Pizza Nutritionix nutrition and allergen guide.",
+      },
+      {
+        id: "mcalisters-deli",
+        menuUrl:
+          "https://nix-vue-inm.s3.amazonaws.com/restaurant/mcalisters-deli/data/menu-latest.json.gz",
+        sourceLabel:
+          "Official McAlister's Deli Nutritionix nutrition and allergen guide.",
       },
       {
         id: "ihop",
@@ -2776,6 +3242,8 @@ const supplementalSourceProfiles = [
         endpoint:
           "https://kjfd81ul.apicdn.sanity.io/v1/graphql/prod_bk_us/default",
         rootField: "allItems",
+        descriptionLocaleField: "enRaw",
+        featureMenuRootField: "allFeatureMenus",
         sourceLabel: "Official Burger King Sanity menu item allergen data.",
       },
       {
@@ -2783,6 +3251,9 @@ const supplementalSourceProfiles = [
         endpoint:
           "https://czqk28jt.apicdn.sanity.io/v1/graphql/prod_plk_us/gen3",
         rootField: "allItem",
+        descriptionLocaleField: "enRaw",
+        shortDescriptionLocaleField: "enRaw",
+        featureMenuRootField: "allFeatureMenu",
         sourceLabel: "Official Popeyes Sanity menu item allergen data.",
       },
     ],
@@ -2809,38 +3280,11 @@ const supplementalSourceProfiles = [
           "Official The Cheesecake Factory Nutritionix online allergen guide.",
       },
       {
-        id: "chilis",
-        baseUrl:
-          "https://www.nutritionix.com/chilis/menu/special-diets/premium",
-        sourceLabel: "Official Chili's Nutritionix online allergen guide.",
-      },
-      {
-        id: "texas-roadhouse",
-        baseUrl:
-          "https://www.nutritionix.com/texas-roadhouse/menu/special-diets/premium",
-        sourceLabel:
-          "Official Texas Roadhouse Nutritionix online allergen guide.",
-      },
-      {
         id: "firehouse-subs",
         baseUrl:
           "https://www.nutritionix.com/firehouse-subs/menu/special-diets/premium",
         sourceLabel:
           "Official Firehouse Subs Nutritionix online allergen guide.",
-      },
-      {
-        id: "marcos-pizza",
-        baseUrl:
-          "https://www.nutritionix.com/marcos-pizza/menu/special-diets/premium",
-        sourceLabel:
-          "Official Marco's Pizza Nutritionix online allergen guide.",
-      },
-      {
-        id: "mcalisters-deli",
-        baseUrl:
-          "https://www.nutritionix.com/mcalisters-deli/menu/special-diets/premium",
-        sourceLabel:
-          "Official McAlister's Deli Nutritionix online allergen guide.",
       },
       {
         id: "golden-corral",
@@ -2988,6 +3432,11 @@ const supplementalSourceProfiles = [
         filename: "heirloom-reston-official-image-menu.json",
         sourceId: "heirloom-reston-va",
         sourceLabel: "Reviewed official Heirloom Reston image food menu.",
+      },
+      {
+        filename: "citizens-culture-official-image-menu.json",
+        sourceId: "citizens-and-culture-silver-spring-md-dc-metro",
+        sourceLabel: "Reviewed official Citizens & Culture image food menus.",
       },
       {
         filename: "shilling-canning-company-official-image-menu.json",
@@ -3341,7 +3790,7 @@ async function fetchNutritionixCalculatorJsonRecords(
           allergens: allergenResult.allergens,
           category:
             cleanText(categories?.[item?.category_id]?.name) ?? source.category,
-          description: sourceLabel,
+          description: cleanText(item.description) ?? sourceLabel,
           evidenceText: evidenceText ?? sourceLabel,
           imageUrl: null,
           ingredientsText,
@@ -3464,6 +3913,7 @@ async function fetchNutritionixSpecialDietsRecords(
     ["shellfish", "allergen_contains_shellfish"],
     ["soy", "allergen_contains_soy"],
     ["tree-nut", "allergen_contains_tree_nuts"],
+    ["wheat", "allergen_contains_wheat"],
   ];
   const recordsByName = new Map();
   const sources = [];
@@ -3471,25 +3921,21 @@ async function fetchNutritionixSpecialDietsRecords(
   const baseline = await fetchSourceWithRetry(baseUrl, source, sourceTypes.api);
   sources.push(baseline.manifest);
 
-  if (!baseline.ok || baseline.contentKind !== "html") {
-    return { records: [], sources };
-  }
-
-  const baselineItems = nutritionixBaselineItems(
-    baseline.text,
-    source,
-    baseline.finalUrl,
-    sourceLabel,
-  );
-
-  if (baselineItems.length === 0) {
-    return { records: [], sources };
-  }
+  const baselineItems =
+    baseline.ok && baseline.contentKind === "html"
+      ? nutritionixBaselineItems(
+          baseline.text,
+          source,
+          baseline.finalUrl,
+          sourceLabel,
+        )
+      : [];
 
   for (const item of baselineItems) {
     recordsByName.set(item.name, {
       ...item,
       allergens: [],
+      officialAllergenCoveredIds: [],
     });
   }
 
@@ -3508,30 +3954,59 @@ async function fetchNutritionixSpecialDietsRecords(
     ? allergenTags
     : []) {
     const containsUrl = nutritionixSpecialDietsUrl(baseUrl, tag, "2");
-    const fetched = await fetchSourceWithRetry(
+    const freeUrl = nutritionixSpecialDietsUrl(baseUrl, tag, "1");
+    const containsFetched = await fetchSourceWithRetry(
       containsUrl,
       source,
       sourceTypes.api,
     );
-    sources.push(fetched.manifest);
+    const freeFetched = await fetchSourceWithRetry(
+      freeUrl,
+      source,
+      sourceTypes.api,
+    );
+    sources.push(containsFetched.manifest, freeFetched.manifest);
 
-    if (!fetched.ok || fetched.contentKind !== "html") {
+    if (
+      !containsFetched.ok ||
+      containsFetched.contentKind !== "html" ||
+      !freeFetched.ok ||
+      freeFetched.contentKind !== "html"
+    ) {
       continue;
     }
 
-    const filteredItems = extractNutritionixSpecialDietsItems(fetched.text);
+    const filteredItems = extractNutritionixSpecialDietsItems(
+      containsFetched.text,
+    );
+    const freeItems = extractNutritionixSpecialDietsItems(freeFetched.text);
     const filteredNames = new Set(filteredItems.map((item) => item.name));
+    const freeNames = new Set(freeItems.map((item) => item.name));
     const normalizedFilteredNames = new Set(
       Array.from(filteredNames).map((name) =>
         normalizeNutritionixFilterName(name),
       ),
     );
+    const normalizedFreeNames = new Set(
+      Array.from(freeNames).map((name) => normalizeNutritionixFilterName(name)),
+    );
+    const normalizedPairOverlap = normalizedSetOverlap(
+      normalizedFilteredNames,
+      normalizedFreeNames,
+    );
+    const normalizedPairUnion = new Set([
+      ...normalizedFilteredNames,
+      ...normalizedFreeNames,
+    ]);
 
     if (
-      nutritionixFilterMatchesBaseline(
-        normalizedFilteredNames,
-        baselineComparisonNames,
-      )
+      normalizedPairUnion.size === 0 ||
+      normalizedPairOverlap / normalizedPairUnion.size > 0.02 ||
+      (baselineComparisonNames.size > 0 &&
+        nutritionixFilterMatchesBaseline(
+          normalizedFilteredNames,
+          baselineComparisonNames,
+        ))
     ) {
       continue;
     }
@@ -3546,6 +4021,7 @@ async function fetchNutritionixSpecialDietsRecords(
             ) / baselineComparisonNames.size
           : 0,
       items: filteredItems,
+      freeItems,
       normalizedNames: normalizedFilteredNames,
     });
   }
@@ -3557,32 +4033,33 @@ async function fetchNutritionixSpecialDietsRecords(
     ? []
     : allergenFilterCandidates;
 
-  for (const { allergen, items } of validAllergenFilterCandidates) {
-    for (const item of items) {
+  for (const { allergen, freeItems, items } of validAllergenFilterCandidates) {
+    const containsNames = new Set(items.map((item) => item.name));
+    for (const item of [...items, ...freeItems]) {
       const existing = recordsByName.get(item.name) ?? {
         ...item,
         allergens: [],
+        officialAllergenCoveredIds: [],
       };
       existing.category = existing.category ?? item.category;
-      existing.allergens.push(allergen);
+      existing.officialAllergenCoveredIds.push(allergen);
+      if (containsNames.has(item.name)) {
+        existing.allergens.push(allergen);
+      }
       recordsByName.set(item.name, existing);
     }
   }
 
   const records = Array.from(recordsByName.values())
-    .filter(
-      (item) =>
-        isProbablyMenuItemName(item.name) &&
-        item.nutritionFacts &&
-        Object.keys(item.nutritionFacts).length > 0,
-    )
+    .filter((item) => isProbablyMenuItemName(item.name))
     .map((item) =>
       createRecord({
         allergenSourceType:
-          validAllergenFilterCandidates.length > 0
+          item.officialAllergenCoveredIds?.length > 0
             ? allergenSourceTypes.officialAllergenMenu
             : allergenSourceTypes.unavailable,
         allergens: item.allergens,
+        officialAllergenCoveredIds: item.officialAllergenCoveredIds,
         category: item.category ?? source.category,
         description: sourceLabel,
         imageUrl: null,
@@ -4782,7 +5259,7 @@ function extractNutritionixGridItems(html, source, url, sourceLabel) {
   return records.filter(isProbablyNutritionixGridFoodOrFoodAdjacentRecord);
 }
 
-function isProbablyNutritionixGridFoodOrFoodAdjacentRecord(record) {
+export function isProbablyNutritionixGridFoodOrFoodAdjacentRecord(record) {
   const name = cleanText(record?.name) ?? "";
   const category = cleanText(record?.category) ?? "";
   const text = `${name} ${category}`;
@@ -4791,7 +5268,7 @@ function isProbablyNutritionixGridFoodOrFoodAdjacentRecord(record) {
       category,
     );
   const nameSuggestsAlcoholOnly =
-    /\b(?:bloody mary|cosmo|cosmopolitan|gin|manhattan|margarita|martini|mezcal|mojito|negroni|rum|sangria|spritz|tequila|vodka|whisk(?:e)?y|wine)\b/i.test(
+    /\b(?:ale|beer|blue moon|bloody mary|bud light|budweiser|cabernet|casamigos|chardonnay|coors light|corona|cosmo|cosmopolitan|don julio|draft|gin|hard seltzer|heineken|henny|ipa|lager|manhattan|marg(?:arita)?|martini|mezcal|michelob|miller lite|modelo|mojito|negroni|patron|pilsner|rum|sangria|spritz|stout|tequila|vodka|whisk(?:e)?y|wine)\b/i.test(
       name,
     );
 
@@ -4825,7 +5302,47 @@ async function fetchNutritionixOfficialRecords(
   return {
     records: items
       .filter((item) => item?.isActive !== 0 && item?.name)
-      .map((item) => {
+      .flatMap((item) => {
+        const optionVariants = nutritionixOptionVariantRecords(parsed, item);
+
+        if (optionVariants.length > 0) {
+          return optionVariants.map((variant) => {
+            const ingredientsText = stringifySelectedFields(variant.modifier, [
+              "ingredients",
+              "ingredientStatement",
+              "ingredientStatements",
+            ]);
+
+            return createRecord({
+              allergenSourceType: allergenSourceTypes.officialAllergenMenu,
+              allergens: variant.allergens,
+              officialAllergenCoveredIds:
+                variant.officialAllergenCoveredIds,
+              category: categoryById.get(item.categoryId) ?? source.category,
+              description: variant.modifier.description ?? sourceLabel,
+              evidenceText: `${variant.optionParentName}: ${variant.optionLabel}`,
+              imageUrl:
+                variant.modifier.imageUrl ??
+                item.imageUrl ??
+                item.largeImageUrl ??
+                item.smallImageUrl ??
+                null,
+              ingredientsText,
+              isConfigurable: false,
+              mayContain: variant.mayContain,
+              name: variant.name,
+              nutritionFacts: nutritionFactsFromObject(variant.modifier),
+              optionGroupName: variant.optionGroupName,
+              optionLabel: variant.optionLabel,
+              optionParentId: variant.optionParentId,
+              optionParentName: variant.optionParentName,
+              sourceKind: "official-api",
+              sourceUrl: fetched.finalUrl,
+              variantGroup: item.templateId ? String(item.templateId) : null,
+            });
+          });
+        }
+
         const allergenResult = nutritionixAllergens(item.allergens);
         const officialAllergenCoveredIds = nutritionixItemAllergenCoverage(
           parsed?.availableAllergenFields,
@@ -4837,7 +5354,7 @@ async function fetchNutritionixOfficialRecords(
           "ingredientStatements",
         ]);
 
-        return createRecord({
+        return [createRecord({
           allergenSourceType:
             officialAllergenCoveredIds.length > 0
               ? allergenSourceTypes.officialAllergenMenu
@@ -4845,7 +5362,7 @@ async function fetchNutritionixOfficialRecords(
           allergens: allergenResult.allergens,
           officialAllergenCoveredIds,
           category: categoryById.get(item.categoryId) ?? source.category,
-          description: sourceLabel,
+          description: cleanText(item.description) ?? sourceLabel,
           imageUrl:
             item.imageUrl ?? item.largeImageUrl ?? item.smallImageUrl ?? null,
           ingredientsText,
@@ -4857,9 +5374,14 @@ async function fetchNutritionixOfficialRecords(
           sourceKind: "official-api",
           sourceUrl: fetched.finalUrl,
           variantGroup: item.templateId ? String(item.templateId) : null,
-        });
+        })];
       })
-      .filter((record) => record.name && isProbablyMenuItemName(record.name)),
+      .filter(
+        (record) =>
+          record.name &&
+          isProbablyMenuItemName(record.name) &&
+          isProbablyNutritionixGridFoodOrFoodAdjacentRecord(record),
+      ),
     sources,
   };
 }
@@ -4955,9 +5477,19 @@ function nutritionixAllergens(allergens = {}) {
 
 async function fetchRbiSanityOfficialRecords(
   source,
-  { endpoint, rootField, sourceLabel },
+  {
+    endpoint,
+    rootField,
+    descriptionLocaleField,
+    shortDescriptionLocaleField,
+    featureMenuRootField,
+  },
 ) {
-  const publicMenu = await fetchRbiSanityPublicMenuEntries(source, endpoint);
+  const publicMenu = await fetchRbiSanityPublicMenuEntries(
+    source,
+    endpoint,
+    featureMenuRootField,
+  );
   const query = `query {
     ${rootField}(limit: 2500) {
       _id
@@ -4965,6 +5497,8 @@ async function fetchRbiSanityOfficialRecords(
       internalName
       isDummyItem
       showInStaticMenu
+      ${descriptionLocaleField ? `description { value: ${descriptionLocaleField} }` : ""}
+      ${shortDescriptionLocaleField ? `shortDescription { value: ${shortDescriptionLocaleField} }` : ""}
       allergens {
         milk
         eggs
@@ -5011,7 +5545,12 @@ async function fetchRbiSanityOfficialRecords(
   const fetched = await fetchJsonPostSource(endpoint, source, sourceTypes.api, {
     query,
   });
-  const sources = [...publicMenu.sources, fetched.manifest];
+  const sources = [...publicMenu.sources, fetched.manifest].map((manifest) => ({
+    ...manifest,
+    configured: true,
+    role: "official-supplemental-api",
+    trust: "configured",
+  }));
 
   if (!fetched.ok || fetched.contentKind !== "json") {
     return { records: [], sources };
@@ -5056,7 +5595,9 @@ async function fetchRbiSanityOfficialRecords(
           allergens: allergenResult.allergens,
           officialAllergenCoveredIds: allergenResult.coveredAllergenIds,
           category: titleCase(category),
-          description: sourceLabel,
+          description:
+            plainTextFromSanityBlocks(item?.description?.value) ??
+            plainTextFromSanityBlocks(item?.shortDescription?.value),
           imageUrl:
             item?.image?.asset?.url ?? item?.images?.app?.asset?.url ?? null,
           mayContain: allergenResult.mayContain,
@@ -5074,11 +5615,15 @@ async function fetchRbiSanityOfficialRecords(
   };
 }
 
-async function fetchRbiSanityPublicMenuEntries(source, endpoint) {
+async function fetchRbiSanityPublicMenuEntries(
+  source,
+  endpoint,
+  featureMenuRootField = "allFeatureMenus",
+) {
   const itemFields = "_id _type name { en } internalName";
   const comboFields = `_id _type name { en } internalName mainItem { ${itemFields} }`;
   const query = `query {
-    allFeatureMenus(limit: 1) {
+    ${featureMenuRootField}(limit: 1) {
       defaultMenu {
         options {
           __typename
@@ -5119,7 +5664,12 @@ async function fetchRbiSanityPublicMenuEntries(source, endpoint) {
   const fetched = await fetchJsonPostSource(endpoint, source, sourceTypes.api, {
     query,
   });
-  const sources = [fetched.manifest];
+  const sources = [{
+    ...fetched.manifest,
+    configured: true,
+    role: "official-supplemental-api",
+    trust: "configured",
+  }];
 
   if (!fetched.ok || fetched.contentKind !== "json") {
     return { entries: new Map(), sources };
@@ -5128,13 +5678,31 @@ async function fetchRbiSanityPublicMenuEntries(source, endpoint) {
   const parsed = parseJsonLoose(fetched.text);
   const entries = new Map();
 
-  for (const featureMenu of asArray(parsed?.data?.allFeatureMenus)) {
+  for (const featureMenu of asArray(parsed?.data?.[featureMenuRootField])) {
     for (const option of asArray(featureMenu?.defaultMenu?.options)) {
       collectRbiPublicMenuEntry(entries, option, source.category);
     }
   }
 
   return { entries, sources };
+}
+
+export function plainTextFromSanityBlocks(value) {
+  if (!Array.isArray(value)) return null;
+
+  const blocks = value
+    .filter((block) => block?._type === "block" && Array.isArray(block.children))
+    .map((block) =>
+      cleanText(
+        block.children
+          .filter((child) => child?._type === "span" && typeof child.text === "string")
+          .map((child) => child.text)
+          .join(""),
+      ),
+    )
+    .filter(Boolean);
+
+  return cleanText(blocks.join(" "));
 }
 
 function collectRbiPublicMenuEntry(entries, node, category) {
@@ -6771,6 +7339,10 @@ export async function fetchSource(url, restaurant, kind, requestOptions = {}) {
     normalizeFetchSourceRequestOptions(requestOptions);
 
   try {
+    if (shouldPreferOfficialReaderFallback(restaurant, url, kind)) {
+      return fetchPopmenuReaderPage(url, restaurant, kind);
+    }
+
     if (
       (restaurant.useBrowserFetch && shouldUseBrowserForUrl(url)) ||
       (restaurant.forceBrowserFetch && shouldUseBrowserForUrl(url))
@@ -6878,7 +7450,22 @@ export async function fetchSource(url, restaurant, kind, requestOptions = {}) {
       }
     }
 
-    if (isUnsolvedGenericCloudflareChallenge(restaurant, result)) {
+    if (isCloudflareChallengeHtml(result)) {
+      if (shouldUseOfficialReaderFallback(restaurant, url)) {
+        return fetchPopmenuReaderPage(url, restaurant, kind);
+      }
+      if (
+        isToastTabUrl(url)
+        || isOrderOnlineUrl(url)
+        || restaurant.useBrowserFetch
+        || restaurant.forceBrowserFetch
+        || browserFetchRestaurantIds.has(restaurant.id)
+      ) {
+        return fetchSourceWithBrowser(url, restaurant, kind, startedAt);
+      }
+      result.ok = false;
+      result.manifest.ok = false;
+      result.manifest.error = "cloudflare-challenge";
       return result;
     }
 
@@ -7031,7 +7618,7 @@ function shouldUseCurlResultBeforeBrowser(result) {
 function isCloudflareChallengeHtml(result) {
   return (
     result?.contentKind === "html" &&
-    /(?:cf_chl|challenge-platform|Just a moment|Checking if the site connection is secure)/i.test(
+    /(?:cf-chl-widget|cf_chl_opt|challenge-platform\/h\/g\/orchestrate|Just a moment|Checking if the site connection is secure)/i.test(
       result.text ?? "",
     )
   );
@@ -7105,7 +7692,9 @@ async function fetchSourceWithTlsClient(
 ) {
   let session;
   const referer =
-    restaurant.id === "qdoba"
+    restaurant.id === "dennys"
+      ? "https://www.dennys.com/"
+      : restaurant.id === "qdoba"
       ? "https://www.qdoba.com/nutrition-allergens"
       : "https://www.zaxbys.com/menu/";
 
@@ -7693,6 +8282,26 @@ export function extractHtmlItems(
     baseUrl,
     kind,
   );
+  const linkedProductPages = extractLinkedProductPageLinks($, baseUrl);
+
+  const reviewedRestaurantItems =
+    restaurant.id === "bukom-cafe-dc"
+      ? extractBukomElementorMenuItems($, restaurant, baseUrl, kind)
+      : restaurant.id === "chain-kung-fu-tea"
+        ? extractKungFuTeaProductItems($, restaurant, baseUrl, kind)
+        : [];
+
+  if (reviewedRestaurantItems.length >= 4) {
+    return {
+      apiLinks,
+      discoveredDocuments: extractDocumentLinks($, baseUrl),
+      locationPageLinks: extractLocationPageLinks($, baseUrl),
+      menuPageLinks: extractMenuPageLinks($, baseUrl),
+      officialPageLinks: extractOfficialPageLinks($, baseUrl),
+      items: reviewedRestaurantItems,
+      productLinks: linkedProductPages,
+    };
+  }
 
   if (kind === sourceTypes.menu && isDardenPlatformUrl(baseUrl)) {
     return {
@@ -7709,7 +8318,7 @@ export function extractHtmlItems(
       ],
       officialPageLinks: extractOfficialPageLinks($, baseUrl),
       items: [],
-      productLinks: [],
+      productLinks: linkedProductPages,
     };
   }
 
@@ -7718,6 +8327,40 @@ export function extractHtmlItems(
     : extractJsonItemsFromHtml($, restaurant, baseUrl, kind);
   records.push(...jsonRecords);
   records.push(...(brandProfile?.items ?? []));
+
+  const pairedClassMenuItems =
+    kind === sourceTypes.menu && !brandProfile?.exclusive
+      ? extractSimpleItemCardMenuItems($, restaurant, baseUrl, kind).filter(
+          (record) => record.sourceKind === "simple-item-card",
+        )
+      : [];
+  const pairedClassMenuCardCount = $(".menu-item").filter(
+    (_index, element) =>
+      $(element).find(".menu-item-name").length > 0 &&
+      $(element).find(".menu-item-sub").length > 0,
+  ).length;
+
+  // A repeated name/subtext card contract is stronger than the loose DOM and
+  // sequential-text fallbacks. Returning it directly prevents descriptive
+  // prose from being emitted as additional menu-item names.
+  if (pairedClassMenuCardCount >= 4 && pairedClassMenuItems.length >= 4) {
+    return {
+      apiLinks,
+      discoveredDocuments: extractDocumentLinks($, baseUrl),
+      locationPageLinks: extractLocationPageLinks($, baseUrl),
+      menuPageLinks: [
+        ...extractMenuPageLinks($, baseUrl),
+        ...extractCommonMenuPathLinks($, baseUrl),
+        ...extractSinglePlatformMenuPageLinks($, baseUrl),
+        ...extractPopmenuMenuPageLinks($, restaurant, baseUrl),
+        ...extractToastOrderPageLinks($, baseUrl),
+        ...extractLaravelCategoryMenuLinks($, baseUrl),
+      ],
+      officialPageLinks: extractOfficialPageLinks($, baseUrl),
+      items: pairedClassMenuItems,
+      productLinks: linkedProductPages,
+    };
+  }
 
   if (!brandProfile?.exclusive) {
     records.push(
@@ -7790,11 +8433,128 @@ export function extractHtmlItems(
       ...extractLaravelCategoryMenuLinks($, baseUrl),
     ],
     officialPageLinks: extractOfficialPageLinks($, baseUrl),
-    items: records,
-    productLinks: uniqueBy(productLinks, (link) =>
-      normalizeUrl(link.url),
+    items: adaptHtmlPageDescriptions(records, $, restaurant),
+    productLinks: uniqueBy(
+      [...linkedProductPages, ...productLinks],
+      (link) => normalizeUrl(link.url),
     ).slice(0, 150),
   };
+}
+
+function extractBukomElementorMenuItems($, restaurant, url, kind) {
+  if (kind !== sourceTypes.menu || !/bukomdc\.com\/menu/i.test(url)) return [];
+
+  const records = [];
+  $(".eael-feature-list-content-box").each((_index, element) => {
+    const name = cleanText(
+      $(element)
+        .find(".eael-feature-list-title")
+        .first()
+        .text()
+        .replace(/\.{2,}\s*\$.*$/u, "")
+        .replace(/\s+\$\d.*$/u, ""),
+    );
+    const description = cleanText(
+      $(element).find(".eael-feature-list-content").first().text(),
+    );
+    if (!name || !description || !isProbablyMenuItemName(name)) return;
+
+    records.push(
+      createRecord({
+        allergenSourceType: allergenSourceTypes.unavailable,
+        allergens: [],
+        category: restaurant.category ?? "Menu",
+        description,
+        imageUrl: null,
+        mayContain: [],
+        name,
+        sourceKind: "bukom-elementor-menu",
+        sourceUrl: url,
+      }),
+    );
+  });
+
+  return uniqueBy(records, (record) => normalizeMenuName(record.name));
+}
+
+function extractKungFuTeaProductItems($, restaurant, url, kind) {
+  if (kind !== sourceTypes.menu || !/kungfutea\.com\/products/i.test(url)) return [];
+
+  const records = [];
+  $("[data-widget_type='image.default'][title]").each((_index, element) => {
+    const title = cleanText($(element).attr("title"));
+    const separator = title?.indexOf(",") ?? -1;
+    if (separator < 1) return;
+
+    const name = cleanText(title.slice(0, separator));
+    const description = cleanText(
+      title
+        .slice(separator + 1)
+        .replace(/\s*Best Sellers?\s*$/i, ""),
+    );
+    if (!name || !description || !isProbablyMenuItemName(name)) return;
+
+    records.push(
+      createRecord({
+        allergenSourceType: allergenSourceTypes.unavailable,
+        allergens: [],
+        category: restaurant.category ?? "Menu",
+        description,
+        imageUrl: null,
+        mayContain: [],
+        name,
+        sourceKind: "kung-fu-tea-products",
+        sourceUrl: url,
+      }),
+    );
+  });
+
+  return uniqueBy(records, (record) => normalizeMenuName(record.name));
+}
+
+function adaptHtmlPageDescriptions(records, $, restaurant) {
+  if (restaurant.id !== "chick-fil-a") return records;
+
+  const pageName = cleanText($("h1").first().text());
+  const pageDescription = extractRestaurantProductDescription($, restaurant);
+
+  return records.map((record) => {
+    const matchesPage =
+      pageName && similarityKey(record.name) === similarityKey(pageName);
+    return {
+      ...record,
+      description: matchesPage && pageDescription
+        ? pageDescription
+        : cleanChickFilADescription(record.description, record.name),
+    };
+  });
+}
+
+function extractLinkedProductPageLinks($, baseUrl) {
+  const links = [];
+
+  $("a[href]").each((_index, element) => {
+    const $element = $(element);
+    const url = absolutizeUrl($element.attr("href"), baseUrl);
+
+    if (!url || !isSameSite(url, baseUrl) || !isLikelyProductHref(url)) {
+      return;
+    }
+
+    const name =
+      cleanText($element.attr("aria-label")) ??
+      cleanText($element.text()) ??
+      cleanText($element.find("img").first().attr("alt")) ??
+      menuNameFromProductUrl(url);
+
+    if (!name || !isProbablyMenuItemName(name)) {
+      return;
+    }
+
+    links.push({ name, url });
+  });
+
+  return uniqueBy(links, (link) => normalizeUrl(link.url));
 }
 
 export function extractJsonMenuFragmentItems(
@@ -7816,6 +8576,7 @@ export function extractJsonMenuFragmentItems(
   }
 
   const records = [...spotAppsRecords];
+  records.push(...extractWordPressProductApiItems(parsed, restaurant, url, kind));
   records.push(...extractMenuSifuJsonItems(parsed, restaurant, url, kind));
   records.push(
     ...extractHeartlandInitialDataItems(parsed, restaurant, url, kind),
@@ -7892,6 +8653,50 @@ export function extractJsonMenuFragmentItems(
     (record) =>
       `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
   );
+}
+
+export function extractWordPressProductApiItems(
+  parsed,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
+  if (
+    kind === sourceTypes.allergen ||
+    !/\/wp-json\/wp\/v2\/product(?:[/?]|$)/i.test(url) ||
+    !Array.isArray(parsed)
+  ) {
+    return [];
+  }
+
+  return parsed.flatMap((product) => {
+    const name = cleanText(
+      product?.title?.rendered
+        ? cheerio.load(product.title.rendered).root().text()
+        : null,
+    );
+    const descriptionHtml =
+      product?.excerpt?.rendered ?? product?.content?.rendered ?? null;
+    const description = cleanText(
+      descriptionHtml ? cheerio.load(descriptionHtml).root().text() : null,
+    );
+
+    if (!name || !isProbablyMenuItemName(name)) return [];
+
+    return [
+      createRecord({
+        allergenSourceType: allergenSourceTypes.unavailable,
+        allergens: [],
+        category: restaurant.category ?? "Menu",
+        description,
+        imageUrl: null,
+        mayContain: [],
+        name,
+        sourceKind: "json-structured",
+        sourceUrl: product?.link ?? url,
+      }),
+    ];
+  });
 }
 
 export function extractIMenuProScriptItems(
@@ -9906,6 +10711,736 @@ function menuNameFromProductUrl(url) {
   }
 }
 
+function productLinkComparator(preferredNames = []) {
+  const preferredKeys = new Set(
+    asArray(preferredNames).map(similarityKey).filter(Boolean),
+  );
+
+  return (left, right) => {
+    const leftPreferred = preferredKeys.has(similarityKey(left.name));
+    const rightPreferred = preferredKeys.has(similarityKey(right.name));
+    if (leftPreferred !== rightPreferred) return leftPreferred ? -1 : 1;
+    return left.name.localeCompare(right.name);
+  };
+}
+
+function isPopmenuProductUrl(url) {
+  try {
+    return /\/items\/[^/]+\/?$/i.test(new URL(url).pathname);
+  } catch {
+    return false;
+  }
+}
+
+function shouldUseOfficialReaderFallback(restaurant, url) {
+  const hostname = new URL(url).hostname;
+  return (
+    (restaurant?.id === "osm-glory-days-grille-237472337" &&
+      /(?:^|\.)glorydaysgrill\.com$/i.test(hostname)) ||
+    (restaurant?.id === "tiger-dumplings-arlington-va" &&
+      /(?:^|\.)tiger-dumplings\.com$/i.test(hostname)) ||
+    (restaurant?.id === "cubanos-bethesda-md" &&
+      /(?:^|\.)toast\.app$/i.test(hostname)) ||
+    (restaurant?.id === "marvs-dogs-dc" &&
+      /(?:^|\.)marvsdogsdc\.com$/i.test(hostname)) ||
+    (restaurant?.id === "sticky-fingers-bakery-dc" &&
+      /(?:^|\.)stickyfingersbakery\.com$/i.test(hostname)) ||
+    (restaurant?.id === "dirty-habit-washington-dc-dc-metro" &&
+      /(?:^|\.)places\.singleplatform\.com$/i.test(hostname)) ||
+    ([
+      "marufuji-japanese-market-tysons-va",
+      "marafuji-japanese-market-tysons-va",
+    ].includes(restaurant?.id) && /(?:^|\.)(?:toasttab\.com|toast\.app)$/i.test(hostname))
+  );
+}
+
+function shouldPreferOfficialReaderFallback(restaurant, url, kind) {
+  if (
+    kind !== sourceTypes.allergen &&
+    restaurant?.preferOfficialReaderFetch === true
+  ) {
+    return true;
+  }
+
+  if (
+    kind === sourceTypes.allergen ||
+    restaurant?.id !== "chain-quickway-japanese-hibachi"
+  ) {
+    return false;
+  }
+
+  try {
+    const sourceUrl = new URL(url);
+    return (
+      /(?:^|\.)quickwayhibachi\.com$/i.test(sourceUrl.hostname) &&
+      /^\/menu\/?$/i.test(sourceUrl.pathname)
+    );
+  } catch {
+    return false;
+  }
+}
+
+export function extractOfficialReaderMarkdownItems(
+  markdown,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
+  if (
+    kind === sourceTypes.allergen ||
+    !/^URL Source:\s+https?:\/\//m.test(String(markdown ?? ""))
+  ) {
+    return [];
+  }
+
+  if (restaurant?.readerParserProfile === "heading-menu") {
+    return extractHeadingReaderMenuItems(markdown, restaurant, url);
+  }
+
+  if (restaurant?.readerParserProfile === "shia-tasting-menu") {
+    return extractShiaReaderMenuItems(markdown, restaurant, url);
+  }
+
+  if (restaurant?.id === "tiger-dumplings-arlington-va") {
+    return extractTigerDumplingsReaderItems(markdown, restaurant, url);
+  }
+
+  if ([
+    "marvs-dogs-dc",
+    "sticky-fingers-bakery-dc",
+    "marufuji-japanese-market-tysons-va",
+    "marafuji-japanese-market-tysons-va",
+    "osm-big-tony-s-pizzeria-dive-11767597986",
+  ].includes(restaurant?.id)) {
+    return extractToastSlugReaderItems(markdown, restaurant, url, {
+      trustItemSlug: true,
+    });
+  }
+
+  if (restaurant?.id === "dirty-habit-washington-dc-dc-metro") {
+    return extractSinglePlatformReaderItems(markdown, restaurant, url);
+  }
+
+  if (restaurant?.id === "chain-quickway-japanese-hibachi") {
+    return extractQuickwayReaderItems(markdown, restaurant, url);
+  }
+
+  if (restaurant?.id === "cubanos-bethesda-md") {
+    return extractCubanosReaderItems(markdown, restaurant, url);
+  }
+
+  if (restaurant?.id !== "osm-glory-days-grille-237472337") return [];
+
+  const lines = String(markdown).replace(/\r/g, "").split("\n");
+  const records = [];
+  let category = restaurant.category ?? "Menu";
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index].trim();
+    const categoryMatch = line.match(/^##\s+(.+)$/);
+    if (categoryMatch) {
+      category = cleanText(categoryMatch[1]) ?? category;
+      continue;
+    }
+
+    const itemMatch = line.match(/^###\s+(.+)$/);
+    if (!itemMatch) continue;
+
+    const name = cleanText(itemMatch[1]);
+    let description = null;
+    for (let next = index + 1; next < lines.length; next += 1) {
+      const candidate = lines[next].trim();
+      if (/^#{2,3}\s+/.test(candidate)) break;
+      if (
+        candidate &&
+        !/^!\[/.test(candidate) &&
+        !/^\[.*\]\(/.test(candidate)
+      ) {
+        description = cleanText(candidate);
+        break;
+      }
+    }
+
+    if (
+      !name ||
+      !description ||
+      !isProbablyMenuItemName(name) ||
+      !hasFoodLanguage(`${name} ${description}`)
+    ) {
+      continue;
+    }
+
+    records.push(
+      createRecord({
+        allergenSourceType: allergenSourceTypes.unavailable,
+        allergens: [],
+        category,
+        description,
+        imageUrl: null,
+        mayContain: [],
+        name,
+        sourceKind: "product-page",
+        sourceUrl: url,
+      }),
+    );
+  }
+
+  return uniqueBy(records, (record) => normalizeMenuName(record.name));
+}
+
+function extractHeadingReaderMenuItems(markdown, restaurant, url) {
+  const lines = String(markdown).replace(/\r/g, "").split("\n");
+  const records = [];
+  let category = restaurant.category ?? "Menu";
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index].trim();
+    const categoryMatch = line.match(/^##\s+(.+)$/);
+    if (categoryMatch) {
+      category = cleanText(categoryMatch[1]) ?? category;
+      continue;
+    }
+
+    const itemMatch = line.match(/^###\s+(.+)$/);
+    if (!itemMatch) continue;
+
+    const name = cleanText(itemMatch[1]);
+    let description = null;
+    for (let next = index + 1; next < lines.length; next += 1) {
+      const candidate = lines[next].trim();
+      if (/^#{2,3}\s+/.test(candidate)) break;
+      if (
+        !candidate ||
+        /^!\[/.test(candidate) ||
+        /^\[.*\]\(/.test(candidate) ||
+        /^(?:Customize|SEE ALL|Order Now|Image|Back)$/i.test(candidate) ||
+        /^\d+$/.test(candidate)
+      ) {
+        continue;
+      }
+      const withoutPrice = candidate.replace(/^\$\d+(?:\.\d{1,2})?\s*/, "");
+      if (!withoutPrice || /^\$\d/.test(withoutPrice)) continue;
+      description = cleanText(withoutPrice);
+      break;
+    }
+
+    if (
+      !name ||
+      !description ||
+      !isProbablyMenuItemName(name) ||
+      !hasFoodLanguage(`${name} ${description}`)
+    ) {
+      continue;
+    }
+
+    records.push(
+      createRecord({
+        allergenSourceType: allergenSourceTypes.unavailable,
+        allergens: [],
+        category,
+        description,
+        imageUrl: null,
+        mayContain: [],
+        name,
+        sourceKind: "official-reader-menu",
+        sourceUrl: url,
+      }),
+    );
+  }
+
+  return uniqueBy(records, (record) => normalizeMenuName(record.name));
+}
+
+function extractShiaReaderMenuItems(markdown, restaurant, url) {
+  const text = String(markdown)
+    .split(/^Markdown Content:\s*$/m)[1]
+    ?.replace(/\*+/g, "")
+    .replace(/\r/g, "") ?? "";
+  const itemNames = [
+    "Scallop and Fried Oyster Ssam",
+    "OSULLOC & Gamtae Guksu",
+    "Hobak Juk",
+    "Soon-Dae",
+    "Saengsun Jjim",
+    "Grilled Roseda Farms Strip Loin",
+    "Ipgasim",
+    "Gwail",
+  ];
+  const records = [];
+
+  for (const name of itemNames) {
+    const start = text.toLowerCase().indexOf(name.toLowerCase());
+    if (start < 0) continue;
+    const afterName = text.slice(start + name.length);
+    const endOffsets = itemNames
+      .filter((candidate) => candidate !== name)
+      .map((candidate) => afterName.toLowerCase().indexOf(candidate.toLowerCase()))
+      .filter((offset) => offset >= 0);
+    const end = endOffsets.length > 0 ? Math.min(...endOffsets) : afterName.length;
+    const description = cleanText(
+      afterName
+        .slice(0, end)
+        .split("\n")
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .find((line) =>
+          !/^(?:or|served with|tasting menu|korean-language menu|white truffle supplement)/i.test(line),
+        ),
+    );
+    if (!description) continue;
+
+    records.push(
+      createRecord({
+        allergenSourceType: allergenSourceTypes.unavailable,
+        allergens: [],
+        category: restaurant.category ?? "Tasting Menu",
+        description,
+        imageUrl: null,
+        mayContain: [],
+        name,
+        sourceKind: "official-reader-menu",
+        sourceUrl: url,
+      }),
+    );
+  }
+
+  return uniqueBy(records, (record) => normalizeMenuName(record.name));
+}
+
+function extractCubanosReaderItems(markdown, restaurant, url) {
+  const records = [];
+  let menu = null;
+  let category = restaurant.category ?? "Menu";
+
+  for (const rawLine of String(markdown).replace(/\r/g, "").split("\n")) {
+    const line = rawLine.trim();
+    const menuMatch = line.match(/^##\s+(.+)$/);
+    if (menuMatch) {
+      menu = cleanText(menuMatch[1]);
+      continue;
+    }
+    if (menu !== "DINNER") continue;
+
+    const categoryMatch = line.match(/^###\s+(.+)$/);
+    if (categoryMatch) {
+      category = cleanText(categoryMatch[1]) ?? category;
+      continue;
+    }
+
+    const itemMatch = line.match(
+      /^\*\s+\[(?:OUT OF STOCK\s+)?(?:\$\d+(?:\.\d{1,2})?)?\]\((https?:\/\/[^)]+\/item-([a-z0-9-]+)_[a-f0-9-]{20,})\)$/i,
+    );
+    if (!itemMatch) continue;
+
+    const name = titleCase(itemMatch[2].replace(/-/g, " "));
+    if (!name || !isProbablyMenuItemName(name)) continue;
+
+    records.push(
+      createRecord({
+        allergenSourceType: allergenSourceTypes.unavailable,
+        allergens: [],
+        category,
+        description: null,
+        imageUrl: null,
+        mayContain: [],
+        name,
+        sourceKind: "toast-reader-menu",
+        sourceUrl: itemMatch[1] || url,
+      }),
+    );
+  }
+
+  return uniqueBy(records, (record) => normalizeMenuName(record.name));
+}
+
+function extractQuickwayReaderItems(markdown, restaurant, url) {
+  const lines = String(markdown).replace(/\r/g, "").split("\n");
+  const records = [];
+  let category = restaurant.category ?? "Menu";
+  const sectionNames = new Set([
+    "hibachi",
+    "combos",
+    "sides add ons",
+    "bento box",
+    "specialty rolls",
+    "sushi roll",
+    "drinks",
+  ]);
+  const isSectionName = (value) => sectionNames.has(similarityKey(value));
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index].trim();
+    const headingCategoryMatch = line.match(/^#\s+(.+)$/);
+    if (headingCategoryMatch) {
+      category = cleanText(headingCategoryMatch[1]) ?? category;
+      continue;
+    }
+    const itemMatch = line.match(/^##\s+(.+)$/);
+    if (!itemMatch) {
+      if (
+        isSectionName(line) ||
+        (/^[A-Z][A-Z /&]+$/.test(line) && line.length <= 40)
+      ) {
+        category = cleanText(line) ?? category;
+      }
+      continue;
+    }
+
+    const name = cleanText(itemMatch[1].replace(/^\[|\]\([^)]+\)$/g, ""));
+    let description = null;
+    for (let next = index + 1; next < lines.length; next += 1) {
+      const candidate = lines[next].trim();
+      if (
+        /^#{1,2}\s+/.test(candidate) ||
+        isSectionName(candidate) ||
+        (/^[A-Z][A-Z /&]+$/.test(candidate) && candidate.length <= 40)
+      ) {
+        break;
+      }
+      if (
+        !candidate ||
+        /^!\[/.test(candidate) ||
+        /^\[.*\]\(/.test(candidate) ||
+        /^\d+(?:-\d+)?\s+CAL\.?$/i.test(candidate) ||
+        /^Availability may differ/i.test(candidate) ||
+        /^SERVED WITH/i.test(candidate)
+      ) {
+        continue;
+      }
+      description = cleanText(candidate);
+      break;
+    }
+
+    if (
+      !name ||
+      !description ||
+      !isProbablyMenuItemName(name) ||
+      !hasFoodLanguage(`${name} ${description}`)
+    ) {
+      continue;
+    }
+
+    records.push(
+      createRecord({
+        allergenSourceType: allergenSourceTypes.unavailable,
+        allergens: [],
+        category,
+        description,
+        imageUrl: null,
+        mayContain: [],
+        name,
+        sourceKind: "official-reader-menu",
+        sourceUrl: url,
+      }),
+    );
+  }
+
+  return uniqueBy(records, (record) => normalizeMenuName(record.name));
+}
+
+function extractTigerDumplingsReaderItems(markdown, restaurant, url) {
+  return extractToastSlugReaderItems(markdown, restaurant, url, {
+    appendQuantitySuffix: true,
+  });
+}
+
+function extractSinglePlatformReaderItems(markdown, restaurant, url) {
+  const lines = String(markdown).replace(/\r/g, "").split("\n");
+  const records = [];
+  let category = restaurant.category ?? "Menu";
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index].trim();
+    const categoryMatch = line.match(/^#{2,3}\s+(.+)$/);
+    if (categoryMatch) {
+      category = cleanText(categoryMatch[1]) ?? category;
+      continue;
+    }
+
+    const itemMatch = line.match(/^####\s+(.+)$/);
+    if (!itemMatch) continue;
+
+    const name = cleanText(itemMatch[1]);
+    const descriptionLines = [];
+    for (let next = index + 1; next < lines.length; next += 1) {
+      const candidate = lines[next].trim();
+      if (/^#{2,4}\s+/.test(candidate) || /^\* \* \*$/.test(candidate)) break;
+      if (
+        !candidate ||
+        /^\$\d/.test(candidate) ||
+        /^\*\s+/.test(candidate) ||
+        /^(?:vegetarian|vegan|gluten-free)$/i.test(candidate)
+      ) {
+        continue;
+      }
+      descriptionLines.push(candidate);
+    }
+
+    const description = cleanText(descriptionLines.join(" "));
+    if (
+      !name ||
+      !description ||
+      !isProbablyMenuItemName(name) ||
+      !hasFoodLanguage(`${name} ${description}`)
+    ) {
+      continue;
+    }
+
+    records.push(
+      createRecord({
+        allergenSourceType: allergenSourceTypes.unavailable,
+        allergens: [],
+        category,
+        description,
+        imageUrl: null,
+        mayContain: [],
+        name,
+        sourceKind: "singleplatform-reader-menu",
+        sourceUrl: url,
+      }),
+    );
+  }
+
+  return uniqueBy(records, (record) => normalizeMenuName(record.name));
+}
+
+function extractToastSlugReaderItems(markdown, restaurant, url, options = {}) {
+  const records = [];
+  let category = restaurant.category ?? "Menu";
+
+  for (const rawLine of String(markdown).replace(/\r/g, "").split("\n")) {
+    const line = rawLine.trim();
+    const categoryMatch = line.match(/^###\s+(.+)$/);
+    if (categoryMatch) {
+      category = cleanText(categoryMatch[1]) ?? category;
+      continue;
+    }
+
+    const itemMatch = line.match(
+      /^\*\s+\[(?:!\[[^\]]*\]\([^)]+\))?(.*?)\]\((https?:\/\/[^)]+)\)$/,
+    );
+    if (!itemMatch) continue;
+
+    const itemUrl = itemMatch[2];
+    const slugMatch = new URL(itemUrl).pathname
+      .split("/")
+      .filter(Boolean)
+      .at(-1)
+      ?.match(/^item-(.+?)_[a-f0-9-]{20,}$/i);
+    const itemSlug = slugMatch?.[1]?.replace(/-+$/g, "") ?? null;
+    const quantityMatch = itemSlug?.match(/-(\d+(?:pcs?)?)$/i) ?? null;
+    const name = itemSlug
+      ? `${titleCase(
+          (quantityMatch
+            ? itemSlug.slice(0, -quantityMatch[0].length)
+            : itemSlug
+          ).replace(/-/g, " "),
+        )}${options.appendQuantitySuffix && quantityMatch ? ` (${quantityMatch[1]})` : ""}`
+      : null;
+    let description = cleanText(
+      itemMatch[1]
+        .replace(/\bOUT OF STOCK\b/gi, "")
+        .replace(/\s*\$\d+(?:\.\d{1,2})?\s*$/i, ""),
+    );
+    description = stripLeadingRepeatedReaderItemName(description, name);
+
+    if (
+      !name ||
+      !description ||
+      !isProbablyMenuItemName(name) ||
+      (!options.trustItemSlug && !hasFoodLanguage(`${name} ${description}`))
+    ) {
+      continue;
+    }
+
+    records.push(
+      createRecord({
+        allergenSourceType: allergenSourceTypes.unavailable,
+        allergens: [],
+        category,
+        description,
+        imageUrl: null,
+        mayContain: [],
+        name,
+        sourceKind: "toast-reader-menu",
+        sourceUrl: itemUrl || url,
+      }),
+    );
+  }
+
+  return uniqueBy(records, (record) => normalizeMenuName(record.name));
+}
+
+function stripLeadingRepeatedReaderItemName(value, itemName) {
+  const cleaned = String(value ?? "").replace(/^#{1,6}\s+/, "").trim();
+  const comparableName = (candidate) => String(normalizeMenuName(candidate) ?? "")
+    .replace(/\b([a-z]+) s\b/g, "$1s");
+  const target = comparableName(itemName);
+  if (!cleaned || !target) return cleaned;
+
+  for (let index = 1; index < cleaned.length; index += 1) {
+    if (!/\s/.test(cleaned[index])) continue;
+    if (comparableName(cleaned.slice(0, index)) !== target) continue;
+    return cleaned.slice(index).trim();
+  }
+  return cleaned;
+}
+
+function fetchPopmenuReaderPage(url, restaurant, kind) {
+  const queuedFetch = popmenuReaderQueue.then(() =>
+    fetchPopmenuReaderPageNow(url, restaurant, kind),
+  );
+  popmenuReaderQueue = queuedFetch.then(
+    () => undefined,
+    () => undefined,
+  );
+  return queuedFetch;
+}
+
+async function fetchPopmenuReaderPageNow(url, restaurant, kind) {
+  const startedAt = Date.now();
+  const sourceUrl = new URL(url);
+  sourceUrl.protocol = "http:";
+  const retrievalUrl = `https://r.jina.ai/${sourceUrl.toString()}`;
+
+  try {
+    let response;
+    let text = "";
+
+    for (let attempt = 1; attempt <= 4; attempt += 1) {
+      response = await fetchWithTimeout(retrievalUrl, { timeoutMs });
+      text = await response.text();
+      if (response.status !== 429 || attempt === 4) break;
+      const retryAfterSeconds = Number(response.headers.get("retry-after")) || 2;
+      await new Promise((resolve) =>
+        setTimeout(resolve, Math.max(2_000, retryAfterSeconds * 1_000)),
+      );
+    }
+
+    const buffer = Buffer.from(text, "utf8");
+    return {
+      contentKind: "text",
+      finalUrl: url,
+      buffer,
+      manifest: {
+        bytes: buffer.length,
+        contentKind: "text",
+        contentType: response.headers.get("content-type") ?? "text/plain",
+        durationMs: Date.now() - startedAt,
+        finalUrl: url,
+        hash: sha256(buffer),
+        kind,
+        ok: response.ok,
+        readerProxyFetched: true,
+        restaurantId: restaurant.id,
+        retrievalUrl,
+        status: response.status,
+        url,
+      },
+      ok: response.ok,
+      text,
+    };
+  } catch (error) {
+    return {
+      contentKind: "error",
+      finalUrl: url,
+      manifest: {
+        contentKind: "error",
+        durationMs: Date.now() - startedAt,
+        error: error instanceof Error ? error.message : "Reader fetch failed",
+        finalUrl: url,
+        kind,
+        ok: false,
+        readerProxyFetched: true,
+        restaurantId: restaurant.id,
+        retrievalUrl,
+        status: "error",
+        url,
+      },
+      ok: false,
+      text: "",
+    };
+  }
+}
+
+export function extractPopmenuReaderItem(
+  markdown,
+  restaurant,
+  url,
+  fallbackName,
+) {
+  const text = String(markdown ?? "").replace(/\r/g, "");
+  if (!/^URL Source:\s+https?:\/\//m.test(text) || !/\[Back To Menu\]/i.test(text)) {
+    return null;
+  }
+
+  const title = cleanText(text.match(/^Title:\s*(.+)$/m)?.[1]);
+  const heading = cleanText(text.match(/^#\s+([^#\n].+)$/m)?.[1]);
+  const titleName = cleanText(title?.replace(/\s+-\s+[^-]+$/, ""));
+  const name = heading ?? fallbackName ?? titleName;
+  if (!name) return null;
+
+  const content = text.split(/^Markdown Content:\s*$/m)[1] ?? text;
+  const lines = content.split("\n").map((line) => line.trim());
+  const headingIndex = heading
+    ? lines.findIndex((line) => line === `# ${heading}`)
+    : -1;
+  let description = null;
+
+  if (headingIndex >= 0) {
+    const sectionEnd = lines.findIndex(
+      (line, index) => index > headingIndex && /^#{1,6}\s/.test(line),
+    );
+    description = lines
+      .slice(headingIndex + 1, sectionEnd >= 0 ? sectionEnd : undefined)
+      .find(isPopmenuReaderDescriptionLine) ?? null;
+  } else {
+    const priceIndex = lines.findIndex((line) => /^\$\d/.test(line));
+    if (priceIndex >= 0) {
+      const remainingLines = lines.slice(priceIndex + 1);
+      const controlIndex = remainingLines.findIndex((line) =>
+        /^(?:Which location|Add Your Review|Have you tried|Reviews? \(|Book a Table|Submit Review|Remind Me|Share this item|Load More Content|\[Order Online)/i.test(
+          line,
+        ),
+      );
+      description = lines
+        .slice(
+          priceIndex + 1,
+          controlIndex >= 0 ? priceIndex + 1 + controlIndex : undefined,
+        )
+        .find(isPopmenuReaderDescriptionLine) ?? null;
+    }
+  }
+
+  description = cleanText(description);
+  if (!description || isGenericProductPageDescription(description)) return null;
+
+  return createRecord({
+    allergenSourceType: allergenSourceTypes.unavailable,
+    allergens: [],
+    category: cleanText(title?.match(/\s+-\s+([^-]+)$/)?.[1]) ?? restaurant.category,
+    description,
+    imageUrl: null,
+    mayContain: [],
+    name,
+    sourceKind: "product-page",
+    sourceUrl: url,
+  });
+}
+
+function isPopmenuReaderDescriptionLine(line) {
+  const value = cleanText(line);
+  return Boolean(
+    value &&
+    value.length >= 8 &&
+    !/^\$\d/.test(value) &&
+    !/^(?:V|VG|GF|DF)\b/.test(value) &&
+    !/^#{1,6}\s/.test(value) &&
+    !/^\[|^!\[/.test(value) &&
+    !/^(?:Have you tried|Add your review|Reviews? \(|Book a Table|Which location|Submit Review|Remind Me|Share this item|Order Online|Load More Content)/i.test(value),
+  );
+}
+
 function extractDominosAllergenXmlItems(text, restaurant, url) {
   const $ = cheerio.load(text, { xmlMode: true });
   const allergenKeys = new Map([
@@ -10468,6 +12003,10 @@ export function extractOfficialApiItems(
     return [];
   }
 
+  if (/^https:\/\/embed\.marqii\.com\/api\/v2\/public\/widget\//i.test(url)) {
+    return extractMarqiiMenuItems(parsed, restaurant, url);
+  }
+
   const profileRecords = extractOfficialApiDocumentSchemaProfileItems(
     parsed,
     restaurant,
@@ -10482,6 +12021,49 @@ export function extractOfficialApiItems(
     ...extractProviderAllergenRecords(parsed, restaurant, url),
     ...extractRecordsFromObject(parsed, restaurant, url, "official-api", kind),
   ];
+}
+
+function extractMarqiiMenuItems(parsed, restaurant, url) {
+  const records = [];
+
+  for (const menu of asArray(parsed?.data)) {
+    const menuName = cleanText(menu?.name);
+
+    for (const section of asArray(menu?.sections)) {
+      const category =
+        cleanText(section?.name) ?? menuName ?? restaurant.category ?? "Menu";
+
+      for (const item of asArray(section?.items)) {
+        const name = cleanMenuName(item?.name);
+        const description = cleanMenuDescription(item?.description);
+
+        if (!name || !isProbablyMenuItemName(name)) continue;
+        if (!description && !hasFoodLanguage(name)) continue;
+
+        const disclosure = disclosureFromMenuText(description ?? "", sourceTypes.menu);
+        records.push(
+          createRecord({
+            allergenSourceType: disclosure.allergenSourceType,
+            allergens: disclosure.directAllergens,
+            category,
+            description,
+            ingredientsText: disclosure.ingredientsText ?? description,
+            mayContain: disclosure.mayContain,
+            name,
+            sourceKind: "marqii-menu-api",
+            sourceUrl: url,
+            variantGroup: menuName,
+          }),
+        );
+      }
+    }
+  }
+
+  return uniqueBy(
+    records,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+  );
 }
 
 function extractOfficialApiDocumentSchemaProfileItems(parsed, restaurant, url) {
@@ -11829,6 +13411,7 @@ function extractJsonItemsFromHtml($, restaurant, url, kind = sourceTypes.menu) {
   const records = [];
 
   records.push(...extractPopmenuApolloStateItems($, restaurant, url, kind));
+  records.push(...extractToastOnlineOrderingStateItems($, restaurant, url, kind));
 
   $(
     "script[type='application/ld+json'], script#__NEXT_DATA__, script[type='application/json']",
@@ -11881,6 +13464,30 @@ function extractJsonItemsFromHtml($, restaurant, url, kind = sourceTypes.menu) {
     }
   });
 
+  return records;
+}
+
+function extractToastOnlineOrderingStateItems($, restaurant, url, kind = sourceTypes.menu) {
+  if (!isToastTabUrl(url)) return [];
+  const records = [];
+  $("script").each((_index, element) => {
+    const text = $(element).contents().text();
+    const markerIndex = text.indexOf("window.__OO_STATE__");
+    if (markerIndex < 0) return;
+    const objectStart = text.indexOf("{", markerIndex);
+    if (objectStart < 0) return;
+    const objectEnd = findMatchingBracket(text, objectStart, "{", "}");
+    if (objectEnd < objectStart) return;
+    const parsed = parseJsonLoose(text.slice(objectStart, objectEnd + 1));
+    if (!parsed) return;
+    records.push(...extractRecordsFromObject(
+      parsed,
+      restaurant,
+      url,
+      "toast-online-ordering-state",
+      kind,
+    ));
+  });
   return records;
 }
 
@@ -12907,6 +14514,14 @@ function extractDomMenuItems($, restaurant, url, kind = sourceTypes.menu) {
     "article",
   ];
 
+  if (restaurant.id === "tatte-dc") {
+    const tatteItems = extractTatteProductCardItems($, restaurant, url, kind);
+
+    if (tatteItems.length >= 10) {
+      return { items: tatteItems, productLinks };
+    }
+  }
+
   items.push(...extractEmbeddedUserItemsMenuItems($, restaurant, url, kind));
   items.push(...extractYextMenuItems($, restaurant, url, kind));
   items.push(...extractWixGalleryMenuItems($, restaurant, url, kind));
@@ -12945,6 +14560,32 @@ function extractDomMenuItems($, restaurant, url, kind = sourceTypes.menu) {
   }
 
   items.push(...webflowCmsItems);
+  const compactSectionMenuItems = extractCompactSectionMenuItems(
+    $,
+    restaurant,
+    url,
+    kind,
+  );
+
+  if (compactSectionMenuItems.length >= 10) {
+    return {
+      items: compactSectionMenuItems,
+      productLinks,
+    };
+  }
+
+  items.push(...compactSectionMenuItems);
+  const beaverBuilderRestaurantMenuItems =
+    extractBeaverBuilderRestaurantMenuItems($, restaurant, url, kind);
+
+  if (beaverBuilderRestaurantMenuItems.length >= 10) {
+    return {
+      items: beaverBuilderRestaurantMenuItems,
+      productLinks,
+    };
+  }
+
+  items.push(...beaverBuilderRestaurantMenuItems);
   const squarespaceMenuBlockItems = extractSquarespaceMenuBlockItems(
     $,
     restaurant,
@@ -13182,6 +14823,40 @@ function extractDomMenuItems($, restaurant, url, kind = sourceTypes.menu) {
   };
 }
 
+function extractTatteProductCardItems($, restaurant, url, kind) {
+  const items = [];
+
+  $("button.product-card").each((_index, element) => {
+    const $card = $(element);
+    const name = cleanText($card.find("h3").first().text());
+    const description = cleanText(
+      $card.find(".bc-markdown p, .bc-markdown").first().text(),
+    );
+
+    if (!name || !description || !isProbablyMenuItemName(name)) return;
+
+    const disclosure = disclosureFromMenuText(description, kind);
+    items.push(createRecord({
+      allergenSourceType: disclosure.allergenSourceType,
+      allergens: disclosure.directAllergens,
+      category: restaurant.category,
+      description,
+      imageUrl: absolutizeUrl(
+        $card.find("img").first().attr("src") ??
+          $card.find("img").first().attr("data-src"),
+        url,
+      ),
+      ingredientsText: disclosure.ingredientsText,
+      mayContain: disclosure.mayContain,
+      name,
+      sourceKind: "html-card",
+      sourceUrl: url,
+    }));
+  });
+
+  return items;
+}
+
 function extractSimpleItemCardMenuItems(
   $,
   restaurant,
@@ -13194,15 +14869,20 @@ function extractSimpleItemCardMenuItems(
 
   const records = [];
 
-  $(".item-card").each((_index, element) => {
+  $(".item-card, .menu-item, .subsection-food .item").each((_index, element) => {
     const $item = $(element);
 
     if ($item.parents("nav, header, footer, form").length > 0) {
       return;
     }
 
-    const $nameNode = $item.find(".item-name").first().clone();
-    $nameNode.find(".item-price, [class*='price'], button, img, svg").remove();
+    const $nameNode = $item
+      .find(".item-name, .menu-item-name")
+      .first()
+      .clone();
+    $nameNode
+      .find(".item-price, .menu-item-tag, [class*='price'], button, img, svg")
+      .remove();
     const name = cleanMenuName($nameNode.text());
 
     if (
@@ -13214,7 +14894,10 @@ function extractSimpleItemCardMenuItems(
     }
 
     const description = cleanMenuDescription(
-      $item.find(".item-desc").first().text(),
+      $item
+        .find(".item-desc, .menu-item-sub, .item-description")
+        .first()
+        .text(),
     );
     const rowText = cleanText($item.text()) ?? "";
     const category =
@@ -14251,11 +15934,89 @@ function extractWeeblyCompactMenuItems(
     }
   });
 
-  return uniqueBy(
+  return repairGenericPdfDescriptionBoundaryBleed(uniqueBy(
     records.filter((record) => isProbablyMenuCatalogRecord(record)),
     (record) =>
       `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
-  );
+  ));
+}
+
+export function repairGenericPdfDescriptionBoundaryBleed(records) {
+  const menuHeadings = (records ?? [])
+    .map((record) => cleanText(record?.name))
+    .filter(
+      (name) =>
+        name.length >= 7 &&
+        normalizeMenuName(name).split(" ").filter(Boolean).length >= 2,
+    );
+
+  return (records ?? []).map((record) => {
+    const original = cleanText(record?.description);
+    if (!original) return record;
+
+    // Combination products intentionally enumerate other products. They need
+    // their complete description, even when the PDF prints those names as
+    // headings elsewhere on the page.
+    if (
+      /\b(?:board|box|combo|dozen|family|feast|flight|pack|platter|sampler|tasting|trio)\b/i.test(
+        record?.name ?? "",
+      )
+    ) {
+      return record;
+    }
+
+    const boundaries = [
+      /\s[•·]{2,}\s/,
+      /\sA\s+\d+%\s+service\s+fee\b/i,
+      /\sDESSERT\s+WINE(?:,|\s)/,
+      /\s(?:WINE|BEVERAGE)\s+PAIRINGS?\b/,
+    ];
+
+    for (const name of menuHeadings) {
+      if (normalizeMenuName(name) === normalizeMenuName(record.name)) continue;
+      const headingPattern = new RegExp(
+        `(?:^|\\s)${escapeRegExp(name)}(?=\\s|$)`,
+        "i",
+      );
+      const match = headingPattern.exec(original);
+      if (!match) continue;
+
+      const boundaryIndex = match.index + (match[0].startsWith(" ") ? 1 : 0);
+      const prefix = original.slice(0, boundaryIndex).trimEnd();
+      const suffix = original.slice(boundaryIndex + name.length).trim();
+      if (prefix.length < 12 || suffix.length < 4) continue;
+
+      // Ingredient/option lists frequently reuse another product's name. A
+      // separator, conjunction, or relational phrase immediately before the
+      // match means it is part of the current product rather than a new row.
+      if (
+        /(?:[,/|+&]|\b(?:add|and|choice of|choose|includes?|or|served with|topped with|with))\s*$/i.test(
+          prefix,
+        )
+      ) {
+        continue;
+      }
+
+      boundaries.push(new RegExp(`\\s${escapeRegExp(name)}(?=\\s|$)`, "i"));
+    }
+
+    const indexes = boundaries
+      .map((pattern) => original.search(pattern))
+      .filter((index) => index >= 12);
+    if (indexes.length === 0) return record;
+
+    const description = original.slice(0, Math.min(...indexes)).trim().replace(/[,:;\-]+$/, "").trim();
+    if (!description) return record;
+
+    return {
+      ...record,
+      description,
+      ingredientsText:
+        record.ingredientsText === record.description ? description : record.ingredientsText,
+      sourceSummary:
+        record.sourceSummary === record.description ? description : record.sourceSummary,
+    };
+  });
 }
 
 function isWeeblyPage($) {
@@ -14388,6 +16149,123 @@ function sectionedImageMenuDescription($, $card, name) {
   const description = cleanText(uniquePieces.join(" "));
 
   return description && description !== name ? description : null;
+}
+
+function extractCompactSectionMenuItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
+  if (kind === sourceTypes.allergen || $(".mn-section .mn-item").length === 0) {
+    return [];
+  }
+
+  const records = [];
+  $(".mn-section").each((_sectionIndex, section) => {
+    const $section = $(section);
+    const category =
+      cleanText($section.find(".mn-section-title").first().text()) ??
+      inferCategoryFromUrl(url) ??
+      restaurant.category;
+
+    $section.find(".mn-item").each((_itemIndex, item) => {
+      const $item = $(item);
+      const name = cleanMenuName($item.find(".mn-item-name").first().text());
+      const description = cleanMenuDescription(
+        $item.find(".mn-item-desc").first().text(),
+      );
+      if (!name || !isProbablyMenuItemName(name)) return;
+      if (!description && !hasFoodLanguage(name)) return;
+
+      const disclosure = disclosureFromMenuText(description ?? "", kind);
+      records.push(
+        createRecord({
+          allergenSourceType: disclosure.allergenSourceType,
+          allergens: disclosure.directAllergens,
+          category,
+          description,
+          ingredientsText: disclosure.ingredientsText ?? description,
+          mayContain: disclosure.mayContain,
+          name,
+          sourceKind: "compact-section-menu",
+          sourceUrl: url,
+          variantGroup: category,
+        }),
+      );
+    });
+  });
+
+  return uniqueBy(
+    records,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+  );
+}
+
+function extractBeaverBuilderRestaurantMenuItems(
+  $,
+  restaurant,
+  url,
+  kind = sourceTypes.menu,
+) {
+  if (
+    kind === sourceTypes.allergen ||
+    $(".bbvm-restaurant-menu-item").length === 0
+  ) {
+    return [];
+  }
+
+  const records = [];
+
+  $(".bbvm-restaurant-menu-items-wrapper").each((_sectionIndex, section) => {
+    const $section = $(section);
+    const category =
+      cleanText(
+        $section.find(".bbvm-restaurant-menu-items-heading").first().text(),
+      ) ??
+      inferCategoryFromUrl(url) ??
+      restaurant.category;
+
+    $section.find(".bbvm-restaurant-menu-item").each((_itemIndex, item) => {
+      const $item = $(item);
+      const name = cleanMenuName($item.find(".menu-item-title").first().text());
+      const description = cleanMenuDescription(
+        $item.find(".menu-item-description").first().text(),
+      );
+
+      if (!name || !isProbablyMenuItemName(name)) {
+        return;
+      }
+
+      if (!description && !hasFoodLanguage(name)) {
+        return;
+      }
+
+      const disclosure = disclosureFromMenuText(description ?? "", kind);
+
+      records.push(
+        createRecord({
+          allergenSourceType: disclosure.allergenSourceType,
+          allergens: disclosure.directAllergens,
+          category,
+          description,
+          ingredientsText: disclosure.ingredientsText ?? description,
+          mayContain: disclosure.mayContain,
+          name,
+          sourceKind: "beaver-builder-restaurant-menu",
+          sourceUrl: url,
+          variantGroup: category,
+        }),
+      );
+    });
+  });
+
+  return uniqueBy(
+    records,
+    (record) =>
+      `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
+  );
 }
 
 function extractSquarespaceMenuBlockItems(
@@ -15870,6 +17748,7 @@ function cleanFoodMenuPanelDescription($, $element, name) {
   const text = cleanText(clone.text())
     ?.replace(/\bStart Your Order\b/gi, "")
     .replace(/\bView Full Menu\b/gi, "")
+    .replace(/\s+(?:Order|View Menu)\s*$/i, "")
     .replace(/\s+/g, " ")
     .trim();
 
@@ -16303,16 +18182,18 @@ export function extractProductPageItem(html, restaurant, url, fallbackName) {
     cleanText($("h1").first().text()) ??
     cleanText($("meta[property='og:title']").attr("content")) ??
     fallbackName;
-  const description =
-    cleanText($("meta[name='description']").attr("content")) ??
-    cleanText($("meta[property='og:description']").attr("content")) ??
+  const description = [
+    extractRestaurantProductDescription($, restaurant),
+    cleanText($("meta[name='description']").attr("content")),
+    cleanText($("meta[property='og:description']").attr("content")),
     cleanText(
       $(
         "[class*='description'], [class*='Description'], [class*='details'], main p",
       )
         .first()
         .text(),
-    );
+    ),
+  ].find((candidate) => candidate && !isGenericProductPageDescription(candidate));
   const imageUrl = absolutizeUrl(
     $("meta[property='og:image']").attr("content") ??
       $("main img").first().attr("src") ??
@@ -16362,7 +18243,7 @@ export function extractProductPageItem(html, restaurant, url, fallbackName) {
       inferCategoryFromUrl(url) ??
       matchingStructured?.category ??
       restaurant.category,
-    description: description ?? matchingStructured?.description ?? null,
+    description: matchingStructured?.description ?? description ?? null,
     imageUrl: imageUrl ?? matchingStructured?.imageUrl ?? null,
     ingredientsText:
       matchingStructured?.ingredientsText ?? ingredientsText ?? null,
@@ -16374,6 +18255,43 @@ export function extractProductPageItem(html, restaurant, url, fallbackName) {
     sourceKind: "product-page",
     sourceUrl: url,
   });
+}
+
+function extractRestaurantProductDescription($, restaurant) {
+  if (restaurant.id === "smoothie-king") {
+    const candidates = [];
+    $("h2, h3").each((_index, element) => {
+      if (!/^ingredients?:?$/i.test(cleanText($(element).text()) ?? "")) return;
+      candidates.push(
+        cleanText($(element).next("p").first().text()),
+        cleanText($(element).parent().find("p").first().text()),
+      );
+    });
+    return candidates.find((candidate) =>
+      candidate &&
+      candidate.length >= 20 &&
+      !isGenericProductPageDescription(candidate)
+    ) ?? null;
+  }
+
+  if (restaurant.id !== "chick-fil-a") return null;
+
+  return $("p.has-text-align-center")
+    .toArray()
+    .map((element) => cleanText($(element).text()))
+    .find((candidate) =>
+      candidate &&
+      candidate.length >= 30 &&
+      !isGenericProductPageDescription(candidate) &&
+      !/^(?:delivery|pick up|restaurant locator|feed them|planning a gathering)\b/i.test(
+        candidate,
+      ),
+    ) ?? null;
+}
+
+function isGenericProductPageDescription(value) {
+  return /^view our (?:iconic )?menu\b/i.test(value)
+    || /^order (?:a|an|the|our)\b.+\bonline\b.+\b(?:delivery|pick-?up)\b/i.test(value);
 }
 
 function extractProductPageIngredientsText($, html) {
@@ -16785,11 +18703,11 @@ function extractGenericPdfMenuItems(text, restaurant, url) {
 
   flushPending();
 
-  return uniqueBy(
+  return repairGenericPdfDescriptionBoundaryBleed(uniqueBy(
     records.filter((record) => isProbablyMenuCatalogRecord(record)),
     (record) =>
       `${normalizeMenuName(record.category)}:${normalizeMenuName(record.name)}`,
-  );
+  ));
 
   function flushPending() {
     if (!pending) {
@@ -24150,7 +26068,7 @@ function nutritionFactsFromJackInTheBoxValues(values) {
   });
 }
 
-async function readPdfPositionRows(buffer) {
+export async function readPdfPositionRows(buffer) {
   const pdfjsLib = await getPdfJsLib();
   const document = await pdfjsLib.getDocument({
     data: new Uint8Array(buffer),
@@ -24174,7 +26092,12 @@ async function readPdfPositionRows(buffer) {
       const y = Math.round(item.transform[5]);
       const key = `${pageNumber}:${y}`;
       const row = byY.get(key) ?? { items: [], pageNumber, y };
-      row.items.push({ str, x });
+      row.items.push({
+        str,
+        x,
+        height: Math.round(Number(item.height ?? 0) * 10) / 10,
+        fontName: item.fontName ?? null,
+      });
       byY.set(key, row);
     }
 
@@ -25723,7 +27646,7 @@ function waffleHouseAllergens(value) {
   );
 }
 
-async function extractDennysAllergenPdfItems(buffer, restaurant, url) {
+export async function extractDennysAllergenPdfItems(buffer, restaurant, url) {
   const rows = await readPdfPositionRows(buffer);
   const records = [];
   const categories = ["Menu", "Menu", "Menu"];
@@ -25778,96 +27701,182 @@ async function extractDennysAllergenPdfItems(buffer, restaurant, url) {
     },
   ];
 
-  for (const row of rows) {
-    const rowText =
-      cleanText(row.items.map((item) => item.str).join(" ")) ?? "";
+  for (const [clusterIndex, cluster] of clusters.entries()) {
+    const laneRows = rows.filter(
+      (row) =>
+        !(row.pageNumber === 1 && clusterIndex === 2) &&
+        row.items.some(
+          (item) =>
+            item.x >= cluster.startX &&
+            item.x < (clusters[clusterIndex + 1]?.startX ?? 1100),
+        ),
+    );
+    const logicalItems = dennysLogicalPdfItemsForLane(laneRows, cluster);
 
-    if (
-      /^(?:ALLERGENS|X - Contains|◊ - May contain|To designate|PLEASE NOTE|At Denny)/i.test(
-        rowText,
-      )
-    ) {
-      continue;
-    }
+    for (const item of logicalItems) {
+      categories[clusterIndex] = item.category ?? categories[clusterIndex];
 
-    clusters.forEach((cluster, clusterIndex) => {
-      const clusterItems = row.items.filter(
-        (item) =>
-          item.x >= cluster.startX &&
-          item.x < (clusters[clusterIndex + 1]?.startX ?? 1100),
-      );
-      let name = cleanDennysPdfName(
-        clusterItems
-          .filter((item) => item.x < cluster.nameEndX)
-          .map((item) => item.str)
-          .join(" "),
-      );
-
-      if (!name) {
-        return;
-      }
-
-      if (/^[A-Za-z][A-Za-z &/'-]+:$/.test(name)) {
-        categories[clusterIndex] = titleCase(name.replace(/:$/, ""));
-        return;
-      }
-
-      const prefixedName = name.match(
-        /^([A-Za-z][A-Za-z &/'-]{2,30}):\s+(.+)$/,
-      );
-
-      if (prefixedName) {
-        categories[clusterIndex] = titleCase(prefixedName[1]);
-        name = cleanDennysPdfName(prefixedName[2]);
-      }
-
-      if (!isDennysPdfItemName(name)) {
-        return;
-      }
-
-      const allergens = [];
-      const mayContain = [];
-
-      for (const item of clusterItems) {
-        if (!/^(?:X|◊|A|F|SM|CO)$/i.test(item.str)) {
-          continue;
-        }
-
-        const allergen = closestDennysAllergenColumn(item.x, cluster.columns);
-
-        if (!allergen) {
-          continue;
-        }
-
-        if (item.str === "◊") {
-          mayContain.push(allergen);
-        } else {
-          allergens.push(allergen);
-        }
+      if (!isDennysPdfItemName(item.name)) {
+        continue;
       }
 
       records.push(
         createRecord({
           allergenSourceType: allergenSourceTypes.officialAllergenMenu,
-          allergens,
+          allergens: item.allergens,
+          officialAllergenCoveredIds: majorAllergensForCrossContact(),
           category: categories[clusterIndex],
           description: "Official Denny's allergen guide PDF.",
           imageUrl: null,
-          mayContain,
-          name,
+          mayContain: item.mayContain,
+          name: item.name,
           sourceKind: "pdf-matrix",
           sourceUrl: url,
           variantGroup: categories[clusterIndex],
         }),
       );
-    });
+    }
   }
 
   return records;
 }
 
+function dennysLogicalPdfItemsForLane(rows, cluster) {
+  const laneEndX = cluster.startX + 330;
+  const items = [];
+  let category = "Menu";
+  let pending = null;
+
+  const finishPending = () => {
+    if (!pending) {
+      return;
+    }
+
+    const name = cleanDennysPdfName(pending.parts.join(" "));
+
+    if (name) {
+      items.push({
+        category: pending.category,
+        name,
+        pageNumber: pending.pageNumber,
+        topY: pending.topY,
+        bottomY: pending.bottomY,
+      });
+    }
+
+    pending = null;
+  };
+
+  for (const row of rows) {
+    const laneItems = row.items.filter(
+      (item) => item.x >= cluster.startX && item.x < laneEndX,
+    );
+    const nameItems = laneItems.filter((item) => item.x < cluster.nameEndX);
+    const itemTextParts = nameItems
+      .filter((item) => /_f8$/i.test(item.fontName ?? ""))
+      .map((item) => item.str)
+      .filter((value) => !/^[®™]$/.test(value));
+    const categoryTextParts = nameItems
+      .filter((item) => /_f9$/i.test(item.fontName ?? "") && item.height >= 6)
+      .map((item) => item.str)
+      .filter((value) => !/^[®™]$/.test(value));
+
+    if (categoryTextParts.length > 0) {
+      finishPending();
+      const categoryPart =
+        cleanDennysPdfName(categoryTextParts.join(" "))?.replace(/:$/, "") ??
+        "";
+      category = titleCase(
+        /^(?:\(|[a-z])/.test(categoryPart)
+          ? `${category} ${categoryPart}`
+          : categoryPart || category,
+      );
+    }
+
+    if (itemTextParts.length === 0) {
+      continue;
+    }
+
+    const itemText = cleanDennysPdfName(itemTextParts.join(" "));
+
+    if (!itemText) {
+      continue;
+    }
+
+    const continuesPending =
+      pending &&
+      pending.pageNumber === row.pageNumber &&
+      pending.bottomY - row.y <= 9;
+
+    if (!continuesPending) {
+      finishPending();
+      pending = {
+        bottomY: row.y,
+        category,
+        pageNumber: row.pageNumber,
+        parts: [],
+        topY: row.y,
+      };
+    }
+
+    pending.parts.push(itemText);
+    pending.bottomY = row.y;
+  }
+
+  finishPending();
+
+  const marks = rows.flatMap((row) =>
+    row.items
+      .filter(
+        (item) =>
+          item.x >= cluster.startX &&
+          item.x < laneEndX &&
+          /^(?:X|◊|A|F|SM|CO|P)$/i.test(item.str),
+      )
+      .map((item) => ({ ...item, pageNumber: row.pageNumber, y: row.y })),
+  );
+
+  return items.map((item) => {
+    const centerY = (item.topY + item.bottomY) / 2;
+    const allergens = [];
+    const mayContain = [];
+
+    for (const mark of marks) {
+      if (
+        mark.pageNumber !== item.pageNumber ||
+        Math.abs(mark.y - centerY) > 7
+      ) {
+        continue;
+      }
+
+      const allergen = closestDennysAllergenColumn(mark.x, cluster.columns);
+
+      if (!allergen) {
+        continue;
+      }
+
+      if (mark.str === "◊") {
+        mayContain.push(allergen);
+      } else {
+        allergens.push(allergen);
+      }
+    }
+
+    return {
+      ...item,
+      allergens: uniqueStrings(allergens),
+      mayContain: uniqueStrings(mayContain),
+    };
+  });
+}
+
 function cleanDennysPdfName(value) {
-  return cleanText(value)?.replace(/\s+/g, " ").trim();
+  return cleanText(value)
+    ?.replace(/\bC\s+razy\b/g, "Crazy")
+    .replace(/\(\s+/g, "(")
+    .replace(/\s+-\s+/g, "-")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function isDennysPdfItemName(name) {
@@ -27013,10 +29022,12 @@ function extractMenuPageLinks($, url) {
     }
 
     const locationMenuMatch = /^\/menu\/([^/?#]+)/i.exec(pathname);
+    const currentIsMenuRoot = /^\/menus?\/?$/i.test(currentPathname);
 
     if (
       locationMenuMatch &&
       currentPathname !== "/" &&
+      !currentIsMenuRoot &&
       !currentPathname
         .toLowerCase()
         .includes(locationMenuMatch[1].toLowerCase())
@@ -27420,17 +29431,20 @@ const knownLocationScopeTokens = [
   "kensington",
   "laurel",
   "las-vegas",
+  "leesburg",
   "lorton",
   "manassas",
   "manchester",
   "mclean",
   "miami",
+  "middleburg",
   "naples",
   "nashville",
   "national-harbor",
   "north-arlington",
   "north-bethesda",
   "palm-beach",
+  "potomac",
   "purcellville",
   "reston",
   "rockville",
@@ -27799,8 +29813,259 @@ function extractApiLinks($, url, restaurant = null) {
   links.push(...extractLunchboxNovaBundleLinks($, url));
   links.push(...extractDardenPlatformApiLinks($, url));
   links.push(...extractIMenuProScriptLinks($, url));
+  links.push(...extractYextMenuScriptLinks($, url));
+  links.push(...extractMarqiiMenuApiLinks($, url));
+  links.push(...extractArbysCmsDataBundleLinks($, url, restaurant));
+  links.push(...extractAnbeOnlineKitchenBundleLinks($, url, restaurant));
 
   return uniqueBy(links, (link) => normalizeUrl(link.url)).slice(0, 12);
+}
+
+function extractMarqiiMenuApiLinks($, url) {
+  return $("[data-marqii^='menus-']")
+    .toArray()
+    .map((element) => $(element).attr("data-marqii"))
+    .map((value) => String(value ?? "").match(/^menus-([0-9a-f-]{36})$/i)?.[1])
+    .filter(Boolean)
+    .map((widgetId) => ({
+      label: "Marqii official embedded menu",
+      referer: url,
+      role: "marqii-menu-api",
+      url: `https://embed.marqii.com/api/v2/public/widget/${widgetId}?widgetType=menus`,
+    }));
+}
+
+function extractAnbeOnlineKitchenBundleLinks($, url, restaurant) {
+  if (restaurant?.id !== "replacement-tikka-washington-dc") return [];
+
+  return $("script[src]")
+    .toArray()
+    .map((element) => absolutizeUrl($(element).attr("src"), url))
+    .filter((href) => href && /\/main\.[a-f0-9]+\.js(?:[?#]|$)/i.test(href))
+    .map((href) => ({
+      label: "Anbe Online Kitchen app bundle",
+      referer: url,
+      role: "anbe-online-kitchen-app-bundle",
+      url: href,
+    }));
+}
+
+export function extractAnbeOnlineKitchenApiLinksFromBundle(
+  text,
+  restaurant,
+  url,
+  queueEntry = null,
+) {
+  if (
+    restaurant?.id !== "replacement-tikka-washington-dc" ||
+    queueEntry?.role !== "anbe-online-kitchen-app-bundle"
+  ) {
+    return [];
+  }
+
+  const posGuid = text.match(/posGuid:"([A-F0-9-]{36})"/i)?.[1];
+  const baseUrl = text.match(
+    /baseUrl:"(https:\/\/onlinekitchen\.salonservice-api\.com\/)"/i,
+  )?.[1];
+  if (!posGuid || !baseUrl) return [];
+
+  const referer = queueEntry.referer ?? url;
+  return [
+    {
+      fetchOptions: {
+        body: JSON.stringify({ posGuid, sessionID: "" }),
+        extraHeaders: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Referer: referer,
+        },
+        method: "POST",
+      },
+      label: "Anbe Online Kitchen item API",
+      referer,
+      role: "anbe-online-kitchen-items-api",
+      url: `${baseUrl}api-restaurant-online-order/single-app/get-item-list`,
+    },
+  ];
+}
+
+export function extractAnbeOnlineKitchenItems(text, restaurant, url, queueEntry = null) {
+  if (queueEntry?.role !== "anbe-online-kitchen-items-api") return [];
+  const parsed = parseJsonLoose(text);
+
+  return asArray(parsed?.body)
+    .map((item) => {
+      const name = cleanMenuName(item?.item);
+      const rawDescription = cleanMenuDescription(item?.description);
+      const description =
+        normalizeMenuName(rawDescription) === normalizeMenuName(name)
+          ? null
+          : rawDescription;
+      if (!name || !isProbablyMenuItemName(name)) return null;
+
+      return createRecord({
+        allergenSourceType: allergenSourceTypes.unavailable,
+        allergens: [],
+        category: restaurant.category ?? "Menu",
+        description,
+        imageUrl: pickImage(item?.imageUrl) ?? pickImage(item?.thumbnail),
+        mayContain: [],
+        name,
+        sourceKind: "anbe-online-kitchen-api",
+        sourceUrl: queueEntry.referer ?? url,
+      });
+    })
+    .filter(Boolean);
+}
+
+function extractYextMenuScriptLinks($, url) {
+  return $("script[src]")
+    .toArray()
+    .map((element) => absolutizeUrl($(element).attr("src"), url))
+    .filter((href) => href && /^https?:\/\/sites\.yext\.com\/\d+-menu\.js(?:[?#]|$)/i.test(href))
+    .map((href) => ({
+      label: "Yext official embedded menu",
+      referer: url,
+      role: "yext-menu-script",
+      url: href,
+    }));
+}
+
+export function extractYextMenuScriptItems(
+  text,
+  restaurant,
+  sourceUrl,
+  kind = sourceTypes.menu,
+  queueEntry = {},
+) {
+  if (queueEntry?.role !== "yext-menu-script") return [];
+  const marker = '"html":';
+  const markerIndex = String(text).indexOf(marker);
+  if (markerIndex < 0) return [];
+  const literalStart = String(text).indexOf("'", markerIndex + marker.length);
+  if (literalStart < 0) return [];
+
+  let escaped = false;
+  let literalEnd = -1;
+  for (let index = literalStart + 1; index < text.length; index += 1) {
+    const character = text[index];
+    if (escaped) {
+      escaped = false;
+    } else if (character === "\\") {
+      escaped = true;
+    } else if (character === "'") {
+      literalEnd = index;
+      break;
+    }
+  }
+  if (literalEnd < 0) return [];
+
+  try {
+    const html = vm.runInNewContext(
+      text.slice(literalStart, literalEnd + 1),
+      Object.create(null),
+      { timeout: 1_000 },
+    );
+    const $ = cheerio.load(html);
+    return extractYextMenuItems($, restaurant, sourceUrl, kind).map((record) => ({
+      ...record,
+      sourceKind: "yext-menu-script",
+    }));
+  } catch {
+    return [];
+  }
+}
+
+function extractArbysCmsDataBundleLinks($, url, restaurant) {
+  if (restaurant?.id !== "arbys") return [];
+
+  return $("script[src]")
+    .toArray()
+    .map((element) => absolutizeUrl($(element).attr("src"), url))
+    .filter(
+      (href) =>
+        href &&
+        isSameSite(href, url) &&
+        /\/_next\/static\/chunks\/cms-data-[a-f0-9]+\.js(?:[?#]|$)/i.test(href),
+    )
+    .map((href) => ({
+      label: "Arby's official CMS product data",
+      referer: url,
+      role: "arbys-cms-data-bundle",
+      url: href,
+    }));
+}
+
+export function extractArbysCmsDataRecords(text, restaurant, url, queueEntry) {
+  if (restaurant?.id !== "arbys" || queueEntry?.role !== "arbys-cms-data-bundle") {
+    return [];
+  }
+
+  const marker = "e.exports=JSON.parse(";
+  const markerIndex = String(text).indexOf(marker);
+  if (markerIndex < 0) return [];
+
+  const literalStart = markerIndex + marker.length;
+  const quote = text[literalStart];
+  if (quote !== "'" && quote !== '"') return [];
+
+  let escaped = false;
+  let literalEnd = -1;
+  for (let index = literalStart + 1; index < text.length; index += 1) {
+    const character = text[index];
+    if (escaped) {
+      escaped = false;
+    } else if (character === "\\") {
+      escaped = true;
+    } else if (character === quote) {
+      literalEnd = index;
+      break;
+    }
+  }
+  if (literalEnd < 0) return [];
+
+  try {
+    const decoded = vm.runInNewContext(
+      text.slice(literalStart, literalEnd + 1),
+      Object.create(null),
+      { timeout: 1_000 },
+    );
+    const payload = JSON.parse(decoded);
+    const grouped = new Map();
+
+    for (const detail of Object.values(payload?.productIdToProductDetailsMap ?? {})) {
+      const name = cleanText(detail?.productName);
+      const description = cleanText(detail?.description);
+      if (!name || !description || !isProbablyMenuItemName(name)) continue;
+      const key = similarityKey(name);
+      const values = grouped.get(key) ?? [];
+      values.push({ detail, description, name });
+      grouped.set(key, values);
+    }
+
+    const records = [];
+    for (const values of grouped.values()) {
+      const descriptions = uniqueStrings(values.map((value) => value.description));
+      if (descriptions.length !== 1) continue;
+      const { detail, name } = values[0];
+      records.push(
+        createRecord({
+          allergenSourceType: allergenSourceTypes.unavailable,
+          allergens: [],
+          category: "Menu",
+          description: descriptions[0],
+          imageUrl: detail?.imageUrl ?? null,
+          mayContain: [],
+          name,
+          sourceKind: "product-page",
+          sourceUrl: queueEntry.referer ?? url,
+        }),
+      );
+    }
+    return records;
+  } catch {
+    return [];
+  }
 }
 
 function extractIMenuProScriptLinks($, url) {
@@ -27854,7 +30119,7 @@ function extractLunchboxNovaBundleLinks($, url) {
   return uniqueBy(links, (link) => normalizeUrl(link.url)).slice(0, 4);
 }
 
-function extractLunchboxNovaMenuApiLinksFromBundle(
+export function extractLunchboxNovaMenuApiLinksFromBundle(
   text,
   _restaurant,
   url,
@@ -28038,7 +30303,7 @@ function lunchboxNovaBaseUrlFromApiUrl(url) {
 function lunchboxNovaApiBaseFromBundle(text) {
   const matches = [
     ...String(text ?? "").matchAll(
-      /https:\/\/[a-z0-9.-]+\.novadine\.com\/api\/v\d+/gi,
+      /https:\/\/[a-z0-9.-]+\.(?:novadine\.com|lunchbox\.io)\/api\/v\d+/gi,
     ),
   ];
   return matches[0]?.[0] ?? null;
@@ -28480,6 +30745,14 @@ function oloVendorApiUrlForMenuUrl(url) {
 }
 
 function platformHeadersForUrl(url) {
+  if (/^https?:\/\/(?:www\.)?dennys\.com\//i.test(url ?? "")) {
+    return {
+      referer: "https://www.dennys.com/",
+      "user-agent":
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+    };
+  }
+
   if (!/\/api\/vendors\/[^/?#]+/i.test(url ?? "")) {
     return {};
   }
@@ -28582,6 +30855,10 @@ export function mergeRecords(records) {
         ...next.sourceUrls,
       ]),
       variantGroup: current.variantGroup ?? next.variantGroup,
+      optionGroupName: current.optionGroupName ?? next.optionGroupName,
+      optionLabel: current.optionLabel ?? next.optionLabel,
+      optionParentId: current.optionParentId ?? next.optionParentId,
+      optionParentName: current.optionParentName ?? next.optionParentName,
     });
   }
 
@@ -28604,6 +30881,15 @@ export function mergeRecords(records) {
       sourceType: item.sourceKind,
       sourceUrls: publishableSourceUrls(item.sourceUrls),
       variantGroup: item.variantGroup,
+      ...(item.optionParentName
+        ? {
+            isOptionVariant: true,
+            optionGroupName: item.optionGroupName,
+            optionLabel: item.optionLabel,
+            optionParentId: item.optionParentId,
+            optionParentName: item.optionParentName,
+          }
+        : {}),
       evidence: item.evidence.slice(0, 5),
     }))
     .sort((a, b) => a.name.localeCompare(b.name));
@@ -28659,6 +30945,12 @@ function mergeOfficialAllergenRecordWithSupplement(authoritative, supplement) {
       ...supplement.sourceUrls,
     ]),
     variantGroup: authoritative.variantGroup ?? supplement.variantGroup,
+    optionGroupName:
+      authoritative.optionGroupName ?? supplement.optionGroupName,
+    optionLabel: authoritative.optionLabel ?? supplement.optionLabel,
+    optionParentId: authoritative.optionParentId ?? supplement.optionParentId,
+    optionParentName:
+      authoritative.optionParentName ?? supplement.optionParentName,
   };
 }
 
@@ -28814,8 +31106,15 @@ export function normalizeRecord(record) {
     name,
     nutritionFacts: normalizeNutritionFacts(record.nutritionFacts),
     sourceKind: record.sourceKind,
-    sourceUrls: publishableSourceUrls([record.sourceUrl]),
+    sourceUrls: publishableSourceUrls([
+      record.sourceUrl,
+      ...(record.sourceUrls ?? []),
+    ]),
     variantGroup: cleanText(record.variantGroup),
+    optionGroupName: cleanText(record.optionGroupName),
+    optionLabel: cleanText(record.optionLabel),
+    optionParentId: cleanText(record.optionParentId),
+    optionParentName: cleanText(record.optionParentName),
   };
 }
 
@@ -28978,6 +31277,10 @@ export function createRecord({
   mayContain,
   name,
   isConfigurable = false,
+  optionGroupName = null,
+  optionLabel = null,
+  optionParentId = null,
+  optionParentName = null,
   sourceKind,
   sourceUrl,
   variantGroup = null,
@@ -28997,6 +31300,10 @@ export function createRecord({
     isConfigurable,
     mayContain: uniqueStrings(mayContain ?? []),
     name: cleanMenuName(name),
+    optionGroupName: cleanText(optionGroupName),
+    optionLabel: cleanText(optionLabel),
+    optionParentId: cleanText(optionParentId),
+    optionParentName: cleanText(optionParentName),
     sourceKind,
     sourceUrl,
     variantGroup: cleanText(variantGroup),
@@ -29021,6 +31328,7 @@ function cleanMenuDescription(description) {
   return cleaned
     ?.replace(/\bStart Your Order\b/gi, "")
     .replace(/\bView Full Menu\b/gi, "")
+    .replace(/\s+Note\.?$/i, "")
     .replace(
       /\s+\bnew seasonal menu(?:\s+(?:breakfast|brunch|lunch|dinner))?\b\s*$/i,
       "",
@@ -30750,7 +33058,8 @@ function isLikelyProductHref(url) {
   try {
     const pathname = new URL(url).pathname.toLowerCase();
     if (
-      /\/(?:events?|locations?|menus?)(?:\/|$)/.test(pathname) ||
+      /\/(?:events?|locations?)(?:\/|$)/.test(pathname) ||
+      /^\/menus?\/?$/.test(pathname) ||
       /\/menu\/(?:brunch|busboys|breakfast|lunch|dinner|dessert|coffee|tea|happy-hour|bar|catering|city-ridge-menu)\/?$/i.test(
         pathname,
       )

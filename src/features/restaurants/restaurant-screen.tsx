@@ -60,7 +60,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ActionBottomSheetModal } from "@/components/action-bottom-sheet-modal";
 import { AllergyIconGuideModal } from "@/components/allergy-icon-guide-modal";
 import { AllergyIconChips } from "@/components/allergy-icon-chips";
-import { IconButtonSurface } from "@/components/icon-button";
+import { LiquidGlassPressable } from "@/components/liquid-glass-pressable";
 import { MenuItemDetailsModal } from "@/components/menu-item-details-modal";
 import { ModalIconButton } from "@/components/modal-icon-button";
 import { ModalScreen } from "@/components/modal-screen";
@@ -76,6 +76,7 @@ import {
 import {
   type AllergyAccommodationPolicy,
   type MenuItem,
+  type OfficialAllergenProfiles,
   type Restaurant,
 } from "@/data/restaurants";
 import {
@@ -85,6 +86,7 @@ import {
 import { useRestaurantCommunity } from "@/features/community/use-restaurant-community";
 import { useAllergyProfile } from "@/features/profile/allergy-profile-context";
 import { AllergyProfileManagerModal } from "@/features/profile/allergy-profile-manager-modal";
+import { RestaurantAccommodationDetails } from "@/features/restaurants/restaurant-accommodation-details";
 import { useRestaurantDetail } from "@/features/restaurants/restaurant-data-context";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import {
@@ -92,7 +94,14 @@ import {
   recordRestaurantVisit,
   type RestaurantSearchLocation,
 } from "@/features/restaurants/restaurant-search-service";
-import { getMenuItemSafety, hasIngredientIntelligence } from "@/lib/safety";
+import {
+  getApplicableIngredientIntelligenceSignals,
+  getIngredientIntelligenceSignals,
+  getMenuItemSafety,
+  getPublishedAllergenSourceAuthority,
+  getRestaurantAllergenSourceCounts,
+  hasApplicableIngredientIntelligence,
+} from "@/lib/safety";
 import { bucketCount, safeErrorCode } from "@/lib/telemetry/schema";
 import { telemetry } from "@/lib/telemetry/telemetry";
 
@@ -108,10 +117,23 @@ type MenuListRow =
       count: number;
       first: boolean;
     }
-  | { id: string; type: "item"; item: MenuItem; first: boolean; last: boolean }
+  | {
+      id: string;
+      type: "option-parent";
+      category: string;
+      count: number;
+      first: boolean;
+      parentName: string;
+    }
+  | {
+      id: string;
+      type: "item";
+      item: MenuItem;
+      first: boolean;
+      last: boolean;
+      nested: boolean;
+    }
   | { id: string; type: "empty" };
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
-type AnimatedPressableStyle = ComponentProps<typeof AnimatedPressable>["style"];
 type AnimatedViewStyle = ComponentProps<typeof Animated.View>["style"];
 const minimumRestaurantLoaderDurationMs = 650;
 const menuRowEntranceDelayMs = 18;
@@ -191,7 +213,7 @@ export function RestaurantScreen() {
       item_count_bucket: bucketCount(loadedRestaurant.items.length),
       restaurant_id: loadedRestaurant.id,
       source_type: loadedRestaurant.items.some(
-        (item) => item.allergenSourceType !== "unavailable",
+        (item) => getPublishedAllergenSourceAuthority(item) !== null,
       )
         ? "official"
         : "ingredient_intelligence",
@@ -434,15 +456,58 @@ export function RestaurantScreen() {
         });
       }
 
-      rows.push(
-        ...items.map((item, index) => ({
-          first: index === 0,
-          id: item.id,
-          item,
-          last: index === items.length - 1,
-          type: "item" as const,
-        })),
-      );
+      let itemIndex = 0;
+
+      while (itemIndex < items.length) {
+        const item = items[itemIndex];
+        const parentId = item.optionParentId;
+
+        if (!parentId || !item.optionParentName) {
+          rows.push({
+            first: itemIndex === 0,
+            id: item.id,
+            item,
+            last: itemIndex === items.length - 1,
+            nested: false,
+            type: "item",
+          });
+          itemIndex += 1;
+          continue;
+        }
+
+        const children: MenuItem[] = [];
+        let childIndex = itemIndex;
+
+        while (
+          childIndex < items.length &&
+          items[childIndex].optionParentId === parentId
+        ) {
+          children.push(items[childIndex]);
+          childIndex += 1;
+        }
+
+        rows.push({
+          category,
+          count: children.length,
+          first: itemIndex === 0,
+          id: `option-parent-${parentId}`,
+          parentName: item.optionParentName,
+          type: "option-parent",
+        });
+        rows.push(
+          ...children.map((child, index) => ({
+            first: false,
+            id: child.id,
+            item: child,
+            last:
+              itemIndex + children.length === items.length &&
+              index === children.length - 1,
+            nested: true,
+            type: "item" as const,
+          })),
+        );
+        itemIndex = childIndex;
+      }
     });
 
     return { rows, sections: navSections };
@@ -469,10 +534,17 @@ export function RestaurantScreen() {
 
       const firstSection = viewableItems
         .map((viewableItem) => viewableItem.item)
-        .find((row) => row?.type === "header" || row?.type === "item");
+        .find(
+          (row) =>
+            row?.type === "header" ||
+            row?.type === "option-parent" ||
+            row?.type === "item",
+        );
       const nextCategory =
         firstSection?.type === "header"
           ? firstSection.category
+          : firstSection?.type === "option-parent"
+            ? firstSection.category
           : firstSection?.type === "item"
             ? firstSection.item.category || "Menu"
             : null;
@@ -561,22 +633,11 @@ export function RestaurantScreen() {
     logoUrl: restaurant.logoUrl ?? undefined,
     name: restaurant.name,
   });
-  const officialItemCount =
-    restaurant.allergenDataStatus?.officialItemCount ??
-    restaurant.items.filter((item) => item.allergenSourceType !== "unavailable")
-      .length;
-  const profileOfficialItemCount =
-    selectedAllergyIds.length === 0
-      ? officialItemCount
-      : restaurant.items.filter(
-          (item) =>
-            !getMenuItemSafety(
-              item,
-              selectedAllergyIds,
-              restaurant.officialAllergenProfiles,
-            ).officialAllergenDataUnavailable,
-        ).length;
+  const { linkedItemCount, officialItemCount } =
+    getRestaurantAllergenSourceCounts(restaurant);
   const totalItemCount = restaurant.items.length;
+  const accommodationsOnly =
+    totalItemCount === 0 && Boolean(restaurant.allergyAccommodationPolicy);
   const filterOptions: { count: number; id: MenuFilter; label: string }[] = [
     { count: totalItemCount, id: "all", label: "All" },
     { count: summary.okCount, id: "ok", label: "Ok" },
@@ -679,7 +740,7 @@ export function RestaurantScreen() {
   };
   const restaurantMeta = getRestaurantMetaLine({
     officialItemCount,
-    profileOfficialItemCount,
+    linkedItemCount,
     restaurant,
     totalItemCount,
     userLocation: restaurantLocation,
@@ -735,13 +796,36 @@ export function RestaurantScreen() {
       );
     }
 
+    if (item.type === "option-parent") {
+      return (
+        <Animated.View entering={entering}>
+          <View
+            style={[
+              styles.menuRow,
+              styles.optionParentRow,
+              styles.rowDivider,
+              item.first && styles.menuRowTop,
+            ]}
+          >
+            <View style={styles.optionParentTextWrap}>
+              <Text style={styles.optionParentTitle}>{item.parentName}</Text>
+              <Text style={styles.optionParentSubtitle}>Choose an option</Text>
+            </View>
+            <Text style={styles.optionParentCount}>{item.count}</Text>
+          </View>
+        </Animated.View>
+      );
+    }
+
     return (
       <Animated.View entering={entering}>
         <MenuRow
           first={item.first}
           item={item.item}
           last={item.last}
+          nested={item.nested}
           onSelect={handleSelectMenuItem}
+          officialAllergenProfiles={restaurant.officialAllergenProfiles}
           safety={menuSafetyByItem.get(item.item)!}
         />
       </Animated.View>
@@ -769,13 +853,15 @@ export function RestaurantScreen() {
               </Animated.Text>
             </View>
             <View style={styles.navActions}>
-              <AnimatedNavButton
-                Icon={Search}
-                iconStyle={navIconAnimatedStyle}
-                label="Search menu"
-                onPress={() => setMenuSearchVisible(true)}
-                style={navButtonAnimatedStyle}
-              />
+              {!accommodationsOnly ? (
+                <AnimatedNavButton
+                  Icon={Search}
+                  iconStyle={navIconAnimatedStyle}
+                  label="Search menu"
+                  onPress={() => setMenuSearchVisible(true)}
+                  style={navButtonAnimatedStyle}
+                />
+              ) : null}
               <AnimatedNavButton
                 Icon={Ellipsis}
                 iconStyle={navIconAnimatedStyle}
@@ -909,13 +995,20 @@ export function RestaurantScreen() {
                     </Pressable>
                   ))}
                 </View>
-                {restaurant.allergyAccommodationPolicy ? (
-                  <AccommodationPolicyCard
-                    onPress={openAccommodations}
-                    policy={restaurant.allergyAccommodationPolicy}
-                  />
-                ) : null}
               </Animated.View>
+
+              {restaurant.allergyAccommodationPolicy && !accommodationsOnly ? (
+                <AccommodationPolicyCard
+                  onPress={openAccommodations}
+                  policy={restaurant.allergyAccommodationPolicy}
+                />
+              ) : null}
+
+              {accommodationsOnly && restaurant.allergyAccommodationPolicy ? (
+                <RestaurantAccommodationDetails
+                  policy={restaurant.allergyAccommodationPolicy}
+                />
+              ) : null}
 
               {totalItemCount > 0 ? (
                 <ScrollView
@@ -947,7 +1040,7 @@ export function RestaurantScreen() {
             styles.content,
             { paddingBottom: Math.max(insets.bottom + 78, 94) },
           ]}
-          data={menuRows}
+          data={accommodationsOnly ? [] : menuRows}
           ref={menuListRef}
           initialNumToRender={10}
           keyboardShouldPersistTaps="handled"
@@ -978,7 +1071,9 @@ export function RestaurantScreen() {
           ]}
         >
           <Text style={styles.floatingDisclaimerText}>
-            Confirm official allergen information with staff before ordering.
+            {accommodationsOnly
+              ? "Confirm allergy accommodations directly before booking or ordering."
+              : "Confirm official allergen information with staff before ordering."}
           </Text>
         </View>
 
@@ -1260,15 +1355,15 @@ function MenuTableOfContents({
 
   return (
     <View style={styles.menuToc}>
-      <Pressable
+      <LiquidGlassPressable
         accessibilityLabel="Open menu sections"
         accessibilityRole="button"
+        containerStyle={styles.menuTocListButtonSurface}
+        contentStyle={styles.menuTocListButton}
         onPress={onOpenSections}
-        style={styles.menuTocListButton}
       >
-        <IconButtonSurface renderFallbackUnderGlass={false} />
         <ListIcon color={colors.primary} size={20} strokeWidth={2.35} />
-      </Pressable>
+      </LiquidGlassPressable>
       <ScrollView
         contentContainerStyle={styles.menuTocScrollContent}
         horizontal
@@ -1281,8 +1376,10 @@ function MenuTableOfContents({
           const active = section.category === activeCategory;
 
           return (
-            <Pressable
+            <LiquidGlassPressable
               accessibilityRole="button"
+              containerStyle={styles.menuTocChipSurface}
+              contentStyle={styles.menuTocChip}
               key={section.category}
               onLayout={(event) => {
                 chipLayoutsRef.current.set(section.category, {
@@ -1291,13 +1388,9 @@ function MenuTableOfContents({
                 });
               }}
               onPress={() => onSelectSection(section)}
-              style={styles.menuTocChip}
+              tintColor={active ? "rgba(0,122,255,0.14)" : null}
+              fallbackColor={active ? colors.primaryLight : undefined}
             >
-              <IconButtonSurface
-                fallbackColor={active ? colors.primaryLight : undefined}
-                renderFallbackUnderGlass={false}
-                tintColor={active ? "rgba(0,122,255,0.24)" : null}
-              />
               <Text
                 maxFontSizeMultiplier={1.08}
                 numberOfLines={1}
@@ -1308,7 +1401,7 @@ function MenuTableOfContents({
               >
                 {section.category}
               </Text>
-            </Pressable>
+            </LiquidGlassPressable>
           );
         })}
       </ScrollView>
@@ -1425,6 +1518,7 @@ function SourceInfoModal({
 
   return (
     <Modal
+      allowSwipeDismissal
       animationType="slide"
       onDismiss={() => {
         if (!visibleTone) {
@@ -1467,19 +1561,20 @@ function OfficialSourceExplanation() {
     <View style={styles.sourceInfoCard}>
       <SourceInfoSection title="What this means">
         <Text style={styles.sourceInfoBody}>
-          Official source means the allergen information came from the
-          restaurant or brand, or from a published nutrition and allergen data
-          provider such as Nutritionix. These are sources that are meant to
-          reflect the restaurant&apos;s actual menu and ingredients.
+          Official allergen data means item-level evidence came from the
+          restaurant or from a menu or nutrition provider connected to its
+          current menu.
         </Text>
       </SourceInfoSection>
       <SourceInfoSection title="How to use it">
         <Text style={styles.sourceInfoBody}>
           We show this separately because it is the closest thing to the
           restaurant telling you what is in the food. The number on the badge
-          shows how many menu items have official allergen information in the
-          menu snapshot you are viewing. We do not repeat this icon on every
-          menu row when official data is the normal source.
+          shows how many menu items have published allergen or ingredient
+          evidence in the menu snapshot you are viewing. It measures source
+          evidence, not how many items are cleared for every allergen. A source
+          may identify known allergens without confirming their absence; those
+          unresolved items remain marked Review.
         </Text>
       </SourceInfoSection>
       <SourceInfoSection title="Still confirm before ordering">
@@ -1515,7 +1610,9 @@ function IngredientIntelligenceExplanation() {
           When Ingredient Intelligence identifies one of your selected
           allergens, the item is marked Avoid. It never marks food as safe, and
           it never overrides official restaurant information. The summary count
-          shows how many menu items have these inferred allergen signals.
+          shows how many menu items Ingredient Intelligence reviewed, including
+          items where it identified a concern or recognized an explicit
+          allergen-free cue.
         </Text>
         <View
           style={[
@@ -1590,20 +1687,24 @@ function AnimatedNavButton({
   onPress: () => void;
   size?: number;
   strokeWidth?: number;
-  style: AnimatedPressableStyle;
+  style: AnimatedViewStyle;
 }) {
   return (
-    <AnimatedPressable
-      accessibilityLabel={label}
-      accessibilityRole="button"
-      onPress={onPress}
+    <Animated.View
       style={[styles.navButton, style]}
     >
-      <IconButtonSurface />
-      <Animated.View style={iconStyle}>
-        <Icon color={colors.primary} size={size} strokeWidth={strokeWidth} />
-      </Animated.View>
-    </AnimatedPressable>
+      <LiquidGlassPressable
+        accessibilityLabel={label}
+        accessibilityRole="button"
+        containerStyle={styles.navButtonGlass}
+        contentStyle={styles.navButtonContent}
+        onPress={onPress}
+      >
+        <Animated.View style={iconStyle}>
+          <Icon color={colors.primary} size={size} strokeWidth={strokeWidth} />
+        </Animated.View>
+      </LiquidGlassPressable>
+    </Animated.View>
   );
 }
 
@@ -1666,7 +1767,9 @@ function MenuSearchModal({
       first={index === 0}
       item={item}
       last={index === matchingItems.length - 1}
+      nested={false}
       onSelect={onPressItem}
+      officialAllergenProfiles={officialAllergenProfiles}
       safety={getMenuItemSafety(
         item,
         selectedAllergyIds,
@@ -1785,13 +1888,17 @@ const MenuRow = memo(function MenuRow({
   first,
   item,
   last,
+  nested,
   onSelect,
+  officialAllergenProfiles,
   safety,
 }: {
   first: boolean;
   item: MenuItem;
   last: boolean;
+  nested: boolean;
   onSelect: (item: MenuItem) => void;
+  officialAllergenProfiles?: OfficialAllergenProfiles;
   safety: ReturnType<typeof getMenuItemSafety>;
 }) {
   const isAvoid = safety.status === "avoid";
@@ -1808,8 +1915,10 @@ const MenuRow = memo(function MenuRow({
     item,
     safety,
     safety.status === "unknown" ? 0 : 1,
+    officialAllergenProfiles,
   );
-  const showIngredientIntelligenceMarker = hasIngredientIntelligence(item);
+  const showIngredientIntelligenceMarker =
+    hasApplicableIngredientIntelligence(item, officialAllergenProfiles);
   const rowAllergenIcons = getMenuRowAllergenIconIds(item, safety);
   const highlightedAllergenIds = primaryNotice?.allergenIds ?? [];
   const showNoticeRow = Boolean(primaryNotice) || rowAllergenIcons.length > 0;
@@ -1825,9 +1934,11 @@ const MenuRow = memo(function MenuRow({
         last ? styles.menuRowBottom : styles.rowDivider,
       ]}
     >
-      <View style={styles.menuText}>
+      <View style={[styles.menuText, nested && styles.menuTextNested]}>
         <View style={styles.menuNameRow}>
-          <Text style={styles.menuName}>{item.name}</Text>
+          <Text style={styles.menuName}>
+            {nested ? item.optionLabel ?? item.name : item.name}
+          </Text>
           {showIngredientIntelligenceMarker ? (
             <IngredientIntelligenceIconBadge />
           ) : null}
@@ -1903,10 +2014,10 @@ function getMenuRowAllergenIconIds(
   ];
   const allIds = [
     ...matchedIds,
-    ...(item.allergenSourceType !== "unavailable" ? item.allergens : []),
-    ...(item.allergenSourceType !== "unavailable" ? (item.mayContain ?? []) : []),
-    ...(item.allergenSourceType === "unavailable"
-      ? (item.inferredAllergenSignals ?? []).map((signal) => signal.id)
+    ...(getPublishedAllergenSourceAuthority(item) ? item.allergens : []),
+    ...(getPublishedAllergenSourceAuthority(item) ? (item.mayContain ?? []) : []),
+    ...(!getPublishedAllergenSourceAuthority(item)
+      ? getIngredientIntelligenceSignals(item).map((signal) => signal.id)
       : []),
   ];
 
@@ -1917,6 +2028,7 @@ function getMenuRowPrimaryNotice(
   item: MenuItem,
   safety: ReturnType<typeof getMenuItemSafety>,
   selectedAllergyCount: number,
+  officialAllergenProfiles?: OfficialAllergenProfiles,
 ) {
   if (safety.directMatchLabels.length > 0) {
     return {
@@ -1944,13 +2056,22 @@ function getMenuRowPrimaryNotice(
       allergenIds: safety.inferredMatches,
       crossContact: false,
       kind: "inferred" as const,
-      tone: "review" as const,
+      // These are profile-specific matches. Other inferred allergens remain
+      // neutral; only an allergen selected by the active profile is red.
+      tone: "avoid" as const,
     };
   }
 
-  if (hasIngredientIntelligence(item)) {
+  if (
+    hasApplicableIngredientIntelligence(item, officialAllergenProfiles)
+  ) {
     const inferredAllergenIds = Array.from(
-      new Set((item.inferredAllergenSignals ?? []).map((signal) => signal.id)),
+      new Set(
+        getApplicableIngredientIntelligenceSignals(
+          item,
+          officialAllergenProfiles,
+        ).map((signal) => signal.id),
+      ),
     );
     const inferredLabels = inferredAllergenIds.map(getAllergenLabel);
 
@@ -1958,7 +2079,7 @@ function getMenuRowPrimaryNotice(
       label:
         inferredLabels.length > 0
           ? `Ingredient Intelligence: ${inferredLabels.join(", ")}`
-          : "Ingredient Intelligence: no signals identified",
+          : "No allergen signals identified",
       allergenIds: inferredAllergenIds,
       crossContact: false,
       kind: "inferred" as const,
@@ -2110,13 +2231,13 @@ function formatAllergyReviewSummary(summary: {
 
 function getRestaurantMetaLine({
   officialItemCount,
-  profileOfficialItemCount,
+  linkedItemCount,
   restaurant,
   totalItemCount,
   userLocation,
 }: {
   officialItemCount: number;
-  profileOfficialItemCount: number;
+  linkedItemCount: number;
   restaurant: Restaurant;
   totalItemCount: number;
   userLocation: RestaurantSearchLocation | null;
@@ -2126,7 +2247,7 @@ function getRestaurantMetaLine({
     sourceBadges: getRestaurantSourceBadges(
       restaurant,
       officialItemCount,
-      profileOfficialItemCount,
+      linkedItemCount,
       totalItemCount,
     ),
   };
@@ -2176,17 +2297,22 @@ function normalizeCityForRegion(
 function getRestaurantSourceBadges(
   restaurant: Restaurant,
   officialItemCount: number,
-  profileOfficialItemCount: number,
+  linkedItemCount: number,
   totalItemCount: number,
 ) {
   const inferredItemCount = restaurant.items.filter(
-    hasIngredientIntelligence,
+    (item) =>
+      hasApplicableIngredientIntelligence(
+        item,
+        restaurant.officialAllergenProfiles,
+      ),
   ).length;
   const badges: SourceBadge[] = [];
+  const publishedItemCount = officialItemCount + linkedItemCount;
 
-  if (officialItemCount > 0) {
+  if (publishedItemCount > 0) {
     badges.push({
-      label: `Official coverage ${profileOfficialItemCount}/${totalItemCount}`,
+      label: `Official allergen data ${publishedItemCount}/${totalItemCount}`,
       tone: "official",
     });
   }
@@ -2240,7 +2366,8 @@ function getAllergenLabel(id: string) {
 }
 
 function getMenuItemSearchRank(item: MenuItem, normalizedQuery: string) {
-  const includeInferenceSearchTerms = item.allergenSourceType === "unavailable";
+  const includeInferenceSearchTerms =
+    getPublishedAllergenSourceAuthority(item) === null;
 
   const weightedFields = [
     { rank: 0, text: item.name },
@@ -2258,7 +2385,7 @@ function getMenuItemSearchRank(item: MenuItem, normalizedQuery: string) {
       text: getAllergenLabel(id),
     })),
     ...(includeInferenceSearchTerms
-      ? (item.inferredAllergenSignals ?? []).map((signal) => ({
+      ? getIngredientIntelligenceSignals(item).map((signal) => ({
           rank: 3,
           text: getAllergenLabel(signal.id),
         }))
@@ -2329,7 +2456,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: "row",
     gap: 10,
-    marginTop: 10,
+    marginBottom: spacing.two,
     paddingHorizontal: 12,
     paddingVertical: 11,
   },
@@ -2806,11 +2933,12 @@ const styles = StyleSheet.create({
   },
   menuTocChip: {
     alignItems: "center",
-    borderRadius: 16,
     justifyContent: "center",
     minHeight: 32,
-    overflow: "hidden",
     paddingHorizontal: 12,
+  },
+  menuTocChipSurface: {
+    borderRadius: 16,
   },
   menuTocChipText: {
     color: colors.muted,
@@ -2823,11 +2951,12 @@ const styles = StyleSheet.create({
   },
   menuTocListButton: {
     alignItems: "center",
-    borderRadius: 16,
     height: 32,
     justifyContent: "center",
-    overflow: "hidden",
     width: 32,
+  },
+  menuTocListButtonSurface: {
+    borderRadius: 16,
   },
   menuTocReveal: {
     alignSelf: "stretch",
@@ -2871,10 +3000,40 @@ const styles = StyleSheet.create({
   menuText: {
     flex: 1,
   },
+  menuTextNested: {
+    paddingLeft: 10,
+  },
   menuVerdictCluster: {
     alignItems: "center",
     flexDirection: "row",
     gap: 6,
+  },
+  optionParentCount: {
+    color: colors.muted,
+    fontSize: 12,
+    fontWeight: "700",
+    lineHeight: 18,
+  },
+  optionParentRow: {
+    alignItems: "center",
+    minHeight: 54,
+    paddingVertical: 9,
+  },
+  optionParentSubtitle: {
+    color: colors.muted,
+    fontSize: 12,
+    fontWeight: "600",
+    lineHeight: 16,
+    marginTop: 1,
+  },
+  optionParentTextWrap: {
+    flex: 1,
+  },
+  optionParentTitle: {
+    color: colors.ink,
+    fontSize: 16,
+    fontWeight: "800",
+    lineHeight: 20,
   },
   menuStatusPill: {
     alignItems: "center",
@@ -2936,6 +3095,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
+  },
+  navButtonContent: {
+    height: "100%",
+    width: "100%",
+  },
+  navButtonGlass: {
+    borderRadius: 999,
+    bottom: 0,
+    left: 0,
+    position: "absolute",
+    right: 0,
+    top: 0,
   },
   navLeading: {
     alignItems: "center",

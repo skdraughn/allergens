@@ -336,7 +336,7 @@ function applyOfficialSourceStatusRepairs(byId) {
 async function promoteAccommodationShells(repository) {
   const source = await readFile(staticRestaurantPath, "utf8");
   const policies = extractAccommodationPolicies(source);
-  const shells = extractPolicyRestaurantCalls(source).map((shell) => {
+  const candidateShells = extractPolicyRestaurantCalls(source).map((shell) => {
     const policy = policies[shell.id];
     return {
       allergyAccommodationPolicy: policy,
@@ -377,6 +377,17 @@ async function promoteAccommodationShells(repository) {
     };
   });
 
+  const shells = [];
+  for (const shell of candidateShells) {
+    if (!(await isCanonicallyClosed(shell.id))) shells.push(shell);
+  }
+
+  const activeRestaurants = [];
+  for (const restaurant of repository.restaurants) {
+    if (!(await isCanonicallyClosed(restaurant.id))) activeRestaurants.push(restaurant);
+  }
+  repository.restaurants = activeRestaurants;
+
   const existing = new Map(repository.restaurants.map((restaurant, index) => [restaurant.id, index]));
   let added = 0;
   let updated = 0;
@@ -385,11 +396,30 @@ async function promoteAccommodationShells(repository) {
     if (existing.has(shell.id)) {
       const index = existing.get(shell.id);
       const existingRestaurant = repository.restaurants[index];
-      repository.restaurants[index] = withOfficialEvidenceMetadata({
-        ...existingRestaurant,
-        ...shell,
-        items: existingRestaurant.items?.length ? existingRestaurant.items : shell.items,
-      });
+      const hasCurrentItems = (existingRestaurant.items?.length ?? 0) > 0;
+      repository.restaurants[index] = withOfficialEvidenceMetadata(
+        hasCurrentItems
+          ? {
+              ...existingRestaurant,
+              allergyAccommodationPolicy: shell.allergyAccommodationPolicy,
+              guideLabel: existingRestaurant.guideLabel ?? shell.guideLabel,
+              guideUrl: existingRestaurant.guideUrl ?? shell.guideUrl,
+              sourceUrls: uniqueStrings([
+                ...(existingRestaurant.sourceUrls ?? []),
+                ...(shell.sourceUrls ?? []),
+              ]),
+              sourceStatus: {
+                ...(existingRestaurant.sourceStatus ?? {}),
+                accommodationOnly: false,
+                extractedFoodItemCount: existingRestaurant.items.length,
+              },
+            }
+          : {
+              ...existingRestaurant,
+              ...shell,
+              items: shell.items,
+            },
+      );
       updated += 1;
       continue;
     }
@@ -399,6 +429,19 @@ async function promoteAccommodationShells(repository) {
 
   repository.restaurants.sort((a, b) => (a.rank ?? 9999) - (b.rank ?? 9999) || a.name.localeCompare(b.name));
   return { added, updated, totalShells: shells.length };
+}
+
+async function isCanonicallyClosed(restaurantId) {
+  try {
+    const dossier = JSON.parse(
+      await readFile(`data/restaurant-verification/restaurants/${restaurantId}.json`, "utf8"),
+    );
+    return /(?:historical_)?closed|defunct|permanently_closed/i.test(
+      `${dossier.status ?? ""} ${dossier.identity?.verdict ?? ""} ${dossier.currentCatalog?.status ?? ""}`,
+    );
+  } catch {
+    return false;
+  }
 }
 
 function setOfficialExtractedStatus(restaurant, matched, { parserProfile, sourceFamily, sourceProfile, sourceUrl }) {

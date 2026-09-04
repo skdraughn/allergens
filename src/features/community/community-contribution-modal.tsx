@@ -477,6 +477,7 @@ export function CommunityContributionModal({
 
   return (
     <Modal
+      allowSwipeDismissal
       animationType="slide"
       onDismiss={() => {
         if (!mode) {

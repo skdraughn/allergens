@@ -8,8 +8,14 @@ test("builds a deterministic immutable catalog with versioned detail paths", () 
     generatedAt: "2026-08-15T00:00:00.000Z",
     snapshotVersion: 1,
     restaurants: [
-      { id: "alpha", items: [{ id: "one" }] },
-      { id: "beta", items: [{ id: "two" }] },
+      {
+        id: "alpha",
+        items: [{ id: "one", allergenSourceType: "ingredient_intelligence" }],
+      },
+      {
+        id: "beta",
+        items: [{ id: "two", allergenSourceType: "ingredient_intelligence" }],
+      },
     ],
   };
   const summary = {
@@ -44,9 +50,43 @@ test("changes the catalog version when canonical content changes", () => {
     summary,
   );
   const second = buildVersionedRestaurantCatalog(
-    { restaurants: [{ id: "alpha", items: [{ id: "changed" }] }], snapshotVersion: 1 },
+    {
+      restaurants: [
+        {
+          id: "alpha",
+          items: [
+            { id: "changed", allergenSourceType: "ingredient_intelligence" },
+          ],
+        },
+      ],
+      snapshotVersion: 1,
+    },
     summary,
   );
 
   assert.notEqual(first.catalogVersion, second.catalogVersion);
+});
+
+test("refuses catalogs that still classify ingredient-derived claims as official", () => {
+  assert.throws(
+    () =>
+      buildVersionedRestaurantCatalog(
+        {
+          restaurants: [
+            {
+              id: "legacy",
+              items: [
+                {
+                  id: "crab-cake",
+                  allergenSourceType: "restaurant_ingredients",
+                  allergens: ["shellfish"],
+                },
+              ],
+            },
+          ],
+        },
+        { restaurants: [{ id: "legacy" }] },
+      ),
+    /not been reclassified as Ingredient Intelligence/,
+  );
 });

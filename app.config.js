@@ -153,7 +153,11 @@ module.exports = ({ config }) => {
       },
       restaurantCatalogBootstrapPath:
         process.env.EXPO_PUBLIC_RESTAURANT_CATALOG_BOOTSTRAP_PATH ||
-        "restaurant-data/catalogs/v1-ed8c8f5523c7523f9f78/summary.json",
+        "restaurant-data/catalogs/v1-742f4fb7bb53a247d7fe/summary.json",
+      restaurantCatalogRetiredIds: [
+        "cranes-dc",
+        "kyojin-sushi-washington-dc-dc-metro",
+      ],
       socialAuthEndpoint: process.env.EXPO_PUBLIC_SOCIAL_AUTH_ENDPOINT,
     },
     android: {

@@ -1,4 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { fetchAuthSession } from "aws-amplify/auth";
 import { downloadData } from "aws-amplify/storage";
 import { ungzip } from "pako";
 import {
@@ -17,6 +18,7 @@ import { isAmplifyConfigured } from "@/lib/amplify";
 import {
   getAuthoritativeCatalogPath,
   getCachedActiveCatalogPath,
+  getRetiredRestaurantIds,
   isVersionedCatalogObjectPath,
   markCatalogActive,
   readImmutableCatalogFile,
@@ -28,6 +30,7 @@ import { telemetry } from "@/lib/telemetry/telemetry";
 
 const supportedSnapshotVersion = 1;
 const emptyRestaurants: Restaurant[] = [];
+let sessionRefreshPromise: Promise<void> | null = null;
 
 type RestaurantRepository = {
   generatedAt: string | null;
@@ -231,7 +234,6 @@ async function fetchRemoteRestaurantRepository(path: string): Promise<Restaurant
     telemetry.recordError(error, "catalog_initialization", {
       errorCode: safeErrorCode(error),
     });
-    console.error("Remote restaurant catalog download failed", error);
     throw error;
   }
 
@@ -262,12 +264,48 @@ async function readParsedImmutableRemoteObject<T>(
     if (parsed) return parsed;
   }
 
-  const result = await downloadData({ path }).result;
+  const result = await downloadRemoteObjectWithSessionRecovery(path);
   const contents = await readDownloadBody(result.body);
   const parsed = parse(contents);
   if (!parsed) return null;
   await writeImmutableCatalogFile(path, contents);
   return parsed;
+}
+
+async function downloadRemoteObjectWithSessionRecovery(path: string) {
+  try {
+    return await downloadData({ path }).result;
+  } catch (error) {
+    if (!isInvalidLoginTokenError(error)) throw error;
+
+    await refreshAmplifySession();
+    return downloadData({ path }).result;
+  }
+}
+
+async function refreshAmplifySession() {
+  if (!sessionRefreshPromise) {
+    sessionRefreshPromise = fetchAuthSession({ forceRefresh: true })
+      .then(() => undefined)
+      .finally(() => {
+        sessionRefreshPromise = null;
+      });
+  }
+
+  return sessionRefreshPromise;
+}
+
+function isInvalidLoginTokenError(error: unknown) {
+  if (!error || typeof error !== "object") return false;
+
+  const candidate = error as { message?: unknown; name?: unknown };
+  const name = typeof candidate.name === "string" ? candidate.name : "";
+  const message = typeof candidate.message === "string" ? candidate.message : "";
+
+  return (
+    name === "NotAuthorizedException" &&
+    /invalid login token|couldn(?:'|’)t verify signed token/i.test(message)
+  );
 }
 
 async function readDownloadBody(body: { blob: () => Promise<Blob> }): Promise<string> {
@@ -311,14 +349,16 @@ function parseRestaurantRepository(value: string): RestaurantRepository | null {
       return null;
     }
 
+    const retiredRestaurantIds = getRetiredRestaurantIds();
     return {
       generatedAt: parsed.generatedAt ?? null,
       restaurants: parsed.restaurants
         .filter(
           (restaurant) =>
-            !restaurant.coverageStatus ||
-            restaurant.coverageStatus === "complete" ||
-            restaurant.coverageStatus === "kept-previous",
+            !retiredRestaurantIds.has(restaurant.id) &&
+            (!restaurant.coverageStatus ||
+              restaurant.coverageStatus === "complete" ||
+              restaurant.coverageStatus === "kept-previous"),
         )
         .map((restaurant) => ({
           ...restaurant,

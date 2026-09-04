@@ -1,9 +1,16 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { normalizeAllergyIds } from "@/constants/allergies";
-import type { AllergenId, Restaurant } from "@/data/restaurants";
+import type { Restaurant } from "@/data/restaurants";
 import { getRestaurantBrand } from "@/data/brand-assets";
-import { hasIngredientIntelligence } from "@/lib/safety";
+import {
+  getApplicableIngredientIntelligenceSignals,
+  getApplicableIngredientIntelligenceSuppressions,
+  getPublishedAllergenSourceAuthority,
+  getRestaurantAllergenSourceCounts,
+  hasApplicableIngredientIntelligence,
+  isPublishedAllergenCovered,
+} from "@/lib/safety";
 
 import amplifyOutputs from "../../../amplify_outputs.json";
 
@@ -62,6 +69,7 @@ export type RestaurantSearchSummary = {
   evidenceStatus:
     | "unconfigured"
     | "official"
+    | "linked"
     | "mixed"
     | "intelligence"
     | "partial"
@@ -77,7 +85,7 @@ export type RestaurantSearchSummary = {
 export type RestaurantAllergenCoverage = {
   allergenId: string;
   coveredItemCount: number;
-  status: "official" | "partial";
+  status: "official" | "linked" | "mixed" | "partial";
   totalCount: number;
 };
 
@@ -101,6 +109,7 @@ type RestaurantCompatibilitySummary = {
   inferredAllergenItemIndexes?: Record<string, number[]>;
   ingredientIntelligenceItemIndexes?: number[];
   ingredientIntelligenceSafeAllergenItemIndexes?: Record<string, number[]>;
+  linkedAllergenItemIndexes?: number[];
   mayContainAllergenItemCounts?: Record<string, number>;
   mayContainAllergenItemIndexes?: Record<string, number[]>;
   officialItemCount?: number;
@@ -341,14 +350,26 @@ export function getSearchResultSummary(
       0,
       cautionCount - ingredientIntelligenceOkCount,
     );
-    const officialResolvedIndexes = new Set<number>([
-      ...directIndexes,
-      ...mayContainIndexes,
-    ]);
+    const linkedSourceIndexes = new Set(
+      summary.linkedAllergenItemIndexes ?? [],
+    );
+    const officialResolvedIndexes = new Set<number>();
+    const linkedResolvedIndexes = new Set<number>();
+    const addPublishedResolution = (index: number) => {
+      if (linkedSourceIndexes.has(index)) {
+        linkedResolvedIndexes.add(index);
+      } else {
+        officialResolvedIndexes.add(index);
+      }
+    };
+
+    for (const index of [...directIndexes, ...mayContainIndexes]) {
+      addPublishedResolution(index);
+    }
 
     for (let index = 0; index < totalCount; index += 1) {
       if (!unavailableIndexes.has(index)) {
-        officialResolvedIndexes.add(index);
+        addPublishedResolution(index);
       }
     }
 
@@ -357,6 +378,7 @@ export function getSearchResultSummary(
     );
     const resolvedIndexes = new Set([
       ...officialResolvedIndexes,
+      ...linkedResolvedIndexes,
       ...intelligenceResolvedIndexes,
     ]);
     const hasAllergenSpecificCoverage = Boolean(
@@ -370,8 +392,23 @@ export function getSearchResultSummary(
       evidenceStatus = "unknown";
     } else if (officialResolvedIndexes.size >= totalCount) {
       evidenceStatus = "official";
+    } else if (linkedResolvedIndexes.size >= totalCount) {
+      evidenceStatus = "linked";
     } else if (resolvedIndexes.size >= totalCount) {
-      evidenceStatus = officialResolvedIndexes.size > 0 ? "mixed" : "intelligence";
+      const resolvedSourceCount = [
+        officialResolvedIndexes,
+        linkedResolvedIndexes,
+        intelligenceResolvedIndexes,
+      ].filter((indexes) => indexes.size > 0).length;
+
+      evidenceStatus =
+        resolvedSourceCount > 1
+          ? "mixed"
+          : intelligenceResolvedIndexes.size > 0
+            ? "intelligence"
+            : linkedResolvedIndexes.size > 0
+              ? "linked"
+              : "official";
     } else if (resolvedIndexes.size > 0) {
       evidenceStatus = "partial";
     } else {
@@ -434,19 +471,45 @@ export function getSearchResultAllergenCoverage(
       return [];
     }
 
-    const unavailableCount = new Set(unavailableByAllergen[allergenId] ?? []).size;
+    const unavailableIndexes = new Set(
+      unavailableByAllergen[allergenId] ?? [],
+    );
+    const unavailableCount = unavailableIndexes.size;
     const coveredItemCount = Math.max(0, totalCount - unavailableCount);
+
+    const linkedSourceIndexes = new Set(
+      summary?.linkedAllergenItemIndexes ?? [],
+    );
+    const linkedCoveredCount = Array.from(
+      { length: totalCount },
+      (_, index) => index,
+    ).filter(
+      (index) =>
+        !unavailableIndexes.has(index) &&
+        linkedSourceIndexes.has(index),
+    ).length;
+    const status =
+      coveredItemCount < totalCount
+        ? "partial" as const
+        : linkedCoveredCount === totalCount
+          ? "linked" as const
+          : linkedCoveredCount > 0
+            ? "mixed" as const
+            : "official" as const;
 
     return [{
       allergenId,
       coveredItemCount,
-      status: coveredItemCount === totalCount ? "official" as const : "partial" as const,
+      status,
       totalCount,
     }];
   });
 }
 
 export function searchResultFromRestaurant(restaurant: Restaurant): RestaurantSearchResult {
+  const hasLoadedItems = restaurant.items.length > 0;
+  const totalItemCount = getRestaurantItemCount(restaurant);
+
   return {
     city: restaurant.city ?? restaurant.address?.city,
     brandKey: restaurant.brandKey,
@@ -468,14 +531,15 @@ export function searchResultFromRestaurant(restaurant: Restaurant): RestaurantSe
     locationId: restaurant.locationId ?? "national",
     name: restaurant.name,
     officialItemCount:
-      restaurant.allergenDataStatus?.officialItemCount ??
-      restaurant.items.filter((item) => item.allergenSourceType !== "unavailable").length,
+      hasLoadedItems
+        ? getRestaurantAllergenSourceCounts(restaurant).officialItemCount
+        : restaurant.allergenDataStatus?.officialItemCount ?? 0,
     rank: restaurant.rank,
     restaurantId: restaurant.id,
     snapshotPath: restaurant.snapshotPath,
     sourceStatus: restaurant.sourceStatus,
     sourceUrls: restaurant.sourceUrls,
-    totalItemCount: restaurant.totalItemCount ?? restaurant.items.length,
+    totalItemCount,
     type: restaurant.type ?? "chain",
   };
 }
@@ -492,24 +556,33 @@ function reconcileSearchResults(
     fallbackRestaurants.map((restaurant) => [restaurant.id, restaurant]),
   );
 
-  return results.map((result) => {
+  return results.flatMap((result) => {
     const fallbackRestaurant = fallbackById.get(result.restaurantId);
 
     if (!fallbackRestaurant) {
-      return result;
+      // The versioned catalog owns restaurant membership. Search affirmation
+      // may contain a stale row for a retired restaurant, but it must never
+      // reintroduce that row into the app.
+      return [];
     }
 
     const fallbackResult = searchResultFromRestaurant(fallbackRestaurant);
     const fallbackItemCount = fallbackResult.totalItemCount ?? 0;
     const apiSummaryItemCount = result.compatibilitySummary?.totalItemCount;
     const compatibilitySummary =
-      result.compatibilitySummary && apiSummaryItemCount === fallbackItemCount
-        ? result.compatibilitySummary
-        : conservativeCompatibilitySummary(fallbackItemCount);
+      fallbackRestaurant.items.length > 0
+        ? fallbackResult.compatibilitySummary
+        : result.compatibilitySummary && apiSummaryItemCount === fallbackItemCount
+          ? result.compatibilitySummary
+          : conservativeCompatibilitySummary(fallbackItemCount);
 
-    return {
+    return [{
       ...result,
       ...fallbackResult,
+      // Full local detail owns compatibility when it is present. The home
+      // repository intentionally contains lightweight rows with no item array,
+      // so those rows retain the matching Lambda summary instead of being
+      // replaced by an all-unavailable conservative placeholder.
       compatibilitySummary,
       distanceMiles: result.distanceMiles,
       lastOpenedAt: result.lastOpenedAt,
@@ -517,22 +590,29 @@ function reconcileSearchResults(
       openedCount: result.openedCount,
       refreshStatus: result.refreshStatus,
       refreshTier: result.refreshTier,
-    };
+    }];
   });
 }
 
-function conservativeCompatibilitySummary(totalItemCount: number): RestaurantCompatibilitySummary {
+function conservativeCompatibilitySummary(
+  totalItemCount: number,
+): RestaurantCompatibilitySummary {
   return {
     directAllergenItemCounts: {},
     directAllergenItemIndexes: {},
     inferredAllergenItemIndexes: {},
     ingredientIntelligenceItemIndexes: [],
+    ingredientIntelligenceSafeAllergenItemIndexes: {},
+    linkedAllergenItemIndexes: [],
     mayContainAllergenItemCounts: {},
     mayContainAllergenItemIndexes: {},
     officialItemCount: 0,
     totalItemCount,
     unavailableCount: totalItemCount,
-    unavailableItemIndexes: Array.from({ length: totalItemCount }, (_, index) => index),
+    unavailableItemIndexes: Array.from(
+      { length: totalItemCount },
+      (_, index) => index,
+    ),
   };
 }
 
@@ -608,6 +688,12 @@ function getFallbackMatchRank(restaurant: Restaurant, normalizedQuery: string) {
 }
 
 function compatibilitySummaryFromRestaurant(restaurant: Restaurant): RestaurantCompatibilitySummary {
+  const totalItemCount = getRestaurantItemCount(restaurant);
+
+  if (restaurant.items.length === 0 && totalItemCount > 0) {
+    return conservativeCompatibilitySummary(totalItemCount);
+  }
+
   const directAllergenItemCounts: Record<string, number> = {};
   const directAllergenItemIndexes: Record<string, number[]> = {};
   const mayContainAllergenItemCounts: Record<string, number> = {};
@@ -615,12 +701,24 @@ function compatibilitySummaryFromRestaurant(restaurant: Restaurant): RestaurantC
   const inferredAllergenItemIndexes: Record<string, number[]> = {};
   const ingredientIntelligenceItemIndexes: number[] = [];
   const ingredientIntelligenceSafeAllergenItemIndexes: Record<string, number[]> = {};
+  const linkedAllergenItemIndexes: number[] = [];
   const unavailableAllergenItemIndexes: Record<string, number[]> = {};
   const unavailableItemIndexes: number[] = [];
 
   restaurant.items.forEach((item, index) => {
+    const sourceAuthority = getPublishedAllergenSourceAuthority(item);
+
+    if (sourceAuthority === "linked") {
+      linkedAllergenItemIndexes.push(index);
+    }
+
     const unavailableAllergenIds = Object.keys(allergyIndexSeed).filter(
-      (allergenId) => !isOfficialAllergenCovered(item, restaurant, allergenId),
+      (allergenId) =>
+        !isPublishedAllergenCovered(
+          item,
+          restaurant.officialAllergenProfiles,
+          allergenId,
+        ),
     );
     const unavailable = unavailableAllergenIds.length === Object.keys(allergyIndexSeed).length;
 
@@ -636,37 +734,73 @@ function compatibilitySummaryFromRestaurant(restaurant: Restaurant): RestaurantC
         unavailableItemIndexes.push(index);
       }
 
-      if (hasIngredientIntelligence(item)) {
+      if (
+        hasApplicableIngredientIntelligence(
+          item,
+          restaurant.officialAllergenProfiles,
+        )
+      ) {
         ingredientIntelligenceItemIndexes.push(index);
 
-        for (const signal of item.inferredAllergenSignals ?? []) {
+        const applicableSignals = getApplicableIngredientIntelligenceSignals(
+          item,
+          restaurant.officialAllergenProfiles,
+        );
+        const signaledAllergenIds = new Set<string>(
+          applicableSignals.map((signal) => signal.id),
+        );
+
+        for (const signal of applicableSignals) {
           inferredAllergenItemIndexes[signal.id] = [
             ...(inferredAllergenItemIndexes[signal.id] ?? []),
             index,
           ];
         }
+
+        // The menu UI already presents a reviewed Intelligence result with no
+        // matching profile signal as clear. Encode that same allergen-specific
+        // result in the home summary so the two surfaces cannot disagree.
+        const explicitlySuppressedIds = new Set<string>(
+          getApplicableIngredientIntelligenceSuppressions(
+            item,
+            restaurant.officialAllergenProfiles,
+          ).map((suppression) => suppression.id),
+        );
+
+        for (const allergenId of unavailableAllergenIds) {
+          if (
+            signaledAllergenIds.has(allergenId) &&
+            !explicitlySuppressedIds.has(allergenId)
+          ) {
+            continue;
+          }
+
+          ingredientIntelligenceSafeAllergenItemIndexes[allergenId] = [
+            ...(ingredientIntelligenceSafeAllergenItemIndexes[allergenId] ?? []),
+            index,
+          ];
+        }
       }
+    }
 
-
-      for (const suppression of item.inferenceSuppressions ?? []) {
-        ingredientIntelligenceSafeAllergenItemIndexes[suppression.id] = [
-          ...(ingredientIntelligenceSafeAllergenItemIndexes[suppression.id] ?? []),
+    if (sourceAuthority) {
+      for (const allergen of item.allergens) {
+        directAllergenItemCounts[allergen] =
+          (directAllergenItemCounts[allergen] ?? 0) + 1;
+        directAllergenItemIndexes[allergen] = [
+          ...(directAllergenItemIndexes[allergen] ?? []),
           index,
         ];
       }
-    }
 
-    for (const allergen of item.allergens) {
-      directAllergenItemCounts[allergen] = (directAllergenItemCounts[allergen] ?? 0) + 1;
-      directAllergenItemIndexes[allergen] = [...(directAllergenItemIndexes[allergen] ?? []), index];
-    }
-
-    for (const allergen of item.mayContain ?? []) {
-      mayContainAllergenItemCounts[allergen] = (mayContainAllergenItemCounts[allergen] ?? 0) + 1;
-      mayContainAllergenItemIndexes[allergen] = [
-        ...(mayContainAllergenItemIndexes[allergen] ?? []),
-        index,
-      ];
+      for (const allergen of item.mayContain ?? []) {
+        mayContainAllergenItemCounts[allergen] =
+          (mayContainAllergenItemCounts[allergen] ?? 0) + 1;
+        mayContainAllergenItemIndexes[allergen] = [
+          ...(mayContainAllergenItemIndexes[allergen] ?? []),
+          index,
+        ];
+      }
     }
   });
 
@@ -677,16 +811,24 @@ function compatibilitySummaryFromRestaurant(restaurant: Restaurant): RestaurantC
       ? { inferredAllergenItemIndexes, ingredientIntelligenceItemIndexes }
       : {}),
     ingredientIntelligenceSafeAllergenItemIndexes,
+    linkedAllergenItemIndexes,
     mayContainAllergenItemCounts,
     mayContainAllergenItemIndexes,
     officialItemCount:
-      restaurant.allergenDataStatus?.officialItemCount ??
-      restaurant.items.filter((item) => item.allergenSourceType !== "unavailable").length,
-    totalItemCount: restaurant.totalItemCount ?? restaurant.items.length,
+      getRestaurantAllergenSourceCounts(restaurant).officialItemCount,
+    totalItemCount,
     unavailableCount: unavailableItemIndexes.length,
     unavailableAllergenItemIndexes,
     unavailableItemIndexes,
   };
+}
+
+function getRestaurantItemCount(restaurant: Restaurant) {
+  if (restaurant.items.length > 0) {
+    return restaurant.items.length;
+  }
+
+  return Math.max(0, restaurant.totalItemCount ?? 0);
 }
 
 const allergyIndexSeed = {
@@ -703,26 +845,6 @@ const allergyIndexSeed = {
   mustard: true,
   sulfites: true,
 };
-
-function isOfficialAllergenCovered(
-  item: Restaurant["items"][number],
-  restaurant: Restaurant,
-  allergenId: string,
-) {
-  if (item.allergenSourceType === "unavailable") {
-    return false;
-  }
-
-  const profileId = item.officialAllergenProfileId;
-  const coveredIds = new Set<AllergenId>([
-    ...(item.officialAllergenCoveredIds ?? []),
-    ...(profileId
-      ? restaurant.officialAllergenProfiles?.[profileId]?.coveredAllergenIds ?? []
-      : []),
-  ]);
-
-  return coveredIds.has(allergenId as AllergenId);
-}
 
 function collectIndexes(indexesByAllergen: Record<string, number[]> | undefined, allergenIds: string[]) {
   const indexes = new Set<number>();

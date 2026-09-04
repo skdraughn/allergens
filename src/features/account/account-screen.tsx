@@ -867,7 +867,13 @@ function MyRequestsModal({
   };
 
   return (
-    <Modal animationType="slide" onRequestClose={onClose} presentationStyle="pageSheet" visible={visible}>
+    <Modal
+      allowSwipeDismissal
+      animationType="slide"
+      onRequestClose={onClose}
+      presentationStyle="pageSheet"
+      visible={visible}
+    >
       <ModalScreen
         actionIcon={editingRequest ? ChevronLeft : X}
         actionLabel={editingRequest ? "Back to my requests" : "Close requests"}
@@ -1106,7 +1112,13 @@ function MyReportsModal({
   }, [visible]);
 
   return (
-    <Modal animationType="slide" onRequestClose={onClose} presentationStyle="pageSheet" visible={visible}>
+    <Modal
+      allowSwipeDismissal
+      animationType="slide"
+      onRequestClose={onClose}
+      presentationStyle="pageSheet"
+      visible={visible}
+    >
       <ModalScreen actionIcon={X} actionLabel="Close reports" onActionPress={onClose}>
         <ScrollView contentContainerStyle={styles.requestsModalContent} showsVerticalScrollIndicator={false}>
           <Text style={styles.title}>My Reports</Text>
@@ -1203,7 +1215,13 @@ function MyReviewsModal({
   }, [visible]);
 
   return (
-    <Modal animationType="slide" onRequestClose={onClose} presentationStyle="pageSheet" visible={visible}>
+    <Modal
+      allowSwipeDismissal
+      animationType="slide"
+      onRequestClose={onClose}
+      presentationStyle="pageSheet"
+      visible={visible}
+    >
       <ModalScreen actionIcon={X} actionLabel="Close reviews" onActionPress={onClose}>
         <ScrollView contentContainerStyle={styles.requestsModalContent} showsVerticalScrollIndicator={false}>
           <Text style={styles.title}>My Reviews</Text>

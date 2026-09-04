@@ -24,6 +24,15 @@ export function getCatalogBootstrapPath() {
   return path;
 }
 
+export function getRetiredRestaurantIds() {
+  const configured = Constants.expoConfig?.extra?.restaurantCatalogRetiredIds;
+  return new Set(
+    Array.isArray(configured)
+      ? configured.filter((value): value is string => typeof value === "string" && value.length > 0)
+      : [],
+  );
+}
+
 export async function getCachedActiveCatalogPath() {
   const path = (await AsyncStorage.getItem(activeCatalogPathStorageKey))?.trim() ?? "";
   return isVersionedCatalogSummaryPath(path) ? path : null;

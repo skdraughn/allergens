@@ -14,6 +14,7 @@ type AllergyIconGuideModalProps = {
 export function AllergyIconGuideModal({ onClose, visible }: AllergyIconGuideModalProps) {
   return (
     <Modal
+      allowSwipeDismissal
       animationType="slide"
       onRequestClose={onClose}
       presentationStyle="pageSheet"

@@ -1189,7 +1189,11 @@ export function sanitizeMenuItemDisplayFields(item) {
       .replace(/\bVinaigree\b/g, "Vinaigrette")
       .replace(/\bvinaigree\b/g, "vinaigrette")
       .replace(/^\s*[•]\s*(?:\(\d+\)\s*)?\d+(?:\.\d{2})?\s*/i, "")
-      .replace(/^[+/]?\d+(?:\.\d{2})?\s+(?!(?:oz|ounce|ounces|qt|quart|quarts|pt|pint|pints|lb|lbs|pound|pounds|cup|cups|piece|pieces|pc|pcs|slice|slices)\b)/i, "")
+      .replace(
+        /^([+/]\d+(?:\.\d{2})?|\d+\.\d{2})\s+(?!(?:oz|ounce|ounces|qt|quart|quarts|pt|pint|pints|lb|lbs|pound|pounds|cup|cups|piece|pieces|pc|pcs|slice|slices)\b)/i,
+        (match, leadingNumber) =>
+          descriptionCountMatchesItemName(next.name, leadingNumber) ? match : "",
+      )
       .replace(/^\/?v\/?(?=agf|gf|df|sf|nf)/i, "")
       .replace(/^\/?(?:(?:n|d)\/)?(?:agf|vg|gf|df|sf|nf)(?:\/(?:agf|vg|gf|df|sf|nf|v|n|d))*/i, "")
       .replace(/^\s*[•]\s*(?:\(\d+\)\s*)?\d+(?:\.\d{2})?\s*/i, "")
@@ -1591,6 +1595,21 @@ export function sanitizeMenuItemDisplayFields(item) {
   }
 
   return next;
+}
+
+function descriptionCountMatchesItemName(name, leadingNumber) {
+  const nameCount = String(name ?? "")
+    .trim()
+    .match(/^([+/]?\d+(?:\.\d{2})?)\b/)?.[1];
+
+  if (!nameCount) {
+    return false;
+  }
+
+  return (
+    Number(nameCount.replace(/^\+/, "")) ===
+    Number(String(leadingNumber).replace(/^\+/, ""))
+  );
 }
 
 export function sanitizeMenuItemsForDisplay(items) {
@@ -3123,6 +3142,8 @@ function isBareGenericProteinOption(name, description, item) {
 
 function isAlcoholOnlyBleedRow(name, category, description) {
   const rowText = `${name} ${category} ${description}`;
+  const swedishFishCocktail =
+    /\bswedish fish\b/i.test(description) && alcoholOnlyDescriptionPattern.test(description);
 
   if (/\b(?:mocktails?|zero proof|non[- ]?alcoholic)\b/i.test(category)) {
     return false;
@@ -3139,15 +3160,12 @@ function isAlcoholOnlyBleedRow(name, category, description) {
     hasFoodDishForAlcoholRow(rowText) ||
     /\b(?:smoothie|juice|cold[- ]pressed|pressed juice|daiquiri ice|root beer|raw bar|oysters?|mussels?|cozze|calamari|shrimp|scallops?|seafood|spinach|bacon|cabbage)\b/i.test(rowText)
   ) {
-    return false;
+    return swedishFishCocktail;
   }
 
   const nameIsAlcohol = alcoholOnlyNamePattern.test(name) || /\bspritz\b/i.test(name) || /^\d{2}\s*spritz$/i.test(name);
   const descriptionIsGlobalAllergyWarning =
     /\ballergy warning\b|\bmay contain or have come in contact with\b/i.test(description);
-  const swedishFishCocktail =
-    /\bswedish fish\b/i.test(description) && alcoholOnlyDescriptionPattern.test(description);
-
   return (
     swedishFishCocktail ||
     (nameIsAlcohol && isPriceOnlyDescription(description)) ||
@@ -3760,6 +3778,16 @@ export function categoryCollapseSummary(items) {
 }
 
 export function officialEvidenceClassification(restaurant) {
+  const exhaustiveOfficialSourceTypes = new Set([
+    "official-allergen-menu",
+    "official-product-allergen-section",
+    "restaurant-linked-product-allergen-section",
+    "restaurant_allergen_document",
+  ]);
+  const positiveOnlyOfficialSourceTypes = new Set([
+    "restaurant_issued_positive",
+    "restaurant_linked_vendor",
+  ]);
   const counts = {
     officialFullMatrixOrApi: 0,
     officialIngredientDisclosure: 0,
@@ -3774,7 +3802,11 @@ export function officialEvidenceClassification(restaurant) {
     const allergenSourceType = String(item?.allergenSourceType ?? "unavailable");
     const description = String(item?.description ?? "");
     const name = String(item?.name ?? "");
-    const official = /official/i.test(allergenSourceType) || item?.officialSource === true;
+    const official =
+      exhaustiveOfficialSourceTypes.has(allergenSourceType) ||
+      positiveOnlyOfficialSourceTypes.has(allergenSourceType) ||
+      /official/i.test(allergenSourceType) ||
+      item?.officialSource === true;
 
     if (allergenSourceType === "unavailable" || !official) {
       counts.unavailable += 1;
@@ -3782,7 +3814,8 @@ export function officialEvidenceClassification(restaurant) {
     }
 
     if (
-      /official-allergen-(?:menu|guide|widget)/i.test(allergenSourceType) &&
+      (exhaustiveOfficialSourceTypes.has(allergenSourceType) ||
+        /official-allergen-(?:menu|guide|widget)/i.test(allergenSourceType)) &&
       /(?:official-api|pdf-matrix|html-allergen-matrix|embedded-flavor-nutrition|official-allergen-widget|everybite-widget-graphql)/i.test(sourceType)
     ) {
       counts.officialFullMatrixOrApi += 1;

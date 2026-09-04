@@ -39,6 +39,7 @@ export type MenuItem = {
     | "official-ingredients"
     | "official-product-allergen-section"
     | "official-global-cross-contact-note"
+    | "ingredient_intelligence"
     | "restaurant-linked-menu-ingredients"
     | "restaurant-linked-product-allergen-section"
     | "restaurant-ingredient-disclosure"
@@ -46,10 +47,17 @@ export type MenuItem = {
     | "restaurant_ingredients"
     | "restaurant_issued"
     | "restaurant_issued_ingredients"
+    | "restaurant_issued_product_name"
     | "restaurant_issued_positive"
     | "restaurant_linked_vendor"
     | "linked_vendor_ingredients"
     | "unavailable";
+  allergenAuthorityTier?:
+    | "restaurant_issued"
+    | "restaurant_linked_vendor"
+    | "third_party"
+    | "ingredient_intelligence"
+    | null;
   officialAllergenProfileId?: string;
   evidence?: {
     sourceKind?: string;
@@ -60,6 +68,7 @@ export type MenuItem = {
   inferredAllergenSignals?: InferredAllergenSignal[];
   inferredIngredients?: string[];
   ingredientIntelligenceReviewed?: boolean;
+  ingredientIntelligenceBasis?: "title-description" | "title";
   inferenceQuestions?: string[];
   inferenceSuppressions?: InferenceSuppression[];
   inferenceSummary?: string;
@@ -68,8 +77,13 @@ export type MenuItem = {
   /** Allergen dimensions explicitly emitted by an official matrix/API, including false values. */
   officialAllergenCoveredIds?: AllergenId[];
   isConfigurable?: boolean;
+  isOptionVariant?: boolean;
   mayContain?: AllergenId[];
   notes?: string;
+  optionGroupName?: string;
+  optionLabel?: string;
+  optionParentId?: string;
+  optionParentName?: string;
   sourceType?: string;
   sourceUrls?: string[];
   variantGroup?: string | null;

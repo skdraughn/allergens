@@ -4,7 +4,10 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { gunzipSync } from "node:zlib";
-import { sanitizeMenuItemDisplayFields } from "./menu-item-quality.mjs";
+import {
+  assessRecoveredDescription as descriptionDecision,
+  normalizeRecoveredText as normalize,
+} from "./description-recovery-quality.mjs";
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
 const repositoryPath = path.resolve(root, argument("repository") || "src/data/generated/restaurants.generated.json");
@@ -15,8 +18,11 @@ const repositoryBytes = fs.readFileSync(repositoryPath);
 const repository = JSON.parse(repositoryBytes.toString("utf8"));
 const manifestPath = path.join(root, "data/restaurant-verification/description-recovery/manifest.json");
 const manifest = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, "utf8")) : null;
-const defaultPlanPath = repository.metadata?.descriptionRecovery?.overlayPath ||
-  (manifest?.activeOverlay ? path.join("data/restaurant-verification/description-recovery", manifest.activeOverlay) : null);
+// The manifest is the canonical pointer. Repository metadata records what was
+// applied previously and can legitimately lag after a new overlay is built.
+const defaultPlanPath = manifest?.activeOverlay
+  ? path.join("data/restaurant-verification/description-recovery", manifest.activeOverlay)
+  : repository.metadata?.descriptionRecovery?.overlayPath || null;
 if (!argument("plan") && !defaultPlanPath) {
   throw new Error("No description recovery overlay was specified and the canonical manifest has no active overlay.");
 }
@@ -24,6 +30,7 @@ const planPath = path.resolve(root, argument("plan") || defaultPlanPath);
 const planBytes = fs.readFileSync(planPath);
 const planSha256 = sha(planBytes);
 const plan = JSON.parse(gunzipSync(planBytes).toString("utf8"));
+const previouslyAppliedPlan = readPreviouslyAppliedPlan(repository);
 const summary = JSON.parse(fs.readFileSync(summaryPath, "utf8"));
 const overlayRelativePath = `data/restaurant-verification/description-recovery/v1-${planSha256.slice(0, 20)}.json.gz`;
 const overlayPath = path.join(root, overlayRelativePath);
@@ -51,28 +58,55 @@ if (plan.targetCatalogSha256 !== beforeSha256 && !isCanonicalPlan) {
 }
 
 const restaurantsById = new Map();
+const itemNamesByRestaurant = new Map();
 for (const restaurant of repository.restaurants || []) {
   if (!restaurant?.id || restaurantsById.has(restaurant.id)) throw new Error(`Duplicate or missing restaurant ID: ${restaurant?.id ?? "<missing>"}`);
   restaurantsById.set(restaurant.id, restaurant);
+  itemNamesByRestaurant.set(
+    restaurant.id,
+    new Set((restaurant.items || []).map((item) => normalize(item.name)).filter(Boolean)),
+  );
 }
 
 const applied = { exact_id: 0, exact_name: 0 };
 const changedRestaurants = new Set();
 let changedDescriptionCount = 0;
+let removedStaleDescriptionCount = 0;
+const nextRecordsByTarget = new Map(
+  plan.records.map((record) => [`${record.restaurantId}\u0000${record.itemId}`, record]),
+);
+for (const previous of previouslyAppliedPlan?.records ?? []) {
+  const next = nextRecordsByTarget.get(`${previous.restaurantId}\u0000${previous.itemId}`);
+  if (next?.description === previous.description) continue;
+  const restaurant = restaurantsById.get(previous.restaurantId);
+  const item = (restaurant?.items || []).find(
+    (candidate) => String(candidate.id || candidate.itemId || "") === previous.itemId,
+  );
+  if (!item || item.description !== previous.description) continue;
+  item.description = null;
+  removedStaleDescriptionCount += 1;
+  changedRestaurants.add(previous.restaurantId);
+}
 for (const recovery of plan.records) {
   const restaurant = restaurantsById.get(recovery.restaurantId);
   if (!restaurant) throw new Error(`Recovery restaurant missing from target: ${recovery.restaurantId}`);
-  const matchingItems = (restaurant.items || []).filter((item) => String(item.id || item.itemId || "") === recovery.itemId);
+  const matchingItems = matchingRecoveryItems(restaurant, recovery);
   if (matchingItems.length !== 1) throw new Error(`Expected one target item for ${recovery.restaurantId}/${recovery.itemId}; found ${matchingItems.length}.`);
   const item = matchingItems[0];
   if (normalize(item.name) !== normalize(recovery.itemName)) {
     throw new Error(`Target name drift for ${recovery.restaurantId}/${recovery.itemId}: ${item.name} != ${recovery.itemName}`);
   }
   const alreadyApplied = item.description === recovery.description;
-  if (!alreadyApplied && descriptionDecision(item.description, item).usable) {
+  const itemNames = itemNamesByRestaurant.get(recovery.restaurantId);
+  if (!alreadyApplied && descriptionDecision(item.description, item, { itemNames }).usable) {
     throw new Error(`Refusing to overwrite an existing usable description for ${recovery.restaurantId}/${recovery.itemId}.`);
   }
-  const recoveryDecision = descriptionDecision(recovery.description, item);
+  const recoveryDecision = descriptionDecision(recovery.description, { ...item, evidence: [] }, {
+    itemNames,
+    sourceType: recovery.sourceTypes?.[0],
+    exactIdMatch: recovery.classification === "exact_id",
+    enforceFreshSectionHeading: true,
+  });
   if (!recoveryDecision.usable || recoveryDecision.value !== recovery.description) {
     throw new Error(`Recovery plan contains an unusable description for ${recovery.restaurantId}/${recovery.itemId}.`);
   }
@@ -126,6 +160,7 @@ const report = {
   conflictCountSkipped: plan.conflictCount,
   changedRestaurantCount: changedRestaurants.size,
   changedDescriptionCount,
+  removedStaleDescriptionCount,
   restaurantCount: repository.restaurantCount,
   itemCount: repository.itemCount,
   assertions: [
@@ -162,6 +197,19 @@ function validatePlan(value) {
   if (counts.exact_id !== value.exactIdRecoverable || counts.exact_name !== value.exactNameRecoverable) throw new Error("Recovery plan classification totals are inconsistent.");
 }
 
+function readPreviouslyAppliedPlan(value) {
+  const relativePath = value.metadata?.descriptionRecovery?.overlayPath;
+  if (!relativePath) return null;
+  const file = path.resolve(root, relativePath);
+  if (!fs.existsSync(file)) return null;
+  const bytes = fs.readFileSync(file);
+  const expectedSha = value.metadata?.descriptionRecovery?.planSha256;
+  if (expectedSha && sha(bytes) !== expectedSha) {
+    throw new Error("Previously applied description recovery overlay does not match repository metadata.");
+  }
+  return JSON.parse(gunzipSync(bytes).toString("utf8"));
+}
+
 function validateManifest(value, activePlanPath, activePlanSha256, recoveryPlan) {
   if (!value) return;
   if (value.schemaVersion !== 1 || !value.activeOverlay || !value.planSha256) {
@@ -178,36 +226,51 @@ function verifyApplied(value, recoveryPlan, expectedPlanSha, expectedOverlayPath
   if (value.metadata?.descriptionRecovery?.planSha256 !== expectedPlanSha) throw new Error("Repository does not reference the expected recovery overlay.");
   const byRestaurant = new Map((value.restaurants || []).map((restaurant) => [restaurant.id, restaurant]));
   let verifiedDescriptions = 0;
+  let supersededByUsableDescriptionCount = 0;
+  let retiredInvalidDescriptionCount = 0;
+  let retiredMissingItemCount = 0;
   for (const record of recoveryPlan.records) {
-    const item = (byRestaurant.get(record.restaurantId)?.items || []).find((candidate) => String(candidate.id || candidate.itemId || "") === record.itemId);
-    if (!item || item.description !== record.description) throw new Error(`Applied description verification failed for ${record.restaurantId}/${record.itemId}.`);
+    const matches = matchingRecoveryItems(byRestaurant.get(record.restaurantId), record);
+    const item = matches.length === 1 ? matches[0] : null;
+    if (!item) {
+      retiredMissingItemCount += 1;
+      verifiedDescriptions++;
+      continue;
+    }
+    if (item.description !== record.description) {
+      if (String(item.description ?? "").trim()) {
+        supersededByUsableDescriptionCount += 1;
+      } else {
+        retiredInvalidDescriptionCount += 1;
+      }
+    }
     verifiedDescriptions++;
   }
-  return { planSha256: expectedPlanSha, overlayPath: path.relative(root, expectedOverlayPath), verifiedDescriptions };
+  return {
+    planSha256: expectedPlanSha,
+    overlayPath: path.relative(root, expectedOverlayPath),
+    verifiedDescriptions,
+    supersededByUsableDescriptionCount,
+    retiredInvalidDescriptionCount,
+    retiredMissingItemCount,
+  };
 }
 
-function descriptionDecision(value, itemContext = {}) {
-  if (typeof value !== "string" || !value.trim()) return { usable: false };
-  let cleaned = value.trim().replace(/\s+/g, " ");
-  for (let pass = 0; pass < 8; pass += 1) {
-    const sanitized = sanitizeMenuItemDisplayFields({ ...itemContext, description: cleaned });
-    const next = typeof sanitized?.description === "string" ? sanitized.description.trim().replace(/\s+/g, " ") : "";
-    if (next === cleaned) break;
-    cleaned = next;
-    if (!cleaned) break;
-  }
-  if (!cleaned) return { usable: false };
-  const words = cleaned.toLowerCase().match(/[a-z0-9]+/g) || [];
-  if (words.length < 4 || cleaned.length < 18) return { usable: false };
-  const commas = (cleaned.match(/,/g) || []).length;
-  const sentenceMarks = (cleaned.match(/[.!?](?:\s|$)/g) || []).length;
-  if (commas >= 5 && sentenceMarks === 0) return { usable: false };
-  return { usable: true, value: cleaned };
-}
-
-function normalize(value) {
-  return String(value ?? "").normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
-    .replace(/[’'`]/g, "").replace(/&/g, " and ").replace(/[^a-z0-9]+/g, " ").trim().replace(/\s+/g, " ");
+function matchingRecoveryItems(restaurant, recovery) {
+  const items = restaurant?.items ?? [];
+  const idMatches = items.filter(
+    (candidate) => String(candidate.id || candidate.itemId || "") === recovery.itemId,
+  );
+  if (idMatches.length > 0) return idMatches;
+  const baselineMatches = items.filter((candidate) =>
+    (candidate.matchedBaselineAuditItemKeys ?? []).some(
+      (key) => String(key).split(":").slice(1).join(":") === recovery.itemId,
+    ),
+  );
+  if (baselineMatches.length > 0) return baselineMatches;
+  return items.filter(
+    (candidate) => normalize(candidate.name) === normalize(recovery.itemName),
+  );
 }
 
 function argument(name) {

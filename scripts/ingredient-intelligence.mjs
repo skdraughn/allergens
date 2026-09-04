@@ -6,6 +6,11 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
 const defaultManifest = require("../data/ingredient-intelligence/v2/manifest.json");
+const allergenSourceContract = require("../src/data/allergen-source-contract.json");
+const officialAllergenSourceTypes = new Set([
+  ...allergenSourceContract.exhaustiveOfficialSourceTypes,
+  ...allergenSourceContract.positiveOnlyOfficialSourceTypes,
+]);
 const projectRoot = path.resolve(__dirname, "..");
 const defaultManifestPath = path.join(
   projectRoot,
@@ -116,6 +121,17 @@ export function promoteRestaurantIssuedAllergenDisclosures(
     return item;
   }
 
+  const explicitDisclosureText = [
+    item.ingredientsText,
+    item.description,
+    ...(item.evidence ?? []).map((entry) => entry?.text),
+  ]
+    .filter(Boolean)
+    .join(" ");
+  if (!/\b(?:contains?|may\s+contain|allergens?)\s*:/i.test(explicitDisclosureText)) {
+    return item;
+  }
+
   const candidate = inferMenuItemIngredientIntelligence(item, {
     includeOfficialCoveredSignals: comprehensiveOfficialIngredients,
     manifest,
@@ -189,6 +205,15 @@ export function inferMenuItemIngredientIntelligence(
 ) {
   if (!manifest) {
     throw new Error("Ingredient Intelligence manifest is required.");
+  }
+
+  // An item occupies one evidence lane. Ingredient Intelligence never
+  // supplements or overrides a restaurant-issued allergen disclosure.
+  if (
+    officialAllergenSourceTypes.has(item?.allergenSourceType) &&
+    !includeOfficialCoveredSignals
+  ) {
+    return null;
   }
 
   if (
@@ -307,6 +332,22 @@ export function inferMenuItemIngredientIntelligence(
   }
 
   if (matches.size === 0 && !explicitGlutenFreeName) {
+    // An Ingredient Intelligence item was still analyzed even when the title
+    // and available description did not produce a known allergen signal. Keep
+    // that reviewed state distinct from an item where intelligence never ran.
+    if (isIngredientIntelligenceSourceType(item?.allergenSourceType)) {
+      return {
+        extractedIngredientMentions: [],
+        inferredIngredients: [],
+        inferredAllergenSignals: [],
+        ingredientIntelligenceBasis: ingredientIntelligenceBasisForItem(item),
+        ingredientIntelligenceReviewed: true,
+        inferenceQuestions: [],
+        inferenceSummary: "No common allergen signals were identified from the available menu text.",
+        inferenceVersion: manifest.version,
+      };
+    }
+
     return null;
   }
 
@@ -384,6 +425,7 @@ export function inferMenuItemIngredientIntelligence(
     extractedIngredientMentions: compactMentions(extractedIngredientMentions),
     inferredIngredients,
     inferredAllergenSignals: contextAdjustedSignals,
+    ingredientIntelligenceBasis: ingredientIntelligenceBasisForItem(item),
     ingredientIntelligenceReviewed: true,
     inferenceQuestions: buildInferenceQuestions(contextAdjustedSignals, matches),
     ...(suppressions.length > 0 ? { inferenceSuppressions: suppressions } : {}),
@@ -401,6 +443,19 @@ function isReliableOfficialDisclosureField(item, sourceField) {
   if (sourceField === "ingredientsText") return String(item.ingredientsText ?? "").length <= 20_000;
   if (sourceField.startsWith("knownIngredients.")) return true;
   return false;
+}
+
+function isIngredientIntelligenceSourceType(sourceType) {
+  return Boolean(sourceType && !officialAllergenSourceTypes.has(sourceType) &&
+    allergenSourceContract.ingredientIntelligenceSourceTypes.includes(sourceType));
+}
+
+function ingredientIntelligenceBasisForItem(item) {
+  return [item?.description, item?.ingredientsText].some(
+    (value) => typeof value === "string" && value.trim().length > 0,
+  )
+    ? "title-description"
+    : "title";
 }
 
 function isExplicitOfficialIngredientMention(mention) {

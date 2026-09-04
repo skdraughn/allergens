@@ -167,6 +167,14 @@ const compactConfiguredCateringTerms = /(?:catering|privateevent|eventmenu)/i;
 const configuredSpecialFoodTerms = /\b(?:happy\s*hour|hh|special|seasonal|limited|brunch|dessert|breakfast|lunch|dinner)\b/i;
 const compactConfiguredSpecialFoodTerms =
   /(?:happyhour|hhmenu|special|seasonal|limited|brunch|dessert|breakfast|lunch|dinner|lunchdinner)/i;
+const officialAllergenSourceTypes = new Set([
+  "official-allergen-menu",
+  "official-product-allergen-section",
+  "restaurant-linked-product-allergen-section",
+  "restaurant_allergen_document",
+  "restaurant_issued_positive",
+  "restaurant_linked_vendor",
+]);
 
 export function sourceUrlsFor(source) {
   return normalizeConfiguredSourceUrls(source).map((entry) => entry.url).filter(Boolean);
@@ -972,7 +980,12 @@ function isOfficialAllergenItem(item) {
     return false;
   }
 
-  return /official/i.test(item?.allergenSourceType ?? "") || item?.officialSource === true;
+  const sourceType = String(item?.allergenSourceType ?? "");
+  return (
+    officialAllergenSourceTypes.has(sourceType) ||
+    /official/i.test(sourceType) ||
+    item?.officialSource === true
+  );
 }
 
 function isOfficialAllergenLegendItem(item) {

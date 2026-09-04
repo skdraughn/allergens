@@ -53,6 +53,21 @@ const reviewedAccommodationPolicies = {
   },
 };
 
+const foundingFarmersOfficialMenuContext = {
+  "bananas-foster": {
+    description:
+      "A Bananas Foster topping option.",
+    sourceUrl:
+      "https://www.wearefoundingfarmers.com/scratch-madebreakfast/",
+  },
+  "maine-blueberry-compote": {
+    description:
+      "A wild Maine blueberry compote topping option.",
+    sourceUrl:
+      "https://www.wearefoundingfarmers.com/natures-best-blueberries/",
+  },
+};
+
 function reviewedOfficialSourceSummary(item, parsedDirectAllergens, parsedMayContain, hasGlobalMayContainNotice) {
   const directCount = parsedDirectAllergens?.size ?? item?.allergens?.length ?? 0;
   const mayContainCount = parsedMayContain?.size ?? item?.mayContain?.length ?? 0;
@@ -19034,6 +19049,7 @@ function normalizeReviewedLostDogCategory(restaurant, item) {
     const text = `${id} ${name} ${description}`;
     let category = item.category;
     let nextDescription = item.description;
+    const officialMenuContext = foundingFarmersOfficialMenuContext[id];
     let changed = false;
 
     if (/^Dessert$/i.test(String(item.category ?? ""))) {
@@ -19065,6 +19081,11 @@ function normalizeReviewedLostDogCategory(restaurant, item) {
       changed = true;
     }
 
+    if (!nextDescription && officialMenuContext) {
+      nextDescription = officialMenuContext.description;
+      changed = true;
+    }
+
     if (/^farmers-decaf$/i.test(id) && /\bmilk chocolate\b/i.test(String(nextDescription ?? ""))) {
       nextDescription = String(nextDescription).replace(/\bmilk chocolate\b/gi, "chocolate");
       changed = true;
@@ -19084,6 +19105,16 @@ function normalizeReviewedLostDogCategory(restaurant, item) {
           ...item,
           category,
           ...(nextDescription ? { description: nextDescription } : { description: undefined }),
+          ...(officialMenuContext
+            ? {
+                sourceUrls: Array.from(
+                  new Set([
+                    ...(item.sourceUrls ?? []),
+                    officialMenuContext.sourceUrl,
+                  ]),
+                ),
+              }
+            : {}),
           sourceSummary: /Reviewed Founding Farmers family menu cleanup/i.test(String(item.sourceSummary ?? ""))
             ? item.sourceSummary
             : `${item.sourceSummary ? `${item.sourceSummary} ` : ""}Reviewed Founding Farmers family menu cleanup: removed section-header rows, stripped source boilerplate descriptions, normalized dessert/beverage sections, and kept source-backed menu items shared across Founding Farmers locations.`,

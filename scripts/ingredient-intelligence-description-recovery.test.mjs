@@ -6,7 +6,7 @@ import {
   getDefaultIngredientIntelligenceManifest,
 } from "./ingredient-intelligence.mjs";
 
-test("description recovery can recompute intelligence without changing direct allergen fields", async () => {
+test("description recovery does not mix intelligence into an official allergen item", async () => {
   const manifest = await getDefaultIngredientIntelligenceManifest();
   const item = annotateMenuItemWithIngredientIntelligence(
     {
@@ -29,8 +29,5 @@ test("description recovery can recompute intelligence without changing direct al
 
   assert.deepEqual(item.allergens, []);
   assert.deepEqual(item.mayContain, []);
-  assert.equal(
-    item.inferredAllergenSignals.some((signal) => signal.id === "mustard"),
-    true,
-  );
+  assert.equal(item.inferredAllergenSignals, undefined);
 });

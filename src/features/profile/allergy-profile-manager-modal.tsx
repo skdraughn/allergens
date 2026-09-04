@@ -115,7 +115,13 @@ export function AllergyProfileManagerModal({
   };
 
   return (
-    <Modal animationType="slide" onRequestClose={onClose} presentationStyle="pageSheet" visible={visible}>
+    <Modal
+      allowSwipeDismissal
+      animationType="slide"
+      onRequestClose={onClose}
+      presentationStyle="pageSheet"
+      visible={visible}
+    >
       <View style={styles.modalRoot}>
         <ModalScreen actionIcon={X} actionLabel="Close allergy profiles" onActionPress={onClose}>
           <ScrollView

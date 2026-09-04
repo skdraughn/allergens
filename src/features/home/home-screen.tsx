@@ -1,10 +1,6 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useFocusEffect, useRouter } from "expo-router";
-import {
-  Search,
-  Sparkles,
-  UserRound,
-} from "lucide-react-native";
+import { Search, UserRound } from "lucide-react-native";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   type NativeScrollEvent,
@@ -30,6 +26,7 @@ import Animated, {
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { IconButton, IconButtonSurface } from "@/components/icon-button";
+import { LiquidGlassPressable } from "@/components/liquid-glass-pressable";
 import { RestaurantLogo } from "@/components/restaurant-logo";
 import {
   FloatingRestaurantRequestButton,
@@ -316,21 +313,16 @@ export function HomeScreen() {
       <SafeAreaView style={styles.safeArea}>
         <Animated.View style={styles.nav}>
           <Animated.View style={[styles.headerProfileSlot, headerProfileScrollStyle]}>
-            <Pressable
+            <LiquidGlassPressable
               accessibilityHint="Choose one or more allergy profiles"
               accessibilityLabel={`Allergy profiles, ${selectedProfileLabel || "My Profile"}`}
               accessibilityRole="button"
+              containerStyle={styles.headerProfile}
+              contentStyle={styles.headerProfileInitialCircle}
               onPress={() => setProfileManagerVisible(true)}
-              style={({ pressed }) => [
-                styles.headerProfile,
-                pressed ? styles.headerProfilePressed : null,
-              ]}
             >
-              <IconButtonSurface />
-              <View style={styles.headerProfileInitialCircle}>
-                <Text style={styles.headerProfileInitial}>{selectedProfileInitial}</Text>
-              </View>
-            </Pressable>
+              <Text style={styles.headerProfileInitial}>{selectedProfileInitial}</Text>
+            </LiquidGlassPressable>
           </Animated.View>
           <Animated.View
             pointerEvents={stickySearchVisible ? "none" : "auto"}
@@ -538,11 +530,7 @@ function RestaurantRow({
   const categoryLabel = /^restaurants?$/i.test(restaurant.category?.trim() ?? "")
     ? null
     : restaurant.category;
-  const metadataLabel = [
-    locationLabel,
-    categoryLabel,
-    policyOnly ? null : `${itemCount} menu items`,
-  ]
+  const metadataLabel = [locationLabel, categoryLabel]
     .filter(Boolean)
     .join(" · ");
 
@@ -559,77 +547,126 @@ function RestaurantRow({
         <RestaurantLogo brand={brand} borderRadius={11} size={34} />
       </View>
       <View style={styles.restaurantText}>
-        <Text style={styles.restaurantName}>{restaurant.name}</Text>
-        {metadataLabel ? (
-          <Text style={styles.restaurantMeta}>
-            {metadataLabel}
+        <View style={[styles.restaurantDetailRow, styles.restaurantNameRow]}>
+          <Text numberOfLines={1} style={[styles.restaurantName, styles.restaurantDetailLeft]}>
+            {restaurant.name}
           </Text>
-        ) : null}
-        {!policyOnly && compatibilityIsProvisional ? (
-          <View style={styles.restaurantEvidenceSkeleton} />
-        ) : !policyOnly ? (
-          <Text
-            numberOfLines={1}
-            style={[
-              styles.restaurantEvidence,
-              compatibilityPresentation.emphasizeEvidence
-                ? styles.restaurantEvidenceNeedsConfirmation
-                : null,
-            ]}
+          {!policyOnly ? (
+            compatibilityIsProvisional ? (
+              <Animated.View
+                accessibilityLabel="Checking allergy compatibility"
+                accessibilityRole="progressbar"
+                entering={FadeIn.duration(160)}
+                exiting={FadeOut.duration(140)}
+                style={styles.restaurantDetailRight}
+              >
+                <View style={styles.compatibilitySkeletonPercent} />
+              </Animated.View>
+            ) : (
+              <Animated.View
+                entering={FadeIn.duration(180)}
+                exiting={FadeOut.duration(120)}
+                style={styles.restaurantDetailRight}
+              >
+                <Text style={styles.compatibilityPercent}>
+                  {compatibilityPresentation.percentLabel}
+                </Text>
+              </Animated.View>
+            )
+          ) : null}
+        </View>
+        <View
+          style={[styles.restaurantDetailRow, styles.restaurantOptionsRow]}
+        >
+          <View style={styles.restaurantDetailLeft}>
+            {metadataLabel ? (
+              <Text numberOfLines={1} style={styles.restaurantMeta}>
+                {metadataLabel}
+              </Text>
+            ) : null}
+          </View>
+          {!policyOnly ? (
+            compatibilityIsProvisional ? (
+              <Animated.View
+                entering={FadeIn.duration(160)}
+                exiting={FadeOut.duration(140)}
+                style={styles.restaurantDetailRight}
+              >
+                <View style={styles.compatibilitySkeletonCount} />
+              </Animated.View>
+            ) : (
+              <Animated.View
+                accessibilityLabel={compatibilityPresentation.accessibilityLabel}
+                accessible
+                entering={FadeIn.duration(180)}
+                exiting={FadeOut.duration(120)}
+                style={[styles.compatibilityCountRow, styles.restaurantDetailRight]}
+              >
+                {compatibilityPresentation.showCount ? (
+                  compatibilityPresentation.usesIngredientIntelligenceOnly ? (
+                    <Text numberOfLines={1} style={styles.compatibilityCount}>
+                      {compatibleCount}/{compatibleTotal} possible
+                    </Text>
+                  ) : (
+                    <Text numberOfLines={1} style={styles.compatibilityCount}>
+                      {compatibleCount}/{compatibleTotal} options
+                    </Text>
+                  )
+                ) : (
+                  <Text style={styles.compatibilityCount}>
+                    {compatibilityPresentation.countFallbackLabel}
+                  </Text>
+                )}
+              </Animated.View>
+            )
+          ) : null}
+        </View>
+        {!policyOnly ? (
+          <View
+            style={[styles.restaurantDetailRow, styles.restaurantEvidenceRow]}
           >
-            {compatibilityPresentation.evidenceLabel}
-          </Text>
+            <View style={styles.restaurantDetailLeft}>
+              {compatibilityIsProvisional ? (
+                <View style={styles.restaurantEvidenceSkeleton} />
+              ) : (
+                <Text
+                  numberOfLines={1}
+                  style={[
+                    styles.restaurantEvidence,
+                    compatibilityPresentation.emphasizeEvidence
+                      ? styles.restaurantEvidenceNeedsConfirmation
+                      : null,
+                  ]}
+                >
+                  {compatibilityPresentation.evidenceLabel}
+                </Text>
+              )}
+            </View>
+            <Animated.View
+              entering={FadeIn.duration(compatibilityIsProvisional ? 160 : 180)}
+              exiting={FadeOut.duration(compatibilityIsProvisional ? 140 : 120)}
+              style={styles.restaurantDetailRight}
+            >
+              {compatibilityIsProvisional ? (
+                <View style={styles.compatibilitySkeletonTrack} />
+              ) : (
+                <View style={styles.compatibilityTrack}>
+                  <View
+                    style={[
+                      styles.compatibilityFill,
+                      compatibilityPresentation.usesIngredientIntelligenceOnly &&
+                        styles.compatibilityFillIntelligence,
+                      {
+                        width: `${compatibilityPresentation.progressPercent}%`,
+                      },
+                    ]}
+                  />
+                </View>
+              )}
+            </Animated.View>
+          </View>
         ) : null}
       </View>
-      {compatibilityIsProvisional && !policyOnly ? (
-        <CompatibilitySkeleton />
-      ) : policyOnly ? null : (
-        <Animated.View
-          entering={FadeIn.duration(180)}
-          exiting={FadeOut.duration(120)}
-          style={styles.compatibilityBlock}
-        >
-          <Text style={styles.compatibilityPercent}>
-            {compatibilityPresentation.percentLabel}
-          </Text>
-          <View
-            accessibilityLabel={compatibilityPresentation.accessibilityLabel}
-            accessible
-            style={styles.compatibilityCountRow}
-          >
-            {compatibilityPresentation.showCount ? (
-              compatibilityPresentation.usesIngredientIntelligenceOnly ? (
-                <>
-                  <Sparkles color="#B25E00" size={12} strokeWidth={2.45} />
-                  <Text numberOfLines={1} style={styles.compatibilityCount}>
-                    {compatibleCount}/{compatibleTotal} possible
-                  </Text>
-                </>
-              ) : (
-                <Text numberOfLines={1} style={styles.compatibilityCount}>
-                  {compatibleCount}/{compatibleTotal} options
-                </Text>
-              )
-            ) : (
-              <Text style={styles.compatibilityCount}>
-                {compatibilityPresentation.countFallbackLabel}
-              </Text>
-            )}
-          </View>
-          <View style={styles.compatibilityTrack}>
-            <View
-              style={[
-                styles.compatibilityFill,
-                compatibilityPresentation.usesIngredientIntelligenceOnly &&
-                  styles.compatibilityFillIntelligence,
-                {
-                  width: `${compatibilityPresentation.progressPercent}%`,
-                },
-              ]}
-            />
-          </View>
-        </Animated.View>
-      )}
     </Pressable>
   );
 }
@@ -659,17 +696,23 @@ function getCompatibilityPresentation(
   } else if (evidenceUnavailable) {
     evidenceLabel = "Not enough allergen data";
   } else if (summary.needsConfirmationCount > 0) {
-    evidenceLabel = `${summary.needsConfirmationCount} need confirmation`;
+    evidenceLabel = `${summary.needsConfirmationCount} item${
+      summary.needsConfirmationCount === 1 ? "" : "s"
+    } to verify`;
     emphasizeEvidence = true;
   } else if (compatibleCount === 0) {
     evidenceLabel = "All items have a concern";
     emphasizeEvidence = true;
   } else if (summary.evidenceStatus === "official") {
     evidenceLabel = "Official allergen data";
+  } else if (summary.evidenceStatus === "linked") {
+    evidenceLabel = "Official allergen data";
   } else if (summary.evidenceStatus === "mixed") {
-    evidenceLabel = "Official + ingredient analysis";
+    evidenceLabel = summary.hasIngredientIntelligence
+      ? "Official + ingredient analysis"
+      : "Official allergen data";
   } else if (summary.evidenceStatus === "intelligence") {
-    evidenceLabel = "Ingredient analysis only";
+    evidenceLabel = "Ingredient Intelligence";
   }
 
   return {
@@ -688,22 +731,6 @@ function getCompatibilityPresentation(
     showCount,
     usesIngredientIntelligenceOnly,
   };
-}
-
-function CompatibilitySkeleton() {
-  return (
-    <Animated.View
-      accessibilityLabel="Checking allergy compatibility"
-      accessibilityRole="progressbar"
-      entering={FadeIn.duration(160)}
-      exiting={FadeOut.duration(140)}
-      style={styles.compatibilitySkeleton}
-    >
-      <View style={styles.compatibilitySkeletonPercent} />
-      <View style={styles.compatibilitySkeletonCount} />
-      <View style={styles.compatibilitySkeletonTrack} />
-    </Animated.View>
-  );
 }
 
 function getRestaurantLocationLabel(restaurant: RestaurantSearchResult) {
@@ -742,22 +769,18 @@ function normalizeCityForRegion(city: string | null | undefined, region: string 
 }
 
 const styles = StyleSheet.create({
-  compatibilityBlock: {
-    alignItems: "flex-end",
-    minWidth: 104,
-  },
   compatibilityCount: {
     color: colors.muted,
-    fontSize: 11,
-    fontWeight: "700",
-    lineHeight: 15,
+    fontSize: 13,
+    fontWeight: "400",
+    lineHeight: 16,
     fontVariant: ["tabular-nums"],
+    textAlign: "right",
   },
   compatibilityCountRow: {
     alignItems: "center",
     flexDirection: "row",
     gap: 3,
-    marginTop: 1,
   },
   compatibilityFill: {
     backgroundColor: "#34C759",
@@ -773,11 +796,6 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     fontVariant: ["tabular-nums"],
     lineHeight: 23,
-  },
-  compatibilitySkeleton: {
-    alignItems: "flex-end",
-    gap: 5,
-    minWidth: 104,
   },
   compatibilitySkeletonCount: {
     backgroundColor: "rgba(116,119,124,0.12)",
@@ -795,14 +813,12 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(116,119,124,0.12)",
     borderRadius: radius.pill,
     height: 5,
-    marginTop: 2,
     width: 66,
   },
   compatibilityTrack: {
     backgroundColor: "#E5E5EA",
     borderRadius: radius.pill,
     height: 5,
-    marginTop: 7,
     overflow: "hidden",
     width: 66,
   },
@@ -837,11 +853,8 @@ const styles = StyleSheet.create({
     fontWeight: "800",
   },
   headerProfile: {
-    alignItems: "center",
     borderRadius: 24,
     height: 48,
-    justifyContent: "center",
-    overflow: "hidden",
     width: 48,
   },
   headerProfileInitial: {
@@ -862,10 +875,6 @@ const styles = StyleSheet.create({
     height: 48,
     width: 48,
     zIndex: 6,
-  },
-  headerProfilePressed: {
-    opacity: 0.68,
-    transform: [{ scale: 0.98 }],
   },
   nav: {
     alignItems: "center",
@@ -894,30 +903,40 @@ const styles = StyleSheet.create({
   restaurantMeta: {
     color: colors.muted,
     fontSize: 13,
-    lineHeight: 18,
-    marginTop: 2,
+    lineHeight: 16,
   },
   restaurantEvidence: {
     color: colors.muted,
     fontSize: 11,
     fontWeight: "600",
     lineHeight: 15,
-    marginTop: 2,
   },
   restaurantEvidenceSkeleton: {
     backgroundColor: "rgba(116,119,124,0.10)",
     borderRadius: radius.pill,
     height: 9,
-    marginTop: 5,
     width: 96,
   },
   restaurantEvidenceNeedsConfirmation: {
     color: "#A85D00",
   },
+  restaurantEvidenceRow: {
+    marginTop: 3,
+    minHeight: 15,
+  },
   restaurantName: {
     color: colors.ink,
     fontSize: 18,
     fontWeight: "700",
+    lineHeight: 23,
+  },
+  restaurantNameRow: {
+    alignItems: "baseline",
+    minHeight: 23,
+  },
+  restaurantOptionsRow: {
+    marginTop: -2,
+    minHeight: 16,
   },
   restaurantRow: {
     alignItems: "center",
@@ -940,6 +959,20 @@ const styles = StyleSheet.create({
   },
   restaurantText: {
     flex: 1,
+  },
+  restaurantDetailLeft: {
+    flex: 1,
+    minWidth: 0,
+  },
+  restaurantDetailRight: {
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
+    width: 104,
+  },
+  restaurantDetailRow: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   safeArea: {
     flex: 1,

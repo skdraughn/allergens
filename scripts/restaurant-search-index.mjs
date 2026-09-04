@@ -1,4 +1,13 @@
+import { readFileSync } from "node:fs";
+
 import { refreshMetadataForRestaurant } from "./restaurant-refresh-policy.mjs";
+
+const allergenSourceContract = JSON.parse(
+  readFileSync(
+    new URL("../src/data/allergen-source-contract.json", import.meta.url),
+    "utf8",
+  ),
+);
 
 const allergenIds = [
   "shellfish",
@@ -14,6 +23,29 @@ const allergenIds = [
   "mustard",
   "sulfites",
 ];
+
+const inclusionByExclusionAllergenIds = [
+  "milk",
+  "egg",
+  "fish",
+  "shellfish",
+  "tree-nut",
+  "peanut",
+  "wheat",
+  "soy",
+  "sesame",
+];
+
+const exhaustiveOfficialSourceTypes = new Set(
+  allergenSourceContract.exhaustiveOfficialSourceTypes,
+);
+const positiveOnlyOfficialSourceTypes = new Set(
+  allergenSourceContract.positiveOnlyOfficialSourceTypes,
+);
+const ingredientIntelligenceSourceTypes = new Set(
+  allergenSourceContract.ingredientIntelligenceSourceTypes,
+);
+const linkedSourceTypes = new Set(allergenSourceContract.linkedOfficialSourceTypes);
 
 const chainAliases = {
   mcdonalds: ["mcdonalds", "mcdonald's", "mickey d", "mickey ds", "mickey d's", "mcd"],
@@ -149,11 +181,18 @@ export function compatibilitySummaryForRestaurant(restaurant) {
   const ingredientIntelligenceSafeAllergenItemIndexes = Object.fromEntries(
     allergenIds.map((id) => [id, []]),
   );
+  const linkedAllergenItemIndexes = [];
   const unavailableAllergenItemIndexes = Object.fromEntries(allergenIds.map((id) => [id, []]));
   const unavailableItemIndexes = [];
   let unavailableCount = 0;
 
   for (const [index, item] of (restaurant.items ?? []).entries()) {
+    const publishedSource = isPublishedAllergenSource(item);
+
+    if (publishedSource && isLinkedAllergenSource(item)) {
+      linkedAllergenItemIndexes.push(index);
+    }
+
     const unavailableAllergenIds = allergenIds.filter(
       (allergenId) => !isOfficialAllergenCovered(item, restaurant, allergenId),
     );
@@ -169,34 +208,51 @@ export function compatibilitySummaryForRestaurant(restaurant) {
         unavailableItemIndexes.push(index);
       }
 
-      if (isIngredientIntelligenceReviewed(item)) {
+      const applicableSignals = publishedSource
+        ? []
+        : ingredientIntelligenceSignals(item);
+      const signalIds = new Set(applicableSignals.map((signal) => signal?.id));
+      const suppressionIds = new Set(
+        (item.inferenceSuppressions ?? [])
+          .map((suppression) => suppression?.id)
+          .filter(Boolean),
+      );
+      const hasApplicableIngredientIntelligence = publishedSource
+        ? unavailableAllergenIds.some((allergenId) => suppressionIds.has(allergenId))
+        : isIngredientIntelligenceReviewed(item);
+
+      if (hasApplicableIngredientIntelligence) {
         ingredientIntelligenceItemIndexes.push(index);
 
-        for (const signal of item.inferredAllergenSignals ?? []) {
+        for (const signal of applicableSignals) {
           if (signal?.id in inferredAllergenItemIndexes) {
             inferredAllergenItemIndexes[signal.id].push(index);
           }
         }
-      }
 
-      for (const suppression of item.inferenceSuppressions ?? []) {
-        if (suppression?.id in ingredientIntelligenceSafeAllergenItemIndexes) {
-          ingredientIntelligenceSafeAllergenItemIndexes[suppression.id].push(index);
+        for (const allergenId of unavailableAllergenIds) {
+          if (signalIds.has(allergenId) && !suppressionIds.has(allergenId)) {
+            continue;
+          }
+
+          ingredientIntelligenceSafeAllergenItemIndexes[allergenId].push(index);
         }
       }
     }
 
-    for (const allergen of uniqueStrings(item.allergens ?? [])) {
-      if (allergen in directAllergenItemCounts) {
-        directAllergenItemCounts[allergen] += 1;
-        directAllergenItemIndexes[allergen].push(index);
+    if (publishedSource) {
+      for (const allergen of uniqueStrings(item.allergens ?? [])) {
+        if (allergen in directAllergenItemCounts) {
+          directAllergenItemCounts[allergen] += 1;
+          directAllergenItemIndexes[allergen].push(index);
+        }
       }
-    }
 
-    for (const allergen of uniqueStrings(item.mayContain ?? [])) {
-      if (allergen in mayContainAllergenItemCounts) {
-        mayContainAllergenItemCounts[allergen] += 1;
-        mayContainAllergenItemIndexes[allergen].push(index);
+      for (const allergen of uniqueStrings(item.mayContain ?? [])) {
+        if (allergen in mayContainAllergenItemCounts) {
+          mayContainAllergenItemCounts[allergen] += 1;
+          mayContainAllergenItemIndexes[allergen].push(index);
+        }
       }
     }
   }
@@ -208,11 +264,12 @@ export function compatibilitySummaryForRestaurant(restaurant) {
       ? { inferredAllergenItemIndexes, ingredientIntelligenceItemIndexes }
       : {}),
     ingredientIntelligenceSafeAllergenItemIndexes,
+    linkedAllergenItemIndexes,
     mayContainAllergenItemCounts,
     mayContainAllergenItemIndexes,
-    officialItemCount:
-      restaurant.allergenDataStatus?.officialItemCount ??
-      (restaurant.items ?? []).filter((item) => item.allergenSourceType !== "unavailable").length,
+    officialItemCount: (restaurant.items ?? []).filter(
+      isPublishedAllergenSource,
+    ).length,
     totalItemCount: (restaurant.items ?? []).length,
     unavailableCount,
     unavailableAllergenItemIndexes,
@@ -221,26 +278,69 @@ export function compatibilitySummaryForRestaurant(restaurant) {
 }
 
 function isOfficialAllergenCovered(item, restaurant, allergenId) {
-  if (item.allergenSourceType === "unavailable") {
+  if (!isPublishedAllergenSource(item)) {
     return false;
   }
 
   const profileId = item.officialAllergenProfileId;
   const coveredIds = new Set([
+    ...(item.allergens ?? []),
+    ...(item.mayContain ?? []),
     ...(item.officialAllergenCoveredIds ?? []),
     ...(profileId
       ? restaurant.officialAllergenProfiles?.[profileId]?.coveredAllergenIds ?? []
       : []),
   ]);
 
+  if (exhaustiveOfficialSourceTypes.has(item.allergenSourceType)) {
+    for (const coveredAllergenId of inclusionByExclusionAllergenIds) {
+      coveredIds.add(coveredAllergenId);
+    }
+  }
+
   return coveredIds.has(allergenId);
 }
 
 function isIngredientIntelligenceReviewed(item) {
   return Boolean(
-    (item.inferredIngredients ?? []).length > 0 ||
-      (item.inferredAllergenSignals ?? []).length > 0
+    ingredientIntelligenceSourceTypes.has(item.allergenSourceType) ||
+      Boolean(item.ingredientIntelligenceBasis) ||
+      item.ingredientIntelligenceReviewed ||
+      (item.inferredIngredients ?? []).length > 0 ||
+      (item.inferredAllergenSignals ?? []).length > 0 ||
+      (item.inferenceSuppressions ?? []).length > 0
   );
+}
+
+function isPublishedAllergenSource(item) {
+  return Boolean(
+    exhaustiveOfficialSourceTypes.has(item?.allergenSourceType) ||
+      positiveOnlyOfficialSourceTypes.has(item?.allergenSourceType),
+  );
+}
+
+function isLinkedAllergenSource(item) {
+  return (
+    item?.allergenAuthorityTier === "restaurant_linked_vendor" ||
+    item?.allergenAuthorityTier === "third_party" ||
+    linkedSourceTypes.has(item?.allergenSourceType)
+  );
+}
+
+function ingredientIntelligenceSignals(item) {
+  const signals = new Map(
+    (item.inferredAllergenSignals ?? []).map((signal) => [signal.id, signal]),
+  );
+
+  if (ingredientIntelligenceSourceTypes.has(item.allergenSourceType)) {
+    for (const id of [...(item.allergens ?? []), ...(item.mayContain ?? [])]) {
+      if (!signals.has(id)) {
+        signals.set(id, { id, c: "high", e: ["legacy-reclassified"] });
+      }
+    }
+  }
+
+  return Array.from(signals.values());
 }
 
 export function encodeGeohash(latitude, longitude, precision = 6) {

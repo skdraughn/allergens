@@ -1,9 +1,9 @@
 import { Plus, type LucideIcon } from "lucide-react-native";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { colors, radius, spacing } from "@/constants/theme";
-import { IconButtonSurface } from "@/components/icon-button";
+import { LiquidGlassPressable } from "@/components/liquid-glass-pressable";
 
 type RestaurantRequestButtonProps = {
   label?: string;
@@ -43,21 +43,18 @@ export function RestaurantRequestButton({
 
 function PillButton({ Icon, label, onPress }: Required<FloatingPillButtonProps>) {
   return (
-    <Pressable
+    <LiquidGlassPressable
       accessibilityLabel={label}
       accessibilityRole="button"
+      containerStyle={styles.button}
+      contentStyle={styles.buttonContent}
       onPress={onPress}
-      style={({ pressed }) => [
-        styles.button,
-        pressed && styles.buttonPressed,
-      ]}
     >
-      <IconButtonSurface />
       <Icon color={colors.primary} size={16} strokeWidth={2.45} />
       <Text numberOfLines={1} style={styles.label}>
         {label}
       </Text>
-    </Pressable>
+    </LiquidGlassPressable>
   );
 }
 
@@ -70,23 +67,18 @@ export function FloatingRestaurantRequestButton({
 
 const styles = StyleSheet.create({
   button: {
-    alignItems: "center",
     borderCurve: "continuous",
     borderRadius: radius.pill,
-    flexDirection: "row",
-    gap: 7,
-    justifyContent: "center",
-    minHeight: 44,
-    overflow: "hidden",
-    paddingHorizontal: 17,
     shadowColor: "#000000",
     shadowOffset: { height: 3, width: 0 },
     shadowOpacity: 0.055,
     shadowRadius: 8,
   },
-  buttonPressed: {
-    opacity: 0.82,
-    transform: [{ scale: 0.985 }],
+  buttonContent: {
+    flexDirection: "row",
+    gap: 7,
+    minHeight: 44,
+    paddingHorizontal: 17,
   },
   floatingWrap: {
     alignItems: "center",

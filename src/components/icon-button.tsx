@@ -4,11 +4,11 @@ import {
   isLiquidGlassAvailable,
   type GlassViewProps,
 } from "expo-glass-effect";
-import { useIsFocused } from "expo-router/react-navigation";
 import type { LucideIcon } from "lucide-react-native";
-import { Pressable, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Animated, { type SharedValue, useAnimatedProps } from "react-native-reanimated";
 
+import { NativeGlassIconButton } from "@/components/native-glass-icon-button";
 import { colors } from "@/constants/theme";
 
 type IconButtonProps = {
@@ -29,27 +29,26 @@ export function IconButton({
   onPress,
 }: IconButtonProps) {
   return (
-    <Pressable
-      accessibilityLabel={label}
-      accessibilityRole="button"
+    <NativeGlassIconButton
+      active={glassActive}
+      contentStyle={styles.buttonContent}
+      glassVisibilityProgress={glassVisibilityProgress}
+      Icon={Icon}
+      iconColor={colors.primary}
+      label={label}
       onPress={onPress}
-      style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
-    >
-      <IconButtonSurface
-        active={glassActive}
-        visibilityProgress={glassVisibilityProgress}
-      />
-      <Icon color={colors.primary} size={22} strokeWidth={2.3} />
-    </Pressable>
+      strokeWidth={2.3}
+      style={styles.button}
+    />
   );
 }
 
 export function IconButtonSurface({
   active = true,
   fallbackColor = "rgba(242,242,247,0.9)",
-  interactive = true,
-  renderFallbackUnderGlass = true,
-  tintColor = "rgba(248,248,252,0.34)",
+  interactive = false,
+  renderFallbackUnderGlass = false,
+  tintColor = null,
   visibilityProgress,
 }: {
   active?: boolean;
@@ -60,7 +59,6 @@ export function IconButtonSurface({
   visibilityProgress?: SharedValue<number>;
 }) {
   const canUseLiquidGlass = isLiquidGlassAvailable() && isGlassEffectAPIAvailable();
-  const isFocused = useIsFocused();
   const animatedProps = useAnimatedProps<GlassViewProps>(() => {
     const glassEffectStyle: "none" | "regular" =
       !visibilityProgress || visibilityProgress.value > 0.01
@@ -73,18 +71,18 @@ export function IconButtonSurface({
   if (canUseLiquidGlass) {
     return (
       <>
-        {renderFallbackUnderGlass || !active || !isFocused ? (
+        {renderFallbackUnderGlass || !active ? (
           <View
             pointerEvents="none"
             style={[styles.surface, styles.fallbackSurface, { backgroundColor: fallbackColor }]}
           />
         ) : null}
-        {active && isFocused ? (
+        {active ? (
           visibilityProgress ? (
             <AnimatedGlassView
               animatedProps={animatedProps}
               isInteractive={interactive}
-              pointerEvents="none"
+              pointerEvents={interactive ? "auto" : "none"}
               style={styles.surface}
               tintColor={tintColor ?? undefined}
             />
@@ -92,7 +90,7 @@ export function IconButtonSurface({
             <GlassView
               glassEffectStyle="regular"
               isInteractive={interactive}
-              pointerEvents="none"
+              pointerEvents={interactive ? "auto" : "none"}
               style={styles.surface}
               tintColor={tintColor ?? undefined}
             />
@@ -112,15 +110,13 @@ export function IconButtonSurface({
 
 const styles = StyleSheet.create({
   button: {
-    alignItems: "center",
     borderRadius: 24,
     height: 48,
-    justifyContent: "center",
-    overflow: "hidden",
     width: 48,
   },
-  buttonPressed: {
-    transform: [{ scale: 0.94 }],
+  buttonContent: {
+    height: 48,
+    width: 48,
   },
   fallbackSurface: {
     borderColor: "rgba(255,255,255,0.75)",

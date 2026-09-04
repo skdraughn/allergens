@@ -17,6 +17,8 @@ const availableSourcePathById = new Map([
   ["kfc", argumentPath("kfc", ".codex-tmp/catalog-repair/kfc-fixed.json")],
   ["little-caesars", argumentPath("little-caesars", ".codex-tmp/catalog-repair/little-caesars-fixed.json")],
   ["chick-fil-a", argumentPath("chick-fil-a", ".codex-tmp/catalog-repair/chick-fil-a-fixed.json")],
+  ["dennys", argumentPath("dennys", ".codex-tmp/catalog-repair/dennys-refreshed.json")],
+  ["cheesecake-factory", argumentPath("cheesecake-factory", ".codex-tmp/catalog-repair/cheesecake-factory-refreshed.json")],
 ]);
 const onlyIds = new Set(
   argumentValue("only")?.split(",").map((value) => value.trim()).filter(Boolean) ??
@@ -58,6 +60,8 @@ const originalPublishedItemCountById = new Map([
   ["kfc", 43],
   ["little-caesars", 14],
   ["chick-fil-a", 148],
+  ["dennys", 196],
+  ["cheesecake-factory", 243],
 ]);
 
 for (const restaurantId of sourcePathById.keys()) {
@@ -101,6 +105,15 @@ for (const restaurantId of sourcePathById.keys()) {
       extractedFoodItemCount: nextRestaurant.items.length,
       quarantinedItemExamples: [],
     };
+  }
+
+  if (restaurantId === "dennys") {
+    nextRestaurant.guideUrl =
+      "https://dennys.com/sites/default/files/2026-08/AllergenGuideJuly2026.pdf";
+    nextRestaurant.guideLabel = "Official Denny's allergen guide";
+  } else if (restaurantId === "cheesecake-factory") {
+    nextRestaurant.guideUrl = "https://www.thecheesecakefactory.com/allergy";
+    nextRestaurant.guideLabel = "Official Cheesecake Factory allergen guide";
   }
 
   nextRestaurant = assignCoverageProfiles(nextRestaurant);
@@ -521,6 +534,25 @@ function summarizeReconciliation(checks) {
 
 function updateEvidence(evidence, restaurantId, repairAt) {
   const evidenceId = evidenceIdForRestaurant(restaurantId);
+  if (restaurantId === "dennys") {
+    evidence.sources = upsertById(evidence.sources, {
+      id: evidenceId,
+      url: "https://dennys.com/sites/default/files/2026-08/AllergenGuideJuly2026.pdf",
+      authorityTier: "restaurant_issued",
+      purpose: "both",
+      retrievedAt: repairAt,
+      contentType: "application/pdf",
+      finalUrl: "https://dennys.com/sites/default/files/2026-08/AllergenGuideJuly2026.pdf",
+      httpStatus: 200,
+      byteLength: 328541,
+      sha256: null,
+      artifactPath: null,
+      excerpt: sourceExcerptForRestaurant(restaurantId),
+      rowIdentifiers: [],
+      request: null,
+      notes: [],
+    });
+  }
   const source = evidence.sources.find((entry) => entry.id === evidenceId);
   source.retrievedAt = repairAt;
   source.purpose = "both";
@@ -557,13 +589,15 @@ function evidenceIdForRestaurant(restaurantId) {
     "dairy-queen": "ev-nutrition",
     kfc: "KFC-E2",
     "little-caesars": "lc-allergen",
+    dennys: "ev-allergen-guide-2026-08",
+    "cheesecake-factory": "src-official-allergy",
   }[restaurantId];
 }
 
 function canonicalSourceTypeForRestaurant(restaurantId) {
-  return restaurantId === "kfc"
+  return restaurantId === "kfc" || restaurantId === "cheesecake-factory"
     ? "official-api"
-    : restaurantId === "little-caesars"
+    : restaurantId === "little-caesars" || restaurantId === "dennys"
       ? "pdf-matrix"
       : "html-allergen-matrix";
 }
@@ -574,6 +608,8 @@ function sourceExcerptForRestaurant(restaurantId) {
     "dairy-queen": "Official Dairy Queen nutrition and allergen matrix with row-level top-allergen declarations.",
     kfc: "Restaurant-linked KFC Nutritionix feed with item-level allergen presence values and declared availability fields.",
     "little-caesars": "Official 2026 Little Caesars US nutrition guide with menu rows and Egg, Milk, Wheat, and Soy allergen columns.",
+    dennys: "Official August 2026 Denny's Menu Item Allergen Guide covering the FDA top nine allergens plus gluten.",
+    "cheesecake-factory": "The Cheesecake Factory's official allergy page embeds its current Nutritionix allergen guide with explicit contains and does-not-contain filtering.",
   }[restaurantId];
 }
 

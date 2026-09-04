@@ -29,7 +29,7 @@ import { DetailPageShell, DetailPageTopBar } from "@/components/detail-page-shel
 import { AllergyRatingPicker } from "@/components/allergy-rating-picker";
 import { CommunityReviewCard } from "@/components/community-review-card";
 import { CommunityReviewSummary } from "@/components/community-review-summary";
-import { IconButtonSurface } from "@/components/icon-button";
+import { LiquidGlassPressable } from "@/components/liquid-glass-pressable";
 import { ModalIconButton } from "@/components/modal-icon-button";
 import { PrimaryButton } from "@/components/primary-button";
 import { FloatingPillButton } from "@/components/restaurant-request-button";
@@ -59,8 +59,6 @@ type ReviewForm = {
   rating: number;
 };
 
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
-type AnimatedPressableStyle = ComponentProps<typeof AnimatedPressable>["style"];
 type AnimatedViewStyle = ComponentProps<typeof Animated.View>["style"];
 
 const emptyForm = (menuItemId = "", allergyIds: string[] = []): ReviewForm => ({
@@ -648,20 +646,24 @@ function AnimatedNavButton({
   onPress: () => void;
   size?: number;
   strokeWidth?: number;
-  style: AnimatedPressableStyle;
+  style: AnimatedViewStyle;
 }) {
   return (
-    <AnimatedPressable
-      accessibilityLabel={label}
-      accessibilityRole="button"
-      onPress={onPress}
+    <Animated.View
       style={[styles.navButton, style]}
     >
-      <IconButtonSurface />
-      <Animated.View style={iconStyle}>
-        <Icon color={colors.primary} size={size} strokeWidth={strokeWidth} />
-      </Animated.View>
-    </AnimatedPressable>
+      <LiquidGlassPressable
+        accessibilityLabel={label}
+        accessibilityRole="button"
+        containerStyle={styles.navButtonGlass}
+        contentStyle={styles.navButtonContent}
+        onPress={onPress}
+      >
+        <Animated.View style={iconStyle}>
+          <Icon color={colors.primary} size={size} strokeWidth={strokeWidth} />
+        </Animated.View>
+      </LiquidGlassPressable>
+    </Animated.View>
   );
 }
 
@@ -946,6 +948,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     overflow: "hidden",
     width: 48,
+  },
+  navButtonContent: {
+    height: "100%",
+    width: "100%",
+  },
+  navButtonGlass: {
+    borderRadius: 999,
+    bottom: 0,
+    left: 0,
+    position: "absolute",
+    right: 0,
+    top: 0,
   },
   navLeading: {
     alignItems: "center",

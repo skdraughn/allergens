@@ -1,6 +1,6 @@
 # Restaurant Verification Ledger
 
-Generated: 2026-08-12T15:58:30.450Z
+Generated: 2026-09-02T16:57:50.841Z
 
 Baseline: 1495 restaurants, 112873 items
 
@@ -21,5 +21,5 @@ Next restaurant: none
 | discrepancy_found | 0 |
 | repair_in_progress | 0 |
 | recheck_required | 0 |
-| codex_verified | 1495 |
-| blocked_unverifiable | 0 |
+| codex_verified | 1494 |
+| blocked_unverifiable | 1 |

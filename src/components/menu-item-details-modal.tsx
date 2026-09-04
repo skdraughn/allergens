@@ -34,7 +34,10 @@ import { allergyOptions } from "@/constants/allergies";
 import { colors, radius, spacing } from "@/constants/theme";
 import type { MenuItem, OfficialAllergenProfiles } from "@/data/restaurants";
 import {
+  getApplicableIngredientIntelligenceSignals,
+  getPublishedAllergenSourceAuthority,
   getUncoveredOfficialAllergenIds,
+  hasApplicableIngredientIntelligence,
   hasIngredientIntelligence,
 } from "@/lib/safety";
 import type {
@@ -57,7 +60,7 @@ type MenuItemDetailsModalProps = {
 };
 
 type SourceCue = {
-  kind: "inferred" | "linked" | "official" | "unavailable";
+  kind: "inferred" | "official" | "unavailable";
   label: string;
 };
 
@@ -87,7 +90,7 @@ export function MenuItemDetailsModal({
     : null;
   const firstSource = displayItem?.sourceUrls?.find(isUserFacingSourceUrl);
   const canShowAllergenSourceLink = Boolean(
-    allergenSourceCue?.kind === "official" || allergenSourceCue?.kind === "linked",
+    allergenSourceCue?.kind === "official",
   );
   const allergenSourceUrl = canShowAllergenSourceLink ? firstSource : undefined;
   const displayedAllergenSourceUrl = allergenSourceUrl;
@@ -178,15 +181,14 @@ export function MenuItemDetailsModal({
 
   return (
     <Modal
+      allowSwipeDismissal
       animationType="slide"
       onDismiss={() => {
         if (!item) {
           setPresentedItem(null);
         }
       }}
-      onRequestClose={
-        ingredientsVisible ? () => setIngredientsVisible(false) : onClose
-      }
+      onRequestClose={onClose}
       presentationStyle="pageSheet"
       visible={Boolean(item)}
     >
@@ -476,12 +478,18 @@ function AllergenChips({
     label: getAllergenLabel(id),
     tone: "mayContain" as const,
   }));
-  const inferredChips = (item.inferredAllergenSignals ?? []).map((signal) => ({
+  const inferredChips = getApplicableIngredientIntelligenceSignals(
+    item,
+    officialAllergenProfiles,
+  ).map((signal) => ({
     id: signal.id,
     label: getAllergenLabel(signal.id),
     tone: "inferred" as const,
   }));
-  const ingredientIntelligenceUsed = hasIngredientIntelligence(item);
+  const ingredientIntelligenceUsed = hasApplicableIngredientIntelligence(
+    item,
+    officialAllergenProfiles,
+  );
 
   const uncoveredOfficialAllergenIds = getUncoveredOfficialAllergenIds(
     item,
@@ -489,10 +497,7 @@ function AllergenChips({
     officialAllergenProfiles,
   );
   const hasNoOfficialAllergenCoverage =
-    item.allergenSourceType === "unavailable" ||
-    (!item.allergenSourceType &&
-      directChips.length === 0 &&
-      crossContactChips.length === 0);
+    getPublishedAllergenSourceAuthority(item) === null;
 
   if (
     hasNoOfficialAllergenCoverage ||
@@ -657,7 +662,7 @@ function AllergenChipGroup({
             >
               {Icon ? (
                 <Icon
-                  color={selected ? "#B42318" : option.accent}
+                  color={selected ? "#B42318" : inferred ? "#265CB9" : option.accent}
                   size={15}
                   strokeWidth={2.35}
                 />
@@ -739,49 +744,31 @@ function isUserFacingSourceUrl(url: string) {
 }
 
 function getAllergenSourceCue(item: MenuItem): SourceCue {
-  switch (item.allergenSourceType) {
-    case "official-allergen-menu":
-      return {
-        kind: "official",
-        label: "Official source",
-      };
-    case "official-ingredients":
-      return {
-        kind: "official",
-        label: "Official source",
-      };
-    case "official-product-allergen-section":
-      return {
-        kind: "official",
-        label: "Official source",
-      };
-    case "official-global-cross-contact-note":
-      return {
-        kind: "official",
-        label: "Official source",
-      };
-    case "restaurant-linked-menu-ingredients":
-    case "restaurant-linked-product-allergen-section":
-      return {
-        kind: "linked",
-        label: "Restaurant-linked menu",
-      };
-    case "unavailable":
-      return hasIngredientIntelligence(item)
-        ? {
-            kind: "inferred",
-            label: "Ingredient Intelligence",
-          }
-        : {
-            kind: "unavailable",
-            label: "No official source",
-          };
-    default:
-      return {
-        kind: "official",
-        label: "Source",
-      };
+  const authority = getPublishedAllergenSourceAuthority(item);
+
+  if (authority === "official") {
+    return {
+      kind: "official",
+      label: "Official source",
+    };
   }
+
+  if (authority === "linked") {
+    return {
+      kind: "official",
+      label: "Official source",
+    };
+  }
+
+  return hasIngredientIntelligence(item)
+    ? {
+        kind: "inferred",
+        label: "Ingredient Intelligence",
+      }
+    : {
+        kind: "unavailable",
+        label: "No official source",
+      };
 }
 
 function getItemCommunity(item: MenuItem, reviews: CommunityAllergyReview[]) {
